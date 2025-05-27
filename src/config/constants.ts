@@ -1,0 +1,1 @@
+export const AppName = 'CheckBiz360 SaaS Platform'
