@@ -50,7 +50,7 @@ export const menuItems = [{
     icon: <AutoGraphIcon />,
     link: '/main/reports',
     subMenu: [{
-        name: 'Sales',
+        name: 'Subcription',
         icon: <BarChartIcon />,
         link: '/main/reports/sales',
         subMenu: []

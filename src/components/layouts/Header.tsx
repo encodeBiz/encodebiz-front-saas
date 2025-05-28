@@ -31,9 +31,9 @@ import {
   ChevronLeft,
   ChevronRight
 } from '@mui/icons-material';
+import HelpIcon from '@mui/icons-material/Help';
 import { useLayout } from '@/hooks/useLayout';
 import { useAppTheme } from '@/hooks/useTheme';
-import { AppName } from '@/config/constants';
 import { useTranslations } from 'next-intl';
 import LocaleSwitcher from '../common/LocaleSwitcher';
 
@@ -80,12 +80,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function Header() {
   const { changeLayoutState, layoutState } = useLayout()
-  const { mode, changeColorMode } = useAppTheme()
+  const {   changeColorMode } = useAppTheme()
   const t = useTranslations();
 
-  const changeLanguage = (lng: string) => {
-    // i18n.changeLanguage(lng);
-  };
+ 
 
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -223,17 +221,11 @@ export default function Header() {
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
              
-            <h1>{t('layout.header.title')}</h1>
+            <h4>{t('layout.header.title')}</h4>
           </Typography>
-
-
-
           <Box sx={{ flexGrow: 1 }} />
-
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-
             <LocaleSwitcher />
-
             <IconButton
               onClick={() => changeColorMode()}
               color="inherit"
@@ -259,6 +251,16 @@ export default function Header() {
                 <Badge badgeContent={17} color="error">
                   <NotificationsIcon />
                 </Badge>
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title="Ayuda">
+              <IconButton
+                size="large"
+                aria-label="show 17 new notifications"
+                color="inherit"
+              >
+                 <HelpIcon />
               </IconButton>
             </Tooltip>
 

@@ -1,15 +1,31 @@
-{ 
-"layout":{ 
-"header": { 
-"title": "Checkbiz360 SaaS Platform", 
-"language": "Language", 
-"english": "English", 
-"spanish": "Spanish", 
-"french": "French", 
-"germany": "German" 
-}, 
-"footer": { 
-"copyright": "© {{year}} My Company. All rights reserved." 
-} 
-}
+{
+    "layout": {
+        "header": {
+            "title": "Checkbiz360 SaaS Platform",
+            "language": "Language",
+            "english": "English",
+            "spanish": "Spanish",
+            "french": "French",
+            "germany": "German"
+        },
+        "side": {
+            "menu": {
+                "Dashboard": "Dashboard",
+                "CheckBiz360 Products": "CheckBiz360 Products",
+                "CheckinBiz": "CheckinBiz",
+                "PassinBiz": "PassinBiz",
+                "Customers": "Customers",
+                "Reports": "Reports",
+                "Subscription": "Subscriptions",
+                "Revenue": "Renewals",
+                "Settings": "Preferences",
+                "Account": "Account",
+                "Notifications": "Notifications",
+                "Security": "Security"
+            }
+        },
+        "footer": {
+            "copyright": "© {{year}} My Company. All rights reserved."
+        }
+    }
 }

@@ -35,6 +35,7 @@ import { styled, useTheme } from '@mui/material/styles';
 import { useLayout } from '@/hooks/useLayout';
 import { menuItems } from '@/config/routes';
 import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 const drawerWidth = 240;
 
@@ -50,6 +51,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function SideMenu() {
   const theme = useTheme();
   const pathname = usePathname()
+  const t = useTranslations();
+  
   const { layoutState, changeLayoutState } = useLayout()
   const [openSubMenu, setOpenSubMenu] = useState<any>({
     products: false,
@@ -124,7 +127,7 @@ export default function SideMenu() {
                     <ListItemIcon>
                       {item.icon}
                     </ListItemIcon>
-                    <ListItemText primary={item.name} />
+                    <ListItemText primary={t(`layout.side.menu.${item.name}`)} />
                   </ListItemButton>
                 </ListItem>
 
@@ -135,7 +138,7 @@ export default function SideMenu() {
                       <ListItemIcon>
                         {item.icon}
                       </ListItemIcon>
-                      <ListItemText primary={item.name} />
+                      <ListItemText primary={t(`layout.side.menu.${item.name}`)}/>
                       {openSubMenu.products ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
                   </ListItem>
@@ -145,7 +148,7 @@ export default function SideMenu() {
                         <ListItemIcon>
                           {e.icon}
                         </ListItemIcon>
-                        <ListItemText primary={e.name} />
+                        <ListItemText primary={t(`layout.side.menu.${item.name}`)} />
                       </ListItemButton>)}
 
                     </List>
