@@ -167,7 +167,7 @@ export default function Header() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-    
+
       <MenuItem>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="error">
@@ -222,12 +222,8 @@ export default function Header() {
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            {AppName}
-
-            <h1>{t('header.title')}</h1>
-            <button onClick={() => changeLanguage('en')}>English</button>
-            <button onClick={() => changeLanguage('fr')}>Français</button>
-            <button onClick={() => changeLanguage('es')}>Español</button>
+             
+            <h1>{t('layout.header.title')}</h1>
           </Typography>
 
 
@@ -236,8 +232,8 @@ export default function Header() {
 
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
 
-             <LocaleSwitcher />
-             
+            <LocaleSwitcher />
+
             <IconButton
               onClick={() => changeColorMode()}
               color="inherit"

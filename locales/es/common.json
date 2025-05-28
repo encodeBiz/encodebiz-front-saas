@@ -1,9 +1,15 @@
 {
-  "header": {
-    "title": "Plataforma SaaS Checkbiz360 ES"
-   
+ "layout":{
+   "header": {
+    "title": "Plataforma SaaS Checkbiz360",
+    "language": "Idioma",
+    "english": "Inglés",
+    "spanish": "Español",
+    "french": "Francés",
+    "germany": "Alemán"
   },
-  "footer": {
+   "footer": {
     "copyright": "© {{year}} My Company. All rights reserved."
   }
+ } 
 }

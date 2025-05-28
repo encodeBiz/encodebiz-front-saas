@@ -13,7 +13,7 @@ import {
 
 // Import your defined locales from i18n.ts
 import { useAppLocale } from '@/hooks/useAppLocale';
-export const locales = ['en', 'es', 'de', 'fr']; // Define your supported locales
+export const locales = ['en', 'es']; // Define your supported locales
 
 interface LocaleSwitcherProps { }
 
@@ -37,22 +37,22 @@ const LocaleSwitcher: React.FC<LocaleSwitcherProps> = () => {
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
         <InputLabel id="locale-switcher-label">
-          {t('label')}
+          {t('layout.header.language')}
         </InputLabel>
         <Select
           labelId="locale-switcher-label"
           id="locale-switcher-select"
           value={selectedLocale}
-          label={t('label')}
+          label={t('layout.header.language')}
           onChange={handleChange}
         >
           {locales.map((locale) => (
             <MenuItem key={locale} value={locale}>
               {/* You can map locale codes to user-friendly names */}
-              {locale === 'en' && t('english')}
-              {locale === 'es' && t('spanish')}
-              {locale === 'fr' && t('french')}
-              {locale === 'de' && t('germany')}
+              {locale === 'en' && t('layout.header.english')}
+              {locale === 'es' && t('layout.header.spanish')}
+              {locale === 'fr' && t('layout.header.french')}
+              {locale === 'de' && t('layout.header.germany')}
             </MenuItem>
           ))}
         </Select>
