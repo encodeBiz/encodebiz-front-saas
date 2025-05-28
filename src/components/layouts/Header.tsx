@@ -34,6 +34,9 @@ import {
 import { useLayout } from '@/hooks/useLayout';
 import { useAppTheme } from '@/hooks/useTheme';
 import { AppName } from '@/config/constants';
+import { useTranslations } from 'next-intl';
+import LocaleSwitcher from '../common/LocaleSwitcher';
+
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -78,6 +81,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function Header() {
   const { changeLayoutState, layoutState } = useLayout()
   const { mode, changeColorMode } = useAppTheme()
+  const t = useTranslations();
+
+  const changeLanguage = (lng: string) => {
+    // i18n.changeLanguage(lng);
+  };
 
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -159,6 +167,7 @@ export default function Header() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+    
       <MenuItem>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="error">
@@ -197,7 +206,7 @@ export default function Header() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, width: '100%' }}>
-        <Toolbar>        
+        <Toolbar>
           <IconButton
             size="large"
             edge="start"
@@ -214,6 +223,11 @@ export default function Header() {
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
             {AppName}
+
+            <h1>{t('header.title')}</h1>
+            <button onClick={() => changeLanguage('en')}>English</button>
+            <button onClick={() => changeLanguage('fr')}>Français</button>
+            <button onClick={() => changeLanguage('es')}>Español</button>
           </Typography>
 
 
@@ -221,6 +235,9 @@ export default function Header() {
           <Box sx={{ flexGrow: 1 }} />
 
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+
+             <LocaleSwitcher />
+             
             <IconButton
               onClick={() => changeColorMode()}
               color="inherit"

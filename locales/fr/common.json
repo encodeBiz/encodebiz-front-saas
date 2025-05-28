@@ -1,0 +1,9 @@
+{
+  "header": {
+    "title": "Mon Application FR"
+  
+  },
+  "footer": {
+    "copyright": "© {{year}} Ma Société. Tous droits réservés."
+  }
+}

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
- 
-import { ThemeProvider } from "@/contexts/themeContext";
 
+import { ThemeProvider } from "@/contexts/themeContext";
+import { LocaleProvider } from "@/contexts/localeContext"; 
 const geistSans = Geist({
     variable: "--font-geist-sans",
     subsets: ["latin"],
@@ -19,15 +19,18 @@ export const metadata: Metadata = {
     description: "CheckBiz360 Platform SaaS",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+ 
     return (
         <html lang="en">
             <body className={`${geistSans.variable} ${geistMono.variable}`}>
-                <ThemeProvider>{children}</ThemeProvider>
+                <LocaleProvider>
+                    <ThemeProvider>{children}</ThemeProvider>
+                </LocaleProvider>
             </body>
         </html>
     );

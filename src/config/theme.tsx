@@ -20,6 +20,7 @@ export const darkTheme: PaletteOptions = {
   mode: 'light',
   primary: {
     main: '#90caf9',
+   
   },
   secondary: {
     main: '#ce93d8',
