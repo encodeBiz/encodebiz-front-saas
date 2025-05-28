@@ -33,6 +33,8 @@ import {
 } from '@mui/icons-material';
 import { styled, useTheme } from '@mui/material/styles';
 import { useLayout } from '@/hooks/useLayout';
+import { menuItems } from '@/config/routes';
+import { usePathname } from 'next/navigation';
 
 const drawerWidth = 240;
 
@@ -47,11 +49,16 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function SideMenu() {
   const theme = useTheme();
+  const pathname = usePathname()
   const { layoutState, changeLayoutState } = useLayout()
   const [openSubMenu, setOpenSubMenu] = useState<any>({
     products: false,
     reports: false,
-    settings: false
+    settings: false,
+    ...menuItems.reduce((acc: any, key: any) => {
+      acc[key] = false;
+      return acc;
+    }, {})
   });
 
 
@@ -64,7 +71,7 @@ export default function SideMenu() {
       <Drawer
         sx={{
           width: drawerWidth,
-          marginTop:10,
+          marginTop: 10,
           flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: drawerWidth,
@@ -108,131 +115,50 @@ export default function SideMenu() {
         {/* Main Menu */}
         <List>
           {/* Dashboard */}
-          <ListItem disablePadding>
-            <ListItemButton selected>
-              <ListItemIcon>
-                <DashboardIcon />
-              </ListItemIcon>
-              <ListItemText primary="Dashboard" />
-            </ListItemButton>
-          </ListItem>
+          {menuItems.map((item: any, i: number) => {
+            if (item.divider) return <Divider />
+            else
+              if (item.subMenu.length == 0)
+                return <ListItem key={i} disablePadding>
+                  <ListItemButton selected={pathname === item.link}>
+                    <ListItemIcon>
+                      {item.icon}
+                    </ListItemIcon>
+                    <ListItemText primary={item.name} />
+                  </ListItemButton>
+                </ListItem>
 
-          {/* Products with submenu */}
-          <ListItem disablePadding>
-            <ListItemButton onClick={() => handleSubMenuToggle('products')}>
-              <ListItemIcon>
-                <ShoppingCartIcon />
-              </ListItemIcon>
-              <ListItemText primary="Products" />
-              {openSubMenu.products ? <ExpandLess /> : <ExpandMore />}
-            </ListItemButton>
-          </ListItem>
-          <Collapse in={openSubMenu.products} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItemButton sx={{ pl: 4 }}>
-                <ListItemIcon>
-                  <LayersIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="All Products" />
-              </ListItemButton>
-              <ListItemButton sx={{ pl: 4 }}>
-                <ListItemIcon>
-                  <LayersIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Categories" />
-              </ListItemButton>
-              <ListItemButton sx={{ pl: 4 }}>
-                <ListItemIcon>
-                  <LayersIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Inventory" />
-              </ListItemButton>
-            </List>
-          </Collapse>
+              else
+                return <div key={i} >
+                  <ListItem disablePadding>
+                    <ListItemButton onClick={() => handleSubMenuToggle(item.id)}>
+                      <ListItemIcon>
+                        {item.icon}
+                      </ListItemIcon>
+                      <ListItemText primary={item.name} />
+                      {openSubMenu.products ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
+                  </ListItem>
+                  <Collapse in={openSubMenu[item.id]} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                      {item.subMenu.map((e: any, index: number) => <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemIcon>
+                          {e.icon}
+                        </ListItemIcon>
+                        <ListItemText primary={e.name} />
+                      </ListItemButton>)}
 
-          {/* Customers */}
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <PeopleIcon />
-              </ListItemIcon>
-              <ListItemText primary="Customers" />
-            </ListItemButton>
-          </ListItem>
+                    </List>
+                  </Collapse>
+                </div>
+          })}
 
-          {/* Reports with submenu */}
-          <ListItem disablePadding>
-            <ListItemButton onClick={() => handleSubMenuToggle('reports')}>
-              <ListItemIcon>
-                <BarChartIcon />
-              </ListItemIcon>
-              <ListItemText primary="Reports" />
-              {openSubMenu.reports ? <ExpandLess /> : <ExpandMore />}
-            </ListItemButton>
-          </ListItem>
-          <Collapse in={openSubMenu.reports} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItemButton sx={{ pl: 4 }}>
-                <ListItemIcon>
-                  <BarChartIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Sales" />
-              </ListItemButton>
-              <ListItemButton sx={{ pl: 4 }}>
-                <ListItemIcon>
-                  <BarChartIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Revenue" />
-              </ListItemButton>
-              <ListItemButton sx={{ pl: 4 }}>
-                <ListItemIcon>
-                  <BarChartIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Customers" />
-              </ListItemButton>
-            </List>
-          </Collapse>
         </List>
 
-        <Divider />
 
-        {/* Settings with submenu */}
-        <List>
-          <ListItem disablePadding>
-            <ListItemButton onClick={() => handleSubMenuToggle('settings')}>
-              <ListItemIcon>
-                <SettingsIcon />
-              </ListItemIcon>
-              <ListItemText primary="Settings" />
-              {openSubMenu.settings ? <ExpandLess /> : <ExpandMore />}
-            </ListItemButton>
-          </ListItem>
-          <Collapse in={openSubMenu.settings} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItemButton sx={{ pl: 4 }}>
-                <ListItemIcon>
-                  <SettingsIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Account" />
-              </ListItemButton>
-              <ListItemButton sx={{ pl: 4 }}>
-                <ListItemIcon>
-                  <SettingsIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Notifications" />
-              </ListItemButton>
-              <ListItemButton sx={{ pl: 4 }}>
-                <ListItemIcon>
-                  <SettingsIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Security" />
-              </ListItemButton>
-            </List>
-          </Collapse>
-        </List>
       </Drawer>
 
-      
+
     </Box>
   );
 }
