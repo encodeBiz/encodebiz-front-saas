@@ -1,1 +1,129 @@
 export const AppName = 'CheckBiz360 SaaS Platform'
+
+
+// src/data/chartData.ts
+
+// Line Chart Data
+export const lineChartData = {
+  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  datasets: [
+    {
+      label: 'Sales Trend',
+      data: [65, 59, 80, 81, 56, 55, 40],
+      fill: true,
+      backgroundColor: 'rgba(75,192,192,0.2)',
+      borderColor: 'rgba(75,192,192,1)',
+      tension: 0.4, // Smooth curve
+    },
+    {
+      label: 'Expenses Trend',
+      data: [28, 48, 40, 19, 86, 27, 90],
+      fill: true,
+      backgroundColor: 'rgba(255,99,132,0.2)',
+      borderColor: 'rgba(255,99,132,1)',
+      tension: 0.4,
+    },
+  ],
+};
+
+export const lineChartOptions = {
+  responsive: true,
+  maintainAspectRatio: false, // Important for responsive charts within Material-UI Grid
+  plugins: {
+    legend: {
+      position: 'top' as const,
+    },
+    title: {
+      display: true,
+      text: 'Monthly Performance',
+    },
+  },
+  scales: {
+    y: {
+      beginAtZero: true,
+    },
+  },
+};
+
+// Bar Chart Data
+export const barChartData = {
+  labels: ['Product A', 'Product B', 'Product C', 'Product D', 'Product E'],
+  datasets: [
+    {
+      label: 'Units Sold',
+      data: [120, 190, 300, 50, 200],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.5)',
+        'rgba(54, 162, 235, 0.5)',
+        'rgba(255, 206, 86, 0.5)',
+        'rgba(75, 192, 192, 0.5)',
+        'rgba(153, 102, 255, 0.5)',
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+      ],
+      borderWidth: 1,
+    },
+  ],
+};
+
+export const barChartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: 'top' as const,
+    },
+    title: {
+      display: true,
+      text: 'Product Sales Overview',
+    },
+  },
+  scales: {
+    y: {
+      beginAtZero: true,
+    },
+  },
+};
+
+// Doughnut Chart Data
+export const doughnutChartData = {
+  labels: ['Marketing', 'Development', 'Sales', 'Operations'],
+  datasets: [
+    {
+      label: 'Budget Allocation',
+      data: [300, 50, 100, 150],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.7)',
+        'rgba(54, 162, 235, 0.7)',
+        'rgba(255, 206, 86, 0.7)',
+        'rgba(75, 192, 192, 0.7)',
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+      ],
+      borderWidth: 1,
+    },
+  ],
+};
+
+export const doughnutChartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: 'right' as const, // Place legend on the right for doughnut
+    },
+    title: {
+      display: true,
+      text: 'Departmental Budget',
+    },
+  },
+};
