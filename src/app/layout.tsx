@@ -5,6 +5,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/contexts/themeContext";
 import { LocaleProvider } from "@/contexts/localeContext";
 import { LayoutProvider } from "@/contexts/layoutContext";
+import { AuthProvider } from "@/contexts/authContext";
+import { EntityProvider } from "@/contexts/entityContext";
 const geistSans = Geist({
     variable: "--font-geist-sans",
     subsets: ["latin"],
@@ -30,9 +32,13 @@ export default async function RootLayout({
         <html lang="en">
             <body className={`${geistSans.variable} ${geistMono.variable}`}>
                 <LocaleProvider>
-                    <LayoutProvider>
-                        <ThemeProvider>{children}</ThemeProvider>
-                    </LayoutProvider>
+                    <AuthProvider>
+                        <EntityProvider>
+                            <LayoutProvider>
+                                <ThemeProvider>{children}</ThemeProvider>
+                            </LayoutProvider>
+                        </EntityProvider>
+                    </AuthProvider>
                 </LocaleProvider>
             </body>
         </html>
