@@ -11,14 +11,14 @@
     "side": {
       "menu": {
         "Dashboard": "Panel",
-        "CheckBiz360 Products": "Productos CheckBiz360",
+        "Products": "Productos",
         "CheckinBiz": "CheckinBiz",
         "PassinBiz": "PassinBiz",
         "Customers": "Clientes",
         "Reports": "Reportes",
         "Subcription": "Subcripciones",
         "Revenue": "Renovaciones",
-        
+        "Billing": "Facturación",
         "Settings": "Preferencias",
         "Account": "Cuenta",
         "Notifications": "Notificaciones",

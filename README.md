@@ -90,3 +90,7 @@ checkbiz360-backoffice/
 ├── package.json              # Project dependencies
 ├── README.md                 # Project documentation
 └── tsconfig.json             # TypeScript configuration
+
+
+novedades
+pasos en como usar la plataforma

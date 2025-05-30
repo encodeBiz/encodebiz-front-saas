@@ -24,7 +24,7 @@ export const menuItems = [{
     subMenu: []
 }, {
     id: 'checkBiz360_products',
-    name: 'CheckBiz360 Products',
+    name: 'Products',
     icon: <AutoGraphIcon />,
     link: '/main/dashboard',
     subMenu: [{
@@ -39,30 +39,19 @@ export const menuItems = [{
         subMenu: []
     }]
 }, {
-    id: 'customers',
-    name: 'Customers',
+    id: 'billing',
+    name: 'Billing',
     icon: <BarChartIcon />,
-    link: '/main/reposts',
-    subMenu: []
-}, {
-    id: 'reports',
-    name: 'Reports',
-    icon: <AutoGraphIcon />,
-    link: '/main/reports',
+    link: '/main/billing',
     subMenu: [{
         name: 'Subcription',
         icon: <BarChartIcon />,
-        link: '/main/reports/sales',
+        link: '/main/billing/sales',
         subMenu: []
     }, {
         name: 'Revenue',
         icon: <BarChartIcon />,
-        link: '/main/reports/sales',
-        subMenu: []
-    }, {
-        name: 'Customers',
-        icon: <BarChartIcon />,
-        link: '/main/reports/sales',
+        link: '/main/billing/sales',
         subMenu: []
     }]
 },

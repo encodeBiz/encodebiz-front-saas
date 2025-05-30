@@ -11,11 +11,12 @@
         "side": {
             "menu": {
                 "Dashboard": "Dashboard",
-                "CheckBiz360 Products": "CheckBiz360 Products",
+                "Products": "Products",
                 "CheckinBiz": "CheckinBiz",
                 "PassinBiz": "PassinBiz",
                 "Customers": "Customers",
                 "Reports": "Reports",
+                "Billing": "Billing",
                 "Subscription": "Subscriptions",
                 "Revenue": "Renewals",
                 "Settings": "Preferences",

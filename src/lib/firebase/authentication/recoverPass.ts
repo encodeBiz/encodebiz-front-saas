@@ -1,0 +1,1 @@
+//Implementarlo vía api Yanquier

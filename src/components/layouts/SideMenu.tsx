@@ -119,7 +119,7 @@ export default function SideMenu() {
         <List>
           {/* Dashboard */}
           {menuItems.map((item: any, i: number) => {
-            if (item.divider) return <Divider />
+            if (item.divider) return <Divider key={i} />
             else
               if (item.subMenu.length == 0)
                 return <ListItem key={i} disablePadding>
@@ -144,11 +144,11 @@ export default function SideMenu() {
                   </ListItem>
                   <Collapse in={openSubMenu[item.id]} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
-                      {item.subMenu.map((e: any, index: number) => <ListItemButton sx={{ pl: 4 }}>
+                      {item.subMenu.map((e: any, index: number) => <ListItemButton key={index} sx={{ pl: 4 }}>
                         <ListItemIcon>
                           {e.icon}
                         </ListItemIcon>
-                        <ListItemText primary={t(`layout.side.menu.${item.name}`)} />
+                        <ListItemText primary={t(`layout.side.menu.${e.name}`)} />
                       </ListItemButton>)}
 
                     </List>
