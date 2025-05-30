@@ -36,6 +36,7 @@ import { useLayout } from '@/hooks/useLayout';
 import { menuItems } from '@/config/routes';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import EntitySwitcher from '../common/EntitySwitcher';
 
 const drawerWidth = 240;
 
@@ -104,13 +105,14 @@ export default function SideMenu() {
         <Divider />
 
         {/* User Profile Section */}
-        <Box sx={{ p: 2, textAlign: 'center' }}>
+        <Box sx={{ p: 2, textAlign: 'center', mt:4 }}>
           <Avatar
             sx={{ width: 64, height: 64, mx: 'auto', mb: 1 }}
             src="/path/to/user.jpg"
           />
           <Typography variant="subtitle1">John Doe</Typography>
           <Typography variant="body2" color="text.secondary">Admin</Typography>
+          <EntitySwitcher />
         </Box>
 
         <Divider />

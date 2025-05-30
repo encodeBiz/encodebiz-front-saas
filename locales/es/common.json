@@ -6,7 +6,8 @@
       "english": "Inglés",
       "spanish": "Español",
       "french": "Francés",
-      "germany": "Alemán"
+      "germany": "Alemán",
+      "entity": "Entidad Actual"
     },
     "side": {
       "menu": {

@@ -8,8 +8,8 @@ import {
   UserCredential,
 } from "firebase/auth";
 import { auth } from "../initializeApp";
-import { codeError } from "@/infrastructure/http/httpClientFetchNext";
-
+import { codeError } from "@/lib/http/httpClientFetchNext";
+ 
 export const login = async (params: LoginParams): Promise<UserCredential> => {
   const { email, password } = params;
 

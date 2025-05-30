@@ -27,12 +27,14 @@ const HelpTabs = () => {
     <Tab
       {...props}
       iconPosition="start"
+
       label={
         <Box sx={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
-          textTransform: 'none'
+          textTransform: 'none',
+          textAlign: 'left'
         }}>
           <Typography variant="body1" sx={{ fontWeight: 600 }}>
             {props.maintext}
@@ -45,6 +47,7 @@ const HelpTabs = () => {
       sx={{
         minHeight: 72,
         padding: theme.spacing(1.5, 2),
+       justifyContent: 'flex-start',
         '&.Mui-selected': {
           backgroundColor: theme.palette.action.selected,
         }
@@ -92,8 +95,11 @@ const HelpTabs = () => {
 
         {/* Tab content */}
         <Box sx={{ p: 3, border: `1px solid ${theme.palette.divider}`, borderTop: 0 }}>
-          {value === 0 && (
-            <Typography>Cloud Storage content goes here</Typography>
+          {value === 0 && (<>        
+            <iframe width="420" height="315"
+              src="https://www.youtube.com/embed/tgbNymZ7vqY?autoplay=1&mute=1">
+            </iframe>
+          </>
           )}
           {value === 1 && (
             <Typography>Database content goes here</Typography>

@@ -1,8 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { User } from "firebase/auth";
- 
+import { User } from "firebase/auth"; 
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import IUser from "@/types/auth/IUser";

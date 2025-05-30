@@ -19,9 +19,9 @@ export interface PresentationCardProps {
 export default function PresentationCard({ title, description, image, action1, action2 }: PresentationCardProps) {
 
   return (
-    <Container maxWidth="xl"  >
+    <Box  >
       <Paper elevation={3} sx={{
-        p: 4, mt: 4, mb: 4, borderRadius: 2, display: 'flex', flexDirection: {
+        mt: 4, mb: 4, borderRadius: 2, display: 'flex', flexDirection: {
 
           xs: 'column',   
           sm: 'column',     
@@ -43,15 +43,15 @@ export default function PresentationCard({ title, description, image, action1, a
             <Button
               variant="contained"
               sx={{
-                background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+                background: 'linear-gradient(45deg, #1976d2 30%, #1976d2 90%)',
                 color: 'white',
                 boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
                 '&:hover': {
-                  background: 'linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)',
+                  background: 'linear-gradient(45deg, #1976d2 30%, #1976d2 90%)',
                 }
               }}
             >
-              Gradient Button
+              Más información
             </Button>
             <Button
               variant="outlined"
@@ -63,7 +63,7 @@ export default function PresentationCard({ title, description, image, action1, a
                 }
               }}
             >
-              Dashed Border
+               Nuestros productos
             </Button>
           </Stack>
         </Box>
@@ -71,6 +71,6 @@ export default function PresentationCard({ title, description, image, action1, a
           <Image width={200} height={200} alt='EncodeBiz' src={image} />
         </Box>
       </Paper>
-    </Container>
+    </Box>
   );
 }
