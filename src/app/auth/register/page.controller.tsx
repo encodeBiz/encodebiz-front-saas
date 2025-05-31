@@ -13,8 +13,7 @@ import * as Yup from 'yup';
 
 
 export interface RegisterFormValues {
-    firstName: string
-    lastName: string
+    fullName: string
     email: string
     phone: string
     password: string
@@ -25,8 +24,7 @@ export interface RegisterFormValues {
 export const useRegisterController = () => {
     const t = useTranslations()
     const [initialValues, setInitialValues] = useState<RegisterFormValues>({
-        firstName: '',
-        lastName: '',
+        fullName: '',
         email: '',
         phone: '',
         password: '',
@@ -35,8 +33,7 @@ export const useRegisterController = () => {
     })
 
     const validationSchema = Yup.object().shape({
-        firstName: Yup.string().required(t('core.formValidatorMessages.required')),
-        lastName: Yup.string().required(t('core.formValidatorMessages.required')),
+        fullName: Yup.string().required(t('core.formValidatorMessages.required')),
         email: Yup.string().email(t('core.formValidatorMessages.email')).required(t('core.formValidatorMessages.required')),
         phone: Yup.string().required(t('core.formValidatorMessages.required')),
         password: Yup.string()
@@ -71,20 +68,14 @@ export const useRegisterController = () => {
 
     const fields = [
         {
-            name: 'firstName',
-            label: 'First Name',
+            name: 'fullName',
+            label: 'Full Name',
             type: 'text',
             required: true,
             component: TextInput,
             fullWidth: true
         },
-        {
-            name: 'lastName',
-            label: 'Last Name',
-            type: 'text',
-            required: true,
-            component: TextInput,
-        },
+      
         {
             name: 'email',
             label: 'Email',

@@ -38,8 +38,7 @@ export const useRegisterController = () => {
 
     const handleGoogleSuccess = (credentialResponse: CredentialResponse) => {
         const decoded = jwtDecode(credentialResponse.credential as string);
-        console.log('Google login success:', decoded);
-        // Handle Google login (send to your backend or process user data)
+        
     };
     const signInWithGoogle: any = useGoogleOneTapLogin({
         onSuccess: (response: CredentialResponse) => handleGoogleSuccess(response),

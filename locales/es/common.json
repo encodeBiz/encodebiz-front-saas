@@ -33,7 +33,8 @@
   "core": {
     "label": {
       "firstName": "Nombre",
-      "lastName": "Pellido",
+      "lastName": "Apellido",
+      "fullName": "Nombre completo",      
       "password": "Contraseña",
       "passwordConfirm": "Confirmar contraseña",
       "email": "Correo electrónico",

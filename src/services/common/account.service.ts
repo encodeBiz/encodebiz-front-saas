@@ -1,4 +1,6 @@
+import { collection } from "@/config/collection";
 import { login } from "@/lib/firebase/authentication/login";
+import { getOne } from "@/lib/firebase/firestore/readDocument";
 import httpClientFetchInstance from "@/lib/http/httpClientFetchNext";
 import IUser from "@/types/auth/IUser";
 import { UserCredential } from "firebase/auth";
@@ -25,7 +27,20 @@ export async function signInEmail(
 ): Promise<UserCredential> {
     try {
         return await login({ email, password })
-    } catch (error: any) {             
+    } catch (error: any) {
         throw new Error(error.message)
     }
 }
+
+
+export async function fetchUserAccount(
+    uid: string
+): Promise<IUser> {
+    try {
+        return await getOne(collection.USER, uid);
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+
