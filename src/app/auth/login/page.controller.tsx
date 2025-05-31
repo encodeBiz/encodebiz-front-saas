@@ -12,44 +12,26 @@ import { useState } from 'react';
 import * as Yup from 'yup';
 
 
-export interface RegisterFormValues {
-    firstName: string
-    lastName: string
+export interface LoginFormValues {
     email: string
-    phone: string
     password: string
-    confirmPassword: string
-    acceptTerms: boolean
 };
 
 export const useRegisterController = () => {
     const t = useTranslations()
-    const [initialValues, setInitialValues] = useState<RegisterFormValues>({
-        firstName: '',
-        lastName: '',
+    const [initialValues, setInitialValues] = useState<LoginFormValues>({
         email: '',
-        phone: '',
         password: '',
-        confirmPassword: '',
-        acceptTerms: false
+
     })
 
     const validationSchema = Yup.object().shape({
-        firstName: Yup.string().required(t('core.formValidatorMessages.required')),
-        lastName: Yup.string().required(t('core.formValidatorMessages.required')),
         email: Yup.string().email(t('core.formValidatorMessages.email')).required(t('core.formValidatorMessages.required')),
-        phone: Yup.string().required(t('core.formValidatorMessages.required')),
         password: Yup.string()
             .required(t('core.formValidatorMessages.required'))
             .min(8, t('core.formValidatorMessages.password')),
-        passwordConfirm: Yup.string().required(t('core.formValidatorMessages.required'))
-            .oneOf([Yup.ref('password'), ''], t('core.formValidatorMessages.passwordMatch'))
-
 
     });
-
-
-
 
     const handleGoogleSuccess = (credentialResponse: CredentialResponse) => {
         const decoded = jwtDecode(credentialResponse.credential as string);
@@ -60,30 +42,16 @@ export const useRegisterController = () => {
         onSuccess: (response: CredentialResponse) => handleGoogleSuccess(response),
     });
 
-    const signInWithFacebook: any = (values: RegisterFormValues, actions: any) => {
+    const signInWithFacebook: any = (values: LoginFormValues, actions: any) => {
 
     };
 
-    const signInWithEmail = (values: RegisterFormValues, actions: any) => {
+    const signInWithEmail = (values: LoginFormValues, actions: any) => {
 
     };
 
     const fields = [
-        {
-            name: 'firstName',
-            label: t('core.label.firstName'),
-            type: 'text',
-            required: true,
-            component: TextInput,
-            fullWidth: true
-        },
-        {
-            name: 'lastName',
-            label: t('core.label.lastName'),
-            type: 'text',
-            required: true,
-            component: TextInput,
-        },
+
         {
             name: 'email',
             label: t('core.label.email'),
@@ -91,13 +59,7 @@ export const useRegisterController = () => {
             required: true,
             component: TextInput,
         },
-        {
-            name: 'phone',
-            label: t('core.label.phone'),
-            type: 'phone',
-            required: true,
-            component: PhoneNumberInput,
-        },
+
         {
             name: 'password',
             label: t('core.label.password'),
@@ -105,20 +67,7 @@ export const useRegisterController = () => {
             required: true,
             component: PasswordInput,
         },
-        {
-            name: 'confirmPassword',
-            label: t('core.label.passwordConfirm'),
-            type: 'password',
-            required: true,
-            component: PasswordInput,
-        },
-        {
-            name: 'acceptTerms',
-            label: t('core.label.acceptTerms'),
-            type: 'checkbox',
-            required: true,
-            component: SimpleCheck,
-        },
+
 
     ];
 

@@ -6,19 +6,20 @@
             "english": "English",
             "spanish": "Spanish",
             "french": "French",
-            "germany": "German"
+            "germany": "German",
+            "entity": "Current Entity"
         },
         "side": {
             "menu": {
-                "Dashboard": "Dashboard",
+                "Dashboard": "Panel",
                 "Products": "Products",
                 "CheckinBiz": "CheckinBiz",
                 "PassinBiz": "PassinBiz",
                 "Customers": "Customers",
                 "Reports": "Reports",
-                "Billing": "Billing",
                 "Subscription": "Subscriptions",
                 "Revenue": "Renewals",
+                "Billing": "Billing",
                 "Settings": "Preferences",
                 "Account": "Account",
                 "Notifications": "Notifications",
@@ -27,6 +28,50 @@
         },
         "footer": {
             "copyright": "© {{year}} My Company. All rights reserved."
+        }
+    },
+    "core": {
+        "label": {
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "password": "Password",
+            "passwordConfirm": "Confirm Password",
+            "email": "Email",
+            "acceptTerms": "Accept Terms and Conditions",
+            "phone": "Phone"
+        },
+        "button": {
+            "submitting": "Submitting...",
+            "submit": "Submit",
+            "cancel": "Cancel",
+            "download": "Download",
+            "delete": "Delete"
+        },
+        "formValidatorMessages": {
+            "required": "This field is required",
+            "email": "This field is required",
+            "password": "The password is too short: must be at least 8 characters.",
+            "passwordMatch": "The passwords do not match"
+        },
+        "signup": {
+            "title": "Create an account",
+            "signup": "Create an account",
+            "subtitle": "Create an account and join EncodeBiz SaaS",
+            "or": "Or",
+            "google": "Join with Google",
+            "facebook": "Join with Facebook",
+            "existAccount": "Do you already have an account?",
+            "signIn": "Sign in"
+        },
+        "signin": {
+            "title": "Sign in",
+            "signup": "Sign in",
+            "subtitle": "Sign in and join EncodeBiz SaaS",
+            "or": "Or",
+            "google": "Join with Google",
+            "facebook": "Join with Facebook",
+            "noAccount": "Don't have an account?",
+            "signIn": "Sign in"
         }
     }
 }

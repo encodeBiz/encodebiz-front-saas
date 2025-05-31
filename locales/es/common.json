@@ -45,7 +45,7 @@
       "submit": "Enviar",
       "cancel": "Cancelar",
       "download": "Descargar",
-      "delete": "Eliminar"      
+      "delete": "Eliminar"
     },
     "formValidatorMessages": {
       "required": "Este campo es requerido",
@@ -55,17 +55,23 @@
     },
     "signup": {
       "title": "Crear una cuenta",
-      "signup": "Registrar",
+      "signup": "Crear cuenta",
       "subtitle": "Crea una cuenta y unete a EncodeBiz Saas",
       "or": "O",
       "google": "Unete con Google",
       "facebook": "Unete con Facebook",
       "existAccount": "¿Ya tienes una cuenta?",
-      "signIn": "Inicia sesión",
-      "": "",
-      "": "",
-      "": "",
-      "": ""
+      "signIn": "Inicia sesión"
+    },
+    "signin": {
+      "title": "Iniciar sesión",
+      "signup": "Iniciar sesión",
+      "subtitle": "Inicia sesióny unete a EncodeBiz Saas",
+      "or": "O",
+      "google": "Unete con Google",
+      "facebook": "Unete con Facebook",
+      "noAccount": "No tienes una cuenta?",
+      "signIn": "Inicia sesión"
     }
   }
 }

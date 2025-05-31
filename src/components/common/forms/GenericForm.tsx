@@ -34,6 +34,7 @@ type GenericFormProps<T> = {
   cancelButtonText?: string;
   onCancel?: () => void;
   formContainerProps?: any;
+  column?: 1 | 2 | 3
 };
 
 const GenericForm = <T extends Record<string, any>>({
@@ -45,6 +46,7 @@ const GenericForm = <T extends Record<string, any>>({
   submitButtonText = 'Submit',
   cancelButtonText = 'Cancel',
   onCancel,
+  column = 1,
   formContainerProps,
 }: GenericFormProps<T>) => {
   const t = useTranslations()
@@ -83,7 +85,7 @@ const GenericForm = <T extends Record<string, any>>({
                 return (
                   <Grid size={{
                     xs: 12,
-                    sm: field.fullWidth ? 12 : 6
+                    sm: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4
                   }} key={field.name} sx={{ width: '100%' }}>
                     <FieldComponent
                       name={field.name}

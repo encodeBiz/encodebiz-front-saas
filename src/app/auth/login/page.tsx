@@ -1,100 +1,86 @@
+
 'use client'
 import React from 'react';
 import {
-    Grid,
+    Container,
+    Box,
     Typography,
-    TextField,
     Button,
-    CssBaseline,
-    Paper
+    Divider,
+    Paper,
+    Grid,
+    Link
 } from '@mui/material';
+import {
+    Google as GoogleIcon,
+    Facebook as FacebookIcon
+} from '@mui/icons-material';
+import { LoginFormValues, useRegisterController } from './page.controller';
+import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
+import { useTranslations } from 'next-intl';
 import { useStyles } from './page.styles';
+import { PrimaryButton } from '@/components/common/buttons/GenericButton';
+import { BaseButton } from '@/components/common/buttons/BaseButton';
+import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 
 
-const LoginPage = ({ imagePosition = 'left' }) => {
+const SignInPage = () => {
+    const { signInWithGoogle, initialValues, signInWithFacebook, validationSchema, fields, signInWithEmail } = useRegisterController()
+    const t = useTranslations()
     const classes = useStyles();
+
     return (
-
-        <Grid container component="main" className={classes.root}>
-            <CssBaseline />
-            {/* Image Grid - conditionally ordered based on prop */}
-            <Grid
-                item
-                xs={false}
-                sm={false}
-                md={6}
-                className={classes.image}
-                sx={{
-                    order: { xs: 2, md: imagePosition === 'left' ? 1 : 2 }
-                }}
-            />
-            {/* Form Grid */}
-            <Grid
-                item
-                xs={12}
-                sm={12}
-                md={6}
-                component={Paper}
-                elevation={6}
-                square
-                sx={{
-                    order: { xs: 1, md: imagePosition === 'left' ? 2 : 1 }
-                }}
-            >
-                <div className={classes.paper}>
-                    <Typography component="h1" variant="h5">
-                        Sign in
+        <Container maxWidth="sm">
+            <Box sx={classes.locale}>
+                <LocaleSwitcher />
+            </Box>
+            <Paper elevation={3} sx={classes.root}>
+                <Box sx={classes.containerTop}>
+                    <Typography variant="h4" component="h1" gutterBottom>
+                        {t('core.signin.title')}
                     </Typography>
-                    <form className={classes.form} noValidate>
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                        >
-                            Sign In
-                        </Button>
-                        <Grid container>
-                            <Grid item xs>
-                                <Typography variant="body2" color="textSecondary">
-                                    Forgot password?
-                                </Typography>
-                            </Grid>
-                            <Grid item>
-                                <Typography variant="body2" color="textSecondary">
-                                    {"Don't have an account? Sign Up"}
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    </form>
-                </div>
-            </Grid>
-        </Grid>
+                    <Typography variant="body1" color="text.secondary">
+                        {t('core.signin.subtitle')}
+                    </Typography>
+                </Box>
 
+                <Grid container spacing={2} sx={classes.fullWidth}>
+                    <Grid size={{ xs: 12, sm: 12 }} sx={classes.fullWidth}>
+                        <BaseButton fullWidth variant="outlined" startIcon={<GoogleIcon color="primary" />} onClick={signInWithGoogle}>
+                            {t('core.signin.google')}
+                        </BaseButton>
+                    </Grid>
+                    <Grid size={{ xs: 12, sm: 12 }} sx={classes.fullWidth}>
+                        <BaseButton fullWidth variant="outlined" startIcon={<FacebookIcon color="primary" />} onClick={signInWithFacebook}>
+                            {t('core.signin.facebook')}
+                        </BaseButton>
+                    </Grid>
+                </Grid>
+
+                <Divider sx={{ my: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                        {t('core.signin.or')}
+                    </Typography>
+                </Divider>
+
+
+                <GenericForm<LoginFormValues>
+                    initialValues={initialValues}
+                    validationSchema={validationSchema}
+                    onSubmit={signInWithEmail}
+                    fields={fields as FormField[]}
+                    submitButtonText={t('core.signin.signup')}
+                />
+
+                <Box sx={{ textAlign: 'center' }}>
+                    <Typography variant="body2">
+                        {t('core.signin.noAccount')} <Link href="/auth/login">{t('core.signin.signIn')}</Link>
+                    </Typography>
+                </Box>
+            </Paper>
+
+        </Container>
     );
 };
 
-export default LoginPage;
+export default SignInPage;

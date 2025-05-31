@@ -1,37 +1,41 @@
-'use client'
 
-import { useTheme } from "@mui/material";
-import { makeStyles } from "@mui/styles";
-
-export const useStyles = makeStyles(() => {
-  const theme = useTheme()
-  return {
-    root: {
-      height: '100vh',
+export const useStyles = () => ({
+  root: {
+    p: 4,
+    mt: 8,
+    borderRadius: 2,
+    
+  },
+  containerTop: { textAlign: 'center', mb: 4 },
+  fullWidth: { width: '100%' },
+  locale:{
+    position:{
+      xs:'relative',
+      sm:'relative',
+      md:'absolute',
+      xl:'absolute',
+      lg:'absolute',
     },
-    image: {
-      backgroundImage: 'url(https://source.unsplash.com/random)',
-      backgroundRepeat: 'no-repeat',
-      backgroundColor: theme.palette.grey[50],
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
+    right:{
+      xs:0,
+      sm:0,
+      md:140,
+      xl:140,
+      lg:140
     },
-    paper: {
-      margin: theme.spacing(8, 4),
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
+    top:{
+      xs:20,
+      sm:20,
+      md:40,
+      xl:40,
+      lg:40
     },
-    avatar: {
-      margin: theme.spacing(1),
-      backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-      width: '100%', // Fix IE 11 issue.
-      marginTop: theme.spacing(1),
-    },
-    submit: {
-      margin: theme.spacing(3, 0, 2),
-    },
+    width:{
+      xs:'100%',
+      sm:'100%',
+      md:40,
+      xl:40,
+      lg:40
+    }
   }
-});
+})
