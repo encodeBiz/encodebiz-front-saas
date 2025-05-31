@@ -14,7 +14,7 @@ import {
 // Define types for our form component
 export type FormField = {
   name: string;
-  label: string;
+  label: string | React.ComponentType<any>;
   type?: 'text' | 'email' | 'password' | 'number' | 'select' | 'checkbox' | 'date';
   required?: boolean;
   component: React.ComponentType<any>;
@@ -49,9 +49,9 @@ const GenericForm = <T extends Record<string, any>>({
 
   return (
     <Paper
-      elevation={3}
+      elevation={0}
       sx={{
-        padding: theme.spacing(4),
+
         maxWidth: 800,
         margin: '0 auto',
         ...formContainerProps?.sx,
@@ -79,7 +79,7 @@ const GenericForm = <T extends Record<string, any>>({
                 const errorText = formikProps.errors[field.name];
 
                 return (
-                  <Grid item xs={12} sm={field.fullWidth ? 12 : 6} key={field.name}>
+                  <Grid item xs={12} sm={field.fullWidth ? 12 : 6} key={field.name} sx={{ width: '100%' }}>
                     <FieldComponent
                       name={field.name}
                       label={field.label}
@@ -99,7 +99,7 @@ const GenericForm = <T extends Record<string, any>>({
                 );
               })}
 
-              <Grid item xs={12}>
+              <Grid item xs={12} sx={{ width: '100%' }}>
                 <Box display="flex" justifyContent="flex-end" gap={2}>
                   {onCancel && (
                     <Button
@@ -114,8 +114,9 @@ const GenericForm = <T extends Record<string, any>>({
                     type="submit"
                     variant="contained"
                     color="primary"
+                    fullWidth
                     disabled={formikProps.isSubmitting || !formikProps.isValid}
-                    sx={{ minWidth: 120 }}
+                    sx={{ mt: 3, mb: 2, py: 1.5 }}
                   >
                     {formikProps.isSubmitting ? 'Submitting...' : submitButtonText}
                   </Button>

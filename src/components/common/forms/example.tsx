@@ -3,7 +3,7 @@ import React from 'react';
 import * as Yup from 'yup';
 import GenericForm, { FormField } from './GenericForm';
 import SelectInput from './fields/SelectField';
-import TextInput from './fields/TextField';
+import TextInput from './fields/TextInput';
  
 
 type UserFormValues = {
@@ -12,7 +12,7 @@ type UserFormValues = {
   email: string;
   role: string;
 };
-
+ 
 const UserForm = () => {
   const initialValues: UserFormValues = {
     firstName: '',

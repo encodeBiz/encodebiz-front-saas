@@ -1,22 +1,22 @@
 // TextInput.tsx
 import React from 'react';
 import { TextField, TextFieldProps } from '@mui/material';
-import { FieldProps } from 'formik';
+import { FieldProps, useField } from 'formik';
 
 const TextInput: React.FC<FieldProps & TextFieldProps> = ({
-  field,
-  form: { touched, errors },
   ...props
 }) => {
-  const error = touched[field.name] && Boolean(errors[field.name]);
-  const helperText = touched[field.name] && errors[field.name];
+  const [field, meta, helper] = useField(props.name);
+  const { touched, error } = meta 
+  const helperText = touched && error;
 
   return (
     <TextField
       {...field}
       {...props}
-      error={error}
+      error={!!error}
       helperText={helperText as string}
+       
     />
   );
 };

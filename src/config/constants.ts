@@ -127,3 +127,18 @@ export const doughnutChartOptions = {
     },
   },
 };
+
+export const countries = [
+  { name: 'United States', code: 'US', dial_code: '+1' },
+  { name: 'United Kingdom', code: 'GB', dial_code: '+44' },
+  { name: 'Canada', code: 'CA', dial_code: '+1' },
+  { name: 'Australia', code: 'AU', dial_code: '+61' },
+  { name: 'Germany', code: 'DE', dial_code: '+49' },
+  { name: 'France', code: 'FR', dial_code: '+33' },
+  { name: 'Brazil', code: 'BR', dial_code: '+55' },
+  { name: 'India', code: 'IN', dial_code: '+91' },
+  { name: 'China', code: 'CN', dial_code: '+86' },
+  { name: 'Japan', code: 'JP', dial_code: '+81' },
+  { name: 'España', code: 'ES', dial_code: '+34' },
+  // Add more countries as needed
+];
