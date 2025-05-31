@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.1.0",
     "@mui/material": "^7.1.0",
+    "@mui/styles": "^6.4.8",
     "@mui/x-data-grid": "^8.4.0",
     "@react-oauth/google": "^0.12.2",
     "@stripe/react-stripe-js": "^3.7.0",

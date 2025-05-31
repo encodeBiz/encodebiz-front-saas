@@ -29,5 +29,43 @@
     "footer": {
       "copyright": "© {{year}} My Company. All rights reserved."
     }
+  },
+  "core": {
+    "label": {
+      "firstName": "Nombre",
+      "lastName": "Pellido",
+      "password": "Contraseña",
+      "passwordConfirm": "Confirmar contraseña",
+      "email": "Correo electrónico",
+      "acceptTerms": "Aceptar términos y condiciones",
+      "phone": "Teléfono"
+    },
+    "button": {
+      "submitting": "Enviando...",
+      "submit": "Enviar",
+      "cancel": "Cancelar",
+      "download": "Descargar",
+      "delete": "Eliminar"      
+    },
+    "formValidatorMessages": {
+      "required": "Este campo es requerido",
+      "email": "Este campo es requerido",
+      "password": "La contraseña es demasiado corta: debe tener un mínimo de 8 caracteres.",
+      "passwordMatch": "La contraseñas no coinciden"
+    },
+    "signup": {
+      "title": "Crear una cuenta",
+      "signup": "Registrar",
+      "subtitle": "Crea una cuenta y unete a EncodeBiz Saas",
+      "or": "O",
+      "google": "Unete con Google",
+      "facebook": "Unete con Facebook",
+      "existAccount": "¿Ya tienes una cuenta?",
+      "signIn": "Inicia sesión",
+      "": "",
+      "": "",
+      "": "",
+      "": ""
+    }
   }
 }

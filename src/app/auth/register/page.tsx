@@ -17,52 +17,49 @@ import {
 } from '@mui/icons-material';
 import { RegisterFormValues, useRegisterController } from './page.controller';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
+import { useTranslations } from 'next-intl';
+import { useStyles } from './page.styles';
+import { PrimaryButton } from '@/components/common/buttons/GenericButton';
+import { BaseButton } from '@/components/common/buttons/BaseButton';
+import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 
 
 const SignUpPage = () => {
     const { signInWithGoogle, initialValues, signInWithFacebook, validationSchema, fields, signInWithEmail } = useRegisterController()
-
+    const t = useTranslations()
+    const classes = useStyles();
 
     return (
         <Container maxWidth="sm">
-            <Paper elevation={3} sx={{ p: 4, mt: 8, borderRadius: 2 }}>
-                <Box sx={{ textAlign: 'center', mb: 4 }}>
+            <Box sx={classes.locale}>
+                <LocaleSwitcher />
+            </Box>
+            <Paper elevation={3} sx={classes.root}>
+                <Box sx={classes.containerTop}>
                     <Typography variant="h4" component="h1" gutterBottom>
-                        Create an Account
+                        {t('core.signup.title')}
                     </Typography>
                     <Typography variant="body1" color="text.secondary">
-                        Join our community today
+                        {t('core.signup.subtitle')}
                     </Typography>
                 </Box>
 
-                <Grid container spacing={2} sx={{ width: '100%' }}>
-                    <Grid item xs={12} sm={6} sx={{ width: '100%' }}>
-                        <Button
-                            fullWidth
-                            variant="outlined"
-                            startIcon={<GoogleIcon color="primary" />}
-                            onClick={signInWithGoogle}
-                            sx={{ height: 56 }}
-                        >
-                            Google
-                        </Button>
+                <Grid container spacing={2} sx={classes.fullWidth}>
+                    <Grid size={{ xs: 12, sm: 6 }} sx={classes.fullWidth}>
+                        <BaseButton fullWidth variant="outlined" startIcon={<GoogleIcon color="primary" />} onClick={signInWithGoogle}>
+                            {t('core.signup.google')}
+                        </BaseButton>
                     </Grid>
-                    <Grid item xs={12} sm={6} sx={{ width: '100%' }}>
-                        <Button
-                            fullWidth
-                            variant="outlined"
-                            startIcon={<FacebookIcon color="primary" />}
-                            onClick={signInWithFacebook}
-                            sx={{ height: 56 }}
-                        >
-                            Facebook
-                        </Button>
+                    <Grid size={{ xs: 12, sm: 6 }} sx={classes.fullWidth}>
+                        <BaseButton fullWidth variant="outlined" startIcon={<FacebookIcon color="primary" />} onClick={signInWithFacebook}>
+                            {t('core.signup.facebook')}
+                        </BaseButton>
                     </Grid>
                 </Grid>
 
                 <Divider sx={{ my: 3 }}>
                     <Typography variant="body2" color="text.secondary">
-                        OR
+                        {t('core.signup.or')}
                     </Typography>
                 </Divider>
 
@@ -72,16 +69,16 @@ const SignUpPage = () => {
                     validationSchema={validationSchema}
                     onSubmit={signInWithEmail}
                     fields={fields as FormField[]}
-                    submitButtonText="Sign Up"
+                    submitButtonText={t('core.signup.signup')}
                 />
 
                 <Box sx={{ textAlign: 'center' }}>
                     <Typography variant="body2">
-                        Already have an account? <Link href="/login">Log in</Link>
+                        {t('core.signup.existAccount')} <Link href="/auth/login">{t('core.signup.signIn')}</Link>
                     </Typography>
                 </Box>
-
             </Paper>
+
         </Container>
     );
 };

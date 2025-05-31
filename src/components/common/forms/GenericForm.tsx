@@ -10,6 +10,8 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+import { BaseButton } from '../buttons/BaseButton';
+import { useTranslations } from 'next-intl';
 
 // Define types for our form component
 export type FormField = {
@@ -45,7 +47,7 @@ const GenericForm = <T extends Record<string, any>>({
   onCancel,
   formContainerProps,
 }: GenericFormProps<T>) => {
-  const theme = useTheme();
+  const t = useTranslations()
 
   return (
     <Paper
@@ -79,7 +81,10 @@ const GenericForm = <T extends Record<string, any>>({
                 const errorText = formikProps.errors[field.name];
 
                 return (
-                  <Grid item xs={12} sm={field.fullWidth ? 12 : 6} key={field.name} sx={{ width: '100%' }}>
+                  <Grid size={{
+                    xs: 12,
+                    sm: field.fullWidth ? 12 : 6
+                  }} key={field.name} sx={{ width: '100%' }}>
                     <FieldComponent
                       name={field.name}
                       label={field.label}
@@ -99,34 +104,24 @@ const GenericForm = <T extends Record<string, any>>({
                 );
               })}
 
-              <Grid item xs={12} sx={{ width: '100%' }}>
+              <Grid sx={{ width: '100%' }}>
                 <Box display="flex" justifyContent="flex-end" gap={2}>
                   {onCancel && (
-                    <Button
-                      variant="outlined"
-                      onClick={onCancel}
-                      sx={{ minWidth: 120 }}
-                    >
+                    <BaseButton sx={{ mt: 3, mb: 2, py: 1.5 }} onClick={onCancel} disabled={formikProps.isSubmitting} fullWidth variant="outlined" color="primary" >
                       {cancelButtonText}
-                    </Button>
+                    </BaseButton>
                   )}
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    disabled={formikProps.isSubmitting || !formikProps.isValid}
-                    sx={{ mt: 3, mb: 2, py: 1.5 }}
-                  >
-                    {formikProps.isSubmitting ? 'Submitting...' : submitButtonText}
-                  </Button>
+
+                  <BaseButton sx={{ mt: 3, mb: 2, py: 1.5 }} disabled={formikProps.isSubmitting || !formikProps.isValid} type="submit" fullWidth variant="contained" color="primary" >
+                    {formikProps.isSubmitting ? t('core.button.submitting') : submitButtonText}
+                  </BaseButton>
                 </Box>
               </Grid>
             </Grid>
           </Form>
         )}
       </Formik>
-    </Paper>
+    </Paper >
   );
 };
 

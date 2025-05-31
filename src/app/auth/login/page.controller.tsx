@@ -68,11 +68,10 @@ export const useRegisterController = () => {
 
     };
 
-
     const fields = [
         {
             name: 'firstName',
-            label: 'First Name',
+            label: t('core.label.firstName'),
             type: 'text',
             required: true,
             component: TextInput,
@@ -80,42 +79,42 @@ export const useRegisterController = () => {
         },
         {
             name: 'lastName',
-            label: 'Last Name',
+            label: t('core.label.lastName'),
             type: 'text',
             required: true,
             component: TextInput,
         },
         {
             name: 'email',
-            label: 'Email',
+            label: t('core.label.email'),
             type: 'email',
             required: true,
             component: TextInput,
         },
         {
             name: 'phone',
-            label: 'Phone',
+            label: t('core.label.phone'),
             type: 'phone',
             required: true,
             component: PhoneNumberInput,
         },
         {
             name: 'password',
-            label: 'Password',
+            label: t('core.label.password'),
             type: 'password',
             required: true,
             component: PasswordInput,
         },
         {
             name: 'confirmPassword',
-            label: 'Confirm Password',
+            label: t('core.label.passwordConfirm'),
             type: 'password',
             required: true,
             component: PasswordInput,
         },
         {
             name: 'acceptTerms',
-            label: 'acceptTerms',
+            label: t('core.label.acceptTerms'),
             type: 'checkbox',
             required: true,
             component: SimpleCheck,
