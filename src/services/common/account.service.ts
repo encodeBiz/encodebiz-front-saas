@@ -1,5 +1,7 @@
+import { login } from "@/lib/firebase/authentication/login";
 import httpClientFetchInstance from "@/lib/http/httpClientFetchNext";
 import IUser from "@/types/auth/IUser";
+import { UserCredential } from "firebase/auth";
 
 
 export async function validateToken(
@@ -14,5 +16,16 @@ export async function validateToken(
     } catch (error) {
         console.error("Error fetching items:", error);
         return []
+    }
+}
+
+
+export async function signInEmail(
+    email: string, password: string
+): Promise<UserCredential> {
+    try {
+        return await login({ email, password })
+    } catch (error: any) {             
+        throw new Error(error.message)
     }
 }

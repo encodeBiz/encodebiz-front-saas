@@ -5,6 +5,8 @@ import PhoneNumberInput from '@/components/common/forms/fields/PhoneNumberInput'
 import SelectInput from '@/components/common/forms/fields/SelectField';
 import SimpleCheck from '@/components/common/forms/fields/SimpleCheck';
 import TextInput from '@/components/common/forms/fields/TextInput';
+import { useToast } from '@/hooks/useToast';
+import { signInEmail } from '@/services/common/account.service';
 import { CredentialResponse, GoogleLogin, useGoogleLogin, useGoogleOneTapLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
 import { useTranslations } from 'next-intl';
@@ -19,6 +21,7 @@ export interface LoginFormValues {
 
 export const useRegisterController = () => {
     const t = useTranslations()
+    const { showToast } = useToast()
     const [initialValues, setInitialValues] = useState<LoginFormValues>({
         email: '',
         password: '',
@@ -46,8 +49,12 @@ export const useRegisterController = () => {
 
     };
 
-    const signInWithEmail = (values: LoginFormValues, actions: any) => {
-
+    const signInWithEmail = async (values: LoginFormValues, actions: any) => {
+        try {
+            await signInEmail(values.email, values.password)
+        } catch (error: any) {
+            showToast(error.message, 'error')
+        }
     };
 
     const fields = [

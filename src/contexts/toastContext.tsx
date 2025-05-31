@@ -1,4 +1,4 @@
-// Updated ToastContext.tsx with queue
+'use client'
 import React, { createContext, useContext, useState, useRef, useEffect } from 'react';
 import { Snackbar, Alert, AlertColor } from '@mui/material';
 
@@ -12,10 +12,8 @@ type ToastContextType = {
     showToast: (message: string, severity?: AlertColor) => void;
 };
 
-export const ToastContext = createContext<ToastContextType>({
-    showToast: () => { },
-});
-
+export const ToastContext = createContext<ToastContextType | undefined>(undefined);
+ 
 export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
     const [toasts, setToasts] = useState<ToastMessage[]>([]);
     const [open, setOpen] = useState(false);
@@ -60,8 +58,8 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
                 open={open}
                 autoHideDuration={6000}
                 onClose={handleClose}
-                TransitionProps={{ onExited: handleExited }}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+   
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
             >
                 <Alert
                     onClose={handleClose}
@@ -75,4 +73,3 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
     );
 };
 
-export const useToast = () => useContext(ToastContext);

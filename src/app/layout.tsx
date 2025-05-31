@@ -7,7 +7,8 @@ import { LocaleProvider } from "@/contexts/localeContext";
 import { LayoutProvider } from "@/contexts/layoutContext";
 import { AuthProvider } from "@/contexts/authContext";
 import { EntityProvider } from "@/contexts/entityContext";
-import { redirect } from "next/dist/server/api-utils";
+import NextTopLoader from 'nextjs-toploader';
+import { ToastProvider } from "@/contexts/toastContext";
 const geistSans = Geist({
     variable: "--font-geist-sans",
     subsets: ["latin"],
@@ -29,7 +30,7 @@ export default async function RootLayout({
     children: React.ReactNode;
 }>) {
 
-   
+
 
 
     return (
@@ -39,7 +40,12 @@ export default async function RootLayout({
                     <AuthProvider>
                         <EntityProvider>
                             <LayoutProvider>
-                                <ThemeProvider>{children}</ThemeProvider>
+                                <ThemeProvider>
+                                    <ToastProvider>
+                                        <NextTopLoader showSpinner={false} color="#F24B00" />
+                                        {children}
+                                    </ToastProvider>
+                                </ThemeProvider>
                             </LayoutProvider>
                         </EntityProvider>
                     </AuthProvider>
