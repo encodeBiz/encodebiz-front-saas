@@ -63,7 +63,14 @@ const HelpTabs = () => {
       <Paper elevation={0} sx={{
         border: `1px solid ${theme.palette.divider}`,
         borderRadius: 1,
-        display: 'flex'
+        display: 'flex', flexDirection: {
+          xs: 'column',   
+          sm: 'column',     
+          md: 'column',     
+          lg: 'row',      
+          xl: 'row',     
+
+        }
       }}>
         <Tabs
           orientation='vertical'
@@ -94,18 +101,20 @@ const HelpTabs = () => {
         </Tabs>
 
         {/* Tab content */}
-        <Box sx={{ p: 3, border: `1px solid ${theme.palette.divider}`, borderTop: 0 }}>
+        <Box sx={{ p: 3, border: `1px solid ${theme.palette.divider}`, borderTop: 0, width:'100%' }}>
           {value === 0 && (<>        
-            <iframe width="420" height="315"
-              src="https://www.youtube.com/embed/tgbNymZ7vqY?autoplay=1&mute=1">
-            </iframe>
+            Contenido aqui!!!
           </>
           )}
           {value === 1 && (
-            <Typography>Database content goes here</Typography>
+            <Typography>
+               Contenido aqui!!!
+            </Typography>
           )}
           {value === 2 && (
-            <Typography>Security Rules content goes here</Typography>
+            <Typography>
+               Contenido aqui!!!
+            </Typography>
           )}
         </Box>
       </Paper>

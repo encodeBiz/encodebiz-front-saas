@@ -21,13 +21,12 @@ export default function PresentationCard({ title, description, image, action1, a
   return (
     <Box  >
       <Paper elevation={3} sx={{
-        mt: 4, mb: 4, borderRadius: 2, display: 'flex', flexDirection: {
-
-          xs: 'column',   
-          sm: 'column',     
-          md: 'column',     
-          lg: 'row',      
-          xl: 'row',     
+        mt: 4, mb: 4, pb: 4, borderRadius: 2, display: 'flex', flexDirection: {
+          xs: 'column-reverse',
+          sm: 'column-reverse',
+          md: 'column-reverse',
+          lg: 'row',
+          xl: 'row',
 
         }, alignItems: 'center', justifyContent: 'space-around'
       }}>
@@ -39,7 +38,21 @@ export default function PresentationCard({ title, description, image, action1, a
             {description}
           </Typography>
 
-          <Stack direction="row" spacing={2}>
+          <Stack direction="row" spacing={2} sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            gap: 2,
+            flexDirection: {
+              xs: 'column',
+              sm: 'column',
+              md: 'column',
+              lg: 'row',
+              xl: 'row',
+
+            }
+          }}>
             <Button
               variant="contained"
               sx={{
@@ -63,7 +76,7 @@ export default function PresentationCard({ title, description, image, action1, a
                 }
               }}
             >
-               Nuestros productos
+              Nuestros productos
             </Button>
           </Stack>
         </Box>

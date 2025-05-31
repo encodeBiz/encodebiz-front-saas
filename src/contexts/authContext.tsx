@@ -7,6 +7,9 @@ import { useRouter } from "nextjs-toploader/app";
 import IUser from "@/types/auth/IUser";
 import { subscribeToAuthChanges } from "@/lib/firebase/authentication/stateChange";
 import { getUser } from "@/lib/firebase/authentication/login";
+import { redirect } from 'next/navigation';
+import { verifyToken } from "@/lib/firebase/authentication/auth_utils";
+import { validateToken } from "@/services/common/account.service";
 
 interface AuthContextType {
     user: IUser | null;
@@ -25,7 +28,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [pendAuth, setPendAuth] = useState(true);
     const { push } = useRouter()
     const searchParams = useSearchParams()
-    const redirect = searchParams.get('redirect')
+    const redirectUri = searchParams.get('redirect')
+    const authToken = searchParams.get('authToken')
+
+     
 
     useEffect(() => {
         setPendAuth(true)
@@ -33,6 +39,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             if (userAuth && !user) {
                 updateUserData(userAuth)
                 setUserAuth(userAuth)
+                console.log(userAuth);               
 
             } else {
                 setUser(null);
@@ -42,13 +49,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         return () => unsubscribe(); // Cleanup on unmount
     }, []);
 
+    const authWithToken = async (authToken: string) =>  {
+        const data = await validateToken(authToken);
+        console.log(data);
+        
+       // redirect('/main/')
+    }
+
+     useEffect(() => {
+       if(authToken)
+        authWithToken(authToken)       
+    }, [authToken]);
+
     const updateUserData = async (loggedUser?: User) => {
         let userAuth: User = loggedUser as User
         if (!user)
             userAuth = await getUser() as User
     
         setTimeout(() => {                      
-            if (redirect) push(redirect)
+            if (redirectUri) push(redirectUri)
             setPendAuth(false)
         }, 1000)
  

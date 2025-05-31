@@ -7,6 +7,7 @@ import { LocaleProvider } from "@/contexts/localeContext";
 import { LayoutProvider } from "@/contexts/layoutContext";
 import { AuthProvider } from "@/contexts/authContext";
 import { EntityProvider } from "@/contexts/entityContext";
+import { redirect } from "next/dist/server/api-utils";
 const geistSans = Geist({
     variable: "--font-geist-sans",
     subsets: ["latin"],
@@ -27,6 +28,9 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+
+   
+
 
     return (
         <html lang="en">
