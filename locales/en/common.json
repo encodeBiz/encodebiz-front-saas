@@ -73,5 +73,13 @@
             "noAccount": "Don't have an account?",
             "signIn": "Sign in"
         }
+    },
+    "features":{
+    "dashboard":{
+      "card":{
+        "btn1":"More information",
+        "btn2":"Products"
+      }
     }
+  }
 }

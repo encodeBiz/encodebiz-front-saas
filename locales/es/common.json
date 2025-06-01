@@ -74,5 +74,16 @@
       "noAccount": "No tienes una cuenta?",
       "signIn": "Inicia sesión"
     }
+  },
+  "features":{
+    "dashboard":{
+      "overview":"Descripción general",
+      "card":{
+        "btn1":"Mas informacion",
+        "btn2":"Productos",
+        "title":"Bienvenido a Encodebiz Saas",
+        "subtitle":"En esta plataforma podras hacer varias cosas interesantes"
+      }
+    }
   }
 }
