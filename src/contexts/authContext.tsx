@@ -7,7 +7,9 @@ import { useRouter } from "nextjs-toploader/app";
 import IUser from "@/types/auth/IUser";
 import { subscribeToAuthChanges } from "@/lib/firebase/authentication/stateChange";
 import { getUser } from "@/lib/firebase/authentication/login";
-import { fetchUserAccount, validateToken } from "@/services/common/account.service";
+import { fetchUserAccount, fetchUserEntities, validateToken } from "@/services/common/account.service";
+import { useEntity } from "@/hooks/useEntity";
+import IEntity from "@/types/auth/IEntity";
 interface AuthContextType {
     user: IUser | null;
     userAuth: User | null;
@@ -23,18 +25,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [token, setToken] = useState<string>('');
     const [pendAuth, setPendAuth] = useState(true);
     const { push } = useRouter()
+
     const searchParams = useSearchParams()
     const redirectUri = searchParams.get('redirect')
-
-
 
     const watchSesionState = async (userAuth: User) => {
         if (userAuth) {
             updateUserData(userAuth)
+            setToken(await userAuth.getIdToken())
             setUser({
                 ...await fetchUserAccount(userAuth.uid),
                 ...userAuth
-            });
+            })
             setUserAuth(userAuth)
             if (redirectUri) push(redirectUri)
             else push('/main/dashboard')

@@ -14,25 +14,26 @@ import {
 
 
 import { useEntity } from '@/hooks/useEntity';
-import IEntity from '@/types/auth/IEntity';
+import IUserEntity from '@/types/auth/IUserEntity';
 export const locales = ['en', 'es']; // Define your supported locales
 
 interface EntitySwitcherProps { }
 
 const EntitySwitcher: React.FC<EntitySwitcherProps> = () => {
   const t = useTranslations(); // 'EntitySwitcher' refers to the key in your message files
-  const { entityList, currentEntity, setCurrentEntity } = useEntity()
+  const { entityList, currentEntity, changeCurrentEntity } = useEntity()
 
 
 
   const handleChange = (event: SelectChangeEvent) => {
     const newEntityId = event.target.value as string;
-    setCurrentEntity(entityList.find(e => e.id === newEntityId) as IEntity);
+    changeCurrentEntity(newEntityId);
   };
 
   return (
     <Box sx={{ minWidth: 120, mt: 4 }}>
-      <FormControl fullWidth>
+
+      {currentEntity && <FormControl fullWidth >
         <InputLabel id="locale-switcher-label">
           {t('layout.header.entity')}
         </InputLabel>
@@ -43,17 +44,17 @@ const EntitySwitcher: React.FC<EntitySwitcherProps> = () => {
           label={t('layout.header.entity')}
           onChange={handleChange}
         >
-          {entityList.map((entity: IEntity, i: number) => (
+          {entityList.map((entity: IUserEntity, i: number) => (
             <MenuItem key={i} value={entity.id}>
-              <Typography>{entity.name}</Typography>
+              <Typography>{entity.entity.name}</Typography>
             </MenuItem>
           ))}
 
-           <MenuItem value={''}>
-              <Typography>Crear entidad</Typography>
-            </MenuItem>
+          <MenuItem value={undefined}>
+            <Typography>Crear entidad</Typography>
+          </MenuItem>
         </Select>
-      </FormControl>
+      </FormControl>}
     </Box>
   );
 };
