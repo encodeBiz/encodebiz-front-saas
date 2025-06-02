@@ -5,7 +5,7 @@ import DashboardCard from "@/components/common/DashboardCard";
 import HelpTabs from "@/components/features/dashboard/HelpTabs/HelpTabs";
 import PresentationCard from "@/components/features/dashboard/PresentationCard/PresentationCard";
 import image from '../../../../public/assets/images/encodebiz-sass.png'
-import { Container, Grid, Typography } from '@mui/material';
+import { Container, Divider, Grid, Typography } from '@mui/material';
 import { useTranslations } from "next-intl";
 
 export default function Dashboard() {
@@ -13,7 +13,7 @@ export default function Dashboard() {
   return (
     <Container maxWidth="lg">
       <Typography variant="h4" component="h1" gutterBottom sx={{ mb: 4 }}>
-        Overview
+        {t('features.dashboard.overview')}
       </Typography>
 
       <PresentationCard
@@ -23,14 +23,16 @@ export default function Dashboard() {
         action1={() => { }}
         action1Text={t('features.dashboard.card.btn1')}
         action2={() => { }}
-        action2Text={t('features.dashboard.card.btn1')}
+        action2Text={t('features.dashboard.card.btn2')}
       />
 
       <HelpTabs />
 
 
+
+
       <Typography variant="h4" component="h2" align="left" gutterBottom>
-        Estadísticas
+        {t('features.dashboard.stats')}      
       </Typography>
 
 
@@ -67,7 +69,7 @@ export default function Dashboard() {
           </DashboardCard>
         </Grid>
 
-          {/* Departmental Budget Chart */}
+        {/* Departmental Budget Chart */}
         <Grid size={{
           xs: 12,
           sm: 6,

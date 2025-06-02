@@ -50,11 +50,11 @@ const SignUpPage = () => {
                             {t('core.signup.google')}
                         </BaseButton>
                     </Grid>
-                    <Grid size={{ xs: 12, sm: 12 }} sx={classes.fullWidth}>
+                    {/** <Grid size={{ xs: 12, sm: 12 }} sx={classes.fullWidth}>
                         <BaseButton fullWidth variant="outlined" startIcon={<FacebookIcon color="primary" />} onClick={signInWithFacebook}>
                             {t('core.signup.facebook')}
                         </BaseButton>
-                    </Grid>
+                    </Grid>*/}
                 </Grid>
 
                 <Divider sx={{ my: 3 }}>

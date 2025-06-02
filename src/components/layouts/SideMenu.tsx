@@ -38,6 +38,7 @@ import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import EntitySwitcher from '../common/EntitySwitcher';
 import { useAuth } from '@/hooks/useAuth';
+import { useRouter } from 'nextjs-toploader/app';
 
 const drawerWidth = 240;
 
@@ -54,7 +55,8 @@ export default function SideMenu() {
   const theme = useTheme();
   const pathname = usePathname()
   const t = useTranslations();
-  const {user} = useAuth();
+  const { user } = useAuth();
+  const { push } = useRouter();
   const { layoutState, changeLayoutState } = useLayout()
   const [openSubMenu, setOpenSubMenu] = useState<any>({
     products: false,
@@ -106,12 +108,12 @@ export default function SideMenu() {
         <Divider />
 
         {/* User Profile Section */}
-        <Box sx={{ p: 2, textAlign: 'center', mt:4 }}>
+        <Box sx={{ p: 2, textAlign: 'center', mt: 4 }}>
           <Avatar
             sx={{ width: 64, height: 64, mx: 'auto', mb: 1 }}
             src="/path/to/user.jpg"
           />
-          
+
           <Typography variant="subtitle1">{user?.displayName}</Typography>
           <Typography variant="body2" color="text.secondary">{user?.email}</Typography>
           <EntitySwitcher />
@@ -126,7 +128,7 @@ export default function SideMenu() {
             if (item.divider) return <Divider key={i} />
             else
               if (item.subMenu.length == 0)
-                return <ListItem key={i} disablePadding>
+                return <ListItem onClick={() => push(item.link)} key={i} disablePadding>
                   <ListItemButton selected={pathname === item.link}>
                     <ListItemIcon>
                       {item.icon}
@@ -142,19 +144,19 @@ export default function SideMenu() {
                       <ListItemIcon>
                         {item.icon}
                       </ListItemIcon>
-                      <ListItemText primary={t(`layout.side.menu.${item.name}`)}/>
+                      <ListItemText primary={t(`layout.side.menu.${item.name}`)} />
                       {openSubMenu.products ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
                   </ListItem>
                   <Collapse in={openSubMenu[item.id]} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
-                      {item.subMenu.map((e: any, index: number) => <ListItemButton key={index} sx={{ pl: 4 }}>
+                      {item.subMenu.map((e: any, index: number) => <ListItem onClick={() => push(e.link)} key={i+'-'+index} disablePadding><ListItemButton   sx={{ pl: 4 }}>
                         <ListItemIcon>
                           {e.icon}
                         </ListItemIcon>
                         <ListItemText primary={t(`layout.side.menu.${e.name}`)} />
-                      </ListItemButton>)}
-
+                      </ListItemButton>
+                      </ListItem>)}
                     </List>
                   </Collapse>
                 </div>

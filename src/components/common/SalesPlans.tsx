@@ -9,7 +9,7 @@ import {
     List,
     ListItem,
     ListItemIcon,
-    
+
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { CheckCircleOutline } from '@mui/icons-material';
@@ -103,7 +103,7 @@ export default function SalesPlans() {
             <Grid container justifyContent="center">
                 {salesPlans.map((plan, index) => (
                     <Grid key={index} size={{
-                        xs: 12, md: 3, sm: 6
+                        xs: 12, md: 6, sm: 6
                     }}>
                         <Box position="relative">
                             {plan.featured && <FeaturedBadge>Most Popular</FeaturedBadge>}
