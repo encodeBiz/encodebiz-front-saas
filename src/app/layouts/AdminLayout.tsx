@@ -1,6 +1,6 @@
 'use client'
 import Footer from '@/components/layouts/Footer';
-import Header from '@/components/layouts/Header';
+import Header from '@/components/layouts/Header/Header';
 import SideMenu from '@/components/layouts/SideMenu';
 import Sidebar from '@/components/layouts/SideMenu';
 import { LayoutProvider } from '@/contexts/layoutContext';

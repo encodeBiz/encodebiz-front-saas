@@ -35,7 +35,9 @@ import HelpIcon from '@mui/icons-material/Help';
 import { useLayout } from '@/hooks/useLayout';
 import { useAppTheme } from '@/hooks/useTheme';
 import { useTranslations } from 'next-intl';
-import LocaleSwitcher from '../common/LocaleSwitcher';
+import LocaleSwitcher from '../../common/LocaleSwitcher';
+import { handleLogout } from '@/services/common/account.service';
+import { useHeader } from './Header.controller';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -80,34 +82,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function Header() {
   const { changeLayoutState, layoutState } = useLayout()
-  const {   changeColorMode } = useAppTheme()
-  const t = useTranslations();
-
- 
-
+  const { changeColorMode } = useAppTheme()
   const theme = useTheme();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const t = useTranslations();
+  const { anchorEl, contextMenu, handleMobileMenuClose, handleProfileMenuOpen, handleMobileMenuOpen,
+    mobileMoreAnchorEl, handleMenuClose } = useHeader()
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = (event: any) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = (event: any) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -126,25 +108,12 @@ export default function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>
+      {contextMenu.map((e, i: number) => <MenuItem onClick={e.action}>
         <ListItemIcon>
-          <AccountCircleIcon fontSize="small" />
+          {e.icon}
         </ListItemIcon>
-        Profile
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <ListItemIcon>
-          <SettingsIcon fontSize="small" />
-        </ListItemIcon>
-        Settings
-      </MenuItem>
-      <Divider />
-      <MenuItem onClick={handleMenuClose}>
-        <ListItemIcon>
-          <LogoutIcon fontSize="small" />
-        </ListItemIcon>
-        Logout
-      </MenuItem>
+        {e.label}
+      </MenuItem>)}
     </Menu>
   );
 
@@ -220,7 +189,7 @@ export default function Header() {
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-             
+
             <h4>{t('layout.header.title')}</h4>
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
@@ -260,7 +229,7 @@ export default function Header() {
                 aria-label="show 17 new notifications"
                 color="inherit"
               >
-                 <HelpIcon />
+                <HelpIcon />
               </IconButton>
             </Tooltip>
 

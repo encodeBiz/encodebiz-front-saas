@@ -1,9 +1,12 @@
+import { RegisterFormValues } from "@/app/auth/register/page.controller";
 import { collection } from "@/config/collection";
+import { createUser } from "@/lib/firebase/authentication/create";
 import { login } from "@/lib/firebase/authentication/login";
+import { logout } from "@/lib/firebase/authentication/logout";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import { searchFirestore, searchFirestoreCount } from "@/lib/firebase/firestore/searchFirestore";
 import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
-import httpClientFetchInstance from "@/lib/http/httpClientFetchNext";
+import httpClientFetchInstance, { HttpClient } from "@/lib/http/httpClientFetchNext";
 import IEntity from "@/types/auth/IEntity";
 import IUser from "@/types/auth/IUser";
 import IUserEntity from "@/types/auth/IUserEntity";
@@ -35,6 +38,41 @@ export async function signInEmail(
     } catch (error: any) {
         throw new Error(error.message)
     }
+}
+
+
+
+export async function signUpEmail(data: RegisterFormValues) {
+    try {
+        const responseAuth = await createUser(data.email, data.password);
+        const token = await responseAuth.user.getIdToken();
+        if (!responseAuth) {
+            throw new Error('Error to fetch user auth token')
+        } else {
+            let httpClientFetchInstance: HttpClient = new HttpClient({
+                baseURL: process.env.NEXT_PUBLIC_BACKEND_URI,
+                headers: {
+                    token: `Bearer ${token}`
+                },
+            });
+            const response: any = await httpClientFetchInstance.post(process.env.NEXT_PUBLIC_BACKEND_URI as string, {
+                entityLegalName: data.legalEntityName,
+                fullName: data.fullName,
+                phoneNumber: data.phone,
+                uid: responseAuth.user.uid,
+                email: data.email,
+                password: data.password,
+            });
+            if (response.errCode && response.errCode !== 200) {
+                throw new Error(response.message)
+            }
+
+
+        }
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+
 }
 
 
@@ -92,7 +130,7 @@ export async function saveStateCurrentEntity(
 ): Promise<void> {
     try {
         console.log(entityList);
-        
+
         entityList.forEach(async element => {
             await updateDocument<IUserEntity>({
                 collection: collection.USER_ENTITY_ROLES,
@@ -112,3 +150,11 @@ export async function saveStateCurrentEntity(
 }
 
 
+
+export async function handleLogout(): Promise<void> {
+    try {
+        await logout()
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}

@@ -4,6 +4,8 @@ import PasswordInput from '@/components/common/forms/fields/PasswordInput';
 import PhoneNumberInput from '@/components/common/forms/fields/PhoneNumberInput';
 import SimpleCheck from '@/components/common/forms/fields/SimpleCheck';
 import TextInput from '@/components/common/forms/fields/TextInput';
+import { useToast } from '@/hooks/useToast';
+import { signUpEmail } from '@/services/common/account.service';
 import { CredentialResponse, useGoogleOneTapLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
 import { useTranslations } from 'next-intl';
@@ -18,21 +20,26 @@ export interface RegisterFormValues {
     password: string
     confirmPassword: string
     acceptTerms: boolean
+    legalEntityName: string
 };
 
 export const useRegisterController = () => {
+    const { showToast } = useToast()
+
     const t = useTranslations()
     const [initialValues, setInitialValues] = useState<RegisterFormValues>({
         fullName: '',
         email: '',
         phone: '',
         password: '',
+        legalEntityName: '',
         confirmPassword: '',
         acceptTerms: false
     })
 
     const validationSchema = Yup.object().shape({
         fullName: Yup.string().required(t('core.formValidatorMessages.required')),
+        legalEntityName: Yup.string().required(t('core.formValidatorMessages.required')),
         email: Yup.string().email(t('core.formValidatorMessages.email')).required(t('core.formValidatorMessages.required')),
         phone: Yup.string().required(t('core.formValidatorMessages.required')),
         password: Yup.string()
@@ -56,49 +63,61 @@ export const useRegisterController = () => {
         onSuccess: (response: CredentialResponse) => handleGoogleSuccess(response),
     });
 
-    const signInWithFacebook: any = (values: RegisterFormValues, actions: any) => {
+    const signInWithFacebook: any = (values: RegisterFormValues) => {
 
     };
 
-    const signInWithEmail = (values: RegisterFormValues, actions: any) => {
-
+    const signInWithEmail = async (values: RegisterFormValues) => {
+        try {
+            await signUpEmail(values)
+        } catch (error: any) {
+            showToast(error.message, 'error')
+        }
     };
 
 
     const fields = [
         {
             name: 'fullName',
-            label: 'Full Name',
+            label: t('core.label.fullName'),
             type: 'text',
             required: true,
             component: TextInput,
             fullWidth: true
         },
-      
+
         {
             name: 'email',
-            label: 'Email',
+            label: t('core.label.email'),
             type: 'email',
             required: true,
             component: TextInput,
         },
         {
             name: 'phone',
-            label: 'Phone',
+            label: t('core.label.phone'),
             type: 'phone',
             required: true,
             component: PhoneNumberInput,
         },
+        ,
+        {
+            name: 'legalEntityName',
+            label: t('core.label.legalEntityName'),
+            type: 'text',
+            required: true,
+            component: TextInput,
+        },
         {
             name: 'password',
-            label: 'Password',
+            label: t('core.label.password'),
             type: 'password',
             required: true,
             component: PasswordInput,
         },
         {
             name: 'confirmPassword',
-            label: 'Confirm Password',
+            label: t('core.label.passwordConfirm'),
             type: 'password',
             required: true,
             component: PasswordInput,

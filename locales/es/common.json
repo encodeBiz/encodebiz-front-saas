@@ -7,7 +7,10 @@
       "spanish": "Español",
       "french": "Francés",
       "germany": "Alemán",
-      "entity": "Entidad Actual"
+      "entity": "Entidad Actual",
+      "profile": "Perfil",
+      "setting": "Preferencias",
+      "logout": "Cerrar sesión"
     },
     "side": {
       "menu": {
@@ -34,8 +37,9 @@
     "label": {
       "firstName": "Nombre",
       "lastName": "Apellido",
-      "fullName": "Nombre completo",      
+      "fullName": "Nombre completo",
       "password": "Contraseña",
+      "legalEntityName": "Npmbre Legal de la Empresa",
       "passwordConfirm": "Confirmar contraseña",
       "email": "Correo electrónico",
       "acceptTerms": "Aceptar términos y condiciones",
@@ -75,14 +79,14 @@
       "signIn": "Inicia sesión"
     }
   },
-  "features":{
-    "dashboard":{
-      "overview":"Descripción general",
-      "card":{
-        "btn1":"Mas informacion",
-        "btn2":"Productos",
-        "title":"Bienvenido a Encodebiz Saas",
-        "subtitle":"En esta plataforma podras hacer varias cosas interesantes"
+  "features": {
+    "dashboard": {
+      "overview": "Descripción general",
+      "card": {
+        "btn1": "Mas informacion",
+        "btn2": "Productos",
+        "title": "Bienvenido a Encodebiz Saas",
+        "subtitle": "En esta plataforma podras hacer varias cosas interesantes"
       }
     }
   }
