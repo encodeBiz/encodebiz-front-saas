@@ -1,6 +1,6 @@
 import { handleLogout } from "@/services/common/account.service";
 import { useTranslations } from "next-intl";
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Menu as MenuIcon,
@@ -21,7 +21,8 @@ export const useHeader = () => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
+  const [showNotification, setShowNotification] = useState(0)
+  const [showMessages, setShowMessages] = useState(0)
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -49,6 +50,6 @@ export const useHeader = () => {
 
   return {
     anchorEl, handleMobileMenuClose, handleProfileMenuOpen, handleMobileMenuOpen,
-    mobileMoreAnchorEl, handleMenuClose,   contextMenu
+    mobileMoreAnchorEl, handleMenuClose, contextMenu,showNotification,showMessages
   }
 }

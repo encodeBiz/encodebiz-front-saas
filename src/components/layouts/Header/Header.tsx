@@ -10,7 +10,6 @@ import {
   Avatar,
   Menu,
   MenuItem,
-  Divider,
   ListItemIcon,
   Tooltip,
   InputBase,
@@ -19,17 +18,13 @@ import {
   useTheme
 } from '@mui/material';
 import {
-  Menu as MenuIcon,
-  Search as SearchIcon,
   Mail as MailIcon,
   Notifications as NotificationsIcon,
-  AccountCircle as AccountCircleIcon,
-  Settings as SettingsIcon,
-  Logout as LogoutIcon,
   Brightness4 as DarkModeIcon,
   Brightness7 as LightModeIcon,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  MenuOutlined
 } from '@mui/icons-material';
 import HelpIcon from '@mui/icons-material/Help';
 import { useLayout } from '@/hooks/useLayout';
@@ -40,53 +35,13 @@ import { handleLogout } from '@/services/common/account.service';
 import { useHeader } from './Header.controller';
 
 
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto',
-  },
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
-}));
-
 export default function Header() {
   const { changeLayoutState, layoutState } = useLayout()
   const { changeColorMode } = useAppTheme()
   const theme = useTheme();
   const t = useTranslations();
   const { anchorEl, contextMenu, handleMobileMenuClose, handleProfileMenuOpen, handleMobileMenuOpen,
-    mobileMoreAnchorEl, handleMenuClose } = useHeader()
+    mobileMoreAnchorEl, handleMenuClose, showNotification, showMessages } = useHeader()
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -135,27 +90,44 @@ export default function Header() {
       onClose={handleMobileMenuClose}
     >
 
+      <Box sx={{ p: 4 }}>
+        <LocaleSwitcher />
+      </Box>
+
+
       <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
+        <IconButton onClick={() => changeColorMode()} size="large" color="inherit">
+          {theme.palette.mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+        </IconButton>
+        <p>{t('layout.header.theme')}</p>
+      </MenuItem>
+
+      {showMessages > 0 && <MenuItem>
+        <IconButton size="large" color="inherit">
+          <Badge badgeContent={showMessages} color="error">
             <MailIcon />
           </Badge>
         </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
+        <p>{t('layout.header.messages')}</p>
+      </MenuItem>}
+
+
+      {showNotification > 0 && <MenuItem>
         <IconButton
           size="large"
-          aria-label="show 17 new notifications"
           color="inherit"
         >
-          <Badge badgeContent={17} color="error">
+          <Badge badgeContent={showNotification} color="error">
             <NotificationsIcon />
           </Badge>
         </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+        <p>{t('layout.header.notification')}</p>
+      </MenuItem>}
+
+
+
+
+      <MenuItem onClick={() => { }}>
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -163,9 +135,22 @@ export default function Header() {
           aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircleIcon />
+          <HelpIcon />
         </IconButton>
-        <p>Profile</p>
+        <p>{t('layout.header.help')}</p>
+      </MenuItem>
+
+      <MenuItem onClick={() => { handleMenuClose(); handleLogout() }}>
+        <IconButton
+          size="large"
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <HelpIcon />
+        </IconButton>
+        <p>{t('layout.header.logout')}</p>
       </MenuItem>
     </Menu>
   );
@@ -203,37 +188,36 @@ export default function Header() {
               {theme.palette.mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
             </IconButton>
 
-            <Tooltip title="Messages">
-              <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                <Badge badgeContent={4} color="error">
+            {showMessages > 0 && <Tooltip title={t('layout.header.messages')}>
+              <IconButton size="large" color="inherit">
+                <Badge badgeContent={showMessages} color="error">
                   <MailIcon />
                 </Badge>
               </IconButton>
-            </Tooltip>
+            </Tooltip>}
 
-            <Tooltip title="Notifications">
+            {showNotification > 0 && <Tooltip title={t('layout.header.notification')}>
               <IconButton
                 size="large"
-                aria-label="show 17 new notifications"
+
                 color="inherit"
               >
-                <Badge badgeContent={17} color="error">
+                <Badge badgeContent={showNotification} color="error">
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
-            </Tooltip>
+            </Tooltip>}
 
-            <Tooltip title="Ayuda">
+            <Tooltip title={t('layout.header.help')}>
               <IconButton
                 size="large"
-                aria-label="show 17 new notifications"
                 color="inherit"
               >
                 <HelpIcon />
               </IconButton>
             </Tooltip>
 
-            <Tooltip title="Account settings">
+            <Tooltip title={t('layout.header.profile')}>
               <IconButton
                 edge="end"
                 size="large"
@@ -261,7 +245,7 @@ export default function Header() {
               onClick={handleMobileMenuOpen}
               color="inherit"
             >
-              <NotificationsIcon />
+              <MenuOutlined />
             </IconButton>
           </Box>
         </Toolbar>
