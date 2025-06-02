@@ -1,7 +1,7 @@
 import { RegisterFormValues } from "@/app/auth/register/page.controller";
 import { collection } from "@/config/collection";
 import { createUser } from "@/lib/firebase/authentication/create";
-import { login } from "@/lib/firebase/authentication/login";
+import { login, loginWithToken } from "@/lib/firebase/authentication/login";
 import { logout } from "@/lib/firebase/authentication/logout";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import { searchFirestore, searchFirestoreCount } from "@/lib/firebase/firestore/searchFirestore";
@@ -11,7 +11,7 @@ import IEntity from "@/types/auth/IEntity";
 import IUser from "@/types/auth/IUser";
 import IUserEntity from "@/types/auth/IUserEntity";
 import { SearchParams } from "@/types/firebase/firestore";
-import { UserCredential } from "firebase/auth";
+import { signInWithCustomToken, UserCredential } from "firebase/auth";
 
 
 export async function validateToken(
@@ -29,6 +29,15 @@ export async function validateToken(
     }
 }
 
+export async function signInToken(
+    token: string
+): Promise<UserCredential> {
+    try {
+        return await loginWithToken(token)
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
 
 export async function signInEmail(
     email: string, password: string

@@ -36,7 +36,7 @@ const FeaturedBadge = styled(Box)(({ theme }) => ({
 
 const salesPlans = [
     {
-        name: 'Basic',
+        name: '🟢 Plan Freemium',
         price: '$19',
         period: '/month',
         features: [

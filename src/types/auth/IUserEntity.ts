@@ -18,5 +18,7 @@ interface IUserEntity {
   updatedAt: Date;
   entity: IEntity
 
+  isActive: boolean
+
 }
 export default IUserEntity;
