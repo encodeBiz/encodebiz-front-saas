@@ -74,7 +74,7 @@ const SignInPage = () => {
 
                 <Box sx={{ textAlign: 'center' }}>
                     <Typography variant="body2">
-                        {t('core.signin.noAccount')} <Link href="/auth/login">{t('core.signin.signIn')}</Link>
+                        {t('core.signin.noAccount')} <Link href="/auth/register">{t('core.signup.signup')}</Link>
                     </Typography>
                 </Box>
             </Paper>

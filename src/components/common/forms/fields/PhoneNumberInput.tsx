@@ -10,7 +10,7 @@ const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
     const { touched, error } = meta
     const helperText = touched && error;
 
-    const [countryCode, setCountryCode] = useState('+43');
+    const [countryCode, setCountryCode] = useState('+34');
     const [phoneNumber, setPhoneNumber] = useState(field.value.replace(/^\+\d+\s?/, ''));
 
     const handleCountryChange = (event: any) => {

@@ -47,7 +47,11 @@
       "passwordConfirm": "Confirmar contraseña",
       "email": "Correo electrónico",
       "acceptTerms": "Aceptar términos y condiciones",
-      "phone": "Teléfono"
+      "phone": "Teléfono",
+      "accepTerm1": " I agree to the",
+      "accepTerm2": " Terms of Service",
+      "accepTerm3": " and ",
+      "accepTerm4": " Privacy Policy"
     },
     "button": {
       "submitting": "Enviando...",
@@ -60,7 +64,8 @@
       "required": "Este campo es requerido",
       "email": "Este campo es requerido",
       "password": "La contraseña es demasiado corta: debe tener un mínimo de 8 caracteres.",
-      "passwordMatch": "La contraseñas no coinciden"
+      "passwordMatch": "La contraseñas no coinciden",
+      "acceptTerm":"Debe aceptar los términos y condiciones"
     },
     "signup": {
       "title": "Crear una cuenta",

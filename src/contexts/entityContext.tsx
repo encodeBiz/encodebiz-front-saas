@@ -21,7 +21,12 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
     const watchSesionState = async (userAuth: User) => {
         if (userAuth) {
-            const entityList: Array<IUserEntity> = await fetchUserEntities(userAuth.uid)           
+            const entityList: Array<IUserEntity> = await fetchUserEntities(userAuth.uid)
+            if (entityList.length == 1) {
+                const item = entityList[0]
+                item.isActive = true
+                entityList.splice(0, 1, item)
+            }
             setEntityList(entityList)
             setCurrentEntity(entityList.find(e => e.isActive) as IUserEntity)
         }

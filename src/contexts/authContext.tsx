@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { User } from "firebase/auth";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import IUser from "@/types/auth/IUser";
 import { subscribeToAuthChanges } from "@/lib/firebase/authentication/stateChange";
@@ -27,7 +27,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const { push } = useRouter()
 
     const searchParams = useSearchParams()
+    const pathName = usePathname()
     const redirectUri = searchParams.get('redirect')
+    const inPublicPage = pathName.startsWith('/auth')
 
     const watchSesionState = async (userAuth: User) => {
         if (userAuth) {
@@ -43,7 +45,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         } else {
             setUser(null);
             setPendAuth(false)
-            push('/auth/login')
+            if (!inPublicPage)
+                push('/auth/login')
         }
     }
 

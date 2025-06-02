@@ -2,7 +2,7 @@
 
 import PasswordInput from '@/components/common/forms/fields/PasswordInput';
 import PhoneNumberInput from '@/components/common/forms/fields/PhoneNumberInput';
-import SimpleCheck from '@/components/common/forms/fields/SimpleCheck';
+import SimpleCheckTerm from '@/components/common/forms/fields/SimpleCheckTerm';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { useToast } from '@/hooks/useToast';
 import { signUpEmail } from '@/services/common/account.service';
@@ -18,7 +18,7 @@ export interface RegisterFormValues {
     email: string
     phone: string
     password: string
-    confirmPassword: string
+    passwordConfirm: string
     acceptTerms: boolean
     legalEntityName: string
 };
@@ -33,7 +33,7 @@ export const useRegisterController = () => {
         phone: '',
         password: '',
         legalEntityName: '',
-        confirmPassword: '',
+        passwordConfirm: '',
         acceptTerms: false
     })
 
@@ -42,6 +42,8 @@ export const useRegisterController = () => {
         legalEntityName: Yup.string().required(t('core.formValidatorMessages.required')),
         email: Yup.string().email(t('core.formValidatorMessages.email')).required(t('core.formValidatorMessages.required')),
         phone: Yup.string().required(t('core.formValidatorMessages.required')),
+        acceptTerms: Yup.boolean().oneOf([true], t('core.formValidatorMessages.acceptTerm'))
+            .required(t('core.formValidatorMessages.required')),
         password: Yup.string()
             .required(t('core.formValidatorMessages.required'))
             .min(8, t('core.formValidatorMessages.password')),
@@ -116,7 +118,7 @@ export const useRegisterController = () => {
             component: PasswordInput,
         },
         {
-            name: 'confirmPassword',
+            name: 'passwordConfirm',
             label: t('core.label.passwordConfirm'),
             type: 'password',
             required: true,
@@ -127,7 +129,7 @@ export const useRegisterController = () => {
             label: 'acceptTerms',
             type: 'checkbox',
             required: true,
-            component: SimpleCheck,
+            component: SimpleCheckTerm,
         },
 
     ];
