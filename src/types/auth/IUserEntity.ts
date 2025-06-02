@@ -9,11 +9,11 @@ import IEntity from "./IEntity";
  */
 interface IUserEntity {
   id?: string;
-  entityId: string
-  role: "owner"
-  status: "active"
-  isActive: boolean
-  userId: string
+  userId: string;
+  entityId: string;
+  role: 'owner' | 'admin' | 'member' | 'viewer';
+  status: 'active' | 'invited' | 'disabled';
+  joinedAt: string;
   createdAt: Date;
   updatedAt: Date;
   entity: IEntity

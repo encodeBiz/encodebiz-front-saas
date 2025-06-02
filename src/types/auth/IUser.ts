@@ -10,16 +10,13 @@ import { User } from "firebase/auth";
  */
 interface IUser extends User {
   id?: string;
-  slug: string;
-  photoURL: any;
-  fullName: string; 
-  phoneNumber: string;
   email: string;
-  stripeCustomerId: string;
-   
+  fullName: string;
+  phoneNumber: string; 
+  lastLoginAt?: string;
+  active: boolean;   
   createdAt: Date;
-  updatedAt: Date;
-   
+  updatedAt: Date;   
   password?: string;
   
 }
