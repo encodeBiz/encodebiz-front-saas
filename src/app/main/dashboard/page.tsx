@@ -7,6 +7,7 @@ import PresentationCard from "@/components/features/dashboard/PresentationCard/P
 import image from '../../../../public/assets/images/encodebiz-sass.png'
 import { Container, Divider, Grid, Typography } from '@mui/material';
 import { useTranslations } from "next-intl";
+import { Cloud } from "@mui/icons-material";
 
 export default function Dashboard() {
   const t = useTranslations()
@@ -26,13 +27,36 @@ export default function Dashboard() {
         action2Text={t('features.dashboard.card.btn2')}
       />
 
-      <HelpTabs />
+
+      <HelpTabs tabs={[
+        {
+          id: '1',
+          title: "¿Como empiezo?",
+          description: "Leer la documentación",
+          icon: <Cloud fontSize="small" />,
+          tabContent: <>1</>
+        },
+         {
+          id: '2',
+          title: "¿Cuanto me costará Encodebiz Sass?",
+          description: "Consultar los planes de cada producto",
+          icon: <Cloud fontSize="small" />,
+          tabContent: <>2</>
+        },
+         {
+          id: '3',
+          title: "¿Como me puede ayudar Encodebiz Sass?",
+          description: "Ver el video",
+          icon: <Cloud fontSize="small" />,
+          tabContent: <>3</>
+        }
+      ]} />
 
 
 
 
       <Typography variant="h4" component="h2" align="left" gutterBottom>
-        {t('features.dashboard.stats')}      
+        {t('features.dashboard.stats')}
       </Typography>
 
 
