@@ -5,7 +5,7 @@ import PhoneNumberInput from '@/components/common/forms/fields/PhoneNumberInput'
 import SimpleCheckTerm from '@/components/common/forms/fields/SimpleCheckTerm';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { useToast } from '@/hooks/useToast';
-import { signUpEmail } from '@/services/common/account.service';
+import { signInGoogle, signUpEmail } from '@/services/common/account.service';
 import { CredentialResponse, useGoogleOneTapLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
 import { useTranslations } from 'next-intl';
@@ -56,18 +56,15 @@ export const useRegisterController = () => {
 
 
 
-    const handleGoogleSuccess = (credentialResponse: CredentialResponse) => {
-        const decoded = jwtDecode(credentialResponse.credential as string);
-        console.log('Google login success:', decoded);
-        // Handle Google login (send to your backend or process user data)
+    const signInWithGoogle = async () => {
+        try {
+            await signInGoogle()
+        } catch (error: any) {
+            showToast(error.message, 'error')
+        }
     };
-    const signInWithGoogle: any = useGoogleOneTapLogin({
-        onSuccess: (response: CredentialResponse) => handleGoogleSuccess(response),
-    });
 
-    const signInWithFacebook: any = (values: RegisterFormValues) => {
-
-    };
+    const signInWithFacebook: any = (values: RegisterFormValues) => {};
 
     const signInWithEmail = async (values: RegisterFormValues) => {
         try {

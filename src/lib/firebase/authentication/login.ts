@@ -1,15 +1,17 @@
 import {
   deleteUser,
   getAuth,
+  GoogleAuthProvider,
   signInWithCustomToken,
   signInWithEmailAndPassword,
+  signInWithPopup,
   updatePassword,
   User,
   UserCredential,
 } from "firebase/auth";
 import { auth } from "../initializeApp";
 import { codeError } from "@/lib/http/httpClientFetchNext";
- 
+
 export const login = async (params: LoginParams): Promise<UserCredential> => {
   const { email, password } = params;
 
@@ -23,6 +25,16 @@ export const login = async (params: LoginParams): Promise<UserCredential> => {
   } catch (error: any) {
     const message = codeError[error.code];
     throw new Error(message ? message : error?.message);
+  }
+};
+
+export const loginWithGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth, new GoogleAuthProvider());
+    return result;
+  } catch (error) {
+    console.error("Google sign-in error:", error);
+    throw error;
   }
 };
 

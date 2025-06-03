@@ -1,7 +1,7 @@
 import { RegisterFormValues } from "@/app/auth/register/page.controller";
 import { collection } from "@/config/collection";
 import { createUser } from "@/lib/firebase/authentication/create";
-import { login, loginWithToken } from "@/lib/firebase/authentication/login";
+import { login, loginWithGoogle, loginWithToken } from "@/lib/firebase/authentication/login";
 import { logout } from "@/lib/firebase/authentication/logout";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import { searchFirestore, searchFirestoreCount } from "@/lib/firebase/firestore/searchFirestore";
@@ -34,6 +34,15 @@ export async function signInToken(
 ): Promise<UserCredential> {
     try {
         return await loginWithToken(token)
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+
+export async function signInGoogle(): Promise<UserCredential> {
+    try {
+        return await loginWithGoogle()
     } catch (error: any) {
         throw new Error(error.message)
     }

@@ -3,6 +3,7 @@ import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 import firebaseApp from '@/config/firebase.mjs'
 import { getStorage } from "firebase/storage";
 import { Analytics, getAnalytics , isSupported} from "firebase/analytics";
+import { GoogleAuthProvider } from "firebase/auth";
 
 
 // Inicializar Authentication
@@ -23,8 +24,12 @@ import { Analytics, getAnalytics , isSupported} from "firebase/analytics";
   });
 }
 
+const googleProvider = new GoogleAuthProvider();
+googleProvider.addScope('https://www.googleapis.com/auth/userinfo.email');
+googleProvider.addScope('https://www.googleapis.com/auth/userinfo.profile');
 
 export {
+  googleProvider,
   auth,
   storage,
   db,
