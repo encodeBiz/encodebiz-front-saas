@@ -45,8 +45,8 @@ export default function AdminLayout({
           })
         }}
       >
-        <Grid container spacing={3}>
-          {children}
+        <Grid container spacing={3} sx={{display:'flex',minHeight:'calc(100vh - 200px)',justifyContent:'flex-start',alignItems:'flex-start'}}>
+         {children}
         </Grid>
       </Box>
       <Footer />

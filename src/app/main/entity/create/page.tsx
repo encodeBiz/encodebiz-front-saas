@@ -22,21 +22,20 @@ const FormEntityPage = () => {
     const classes = useStyles();
 
     return (
-        <Container maxWidth="lg">
+        <Container maxWidth="xl">
             <PresentationCard
                 title={t('features.entity.create.card.title')}
                 description={t('features.entity.create.card.subtitle')}
-                image={image}
-
             >
-
-
                 <GenericForm<EntityFormValues>
+                    
+                    column={2}
                     initialValues={initialValues}
                     validationSchema={validationSchema}
                     onSubmit={handleCreateEntity}
                     fields={fields as FormField[]}
                     submitButtonText={t('core.button.submit')}
+
                 />
             </PresentationCard>
 

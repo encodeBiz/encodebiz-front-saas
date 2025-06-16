@@ -2,17 +2,20 @@
 export const useStyles = () => ({
   base: {
     width: '100%',
-    mt: 4, mb: 4, pb: 4, borderRadius: 2, display: 'flex', flexDirection: 'column'
+    borderRadius: 2, display: 'flex', flexDirection: 'column', justifyContent: 'space-around',pt:4,pb:4
+  },
+  content: {
+     pl: 8, pr: 8
   },
   root: {
-    mt: 4, mb: 4, pb: 4,p:4,pl:10,pr:10, borderRadius: 2, display: 'flex', flexDirection: {
+     pl: 4, pr: 4, borderRadius: 2, display: 'flex', flexDirection: {
       xs: 'column-reverse',
       sm: 'column-reverse',
       md: 'column-reverse',
       lg: 'row',
       xl: 'row',
 
-    }, alignItems: 'center', justifyContent: 'space-around'
+    }, alignItems: 'center', justifyContent: 'space-between'
   },
   container: { display: 'flex', flexDirection: 'column', alignItems: 'flex-start' },
   stack: {

@@ -56,8 +56,6 @@ const GenericForm = <T extends Record<string, any>>({
       elevation={0}
       sx={{
 
-        maxWidth: 800,
-        margin: '0 auto',
         ...formContainerProps?.sx,
       }}
       {...formContainerProps}

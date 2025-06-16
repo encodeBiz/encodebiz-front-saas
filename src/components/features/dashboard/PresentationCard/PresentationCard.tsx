@@ -41,11 +41,13 @@ export default function PresentationCard({ children, title, description, image, 
               {typeof action2 === 'function' && <BaseButton variant="outlined" onClick={action2}>{action2Text}</BaseButton>}
             </Stack>
           </Box>
-          <Box sx={styles.imageContainer}>
+          {image && <Box sx={styles.imageContainer}>
             <Image width={200} height={200} alt='EncodeBiz' src={image} />
-          </Box>
+          </Box>}
         </Box>
-        {children}
+        <Box sx={styles.content}>
+          {children}
+        </Box>
       </Paper>
 
     </Box>
