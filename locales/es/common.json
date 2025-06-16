@@ -51,7 +51,8 @@
       "accepTerm1": " I agree to the",
       "accepTerm2": " Terms of Service",
       "accepTerm3": " and ",
-      "accepTerm4": " Privacy Policy"
+      "accepTerm4": " Privacy Policy",
+      "billingEmail": "Email para gestionar los pagos"
     },
     "button": {
       "submitting": "Enviando...",
@@ -65,7 +66,7 @@
       "email": "Este campo es requerido",
       "password": "La contraseña es demasiado corta: debe tener un mínimo de 8 caracteres.",
       "passwordMatch": "La contraseñas no coinciden",
-      "acceptTerm":"Debe aceptar los términos y condiciones"
+      "acceptTerm": "Debe aceptar los términos y condiciones"
     },
     "signup": {
       "title": "Crear una cuenta",
@@ -97,6 +98,14 @@
         "btn2": "Productos",
         "title": "Bienvenido a Encodebiz Saas",
         "subtitle": "En esta plataforma podras hacer varias cosas interesantes"
+      }
+    },
+    "entity": {
+      "create": {     
+        "card": {         
+          "title": "Crear entidad legal",
+          "subtitle": "En la plataforma puedes asociar varias entidades a la cuenta, pero es necesario al menos una para comenzar a utilixar nuestros productos"
+        }
       }
     }
   }

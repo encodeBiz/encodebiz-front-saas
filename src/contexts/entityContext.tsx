@@ -6,6 +6,7 @@ import { subscribeToAuthChanges } from "@/lib/firebase/authentication/stateChang
 import { User } from "firebase/auth";
 import IUserEntity from "@/types/auth/IUserEntity";
 import { fetchUserEntities, saveStateCurrentEntity } from "@/services/common/account.service";
+import { useRouter } from "nextjs-toploader/app";
 
 interface EntityContextType {
     currentEntity: IUserEntity | undefined;
@@ -18,17 +19,26 @@ export const EntityContext = createContext<EntityContextType | undefined>(undefi
 export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     const [currentEntity, setCurrentEntity] = useState<IUserEntity | undefined>(undefined);
     const [entityList, setEntityList] = useState<Array<IUserEntity>>([]);
-
+    const { push } = useRouter()
     const watchSesionState = async (userAuth: User) => {
         if (userAuth) {
             const entityList: Array<IUserEntity> = await fetchUserEntities(userAuth.uid)
-            if (entityList.length == 1) {
-                const item = entityList[0]
-                item.isActive = true
-                entityList.splice(0, 1, item)
+            console.log(entityList);
+
+
+            if (entityList.length !== 0) {
+                if (entityList.length == 1) {
+                    const item = entityList[0]
+                    item.isActive = true
+                    entityList.splice(0, 1, item)
+                }
+                setEntityList(entityList)
+                setCurrentEntity(entityList.find(e => e.isActive) as IUserEntity)
+            } else {
+                push('/main/entity/create')
+                console.log('OK');
+
             }
-            setEntityList(entityList)
-            setCurrentEntity(entityList.find(e => e.isActive) as IUserEntity)
         }
     }
 

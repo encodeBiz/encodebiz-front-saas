@@ -1,7 +1,11 @@
 
 export const useStyles = () => ({
+  base: {
+    width: '100%',
+    mt: 4, mb: 4, pb: 4, borderRadius: 2, display: 'flex', flexDirection: 'column'
+  },
   root: {
-    mt: 4, mb: 4, pb: 4, borderRadius: 2, display: 'flex', flexDirection: {
+    mt: 4, mb: 4, pb: 4,p:4,pl:10,pr:10, borderRadius: 2, display: 'flex', flexDirection: {
       xs: 'column-reverse',
       sm: 'column-reverse',
       md: 'column-reverse',

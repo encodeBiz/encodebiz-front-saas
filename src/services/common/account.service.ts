@@ -11,7 +11,7 @@ import IEntity from "@/types/auth/IEntity";
 import IUser from "@/types/auth/IUser";
 import IUserEntity from "@/types/auth/IUserEntity";
 import { SearchParams } from "@/types/firebase/firestore";
-import { signInWithCustomToken, UserCredential } from "firebase/auth";
+import { UserCredential } from "firebase/auth";
 
 
 export async function validateToken(
@@ -68,7 +68,7 @@ export async function signUpEmail(data: RegisterFormValues) {
             throw new Error('Error to fetch user auth token')
         } else {
             let httpClientFetchInstance: HttpClient = new HttpClient({
-                baseURL: process.env.NEXT_PUBLIC_BACKEND_URI,
+                baseURL: process.env.NEXT_PUBLIC_BACKEND_URI_CREATE_USER,
                 headers: {
                     token: `Bearer ${token}`
                 },
