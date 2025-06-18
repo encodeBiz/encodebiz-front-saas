@@ -21,7 +21,8 @@ export type FormField = {
   required?: boolean;
   component: React.ComponentType<any>;
   options?: Array<{ value: any; label: string }>; // For select inputs
-  [key: string]: any; // Allow additional props
+  [key: string]: any; // Allow additional props  
+  disabled? : boolean;
 };
 
 type GenericFormProps<T> = {
@@ -34,7 +35,7 @@ type GenericFormProps<T> = {
   cancelButtonText?: string;
   onCancel?: () => void;
   formContainerProps?: any;
-  column?: 1 | 2 | 3
+  column?: 1 | 2 | 3;
 };
 
 const GenericForm = <T extends Record<string, any>>({
@@ -91,6 +92,7 @@ const GenericForm = <T extends Record<string, any>>({
                       label={field.label}
                       type={field.type}
                       required={field.required}
+                      disabled={field.disabled}
                       fullWidth
                       variant="outlined"
                       error={isInvalid}

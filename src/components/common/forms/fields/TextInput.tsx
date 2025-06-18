@@ -14,7 +14,9 @@ const TextInput: React.FC<FieldProps & TextFieldProps> = ({
     <TextField
       {...field}
       {...props}
+      value={field.value ?? ``}
       error={!!error}
+      disabled={props.disabled}
       helperText={helperText as string}
        
     />

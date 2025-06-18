@@ -16,6 +16,7 @@ import {
 import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import CreditCardOffIcon from '@mui/icons-material/CreditCardOff';
+import PersonIcon from '@mui/icons-material/Person';
 export const menuItems = [{
     id: 'dashboard',
     name: 'Dashboard',
@@ -66,8 +67,8 @@ export const menuItems = [{
     link: '/main/settings',
     subMenu: [{
         name: 'Account',
-        icon: <SettingsIcon />,
-        link: '/main/reports/sales',
+        icon: <PersonIcon />,
+        link: '/main/preferences/account',
         subMenu: []
     }, {
         name: 'Notifications',

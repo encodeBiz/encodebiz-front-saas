@@ -38,15 +38,15 @@
     }
   },
   "core": {
-    "title":{
-      "loader":"Cargando sesión de usuario"
+    "title": {
+      "loader": "Cargando sesión de usuario"
     },
     "label": {
       "firstName": "Nombre",
       "lastName": "Apellido",
       "fullName": "Nombre completo",
       "password": "Contraseña",
-      "legalEntityName": "Npmbre Legal de la Empresa",
+      "legalEntityName": "Nombre Legal de la Empresa",
       "passwordConfirm": "Confirmar contraseña",
       "email": "Correo electrónico",
       "acceptTerms": "Aceptar términos y condiciones",
@@ -55,7 +55,8 @@
       "accepTerm2": " Terms of Service",
       "accepTerm3": " and ",
       "accepTerm4": " Privacy Policy",
-      "billingEmail": "Email para gestionar los pagos"
+      "billingEmail": "Email para gestionar los pagos",
+      "avatar": "Avatar"
     },
     "button": {
       "submitting": "Enviando...",
@@ -69,7 +70,9 @@
       "email": "Este campo es requerido",
       "password": "La contraseña es demasiado corta: debe tener un mínimo de 8 caracteres.",
       "passwordMatch": "La contraseñas no coinciden",
-      "acceptTerm": "Debe aceptar los términos y condiciones"
+      "acceptTerm": "Debe aceptar los términos y condiciones",
+      "avatarUpload": "Selecciona un archivo de imagen válido.",
+      "avatarMaxSize": "La imagen es demasiado grande. Máximo permitido: 5MB."
     },
     "signup": {
       "title": "Crear una cuenta",
@@ -104,12 +107,24 @@
       }
     },
     "entity": {
-      "create": {     
-        "card": {         
+      "create": {
+        "card": {
           "title": "Crear entidad legal",
           "subtitle": "En la plataforma puedes asociar varias entidades a la cuenta, pero es necesario al menos una para comenzar a utilixar nuestros productos"
         }
       }
     }
+  },
+  "account": {
+    "title": "Cuenta",
+    "tabs": {
+      "tab1": {
+        "title": "Gestionar Perfil"
+      },
+      "tab2": {
+        "title": "Cambiar Contraseña"
+      }
+    },
+    "sessionLastTime":"Último inicio de sesión"
   }
 }

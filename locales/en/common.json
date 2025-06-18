@@ -31,6 +31,9 @@
         }
     },
     "core": {
+        "title": {
+            "loader": "Loading user session"
+        },
         "label": {
             "firstName": "First Name",
             "lastName": "Last Name",
@@ -38,7 +41,8 @@
             "passwordConfirm": "Confirm Password",
             "email": "Email",
             "acceptTerms": "Accept Terms and Conditions",
-            "phone": "Phone"
+            "phone": "Phone",
+            "avatar": "Avatar"
         },
         "button": {
             "submitting": "Submitting...",
@@ -51,7 +55,9 @@
             "required": "This field is required",
             "email": "This field is required",
             "password": "The password is too short: must be at least 8 characters.",
-            "passwordMatch": "The passwords do not match"
+            "passwordMatch": "The passwords do not match",
+            "avatarUpload": "Select a valid image to upload.",
+            "avatarMaxSize": "Image is too large. Maximum size allowed: 5MB."
         },
         "signup": {
             "title": "Create an account",
@@ -74,12 +80,24 @@
             "signIn": "Sign in"
         }
     },
-    "features":{
-    "dashboard":{
-      "card":{
-        "btn1":"More information",
-        "btn2":"Products"
-      }
+    "features": {
+        "dashboard": {
+            "card": {
+                "btn1": "More information",
+                "btn2": "Products"
+            }
+        }
+    },
+    "account": {
+        "title": "Account",
+        "tabs": {
+            "tab1": {
+                "title": "Profile Setting"
+            },
+            "tab2": {
+                "title": "Change Password"
+            }
+        },
+        "sessionLastTime": "Last login"
     }
-  }
 }

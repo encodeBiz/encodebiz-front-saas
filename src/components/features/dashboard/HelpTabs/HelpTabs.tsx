@@ -104,9 +104,9 @@ const HelpTabs = ({ tabs }: HelpTabsProps) => {
 
         {/* Tab content */}
         <Box sx={{ p: 3, border: `1px solid ${theme.palette.divider}`, borderTop: 0, width: '100%' }}>
-          {tabs.map((e, i) => <>
+          {tabs.map((e, i) => <span key={i}>
             {value === i && (<> {e.tabContent} </>)}
-          </>)}
+          </span>)}
         </Box>
       </Paper>
 

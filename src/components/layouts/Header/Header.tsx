@@ -12,9 +12,6 @@ import {
   MenuItem,
   ListItemIcon,
   Tooltip,
-  InputBase,
-  styled,
-  alpha,
   useTheme
 } from '@mui/material';
 import {
@@ -63,7 +60,7 @@ export default function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {contextMenu.map((e, i: number) => <MenuItem onClick={e.action}>
+      {contextMenu.map((e, i: number) => <MenuItem key={i} onClick={e.action}>
         <ListItemIcon>
           {e.icon}
         </ListItemIcon>
