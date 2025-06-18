@@ -6,8 +6,6 @@ import SimpleCheckTerm from '@/components/common/forms/fields/SimpleCheckTerm';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { useToast } from '@/hooks/useToast';
 import { signInGoogle, signUpEmail } from '@/services/common/account.service';
-import { CredentialResponse, useGoogleOneTapLogin } from '@react-oauth/google';
-import { jwtDecode } from "jwt-decode";
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import * as Yup from 'yup';

@@ -1,5 +1,5 @@
 // pages/api/verify-token.ts
-import { signInWithToken, verifyToken } from '@/lib/firebase/authentication/auth_utils';
+import { verifyToken } from '@/lib/firebase/authentication/auth_utils';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest, response: NextResponse) {
