@@ -10,7 +10,7 @@ export async function createEntity(data: EntityFormValues, token: string) {
             throw new Error('Error to fetch user auth token')
         } else {
             let httpClientFetchInstance: HttpClient = new HttpClient({
-                baseURL: process.env.NEXT_PUBLIC_BACKEND_URI_CREATE_ENTITY,
+                baseURL: '',
                 headers: {
                     token: `Bearer ${token}`
                 },
@@ -35,7 +35,7 @@ export async function updateEntity(data: EntityFormValues, token: string) {
             throw new Error('Error to fetch user auth token')
         } else {
             let httpClientFetchInstance: HttpClient = new HttpClient({
-                baseURL: process.env.NEXT_PUBLIC_BACKEND_URI_UPDATE_ENTITY,
+                baseURL: '',
                 headers: {
                     token: `Bearer ${token}`
                 },

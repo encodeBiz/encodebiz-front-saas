@@ -15,6 +15,7 @@ import {
 
 import { useEntity } from '@/hooks/useEntity';
 import IUserEntity from '@/types/auth/IUserEntity';
+import { useRouter } from 'nextjs-toploader/app';
 export const locales = ['en', 'es']; // Define your supported locales
 
 interface EntitySwitcherProps { }
@@ -22,7 +23,7 @@ interface EntitySwitcherProps { }
 const EntitySwitcher: React.FC<EntitySwitcherProps> = () => {
   const t = useTranslations(); // 'EntitySwitcher' refers to the key in your message files
   const { entityList, currentEntity, changeCurrentEntity } = useEntity()
-
+  const { push } = useRouter()
 
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -50,7 +51,7 @@ const EntitySwitcher: React.FC<EntitySwitcherProps> = () => {
             </MenuItem>
           ))}
 
-          <MenuItem value={undefined}>
+          <MenuItem onClick={() => push('/main/entity/create')} value={undefined}>
             <Typography>Crear entidad</Typography>
           </MenuItem>
         </Select>

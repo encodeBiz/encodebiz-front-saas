@@ -1,11 +1,14 @@
 'use client'
+import PageLoader from '@/components/common/PageLoader';
 import Footer from '@/components/layouts/Footer';
 import Header from '@/components/layouts/Header/Header';
 import SideMenu from '@/components/layouts/SideMenu';
 import Sidebar from '@/components/layouts/SideMenu';
 import { LayoutProvider } from '@/contexts/layoutContext';
+import { useAuth } from '@/hooks/useAuth';
 import { useLayout } from '@/hooks/useLayout';
 import { Box, CssBaseline, Grid, Toolbar } from '@mui/material';
+import { useTranslations } from 'next-intl';
 
 const drawerWidth = 240; // Define the width of your drawer
 
@@ -15,11 +18,14 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const { layoutState } = useLayout()
+  const { pendAuth } = useAuth()
+  const t = useTranslations()
 
   return (
 
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <CssBaseline />
+      
       <Header />
       {/* Main content area, including drawer and content grid */}
       <Box
@@ -46,7 +52,8 @@ export default function AdminLayout({
         }}
       >
         <Grid container spacing={3} sx={{display:'flex',minHeight:'calc(100vh - 200px)',justifyContent:'flex-start',alignItems:'flex-start'}}>
-         {children}
+        {pendAuth && <PageLoader message={t('core.title.loader')} type={'circular'} fullScreen={false} />}
+        {!pendAuth && children}
         </Grid>
       </Box>
       <Footer />

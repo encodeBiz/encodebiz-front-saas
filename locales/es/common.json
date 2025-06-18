@@ -38,6 +38,9 @@
     }
   },
   "core": {
+    "title":{
+      "loader":"Cargando sesión de usuario"
+    },
     "label": {
       "firstName": "Nombre",
       "lastName": "Apellido",

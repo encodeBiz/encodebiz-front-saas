@@ -3,11 +3,13 @@
 import PasswordInput from '@/components/common/forms/fields/PasswordInput';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { useAuth } from '@/hooks/useAuth';
+import { useEntity } from '@/hooks/useEntity';
 import { useToast } from '@/hooks/useToast';
 import { signInEmail, signInGoogle } from '@/services/common/account.service';
 import { createEntity } from '@/services/common/entity.service';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useRouter } from 'nextjs-toploader/app';
+import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 
 
@@ -22,6 +24,8 @@ export const useRegisterController = () => {
     const t = useTranslations()
     const { showToast } = useToast()
     const { user, token } = useAuth()
+    const { refrestList } = useEntity()
+    const { push } = useRouter()
     const [initialValues, setInitialValues] = useState<EntityFormValues>({
         uid: user?.uid as string,
         "name": '',
@@ -38,6 +42,8 @@ export const useRegisterController = () => {
     const handleCreateEntity = async (values: EntityFormValues) => {
         try {
             await createEntity(values, token)
+            refrestList(user?.id as string)
+            push('/main/dashboard')
         } catch (error: any) {
             showToast(error.message, 'error')
         }
@@ -63,6 +69,20 @@ export const useRegisterController = () => {
 
 
     ];
+
+
+    useEffect(() => {
+        if (user?.id) {
+            setInitialValues({
+                uid: user?.uid as string,
+                "name": '',
+                "billingEmail": user?.email as string,
+                "active": true,
+
+            })
+        }
+        return () => { }
+    }, [user?.id])
 
 
 

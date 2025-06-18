@@ -7,9 +7,7 @@ import { useRouter } from "nextjs-toploader/app";
 import IUser from "@/types/auth/IUser";
 import { subscribeToAuthChanges } from "@/lib/firebase/authentication/stateChange";
 import { getUser } from "@/lib/firebase/authentication/login";
-import { fetchUserAccount, fetchUserEntities, signInToken, validateToken } from "@/services/common/account.service";
-import { useEntity } from "@/hooks/useEntity";
-import IEntity from "@/types/auth/IEntity";
+import { fetchUserAccount, signInToken } from "@/services/common/account.service";
 interface AuthContextType {
     user: IUser | null;
     userAuth: User | null;
@@ -33,7 +31,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const watchSesionState = async (userAuth: User) => {
         if (userAuth) {
-            
+
             updateUserData(userAuth)
             setToken(await userAuth.getIdToken())
             setUser({

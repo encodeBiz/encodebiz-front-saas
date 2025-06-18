@@ -14,6 +14,8 @@ interface EntityContextType {
     setEntityList: (entityList: Array<IUserEntity>) => void;
     setCurrentEntity: (currentEntity: IUserEntity | undefined) => void;
     changeCurrentEntity: (id: string) => void;
+    refrestList: (userId: string) => void;
+
 }
 export const EntityContext = createContext<EntityContextType | undefined>(undefined);
 export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
@@ -35,10 +37,23 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
                 setEntityList(entityList)
                 setCurrentEntity(entityList.find(e => e.isActive) as IUserEntity)
             } else {
-                push('/main/entity/create')
-                console.log('OK');
-
+                push('/main/entity/create')               
             }
+        }
+    }
+
+    const refrestList = async (userId: string) => {
+        const entityList: Array<IUserEntity> = await fetchUserEntities(userId)
+        if (entityList.length !== 0) {
+            if (entityList.length == 1) {
+                const item = entityList[0]
+                item.isActive = true
+                entityList.splice(0, 1, item)
+            }
+            setEntityList(entityList)
+            setCurrentEntity(entityList.find(e => e.isActive) as IUserEntity)
+        } else {
+            push('/main/entity/create')         
         }
     }
 
@@ -66,7 +81,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     }, []);
 
     return (
-        <EntityContext.Provider value={{ entityList, currentEntity, setEntityList, setCurrentEntity, changeCurrentEntity }}>
+        <EntityContext.Provider value={{ entityList, currentEntity, refrestList, setEntityList, setCurrentEntity, changeCurrentEntity }}>
             {children}
         </EntityContext.Provider>
     );
