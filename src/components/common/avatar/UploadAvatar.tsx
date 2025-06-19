@@ -12,12 +12,16 @@ type UploadAvatarProps = {
   initialImage?: string | null;
   onImageChange?: (file: File | null) => void;
   onError?: (message: string) => void;
+  variant?: 'rounded' | 'circular' | 'square';
+  label?: string;
 };
 
 export default function UploadAvatar({
   initialImage = undefined,
   onImageChange,
   onError,
+  label,
+  variant = "circular",
 }: UploadAvatarProps) {
   const t = useTranslations()
   const [avatarSrc, setAvatarSrc] = useState<string | undefined | null>(initialImage);
@@ -62,12 +66,12 @@ export default function UploadAvatar({
   }, [initialImage]);
 
   return (
-    <Box>
+    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
       <ButtonBase
         component="label"
         role={undefined}
         tabIndex={-1} // prevent label from tab focus
-        aria-label="Avatar image"
+        aria-label="Image"
         sx={{
           borderRadius: '40px',
           '&:has(:focus-visible)': {
@@ -77,7 +81,8 @@ export default function UploadAvatar({
         }}
       >
         <Avatar
-          alt="new avatar"
+          alt="Image"
+          variant={variant}
           src={avatarSrc ?? undefined}
           sx={{ width: 100, height: 100, border: 1, borderColor: "lightgrey" }}
         />
@@ -98,6 +103,10 @@ export default function UploadAvatar({
           onChange={handleAvatarChange}
         />
       </ButtonBase>
+      {label &&
+        <label
+          style={{ marginLeft: "30px", fontSize: "0.75rem", color: "rgba(0, 0, 0, 0.6)" }}
+        >{label}</label>}
 
       {error && (
         <Typography color="error" variant="caption" sx={{ mt: 1, display: 'block' }}>

@@ -149,6 +149,7 @@ export const useUserAccountController = () => {
                     <UploadAvatar
                         initialImage={avatarSrc}
                         onImageChange={onImageChangeAction}
+                        label={t("core.label.avatar")}
                     />
                 </div>
                 <GenericForm<UserFormValues>

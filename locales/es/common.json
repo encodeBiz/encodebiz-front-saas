@@ -60,7 +60,8 @@
       "billingEmail": "Email para gestionar los pagos",
       "avatar": "Avatar",
       "sessionLastTime": "Último inicio de sesión",
-      "createAt": "Fecha de creación"
+      "createAt": "Fecha de creación",
+      "logo": "Logo"
     },
     "button": {
       "submitting": "Enviando...",

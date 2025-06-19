@@ -54,7 +54,8 @@
             "phone": "Phone",
             "avatar": "Avatar",
             "sessionLastTime": "Last login",
-            "createAt": "Create at"
+            "createAt": "Create at",
+            "logo": "Logo"
         },
         "button": {
             "submitting": "Submitting...",

@@ -165,6 +165,8 @@ export const useSettingEntityController = () => {
                     <UploadAvatar
                         initialImage={avatarSrc}
                         onImageChange={onImageChangeAction}
+                        variant='rounded'                        
+                        label={t("core.label.logo")}
                     />
                 </div>
                 <GenericForm<PasswordFormValues>
@@ -174,7 +176,7 @@ export const useSettingEntityController = () => {
                     onSubmit={changeBrandAction}
                     fields={fields2 as FormField[]}
                     submitButtonText={t('core.button.submit')}
-
+                    enableReinitialize
                 />
             </>
         );
