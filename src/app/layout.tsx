@@ -9,6 +9,7 @@ import { AuthProvider } from "@/contexts/authContext";
 import { EntityProvider } from "@/contexts/entityContext";
 import NextTopLoader from 'nextjs-toploader';
 import { ToastProvider } from "@/contexts/toastContext";
+import { CommonModalProvider } from "@/contexts/commonModalContext";
 const geistSans = Geist({
     variable: "--font-geist-sans",
     subsets: ["latin"],
@@ -42,8 +43,10 @@ export default async function RootLayout({
                             <LayoutProvider>
                                 <ThemeProvider>
                                     <ToastProvider>
-                                        <NextTopLoader showSpinner={false} color="#1976d2" />
-                                        {children}
+                                        <CommonModalProvider>
+                                            <NextTopLoader showSpinner={false} color="#1976d2" />
+                                            {children}
+                                        </CommonModalProvider>
                                     </ToastProvider>
                                 </ThemeProvider>
                             </LayoutProvider>

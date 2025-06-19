@@ -2,6 +2,7 @@
 import PageLoader from '@/components/common/PageLoader';
 import Footer from '@/components/layouts/Footer';
 import Header from '@/components/layouts/Header/Header';
+import Onboarding from '@/components/layouts/Onboarding/Onboarding';
 import SideMenu from '@/components/layouts/SideMenu';
 import Sidebar from '@/components/layouts/SideMenu';
 import { LayoutProvider } from '@/contexts/layoutContext';
@@ -54,6 +55,7 @@ export default function AdminLayout({
         <Grid container spacing={3} sx={{display:'flex',minHeight:'calc(100vh - 200px)',justifyContent:'flex-start',alignItems:'flex-start'}}>
         {pendAuth && <PageLoader message={t('core.title.loader')} type={'circular'} fullScreen={false} />}
         {!pendAuth && children}
+        <Onboarding />
         </Grid>
       </Box>
       <Footer />

@@ -228,7 +228,6 @@ export const useUserAccountController = () => {
     ];
 
     useEffect(() => {
-        console.log('>>>>User>>', user);
         setInitialValues({
             uid: user?.uid as string | "",
             "name": user?.displayName as string | "",
