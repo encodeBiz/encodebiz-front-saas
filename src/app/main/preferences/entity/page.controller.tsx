@@ -8,6 +8,7 @@ import { useTranslations } from 'next-intl';
 import { SxProps, Theme } from '@mui/material';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import TextInput from '@/components/common/forms/fields/TextInput';
+import ColorPickerInput from '@/components/common/forms/fields/ColorPickerInput';
 import UploadAvatar from '@/components/common/avatar/UploadAvatar';
 import { useToast } from '@/hooks/useToast';
 import moment from 'moment';
@@ -24,9 +25,8 @@ export interface EntityFormValues {
     "createAt": string
 };
 
-export interface PasswordFormValues {
-    "newpass": string
-    "passcheck": string
+export interface BrandFormValues {
+    "brandColor": string
 };
 
 export type TabItem = {
@@ -51,18 +51,16 @@ export const useSettingEntityController = () => {
         "active": currentEntity?.entity?.active as boolean | true
     });
 
-    const [newPasswordValues] = useState<PasswordFormValues>({
-        "newpass": "" as string,
-        "passcheck": "" as string
+    const [initialBrandValues, setInitialBrandValues] = useState<BrandFormValues>({
+        "brandColor": "#ffffff" as string,
     });
 
     const validationSchema = Yup.object().shape({
         name: Yup.string().required(t('core.formValidatorMessages.required')),
     });
 
-    const passwordValidationSchema = Yup.object().shape({
-        newpass: Yup.string().required(t('core.formValidatorMessages.required')),
-        passcheck: Yup.string().required(t('core.formValidatorMessages.required')),
+    const brandValidationSchema = Yup.object().shape({
+        brandColor: Yup.string(),
     });
 
     const fields = [
@@ -84,11 +82,10 @@ export const useSettingEntityController = () => {
 
     const fields2 = [
         {
-            name: 'newpass',
-            label: t('core.label.password'),
-            type: 'text',
+            name: 'brandColor',
+            label: t('core.label.color'),
+            component: ColorPickerInput,
             required: true,
-            component: TextInput,
         },
     ];
 
@@ -109,8 +106,8 @@ export const useSettingEntityController = () => {
             }
         }
     };
-    
-    const changeBrandAction = async (values: PasswordFormValues) => {
+
+    const changeBrandAction = async (values: BrandFormValues) => {
         try {
             console.log("values>>>", values);
             console.log("avatarFile>>>", avatarFile);
@@ -165,14 +162,15 @@ export const useSettingEntityController = () => {
                     <UploadAvatar
                         initialImage={avatarSrc}
                         onImageChange={onImageChangeAction}
-                        variant='rounded'                        
+                        variant='rounded'
                         label={t("core.label.logo")}
+                        size={150}
                     />
                 </div>
-                <GenericForm<PasswordFormValues>
+                <GenericForm<BrandFormValues>
                     column={2}
-                    initialValues={newPasswordValues}
-                    validationSchema={passwordValidationSchema}
+                    initialValues={initialBrandValues}
+                    validationSchema={brandValidationSchema}
                     onSubmit={changeBrandAction}
                     fields={fields2 as FormField[]}
                     submitButtonText={t('core.button.submit')}
@@ -193,14 +191,12 @@ export const useSettingEntityController = () => {
     ];
 
     useEffect(() => {
-        console.log("currentEntity>>>>", currentEntity);
         if (currentEntity?.entity?.createdAt)
             formatDate(currentEntity.entity.createdAt);
     }, [currentEntity]);
 
     useEffect(() => {
         if (createAtDate !== "") {
-            console.log("createAtDate>>>", createAtDate);
             setInitialValues({
                 uid: currentEntity?.entity?.id as string | "",
                 "name": currentEntity?.entity?.name as string | "",

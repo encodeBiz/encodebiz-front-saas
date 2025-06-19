@@ -14,6 +14,7 @@ type UploadAvatarProps = {
   onError?: (message: string) => void;
   variant?: 'rounded' | 'circular' | 'square';
   label?: string;
+  size?:number;
 };
 
 export default function UploadAvatar({
@@ -22,6 +23,7 @@ export default function UploadAvatar({
   onError,
   label,
   variant = "circular",
+  size = 100,
 }: UploadAvatarProps) {
   const t = useTranslations()
   const [avatarSrc, setAvatarSrc] = useState<string | undefined | null>(initialImage);
@@ -84,7 +86,7 @@ export default function UploadAvatar({
           alt="Image"
           variant={variant}
           src={avatarSrc ?? undefined}
-          sx={{ width: 100, height: 100, border: 1, borderColor: "lightgrey" }}
+          sx={{ width: size, height: size, border: 1, borderColor: "lightgrey" }}
         />
         <input
           type="file"

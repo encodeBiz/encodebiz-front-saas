@@ -55,7 +55,8 @@
             "avatar": "Avatar",
             "sessionLastTime": "Last login",
             "createAt": "Create at",
-            "logo": "Logo"
+            "logo": "Logo",
+            "color": "Color"
         },
         "button": {
             "submitting": "Submitting...",

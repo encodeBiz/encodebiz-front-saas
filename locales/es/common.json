@@ -61,7 +61,8 @@
       "avatar": "Avatar",
       "sessionLastTime": "Último inicio de sesión",
       "createAt": "Fecha de creación",
-      "logo": "Logo"
+      "logo": "Logo",
+      "color": "Color"
     },
     "button": {
       "submitting": "Enviando...",
