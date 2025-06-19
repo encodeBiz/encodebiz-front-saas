@@ -36,6 +36,7 @@ type GenericFormProps<T> = {
   onCancel?: () => void;
   formContainerProps?: any;
   column?: 1 | 2 | 3;
+  enableReinitialize?: boolean;
 };
 
 const GenericForm = <T extends Record<string, any>>({
@@ -49,6 +50,7 @@ const GenericForm = <T extends Record<string, any>>({
   onCancel,
   column = 1,
   formContainerProps,
+  enableReinitialize,
 }: GenericFormProps<T>) => {
   const t = useTranslations()
 
@@ -71,6 +73,8 @@ const GenericForm = <T extends Record<string, any>>({
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={onSubmit}
+        enableReinitialize={enableReinitialize}
+        
       >
         {(formikProps: FormikProps<T>) => (
           <Form noValidate>
