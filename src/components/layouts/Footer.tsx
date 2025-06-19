@@ -1,6 +1,7 @@
 // src/components/Footer.tsx
 import React from 'react';
 import { Box, Typography, Container } from '@mui/material';
+import Onboarding from './Onboarding/Onboarding';
 
 const Footer: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ const Footer: React.FC = () => {
       }}
     >
       <Container maxWidth="lg">
+        
         <Typography variant="body2" color="inherit" align="center">
           {'© '}
           {new Date().getFullYear()}

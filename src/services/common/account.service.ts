@@ -73,7 +73,7 @@ export async function signUpEmail(data: RegisterFormValues) {
                     token: `Bearer ${token}`
                 },
             });
-            const response: any = await httpClientFetchInstance.post(process.env.NEXT_PUBLIC_BACKEND_URI as string, {
+            const response: any = await httpClientFetchInstance.post('', {
                 entityLegalName: data.legalEntityName,
                 fullName: data.fullName,
                 phoneNumber: data.phone,
