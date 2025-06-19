@@ -1,16 +1,14 @@
 'use client'
 
-import { useTranslations } from 'next-intl';
-import { useState, ReactNode, useEffect } from 'react';
 import * as Yup from 'yup';
+import { useState, ReactNode, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import { useTranslations } from 'next-intl';
 import { SxProps, Theme } from '@mui/material';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import TextInput from '@/components/common/forms/fields/TextInput';
-import Avatar from '@mui/material/Avatar';
-import ButtonBase from '@mui/material/ButtonBase';
-import Typography from '@mui/material/Typography';
-
+import UploadAvatar from '@/components/common/avatar/UploadAvatar';
+import { useToast } from '@/hooks/useToast';
 export interface UserFormValues {
     "uid": string
     "name": string
@@ -34,11 +32,11 @@ export type TabItem = {
 };
 
 export const useUserAccountController = () => {
-    const t = useTranslations()
+    const t = useTranslations();
     const { user } = useAuth();
+    const { showToast } = useToast()
     const [avatarSrc, setAvatarSrc] = useState<string | undefined>(undefined);
-    const [error, setError] = useState<string | null>(null);
-
+    const [avatarFile, setAvatarFile] = useState<File | null>(null);
     const [initialValues, setInitialValues] = useState<UserFormValues>({
         uid: user?.uid as string | "",
         "name": user?.displayName as string | "",
@@ -46,11 +44,12 @@ export const useUserAccountController = () => {
         "phone": user?.phoneNumber as string | "",
         "lastlogin": user?.metadata.lastSignInTime as string | "",
         "active": true,
-    })
+    });
+
     const [newPasswordValues] = useState<PasswordFormValues>({
         "newpass": "" as string,
         "passcheck": "" as string
-    })
+    });
 
     const validationSchema = Yup.object().shape({
         email: Yup.string().email(t('core.formValidatorMessages.email')).required(t('core.formValidatorMessages.required')),
@@ -62,7 +61,6 @@ export const useUserAccountController = () => {
         newpass: Yup.string().required(t('core.formValidatorMessages.required')),
         passcheck: Yup.string().required(t('core.formValidatorMessages.required')),
     });
-
 
     const fields = [
         {
@@ -113,87 +111,51 @@ export const useUserAccountController = () => {
         },
     ];
 
-    const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
+    const onImageChangeAction = async (file: File | null) => {
         if (!file) return;
 
-        // Validación: Tipo de archivo debe ser imagen
-        if (!file.type.startsWith('image/')) {
-            const errorMessage = t(`core.formValidatorMessages.avatarUpload`);
-            setError(errorMessage);
-            //if (onError) onError(errorMessage);
-            return;
+        setAvatarFile(file);
+    };
+
+    const setUserDataAction = async (values: UserFormValues) => {
+        try {
+            console.log("values>>>", values);
+            console.log("avatarFile>>>", avatarFile);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                showToast(error.message, 'error');
+            } else {
+                showToast(String(error), 'error');
+            }
         }
+    };
 
-        const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
-        if (file.size > maxSizeInBytes) {
-            const errorMessage = t(`core.formValidatorMessages.avatarMaxSize`);
-            setError(errorMessage);
-            //if (onError) onError(errorMessage);
-            return;
+    const changePasswordAction = async (values: PasswordFormValues) => {
+        try {
+            console.log("values>>>", values);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                showToast(error.message, 'error');
+            } else {
+                showToast(String(error), 'error');
+            }
         }
-
-        // Si pasa las validaciones:
-        setError(null);
-
-        const reader = new FileReader();
-        reader.onload = () => {
-            setAvatarSrc(reader.result as string);
-            //if (onImageChange) onImageChange(file);
-        };
-        reader.readAsDataURL(file);
     };
 
     const formTabs1 = () => {
         return (
             <>
                 <div style={{ paddingBottom: "20px" }}>
-                    <ButtonBase
-                        component="label"
-                        role={undefined}
-                        tabIndex={-1} // prevent label from tab focus
-                        aria-label="Avatar image"
-                        sx={{
-                            borderRadius: '40px',
-                            '&:has(:focus-visible)': {
-                                outline: '2px solid',
-                                outlineOffset: '2px',
-                            },
-                        }}
-                    >
-                        <Avatar
-                            alt="new avatar"
-                            src={avatarSrc}
-                            sx={{ width: 100, height: 100, border: 1, borderColor: "lightgrey" }}
-                        />
-                        <input
-                            type="file"
-                            accept="image/*"
-                            style={{
-                                border: 1,
-                                clip: 'rect(0 0 0 0)',
-                                height: '1px',
-                                margin: '-1px',
-                                overflow: 'hidden',
-                                padding: 0,
-                                position: 'absolute',
-                                whiteSpace: 'nowrap',
-                                width: '1px',
-                            }}
-                            onChange={handleAvatarChange}
-                        />
-                    </ButtonBase>
-                    {error && (
-                        <Typography color="error" variant="caption" sx={{ mt: 1, display: 'block' }}>
-                            {error}
-                        </Typography>
-                    )}
+                    <UploadAvatar
+                        initialImage={avatarSrc}
+                        onImageChange={onImageChangeAction}
+                    />
                 </div>
                 <GenericForm<UserFormValues>
                     column={2}
                     initialValues={initialValues}
                     validationSchema={validationSchema}
-                    onSubmit={() => { console.log(`Sending account form...`) }}
+                    onSubmit={setUserDataAction}
                     fields={fields as FormField[]}
                     submitButtonText={t('core.button.submit')}
 
@@ -209,7 +171,7 @@ export const useUserAccountController = () => {
                 column={2}
                 initialValues={newPasswordValues}
                 validationSchema={passwordValidationSchema}
-                onSubmit={() => { console.log(`Sending new Password form...`) }}
+                onSubmit={changePasswordAction}
                 fields={fields2 as FormField[]}
                 submitButtonText={t('core.button.submit')}
 
@@ -228,7 +190,6 @@ export const useUserAccountController = () => {
     ];
 
     useEffect(() => {
-        console.log('>>>>User>>', user);
         setInitialValues({
             uid: user?.uid as string | "",
             "name": user?.displayName as string | "",
