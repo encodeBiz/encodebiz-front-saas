@@ -1,4 +1,5 @@
 {
+    "locale": "en",
     "layout": {
         "header": {
             "title": "Checkbiz360 SaaS Platform",
@@ -7,7 +8,14 @@
             "spanish": "Spanish",
             "french": "French",
             "germany": "German",
-            "entity": "Current Entity"
+            "entity": "Current Entity",
+            "profile": "Profile",
+            "setting": "Settings",
+            "logout": "Logout",
+            "help": "Help",
+            "theme": "Theme",
+            "messages": "Menssages",
+            "notification": "Notifications"
         },
         "side": {
             "menu": {
@@ -23,7 +31,8 @@
                 "Settings": "Preferences",
                 "Account": "Account",
                 "Notifications": "Notifications",
-                "Security": "Security"
+                "Security": "Security",
+                "Entity": "Entity"
             }
         },
         "footer": {
@@ -41,8 +50,13 @@
             "passwordConfirm": "Confirm Password",
             "email": "Email",
             "acceptTerms": "Accept Terms and Conditions",
+            "legalEntityName": "Legal Entity Name",
             "phone": "Phone",
-            "avatar": "Avatar"
+            "avatar": "Avatar",
+            "sessionLastTime": "Last login",
+            "createAt": "Create at",
+            "logo": "Logo",
+            "color": "Color"
         },
         "button": {
             "submitting": "Submitting...",
@@ -82,9 +96,13 @@
     },
     "features": {
         "dashboard": {
+            "overview": "General Descriptions",
+            "stats": "Stats",
             "card": {
                 "btn1": "More information",
-                "btn2": "Products"
+                "btn2": "Products",
+                "title": "Welcome to Encodebiz Saas",
+                "subtitle": "This platform offers a variety of interesting features."
             }
         }
     },
@@ -99,5 +117,16 @@
             }
         },
         "sessionLastTime": "Last login"
+    },
+    "entity": {
+        "title": "Entity",
+        "tabs": {
+            "tab1": {
+                "title": "Entity Setting"
+            },
+            "tab2": {
+                "title": "Change Branding"
+            }
+        }
     }
 }

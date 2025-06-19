@@ -17,6 +17,7 @@ import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import CreditCardOffIcon from '@mui/icons-material/CreditCardOff';
 import PersonIcon from '@mui/icons-material/Person';
+import BusinessIcon from '@mui/icons-material/Business';
 export const menuItems = [{
     id: 'dashboard',
     name: 'Dashboard',
@@ -45,7 +46,7 @@ export const menuItems = [{
     icon: <BarChartIcon />,
     link: '/main/billing',
     subMenu: [{
-        name: 'Subcription',
+        name: 'Subscription',
         icon: <BarChartIcon />,
         link: '/main/billing/sales',
         subMenu: []
@@ -69,6 +70,11 @@ export const menuItems = [{
         name: 'Account',
         icon: <PersonIcon />,
         link: '/main/preferences/account',
+        subMenu: []
+    },{
+        name: 'Entity',
+        icon: <BusinessIcon />,
+        link: '/main/preferences/entity',
         subMenu: []
     }, {
         name: 'Notifications',

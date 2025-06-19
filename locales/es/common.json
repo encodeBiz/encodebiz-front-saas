@@ -1,4 +1,5 @@
 {
+  "locale":"es",
   "layout": {
     "header": {
       "title": "Plataforma SaaS Checkbiz360",
@@ -24,13 +25,14 @@
         "PassinBiz": "PassinBiz",
         "Customers": "Clientes",
         "Reports": "Reportes",
-        "Subcription": "Subcripciones",
+        "Subscription": "Suscripciones",
         "Revenue": "Renovaciones",
         "Billing": "Facturación",
         "Settings": "Preferencias",
         "Account": "Cuenta",
         "Notifications": "Notificaciones",
-        "Security": "Securidad"
+        "Security": "Securidad",
+        "Entity": "Entidad"
       }
     },
     "footer": {
@@ -56,7 +58,11 @@
       "accepTerm3": " and ",
       "accepTerm4": " Privacy Policy",
       "billingEmail": "Email para gestionar los pagos",
-      "avatar": "Avatar"
+      "avatar": "Avatar",
+      "sessionLastTime": "Último inicio de sesión",
+      "createAt": "Fecha de creación",
+      "logo": "Logo",
+      "color": "Color"
     },
     "button": {
       "submitting": "Enviando...",
@@ -125,6 +131,17 @@
         "title": "Cambiar Contraseña"
       }
     },
-    "sessionLastTime":"Último inicio de sesión"
+    "sessionLastTime": "Último inicio de sesión"
+  },
+  "entity": {
+    "title": "Entidad",
+    "tabs": {
+      "tab1": {
+        "title": "Modificar Entidad"
+      },
+      "tab2": {
+        "title": "Modificar Marca"
+      }
+    }
   }
 }
