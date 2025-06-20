@@ -23,28 +23,28 @@ import { CommonModalType } from '@/contexts/commonModalContext';
 import { useStyles } from './Onboarding.styles';
 import { useAuth } from '@/hooks/useAuth';
 import Image from 'next/image';
-
+import image from '../../../../public/assets/images/1.jpg'
 // Define the steps/slides for the onboarding process
 const onboardingSteps = [
     {
         title: 'Welcome to Our App!',
         description: 'Discover a new way to manage your tasks, connect with friends, and explore new opportunities.',
-        image: 'https://placehold.co/400x250/A3E635/000000?text=Welcome', // Placeholder image
+        image: image, // Placeholder image
     },
     {
         title: 'Intuitive Interface',
         description: 'Our user-friendly design ensures a seamless and enjoyable experience from start to finish.',
-        image: 'https://placehold.co/400x250/22D3EE/000000?text=Interface', // Placeholder image
+        image: image, // Placeholder image
     },
     {
         title: 'Powerful Features',
         description: 'Unlock a suite of powerful tools designed to boost your productivity and simplify your life.',
-        image: 'https://placehold.co/400x250/FACC15/000000?text=Features', // Placeholder image
+        image: image, // Placeholder image
     },
     {
         title: 'Get Started!',
         description: 'You are now ready to begin your journey. Click "Finish" to dive in!',
-        image: 'https://placehold.co/400x250/FB923C/000000?text=Ready', // Placeholder image
+        image: image, // Placeholder image
     },
 ];
 
@@ -127,20 +127,19 @@ function Onboarding() {
             {/* Dialog content area for the current slide */}
             <DialogContent sx={classes.content}>
                 <Image
-                width={100}
-                height={100}
+                    width={400}
+                    height={400}
                     src={onboardingSteps[activeStep].image}
                     alt={onboardingSteps[activeStep].title}
                     className={classes.image as any} // Responsive image styling
-                    onError={(e: any) => { e.target.onerror = null; e.target.src = "https://placehold.co/400x250/CCCCCC/000000?text=Image+Error"; }}
                 />
-                <Typography variant="body1" className="text-gray-700 leading-relaxed max-w-lg">
+                <Typography variant="body1" sx={classes.textContent}>
                     {onboardingSteps[activeStep].description}
                 </Typography>
             </DialogContent>
 
             {/* Dialog actions for navigation and stepper */}
-            <DialogActions className="flex flex-col sm:flex-row items-center justify-between p-6 border-t border-gray-200">
+            <DialogActions sx={classes.footer} className="">
                 {/* Stepper to show progress */}
                 <Box className="flex-grow w-full sm:w-auto mb-4 sm:mb-0">
                     <Stepper activeStep={activeStep} alternativeLabel className="w-full">
@@ -159,7 +158,7 @@ function Onboarding() {
                         onClick={handleBack}
                         disabled={activeStep === 0}
                         startIcon={<ArrowBackIosIcon />}
-                        className="rounded-full px-4 py-2 hover:bg-gray-100 border-gray-300 text-gray-700"
+                        style={{marginRight:10}}
                     >
                         Back
                     </Button>
@@ -168,7 +167,7 @@ function Onboarding() {
                         onClick={handleNext}
                         disabled={isLastStep}
                         endIcon={<ArrowForwardIosIcon />}
-                        className="rounded-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white"
+
                     >
                         Next
                     </Button>
