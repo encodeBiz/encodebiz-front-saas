@@ -39,6 +39,7 @@ import { useTranslations } from 'next-intl';
 import EntitySwitcher from '../common/EntitySwitcher';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'nextjs-toploader/app';
+import { useEntity } from '@/hooks/useEntity';
 
 const drawerWidth = 240;
 
@@ -56,6 +57,7 @@ export default function SideMenu() {
   const pathname = usePathname()
   const t = useTranslations();
   const { user } = useAuth();
+  const { currentEntity } = useEntity();
   const { push } = useRouter();
   const { layoutState, changeLayoutState } = useLayout()
   const [openSubMenu, setOpenSubMenu] = useState<any>({
@@ -128,8 +130,8 @@ export default function SideMenu() {
             if (item.divider) return <Divider key={i} />
             else
               if (item.subMenu.length == 0)
-                return <ListItem onClick={() => push(item.link)} key={i} disablePadding>
-                  <ListItemButton selected={pathname === item.link}>
+                return <ListItem  key={i} disablePadding>
+                  <ListItemButton disabled={!currentEntity} onClick={() => push(item.link)} selected={pathname === item.link}>
                     <ListItemIcon>
                       {item.icon}
                     </ListItemIcon>
@@ -140,7 +142,7 @@ export default function SideMenu() {
               else
                 return <div key={i} >
                   <ListItem disablePadding>
-                    <ListItemButton onClick={() => handleSubMenuToggle(item.id)}>
+                    <ListItemButton disabled={!currentEntity} onClick={() => handleSubMenuToggle(item.id)}>
                       <ListItemIcon>
                         {item.icon}
                       </ListItemIcon>

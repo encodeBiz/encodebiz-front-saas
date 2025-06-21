@@ -1,5 +1,5 @@
 {
-  "locale":"es",
+  "locale": "es",
   "layout": {
     "header": {
       "title": "Plataforma SaaS Checkbiz360",
@@ -43,6 +43,9 @@
     "title": {
       "loader": "Cargando sesión de usuario"
     },
+    "feedback":{
+      "success":"La operación se realizó exitosamente"
+    },
     "label": {
       "firstName": "Nombre",
       "lastName": "Apellido",
@@ -62,7 +65,21 @@
       "sessionLastTime": "Último inicio de sesión",
       "createAt": "Fecha de creación",
       "logo": "Logo",
-      "color": "Color"
+      "color": "Color",
+      "taxId": "NIF / CIF / NIE / VAT",
+      "street": "Calle",
+      "city": "Ciudad",
+      "postalCode": "Código postal",
+      "region": "Región",
+      "country": "País",
+      "backgroundColor": "Color de fondo",
+      "labelColor": "Color de etiqueta",
+      "textColor": "Color de texto",
+      "stripImageUrl": "Imagen de tira",
+      "iconUrl": "Icono",
+      "address": "Dirección",
+      "legal": "Legal",
+      "name": "Nombre"
     },
     "button": {
       "submitting": "Enviando...",

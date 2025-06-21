@@ -2,7 +2,7 @@
 import React from 'react';
 import * as Yup from 'yup';
 import GenericForm, { FormField } from './GenericForm';
-import SelectInput from './fields/SelectField';
+import SelectInput from './fields/SelectInput';
 import TextInput from './fields/TextInput';
  
 

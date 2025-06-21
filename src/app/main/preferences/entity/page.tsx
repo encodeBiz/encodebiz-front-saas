@@ -17,6 +17,7 @@ const EntityPreferencesPage = () => {
         <Container maxWidth="xl">
             <PresentationCard
                 title={t('entity.title')}
+                description={t('features.entity.create.card.subtitle')}
             >
                 <GenericTabs
                     tabs={tabsRender}

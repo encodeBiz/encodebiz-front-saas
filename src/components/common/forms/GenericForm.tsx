@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import {
   Box,
   Button,
+  Divider,
   Grid,
   Paper,
   Typography,
@@ -17,12 +18,15 @@ import { useTranslations } from 'next-intl';
 export type FormField = {
   name: string;
   label: string | React.ComponentType<any>;
-  type?: 'text' | 'email' | 'password' | 'number' | 'select' | 'checkbox' | 'date';
+  type?: 'text' | 'email' | 'password' | 'number' | 'select' | 'checkbox' | 'date' | 'textarea';
   required?: boolean;
   component: React.ComponentType<any>;
   options?: Array<{ value: any; label: string }>; // For select inputs
   [key: string]: any; // Allow additional props  
-  disabled? : boolean;
+  disabled?: boolean;
+  isDivider?: boolean;
+  fullWidth?: boolean;
+  onChange?: (e: any) => void
 };
 
 type GenericFormProps<T> = {
@@ -31,6 +35,7 @@ type GenericFormProps<T> = {
   onSubmit: (values: T, formikHelpers: FormikHelpers<T>) => void | Promise<any>;
   fields: FormField[];
   title?: string;
+
   submitButtonText?: string;
   cancelButtonText?: string;
   onCancel?: () => void;
@@ -74,7 +79,7 @@ const GenericForm = <T extends Record<string, any>>({
         validationSchema={validationSchema}
         onSubmit={onSubmit}
         enableReinitialize={enableReinitialize}
-        
+
       >
         {(formikProps: FormikProps<T>) => (
           <Form noValidate>
@@ -85,30 +90,41 @@ const GenericForm = <T extends Record<string, any>>({
                 const isInvalid =
                   formikProps.touched[field.name] && Boolean(formikProps.errors[field.name]);
                 const errorText = formikProps.errors[field.name];
-
-                return (
-                  <Grid size={{
-                    xs: 12,
-                    sm: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4
-                  }} key={field.name} sx={{ width: '100%' }}>
-                    <FieldComponent
-                      name={field.name}
-                      label={field.label}
-                      type={field.type}
-                      required={field.required}
-                      disabled={field.disabled}
-                      fullWidth
-                      variant="outlined"
-                      error={isInvalid}
-                      helperText={isInvalid ? errorText : ''}
-                      value={formikProps.values[field.name]}
-                      onChange={formikProps.handleChange}
-                      onBlur={formikProps.handleBlur}
-                      options={field.options}
-                      {...field.extraProps}
-                    />
-                  </Grid>
-                );
+                if (field.isDivider) return <Grid size={{
+                  xs: 12,
+                  sm: 12
+                }} key={field.name} sx={{ width: '100%' }}>
+                  <Divider />
+                  <Typography variant='subtitle1'>{field.label as string}</Typography>
+                </Grid>
+                else
+                  return (
+                    <Grid size={{
+                      xs: 12,
+                      sm: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4
+                    }} key={field.name} sx={{ width: '100%' }}>
+                      <FieldComponent
+                        name={field.name}
+                        label={field.label}
+                        type={field.type}
+                        required={field.required}
+                        disabled={field.disabled}
+                        fullWidth
+                        variant="outlined"
+                        error={isInvalid}
+                        helperText={isInvalid ? errorText : ''}
+                        value={formikProps.values[field.name]}
+                        onChange={(e: any) => {
+                          formikProps.handleChange(e)
+                          if (typeof field.onChange === 'function')
+                            field.onChange(e)
+                        }}
+                        onBlur={formikProps.handleBlur}
+                        options={field.options}
+                        {...field.extraProps}
+                      />
+                    </Grid>
+                  );
               })}
 
               <Grid sx={{ width: '100%' }}>

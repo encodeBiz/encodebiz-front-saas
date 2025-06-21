@@ -79,7 +79,7 @@ checkbiz360-backoffice/
 │   ├── styles/               # Global styles
 │   │   ├── globals.css       # Global CSS
 │   │   └── theme/            # Theme styles
-│   └── types/                # TypeScript types
+│   └── domain/                # TypeScript types
 │       ├── api/              # API response types
 │       ├── components/       # Component prop types
 │       └── index.ts          # Main types export

@@ -1,6 +1,77 @@
 import { EntityFormValues } from "@/app/main/entity/create/page.controller";
+import { EntityUpdatedFormValues } from "@/app/main/preferences/entity/page.controller";
+import IEntity from "@/domain/auth/IEntity";
+import IUserEntity from "@/domain/auth/IUserEntity";
+import { SearchParams } from "@/domain/firebase/firestore";
 import { createUser } from "@/lib/firebase/authentication/create";
+import { getOne } from "@/lib/firebase/firestore/readDocument";
+import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
+import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
+import { collection } from "@/config/collection";
+
+
+
+
+export async function fetchEntity(
+    id: string
+): Promise<IEntity> {
+    try {
+        return await getOne(collection.ENTITIES, id);
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+
+export async function fetchUserEntities(
+    uid: string
+): Promise<Array<IUserEntity>> {
+    const params: SearchParams = {
+        collection: collection.USER_ENTITY_ROLES,
+        filters: [{
+            field: 'userId',
+            operator: '==',
+            value: uid,
+        }]
+    }
+    try {
+        const resultList: IUserEntity[] = await searchFirestore(params);
+        return await Promise.all(resultList.map(async (item) => {
+            const entity = await fetchEntity(item.entityId);
+            return {
+                ...item,
+                entity
+            }
+        }))
+
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+export async function saveStateCurrentEntity(
+    entityList: Array<IUserEntity>
+): Promise<void> {
+    try {
+ 
+        entityList.forEach(async element => {
+            await updateDocument<IUserEntity>({
+                collection: collection.USER_ENTITY_ROLES,
+                data: {
+                    isActive: element.isActive,
+                    updatedAt: new Date(),
+                },
+                id: element.id as string,
+            });
+        });
+
+
+
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
 
 
 export async function createEntity(data: EntityFormValues, token: string) {
@@ -21,6 +92,8 @@ export async function createEntity(data: EntityFormValues, token: string) {
             if (response.errCode && response.errCode !== 200) {
                 throw new Error(response.message)
             }
+
+            return response
         }
     } catch (error: any) {
         throw new Error(error.message)
@@ -28,7 +101,7 @@ export async function createEntity(data: EntityFormValues, token: string) {
 }
 
 
-export async function updateEntity(data: EntityFormValues, token: string) {
+export async function updateEntity(data: EntityUpdatedFormValues | any, token: string) {
     try {
 
         if (!token) {

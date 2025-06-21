@@ -4,9 +4,9 @@ import { createContext, useEffect, useState } from "react";
 
 import { subscribeToAuthChanges } from "@/lib/firebase/authentication/stateChange";
 import { User } from "firebase/auth";
-import IUserEntity from "@/types/auth/IUserEntity";
-import { fetchUserEntities, saveStateCurrentEntity } from "@/services/common/account.service";
+import IUserEntity from "@/domain/auth/IUserEntity";
 import { useRouter } from "nextjs-toploader/app";
+import { fetchUserEntities, saveStateCurrentEntity } from "@/services/common/entity.service";
 
 interface EntityContextType {
     currentEntity: IUserEntity | undefined;
@@ -27,32 +27,33 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
  
 
             if (entityList.length > 0) {
-                if (entityList.length > 0 && entityList.filter(e=>e.isActive).length===0) {
+                if (entityList.length > 0 && entityList.filter(e => e.isActive).length === 0) {
                     const item = entityList[0]
                     item.isActive = true
                     entityList.splice(0, 1, item)
                 }
-                 
+
                 setEntityList(entityList)
                 setCurrentEntity(entityList.find(e => e.isActive) as IUserEntity)
             } else {
-                push('/main/entity/create')               
+                push('/main/entity/create')
             }
         }
     }
 
     const refrestList = async (userId: string) => {
         const entityList: Array<IUserEntity> = await fetchUserEntities(userId)
-        if (entityList.length !== 0) {
-            if (entityList.length == 1) {
+        if (entityList.length > 0) {
+            if (entityList.length > 0 && entityList.filter(e => e.isActive).length === 0) {
                 const item = entityList[0]
                 item.isActive = true
                 entityList.splice(0, 1, item)
             }
+
             setEntityList(entityList)
             setCurrentEntity(entityList.find(e => e.isActive) as IUserEntity)
         } else {
-            push('/main/entity/create')         
+            push('/main/entity/create')
         }
     }
 
@@ -80,7 +81,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     }, []);
 
     return (
-        <EntityContext.Provider value={{ entityList, currentEntity, refrestList,  setCurrentEntity, changeCurrentEntity }}>
+        <EntityContext.Provider value={{ entityList, currentEntity, refrestList, setCurrentEntity, changeCurrentEntity }}>
             {children}
         </EntityContext.Provider>
     );
