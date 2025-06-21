@@ -9,19 +9,37 @@
  * @typedef {IUser}
  */
 interface IEntity {
+
   id?: string;
   name: string;
   slug: string;
-  type: 'company' | 'autonomous' | 'organization' | 'event';
-  active: boolean;
+  type?: "company" | "autonomous" | "organization" | "event";
+  billingEmail?: string;
   stripeCustomerId?: string;
-  billingEmail: string;
   branding?: {
-    logoUrl?: string;
-    primaryColor?: string;
+    logoUrl: string,
+    backgroundColor: string,
+    labelColor?: string,
+    textColor: string,
+    stripImageUrl?: string,
+    iconUrl?: string
+  }
+  active: boolean;
+  createdAt?: Date;
+  legal?: {
+    legalName: string; // Razón social
+    taxId: string; // NIF / CIF / NIE / VAT
+    address: {
+      street: string;
+      city: string;
+      postalCode: string;
+      region?: string;
+      country: string;
+    };
   };
-  createdAt: Date;
   updatedAt: Date;
-
 }
+
+
+
 export default IEntity;

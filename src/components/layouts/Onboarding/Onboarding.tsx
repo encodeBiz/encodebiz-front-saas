@@ -128,7 +128,7 @@ function Onboarding() {
             <DialogContent sx={classes.content}>
                 <Image
                     width={400}
-                    height={400}
+                    height={300}
                     src={onboardingSteps[activeStep].image}
                     alt={onboardingSteps[activeStep].title}
                     className={classes.image as any} // Responsive image styling
