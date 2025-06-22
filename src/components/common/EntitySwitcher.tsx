@@ -14,7 +14,7 @@ import {
 
 
 import { useEntity } from '@/hooks/useEntity';
-import IUserEntity from '@/types/auth/IUserEntity';
+import IUserEntity from '@/domain/auth/IUserEntity';
 import { useRouter } from 'nextjs-toploader/app';
 export const locales = ['en', 'es']; // Define your supported locales
 

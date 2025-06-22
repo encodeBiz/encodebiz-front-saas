@@ -4,6 +4,11 @@ import { DateTimeFormatOptions } from "next-intl";
 import 'moment/locale/es';
 moment.locale('es')
 
+export type FirestoreTimestamp = {
+    seconds: number;
+    nanoseconds: number;
+};
+
 export const formatDay = (dd: number): any => {
     return dd < 10 ? '0' + dd : dd;
 }
@@ -38,6 +43,25 @@ export function format_date(str: Timestamp | Date | string | any, format: string
 
     return date;
 }
+
+   export const formatDate = async (
+        timestamp: FirestoreTimestamp | Date,
+        locale:string='es'
+    ) => {
+        // Configurar el idioma
+       
+        moment.locale(locale);
+
+        let jsDate: Date;
+        if (timestamp instanceof Date) {
+            jsDate = timestamp;
+        } else {
+            jsDate = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1_000_000);
+        }
+        const format = locale === 'es' ? 'D [de] MMMM [de] YYYY' : 'MMMM D, YYYY';
+        return moment(jsDate).format(format)
+      
+    };
 
 export function remainTime(nextDate: Timestamp | Date | string | any): string {
     let date: Date = new Date()

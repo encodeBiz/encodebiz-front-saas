@@ -44,7 +44,7 @@ export default async function RootLayout({
                                 <ThemeProvider>
                                     <ToastProvider>
                                         <CommonModalProvider>
-                                            <NextTopLoader showSpinner={false} color="#1976d2" />
+                                            <NextTopLoader showSpinner={false} color="#456456" />
                                             {children}
                                         </CommonModalProvider>
                                     </ToastProvider>

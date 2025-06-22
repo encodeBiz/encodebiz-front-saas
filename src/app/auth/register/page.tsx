@@ -69,6 +69,7 @@ const SignUpPage = () => {
                     validationSchema={validationSchema}
                     onSubmit={signInWithEmail}
                     fields={fields as FormField[]}
+                    btnFullWidth
                     submitButtonText={t('core.signup.signup')}
                 />
 

@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { User } from "firebase/auth";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
-import IUser from "@/types/auth/IUser";
+import IUser from "@/domain/auth/IUser";
 import { subscribeToAuthChanges } from "@/lib/firebase/authentication/stateChange";
 import { getUser } from "@/lib/firebase/authentication/login";
 import { fetchUserAccount, signInToken } from "@/services/common/account.service";
@@ -31,7 +31,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const watchSesionState = async (userAuth: User) => {
         if (userAuth) {
-
             updateUserData(userAuth)
             setToken(await userAuth.getIdToken())
             setUser({
@@ -40,7 +39,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             })
             setUserAuth(userAuth)
             if (redirectUri) push(redirectUri)
-            else push('/main/dashboard')
+            else {
+                if(pathName==='/' || pathName==='/main')
+                push('/main/dashboard')
+            }
         } else {
             setUser(null);
             setPendAuth(false)

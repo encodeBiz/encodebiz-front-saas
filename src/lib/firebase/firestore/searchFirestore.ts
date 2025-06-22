@@ -17,7 +17,7 @@
   onSnapshot,
 } from "firebase/firestore";
 import { db } from "../initializeApp";
-import { SearchParams } from "@/types/firebase/firestore";
+import { SearchParams } from "@/domain/firebase/firestore";
 
 
 export const searchFirestore = async <T>(

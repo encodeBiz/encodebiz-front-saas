@@ -1,6 +1,6 @@
  import {  doc, updateDoc, DocumentReference,setDoc } from "firebase/firestore";
 import { db } from "../initializeApp";
-import { SetDocumentParams, UpdateDocumentParams } from "@/types/firebase/firestore";
+import { SetDocumentParams, UpdateDocumentParams } from "@/domain/firebase/firestore";
 
 
 
