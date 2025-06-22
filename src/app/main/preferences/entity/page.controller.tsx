@@ -17,6 +17,7 @@ import { country } from '@/config/country';
 import { formatDate } from '@/lib/common/Date';
 import { createSlug } from '@/lib/common/String';
 import { updateEntity } from '@/services/common/entity.service';
+import ImageUploadInput from '@/components/common/forms/fields/ImageUploadInput';
 
 
 
@@ -35,7 +36,9 @@ export interface EntityUpdatedFormValues {
 };
 
 export interface BrandFormValues {
-    "brandColor": string
+    "backgroundColor": string
+    "labelColor": string
+    "textColor": string
 };
 
 export type TabItem = {
@@ -69,10 +72,6 @@ export const useSettingEntityController = () => {
         billingEmail: currentEntity?.entity?.billingEmail as string | ""
     });
 
-    const [initialBrandValues, setInitialBrandValues] = useState<BrandFormValues>({
-        "brandColor": "#ffffff" as string,
-    });
-
     const validationSchema = Yup.object().shape({
         name: Yup.string().required(t('core.formValidatorMessages.required')),
         street: Yup.string().required(t('core.formValidatorMessages.required')),
@@ -85,9 +84,7 @@ export const useSettingEntityController = () => {
 
     });
 
-    const brandValidationSchema = Yup.object().shape({
-        brandColor: Yup.string(),
-    });
+
 
     const fields = [
         {
@@ -166,11 +163,88 @@ export const useSettingEntityController = () => {
         },
     ];
 
+
+    const [initialBrandValues, setInitialBrandValues] = useState<BrandFormValues>({
+        "backgroundColor": "#417505" as string,
+        "labelColor": "#b62929" as string,
+        "textColor": "#4a90e2" as string,
+    
+    });
+
+    const brandValidationSchema = Yup.object().shape({
+        backgroundColor: Yup.string().required(t('core.formValidatorMessages.required')),
+        labelColor: Yup.string().required(t('core.formValidatorMessages.required')),
+        textColor: Yup.string().required(t('core.formValidatorMessages.required')),
+        logoUrl: Yup.mixed()
+            .required('An image is required')
+            .test('fileSize', t('core.formValidatorMessages.avatarMaxSize'), (value: any) => {
+               
+                if (!value) return true; // if no file, let required handle it
+                return value.size <= 5000000; // 5MB
+            })
+            .test('fileType', t('core.formValidatorMessages.avatarUpload'), (value: any) => {
+                if (!value) return true; // if no file, let required handle it
+                return ['image/jpeg', 'image/png', 'image/gif'].includes(value.type);
+            }),
+        stripImageUrl: Yup.mixed()
+            .required('An image is required')
+            .test('fileSize', t('core.formValidatorMessages.avatarMaxSize'), (value: any) => {
+                if (!value) return true; // if no file, let required handle it
+                return value.size <= 5000000; // 5MB
+            })
+            .test('fileType', t('core.formValidatorMessages.avatarUpload'), (value: any) => {
+                if (!value) return true; // if no file, let required handle it
+                return ['image/jpeg', 'image/png', 'image/gif'].includes(value.type);
+            }),
+        iconUrl: Yup.mixed()
+            .required('An image is required')
+            .test('fileSize', t('core.formValidatorMessages.avatarMaxSize'), (value: any) => {
+                if (!value) return true; // if no file, let required handle it
+                return value.size <= 5000000; // 5MB
+            })
+            .test('fileType', t('core.formValidatorMessages.avatarUpload'), (value: any) => {
+                if (!value) return true; // if no file, let required handle it
+                return ['image/jpeg', 'image/png', 'image/gif'].includes(value.type);
+            }),
+    });
+
     const fields2 = [
+       
+
         {
-            name: 'brandColor',
-            label: t('core.label.color'),
+            name: 'backgroundColor',
+            label: t('core.label.backgroundColor'),
             component: ColorPickerInput,
+            required: true,
+        },
+        {
+            name: 'labelColor',
+            label: t('core.label.labelColor'),
+            component: ColorPickerInput,
+            required: true,
+        },
+        {
+            name: 'textColor',
+            label: t('core.label.textColor'),
+            component: ColorPickerInput,
+            required: true,
+        },
+ {
+            name: 'logoUrl',
+            label: t('core.label.logo'),
+            component: ImageUploadInput,
+            required: true,
+        },
+         {
+            name: 'stripImageUrl',
+            label: t('core.label.stripImageUrl'),
+            component: ImageUploadInput,
+            required: true,
+        },
+         {
+            name: 'iconUrl',
+            label: t('core.label.iconUrl'),
+            component: ImageUploadInput,
             required: true,
         },
     ];
@@ -262,7 +336,7 @@ export const useSettingEntityController = () => {
                     validationSchema={validationSchema}
                     onSubmit={setEntityDataAction}
                     fields={fields as FormField[]}
-                    submitButtonText={t('core.button.submit')}
+                    submitButtonText={t('core.button.save')}
                     enableReinitialize
 
                 />
@@ -273,22 +347,14 @@ export const useSettingEntityController = () => {
     const formTabs2 = () => {
         return (
             <>
-                <div style={{ paddingBottom: "20px" }}>
-                    <UploadAvatar
-                        initialImage={avatarSrc}
-                        onImageChange={onImageChangeAction}
-                        variant='rounded'
-                        label={t("core.label.logo")}
-                        size={150}
-                    />
-                </div>
+
                 <GenericForm<BrandFormValues>
-                    column={2}
+                    column={3}
                     initialValues={initialBrandValues}
                     validationSchema={brandValidationSchema}
                     onSubmit={changeBrandAction}
                     fields={fields2 as FormField[]}
-                    submitButtonText={t('core.button.submit')}
+                    submitButtonText={t('core.button.save')}
                     enableReinitialize
                 />
             </>

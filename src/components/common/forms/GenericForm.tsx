@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { BaseButton } from '../buttons/BaseButton';
 import { useTranslations } from 'next-intl';
+import { createSlug } from '@/lib/common/String';
 
 // Define types for our form component
 export type FormField = {
@@ -35,7 +36,7 @@ type GenericFormProps<T> = {
   onSubmit: (values: T, formikHelpers: FormikHelpers<T>) => void | Promise<any>;
   fields: FormField[];
   title?: string;
-
+btnFullWidth?: boolean;
   submitButtonText?: string;
   cancelButtonText?: string;
   onCancel?: () => void;
@@ -56,6 +57,7 @@ const GenericForm = <T extends Record<string, any>>({
   column = 1,
   formContainerProps,
   enableReinitialize,
+  btnFullWidth=false
 }: GenericFormProps<T>) => {
   const t = useTranslations()
 
@@ -63,7 +65,7 @@ const GenericForm = <T extends Record<string, any>>({
     <Paper
       elevation={0}
       sx={{
-
+        p:4,
         ...formContainerProps?.sx,
       }}
       {...formContainerProps}
@@ -83,17 +85,17 @@ const GenericForm = <T extends Record<string, any>>({
       >
         {(formikProps: FormikProps<T>) => (
           <Form noValidate>
-            {/*JSON.stringify(formikProps.errors)*/}
+            {JSON.stringify(formikProps.errors)}
             <Grid container spacing={3}>
-              {fields.map((field) => {
+              {fields.map((field,i) => {
                 const FieldComponent = field.component;
                 const isInvalid =
                   formikProps.touched[field.name] && Boolean(formikProps.errors[field.name]);
                 const errorText = formikProps.errors[field.name];
-                if (field.isDivider) return <Grid size={{
+                if (field.isDivider) return <Grid  size={{
                   xs: 12,
                   sm: 12
-                }} key={field.name} sx={{ width: '100%' }}>
+                }} key={i} sx={{ width: '100%' }}>
                   <Divider />
                   <Typography variant='subtitle1'>{field.label as string}</Typography>
                 </Grid>
@@ -130,12 +132,12 @@ const GenericForm = <T extends Record<string, any>>({
               <Grid sx={{ width: '100%' }}>
                 <Box display="flex" justifyContent="flex-end" gap={2}>
                   {onCancel && (
-                    <BaseButton sx={{ mt: 3, mb: 2, py: 1.5 }} onClick={onCancel} disabled={formikProps.isSubmitting} fullWidth variant="outlined" color="primary" >
+                    <BaseButton sx={{ mt: 3, mb: 2, py: 1.5 }} onClick={onCancel} disabled={formikProps.isSubmitting} fullWidth={btnFullWidth} variant="outlined" color="primary" >
                       {cancelButtonText}
                     </BaseButton>
                   )}
 
-                  <BaseButton sx={{ mt: 3, mb: 2, py: 1.5 }} disabled={formikProps.isSubmitting || !formikProps.isValid} type="submit" fullWidth variant="contained" color="primary" >
+                  <BaseButton sx={{ mt: 3, mb: 2, py: 1.5 }} disabled={formikProps.isSubmitting || !formikProps.isValid} type="submit" fullWidth={btnFullWidth} variant="contained" color="primary" >
                     {formikProps.isSubmitting ? t('core.button.submitting') : submitButtonText}
                   </BaseButton>
                 </Box>

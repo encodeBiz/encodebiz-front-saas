@@ -19,7 +19,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
 
 
 
-  return (<FormControl required sx={{ m: 1, minWidth: 120 }}>
+  return (<FormControl required sx={{  width: '100%' }}>
     
     <InputLabel id="demo-simple-select-required-label">{props.label}</InputLabel>
     <Select

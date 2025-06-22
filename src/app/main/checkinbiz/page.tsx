@@ -30,8 +30,7 @@ export default function Dashboard() {
 
       <SalesPlans />
 
-      <HelpTabs />
-
+ 
 
 
 

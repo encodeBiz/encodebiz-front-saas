@@ -48,6 +48,7 @@
     },
     "label": {
       "firstName": "Nombre",
+      "uploadResourse": "Subir recurso",
       "lastName": "Apellido",
       "fullName": "Nombre completo",
       "password": "Contraseña",
