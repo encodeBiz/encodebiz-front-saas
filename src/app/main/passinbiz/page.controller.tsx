@@ -4,6 +4,7 @@ export default function usePassInBizController() {
   const t = useTranslations();
   const salesPlans = [
     {
+      
       name: t("salesPlan.free"),
       price: '$19',
       period: `/${t("salesPlan.month")}`,

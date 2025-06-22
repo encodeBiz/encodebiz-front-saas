@@ -1,7 +1,7 @@
 'use client';
 import { useTranslations } from 'next-intl';
 import { Container, Typography } from '@mui/material';
-import SalesPlans from "@/components/common/SalesPlans";
+import SalesPlans, { Plan } from "@/components/common/SalesPlans";
 import useCheckInBizController from './page.controller';
 
 export default function CheckInBiz() {
@@ -16,7 +16,7 @@ export default function CheckInBiz() {
         {t("salesPlan.subTitle")}
       </Typography>
       <br />
-      <SalesPlans pricingPlans={salesPlans} />
+      <SalesPlans serviceId='checkinbiz' pricingPlans={salesPlans  as Array<Plan>} />
     </Container>
   );
 }

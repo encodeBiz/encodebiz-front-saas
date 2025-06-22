@@ -3,15 +3,9 @@ import { CardContent, Typography, Button, Box, List, ListItem, ListItemIcon } fr
 import { styled } from '@mui/material/styles';
 import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
 import { useTranslations } from 'next-intl';
+import { Plan } from './SalesPlans';
 
-interface Plan {
-    name: string;
-    price: string;
-    period: string;
-    features: string[];
-    featured?: boolean;
-}
-
+ 
 const PlanCard = styled(Box)<{ featured?: string }>(({ theme, featured }) => ({
     maxWidth: 250,
     minWidth: 220,
@@ -41,19 +35,19 @@ const FeaturedBadge = styled(Box)(({ theme }) => ({
 const SelectButton = styled(Button)<{ featured?: string }>(({ theme, featured }) => ({
     marginBottom: 0,
     width: '100%',
-    color: featured==="true" ? theme.palette.text.primary : theme.palette.text.primary,
-    backgroundColor: featured==="true" ? theme.palette.primary.contrastText : theme.palette.primary.main,
+    color: featured === "true" ? theme.palette.text.primary : theme.palette.text.primary,
+    backgroundColor: featured === "true" ? theme.palette.primary.contrastText : theme.palette.primary.main,
 }));
 
-export const PricingCard: React.FC<Plan> = ({ name, price, period, features, featured = false }) => {
+export const PricingCard: React.FC<Plan> = ({ name, price, period, features, serviceId, featured = false }) => {
     const t = useTranslations()
-     return (
+    return (
         <PlanCard featured={String(featured)}>
             {featured && (
                 <FeaturedBadge>Most Popular</FeaturedBadge>
             )}
 
-            <CardContent sx={{display:"flex", flexDirection:"column", justifyContent:"space-between", height:"100%"}}>
+            <CardContent sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
                 <span>
                     <Typography
                         variant="h6"
@@ -86,7 +80,7 @@ export const PricingCard: React.FC<Plan> = ({ name, price, period, features, fea
                     </List>
                 </span>
                 <SelectButton featured={String(featured)} fullWidth variant="contained">
-                     {t("salesPlan.pay")}
+                    {t("salesPlan.pay")}
                 </SelectButton>
             </CardContent>
         </PlanCard>

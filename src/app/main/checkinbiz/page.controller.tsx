@@ -1,8 +1,9 @@
 
+import { Plan } from '@/components/common/SalesPlans';
 import { useTranslations } from 'next-intl';
 export default function useCheckInBizController() {
   const t = useTranslations();
-  const salesPlans = [
+  const salesPlans:Array<Plan> = [
     {
       name: t("salesPlan.free"),
       price: '$19',
@@ -13,7 +14,8 @@ export default function useCheckInBizController() {
         t("salesPlan.emailSuport"),
         t("salesPlan.customerTime")
       ],
-      featured: false
+      featured: false,
+      //planId:'bronze'
     },
     {
       name: t("salesPlan.standard"),
