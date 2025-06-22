@@ -5,7 +5,7 @@ import { useState, ReactNode, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useTranslations } from 'next-intl';
-import { SxProps, Theme } from '@mui/material';
+import { Box, SxProps, Theme } from '@mui/material';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import ColorPickerInput from '@/components/common/forms/fields/ColorPickerInput';
@@ -16,8 +16,12 @@ import SelectInput from '@/components/common/forms/fields/SelectInput';
 import { country } from '@/config/country';
 import { formatDate } from '@/lib/common/Date';
 import { createSlug } from '@/lib/common/String';
-import { updateEntity, updateEntityBranding } from '@/services/common/entity.service';
+import { deleteEntity, updateEntity, updateEntityBranding } from '@/services/common/entity.service';
 import ImageUploadInput from '@/components/common/forms/fields/ImageUploadInput';
+import { BaseButton } from '@/components/common/buttons/BaseButton';
+import { useCommonModal } from '@/hooks/useCommonModal';
+import { CommonModalType } from '@/contexts/commonModalContext';
+import ConfirmModal from '@/components/common/modals/ConfirmModal';
 
 
 
@@ -55,6 +59,7 @@ export type TabItem = {
 export const useSettingEntityController = () => {
     const t = useTranslations();
     const { currentEntity, refrestList } = useEntity();
+    const { openModal, closeModal } = useCommonModal()
     const { user, token } = useAuth();
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
@@ -344,11 +349,33 @@ export const useSettingEntityController = () => {
     }, [currentEntity])
 
 
+    const handleDeleteEntity = async (entityId: string) => {
+        setPending(true)
+        try {
+            await deleteEntity({
+                uid: user?.id as string,
+                entityId: entityId
+            }, token)
+            refrestList(user?.id as string)
+            showToast(t('core.feedback.success'), 'success');
+            setPending(false)
+            closeModal(CommonModalType.DELETE)
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                showToast(error.message, 'error');
+            } else {
+                showToast(String(error), 'error');
+            }
+        }
+    }
 
 
     const formTabs1 = () => {
         return (
             <>
+                <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' sx={{ width: '100%' }}>
+                    <BaseButton onClick={() => openModal(CommonModalType.DELETE, { entityId: currentEntity?.entity.id })} variant='contained' color='warning' >Eliminar entidad</BaseButton>
+                </Box>
                 <GenericForm<EntityUpdatedFormValues>
                     column={2}
 
@@ -359,6 +386,15 @@ export const useSettingEntityController = () => {
                     submitButtonText={t('core.button.save')}
                     enableReinitialize
 
+                />
+                <ConfirmModal
+                    codeValidator
+                    isLoading={pending}
+                    word={createSlug(currentEntity?.entity.name as string ?? '')}
+                    title={t('entity.tabs.tab1.deleteConfirmModalTitle')}
+                    description={t('entity.tabs.tab1.deleteConfirmModalTitle2')}
+                    label={t('entity.tabs.tab1.deleteConfirmModalTitle2')}
+                    onOKAction={(args: { entityId: string }) => handleDeleteEntity(args.entityId)}
                 />
             </>
         );

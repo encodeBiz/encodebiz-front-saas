@@ -18,6 +18,7 @@ const EntityPreferencesPage = () => {
             <PresentationCard
                 title={t('entity.title')}
                 description={t('features.entity.create.card.subtitle')}
+              
             >
                 <GenericTabs
                     tabs={tabsRender}

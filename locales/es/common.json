@@ -36,15 +36,15 @@
       }
     },
     "footer": {
-      "copyright": "© {{year}} My Company. All rights reserved."
+      "copyright": "EncodeBiz. Todos los derechos reservados."
     }
   },
   "core": {
     "title": {
       "loader": "Cargando sesión de usuario"
     },
-    "feedback":{
-      "success":"La operación se realizó exitosamente"
+    "feedback": {
+      "success": "La operación se realizó exitosamente"
     },
     "label": {
       "firstName": "Nombre",
@@ -156,7 +156,10 @@
     "title": "Entidad",
     "tabs": {
       "tab1": {
-        "title": "Modificar Entidad"
+        "title": "Modificar Entidad",
+        "deleteConfirmModalTitle": "Eliminar Entidad",
+        "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente la entidad y todas sus configuraciones y compras asociadas",
+        "deleteConfirmModalTitle3": "Por favor entre la siguiente palabra para continuar con la accion"
       },
       "tab2": {
         "title": "Modificar Marca"
@@ -164,8 +167,8 @@
     }
   },
   "salesPlan": {
-    "title":"Elige tu plan de ventas",
-    "subTitle":"Seleccione el plan que se ajuste a las necesidades de su negocio",
+    "title": "Elige tu plan de ventas",
+    "subTitle": "Seleccione el plan que se ajuste a las necesidades de su negocio",
     "free": "Plan Gratis",
     "standard": "Estandar",
     "month": "mes",
@@ -186,6 +189,7 @@
     "dedicateManager": " Gestor de cuentas dedicado",
     "customIntegrations": "Integraciones personalizadas",
     "whiteLabel": "Soluciones de marca blanca",
-    "onsiteTraining": "Capacitación en el lugar"
+    "onsiteTraining": "Capacitación en el lugar",
+    "pay": "Obtener Plan"
   }
 }

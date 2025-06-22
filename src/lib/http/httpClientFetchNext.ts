@@ -164,8 +164,11 @@ export class HttpClient {
    * @param {?RequestInit} [config]
    * @returns {Promise<T>}
    */
-  delete<T>(url: string, config?: RequestInit): Promise<T> {
-    return this.request<T>("DELETE", url, config);
+  delete<T>(url: string, data?: any, config?: RequestInit): Promise<T> {
+    return this.request<T>("DELETE", url,  {
+      body: JSON.stringify(data),
+      ...config,
+    });
   }
 
 

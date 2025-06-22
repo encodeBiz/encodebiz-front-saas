@@ -2,6 +2,7 @@ import React from 'react';
 import { CardContent, Typography, Button, Box, List, ListItem, ListItemIcon } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
+import { useTranslations } from 'next-intl';
 
 interface Plan {
     name: string;
@@ -45,7 +46,8 @@ const SelectButton = styled(Button)<{ featured?: string }>(({ theme, featured })
 }));
 
 export const PricingCard: React.FC<Plan> = ({ name, price, period, features, featured = false }) => {
-    return (
+    const t = useTranslations()
+     return (
         <PlanCard featured={String(featured)}>
             {featured && (
                 <FeaturedBadge>Most Popular</FeaturedBadge>
@@ -84,7 +86,7 @@ export const PricingCard: React.FC<Plan> = ({ name, price, period, features, fea
                     </List>
                 </span>
                 <SelectButton featured={String(featured)} fullWidth variant="contained">
-                    Select Plan
+                     {t("salesPlan.pay")}
                 </SelectButton>
             </CardContent>
         </PlanCard>
