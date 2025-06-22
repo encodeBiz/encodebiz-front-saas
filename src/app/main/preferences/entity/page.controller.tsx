@@ -16,7 +16,7 @@ import SelectInput from '@/components/common/forms/fields/SelectInput';
 import { country } from '@/config/country';
 import { formatDate } from '@/lib/common/Date';
 import { createSlug } from '@/lib/common/String';
-import { updateEntity } from '@/services/common/entity.service';
+import { updateEntity, updateEntityBranding } from '@/services/common/entity.service';
 import ImageUploadInput from '@/components/common/forms/fields/ImageUploadInput';
 
 
@@ -39,6 +39,9 @@ export interface BrandFormValues {
     "backgroundColor": string
     "labelColor": string
     "textColor": string
+    logoUrl: File | string,
+    stripImageUrl: File | string,
+    iconUrl: File | string,
 };
 
 export type TabItem = {
@@ -168,7 +171,9 @@ export const useSettingEntityController = () => {
         "backgroundColor": "#417505" as string,
         "labelColor": "#b62929" as string,
         "textColor": "#4a90e2" as string,
-    
+        logoUrl: '',
+        stripImageUrl: '',
+        iconUrl: '',
     });
 
     const brandValidationSchema = Yup.object().shape({
@@ -178,7 +183,7 @@ export const useSettingEntityController = () => {
         logoUrl: Yup.mixed()
             .required('An image is required')
             .test('fileSize', t('core.formValidatorMessages.avatarMaxSize'), (value: any) => {
-               
+
                 if (!value) return true; // if no file, let required handle it
                 return value.size <= 5000000; // 5MB
             })
@@ -209,7 +214,7 @@ export const useSettingEntityController = () => {
     });
 
     const fields2 = [
-       
+
 
         {
             name: 'backgroundColor',
@@ -229,19 +234,19 @@ export const useSettingEntityController = () => {
             component: ColorPickerInput,
             required: true,
         },
- {
+        {
             name: 'logoUrl',
             label: t('core.label.logo'),
             component: ImageUploadInput,
             required: true,
         },
-         {
+        {
             name: 'stripImageUrl',
             label: t('core.label.stripImageUrl'),
             component: ImageUploadInput,
             required: true,
         },
-         {
+        {
             name: 'iconUrl',
             label: t('core.label.iconUrl'),
             component: ImageUploadInput,
@@ -249,11 +254,7 @@ export const useSettingEntityController = () => {
         },
     ];
 
-    const onImageChangeAction = async (file: File | null) => {
-        if (!file) return;
 
-        setAvatarFile(file);
-    };
 
     const setEntityDataAction = async (values: EntityUpdatedFormValues) => {
         try {
@@ -294,8 +295,27 @@ export const useSettingEntityController = () => {
 
     const changeBrandAction = async (values: BrandFormValues) => {
         try {
-            console.log("values>>>", values);
-            console.log("avatarFile>>>", avatarFile);
+
+            const form = new FormData();
+            form.append('entityId', currentEntity?.entity.id as string);
+            form.append('backgroundColor', values.backgroundColor);
+            form.append('labelColor', values.labelColor);
+            form.append('textColor', values.textColor);
+            form.append('logo', values.logoUrl);
+            form.append('icon', values.iconUrl);
+            form.append('stripImage', values.stripImageUrl);
+            const updateData = {
+                entityId: currentEntity?.entity.id,
+                backgroundColor: values.backgroundColor,
+                labelColor: values.labelColor,
+                textColor: values.textColor,
+                files: {
+                    logo: values.logoUrl,
+                    icon: values.iconUrl,
+                    stripImage: values.stripImageUrl,
+                }
+            }
+            await updateEntityBranding(form, token)
         } catch (error: unknown) {
             if (error instanceof Error) {
                 showToast(error.message, 'error');

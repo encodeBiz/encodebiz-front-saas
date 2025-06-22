@@ -87,7 +87,8 @@
       "submit": "Enviar",
       "cancel": "Cancelar",
       "download": "Descargar",
-      "delete": "Eliminar"
+      "delete": "Eliminar",
+      "save": "Guardar"
     },
     "formValidatorMessages": {
       "required": "Este campo es requerido",

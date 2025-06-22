@@ -1,5 +1,5 @@
 import { EntityFormValues } from "@/app/main/entity/create/page.controller";
-import { EntityUpdatedFormValues } from "@/app/main/preferences/entity/page.controller";
+import { BrandFormValues, EntityUpdatedFormValues } from "@/app/main/preferences/entity/page.controller";
 import IEntity from "@/domain/auth/IEntity";
 import IUserEntity from "@/domain/auth/IUserEntity";
 import { SearchParams } from "@/domain/firebase/firestore";
@@ -54,7 +54,7 @@ export async function saveStateCurrentEntity(
     entityList: Array<IUserEntity>
 ): Promise<void> {
     try {
- 
+
         entityList.forEach(async element => {
             await updateDocument<IUserEntity>({
                 collection: collection.USER_ENTITY_ROLES,
@@ -116,6 +116,30 @@ export async function updateEntity(data: EntityUpdatedFormValues | any, token: s
             const response: any = await httpClientFetchInstance.post(process.env.NEXT_PUBLIC_BACKEND_URI_UPDATE_ENTITY as string, {
                 ...data
             });
+            if (response.errCode && response.errCode !== 200) {
+                throw new Error(response.message)
+            }
+        }
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
+
+
+export async function updateEntityBranding(data: BrandFormValues | any, token: string) {
+    try {
+
+        if (!token) {
+            throw new Error('Error to fetch user auth token')
+        } else {
+            let httpClientFetchInstance: HttpClient = new HttpClient({
+                baseURL: '',
+                headers: {
+                    token: `Bearer ${token}`,
+                    
+                },
+            });
+            const response: any = await httpClientFetchInstance.upload(process.env.NEXT_PUBLIC_BACKEND_URI_UPDATE_BRANDNG_ENTITY as string, data);
             if (response.errCode && response.errCode !== 200) {
                 throw new Error(response.message)
             }

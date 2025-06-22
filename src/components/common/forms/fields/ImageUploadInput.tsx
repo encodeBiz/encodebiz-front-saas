@@ -11,6 +11,7 @@ import {
   FormHelperText,
   InputLabel,
   FormControl,
+  TextField,
 } from '@mui/material';
 import { CloudUpload, Delete } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
@@ -24,13 +25,19 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
   const [field, meta, helper] = useField(name);
   const { touched, error } = meta
   const helperText = touched && error;
+
+   const { 
+   
+    validateField, 
+   
+  } = useFormikContext();
+
   const [preview, setPreview] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
 
   const handleFileChange = useCallback((event: any) => {
     const file = event.currentTarget.files[0];
-    helper.setValue(file);
-    helper.setTouched(true)
+
     if (!file) return;
     setIsUploading(true);
     // Simulate upload delay (remove in production)
@@ -39,6 +46,11 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
       reader.onloadend = () => {
         setPreview(reader.result);
         setIsUploading(false);
+        helper.setValue(file);
+        helper.setTouched(true)
+        setTimeout(() => {
+          validateField(name)
+        }, 1);
       };
       reader.readAsDataURL(file);
     }, 1000);
@@ -46,14 +58,14 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
 
   const handleRemoveImage = useCallback(() => {
     setPreview(null);
-    helper.setValue(null);    
+    helper.setValue(null);
   }, [name]);
 
   return (
     <FormControl required sx={{ m: 1, width: '100%' }}>
       <InputLabel error={!!helperText} id="demo-simple-select-required-label">{label}</InputLabel>
       <Box sx={{ paddingTop: 5 }}>
- 
+
         {preview ? (
           <Box sx={{ position: 'relative', display: 'inline-block', borderRadius: '1px solid red' }}>
             <Avatar
@@ -85,12 +97,19 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
             startIcon={<CloudUpload />}
             disabled={isUploading}
           >
+
             {isUploading ? (
               <CircularProgress size={24} />
             ) : (
               t('core.label.uploadResourse')
             )}
-            <input
+            {JSON.stringify(field.value)}
+            <TextField
+              {...props}
+              onChange={handleFileChange}   
+              onBlur={(e)=>field.onBlur(e)}           
+              type="file"
+              value={field.value}
               style={{
                 border: 1,
                 clip: 'rect(0 0 0 0)',
@@ -102,11 +121,10 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
                 whiteSpace: 'nowrap',
                 width: '1px',
               }}
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              
+              accept={accept}
+
             />
+
           </Button>
         )}
 

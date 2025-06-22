@@ -81,7 +81,6 @@ export class HttpClient {
         : "no-cache"
     }
     const fullURL = this.createFullURL(url);
-    console.log('INPUT CACHE', forceCache)
     const config: RequestInit = {
       method,
       headers: {
@@ -139,6 +138,8 @@ export class HttpClient {
     });
   }
 
+  
+
   /**
    * Put request
    *
@@ -166,7 +167,27 @@ export class HttpClient {
   delete<T>(url: string, config?: RequestInit): Promise<T> {
     return this.request<T>("DELETE", url, config);
   }
+
+
+  /**
+   * Post request
+   *
+   * @template T
+   * @param {string} url
+   * @param {?*} [data]
+   * @param {?RequestInit} [config]
+   * @returns {Promise<T>}
+   */
+  upload<T>(url: string, data?: any, config?: RequestInit): Promise<T> {
+    return this.request<T>("POST", url, {
+      body: data,
+      ...config,
+    });
+  }
 }
+
+
+
 
 /**
  * Singleton instance of HttpClient
