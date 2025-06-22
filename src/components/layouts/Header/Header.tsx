@@ -30,6 +30,7 @@ import { useTranslations } from 'next-intl';
 import LocaleSwitcher from '../../common/LocaleSwitcher';
 import { handleLogout } from '@/services/common/account.service';
 import { useHeader } from './Header.controller';
+import { useCommonModal } from '@/hooks/useCommonModal';
 
 
 export default function Header() {
@@ -39,6 +40,7 @@ export default function Header() {
   const t = useTranslations();
   const { anchorEl, contextMenu, handleMobileMenuClose, handleProfileMenuOpen, handleMobileMenuOpen,
     mobileMoreAnchorEl, handleMenuClose, showNotification, showMessages } = useHeader()
+    const { openModal } = useCommonModal()
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -124,7 +126,7 @@ export default function Header() {
 
 
 
-      <MenuItem onClick={() => { }}>
+      <MenuItem onClick={()=>openModal()}>
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -208,7 +210,7 @@ export default function Header() {
             <Tooltip title={t('layout.header.help')}>
               <IconButton
                 size="large"
-                color="inherit"
+                color="inherit" onClick={()=>openModal()}
               >
                 <HelpIcon />
               </IconButton>

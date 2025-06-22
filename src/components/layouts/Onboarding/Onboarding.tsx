@@ -64,8 +64,9 @@ function Onboarding() {
     const classes = useStyles()
 
     // Handler for closing the dialog
-    const handleClose = () => {
-        closeModal(CommonModalType.ONBOARDING);
+    const handleClose = (event: {}, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
+        if (reason !== 'backdropClick')
+            closeModal(CommonModalType.ONBOARDING);
     };
 
     // Handler for moving to the next step
@@ -101,13 +102,13 @@ function Onboarding() {
                 transition: Transition,
             }}
             keepMounted
+
+            disableEscapeKeyDown
             onClose={handleClose}
             aria-describedby="onboarding-dialog-description"
             fullWidth
             maxWidth="md" // Set max width for the dialog
-            PaperProps={{
-                className: "rounded-xl shadow-2xl overflow-hidden" // Tailwind classes for rounded corners and shadow
-            }}
+
         >
             {/* Dialog title with a close button */}
             <DialogTitle
@@ -117,7 +118,7 @@ function Onboarding() {
                 </Typography>
                 <IconButton
                     aria-label="close"
-                    onClick={handleClose}
+                    onClick={(e) => handleClose(e, 'manual')}
                     className="text-white hover:bg-blue-700"
                 >
                     <CloseIcon />
@@ -158,7 +159,7 @@ function Onboarding() {
                         onClick={handleBack}
                         disabled={activeStep === 0}
                         startIcon={<ArrowBackIosIcon />}
-                        style={{marginRight:10}}
+                        style={{ marginRight: 10 }}
                     >
                         Back
                     </Button>
@@ -176,7 +177,7 @@ function Onboarding() {
                         <Button
                             variant="contained"
                             color="success"
-                            onClick={handleClose}
+                            onClick={(e) => handleClose(e, 'manual')}
                             className="rounded-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white"
                         >
                             Finish
