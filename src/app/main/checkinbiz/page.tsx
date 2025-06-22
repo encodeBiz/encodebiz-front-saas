@@ -8,10 +8,14 @@ export default function CheckInBiz() {
   const t = useTranslations()
   const { salesPlans } = useCheckInBizController();
   return (
-    <Container maxWidth="lg">
-      <Typography variant="h4" component="h1" gutterBottom sx={{ mb: 4 }}>
-        {t('features.dashboard.overview')}
+    <Container maxWidth="xl">
+      <Typography variant="h4" align="center" gutterBottom>
+        {t("salesPlan.title")}
       </Typography>
+      <Typography variant="subtitle1" align="center" color="text.secondary" gutterBottom>
+        {t("salesPlan.subTitle")}
+      </Typography>
+      <br />
       <SalesPlans pricingPlans={salesPlans} />
     </Container>
   );

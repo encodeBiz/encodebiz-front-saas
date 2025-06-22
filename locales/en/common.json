@@ -130,6 +130,8 @@
         }
     },
     "salesPlan": {
+        "title": "Choose Your Sales Plan",
+        "subTitle": "Select the plan that fits your business needs",
         "avancedAnalitics": "Advanced analytics",
         "apiAcces": "API access",
         "basicAnalitics": "Basic analytics",

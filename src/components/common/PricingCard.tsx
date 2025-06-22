@@ -32,7 +32,7 @@ const FeaturedBadge = styled(Box)(({ theme }) => ({
     position: 'absolute',
     border: `1px solid ${theme.palette.primary.main}`,
     top: -10,
-    right: 50,
+    right: 65,
     fontSize: '0.75rem',
     fontWeight: 'bold',
 }));
