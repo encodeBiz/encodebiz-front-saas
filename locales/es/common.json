@@ -161,5 +161,30 @@
         "title": "Modificar Marca"
       }
     }
+  },
+  "salesPlan": {
+    "title":"Elige tu plan de ventas",
+    "subTitle":"Seleccione el plan que se ajuste a las necesidades de su negocio",
+    "free": "Plan Gratis",
+    "standard": "Estandar",
+    "month": "mes",
+    "selectPlan": "Seleccionar Plan",
+    "custom": "Personalizado",
+    "upToTen": "Hasta 10 productos",
+    "basicAnalitics": "Análisis básico",
+    "emailSuport": "Soporte por correo electrónico",
+    "emailPrioritySuport": "Soporte piorizado por correo electrónico",
+    "emailAndPhoneSuport": "Soporte telefónico y correo electrónico",
+    "enterprise": "Empresarial",
+    "customerTime": "Atención al cliente 24/7",
+    "apiAcces": "Acceso a APIs",
+    "customReport": "Informes personalizados",
+    "unlimitedProducts": "Productos ilimitados",
+    "premium": "Premium",
+    "avancedAnalitics": "Análisis avanzados",
+    "dedicateManager": " Gestor de cuentas dedicado",
+    "customIntegrations": "Integraciones personalizadas",
+    "whiteLabel": "Soluciones de marca blanca",
+    "onsiteTraining": "Capacitación en el lugar"
   }
 }
