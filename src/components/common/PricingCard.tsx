@@ -12,7 +12,7 @@ interface Plan {
 }
 
 const PlanCard = styled(Box)<{ featured?: string }>(({ theme, featured }) => ({
-    maxWidth: 345,
+    maxWidth: 250,
     minWidth: 220,
     margin: theme.spacing(2),
     border: featured === "true" ? `1px solid ${theme.palette.primary.main}` : 'none',

@@ -128,5 +128,28 @@
                 "title": "Change Branding"
             }
         }
+    },
+    "salesPlan": {
+        "avancedAnalitics": "Advanced analytics",
+        "apiAcces": "API access",
+        "basicAnalitics": "Basic analytics",
+        "custom": "Custom",
+        "customReport": "Custom reports",
+        "customerTime": "24/7 customer care",
+        "customIntegrations": "Custom integrations",
+        "dedicateManager": "Dedicated account manager",
+        "emailSuport": "Email support",
+        "emailPrioritySuport": "Priority email support",
+        "emailAndPhoneSuport": "Phone & email support",
+        "enterprise": "Enterprise",
+        "free": "Plan Freemium",
+        "month": "month",
+        "onsiteTraining": "On-site training",
+        "premium": "Premium",
+        "standard": "Standard",
+        "selectPlan": "Select Plan",
+        "upToTen": "Up to 10 products",
+        "unlimitedProducts": "Unlimited products",
+        "whiteLabel": "White-label solutions"
     }
 }

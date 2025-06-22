@@ -14,7 +14,7 @@ interface SalesPlansProps {
 export default function SalesPlans({ pricingPlans }: SalesPlansProps) {
 
     return (
-        <Grid container spacing={2} justifyContent="center">
+        <Grid container spacing={1} justifyContent="center">
             {pricingPlans.map((plan, index) => (
                 <PricingCard key={index} {...plan} />
             ))}

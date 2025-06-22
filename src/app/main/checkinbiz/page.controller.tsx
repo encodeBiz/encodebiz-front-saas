@@ -1,60 +1,61 @@
 
-export default function useDashboardController() {
-  
+import { useTranslations } from 'next-intl';
+export default function useCheckInBizController() {
+  const t = useTranslations();
   const salesPlans = [
     {
-      name: 'Plan Freemium',
+      name: t("salesPlan.free"),
       price: '$19',
-      period: '/month',
+      period: `/${t("salesPlan.month")}`,
       features: [
-        'Up to 10 products',
-        'Basic analytics',
-        'Email support',
-        '24/7 customer care'
+        t("salesPlan.upToTen"),
+        t("salesPlan.basicAnalitics"),
+        t("salesPlan.emailSuport"),
+        t("salesPlan.customerTime")
       ],
       featured: false
     },
     {
-      name: 'Standard',
+      name: t("salesPlan.standard"),
       price: '$49',
-      period: '/month',
+      period: `/${t("salesPlan.month")}`,
       features: [
-        'Up to 50 products',
-        'Advanced analytics',
-        'Priority email support',
-        '24/7 customer care',
-        'API access'
+        t("salesPlan.upToTen"),
+        t("salesPlan.avancedAnalitics"),
+        t("salesPlan.emailPrioritySuport"),
+        t("salesPlan.customerTime"),
+        t("salesPlan.apiAcces")
       ],
       featured: false
     },
     {
-      name: 'Premium',
+      name: t("salesPlan.premium"),
       price: '$99',
-      period: '/month',
+      period: `/${t("salesPlan.month")}`,
       features: [
-        'Unlimited products',
-        'Advanced analytics',
-        'Phone & email support',
-        '24/7 customer care',
-        'API access',
-        'Custom reports'
+        t("salesPlan.unlimitedProducts"),
+        t("salesPlan.avancedAnalitics"),
+        t("salesPlan.emailAndPhoneSuport"),
+        t("salesPlan.customerTime"),
+        t("salesPlan.apiAcces"),
+        t("salesPlan.customReport")
       ],
       featured: true
     },
     {
-      name: 'Enterprise',
-      price: 'Custom',
+      name: t("salesPlan.enterprise"),
+      price: t("salesPlan.custom"),
       period: '',
       features: [
-        'Unlimited products',
-        'Dedicated account manager',
-        'Custom integrations',
-        '24/7 premium support',
-        'White-label solutions',
-        'On-site training'
+        t("salesPlan.unlimitedProducts"),
+        t("salesPlan.dedicateManager"),
+        t("salesPlan.customIntegrations"),
+        t("salesPlan.customerTime"),
+        t("salesPlan.whiteLabel"),
+        t("salesPlan.onsiteTraining")
       ],
       featured: false
     }
-  ]; 
-  return {salesPlans}
+  ];
+  return { salesPlans }
 }
