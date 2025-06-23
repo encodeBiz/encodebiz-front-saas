@@ -28,7 +28,9 @@ export async function subscribeInSassProduct(data: ISubscription, token: string)
             throw new Error(response.message)
         }
 
-    } catch (error: any) {
+    } catch (error: any) { 
+        console.log(error);
+        
         throw new Error(error.message)
     }
 }

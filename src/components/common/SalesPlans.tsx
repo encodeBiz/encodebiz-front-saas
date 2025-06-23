@@ -1,6 +1,6 @@
 import React from 'react';
 import Grid from '@mui/material/Grid';
-import { PricingCard } from './PricingCard';
+import { PricingCard } from './PricingCard/PricingCard';
 import { IPlan } from '@/domain/core/IPlan';
 interface SalesPlansProps {
     pricingPlans: IPlan[];

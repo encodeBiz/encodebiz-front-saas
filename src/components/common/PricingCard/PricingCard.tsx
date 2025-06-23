@@ -4,10 +4,12 @@ import { styled } from '@mui/material/styles';
 import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
 import { useTranslations } from 'next-intl';
 import { IPlan } from '@/domain/core/IPlan';
-import { GenericButton } from './buttons/BaseButton';
+import { GenericButton } from '../buttons/BaseButton';
 
 import { useEntity } from '@/hooks/useEntity';
 import { useAuth } from '@/hooks/useAuth';
+import { subscribeInSassProduct } from '@/services/common/subscription.service';
+import usePricingCardController from './PricingCard.controller';
 export interface ISubscription {
     entityId: string
     serviceId: "passinbiz" | "checkinbiz"
@@ -54,29 +56,7 @@ export type PricingCardProps = IPlan & {
 
 export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, period, features, featured = false, fromService }) => {
     const t = useTranslations();
-    const { currentEntity } = useEntity();
-    const { token } = useAuth()
-    const [loadingGetPlan, setLoadingGetPlan] = useState(false);
-
-    const subcribeAction = async () => {
-        try {
-            setLoadingGetPlan(true);
-            const data: ISubscription = {
-                entityId: currentEntity?.entity?.id ? currentEntity.entity.id : "",
-                serviceId: fromService,
-                planId: id
-            }
-            setTimeout(() => {
-                console.log("Data:>>>>", data);
-                console.log("Token:>>>>", token);
-                setLoadingGetPlan(false);
-            }, 500);
-
-        } catch (error) {
-            console.log("Error:", error);
-            setLoadingGetPlan(false);
-        }
-    }
+    const {subcribeAction, loadingGetPlan} = usePricingCardController(id, fromService)
     return (
         <PlanCard featured={String(featured)}>
             {featured && (

@@ -1,7 +1,7 @@
 'use client';
 import { useTranslations } from 'next-intl';
 import { Container, Typography } from '@mui/material';
-import SalesPlans, { Plan } from "@/components/common/SalesPlans";
+import SalesPlans from "@/components/common/SalesPlans";
 import useCheckInBizController from './page.controller';
 
 export default function CheckInBiz() {
