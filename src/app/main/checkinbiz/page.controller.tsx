@@ -1,4 +1,5 @@
 
+import { Plan } from '@/components/common/SalesPlans';
 import { useTranslations } from 'next-intl';
 import { IPlan } from '@/domain/core/IPlan';
 export default function useCheckInBizController() {
@@ -15,7 +16,8 @@ export default function useCheckInBizController() {
         t("salesPlan.emailSuport"),
         t("salesPlan.customerTime")
       ],
-      featured: false
+      featured: false,
+      //planId:'bronze'
     },
     {
       id: "bronze",
