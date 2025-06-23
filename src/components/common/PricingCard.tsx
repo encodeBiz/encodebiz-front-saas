@@ -1,15 +1,17 @@
-import React from 'react';
-import { CardContent, Typography, Button, Box, List, ListItem, ListItemIcon } from '@mui/material';
+import React, { useState } from 'react';
+import { CardContent, Typography, Box, List, ListItem, ListItemIcon } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
 import { useTranslations } from 'next-intl';
+import { IPlan } from '@/domain/core/IPlan';
+import { GenericButton } from './buttons/BaseButton';
 
-interface Plan {
-    name: string;
-    price: string;
-    period: string;
-    features: string[];
-    featured?: boolean;
+import { useEntity } from '@/hooks/useEntity';
+import { useAuth } from '@/hooks/useAuth';
+export interface ISubscription {
+    entityId: string
+    serviceId: "passinbiz" | "checkinbiz"
+    planId: "freemium" | "bronze" | "enterprise";
 }
 
 const PlanCard = styled(Box)<{ featured?: string }>(({ theme, featured }) => ({
@@ -38,22 +40,50 @@ const FeaturedBadge = styled(Box)(({ theme }) => ({
     fontWeight: 'bold',
 }));
 
-const SelectButton = styled(Button)<{ featured?: string }>(({ theme, featured }) => ({
+const SelectButton = styled(GenericButton)<{ featured?: string }>(({ theme, featured }) => ({
     marginBottom: 0,
     width: '100%',
-    color: featured==="true" ? theme.palette.text.primary : theme.palette.text.primary,
-    backgroundColor: featured==="true" ? theme.palette.primary.contrastText : theme.palette.primary.main,
+    color: featured === "true" ? theme.palette.text.primary : theme.palette.text.primary,
+    backgroundColor: featured === "true" ? theme.palette.primary.contrastText : theme.palette.primary.main,
 }));
 
-export const PricingCard: React.FC<Plan> = ({ name, price, period, features, featured = false }) => {
-    const t = useTranslations()
-     return (
+
+export type PricingCardProps = IPlan & {
+    fromService: "passinbiz" | "checkinbiz";
+};
+
+export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, period, features, featured = false, fromService }) => {
+    const t = useTranslations();
+    const { currentEntity } = useEntity();
+    const { token } = useAuth()
+    const [loadingGetPlan, setLoadingGetPlan] = useState(false);
+
+    const subcribeAction = async () => {
+        try {
+            setLoadingGetPlan(true);
+            const data: ISubscription = {
+                entityId: currentEntity?.entity?.id ? currentEntity.entity.id : "",
+                serviceId: fromService,
+                planId: id
+            }
+            setTimeout(() => {
+                console.log("Data:>>>>", data);
+                console.log("Token:>>>>", token);
+                setLoadingGetPlan(false);
+            }, 500);
+
+        } catch (error) {
+            console.log("Error:", error);
+            setLoadingGetPlan(false);
+        }
+    }
+    return (
         <PlanCard featured={String(featured)}>
             {featured && (
                 <FeaturedBadge>Most Popular</FeaturedBadge>
             )}
 
-            <CardContent sx={{display:"flex", flexDirection:"column", justifyContent:"space-between", height:"100%"}}>
+            <CardContent sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
                 <span>
                     <Typography
                         variant="h6"
@@ -85,8 +115,15 @@ export const PricingCard: React.FC<Plan> = ({ name, price, period, features, fea
                         ))}
                     </List>
                 </span>
-                <SelectButton featured={String(featured)} fullWidth variant="contained">
-                     {t("salesPlan.pay")}
+                <SelectButton
+                    featured={String(featured)}
+                    fullWidth
+                    variant="contained"
+                    onClick={subcribeAction}
+                    disabled={loadingGetPlan}
+                    loading={loadingGetPlan}
+                >
+                    {t("salesPlan.pay")}
                 </SelectButton>
             </CardContent>
         </PlanCard>

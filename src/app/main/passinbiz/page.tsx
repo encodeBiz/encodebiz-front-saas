@@ -16,7 +16,7 @@ export default function PassInBiz() {
         {t("salesPlan.subTitle")}
       </Typography>
       <br />
-      <SalesPlans pricingPlans={salesPlans} />
+      <SalesPlans pricingPlans={salesPlans} fromService='passinbiz' />
     </Container>
   );
 }

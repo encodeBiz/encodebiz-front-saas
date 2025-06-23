@@ -1,9 +1,11 @@
 
 import { useTranslations } from 'next-intl';
+import { IPlan } from '@/domain/core/IPlan';
 export default function useCheckInBizController() {
   const t = useTranslations();
-  const salesPlans = [
+  const salesPlans:IPlan[] = [
     {
+      id: "freemium",
       name: t("salesPlan.free"),
       price: '$19',
       period: `/${t("salesPlan.month")}`,
@@ -16,7 +18,8 @@ export default function useCheckInBizController() {
       featured: false
     },
     {
-      name: t("salesPlan.standard"),
+      id: "bronze",
+      name: t("salesPlan.bronze"),
       price: '$49',
       period: `/${t("salesPlan.month")}`,
       features: [
@@ -26,9 +29,10 @@ export default function useCheckInBizController() {
         t("salesPlan.customerTime"),
         t("salesPlan.apiAcces")
       ],
-      featured: false
+      featured: true
     },
     {
+      id: "enterprise",
       name: t("salesPlan.premium"),
       price: '$99',
       period: `/${t("salesPlan.month")}`,
@@ -40,22 +44,8 @@ export default function useCheckInBizController() {
         t("salesPlan.apiAcces"),
         t("salesPlan.customReport")
       ],
-      featured: true
-    },
-    {
-      name: t("salesPlan.enterprise"),
-      price: t("salesPlan.custom"),
-      period: '',
-      features: [
-        t("salesPlan.unlimitedProducts"),
-        t("salesPlan.dedicateManager"),
-        t("salesPlan.customIntegrations"),
-        t("salesPlan.customerTime"),
-        t("salesPlan.whiteLabel"),
-        t("salesPlan.onsiteTraining")
-      ],
       featured: false
-    }
+    },
   ];
   return { salesPlans }
 }

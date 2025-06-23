@@ -169,9 +169,10 @@
   "salesPlan": {
     "title": "Elige tu plan de ventas",
     "subTitle": "Seleccione el plan que se ajuste a las necesidades de su negocio",
-    "free": "Plan Gratis",
+    "free": "Gratis",
     "standard": "Estandar",
     "month": "mes",
+    "bronze": "Bronce",
     "selectPlan": "Seleccionar Plan",
     "custom": "Personalizado",
     "upToTen": "Hasta 10 productos",
