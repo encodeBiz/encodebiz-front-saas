@@ -1,14 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { CardContent, Typography, Box, List, ListItem, ListItemIcon } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
 import { useTranslations } from 'next-intl';
 import { IPlan } from '@/domain/core/IPlan';
 import { GenericButton } from '../buttons/BaseButton';
-
-import { useEntity } from '@/hooks/useEntity';
-import { useAuth } from '@/hooks/useAuth';
-import { subscribeInSassProduct } from '@/services/common/subscription.service';
 import usePricingCardController from './PricingCard.controller';
 export interface ISubscription {
     entityId: string
@@ -17,8 +13,8 @@ export interface ISubscription {
 }
 
 const PlanCard = styled(Box)<{ featured?: string }>(({ theme, featured }) => ({
-    maxWidth: 250,
-    minWidth: 220,
+    maxWidth: 300,
+    minWidth: 250,
     margin: theme.spacing(2),
     border: featured === "true" ? `1px solid ${theme.palette.primary.main}` : 'none',
     transform: featured === "true" ? 'scale(1.05)' : 'scale(1)',
@@ -52,11 +48,17 @@ const SelectButton = styled(GenericButton)<{ featured?: string }>(({ theme, feat
 
 export type PricingCardProps = IPlan & {
     fromService: "passinbiz" | "checkinbiz";
+    getPlanAllow: boolean;
 };
 
-export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, period, features, featured = false, fromService }) => {
+export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, period, features, featured = false, fromService, getPlanAllow = false }) => {
     const t = useTranslations();
-    const {subcribeAction, loadingGetPlan} = usePricingCardController(id, fromService)
+    const { subcribeAction, loadingGetPlan, setLoadingGetPlan } = usePricingCardController(id, fromService);
+
+    useEffect(() => {
+        setLoadingGetPlan(getPlanAllow);
+    }, [getPlanAllow]);
+
     return (
         <PlanCard featured={String(featured)}>
             {featured && (
