@@ -33,7 +33,7 @@ const FeaturedBadge = styled(Box)(({ theme }) => ({
     position: 'absolute',
     border: `1px solid ${theme.palette.primary.main}`,
     top: -10,
-    right: 65,
+    right: 94,
     fontSize: '0.75rem',
     fontWeight: 'bold',
 }));
@@ -62,7 +62,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
     return (
         <PlanCard featured={String(featured)}>
             {featured && (
-                <FeaturedBadge>Most Popular</FeaturedBadge>
+                <FeaturedBadge>{t("salesPlan.popular")}</FeaturedBadge>
             )}
 
             <CardContent sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
