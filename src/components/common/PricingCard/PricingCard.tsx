@@ -1,14 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { CardContent, Typography, Box, List, ListItem, ListItemIcon } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
 import { useTranslations } from 'next-intl';
 import { IPlan } from '@/domain/core/IPlan';
 import { GenericButton } from '../buttons/BaseButton';
-
-import { useEntity } from '@/hooks/useEntity';
-import { useAuth } from '@/hooks/useAuth';
-import { subscribeInSassProduct } from '@/services/common/subscription.service';
 import usePricingCardController from './PricingCard.controller';
 export interface ISubscription {
     entityId: string
@@ -17,8 +13,8 @@ export interface ISubscription {
 }
 
 const PlanCard = styled(Box)<{ featured?: string }>(({ theme, featured }) => ({
-    maxWidth: 250,
-    minWidth: 220,
+    maxWidth: 300,
+    minWidth: 250,
     margin: theme.spacing(2),
     border: featured === "true" ? `1px solid ${theme.palette.primary.main}` : 'none',
     transform: featured === "true" ? 'scale(1.05)' : 'scale(1)',
@@ -37,7 +33,7 @@ const FeaturedBadge = styled(Box)(({ theme }) => ({
     position: 'absolute',
     border: `1px solid ${theme.palette.primary.main}`,
     top: -10,
-    right: 65,
+    right: 94,
     fontSize: '0.75rem',
     fontWeight: 'bold',
 }));
@@ -52,15 +48,21 @@ const SelectButton = styled(GenericButton)<{ featured?: string }>(({ theme, feat
 
 export type PricingCardProps = IPlan & {
     fromService: "passinbiz" | "checkinbiz";
+    getPlanAllow: boolean;
 };
 
-export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, period, features, featured = false, fromService }) => {
+export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, period, features, featured = false, fromService, getPlanAllow = false }) => {
     const t = useTranslations();
-    const {subcribeAction, loadingGetPlan} = usePricingCardController(id, fromService)
+    const { subcribeAction, loadingGetPlan, setLoadingGetPlan } = usePricingCardController(id, fromService);
+
+    useEffect(() => {
+        setLoadingGetPlan(getPlanAllow);
+    }, [getPlanAllow]);
+
     return (
         <PlanCard featured={String(featured)}>
             {featured && (
-                <FeaturedBadge>Most Popular</FeaturedBadge>
+                <FeaturedBadge>{t("salesPlan.popular")}</FeaturedBadge>
             )}
 
             <CardContent sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>

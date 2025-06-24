@@ -1,6 +1,3 @@
-
-import { useTranslations } from 'next-intl';
-import { IPlan } from '@/domain/core/IPlan';
 import { subscribeInSassProduct } from '@/services/common/subscription.service';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
@@ -8,7 +5,6 @@ import { useState } from 'react';
 import { ISubscription } from './PricingCard';
 import { useToast } from '@/hooks/useToast';
 export default function usePricingCardController(id: "freemium" | "bronze" | "enterprise", fromService: "passinbiz" | "checkinbiz") {
-    const t = useTranslations();
     const { currentEntity } = useEntity();
     const { token } = useAuth()
     const [loadingGetPlan, setLoadingGetPlan] = useState(false);
@@ -22,14 +18,16 @@ export default function usePricingCardController(id: "freemium" | "bronze" | "en
                 serviceId: fromService,
                 planId: id
             }
+            console.log("token>>>", token)
             await subscribeInSassProduct(data, token)
-
-        } catch (error: any) {
-            console.log("Error:", error);
+        } catch (error: unknown) {
             setLoadingGetPlan(false);
-            showToast(error.message, 'error')
-
+            if (error instanceof Error) {
+                showToast(error.message, 'error');
+            } else {
+                showToast(String(error), 'error');
+            }
         }
     }
-    return { subcribeAction, loadingGetPlan }
+    return { subcribeAction, loadingGetPlan, setLoadingGetPlan }
 }
