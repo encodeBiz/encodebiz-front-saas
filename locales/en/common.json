@@ -36,7 +36,12 @@
             }
         },
         "footer": {
-            "copyright": "© {{year}} EncodeBiz. All rights reserved."
+            "copyright": "© {{year}} EncodeBiz. All rights reserved.",
+            "web": "Our Site",
+            "contactUs": "Contact Us",
+            "whatsApp": "WhatsApp",
+            "policy": "Policy and Privacy",
+            "terms": "Terms and Conditions"
         }
     },
     "core": {
@@ -170,5 +175,11 @@
         "upToFive": "Limit: Up to 5 pass holders.",
         "unlimitedProducts": "Unlimited products",
         "whiteLabel": "White-label solutions"
+    },
+    "terms": {
+        "title": "Terms and Conditions"
+    },
+    "policy": {
+        "title": "Policy and Privacy"
     }
 }

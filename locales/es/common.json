@@ -36,7 +36,12 @@
       }
     },
     "footer": {
-      "copyright": "EncodeBiz. Todos los derechos reservados."
+      "copyright": "EncodeBiz. Todos los derechos reservados.",
+      "web": "Nuestra Web",
+      "contactUs": "Contáctenos",
+      "whatsApp": "WhatsApp",
+      "policy": "Política y Privacidad",
+      "terms": "Términos y Condiciones"
     }
   },
   "core": {
@@ -208,5 +213,11 @@
     "onsiteTraining": "Capacitación en el lugar",
     "pay": "Obtener Plan",
     "notAllowedPlan": "Debes actualizar los datos legales de la entidad seleccionada antes de obtener un plan."
+  },
+  "terms":{
+    "title":"Términos y Condiciones"
+  },
+  "policy":{
+    "title":"Política y Privacidad"
   }
 }

@@ -2,6 +2,7 @@
 import React from 'react';
 import { Box, Typography, Container } from '@mui/material';
 import { useTranslations } from 'next-intl';
+import CustomFooter from './CustomFooter/CustomFooter';
 
 const Footer: React.FC = () => {
   const t = useTranslations()
@@ -10,11 +11,12 @@ const Footer: React.FC = () => {
       sx={{
         width: '100%',
         bgcolor: (theme) => theme.palette.background.paper,
-        
+
         py: 3,
       }}
     >
-      <Container maxWidth="lg">        
+      <Container maxWidth="lg">
+        <CustomFooter />
         <Typography variant="body2" color="inherit" align="center">
           {'© '}
           {new Date().getFullYear()}{' '}
