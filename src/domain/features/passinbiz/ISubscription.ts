@@ -1,14 +1,17 @@
+import { BizType, PlanType } from "@/domain/core/IService";
+
 export interface Subscription {
     entityId: string;
-    serviceId: 'passinbiz'
-    plan: 'freemium' | 'bronze' | 'gold' | 'enterprise';
+    serviceId: BizType
+    plan: PlanType;
     maxHolders: number;
     allowBranding: boolean;
     allowCustomTemplate: boolean;
     payPerUse: boolean;
     stripeSubscriptionId?: string;
-    status: 'active' | 'trialing' | 'cancelled';
+    status: StatusType;
     startDate: string;
     endDate?: string;
-
 }
+
+export type StatusType = 'active' | 'trialing' | 'cancelled';

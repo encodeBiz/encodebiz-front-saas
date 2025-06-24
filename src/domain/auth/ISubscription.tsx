@@ -1,11 +1,13 @@
+import { BizType, PlanType } from "../core/IService";
+
 export interface ISubscription {
     entityId: string
-    serviceId: "passinbiz" | "checkinbiz"
-    planId: "freemium" | "bronze" | "enterprise";
+    serviceId: BizType
+    planId: PlanType;
 }
 
 export interface IUnSubscription {
     entityId: string
-    serviceId: "passinbiz" | "checkinbiz"
+    serviceId: BizType
     
 }

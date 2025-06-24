@@ -22,6 +22,7 @@ import { BaseButton } from '@/components/common/buttons/BaseButton';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
+import { configBilling } from '@/services/common/subscription.service';
 
 
 
@@ -283,6 +284,10 @@ export const useSettingEntityController = () => {
                 "active": true
             }
             await updateEntity(updateData, token)
+            await configBilling({
+                entityId: currentEntity?.entity.id as string,
+                uid: user?.id as string
+            }, token)
             refrestList(user?.id as string)
             showToast(t('core.feedback.success'), 'success');
             setPending(false)
@@ -374,11 +379,11 @@ export const useSettingEntityController = () => {
         return (
             <>
                 <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' sx={{ width: '100%' }}>
-                    <BaseButton onClick={() => openModal(CommonModalType.DELETE, { entityId: currentEntity?.entity.id })} variant='contained' color='warning' >Eliminar entidad</BaseButton>
+                    <BaseButton disabled={!user?.id || !currentEntity} onClick={() => openModal(CommonModalType.DELETE, { entityId: currentEntity?.entity.id })} variant='contained' color='warning' >Eliminar entidad</BaseButton>
                 </Box>
                 <GenericForm<EntityUpdatedFormValues>
                     column={2}
-
+                    disabled={!user?.id  || !currentEntity}
                     initialValues={initialValues}
                     validationSchema={validationSchema}
                     onSubmit={setEntityDataAction}
@@ -406,6 +411,7 @@ export const useSettingEntityController = () => {
 
                 <GenericForm<BrandFormValues>
                     column={3}
+                    disabled={!user?.id || !currentEntity}
                     initialValues={initialBrandValues}
                     validationSchema={brandValidationSchema}
                     onSubmit={changeBrandAction}

@@ -43,6 +43,7 @@ btnFullWidth?: boolean;
   formContainerProps?: any;
   column?: 1 | 2 | 3;
   enableReinitialize?: boolean;
+  disabled?: boolean;
 };
 
 const GenericForm = <T extends Record<string, any>>({
@@ -57,7 +58,8 @@ const GenericForm = <T extends Record<string, any>>({
   column = 1,
   formContainerProps,
   enableReinitialize,
-  btnFullWidth=false
+  btnFullWidth=false,
+  disabled=false
 }: GenericFormProps<T>) => {
   const t = useTranslations()
 
@@ -111,7 +113,7 @@ const GenericForm = <T extends Record<string, any>>({
                         label={field.label}
                         type={field.type}
                         required={field.required}
-                        disabled={field.disabled}
+                        disabled={field.disabled || disabled}
                         fullWidth
                         variant="outlined"
                         error={isInvalid}
@@ -133,12 +135,12 @@ const GenericForm = <T extends Record<string, any>>({
               <Grid sx={{ width: '100%' }}>
                 <Box display="flex" justifyContent="flex-end" gap={2}>
                   {onCancel && (
-                    <BaseButton sx={{ mt: 3, mb: 2, py: 1.5 }} onClick={onCancel} disabled={formikProps.isSubmitting} fullWidth={btnFullWidth} variant="outlined" color="primary" >
+                    <BaseButton sx={{ mt: 3, mb: 2, py: 1.5 }} onClick={onCancel} disabled={formikProps.isSubmitting || disabled} fullWidth={btnFullWidth} variant="outlined" color="primary" >
                       {cancelButtonText}
                     </BaseButton>
                   )}
 
-                  <BaseButton sx={{ mt: 3, mb: 2, py: 1.5 }} disabled={formikProps.isSubmitting || !formikProps.isValid} type="submit" fullWidth={btnFullWidth} variant="contained" color="primary" >
+                  <BaseButton sx={{ mt: 3, mb: 2, py: 1.5 }} disabled={formikProps.isSubmitting || disabled || !formikProps.isValid} type="submit" fullWidth={btnFullWidth} variant="contained" color="primary" >
                     {formikProps.isSubmitting ? t('core.button.submitting') : submitButtonText}
                   </BaseButton>
                 </Box>

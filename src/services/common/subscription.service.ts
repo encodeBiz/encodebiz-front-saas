@@ -69,7 +69,7 @@ export async function configBilling(data: {
                 token: `Bearer ${token}`
             },
         });
-        const response: any = await httpClientFetchInstance.post(process.env.NEXT_PUBLIC_BACKEND_URI_SUBCRIBE as string, {
+        const response: any = await httpClientFetchInstance.post(process.env.NEXT_PUBLIC_BACKEND_URI_CONFIGBILLING as string, {
             ...data
         });
         if (response.errCode && response.errCode !== 200) {

@@ -207,6 +207,6 @@
     "whiteLabel": "Soluciones de marca blanca",
     "onsiteTraining": "Capacitación en el lugar",
     "pay": "Obtener Plan",
-    "notAllowedPlan": "Debes actualizar los datos de tu entidad antes de obtener un plan."
+    "notAllowedPlan": "Debes actualizar los datos legales de la entidad seleccionada antes de obtener un plan."
   }
 }

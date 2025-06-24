@@ -26,10 +26,10 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
   const { touched, error } = meta
   const helperText = touched && error;
 
-   const { 
-   
-    validateField, 
-   
+  const {
+
+    validateField,
+
   } = useFormikContext();
 
   const [preview, setPreview] = useState(null);
@@ -74,7 +74,7 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
               sx={{ width: '100%', height: '100%', mb: 1 }}
               variant="rounded"
             />
-            <IconButton
+            <IconButton disabled={isUploading || props.disabled}
               onClick={handleRemoveImage}
               sx={{
                 position: 'absolute',
@@ -95,7 +95,7 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
             variant="outlined"
             color="primary"
             startIcon={<CloudUpload />}
-            disabled={isUploading}
+            disabled={isUploading || props.disabled}
           >
 
             {isUploading ? (
@@ -103,11 +103,11 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
             ) : (
               t('core.label.uploadResourse')
             )}
-            {JSON.stringify(field.value)}
+
             <TextField
               {...props}
-              onChange={handleFileChange}   
-              onBlur={(e)=>field.onBlur(e)}           
+              onChange={handleFileChange}
+              onBlur={(e) => field.onBlur(e)}
               type="file"
               value={field.value}
               style={{
@@ -121,8 +121,9 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
                 whiteSpace: 'nowrap',
                 width: '1px',
               }}
-              accept={accept}
 
+              accept={accept}
+              disabled={isUploading || props.disabled}
             />
 
           </Button>

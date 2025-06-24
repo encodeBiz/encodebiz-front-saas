@@ -6,12 +6,8 @@ import { useTranslations } from 'next-intl';
 import { IPlan } from '@/domain/core/IPlan';
 import { GenericButton } from '../buttons/BaseButton';
 import usePricingCardController from './PricingCard.controller';
-export interface ISubscription {
-    entityId: string
-    serviceId: "passinbiz" | "checkinbiz"
-    planId: "freemium" | "bronze" | "enterprise";
-}
-
+import { BizType } from '@/domain/core/IService';
+ 
 const PlanCard = styled(Box)<{ featured?: string }>(({ theme, featured }) => ({
     maxWidth: 300,
     minWidth: 250,
@@ -47,7 +43,7 @@ const SelectButton = styled(GenericButton)<{ featured?: string }>(({ theme, feat
 
 
 export type PricingCardProps = IPlan & {
-    fromService: "passinbiz" | "checkinbiz";
+    fromService: BizType;
     getPlanAllow: boolean;
 };
 

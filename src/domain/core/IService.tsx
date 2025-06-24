@@ -1,8 +1,11 @@
 export interface IService {
 
-    id: 'passinbiz' | 'checkinbiz'; // o string si lo generalizas
+    id: BizType; // o string si lo generalizas
     name: string;
     description: string;
-    availablePlans: Array<'freemium' | 'bronze' | 'gold' | 'enterprise'>;
+    availablePlans: Array<PlanType>;
 }
 
+export type PlanType = "freemium" | "bronze" | "enterprise";
+
+export type BizType = 'passinbiz' | 'checkinbiz';
