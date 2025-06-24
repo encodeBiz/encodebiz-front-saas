@@ -1,12 +1,12 @@
 import { RegisterFormValues } from "@/app/auth/register/page.controller";
 import { collection } from "@/config/collection";
 import { createUser } from "@/lib/firebase/authentication/create";
-import { login, loginWithGoogle, loginWithToken } from "@/lib/firebase/authentication/login";
+import { changePass, getUser, login, loginWithGoogle, loginWithToken } from "@/lib/firebase/authentication/login";
 import { logout } from "@/lib/firebase/authentication/logout";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
-import httpClientFetchInstance, { HttpClient } from "@/lib/http/httpClientFetchNext";
+import httpClientFetchInstance, { codeError, HttpClient } from "@/lib/http/httpClientFetchNext";
 import IUser from "@/domain/auth/IUser";
-import { UserCredential } from "firebase/auth";
+import { EmailAuthCredential, EmailAuthProvider, reauthenticateWithCredential, User, UserCredential } from "firebase/auth";
 
 
 export async function validateToken(
@@ -30,7 +30,8 @@ export async function signInToken(
     try {
         return await loginWithToken(token)
     } catch (error: any) {
-        throw new Error(error.message)
+        throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
+
     }
 }
 
@@ -39,7 +40,8 @@ export async function signInGoogle(): Promise<UserCredential> {
     try {
         return await loginWithGoogle()
     } catch (error: any) {
-        throw new Error(error.message)
+        throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
+
     }
 }
 
@@ -49,7 +51,8 @@ export async function signInEmail(
     try {
         return await login({ email, password })
     } catch (error: any) {
-        throw new Error(error.message)
+        throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
+
     }
 }
 
@@ -83,7 +86,8 @@ export async function signUpEmail(data: RegisterFormValues) {
 
         }
     } catch (error: any) {
-        throw new Error(error.message)
+        throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
+
     }
 
 }
@@ -97,7 +101,8 @@ export async function fetchUserAccount(
     try {
         return await getOne(collection.USER, uid);
     } catch (error: any) {
-        throw new Error(error.message)
+        throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
+
     }
 }
 
@@ -107,6 +112,37 @@ export async function handleLogout(): Promise<void> {
     try {
         await logout()
     } catch (error: any) {
-        throw new Error(error.message)
+        throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
+
+    }
+}
+
+export async function reAuth(password: string): Promise<UserCredential> {
+    try {
+        const user = await getUser()
+        const credencial = EmailAuthProvider.credential(user?.email as string, password)
+        return await reauthenticateWithCredential(user as User, credencial)
+    } catch (error: any) {
+        throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
+    }
+}
+
+
+export async function changePassword(password: string): Promise<void> {
+    try {
+        const user = await getUser()
+        await changePass(user as User, password)
+    } catch (error: any) {
+        throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
+
+    }
+}
+
+export async function updateAccout(): Promise<UserCredential> {
+    try {
+        return await loginWithGoogle()
+    } catch (error: any) {
+        throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
+
     }
 }

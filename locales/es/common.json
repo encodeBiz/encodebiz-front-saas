@@ -80,7 +80,8 @@
       "iconUrl": "Icono",
       "address": "Dirección",
       "legal": "Legal",
-      "name": "Nombre"
+      "name": "Nombre",
+      "currentPassword":"Contraseña actual"
     },
     "button": {
       "submitting": "Enviando...",

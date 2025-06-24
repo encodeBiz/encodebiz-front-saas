@@ -1,5 +1,6 @@
+import { SxProps, Theme } from "@mui/material";
 
-export const useStyles = () => ({
+export const useStyles = (): Record<string, SxProps<Theme>> => ({
   base: {
     width: '100%',
     borderRadius: 2, display: 'flex', flexDirection: 'column', justifyContent: 'space-around',pt:4,pb:4

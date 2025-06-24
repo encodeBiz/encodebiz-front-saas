@@ -95,7 +95,6 @@ export class HttpClient {
       const response = await fetch(fullURL, { ...config, cache: forceCache });
 
       if (!response.ok) {
-
         if (response.status === 400) {
           const responseError: { code: string; message: string; error: string } =
             await response.json();
