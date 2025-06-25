@@ -31,7 +31,7 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
     validateField,
 
   } = useFormikContext();
-
+   
   const [preview, setPreview] = useState(field.value);
   const [isUploading, setIsUploading] = useState(false);
 
