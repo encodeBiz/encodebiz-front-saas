@@ -88,7 +88,8 @@ const GenericForm = <T extends Record<string, any>>({
 
       >
         {(formikProps: FormikProps<T>) => (
-          <Form noValidate>        
+          <Form noValidate>       
+           
             <Grid container spacing={3}>
               {fields.map((field,i) => {
                 const FieldComponent = field.component;

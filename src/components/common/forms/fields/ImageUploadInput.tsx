@@ -32,7 +32,7 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
 
   } = useFormikContext();
 
-  const [preview, setPreview] = useState(null);
+  const [preview, setPreview] = useState(field.value);
   const [isUploading, setIsUploading] = useState(false);
 
   const handleFileChange = useCallback((event: any) => {
@@ -109,7 +109,7 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
               onChange={handleFileChange}
               onBlur={(e) => field.onBlur(e)}
               type="file"
-              value={field.value}
+             
               style={{
                 border: 1,
                 clip: 'rect(0 0 0 0)',

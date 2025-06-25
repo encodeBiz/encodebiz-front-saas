@@ -383,7 +383,7 @@ export const useSettingEntityController = () => {
                 </Box>
                 <GenericForm<EntityUpdatedFormValues>
                     column={2}
-                    disabled={!user?.id  || !currentEntity}
+                    disabled={!user?.id  || !currentEntity || pending}
                     initialValues={initialValues}
                     validationSchema={validationSchema}
                     onSubmit={setEntityDataAction}
@@ -411,7 +411,7 @@ export const useSettingEntityController = () => {
 
                 <GenericForm<BrandFormValues>
                     column={3}
-                    disabled={!user?.id || !currentEntity}
+                    disabled={!user?.id || !currentEntity || pending}
                     initialValues={initialBrandValues}
                     validationSchema={brandValidationSchema}
                     onSubmit={changeBrandAction}

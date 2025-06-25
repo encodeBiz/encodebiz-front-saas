@@ -8,15 +8,17 @@ import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import UploadAvatar from '@/components/common/avatar/UploadAvatar';
 import { useToast } from '@/hooks/useToast';
-import { changePassword, reAuth } from '@/services/common/account.service';
+import { changePassword, reAuth, updateAccout } from '@/services/common/account.service';
 import ImageUploadInput from '@/components/common/forms/fields/ImageUploadInput';
+import { uploadFile } from '@/lib/firebase/storage/fileManager';
 export interface UserFormValues {
     "uid": string
     "name": string
     "email": string
     "phone": string
     "active": boolean
-    "lastlogin": string
+    "avatar": any
+
 };
 
 export interface PasswordFormValues {
@@ -39,6 +41,8 @@ export const useUserAccountController = () => {
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
 
+
+
     const [avatarSrc, setAvatarSrc] = useState<string | undefined>(undefined);
     const [avatarFile, setAvatarFile] = useState<File | null>(null);
     const [initialValues, setInitialValues] = useState<UserFormValues>({
@@ -46,7 +50,7 @@ export const useUserAccountController = () => {
         "name": user?.displayName as string | "",
         "email": user?.email as string | "",
         "phone": user?.phoneNumber as string | "",
-        "lastlogin": user?.metadata.lastSignInTime as string | "",
+        avatar: user?.photoURL as string | "",
         "active": true,
     });
 
@@ -85,7 +89,7 @@ export const useUserAccountController = () => {
 
     const fields = [
         {
-            name: 'logoUrl',
+            name: 'avatar',
             label: t('core.label.logo'),
             component: ImageUploadInput,
             required: true,
@@ -136,14 +140,20 @@ export const useUserAccountController = () => {
             component: TextInput,
         },
     ];
-   
+
 
     const setUserDataAction = async (values: UserFormValues) => {
         try {
-            console.log("values>>>", values);
-            console.log("avatarFile>>>", avatarFile);
+            let uri
+             
             setPending(true)
-
+            if (typeof values.avatar === 'object') {
+                uri = await uploadFile(values.avatar, `user-avatar/${values.avatar}`, () => { })
+            } else {
+                uri = values.avatar
+            }
+            await updateAccout(uri, values.name)
+             showToast(t('core.feedback.success'), 'success');
             setPending(false)
         } catch (error: unknown) {
             if (error instanceof Error) {
@@ -183,7 +193,8 @@ export const useUserAccountController = () => {
 
                 <GenericForm<UserFormValues>
                     column={1}
-                    disabled={pending}
+                    enableReinitialize
+                    disabled={!user?.id || pending}
                     initialValues={initialValues}
                     validationSchema={validationSchema}
                     onSubmit={setUserDataAction}
@@ -200,7 +211,8 @@ export const useUserAccountController = () => {
 
             <GenericForm<PasswordFormValues>
                 column={1}
-                disabled={pending}
+                enableReinitialize
+                    disabled={!user?.id || pending}
                 initialValues={passwordwordValues}
                 validationSchema={passwordValidationSchema}
                 onSubmit={changePasswordAction}
@@ -227,7 +239,7 @@ export const useUserAccountController = () => {
             "name": user?.displayName as string | "",
             "email": user?.email as string | "",
             "phone": user?.phoneNumber as string | "",
-            "lastlogin": user?.metadata.lastSignInTime as string | "",
+            avatar: user?.photoURL as string | "",
             "active": true,
         });
         setAvatarSrc(user?.photoURL as string | "");

@@ -48,7 +48,7 @@ const PageLoader: React.FC<PageLoaderProps> = ({
       width: '100%',
       height: 'calc(50vh - 200px)',
       backgroundColor: theme.palette.background.default,
-      zIndex: theme.zIndex.modal + 1
+     // zIndex: theme.zIndex.modal + 1
     })
   };
 
