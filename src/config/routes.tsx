@@ -18,6 +18,7 @@ import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import CreditCardOffIcon from '@mui/icons-material/CreditCardOff';
 import PersonIcon from '@mui/icons-material/Person';
 import BusinessIcon from '@mui/icons-material/Business';
+import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 export const menuItems = [{
     id: 'dashboard',
     name: 'Dashboard',
@@ -47,8 +48,8 @@ export const menuItems = [{
     link: '/main/billing',
     subMenu: [{
         name: 'Subscription',
-        icon: <BarChartIcon />,
-        link: '/main/billing/sales',
+        icon: <WorkspacePremiumIcon />,
+        link: '/main/billing/suscription',
         subMenu: []
     }, {
         name: 'Revenue',

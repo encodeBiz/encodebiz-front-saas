@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+"use client"
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -44,6 +45,10 @@ interface GenericTableProps<T> {
   onEdit?: (row: T) => void;
   onBulkAction?: (ids: (string | number)[]) => void;
   loading?: boolean;
+  page?: number;
+  rowsPerPage?: number;
+  onPageChange?: (newPage: number) => void;
+  onRowsPerPageChange?: (rows: number) => void;
 }
 
 export function GenericTable<T extends Record<string, any>>({
@@ -56,14 +61,17 @@ export function GenericTable<T extends Record<string, any>>({
   onDelete,
   onEdit,
   onBulkAction,
-  loading = false
+  loading = false,
+  onPageChange,
+  onRowsPerPageChange,
 }: GenericTableProps<T>) {
   // State management
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [orderBy, setOrderBy] = useState<keyof T>(keyField);
   const [selected, setSelected] = useState<(string | number)[]>([]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [totalItems, setTotalItems] = useState(0);
   const [searchText, setSearchText] = useState('');
 
   // Filter data based on search text
@@ -75,7 +83,7 @@ export function GenericTable<T extends Record<string, any>>({
         return value?.toString().toLowerCase().includes(searchText.toLowerCase());
       })
     );
-  }, [data, searchText, columns]);
+  }, [data, searchText, columns, page, rowsPerPage]);
 
   // Sort data
   const sortedData = useMemo(() => {
@@ -95,12 +103,7 @@ export function GenericTable<T extends Record<string, any>>({
         ? aValue.toString().localeCompare(bValue.toString())
         : bValue.toString().localeCompare(aValue.toString());
     });
-  }, [filteredData, order, orderBy]);
-
-  // Pagination
-  const paginatedData = useMemo(() => {
-    return sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-  }, [sortedData, page, rowsPerPage]);
+  }, [filteredData, order, orderBy, data, rowsPerPage, page]);
 
   // Handlers
   const handleRequestSort = (property: keyof T) => {
@@ -111,7 +114,7 @@ export function GenericTable<T extends Record<string, any>>({
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = paginatedData.map((row) => row[keyField]);
+      const newSelected = sortedData.map((row) => row[keyField]);
       setSelected(newSelected);
       return;
     }
@@ -150,11 +153,27 @@ export function GenericTable<T extends Record<string, any>>({
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    const newLimit = parseInt(event.target.value, 10);
+    setRowsPerPage(newLimit);
   };
 
   const isSelected = (id: string | number) => selected.indexOf(id) !== -1;
+
+
+
+  useEffect(() => {
+    if (onPageChange)
+      onPageChange(page);
+  }, [page]);
+
+  useEffect(() => {
+    if (data.length !== 0) setTotalItems(data[0].total);
+  }, [data]);
+
+  useEffect(() => {
+    if (onRowsPerPageChange)
+      onRowsPerPageChange(rowsPerPage)
+  }, [rowsPerPage]);
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -167,7 +186,7 @@ export function GenericTable<T extends Record<string, any>>({
         }}
       >
         {title && <Typography variant="h6">{title}</Typography>}
-        
+
         <Box sx={{ display: 'flex', gap: 2 }}>
           <TextField
             variant="outlined"
@@ -186,7 +205,7 @@ export function GenericTable<T extends Record<string, any>>({
               )
             }}
           />
-          
+
           <Tooltip title="Filter">
             <IconButton>
               <FilterIcon />
@@ -225,13 +244,13 @@ export function GenericTable<T extends Record<string, any>>({
                 <TableCell padding="checkbox">
                   <Checkbox
                     color="primary"
-                    indeterminate={selected.length > 0 && selected.length < paginatedData.length}
-                    checked={paginatedData.length > 0 && selected.length === paginatedData.length}
+                    indeterminate={selected.length > 0 && selected.length < sortedData.length}
+                    checked={sortedData.length > 0 && selected.length === sortedData.length}
                     onChange={handleSelectAllClick}
                   />
                 </TableCell>
               )}
-              
+
               {columns.map((column) => (
                 <TableCell
                   key={column.id as string}
@@ -252,13 +271,13 @@ export function GenericTable<T extends Record<string, any>>({
                   )}
                 </TableCell>
               ))}
-              
+
               {(onEdit || onDelete) && (
                 <TableCell align="right">Actions</TableCell>
               )}
             </TableRow>
           </TableHead>
-          
+
           <TableBody>
             {loading ? (
               <TableRow>
@@ -266,14 +285,14 @@ export function GenericTable<T extends Record<string, any>>({
                   Loading...
                 </TableCell>
               </TableRow>
-            ) : paginatedData.length === 0 ? (
+            ) : sortedData.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={columns.length + 2} align="center">
                   No data available
                 </TableCell>
               </TableRow>
             ) : (
-              paginatedData.map((row) => {
+              sortedData.map((row) => {
                 const isItemSelected = isSelected(row[keyField]);
                 return (
                   <TableRow
@@ -294,7 +313,7 @@ export function GenericTable<T extends Record<string, any>>({
                         />
                       </TableCell>
                     )}
-                    
+
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (
@@ -303,7 +322,7 @@ export function GenericTable<T extends Record<string, any>>({
                         </TableCell>
                       );
                     })}
-                    
+
                     {(onEdit || onDelete) && (
                       <TableCell align="right" sx={{ whiteSpace: 'nowrap' }}>
                         {onEdit && (
@@ -341,11 +360,11 @@ export function GenericTable<T extends Record<string, any>>({
           </TableBody>
         </Table>
       </TableContainer>
-      
+
       <TablePagination
         rowsPerPageOptions={[5, 10, 25, 100]}
         component="div"
-        count={filteredData.length}
+        count={totalItems}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
