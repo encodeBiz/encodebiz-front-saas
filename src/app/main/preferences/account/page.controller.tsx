@@ -8,9 +8,12 @@ import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import UploadAvatar from '@/components/common/avatar/UploadAvatar';
 import { useToast } from '@/hooks/useToast';
-import { changePassword, reAuth, updateAccout } from '@/services/common/account.service';
+import { changePassword, fetchUserAccount, reAuth, updateAccout } from '@/services/common/account.service';
 import ImageUploadInput from '@/components/common/forms/fields/ImageUploadInput';
 import { uploadFile } from '@/lib/firebase/storage/fileManager';
+import { emailRule, fileImageRule, passwordRestrictionRule, requiredRule } from '@/config/yupRules';
+import { getUser } from '@/lib/firebase/authentication/login';
+import { User } from 'firebase/auth';
 export interface UserFormValues {
     "uid": string
     "name": string
@@ -37,7 +40,7 @@ export type TabItem = {
 
 export const useUserAccountController = () => {
     const t = useTranslations();
-    const { user } = useAuth();
+    const { user, setUser } = useAuth();
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
 
@@ -61,29 +64,17 @@ export const useUserAccountController = () => {
     });
 
     const validationSchema = Yup.object().shape({
-        email: Yup.string().email(t('core.formValidatorMessages.email')).required(t('core.formValidatorMessages.required')),
-        name: Yup.string().required(t('core.formValidatorMessages.required')),
-        phone: Yup.string().required(t('core.formValidatorMessages.required')),
-        avatar: Yup.mixed()
-            .required('An image is required')
-            .test('fileSize', t('core.formValidatorMessages.avatarMaxSize'), (value: any) => {
+        email: emailRule(t),
+        name: requiredRule(t),
+        phone: Yup.string().optional(),
+        avatar: fileImageRule(t)
 
-                if (!value) return true; // if no file, let required handle it
-                return value.size <= 5000000; // 5MB
-            })
-            .test('fileType', t('core.formValidatorMessages.avatarUpload'), (value: any) => {
-                if (!value) return true; // if no file, let required handle it
-                return ['image/jpeg', 'image/png', 'image/gif'].includes(value.type);
-            }),
     });
 
     const passwordValidationSchema = Yup.object().shape({
-        currentPassword: Yup.string().required(t('core.formValidatorMessages.required')),
-        password: Yup.string()
-            .required(t('core.formValidatorMessages.required'))
-            .min(8, t('core.formValidatorMessages.password')),
-        passwordConfirm: Yup.string().required(t('core.formValidatorMessages.required'))
-            .oneOf([Yup.ref('password'), ''], t('core.formValidatorMessages.passwordMatch'))
+        currentPassword: requiredRule(t),
+        password: passwordRestrictionRule(t),
+        passwordConfirm: requiredRule(t).oneOf([Yup.ref('password'), ''], t('core.formValidatorMessages.passwordMatch'))
 
     });
 
@@ -92,6 +83,7 @@ export const useUserAccountController = () => {
             name: 'avatar',
             label: t('core.label.logo'),
             component: ImageUploadInput,
+
             required: true,
         },
         {
@@ -145,7 +137,7 @@ export const useUserAccountController = () => {
     const setUserDataAction = async (values: UserFormValues) => {
         try {
             let uri
-             
+
             setPending(true)
             if (typeof values.avatar === 'object') {
                 uri = await uploadFile(values.avatar, `user-avatar/${values.avatar}`, () => { })
@@ -153,7 +145,12 @@ export const useUserAccountController = () => {
                 uri = values.avatar
             }
             await updateAccout(uri, values.name)
-             showToast(t('core.feedback.success'), 'success');
+            setUser({
+                ...user as any,
+                ...await getUser() as User
+            })
+
+            showToast(t('core.feedback.success'), 'success');
             setPending(false)
         } catch (error: unknown) {
             if (error instanceof Error) {
@@ -212,7 +209,7 @@ export const useUserAccountController = () => {
             <GenericForm<PasswordFormValues>
                 column={1}
                 enableReinitialize
-                    disabled={!user?.id || pending}
+                disabled={!user?.id || pending}
                 initialValues={passwordwordValues}
                 validationSchema={passwordValidationSchema}
                 onSubmit={changePasswordAction}

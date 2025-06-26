@@ -31,10 +31,12 @@ import LocaleSwitcher from '../../common/LocaleSwitcher';
 import { handleLogout } from '@/services/common/account.service';
 import { useHeader } from './Header.controller';
 import { useCommonModal } from '@/hooks/useCommonModal';
+import { useAuth } from '@/hooks/useAuth';
 
 
 export default function Header() {
   const { changeLayoutState, layoutState } = useLayout()
+  const { user } = useAuth()
   const { changeColorMode } = useAppTheme()
   const theme = useTheme();
   const t = useTranslations();
@@ -228,8 +230,8 @@ export default function Header() {
               >
                 <Avatar
                   sx={{ width: 32, height: 32 }}
-                  src="/path/to/user.jpg"
-                  alt="User Avatar"
+                  src={user?.photoURL?user?.photoURL:''}
+                  alt={user?.displayName as string}
                 />
               </IconButton>
             </Tooltip>

@@ -30,6 +30,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const inPublicPage = pathName.startsWith('/auth')
 
     const watchSesionState = async (userAuth: User) => {
+         
         if (userAuth) {
             updateUserData(userAuth)
             setToken(await userAuth.getIdToken())

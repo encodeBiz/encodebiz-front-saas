@@ -6,8 +6,8 @@ import { logout } from "@/lib/firebase/authentication/logout";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import httpClientFetchInstance, { codeError, HttpClient } from "@/lib/http/httpClientFetchNext";
 import IUser from "@/domain/auth/IUser";
-import { EmailAuthCredential, EmailAuthProvider, reauthenticateWithCredential, updateProfile, User, UserCredential } from "firebase/auth";
-
+import {  EmailAuthProvider, reauthenticateWithCredential, reload, updateProfile, User, UserCredential } from "firebase/auth";
+ 
 
 export async function validateToken(
     token: string,
@@ -141,10 +141,11 @@ export async function changePassword(password: string): Promise<void> {
 export async function updateAccout(photoURL: string, displayName: string): Promise<void> {
     try {
         const user = await getUser()
-        return await updateProfile(user as User, {
+        await updateProfile(user as User, {
             photoURL,
             displayName
         })
+ 
     } catch (error: any) {
         throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
 

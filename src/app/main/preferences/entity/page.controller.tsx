@@ -23,6 +23,7 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { configBilling } from '@/services/common/subscription.service';
+import { fileImageRule, requiredRule } from '@/config/yupRules';
 
 
 
@@ -82,14 +83,14 @@ export const useSettingEntityController = () => {
     });
 
     const validationSchema = Yup.object().shape({
-        name: Yup.string().required(t('core.formValidatorMessages.required')),
-        street: Yup.string().required(t('core.formValidatorMessages.required')),
-        country: Yup.string().required(t('core.formValidatorMessages.required')),
-        city: Yup.string().required(t('core.formValidatorMessages.required')),
-        postalCode: Yup.string().required(t('core.formValidatorMessages.required')),
-        //region: Yup.string().required(t('core.formValidatorMessages.required')),
-        taxId: Yup.string().required(t('core.formValidatorMessages.required')),
-        legalName: Yup.string().required(t('core.formValidatorMessages.required')),
+        name: requiredRule(t),
+        street: requiredRule(t),
+        country: requiredRule(t),
+        city: requiredRule(t),
+        postalCode: requiredRule(t),
+        //region: requiredRule(t),
+        taxId: requiredRule(t),
+        legalName: requiredRule(t),
 
     });
 
@@ -183,40 +184,12 @@ export const useSettingEntityController = () => {
     });
 
     const brandValidationSchema = Yup.object().shape({
-        backgroundColor: Yup.string().required(t('core.formValidatorMessages.required')),
-        labelColor: Yup.string().required(t('core.formValidatorMessages.required')),
-        textColor: Yup.string().required(t('core.formValidatorMessages.required')),
-        logoUrl: Yup.mixed()
-            .required('An image is required')
-            .test('fileSize', t('core.formValidatorMessages.avatarMaxSize'), (value: any) => {
-
-                if (!value) return true; // if no file, let required handle it
-                return value.size <= 5000000; // 5MB
-            })
-            .test('fileType', t('core.formValidatorMessages.avatarUpload'), (value: any) => {
-                if (!value) return true; // if no file, let required handle it
-                return ['image/jpeg', 'image/png', 'image/gif'].includes(value.type);
-            }),
-        stripImageUrl: Yup.mixed()
-            .required('An image is required')
-            .test('fileSize', t('core.formValidatorMessages.avatarMaxSize'), (value: any) => {
-                if (!value) return true; // if no file, let required handle it
-                return value.size <= 5000000; // 5MB
-            })
-            .test('fileType', t('core.formValidatorMessages.avatarUpload'), (value: any) => {
-                if (!value) return true; // if no file, let required handle it
-                return ['image/jpeg', 'image/png', 'image/gif'].includes(value.type);
-            }),
-        iconUrl: Yup.mixed()
-            .required('An image is required')
-            .test('fileSize', t('core.formValidatorMessages.avatarMaxSize'), (value: any) => {
-                if (!value) return true; // if no file, let required handle it
-                return value.size <= 5000000; // 5MB
-            })
-            .test('fileType', t('core.formValidatorMessages.avatarUpload'), (value: any) => {
-                if (!value) return true; // if no file, let required handle it
-                return ['image/jpeg', 'image/png', 'image/gif'].includes(value.type);
-            }),
+        backgroundColor: requiredRule(t),
+        labelColor: requiredRule(t),
+        textColor: requiredRule(t),
+        logoUrl: fileImageRule(t),
+        stripImageUrl: fileImageRule(t),
+        iconUrl: fileImageRule(t)
     });
 
     const fields2 = [
@@ -305,33 +278,30 @@ export const useSettingEntityController = () => {
 
     const changeBrandAction = async (values: BrandFormValues) => {
         try {
-
+            setPending(true)
             const form = new FormData();
             form.append('entityId', currentEntity?.entity.id as string);
             form.append('backgroundColor', values.backgroundColor);
             form.append('labelColor', values.labelColor);
             form.append('textColor', values.textColor);
-            form.append('logo', values.logoUrl);
-            form.append('icon', values.iconUrl);
-            form.append('stripImage', values.stripImageUrl);
-            const updateData = {
-                entityId: currentEntity?.entity.id,
-                backgroundColor: values.backgroundColor,
-                labelColor: values.labelColor,
-                textColor: values.textColor,
-                files: {
-                    logo: values.logoUrl,
-                    icon: values.iconUrl,
-                    stripImage: values.stripImageUrl,
-                }
-            }
+            if (typeof values.logoUrl !== 'string')
+                form.append('logo', values.logoUrl);
+            if (typeof values.logoUrl !== 'string')
+                form.append('icon', values.iconUrl);
+            if (typeof values.stripImageUrl !== 'string')
+                form.append('stripImage', values.stripImageUrl);
+
             await updateEntityBranding(form, token)
+            refrestList(user?.id as string)
+            showToast(t('core.feedback.success'), 'success');
+            setPending(false)
         } catch (error: unknown) {
             if (error instanceof Error) {
                 showToast(error.message, 'error');
             } else {
                 showToast(String(error), 'error');
             }
+               setPending(false)
         }
     };
 
@@ -351,6 +321,15 @@ export const useSettingEntityController = () => {
         })
         setCityList(country.find(e => e.name === currentEntity?.entity?.legal?.address.country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
 
+
+        setInitialBrandValues({
+            "backgroundColor": currentEntity?.entity?.branding?.backgroundColor as string | "",
+            "labelColor": currentEntity?.entity?.branding?.labelColor as string | "",
+            "textColor": currentEntity?.entity?.branding?.textColor as string | "",
+            logoUrl: currentEntity?.entity?.branding?.logo as string | "",
+            stripImageUrl: currentEntity?.entity?.branding?.stripImage as string | "",
+            iconUrl: currentEntity?.entity?.branding?.icon as string | "",
+        })
     }, [currentEntity])
 
 
@@ -371,6 +350,7 @@ export const useSettingEntityController = () => {
             } else {
                 showToast(String(error), 'error');
             }
+               setPending(false)
         }
     }
 
@@ -383,7 +363,7 @@ export const useSettingEntityController = () => {
                 </Box>
                 <GenericForm<EntityUpdatedFormValues>
                     column={2}
-                    disabled={!user?.id  || !currentEntity || pending}
+                    disabled={!user?.id || !currentEntity || pending}
                     initialValues={initialValues}
                     validationSchema={validationSchema}
                     onSubmit={setEntityDataAction}

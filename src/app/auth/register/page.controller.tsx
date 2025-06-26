@@ -4,6 +4,7 @@ import PasswordInput from '@/components/common/forms/fields/PasswordInput';
 import PhoneNumberInput from '@/components/common/forms/fields/PhoneNumberInput';
 import SimpleCheckTerm from '@/components/common/forms/fields/SimpleCheckTerm';
 import TextInput from '@/components/common/forms/fields/TextInput';
+import { emailRule, passwordRestrictionRule, requiredRule } from '@/config/yupRules';
 import { useToast } from '@/hooks/useToast';
 import { signInGoogle, signUpEmail } from '@/services/common/account.service';
 import { useTranslations } from 'next-intl';
@@ -36,16 +37,14 @@ export const useRegisterController = () => {
     })
 
     const validationSchema = Yup.object().shape({
-        fullName: Yup.string().required(t('core.formValidatorMessages.required')),
-        legalEntityName: Yup.string().required(t('core.formValidatorMessages.required')),
-        email: Yup.string().email(t('core.formValidatorMessages.email')).required(t('core.formValidatorMessages.required')),
-        phone: Yup.string().required(t('core.formValidatorMessages.required')),
+        fullName: requiredRule(t),
+        legalEntityName: requiredRule(t),
+        email:emailRule(t),
+        phone: requiredRule(t),
         acceptTerms: Yup.boolean().oneOf([true], t('core.formValidatorMessages.acceptTerm'))
             .required(t('core.formValidatorMessages.required')),
-        password: Yup.string()
-            .required(t('core.formValidatorMessages.required'))
-            .min(8, t('core.formValidatorMessages.password')),
-        passwordConfirm: Yup.string().required(t('core.formValidatorMessages.required'))
+        password: passwordRestrictionRule(t),
+        passwordConfirm: requiredRule(t)
             .oneOf([Yup.ref('password'), ''], t('core.formValidatorMessages.passwordMatch'))
 
 
