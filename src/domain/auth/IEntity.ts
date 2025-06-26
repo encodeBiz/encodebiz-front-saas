@@ -17,12 +17,14 @@ interface IEntity {
   billingEmail?: string;
   stripeCustomerId?: string;
   branding?: {
-    logoUrl: string,
-    backgroundColor: string,
-    labelColor?: string,
-    textColor: string,
-    stripImageUrl?: string,
-    iconUrl?: string
+    backgroundColor: string
+    entityId: string
+    icon: string
+    labelColor: string
+    logo: string
+    stripImage: string
+    textColor: string
+    uid: string
   }
   active: boolean;
   createdAt?: Date;

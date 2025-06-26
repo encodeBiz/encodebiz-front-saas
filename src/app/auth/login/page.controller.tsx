@@ -2,6 +2,7 @@
 
 import PasswordInput from '@/components/common/forms/fields/PasswordInput';
 import TextInput from '@/components/common/forms/fields/TextInput';
+import { emailRule, passwordRestrictionRule } from '@/config/yupRules';
 import { useToast } from '@/hooks/useToast';
 import { signInEmail, signInGoogle } from '@/services/common/account.service';
 import { useTranslations } from 'next-intl';
@@ -24,10 +25,8 @@ export const useRegisterController = () => {
     })
 
     const validationSchema = Yup.object().shape({
-        email: Yup.string().email(t('core.formValidatorMessages.email')).required(t('core.formValidatorMessages.required')),
-        password: Yup.string()
-            .required(t('core.formValidatorMessages.required'))
-            .min(8, t('core.formValidatorMessages.password')),
+        email: emailRule(t),
+        password: passwordRestrictionRule(t),
 
     });
 

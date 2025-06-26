@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { FieldProps, useField, useFormikContext } from 'formik';
 import {
   Box,
@@ -20,17 +20,21 @@ import { useTranslations } from 'next-intl';
 interface ImageFieldProps {
   accept: string
 }
-const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & FieldProps & TextFieldProps & ImageFieldProps) => {
+const ImageUploadInput = ({ name, label, accept = 'image/*',  ...props }: any & FieldProps & TextFieldProps & ImageFieldProps) => {
   const t = useTranslations();
   const [field, meta, helper] = useField(name);
   const { touched, error } = meta
   const helperText = touched && error;
 
   const {
-
     validateField,
-
   } = useFormikContext();
+   
+
+  useEffect(() => {
+    if(typeof field.value === 'string') setPreview(field.value)
+  }, [field.value])
+  
    
   const [preview, setPreview] = useState(field.value);
   const [isUploading, setIsUploading] = useState(false);
@@ -59,19 +63,21 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
   const handleRemoveImage = useCallback(() => {
     setPreview(null);
     helper.setValue(null);
+   
   }, [name]);
 
   return (
     <FormControl required sx={{ m: 1, width: '100%' }}>
       <InputLabel error={!!helperText} id="demo-simple-select-required-label">{label}</InputLabel>
       <Box sx={{ paddingTop: 5 }}>
-
+ 
         {preview ? (
           <Box sx={{ position: 'relative', display: 'inline-block', borderRadius: '1px solid red' }}>
+          
             <Avatar
               src={preview}
               alt="Preview"
-              sx={{ width: '100%', height: '100%', mb: 1 }}
+              sx={{ width: '100%', height: '100%', mb: 1, maxWidth:300 }}
               variant="rounded"
             />
             <IconButton disabled={isUploading || props.disabled}
@@ -105,7 +111,7 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
             )}
 
             <TextField
-              {...props}
+             
               onChange={handleFileChange}
               onBlur={(e) => field.onBlur(e)}
               type="file"
@@ -122,7 +128,7 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
                 width: '1px',
               }}
 
-              accept={accept}
+              //accept={accept}
               disabled={isUploading || props.disabled}
             />
 

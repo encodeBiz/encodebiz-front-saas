@@ -132,12 +132,11 @@ export async function updateEntityBranding(data: BrandFormValues | any, token: s
         if (!token) {
             throw new Error('Error to fetch user auth token')
         } else {
+
+             
             let httpClientFetchInstance: HttpClient = new HttpClient({
                 baseURL: '',
-                headers: {
-                    token: `Bearer ${token}`,
-
-                },
+               
             });
             const response: any = await httpClientFetchInstance.upload(process.env.NEXT_PUBLIC_BACKEND_URI_UPDATE_BRANDNG_ENTITY as string, data);
             if (response.errCode && response.errCode !== 200) {

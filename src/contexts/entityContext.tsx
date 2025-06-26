@@ -43,6 +43,8 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
     const refrestList = async (userId: string) => {
         const entityList: Array<IUserEntity> = await fetchUserEntities(userId)
+        console.log(entityList);
+        
         if (entityList.length > 0) {
             if (entityList.length > 0 && entityList.filter(e => e.isActive).length === 0) {
                 const item = entityList[0]

@@ -180,11 +180,26 @@ export class HttpClient {
    * @param {?RequestInit} [config]
    * @returns {Promise<T>}
    */
-  upload<T>(url: string, data?: any, config?: RequestInit): Promise<T> {
-    return this.request<T>("POST", url, {
-      body: data,
-      ...config,
-    });
+  async upload<T>(url: string, data?: any): Promise<T> {
+    try {
+      const response = await fetch(url, { 
+        method:'POST',
+        body: data }
+      );
+
+      if (!response.ok) {
+        if (response.status === 400) {
+          const responseError: { code: string; message: string; error: string } =
+            await response.json();
+          const message = codeError[responseError.code];
+          throw new Error(message ? message : responseError.error ? responseError.error : `HTTP error! status: ${response.status}`);
+        } else throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json() as Promise<T>;
+    } catch (error) {
+      console.error("Fetch error:", error);
+      throw error;
+    }
   }
 }
 
