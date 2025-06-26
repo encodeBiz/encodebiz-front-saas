@@ -8,6 +8,7 @@ export default function CustomFooter() {
     const t = useTranslations();
     const classes = useStyles();
     return (
+        <Box sx={{bgcolor: (theme) => theme.palette.background.paper, width:"100%"}}>
         <Box
             sx={classes.general_content}
         >
@@ -60,6 +61,7 @@ export default function CustomFooter() {
                     </Box>
                 </Box>
             </Box>
+        </Box>
         </Box>
     );
 }

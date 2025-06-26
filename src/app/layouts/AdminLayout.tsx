@@ -10,6 +10,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useLayout } from '@/hooks/useLayout';
 import { Box, CssBaseline, Grid, Toolbar } from '@mui/material';
 import { useTranslations } from 'next-intl';
+import CustomFooter from '@/components/layouts/CustomFooter/CustomFooter';
 
 const drawerWidth = 240; // Define the width of your drawer
 
@@ -26,7 +27,7 @@ export default function AdminLayout({
 
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <CssBaseline />
-      
+
       <Header />
       {/* Main content area, including drawer and content grid */}
       <Box
@@ -41,7 +42,7 @@ export default function AdminLayout({
         component="main"
         sx={{
           flexGrow: 1, // Allows main content to take up available space
-          p: 3, // Padding around the main content           
+          //p: 3, // Padding around the main content           
           // Margin top to clear the fixed AppBar
           mt: (theme) => `${theme.mixins.toolbar.minHeight}px`,
           // Adjust padding for drawer if it were permanent/persistent
@@ -52,11 +53,12 @@ export default function AdminLayout({
           })
         }}
       >
-        <Grid container spacing={3} sx={{display:'flex',minHeight:'calc(100vh - 200px)',justifyContent:'flex-start',alignItems:'flex-start'}}>
-        {pendAuth && <PageLoader message={t('core.title.loader')} type={'circular'} fullScreen={false} />}
-        {!pendAuth && children}
-        <Onboarding />
+        <Grid container spacing={3} sx={{ display: 'flex', minHeight: 'calc(100vh - 200px)', justifyContent: 'flex-start', alignItems: 'flex-start', padding:"24px" }}>
+          {pendAuth && <PageLoader message={t('core.title.loader')} type={'circular'} fullScreen={false} />}
+          {!pendAuth && children}
+          <Onboarding />
         </Grid>
+        <CustomFooter />
       </Box>
       <Footer />
     </Box>

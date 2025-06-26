@@ -8,7 +8,7 @@ export const useStyles = (): Record<string, SxProps<Theme>> => ({
         fontSize: "14px",
         padding: {
             xs: "20px 20px",
-            lg: "20px 0px"
+            lg: "20px 40px"
         },
         flexDirection: {
             xs: 'column',
