@@ -1,22 +1,22 @@
 'use client';
-import { Container, Typography } from '@mui/material';
+import { Container } from '@mui/material';
 import { useTranslations } from "next-intl";
+import useHolderController from './page.controller';
+import PresentationCard from '@/components/features/dashboard/PresentationCard/PresentationCard';
+import GenericTabs from '@/components/common/tabs/GenericTabs';
 
 export default function HolderList() {
+  const { tabsRender } = useHolderController();
   const t = useTranslations()
   return (
     <Container maxWidth="lg">
-      <Typography variant="h4" component="h1" gutterBottom sx={{ mb: 4 }}>
-        {t('features.dashboard.overview')}
-      </Typography>
-
-      
-
-
-
-
-
-
+      <PresentationCard
+        title={t('holders.title')}
+      >
+        <GenericTabs
+          tabs={tabsRender}
+        />
+      </PresentationCard>
     </Container>
   );
 }

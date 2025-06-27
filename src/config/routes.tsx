@@ -19,6 +19,7 @@ import CreditCardOffIcon from '@mui/icons-material/CreditCardOff';
 import PersonIcon from '@mui/icons-material/Person';
 import BusinessIcon from '@mui/icons-material/Business';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
+import GroupIcon from '@mui/icons-material/Group';
 export const menuItems = [{
     id: 'dashboard',
     name: 'Dashboard',
@@ -39,6 +40,11 @@ export const menuItems = [{
         name: 'PassinBiz',
         icon: <CreditScoreIcon />,
         link: '/main/passinbiz',
+        subMenu: []
+    }, {
+        name: 'Holders',
+        icon: <GroupIcon />,
+        link: '/main/passinbiz/holder',
         subMenu: []
     }]
 }, {
@@ -72,7 +78,7 @@ export const menuItems = [{
         icon: <PersonIcon />,
         link: '/main/preferences/account',
         subMenu: []
-    },{
+    }, {
         name: 'Entity',
         icon: <BusinessIcon />,
         link: '/main/preferences/entity',

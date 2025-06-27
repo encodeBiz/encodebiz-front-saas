@@ -32,7 +32,8 @@
         "Account": "Cuenta",
         "Notifications": "Notificaciones",
         "Security": "Securidad",
-        "Entity": "Entidad"
+        "Entity": "Entidad",
+        "Holders": "Titulares"
       }
     },
     "footer": {
@@ -86,7 +87,9 @@
       "address": "Dirección",
       "legal": "Legal",
       "name": "Nombre",
-      "currentPassword":"Contraseña actual"
+      "currentPassword": "Contraseña actual",
+      "label": "Etiqueta",
+      "value": "Valor"
     },
     "button": {
       "submitting": "Enviando...",
@@ -215,10 +218,15 @@
     "pay": "Obtener Plan",
     "notAllowedPlan": "Debes actualizar los datos legales de la entidad seleccionada antes de obtener un plan."
   },
-  "terms":{
-    "title":"Términos y Condiciones"
+  "terms": {
+    "title": "Términos y Condiciones"
   },
-  "policy":{
-    "title":"Política y Privacidad"
+  "policy": {
+    "title": "Política y Privacidad"
+  },
+  "holders": {
+    "title": "Titulares",
+    "holderList": "Lista de Titulares",
+    "addHolder": "Adicionar Titular"
   }
 }

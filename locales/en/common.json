@@ -32,7 +32,8 @@
                 "Account": "Account",
                 "Notifications": "Notifications",
                 "Security": "Security",
-                "Entity": "Entity"
+                "Entity": "Entity",
+                "Holders": "Holders"
             }
         },
         "footer": {
@@ -61,7 +62,9 @@
             "sessionLastTime": "Last login",
             "createAt": "Create at",
             "logo": "Logo",
-            "color": "Color"
+            "color": "Color",
+            "label": "Label",
+            "value": "Value"
         },
         "button": {
             "submitting": "Submitting...",
@@ -181,5 +184,10 @@
     },
     "policy": {
         "title": "Policy and Privacy"
+    },
+    "holders": {
+        "title": "Holders",
+        "holderList": "Holders List",
+        "addHolder": "New Holder"
     }
 }
