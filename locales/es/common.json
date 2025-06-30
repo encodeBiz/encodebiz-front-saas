@@ -37,7 +37,8 @@
         "Entity": "Entidad",
         "HoldersList": "Listado de Titulares",
         "AddHolders": "Adicionar Titulares",
-        "Plans": "Planes"
+        "Plans": "Planes",
+        "Holders": "Titulares"
       }
     },
     "footer": {

@@ -48,14 +48,9 @@ export const menuItems = [{
         link: '/main/passinbiz/plans',
         subMenu: []
     }, {
-        name: 'AddHolders',
-        icon: <GroupAddIcon />,
-        link: '/main/passinbiz/holder/add',
-        subMenu: []
-    }, {
-        name: 'HoldersList',
+        name: 'Holders',
         icon: <GroupIcon />,
-        link: '/main/passinbiz/holder/list',
+        link: '/main/passinbiz/holder',
         subMenu: []
     }]
 },
