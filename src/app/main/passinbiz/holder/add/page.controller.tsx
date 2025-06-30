@@ -1,9 +1,7 @@
 import { useTranslations } from "next-intl";
-import { useState, ReactNode } from 'react';
-import { SxProps, Theme } from '@mui/material';
+import { useState } from 'react';
 import DynamicKeyValueInput, { DynamicFields } from "@/components/common/forms/fields/DynamicKeyValueInput";
 import * as Yup from 'yup';
-import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import TextInput from '@/components/common/forms/fields/TextInput';
 
 import { emailRule, requiredRule } from '@/config/yupRules';
@@ -15,14 +13,6 @@ export interface HolderFormValues {
   "customFields": DynamicFields;
 };
 
-export type TabItem = {
-  label: string | ReactNode;
-  icon?: ReactNode;
-  content: ReactNode;
-  disabled?: boolean;
-  sx?: SxProps<Theme>;
-};
-
 export default function useHolderController() {
   const t = useTranslations();
   const [initialValues] = useState<HolderFormValues>({
@@ -31,6 +21,7 @@ export default function useHolderController() {
     phoneNumber: "",
     customFields: []
   });
+
   const validationSchema = Yup.object().shape({
     customFields: Yup.array()
       .of(
@@ -80,37 +71,5 @@ export default function useHolderController() {
     },
   ];
 
-  const formTabs1 = () => {
-    return (
-      <>Listado de Holders</>
-    );
-  };
-
-  const formTabs2 = () => {
-    return (
-      <GenericForm<HolderFormValues>
-        column={2}
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={setDinamicDataAction}
-        fields={fields as FormField[]}
-        submitButtonText={t('core.button.save')}
-        enableReinitialize
-
-      />
-    );
-  };
-
-  const tabsRender: TabItem[] = [
-    {
-      label: `${t("holders.holderList")}`,
-      content: formTabs1(),
-    },
-    {
-      label: `${t("holders.addHolder")}`,
-      content: formTabs2(),
-    }
-  ];
-
-  return { tabsRender }
+  return { fields, initialValues, validationSchema, setDinamicDataAction }
 }
