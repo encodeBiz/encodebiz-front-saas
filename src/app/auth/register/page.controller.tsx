@@ -39,7 +39,7 @@ export const useRegisterController = () => {
     const validationSchema = Yup.object().shape({
         fullName: requiredRule(t),
         legalEntityName: requiredRule(t),
-        email:emailRule(t),
+        email: emailRule(t),
         phone: requiredRule(t),
         acceptTerms: Yup.boolean().oneOf([true], t('core.formValidatorMessages.acceptTerm'))
             .required(t('core.formValidatorMessages.required')),
@@ -55,13 +55,23 @@ export const useRegisterController = () => {
 
     const signInWithGoogle = async () => {
         try {
-            await signInGoogle()
+            const data = await signInGoogle()
+ 
+            await signUpEmail({
+                fullName: data.user.displayName as string,
+                acceptTerms: true,
+                email: data.user.email as string,
+                legalEntityName: 'WorkSapce',
+                password: '123hg3j4h5gj3h4g5j',
+                passwordConfirm: '123hg3j4h5gj3h4g5j',
+                phone: data.user.phoneNumber as string ?? '',
+            })
         } catch (error: any) {
             showToast(error.message, 'error')
         }
     };
 
-    const signInWithFacebook: any = (values: RegisterFormValues) => {};
+    const signInWithFacebook: any = (values: RegisterFormValues) => { };
 
     const signInWithEmail = async (values: RegisterFormValues) => {
         try {

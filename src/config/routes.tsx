@@ -1,17 +1,7 @@
 import {
     Dashboard as DashboardIcon,
-    ShoppingCart as ShoppingCartIcon,
-    People as PeopleIcon,
     BarChart as BarChartIcon,
-    Layers as LayersIcon,
-    Settings as SettingsIcon,
-    ChevronLeft,
-    ChevronRight,
-    ExpandLess,
-    ExpandMore,
-    Mail as MailIcon,
-    Notifications as NotificationsIcon,
-    Menu as MenuIcon
+    Settings as SettingsIcon
 } from '@mui/icons-material';
 import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
@@ -21,33 +11,52 @@ import BusinessIcon from '@mui/icons-material/Business';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import GroupIcon from '@mui/icons-material/Group';
 export const menuItems = [{
+    id: 'home',
+    name: 'home',
+    header: true, subMenu: []
+}, {
     id: 'dashboard',
     name: 'Dashboard',
     icon: <DashboardIcon />,
     link: '/main/dashboard',
     subMenu: []
+},
+{
+    divider: true,
+    subMenu: []
 }, {
     id: 'checkBiz360_products',
     name: 'Products',
-    icon: <AutoGraphIcon />,
-    link: '/main/dashboard',
+    header: true, subMenu: []
+}, {
+    id: 'checkinbiz_products',
+    name: 'CheckinBiz',
+    icon: <CreditCardOffIcon />,
+    link: '/main/checkinbiz',
+    subMenu: []
+},
+{
+    id: 'passinbiz_products',
+    name: 'PassinBiz',
+    icon: <CreditScoreIcon />,
+    link: '/main/passinbiz',
     subMenu: [{
-        name: 'CheckinBiz',
-        icon: <CreditCardOffIcon />,
-        link: '/main/checkinbiz',
-        subMenu: []
-    }, {
-        name: 'PassinBiz',
-        icon: <CreditScoreIcon />,
-        link: '/main/passinbiz',
-        subMenu: []
-    }, {
         name: 'Holders',
         icon: <GroupIcon />,
         link: '/main/passinbiz/holder',
         subMenu: []
     }]
-}, {
+},
+{
+    divider: true,
+    subMenu: []
+},
+{
+    id: 'general',
+    name: 'general',
+    header: true, subMenu: []
+},
+{
     id: 'billing',
     name: 'Billing',
     icon: <BarChartIcon />,

@@ -9,28 +9,15 @@ import {
   ListItemText,
   Collapse,
   Divider,
-  Toolbar,
   Box,
   Typography,
   Avatar,
-  IconButton,
-  Badge
-} from '@mui/material';
+  IconButton} from '@mui/material';
 import {
-  Dashboard as DashboardIcon,
-  ShoppingCart as ShoppingCartIcon,
-  People as PeopleIcon,
-  BarChart as BarChartIcon,
-  Layers as LayersIcon,
-  Settings as SettingsIcon,
   ChevronLeft,
   ChevronRight,
   ExpandLess,
-  ExpandMore,
-  Mail as MailIcon,
-  Notifications as NotificationsIcon,
-  Menu as MenuIcon
-} from '@mui/icons-material';
+  ExpandMore} from '@mui/icons-material';
 import { styled, useTheme } from '@mui/material/styles';
 import { useLayout } from '@/hooks/useLayout';
 import { menuItems } from '@/config/routes';
@@ -131,11 +118,11 @@ export default function SideMenu() {
             else
               if (item.subMenu.length == 0)
                 return <ListItem  key={i} disablePadding>
-                  <ListItemButton disabled={!currentEntity} onClick={() => push(item.link)} selected={pathname === item.link}>
-                    <ListItemIcon>
+                  <ListItemButton disabled={!currentEntity || item.header} onClick={() => push(item.link)} selected={pathname === item.link}>
+                   {!item.header && <ListItemIcon>
                       {item.icon}
-                    </ListItemIcon>
-                    <ListItemText primary={t(`layout.side.menu.${item.name}`)} />
+                    </ListItemIcon>}
+                    <ListItemText     primary={t(`layout.side.menu.${item.name}`)} />
                   </ListItemButton>
                 </ListItem>
 

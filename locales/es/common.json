@@ -21,6 +21,8 @@
       "menu": {
         "Dashboard": "Panel",
         "Products": "Productos",
+        "home": "Inicio",
+        "general":"General",
         "CheckinBiz": "CheckinBiz",
         "PassinBiz": "PassinBiz",
         "Customers": "Clientes",
