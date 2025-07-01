@@ -119,7 +119,9 @@
       "google": "Unete con Google",
       "facebook": "Unete con Facebook",
       "existAccount": "¿Ya tienes una cuenta?",
-      "signIn": "Inicia sesión"
+      "signIn": "Inicia sesión",
+      "complete_profile": "Completar perfil",
+      "complete_profile_desc":"Antes de comenzar debes completar tus datos en la plataforma y crear tu primera entidad, estos datos luego los puedes modificar desde las preferencias"
     },
     "signin": {
       "title": "Iniciar sesión",

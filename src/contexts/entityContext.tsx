@@ -7,6 +7,8 @@ import { User } from "firebase/auth";
 import IUserEntity from "@/domain/auth/IUserEntity";
 import { useRouter } from "nextjs-toploader/app";
 import { fetchUserEntities, saveStateCurrentEntity } from "@/services/common/entity.service";
+import IUser from "@/domain/auth/IUser";
+import { fetchUserAccount } from "@/services/common/account.service";
 
 interface EntityContextType {
     currentEntity: IUserEntity | undefined;
@@ -24,7 +26,6 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     const watchSesionState = async (userAuth: User) => {
         if (userAuth) {
             const entityList: Array<IUserEntity> = await fetchUserEntities(userAuth.uid)
- 
 
             if (entityList.length > 0) {
                 if (entityList.length > 0 && entityList.filter(e => e.isActive).length === 0) {
@@ -32,11 +33,12 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
                     item.isActive = true
                     entityList.splice(0, 1, item)
                 }
-
                 setEntityList(entityList)
                 setCurrentEntity(entityList.find(e => e.isActive) as IUserEntity)
             } else {
-                push('/main/entity/create')
+                const userData: IUser = await fetchUserAccount(userAuth.uid)
+                if (userData.email)
+                    push('/main/entity/create')
             }
         }
     }
@@ -44,7 +46,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     const refrestList = async (userId: string) => {
         const entityList: Array<IUserEntity> = await fetchUserEntities(userId)
         console.log(entityList);
-        
+
         if (entityList.length > 0) {
             if (entityList.length > 0 && entityList.filter(e => e.isActive).length === 0) {
                 const item = entityList[0]

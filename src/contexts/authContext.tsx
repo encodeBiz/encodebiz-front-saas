@@ -30,19 +30,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const inPublicPage = pathName.startsWith('/auth')
 
     const watchSesionState = async (userAuth: User) => {
-         
+
         if (userAuth) {
             updateUserData(userAuth)
             setToken(await userAuth.getIdToken())
+            const userData: IUser = await fetchUserAccount(userAuth.uid)
             setUser({
-                ...await fetchUserAccount(userAuth.uid),
+                ...userData,
                 ...userAuth
             })
+
+            if (!userData.email) {
+                push('/main/complete-profile')
+            }
             setUserAuth(userAuth)
             if (redirectUri) push(redirectUri)
             else {
-                if(pathName==='/' || pathName==='/main')
-                push('/main/dashboard')
+                if (pathName === '/' || pathName === '/main')
+                    push('/main/dashboard')
             }
         } else {
             setUser(null);
