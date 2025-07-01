@@ -35,6 +35,9 @@
         "Notifications": "Notificaciones",
         "Security": "Securidad",
         "Entity": "Entidad",
+        "HoldersList": "Listado de Titulares",
+        "AddHolders": "Adicionar Titulares",
+        "Plans": "Planes",
         "Holders": "Titulares"
       }
     },

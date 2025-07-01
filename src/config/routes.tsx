@@ -10,6 +10,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import BusinessIcon from '@mui/icons-material/Business';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import GroupIcon from '@mui/icons-material/Group';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import ViewColumnIcon from '@mui/icons-material/ViewColumn';
 export const menuItems = [{
     id: 'home',
     name: 'home',
@@ -41,6 +43,11 @@ export const menuItems = [{
     icon: <CreditScoreIcon />,
     link: '/main/passinbiz',
     subMenu: [{
+        name: 'Plans',
+        icon: <ViewColumnIcon />,
+        link: '/main/passinbiz/plans',
+        subMenu: []
+    }, {
         name: 'Holders',
         icon: <GroupIcon />,
         link: '/main/passinbiz/holder',
