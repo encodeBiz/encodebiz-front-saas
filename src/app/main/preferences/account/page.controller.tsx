@@ -14,6 +14,7 @@ import { uploadFile } from '@/lib/firebase/storage/fileManager';
 import { emailRule, fileImageRule, passwordRestrictionRule, requiredRule } from '@/config/yupRules';
 import { getUser } from '@/lib/firebase/authentication/login';
 import { User } from 'firebase/auth';
+import { useLayout } from '@/hooks/useLayout';
 export interface UserFormValues {
     "uid": string
     "name": string
@@ -43,7 +44,7 @@ export const useUserAccountController = () => {
     const { user, setUser } = useAuth();
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
-
+    const { changeLoaderState } = useLayout()
 
 
     const [avatarSrc, setAvatarSrc] = useState<string | undefined>(undefined);
@@ -144,6 +145,7 @@ export const useUserAccountController = () => {
             } else {
                 uri = values.avatar
             }
+            ({ show: true, args: { text: t('core.title.loaderAction') } })
             await updateAccout(uri, values.name)
             setUser({
                 ...user as any,
@@ -152,6 +154,7 @@ export const useUserAccountController = () => {
 
             showToast(t('core.feedback.success'), 'success');
             setPending(false)
+             changeLoaderState({ show: false })
         } catch (error: unknown) {
             if (error instanceof Error) {
                 showToast(error.message, 'error');
@@ -159,12 +162,14 @@ export const useUserAccountController = () => {
                 showToast(String(error), 'error');
             }
             setPending(false)
+             changeLoaderState({ show: false })
         }
     };
 
     const changePasswordAction = async (values: PasswordFormValues) => {
         try {
             setPending(true)
+            changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             await reAuth(values.currentPassword)
             await changePassword(values.password)
             setPending(false)
@@ -174,6 +179,7 @@ export const useUserAccountController = () => {
                 "passwordConfirm": "" as string,
                 currentPassword: "" as string
             })
+            changeLoaderState({ show: false })
         } catch (error: unknown) {
             if (error instanceof Error) {
                 showToast(error.message, 'error');
@@ -181,6 +187,7 @@ export const useUserAccountController = () => {
                 showToast(String(error), 'error');
             }
             setPending(false)
+            changeLoaderState({ show: false })
         }
     };
 

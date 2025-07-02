@@ -3,22 +3,14 @@ import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 
 import {
-  Menu as MenuIcon,
-  Search as SearchIcon,
-  Mail as MailIcon,
-  Notifications as NotificationsIcon,
   AccountCircle as AccountCircleIcon,
   Settings as SettingsIcon,
-  Logout as LogoutIcon,
-  Brightness4 as DarkModeIcon,
-  Brightness7 as LightModeIcon,
-  ChevronLeft,
-  ChevronRight
-} from '@mui/icons-material';
+  Logout as LogoutIcon} from '@mui/icons-material';
+import { useRouter } from "nextjs-toploader/app";
 
 export const useHeader = () => {
   const t = useTranslations();
-
+  const { push } = useRouter()
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [showNotification, setShowNotification] = useState(0)
@@ -43,13 +35,13 @@ export const useHeader = () => {
 
 
   const contextMenu = [
-    { label: t('layout.header.profile'), icon: <AccountCircleIcon fontSize="small" />, action: () => { handleMenuClose(); } },
-    { label: t('layout.header.setting'), icon: <SettingsIcon fontSize="small" />, action: () => { handleMenuClose(); } },
+    { label: t('layout.header.profile'), icon: <AccountCircleIcon fontSize="small" />, action: () => { push('/main/preferences/account'); handleMenuClose(); } },
+   // { label: t('layout.header.setting'), icon: <SettingsIcon fontSize="small" />, action: () => { handleMenuClose(); } },
     { label: t('layout.header.logout'), icon: <LogoutIcon fontSize="small" />, action: () => { handleMenuClose(); handleLogout() } }
   ]
 
   return {
     anchorEl, handleMobileMenuClose, handleProfileMenuOpen, handleMobileMenuOpen,
-    mobileMoreAnchorEl, handleMenuClose, contextMenu,showNotification,showMessages
+    mobileMoreAnchorEl, handleMenuClose, contextMenu, showNotification, showMessages
   }
 }

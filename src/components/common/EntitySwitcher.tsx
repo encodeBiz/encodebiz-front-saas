@@ -16,6 +16,7 @@ import {
 import { useEntity } from '@/hooks/useEntity';
 import IUserEntity from '@/domain/auth/IUserEntity';
 import { useRouter } from 'nextjs-toploader/app';
+import { useLayout } from '@/hooks/useLayout';
 export const locales = ['en', 'es']; // Define your supported locales
 
 interface EntitySwitcherProps { }
@@ -23,12 +24,16 @@ interface EntitySwitcherProps { }
 const EntitySwitcher: React.FC<EntitySwitcherProps> = () => {
   const t = useTranslations(); // 'EntitySwitcher' refers to the key in your message files
   const { entityList, currentEntity, changeCurrentEntity } = useEntity()
+  const { changeLoaderState } = useLayout()
+
   const { push } = useRouter()
 
 
   const handleChange = (event: SelectChangeEvent) => {
     const newEntityId = event.target.value as string;
-    changeCurrentEntity(newEntityId);
+    changeLoaderState({show: true, args: { text: t('core.title.loaderChangeEntity')}})
+    if (newEntityId)
+      changeCurrentEntity(newEntityId, () => changeLoaderState({ show: false }));
   };
 
   return (

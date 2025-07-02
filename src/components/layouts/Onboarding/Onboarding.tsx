@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
     Dialog,
     DialogTitle,
@@ -21,9 +21,9 @@ import { TransitionProps } from '@mui/material/transitions';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useStyles } from './Onboarding.styles';
-import { useAuth } from '@/hooks/useAuth';
 import Image from 'next/image';
 import image from '../../../../public/assets/images/1.jpg'
+
 // Define the steps/slides for the onboarding process
 const onboardingSteps = [
     {
@@ -58,9 +58,9 @@ const Transition = React.forwardRef(function Transition(
 });
 
 function Onboarding() {
-    const { open, closeModal, openModal } = useCommonModal()
-    const { user } = useAuth()
+    const { open, closeModal } = useCommonModal()
     const [activeStep, setActiveStep] = useState(0);
+
     const classes = useStyles()
 
     // Handler for closing the dialog
@@ -81,19 +81,6 @@ function Onboarding() {
 
     // Check if it's the last step
     const isLastStep = activeStep === onboardingSteps.length - 1;
-
-    useEffect(() => {
-        if (user?.id) {
-            const isViewOnboarding = localStorage.getItem('view-onboarding-' + user?.id)
-            if (!isViewOnboarding) {
-                setTimeout(() => {
-                    openModal()
-                }, 2000);
-            }
-
-        }
-    }, [user?.id])
-
 
     return (
         <Dialog

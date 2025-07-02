@@ -8,9 +8,11 @@ import image from '../../../../public/assets/images/encodebiz-sass.png'
 import { Container, Divider, Grid, Typography } from '@mui/material';
 import { useTranslations } from "next-intl";
 import { Cloud } from "@mui/icons-material";
+import useDashboardController from "./page.controller";
 
 export default function Dashboard() {
   const t = useTranslations()
+  const _ = useDashboardController()
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" component="h1" gutterBottom sx={{ mb: 4 }}>

@@ -11,6 +11,7 @@ import {
 
 type PageLoaderProps = {
   type?: 'circular' | 'linear';
+  backdrop?:boolean
   size?: number | string;
   thickness?: number;
   message?: string;
@@ -24,6 +25,7 @@ const PageLoader: React.FC<PageLoaderProps> = ({
   thickness = 3.6,
   message,
   fullScreen = true,
+  backdrop = false,
   progress
 }) => {
   const theme = useTheme();
@@ -40,7 +42,7 @@ const PageLoader: React.FC<PageLoaderProps> = ({
       left: 0,
       width: '100vw',
       height: '100vh',
-      backgroundColor: theme.palette.background.default,
+      backgroundColor: backdrop?'rgba(0,0,0,0.4)':theme.palette.background.default,
       zIndex: theme.zIndex.modal + 1
     }),
     ...(!fullScreen && {

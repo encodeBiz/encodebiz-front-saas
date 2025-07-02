@@ -90,16 +90,12 @@ export const menuItems = [{
     icon: <SettingsIcon />,
     link: '/main/settings',
     subMenu: [{
-        name: 'Account',
-        icon: <PersonIcon />,
-        link: '/main/preferences/account',
-        subMenu: []
-    }, {
         name: 'Entity',
         icon: <BusinessIcon />,
         link: '/main/preferences/entity',
         subMenu: []
-    }, {
+    },
+    /* {
         name: 'Notifications',
         icon: <SettingsIcon />,
         link: '/main/reports/sales',
@@ -109,5 +105,5 @@ export const menuItems = [{
         icon: <SettingsIcon />,
         link: '/main/reports/sales',
         subMenu: []
-    }]
+    }*/]
 }]

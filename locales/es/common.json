@@ -22,7 +22,7 @@
         "Dashboard": "Panel",
         "Products": "Productos",
         "home": "Inicio",
-        "general":"General",
+        "general": "General",
         "CheckinBiz": "CheckinBiz",
         "PassinBiz": "PassinBiz",
         "Customers": "Clientes",
@@ -52,7 +52,9 @@
   },
   "core": {
     "title": {
-      "loader": "Cargando sesión de usuario"
+      "loader": "Cargando sesión de usuario",
+      "loaderChangeEntity": "Cambiando entidad",
+      "loaderAction": "Procesando información"
     },
     "feedback": {
       "success": "La operación se realizó exitosamente"
@@ -124,7 +126,7 @@
       "existAccount": "¿Ya tienes una cuenta?",
       "signIn": "Inicia sesión",
       "complete_profile": "Completar perfil",
-      "complete_profile_desc":"Antes de comenzar debes completar tus datos en la plataforma y crear tu primera entidad, estos datos luego los puedes modificar desde las preferencias"
+      "complete_profile_desc": "Antes de comenzar debes completar tus datos en la plataforma y crear tu primera entidad, estos datos luego los puedes modificar desde las preferencias"
     },
     "signin": {
       "title": "Iniciar sesión",
@@ -179,7 +181,12 @@
         "deleteConfirmModalTitle3": "Por favor entre la siguiente palabra para continuar con la accion"
       },
       "tab2": {
-        "title": "Modificar Marca"
+        "title": "Modificar Marca",
+        "btn": "Eliminar Entidad"
+      },
+      "tab3": {
+        "title": "Configurar Billing",
+        "btn": "Configurar Billing"
       }
     }
   },

@@ -59,8 +59,7 @@ export async function unSubscribeInSassProduct(data: IUnSubscription, token: str
 
 
 export async function configBilling(data: {
-    "entityId": string,
-    "uid": string
+    "entityId": string 
 }, token: string) {
     try {
         let httpClientFetchInstance: HttpClient = new HttpClient({
@@ -75,7 +74,7 @@ export async function configBilling(data: {
         if (response.errCode && response.errCode !== 200) {
             throw new Error(response.message)
         }
-
+        return response
     } catch (error: any) {
         throw new Error(error.message)
     }

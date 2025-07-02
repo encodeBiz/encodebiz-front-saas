@@ -24,6 +24,7 @@ import { CommonModalType } from '@/contexts/commonModalContext';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { configBilling } from '@/services/common/subscription.service';
 import { fileImageRule, requiredRule } from '@/config/yupRules';
+import { useLayout } from '@/hooks/useLayout';
 
 
 
@@ -62,6 +63,8 @@ export const useSettingEntityController = () => {
     const t = useTranslations();
     const { currentEntity, refrestList } = useEntity();
     const { openModal, closeModal } = useCommonModal()
+    const [iframeUrl, setIframeUrl] = useState(''); // Initial URL
+    const { changeLoaderState } = useLayout()
     const { user, token } = useAuth();
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
@@ -234,6 +237,13 @@ export const useSettingEntityController = () => {
     ];
 
 
+    const configBillingAction = async () => {
+        const data: { url: string } = await configBilling({
+            entityId: currentEntity?.entity.id as string
+
+        }, token)
+        setIframeUrl(data.url)
+    }
 
     const setEntityDataAction = async (values: EntityUpdatedFormValues) => {
         try {
@@ -256,11 +266,9 @@ export const useSettingEntityController = () => {
                 },
                 "active": true
             }
+            changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             await updateEntity(updateData, token)
-            await configBilling({
-                entityId: currentEntity?.entity.id as string,
-                uid: user?.id as string
-            }, token)
+            changeLoaderState({ show: false })
             refrestList(user?.id as string)
             showToast(t('core.feedback.success'), 'success');
             setPending(false)
@@ -273,6 +281,8 @@ export const useSettingEntityController = () => {
                 showToast(String(error), 'error');
             }
             setPending(false)
+            changeLoaderState({ show: false })
+
         }
     };
 
@@ -290,18 +300,20 @@ export const useSettingEntityController = () => {
                 form.append('icon', values.iconUrl);
             if (typeof values.stripImageUrl !== 'string')
                 form.append('stripImage', values.stripImageUrl);
-
+            changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             await updateEntityBranding(form, token)
             refrestList(user?.id as string)
             showToast(t('core.feedback.success'), 'success');
             setPending(false)
+            changeLoaderState({ show: false })
         } catch (error: unknown) {
             if (error instanceof Error) {
                 showToast(error.message, 'error');
             } else {
                 showToast(String(error), 'error');
             }
-               setPending(false)
+            setPending(false)
+            changeLoaderState({ show: false })
         }
     };
 
@@ -336,10 +348,12 @@ export const useSettingEntityController = () => {
     const handleDeleteEntity = async (entityId: string) => {
         setPending(true)
         try {
+            changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             await deleteEntity({
                 uid: user?.id as string,
                 entityId: entityId
             }, token)
+            changeLoaderState({ show: false })
             refrestList(user?.id as string)
             showToast(t('core.feedback.success'), 'success');
             setPending(false)
@@ -350,7 +364,8 @@ export const useSettingEntityController = () => {
             } else {
                 showToast(String(error), 'error');
             }
-               setPending(false)
+            setPending(false)
+            changeLoaderState({ show: false })
         }
     }
 
@@ -359,7 +374,8 @@ export const useSettingEntityController = () => {
         return (
             <>
                 <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' sx={{ width: '100%' }}>
-                    <BaseButton disabled={!user?.id || !currentEntity} onClick={() => openModal(CommonModalType.DELETE, { entityId: currentEntity?.entity.id })} variant='contained' color='warning' >Eliminar entidad</BaseButton>
+                    <BaseButton disabled={!user?.id || !currentEntity} onClick={() => openModal(CommonModalType.DELETE, { entityId: currentEntity?.entity.id })} variant='contained' color='warning' >{t('entity.tabs.tab2.btn')}</BaseButton>
+
                 </Box>
                 <GenericForm<EntityUpdatedFormValues>
                     column={2}
@@ -403,6 +419,29 @@ export const useSettingEntityController = () => {
         );
     }
 
+    const formTabs3 = () => {
+        return (
+            <>
+                <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' sx={{ width: '100%' }}>
+                    <BaseButton disabled={!user?.id || !currentEntity} onClick={() => configBillingAction()} variant='contained' color='warning' >{t('entity.tabs.tab3.btn')}</BaseButton>
+                </Box>
+                <div style={{ marginTop: '20px', border: '1px solid #ccc', height: '400px', width: '100%' }}>
+                    {/* The key to dynamism is setting the src attribute to the state variable */}
+                    {iframeUrl && <iframe
+                        src={iframeUrl}
+                        title="Dynamic Content"
+                        width="100%"
+                        height="100%"
+
+                        allowFullScreen
+                    >
+                        Your browser does not support iframes.
+                    </iframe>}
+                </div>
+            </>
+        );
+    }
+
     const tabsRender: TabItem[] = [
         {
             label: `${t("entity.tabs.tab1.title")}`,
@@ -410,6 +449,9 @@ export const useSettingEntityController = () => {
         }, {
             label: `${t("entity.tabs.tab2.title")}`,
             content: formTabs2(),
+        }, {
+            label: `${t("entity.tabs.tab3.title")}`,
+            content: formTabs3(),
         },
     ];
 

@@ -34,10 +34,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (userAuth) {
             updateUserData(userAuth)
             setToken(await userAuth.getIdToken())
-            const userData: IUser = await fetchUserAccount(userAuth.uid)
+            const extraData = await fetchUserAccount(userAuth.uid)
+            const userData: IUser = {
+                ...extraData,
+                completeProfile: extraData.email ? true : false
+            }
             setUser({
+                ...userAuth,
                 ...userData,
-                ...userAuth
             })
 
             if (!userData.email) {

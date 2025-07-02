@@ -69,6 +69,8 @@ export async function saveStateCurrentEntity(
   }
 }
 
+
+
 export async function createEntity(data: EntityFormValues, token: string) {
   try {
     if (!token) {
@@ -175,4 +177,32 @@ export async function fetchAllEntitiesPaginated(limitCount: number = 5, startAft
   } catch (error: any) {
     throw new Error(error.message);
   }
+}
+
+
+export async function deleteEntity(data: {
+    "entityId": string,
+    "uid": string
+} | any, token: string) {
+    try {
+
+        if (!token) {
+            throw new Error('Error to fetch user auth token')
+        } else {
+            let httpClientFetchInstance: HttpClient = new HttpClient({
+                baseURL: '',
+                headers: {
+                    token: `Bearer ${token}`
+                },
+            });
+            const response: any = await httpClientFetchInstance.delete(process.env.NEXT_PUBLIC_BACKEND_URI_DELETE_ENTITY as string, {
+                ...data
+            });
+            if (response.errCode && response.errCode !== 200) {
+                throw new Error(response.message)
+            }
+        }
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
 }

@@ -14,7 +14,7 @@ interface EntityContextType {
     currentEntity: IUserEntity | undefined;
     entityList: Array<IUserEntity> | [];
     setCurrentEntity: (currentEntity: IUserEntity | undefined) => void;
-    changeCurrentEntity: (id: string) => void;
+    changeCurrentEntity: (id: string, callback?: Function) => void;
     refrestList: (userId: string) => void;
 
 }
@@ -62,7 +62,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
 
-    const changeCurrentEntity = async (id: string) => {
+    const changeCurrentEntity = async (id: string, callback?: Function) => {
         const current: IUserEntity = entityList.find(e => e.id === id) as IUserEntity
         if (current) {
             const updatedList: Array<IUserEntity> = []
@@ -75,7 +75,11 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
             })
             setEntityList(updatedList)
             setCurrentEntity(current)
-            saveStateCurrentEntity(updatedList)
+            await saveStateCurrentEntity(updatedList)
+
+            setTimeout(() => {
+                if (typeof callback === 'function') callback()
+            }, 1000);
         }
     }
 

@@ -14,6 +14,8 @@ import { getUser } from '@/lib/firebase/authentication/login';
 import { getIdToken, User } from 'firebase/auth';
 import IUser from '@/domain/auth/IUser';
 import { useRouter } from 'nextjs-toploader/app';
+import { useEntity } from '@/hooks/useEntity';
+import { useLayout } from '@/hooks/useLayout';
 export interface UserFormValues {
     "uid": string
     "name": string
@@ -38,6 +40,8 @@ export type TabItem = {
 export const useUserProfileController = () => {
     const t = useTranslations();
     const { user, setUser } = useAuth();
+    const { refrestList } = useEntity();
+    const {changeLoaderState} = useLayout()
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
     const { push } = useRouter()
@@ -107,6 +111,7 @@ export const useUserProfileController = () => {
     const setUserDataAction = async (values: UserFormValues) => {
         try {
             let uri
+            changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
 
             setPending(true)
             if (typeof values.avatar === 'object') {
@@ -114,8 +119,6 @@ export const useUserProfileController = () => {
             } else {
                 uri = values.avatar
             }
-            console.log(user);
-            
 
             const sessionToken = await user?.accessToken;
             if (!user) {
@@ -135,6 +138,10 @@ export const useUserProfileController = () => {
                     ...user as any,
                     ...await getUser() as User
                 })
+
+                refrestList(user?.uid)
+                changeLoaderState({ show:false})
+
             }
 
             showToast(t('core.feedback.success'), 'success');
@@ -146,6 +153,7 @@ export const useUserProfileController = () => {
                 showToast(String(error), 'error');
             }
             setPending(false)
+            changeLoaderState({ show:false})
         }
     };
 
@@ -157,8 +165,7 @@ export const useUserProfileController = () => {
     }
 
     useEffect(() => {
-
-        checkProfile()
+        checkProfile()         
         setInitialValues({
             uid: user?.uid as string | "",
             "name": user?.displayName as string | "",

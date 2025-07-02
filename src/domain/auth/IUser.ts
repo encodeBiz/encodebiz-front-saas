@@ -18,7 +18,7 @@ interface IUser extends User {
   createdAt: Date;
   updatedAt: Date;   
   password?: string;
-  
+  completeProfile?: boolean;   
   accessToken?: string;
 }
 export default IUser;
