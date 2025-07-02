@@ -19,5 +19,6 @@ interface IUser extends User {
   updatedAt: Date;   
   password?: string;
   
+  accessToken?: string;
 }
 export default IUser;

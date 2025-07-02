@@ -11,7 +11,7 @@ import ImageUploadInput from '@/components/common/forms/fields/ImageUploadInput'
 import { uploadFile } from '@/lib/firebase/storage/fileManager';
 import { emailRule, fileImageRule, requiredRule } from '@/config/yupRules';
 import { getUser } from '@/lib/firebase/authentication/login';
-import { User } from 'firebase/auth';
+import { getIdToken, User } from 'firebase/auth';
 import IUser from '@/domain/auth/IUser';
 import { useRouter } from 'nextjs-toploader/app';
 export interface UserFormValues {
@@ -114,20 +114,28 @@ export const useUserProfileController = () => {
             } else {
                 uri = values.avatar
             }
+            console.log(user);
+            
 
-            await signUpEmail({
-                fullName: values.name as string,
-                acceptTerms: true,
-                email: values.email as string,
-                legalEntityName: values.legalEntityName,
-                password: '123hg3j4h5gj3h4g5j',
-                passwordConfirm: '123hg3j4h5gj3h4g5j',
-                phone: values.phone as string ?? '',
-            })
-            setUser({
-                ...user as any,
-                ...await getUser() as User
-            })
+            const sessionToken = await user?.accessToken;
+            if (!user) {
+                showToast('Error to fetch user auth token', 'error')
+            } else {
+                await signUpEmail({
+                    fullName: values.name as string,
+                    acceptTerms: true,
+                    email: values.email as string,
+                    legalEntityName: values.legalEntityName,
+                    password: '123hg3j4h5gj3h4g5j',
+                    passwordConfirm: '123hg3j4h5gj3h4g5j',
+                    phone: values.phone as string ?? '',
+                }, sessionToken, user?.uid)
+
+                setUser({
+                    ...user as any,
+                    ...await getUser() as User
+                })
+            }
 
             showToast(t('core.feedback.success'), 'success');
             setPending(false)
@@ -144,13 +152,13 @@ export const useUserProfileController = () => {
 
 
     const checkProfile = async () => {
-           const userData: IUser = await fetchUserAccount(user?.uid as string)
-           if(userData.email)  push('/main/dashboard')
+        const userData: IUser = await fetchUserAccount(user?.uid as string)
+        if (userData.email) push('/main/dashboard')
     }
 
     useEffect(() => {
 
-        checkProfile() 
+        checkProfile()
         setInitialValues({
             uid: user?.uid as string | "",
             "name": user?.displayName as string | "",
@@ -161,7 +169,7 @@ export const useUserProfileController = () => {
             "active": true,
         });
 
-     
+
 
     }, [user]);
 

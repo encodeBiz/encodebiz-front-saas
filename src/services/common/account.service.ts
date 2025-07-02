@@ -6,8 +6,8 @@ import { logout } from "@/lib/firebase/authentication/logout";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import httpClientFetchInstance, { codeError, HttpClient } from "@/lib/http/httpClientFetchNext";
 import IUser from "@/domain/auth/IUser";
-import {  EmailAuthProvider, reauthenticateWithCredential, reload, updateProfile, User, UserCredential } from "firebase/auth";
- 
+import { EmailAuthProvider, reauthenticateWithCredential, reload, updateProfile, User, UserCredential } from "firebase/auth";
+
 
 export async function validateToken(
     token: string,
@@ -58,33 +58,28 @@ export async function signInEmail(
 
 
 
-export async function signUpEmail(data: RegisterFormValues) {
+export async function signUpEmail(data: RegisterFormValues, sessionToken?: string, uid?: string) {
     try {
-        const responseAuth = await createUser(data.email, data.password);
-        const token = await responseAuth.user.getIdToken();
-        if (!responseAuth) {
-            throw new Error('Error to fetch user auth token')
-        } else {
-            let httpClientFetchInstance: HttpClient = new HttpClient({
-                baseURL: process.env.NEXT_PUBLIC_BACKEND_URI_CREATE_USER,
-                headers: {
-                    token: `Bearer ${token}`
-                },
-            });
-            const response: any = await httpClientFetchInstance.post('', {
-                entityLegalName: data.legalEntityName,
-                fullName: data.fullName,
-                phoneNumber: data.phone,
-                uid: responseAuth.user.uid,
-                email: data.email,
-                password: data.password,
-            });
-            if (response.errCode && response.errCode !== 200) {
-                throw new Error(response.message)
-            }
-
-
+        let httpClientFetchInstance: HttpClient = new HttpClient({
+            baseURL: process.env.NEXT_PUBLIC_BACKEND_URI_CREATE_USER,
+            headers: {
+                token: `Bearer ${sessionToken}`
+            },
+        });
+        const response: any = await httpClientFetchInstance.post('', {
+            entityLegalName: data.legalEntityName,
+            fullName: data.fullName,
+            phoneNumber: data.phone,
+            uid: uid,
+            email: data.email,
+            password: data.password,
+        });
+        if (response.errCode && response.errCode !== 200) {
+            throw new Error(response.message)
         }
+
+
+
     } catch (error: any) {
         throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
 
@@ -145,7 +140,7 @@ export async function updateAccout(photoURL: string, displayName: string): Promi
             photoURL,
             displayName
         })
- 
+
     } catch (error: any) {
         throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
 

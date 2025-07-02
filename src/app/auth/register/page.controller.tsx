@@ -6,6 +6,7 @@ import SimpleCheckTerm from '@/components/common/forms/fields/SimpleCheckTerm';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { emailRule, passwordRestrictionRule, requiredRule } from '@/config/yupRules';
 import { useToast } from '@/hooks/useToast';
+import { createUser } from '@/lib/firebase/authentication/create';
 import { signInGoogle, signUpEmail } from '@/services/common/account.service';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -56,8 +57,6 @@ export const useRegisterController = () => {
     const signInWithGoogle = async () => {
         try {
             const data = await signInGoogle()
- 
-           
         } catch (error: any) {
             showToast(error.message, 'error')
         }
@@ -67,7 +66,13 @@ export const useRegisterController = () => {
 
     const signInWithEmail = async (values: RegisterFormValues) => {
         try {
-            await signUpEmail(values)
+            const responseAuth = await createUser(values.email, values.password);
+            const sessionToken = await responseAuth.user.getIdToken();
+            if (!responseAuth) {
+                showToast('Error to fetch user auth token', 'error')
+            } else {
+                await signUpEmail(values, sessionToken, responseAuth.user.uid as string)
+            }
         } catch (error: any) {
             showToast(error.message, 'error')
         }
