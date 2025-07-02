@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const watchSesionState = async (userAuth: User) => {
 
         if (userAuth) {
-            
+            updateUserData()
             setToken(await userAuth.getIdToken())
             const extraData = await fetchUserAccount(userAuth.uid)
             const userData: IUser = {
@@ -53,6 +53,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 if (pathName === '/' || pathName === '/main')
                     push('/main/dashboard')
             }
+            setPendAuth(false)
         } else {
             setUser(null);
             setPendAuth(false)
@@ -82,7 +83,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     /** Refresh User Data */
     const updateUserData = async () => {
-        let userAuth = await getUser() as User
+        let userAuth: User =  await getUser() as User
         const extraData = await fetchUserAccount(userAuth.uid)
         const userData: IUser = {
             ...extraData,
@@ -97,6 +98,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             if (redirectUri) push(redirectUri)
             setPendAuth(false)
         }, 1000)
+
+
     }
 
 
