@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const watchSesionState = async (userAuth: User) => {
 
         if (userAuth) {
-            updateUserData(userAuth)
+            
             setToken(await userAuth.getIdToken())
             const extraData = await fetchUserAccount(userAuth.uid)
             const userData: IUser = {
@@ -81,17 +81,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 
     /** Refresh User Data */
-    const updateUserData = async (loggedUser?: User) => {
-        let userAuth: User = loggedUser as User
-        if (!user)
-            userAuth = await getUser() as User
+    const updateUserData = async () => {
+        let userAuth = await getUser() as User
+        const extraData = await fetchUserAccount(userAuth.uid)
+        const userData: IUser = {
+            ...extraData,
+            completeProfile: extraData.email ? true : false
+        }
+        setUser({
+            ...userAuth,
+            ...userData,
+        })
 
         setTimeout(() => {
             if (redirectUri) push(redirectUri)
             setPendAuth(false)
         }, 1000)
-
-
     }
 
 

@@ -39,9 +39,9 @@ export type TabItem = {
 
 export const useUserProfileController = () => {
     const t = useTranslations();
-    const { user, setUser } = useAuth();
+    const { user, setUser, updateUserData } = useAuth();
     const { refrestList } = useEntity();
-    const {changeLoaderState} = useLayout()
+    const { changeLoaderState } = useLayout()
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
     const { push } = useRouter()
@@ -140,7 +140,8 @@ export const useUserProfileController = () => {
                 })
 
                 refrestList(user?.uid)
-                changeLoaderState({ show:false})
+                updateUserData()
+                changeLoaderState({ show: false })
 
             }
 
@@ -153,7 +154,7 @@ export const useUserProfileController = () => {
                 showToast(String(error), 'error');
             }
             setPending(false)
-            changeLoaderState({ show:false})
+            changeLoaderState({ show: false })
         }
     };
 
@@ -165,7 +166,7 @@ export const useUserProfileController = () => {
     }
 
     useEffect(() => {
-        checkProfile()         
+        checkProfile()
         setInitialValues({
             uid: user?.uid as string | "",
             "name": user?.displayName as string | "",

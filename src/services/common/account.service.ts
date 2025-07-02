@@ -7,6 +7,7 @@ import { getOne } from "@/lib/firebase/firestore/readDocument";
 import httpClientFetchInstance, { codeError, HttpClient } from "@/lib/http/httpClientFetchNext";
 import IUser from "@/domain/auth/IUser";
 import { EmailAuthProvider, reauthenticateWithCredential, reload, updateProfile, User, UserCredential } from "firebase/auth";
+import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
 
 
 export async function validateToken(
@@ -133,13 +134,25 @@ export async function changePassword(password: string): Promise<void> {
     }
 }
 
-export async function updateAccout(photoURL: string, displayName: string): Promise<void> {
+export async function updateAccout(photoURL: string, phoneNumber: string, displayName: string): Promise<void> {
     try {
         const user = await getUser()
         await updateProfile(user as User, {
             photoURL,
             displayName
         })
+
+        await updateDocument<Partial<IUser>>({
+            collection: collection.USER,
+            data: {
+                photoURL,
+                phoneNumber,
+                fullName: displayName,
+                updatedAt: new Date(),
+            },
+            id: user?.uid as string,
+        });
+
 
     } catch (error: any) {
         throw new Error(codeError[error.code] ? codeError[error.code] : error.message)

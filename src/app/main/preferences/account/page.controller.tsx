@@ -41,10 +41,11 @@ export type TabItem = {
 
 export const useUserAccountController = () => {
     const t = useTranslations();
-    const { user, setUser } = useAuth();
+    const { user, updateUserData } = useAuth();
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
     const { changeLoaderState } = useLayout()
+
 
 
     const [avatarSrc, setAvatarSrc] = useState<string | undefined>(undefined);
@@ -146,15 +147,12 @@ export const useUserAccountController = () => {
                 uri = values.avatar
             }
             ({ show: true, args: { text: t('core.title.loaderAction') } })
-            await updateAccout(uri, values.name)
-            setUser({
-                ...user as any,
-                ...await getUser() as User
-            })
+            await updateAccout(uri, values.phone, values.name)
+            updateUserData()
 
             showToast(t('core.feedback.success'), 'success');
             setPending(false)
-             changeLoaderState({ show: false })
+            changeLoaderState({ show: false })
         } catch (error: unknown) {
             if (error instanceof Error) {
                 showToast(error.message, 'error');
@@ -162,7 +160,7 @@ export const useUserAccountController = () => {
                 showToast(String(error), 'error');
             }
             setPending(false)
-             changeLoaderState({ show: false })
+            changeLoaderState({ show: false })
         }
     };
 
