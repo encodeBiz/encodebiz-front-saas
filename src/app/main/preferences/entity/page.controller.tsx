@@ -190,9 +190,9 @@ export const useSettingEntityController = () => {
         backgroundColor: requiredRule(t),
         labelColor: requiredRule(t),
         textColor: requiredRule(t),
-        logoUrl: fileImageRule(t),
-        stripImageUrl: fileImageRule(t),
-        iconUrl: fileImageRule(t)
+        logoUrl: requiredRule(t),
+        stripImageUrl: requiredRule(t),
+        iconUrl: requiredRule(t)
     });
 
     const fields2 = [

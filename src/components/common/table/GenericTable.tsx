@@ -24,8 +24,9 @@ import {
   Delete as DeleteIcon,
   Edit as EditIcon
 } from '@mui/icons-material';
+import firebase from "firebase/compat/app";
 
-interface Column<T> {
+export interface Column<T> {
   id: keyof T;
   label: string;
   minWidth?: number;
@@ -33,6 +34,36 @@ interface Column<T> {
   format?: (value: any, row: T) => React.ReactNode;
   sortable?: boolean;
 }
+
+export interface IRowAction {
+    icon: any
+    label?: string
+    onPress: (row: any) => void
+}
+
+export const buildSearch = (term: string): Array<{
+    field: string;
+    operator: firebase.firestore.WhereFilterOp;
+    value: any;
+}> => {
+    const filters: Array<{
+        field: string;
+        operator: firebase.firestore.WhereFilterOp;
+        value: any;
+    }> = []
+    const fieldSearch = ['name']
+    if (term) {
+        fieldSearch.forEach(field => {
+            filters.push({
+                field: field,
+                operator: '==',
+                value: term
+            })
+        });
+    }
+    return filters
+}
+
 
 interface GenericTableProps<T> {
   data: T[];
@@ -47,8 +78,9 @@ interface GenericTableProps<T> {
   loading?: boolean;
   page?: number;
   rowsPerPage?: number;
-  onPageChange?: (newPage: number) => void;
   onRowsPerPageChange?: (rows: number) => void;
+  onBack:()=>void
+  onNext:()=>void
 }
 
 export function GenericTable<T extends Record<string, any>>({
@@ -56,20 +88,22 @@ export function GenericTable<T extends Record<string, any>>({
   columns,
   keyField,
   title,
+  page,
   selectable = false,
   onRowClick,
   onDelete,
   onEdit,
   onBulkAction,
   loading = false,
-  onPageChange,
   onRowsPerPageChange,
+  onBack,
+  onNext
 }: GenericTableProps<T>) {
   // State management
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [orderBy, setOrderBy] = useState<keyof T>(keyField);
   const [selected, setSelected] = useState<(string | number)[]>([]);
-  const [page, setPage] = useState(0);
+ 
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [totalItems, setTotalItems] = useState(0);
   const [searchText, setSearchText] = useState('');
@@ -148,8 +182,16 @@ export function GenericTable<T extends Record<string, any>>({
     setSelected(newSelected);
   };
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
+  const handleChangePage = (event: any, newPage: number) => {
+    let eventPage;
+    if(newPage > (page as number)) onNext()
+    else onBack()
+    
+    //setPage(newPage);
+    console.log(eventPage);
+    console.log(newPage);
+    
+    
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -160,14 +202,10 @@ export function GenericTable<T extends Record<string, any>>({
   const isSelected = (id: string | number) => selected.indexOf(id) !== -1;
 
 
+ 
 
   useEffect(() => {
-    if (onPageChange)
-      onPageChange(page);
-  }, [page]);
-
-  useEffect(() => {
-    if (data.length !== 0) setTotalItems(data[0].total);
+    if (data.length !== 0) setTotalItems(data[0].totalItems);
   }, [data]);
 
   useEffect(() => {
@@ -195,7 +233,7 @@ export function GenericTable<T extends Record<string, any>>({
             value={searchText}
             onChange={(e) => {
               setSearchText(e.target.value);
-              setPage(0);
+            
             }}
             InputProps={{
               startAdornment: (
@@ -360,13 +398,13 @@ export function GenericTable<T extends Record<string, any>>({
           </TableBody>
         </Table>
       </TableContainer>
-
+           
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25, 100]}
+        rowsPerPageOptions={[2, 5, 10, 25, 100]}
         component="div"
         count={totalItems}
         rowsPerPage={rowsPerPage}
-        page={page}
+        page={page as number}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />

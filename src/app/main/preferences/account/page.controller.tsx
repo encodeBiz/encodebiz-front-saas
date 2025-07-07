@@ -6,14 +6,11 @@ import { useTranslations } from 'next-intl';
 import { SxProps, Theme } from '@mui/material';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import TextInput from '@/components/common/forms/fields/TextInput';
-import UploadAvatar from '@/components/common/avatar/UploadAvatar';
 import { useToast } from '@/hooks/useToast';
-import { changePassword, fetchUserAccount, reAuth, updateAccout } from '@/services/common/account.service';
+import { changePassword, reAuth, updateAccout } from '@/services/common/account.service';
 import ImageUploadInput from '@/components/common/forms/fields/ImageUploadInput';
 import { uploadFile } from '@/lib/firebase/storage/fileManager';
 import { emailRule, fileImageRule, passwordRestrictionRule, requiredRule } from '@/config/yupRules';
-import { getUser } from '@/lib/firebase/authentication/login';
-import { User } from 'firebase/auth';
 import { useLayout } from '@/hooks/useLayout';
 export interface UserFormValues {
     "uid": string
@@ -85,7 +82,6 @@ export const useUserAccountController = () => {
             name: 'avatar',
             label: t('core.label.logo'),
             component: ImageUploadInput,
-
             required: true,
         },
         {

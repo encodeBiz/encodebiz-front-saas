@@ -1,4 +1,4 @@
-export const AppName = 'CheckBiz360 SaaS Platform'
+export const AppName = 'EncodeBiz SaaS Platform'
 
 
 // src/data/chartData.ts
@@ -142,3 +142,15 @@ export const countries = [
   { name: 'España', code: 'ES', dial_code: '+34' },
   // Add more countries as needed
 ];
+
+
+export const fileTypes = [
+  { label: 'Logo', value: 'logo' },
+  { label: 'background', value: 'background' },
+  { label: 'stripImage', value: 'stripImage' },
+  { label: 'icon', value: 'icon' },
+  { label: 'eventLogo', value: 'eventLogo' },
+  { label: 'eventBackground', value: 'eventBackground' },
+  { label: 'eventStripImage', value: 'eventStripImage' },
+  { label: 'custom', value: 'custom' },
+]

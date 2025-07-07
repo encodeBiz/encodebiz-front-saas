@@ -2,7 +2,7 @@
   "locale": "es",
   "layout": {
     "header": {
-      "title": "Plataforma SaaS Checkbiz360",
+      "title": "Plataforma SaaS EncodeBiz",
       "language": "Idioma",
       "english": "Inglés",
       "spanish": "Español",
@@ -11,6 +11,7 @@
       "entity": "Entidad Actual",
       "profile": "Perfil",
       "setting": "Preferencias",
+      "media": "Media",
       "logout": "Cerrar sesión",
       "help": "Ayuda",
       "theme": "Tema",
@@ -21,6 +22,7 @@
       "menu": {
         "Dashboard": "Panel",
         "Products": "Productos",
+        "Media": "Media",
         "home": "Inicio",
         "general": "General",
         "CheckinBiz": "CheckinBiz",
@@ -54,7 +56,8 @@
     "title": {
       "loader": "Cargando sesión de usuario",
       "loaderChangeEntity": "Cambiando entidad",
-      "loaderAction": "Procesando información"
+      "loaderAction": "Procesando información",
+      "mediaModaltitle": "Selector de Medias"
     },
     "feedback": {
       "success": "La operación se realizó exitosamente"
@@ -242,5 +245,11 @@
     "title": "Titulares",
     "holderList": "Lista de Titulares",
     "addHolder": "Adicionar Titular"
+  },
+  "media": {
+    "text1": "Archicos seleccionados",
+    "labelType": "Seleccione el tipo de archivo a subir",
+    "deleteConfirmModalTitle":"Emilinar archivo",
+    "deleteConfirmModalTitle2":"Esta acción no se puede deshacer. Eliminará permanentemente permanentemente el archivo"
   }
 }

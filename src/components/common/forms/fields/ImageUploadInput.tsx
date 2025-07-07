@@ -16,71 +16,62 @@ import {
 import { CloudUpload, Delete } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 import { useTranslations } from 'next-intl';
+import MediaModalSelectedFiles from '../../modals/MediaModalSelectedFiles/MediaModalSelectedFiles';
+import { useCommonModal } from '@/hooks/useCommonModal';
+import { CommonModalType } from '@/contexts/commonModalContext';
+import { IUserMedia } from '@/domain/core/IUserMedia';
 
 interface ImageFieldProps {
   accept: string
 }
-const ImageUploadInput = ({ name, label, accept = 'image/*',  ...props }: any & FieldProps & TextFieldProps & ImageFieldProps) => {
+const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & FieldProps & TextFieldProps & ImageFieldProps) => {
   const t = useTranslations();
   const [field, meta, helper] = useField(name);
   const { touched, error } = meta
   const helperText = touched && error;
-
+  const { open, openModal } = useCommonModal()
   const {
     validateField,
   } = useFormikContext();
-   
+
 
   useEffect(() => {
-    if(typeof field.value === 'string') setPreview(field.value)
+    if (typeof field.value === 'string') setPreview(field.value)
   }, [field.value])
-  
-   
-  const [preview, setPreview] = useState(field.value);
-  const [isUploading, setIsUploading] = useState(false);
 
-  const handleFileChange = useCallback((event: any) => {
-    const file = event.currentTarget.files[0];
 
-    if (!file) return;
-    setIsUploading(true);
-    // Simulate upload delay (remove in production)
+
+  const handleOnSelected = useCallback((file: IUserMedia) => {
+    setPreview(file.url);
+    helper.setValue(file.url);
+    helper.setTouched(true)
     setTimeout(() => {
-      const reader: any = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result);
-        setIsUploading(false);
-        helper.setValue(file);
-        helper.setTouched(true)
-        setTimeout(() => {
-          validateField(name)
-        }, 1);
-      };
-      reader.readAsDataURL(file);
-    }, 1000);
+      validateField(name)
+    }, 1);
   }, [name]);
+
+
+
+  const [preview, setPreview] = useState(field.value);
 
   const handleRemoveImage = useCallback(() => {
     setPreview(null);
     helper.setValue(null);
-   
   }, [name]);
 
   return (
-    <FormControl required sx={{ m: 1, width: '100%' }}>
+    <FormControl key={name} required sx={{ m: 1, width: '100%' }}>
       <InputLabel error={!!helperText} id="demo-simple-select-required-label">{label}</InputLabel>
       <Box sx={{ paddingTop: 5 }}>
- 
         {preview ? (
           <Box sx={{ position: 'relative', display: 'inline-block', borderRadius: '1px solid red' }}>
-          
             <Avatar
               src={preview}
               alt="Preview"
-              sx={{ width: '100%', height: '100%', mb: 1, maxWidth:300 }}
+              sx={{ width: '100%', height: '100%', mb: 1, maxWidth: 300 }}
               variant="rounded"
             />
-            <IconButton disabled={isUploading || props.disabled}
+            <IconButton disabled={props.disabled}
               onClick={handleRemoveImage}
               sx={{
                 position: 'absolute',
@@ -101,42 +92,14 @@ const ImageUploadInput = ({ name, label, accept = 'image/*',  ...props }: any & 
             variant="outlined"
             color="primary"
             startIcon={<CloudUpload />}
-            disabled={isUploading || props.disabled}
-          >
-
-            {isUploading ? (
-              <CircularProgress size={24} />
-            ) : (
-              t('core.label.uploadResourse')
-            )}
-
-            <TextField
-             
-              onChange={handleFileChange}
-              onBlur={(e) => field.onBlur(e)}
-              type="file"
-             
-              style={{
-                border: 1,
-                clip: 'rect(0 0 0 0)',
-                height: '1px',
-                margin: '-1px',
-                overflow: 'hidden',
-                padding: 0,
-                position: 'absolute',
-                whiteSpace: 'nowrap',
-                width: '1px',
-              }}
-
-              //accept={accept}
-              disabled={isUploading || props.disabled}
-            />
-
-          </Button>
+            disabled={props.disabled}
+            onClick={() => openModal(CommonModalType.FILES, {name})}
+          >{t('core.label.uploadResourse')}</Button>
         )}
 
         <FormHelperText error={!!helperText}>{helperText as string}</FormHelperText>
-      </Box>
+      </Box>{name}
+      {CommonModalType.FILES && open.open && open.args.name===name && <MediaModalSelectedFiles key={name} onSelected={handleOnSelected} />}
     </FormControl>
 
   );

@@ -184,11 +184,14 @@ export class HttpClient {
    * @param {?RequestInit} [config]
    * @returns {Promise<T>}
    */
-  async upload<T>(url: string, data?: any): Promise<T> {
+  async upload<T>(url: string, data?: any, headers?: any): Promise<T> {
     try {
+       
+      
       const response = await fetch(url, {
         method: 'POST',
-        body: data
+        body: data,        
+        ...headers
       }
       );
 

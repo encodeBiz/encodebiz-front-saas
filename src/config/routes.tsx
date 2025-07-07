@@ -1,7 +1,8 @@
 import {
     Dashboard as DashboardIcon,
     BarChart as BarChartIcon,
-    Settings as SettingsIcon
+    Settings as SettingsIcon,
+    ImageSearchOutlined
 } from '@mui/icons-material';
 import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
@@ -95,6 +96,12 @@ export const menuItems = [{
         link: '/main/preferences/entity',
         subMenu: []
     },
+    {
+        name: 'Media',
+        icon: <ImageSearchOutlined />,
+        link: '/main/preferences/media',
+        subMenu: []
+    }
     /* {
         name: 'Notifications',
         icon: <SettingsIcon />,

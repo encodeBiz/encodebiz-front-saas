@@ -1,15 +1,9 @@
+import { Column } from "@/components/common/table/GenericTable";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 
-interface Column<T> {
-  id: keyof T;
-  label: string;
-  minWidth?: number;
-  align?: 'left' | 'center' | 'right' | 'justify' | 'inherit';
-  format?: (value: any, row: T) => React.ReactNode;
-  sortable?: boolean;
-}
+
 
 export default function useHolderListController() {
   const t = useTranslations();

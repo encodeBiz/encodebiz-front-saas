@@ -100,7 +100,7 @@ const ConfirmModal = ({ word, title, label, description, isLoading = false, code
                     variant="contained"
                     startIcon={isLoading ? <CircularProgress size={20} /> : null}
                 >
-                    {t('core.button.submit')}
+                    {codeValidator?t('core.button.submit'):t('core.button.delete')}
                 </Button>
             </DialogActions>
         </Dialog>
