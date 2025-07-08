@@ -4,6 +4,10 @@ export interface IService {
     name: string;
     description: string;
     availablePlans: Array<PlanType>;
+    activatedAt: Date
+    active: boolean
+    metadata: Record<string, any>
+
 }
 
 export type PlanType = "freemium" | "bronze" | "enterprise";

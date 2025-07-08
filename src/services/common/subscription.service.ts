@@ -1,16 +1,29 @@
-import { RegisterFormValues } from "@/app/auth/register/page.controller";
 import { collection } from "@/config/collection";
-import { createUser } from "@/lib/firebase/authentication/create";
-import { login, loginWithGoogle, loginWithToken } from "@/lib/firebase/authentication/login";
-import { logout } from "@/lib/firebase/authentication/logout";
-import { getOne } from "@/lib/firebase/firestore/readDocument";
-import httpClientFetchInstance, { HttpClient } from "@/lib/http/httpClientFetchNext";
-import IUser from "@/domain/auth/IUser";
-import { UserCredential } from "firebase/auth";
+import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { ISubscription, IUnSubscription } from "@/domain/auth/ISubscription";
+import { IPlanData } from "@/domain/core/IPlan";
+import { getAll, getOne } from "@/lib/firebase/firestore/readDocument";
+import { IService } from "@/domain/core/IService";
 
 
 
+export async function fetchAvailablePlans(productId: string): Promise<IPlanData[]> {
+    try {
+        const planDataList = await getAll<IPlanData>(`service/${productId}/plan`);
+        return planDataList;
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
+}
+
+export async function fetchService(productId: string): Promise<IService> {
+    try {
+        const planDataList = await getOne<IService>(`service`, productId);
+        return planDataList;
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
+}
 
 
 export async function subscribeInSassProduct(data: ISubscription, token: string) {
@@ -28,9 +41,9 @@ export async function subscribeInSassProduct(data: ISubscription, token: string)
             throw new Error(response.message)
         }
 
-    } catch (error: any) { 
+    } catch (error: any) {
         console.log(error);
-        
+
         throw new Error(error.message)
     }
 }
@@ -59,7 +72,7 @@ export async function unSubscribeInSassProduct(data: IUnSubscription, token: str
 
 
 export async function configBilling(data: {
-    "entityId": string 
+    "entityId": string
 }, token: string) {
     try {
         let httpClientFetchInstance: HttpClient = new HttpClient({

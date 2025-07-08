@@ -31,13 +31,15 @@ export const menuItems = [{
     id: 'checkBiz360_products',
     name: 'Products',
     header: true, subMenu: []
-}, {
+}
+
+/*, {
     id: 'checkinbiz_products',
     name: 'CheckinBiz',
     icon: <CreditCardOffIcon />,
     link: '/main/checkinbiz',
     subMenu: []
-},
+}*/,
 {
     id: 'passinbiz_products',
     name: 'PassinBiz',

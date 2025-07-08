@@ -49,7 +49,7 @@ export type PricingCardProps = IPlan & {
 
 export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, period, features, featured = false, fromService, getPlanAllow = false }) => {
     const t = useTranslations();
-    const { subcribeAction, loadingGetPlan, setLoadingGetPlan } = usePricingCardController(id, fromService);
+    const { subcribeAction, loadingGetPlan, setLoadingGetPlan } = usePricingCardController(id as string, fromService);
 
     useEffect(() => {
         setLoadingGetPlan(getPlanAllow);
@@ -71,7 +71,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
                         {name}
                     </Typography>
 
-                    <Typography
+                    {price && <Typography
                         variant="h4"
                         color="primary"
                         sx={{ textAlign: "center", marginTop: "20px" }}
@@ -80,10 +80,10 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
                         <Typography variant="body2" component="span">
                             {period}
                         </Typography>
-                    </Typography>
+                    </Typography>}
 
                     <List sx={{ marginTop: "10px" }}>
-                        {features.map((feature, i) => (
+                        {(features as Array<string>).map((feature, i) => (
                             <ListItem key={i} disableGutters>
                                 <ListItemIcon sx={{ minWidth: 30 }}>
                                     <CheckCircleOutline color="primary" fontSize="small" />

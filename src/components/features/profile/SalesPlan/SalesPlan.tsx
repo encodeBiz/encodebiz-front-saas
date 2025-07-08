@@ -4,11 +4,11 @@ import { Container, Typography, Alert, Link, Box } from '@mui/material';
 import SalesPlans from "@/components/common/SalesPlans";
 import useSalesPlanController from './SalesPlan.controller';
 import { BizType } from '@/domain/core/IService';
+import { IPlan } from '@/domain/core/IPlan';
  
 
-export default function SalesPlan({fromService}:{fromService:BizType}) {
+export default function SalesPlan({fromService,salesPlans, notGetPlan}:{fromService:BizType,salesPlans:Array<IPlan>, notGetPlan:boolean}) {
     const t = useTranslations()
-    const { salesPlans, notGetPlan } = useSalesPlanController();
  
     return (
         <Container maxWidth="xl">

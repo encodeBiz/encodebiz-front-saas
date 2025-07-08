@@ -2,9 +2,10 @@ import { subscribeInSassProduct } from '@/services/common/subscription.service';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useState } from 'react';
-import { ISubscription } from './PricingCard';
+ 
 import { useToast } from '@/hooks/useToast';
-export default function usePricingCardController(id: "freemium" | "bronze" | "enterprise", fromService: "passinbiz" | "checkinbiz") {
+import { ISubscription } from '@/domain/auth/ISubscription';
+export default function usePricingCardController(id: string, fromService: "passinbiz" | "checkinbiz") {
     const { currentEntity } = useEntity();
     const { token } = useAuth()
     const [loadingGetPlan, setLoadingGetPlan] = useState(false);

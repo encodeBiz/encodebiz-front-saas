@@ -1,8 +1,18 @@
 export interface IPlan {
-    id: "freemium" | "bronze" | "enterprise";
-    name: string;
-    price: string;
-    period: string;
-    features: string[];
+    id: string;
+    name?: string;
+    price?: string;
+    period?: string;
+    features?: string[];
     featured?: boolean;
+}
+
+export interface IPlanData {
+    allowBranding: boolean
+    allowCustomTemplate: boolean
+    id: string
+    maxHolders: number
+    monthlyPrice: number
+    payPerUse: boolean
+    service: string
 }

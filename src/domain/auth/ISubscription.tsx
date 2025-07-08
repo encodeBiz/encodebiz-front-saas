@@ -3,7 +3,7 @@ import { BizType, PlanType } from "../core/IService";
 export interface ISubscription {
     entityId: string
     serviceId: BizType
-    planId: PlanType;
+    planId: string;
 }
 
 export interface IUnSubscription {
