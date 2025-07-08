@@ -19,12 +19,13 @@ import { useTranslations } from 'next-intl';
 import MediaModalSelectedFiles from '../../modals/MediaModalSelectedFiles/MediaModalSelectedFiles';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
-import { IUserMedia } from '@/domain/core/IUserMedia';
+import { IUserMedia, IUserMediaType } from '@/domain/core/IUserMedia';
 
 interface ImageFieldProps {
   accept: string
+  typeUpload: IUserMediaType
 }
-const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & FieldProps & TextFieldProps & ImageFieldProps) => {
+const ImageUploadInput = ({ name, label, typeUpload = 'custom', accept = 'image/*', ...props }: any & FieldProps & TextFieldProps & ImageFieldProps) => {
   const t = useTranslations();
   const [field, meta, helper] = useField(name);
   const { touched, error } = meta
@@ -93,13 +94,13 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
             color="primary"
             startIcon={<CloudUpload />}
             disabled={props.disabled}
-            onClick={() => openModal(CommonModalType.FILES, {name})}
+            onClick={() => openModal(CommonModalType.FILES, { name })}
           >{t('core.label.uploadResourse')}</Button>
         )}
 
         <FormHelperText error={!!helperText}>{helperText as string}</FormHelperText>
-      </Box>{name}
-      {CommonModalType.FILES && open.open && open.args.name===name && <MediaModalSelectedFiles key={name} onSelected={handleOnSelected} />}
+      </Box>
+      {CommonModalType.FILES && open.open && open.args.name === name && <MediaModalSelectedFiles type={typeUpload} key={name} onSelected={handleOnSelected} />}
     </FormControl>
 
   );

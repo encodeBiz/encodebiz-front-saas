@@ -86,6 +86,7 @@ export async function createEntity(data: EntityFormValues, token: string) {
         process.env.NEXT_PUBLIC_BACKEND_URI_CREATE_ENTITY as string,
         {
           ...data,
+          
         }
       );
       if (response.errCode && response.errCode !== 200) {
@@ -142,7 +143,7 @@ export async function updateEntityBranding(
           token: `Bearer ${token}`,
         },
       });
-      const response: any = await httpClientFetchInstance.upload(
+      const response: any = await httpClientFetchInstance.post(
         process.env.NEXT_PUBLIC_BACKEND_URI_UPDATE_BRANDNG_ENTITY as string,
         data
       );

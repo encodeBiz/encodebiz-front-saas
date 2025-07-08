@@ -14,10 +14,12 @@ import {
 import { BaseButton } from '../buttons/BaseButton';
 import { useTranslations } from 'next-intl';
 import { createSlug } from '@/lib/common/String';
+import { IUserMedia } from '@/domain/core/IUserMedia';
 
 // Define types for our form component
 export type FormField = {
   name: string;
+  typeUpload?: IUserMedia;
   label: string | React.ComponentType<any>;
   type?: 'text' | 'email' | 'password' | 'number' | 'select' | 'checkbox' | 'date' | 'textarea';
   required?: boolean;
@@ -112,6 +114,7 @@ const GenericForm = <T extends Record<string, any>>({
                       <FieldComponent
                         name={field.name}
                         label={field.label}
+                        typeUpload={field.typeUpload}
                         type={field.type}
                         required={field.required}
                         disabled={field.disabled || disabled}

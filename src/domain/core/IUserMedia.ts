@@ -1,7 +1,7 @@
 export interface IUserMedia {
     entityId: string
     uid?: string
-    type: 'logo' | 'background' | 'stripImage' | 'icon' | 'eventLogo' | 'eventBackground' | 'eventStripImage' | 'custom'
+    type: IUserMediaType
     file?: File
     id:string
     filename: string
@@ -13,3 +13,5 @@ export interface IUserMedia {
     url: string
     width: number
 }
+
+export type IUserMediaType =  'logo' | 'background' | 'stripImage' | 'icon' | 'eventLogo' | 'eventBackground' | 'eventStripImage' | 'custom'

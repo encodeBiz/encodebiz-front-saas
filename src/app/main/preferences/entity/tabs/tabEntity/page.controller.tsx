@@ -62,14 +62,13 @@ export type TabItem = {
 export const useSettingEntityController = () => {
     const t = useTranslations();
     const { currentEntity, refrestList } = useEntity();
-    const { openModal, closeModal } = useCommonModal()
-    const [iframeUrl, setIframeUrl] = useState(''); // Initial URL
+    const { closeModal } = useCommonModal()
+
     const { changeLoaderState } = useLayout()
     const { user, token } = useAuth();
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
-    const [avatarSrc, setAvatarSrc] = useState<string | undefined>(undefined);
-    const [avatarFile, setAvatarFile] = useState<File | null>(null);
+
     const [cityList, setCityList] = useState<any>([])
     const [initialValues, setInitialValues] = useState<EntityUpdatedFormValues>({
         uid: currentEntity?.entity?.id as string | "",
@@ -177,75 +176,114 @@ export const useSettingEntityController = () => {
     ];
 
 
-    const [initialBrandValues, setInitialBrandValues] = useState<BrandFormValues>({
-        "backgroundColor": "#417505" as string,
-        "labelColor": "#b62929" as string,
-        "textColor": "#4a90e2" as string,
-        logoUrl: '',
-        stripImageUrl: '',
-        iconUrl: '',
-    });
-
-    const brandValidationSchema = Yup.object().shape({
-        backgroundColor: requiredRule(t),
-        labelColor: requiredRule(t),
-        textColor: requiredRule(t),
-        logoUrl: requiredRule(t),
-        stripImageUrl: requiredRule(t),
-        iconUrl: requiredRule(t)
-    });
-
-    const fields2 = [
-
-
-        {
-            name: 'backgroundColor',
-            label: t('core.label.backgroundColor'),
-            component: ColorPickerInput,
-            required: true,
-        },
-        {
-            name: 'labelColor',
-            label: t('core.label.labelColor'),
-            component: ColorPickerInput,
-            required: true,
-        },
-        {
-            name: 'textColor',
-            label: t('core.label.textColor'),
-            component: ColorPickerInput,
-            required: true,
-        },
-        {
-            name: 'logoUrl',
-            label: t('core.label.logo'),
-            component: ImageUploadInput,
-            required: true,
-            typeUpload: 'logo'
-        },
-        {
-            name: 'stripImageUrl',
-            label: t('core.label.stripImageUrl'),
-            component: ImageUploadInput,
-            required: true,
-            typeUpload: 'stripImage'
-        },
-        {
-            name: 'iconUrl',
-            label: t('core.label.iconUrl'),
-            component: ImageUploadInput,
-            required: true,
-
-            typeUpload: 'icon'
-        },
-    ];
-
-
-   
- 
 
 
 
-    return {   }
+
+
+    const setEntityDataAction = async (values: EntityUpdatedFormValues) => {
+        try {
+            setPending(true)
+            const updateData = {
+                "id": currentEntity?.entity?.id,
+                "name": values.name,
+                "slug": createSlug(values.name),
+                "billingEmail": values.billingEmail,
+                "legal": {
+                    "legalName": values.legalName,
+                    "taxId": values.taxId,
+                    "address": {
+                        "street": values.street,
+                        "city": values.city,
+                        "postalCode": values.postalCode,
+                        "country": values.country,
+
+                    }
+                },
+                "active": true
+            }
+            changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+            await updateEntity(updateData, token)
+            changeLoaderState({ show: false })
+            refrestList(user?.id as string)
+            showToast(t('core.feedback.success'), 'success');
+            setPending(false)
+
+        } catch (error: any) {
+
+            if (error instanceof Error) {
+                showToast(error.message, 'error');
+            } else {
+                showToast(String(error), 'error');
+            }
+            setPending(false)
+            changeLoaderState({ show: false })
+
+        }
+    };
+
+
+    const fetchData = async () => {
+        const entity = await fetchEntity(currentEntity?.entity.id as string)
+
+
+        setInitialValues({
+            uid: currentEntity?.entity?.id as string | "",
+            "name": currentEntity?.entity?.name as string | "",
+            "active": currentEntity?.entity?.active as boolean | true,
+            "street": currentEntity?.entity?.legal?.address.street as string | "",
+            "country": currentEntity?.entity?.legal?.address.country as string | "",
+            "city": currentEntity?.entity?.legal?.address.city as string | "",
+            "postalCode": currentEntity?.entity?.legal?.address.postalCode as string | "",
+            "taxId": currentEntity?.entity?.legal?.taxId as string | "",
+            "legalName": currentEntity?.entity?.legal?.legalName as string | "",
+            billingEmail: currentEntity?.entity?.billingEmail as string | ""
+        })
+        setCityList(country.find(e => e.name === currentEntity?.entity?.legal?.address.country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
+
+
+    }
+    useEffect(() => {
+        fetchData()
+    }, [currentEntity?.entity.id])
+
+
+
+    const handleDeleteEntity = async (entityId: string) => {
+        setPending(true)
+        try {
+            changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+            await deleteEntity({
+                uid: user?.id as string,
+                entityId: entityId
+            }, token)
+            changeLoaderState({ show: false })
+            refrestList(user?.id as string)
+            showToast(t('core.feedback.success'), 'success');
+            setPending(false)
+            closeModal(CommonModalType.DELETE)
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                showToast(error.message, 'error');
+            } else {
+                showToast(String(error), 'error');
+            }
+            setPending(false)
+            changeLoaderState({ show: false })
+        }
+    }
+
+
+
+
+    useEffect(() => {
+        if (currentEntity?.entity?.createdAt)
+            formatDate(currentEntity.entity.createdAt, t('locale'));
+    }, [currentEntity]);
+
+
+
+
+    return { validationSchema, initialValues, setEntityDataAction, fields, pending, handleDeleteEntity }
 }
 

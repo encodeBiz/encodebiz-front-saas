@@ -62,121 +62,13 @@ export type TabItem = {
 export const useSettingEntityController = () => {
     const t = useTranslations();
     const { currentEntity, refrestList } = useEntity();
-    const { openModal, closeModal } = useCommonModal()
-    const [iframeUrl, setIframeUrl] = useState(''); // Initial URL
+ 
     const { changeLoaderState } = useLayout()
     const { user, token } = useAuth();
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
-    const [avatarSrc, setAvatarSrc] = useState<string | undefined>(undefined);
-    const [avatarFile, setAvatarFile] = useState<File | null>(null);
-    const [cityList, setCityList] = useState<any>([])
-    const [initialValues, setInitialValues] = useState<EntityUpdatedFormValues>({
-        uid: currentEntity?.entity?.id as string | "",
-        "name": currentEntity?.entity?.name as string | "",
-        "active": currentEntity?.entity?.active as boolean | true,
-        "street": currentEntity?.entity?.legal?.address.street as string | "",
-        "country": currentEntity?.entity?.legal?.address.country as string | "",
-        "city": currentEntity?.entity?.legal?.address.city as string | "",
-        "postalCode": currentEntity?.entity?.legal?.address.postalCode as string | "",
-        //"region": currentEntity?.entity?.legal?.address.region as string | "",
-        "taxId": currentEntity?.entity?.legal?.taxId as string | "",
-        "legalName": currentEntity?.entity?.legal?.legalName as string | "",
-        billingEmail: currentEntity?.entity?.billingEmail as string | ""
-    });
-
-    const validationSchema = Yup.object().shape({
-        name: requiredRule(t),
-        street: requiredRule(t),
-        country: requiredRule(t),
-        city: requiredRule(t),
-        postalCode: requiredRule(t),
-        //region: requiredRule(t),
-        taxId: requiredRule(t),
-        legalName: requiredRule(t),
-
-    });
-
-
-
-    const fields = [
-        {
-            name: 'name',
-            label: t('core.label.name'),
-            type: 'text',
-            required: true,
-            fullWidth: true,
-            component: TextInput,
-        },
-
-        {
-            isDivider: true,
-            label: t('core.label.legal'),
-        },
-        {
-            name: 'legalName',
-            label: t('core.label.legalEntityName'),
-            type: 'text',
-            required: true,
-            fullWidth: true,
-            component: TextInput,
-        },
-        {
-            name: 'billingEmail',
-            label: t('core.label.billingEmail'),
-            type: 'email',
-            component: TextInput,
-        },
-        {
-            name: 'taxId',
-            label: t('core.label.taxId'),
-            type: 'text',
-            component: TextInput,
-        },
-        {
-            isDivider: true,
-            label: t('core.label.address'),
-        },
-        {
-            name: 'street',
-            label: t('core.label.street'),
-            type: 'textarea',
-            fullWidth: true,
-            component: TextInput,
-        },
-        {
-            name: 'country',
-            label: t('core.label.country'),
-            onChange: (event: any) => {
-                setCityList(country.find(e => e.name === event)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
-            },
-            component: SelectInput,
-            options: country.map(e => ({ label: e.name, value: e.name }))
-        },
-        {
-            name: 'city',
-            label: t('core.label.city'),
-            component: SelectInput,
-            options: cityList
-        },
-        /*
-        {
-            name: 'region',
-            label: t('core.label.region'),
-            component: TextInput,
-            options: cityList
-        },
-        */
-        {
-            name: 'postalCode',
-            label: t('core.label.postalCode'),
-            component: TextInput,
-            fullWidth: true,
-            options: cityList
-        },
-    ];
-
-
+    
+    
     const [initialBrandValues, setInitialBrandValues] = useState<BrandFormValues>({
         "backgroundColor": "#417505" as string,
         "labelColor": "#b62929" as string,
@@ -239,13 +131,72 @@ export const useSettingEntityController = () => {
             typeUpload: 'icon'
         },
     ];
-
-
-   
  
+    const changeBrandAction = async (values: BrandFormValues) => {
+        try {
+            setPending(true)
+            const form = new FormData();
+            form.append('entityId', currentEntity?.entity.id as string);
+            form.append('backgroundColor', values.backgroundColor);
+            form.append('labelColor', values.labelColor);
+            form.append('textColor', values.textColor);
+            form.append('logo', values.logoUrl);
+            form.append('icon', values.iconUrl);
+            form.append('stripImage', values.stripImageUrl);
+            const data = {
+                'entityId': currentEntity?.entity.id,
+                'backgroundColor': values.backgroundColor,
+                'labelColor': values.labelColor,
+                'textColor': values.textColor,
+                files: {
+                    'logo': values.logoUrl,
+                    'icon': values.iconUrl,
+                    'stripImage': values.stripImageUrl
+                }
+            }
+            changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+            await updateEntityBranding(data, token)
+            refrestList(user?.id as string)
+            showToast(t('core.feedback.success'), 'success');
+            setPending(false)
+            changeLoaderState({ show: false })
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                showToast(error.message, 'error');
+            } else {
+                showToast(String(error), 'error');
+            }
+            setPending(false)
+            changeLoaderState({ show: false })
+        }
+    };
+
+    const fetchData = async () => {
+
+        setInitialBrandValues({
+            "backgroundColor": currentEntity?.entity?.branding?.backgroundColor as string | "",
+            "labelColor": currentEntity?.entity?.branding?.labelColor as string | "",
+            "textColor": currentEntity?.entity?.branding?.textColor as string | "",
+            logoUrl: currentEntity?.entity?.branding?.logo as string | "",
+            stripImageUrl: currentEntity?.entity?.branding?.stripImage as string | "",
+            iconUrl: currentEntity?.entity?.branding?.icon as string | "",
+        })
+    }
+    useEffect(() => {
+        fetchData()
+    }, [currentEntity?.entity.id])
 
 
 
-    return {   }
+
+    useEffect(() => {
+        if (currentEntity?.entity?.createdAt)
+            formatDate(currentEntity.entity.createdAt, t('locale'));
+    }, [currentEntity]);
+
+
+
+
+    return { brandValidationSchema, changeBrandAction, pending, fields2, initialBrandValues }
 }
 
