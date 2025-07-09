@@ -2,7 +2,7 @@
 import { verifyToken } from '@/lib/firebase/authentication/auth_utils';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(request: NextRequest, response: NextResponse) {
+export async function POST(request: any, response: any) {
 
   const data = await request.json();
   const { token } = data
