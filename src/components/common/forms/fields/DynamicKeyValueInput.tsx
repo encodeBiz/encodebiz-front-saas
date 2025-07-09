@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, TextField } from '@mui/material';
 import { FieldProps, useField, useFormikContext } from 'formik';
 import { useTranslations } from 'next-intl';
@@ -44,6 +44,11 @@ const DynamicKeyValueInput: React.FC<FieldProps> = ({ ...props }) => {
         setFields(newFields);
         setFieldValue(name, newFields);
     };
+
+    useEffect(() => {
+      handleAdd()
+    }, [])
+    
 
     return (
         <Box>

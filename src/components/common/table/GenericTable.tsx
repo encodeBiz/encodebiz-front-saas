@@ -71,6 +71,7 @@ interface GenericTableProps<T> {
   keyField: keyof T;
   title?: string;
   selectable?: boolean;
+  search?: boolean;
   onRowClick?: (row: T) => void;
   onDelete?: (ids: (string | number)[]) => void;
   onEdit?: (row: T) => void;
@@ -95,6 +96,7 @@ export function GenericTable<T extends Record<string, any>>({
   onEdit,
   onBulkAction,
   loading = false,
+  search = false,
   onRowsPerPageChange,
   onBack,
   onNext
@@ -186,12 +188,7 @@ export function GenericTable<T extends Record<string, any>>({
     let eventPage;
     if(newPage > (page as number)) onNext()
     else onBack()
-    
-    //setPage(newPage);
-    console.log(eventPage);
-    console.log(newPage);
-    
-    
+ 
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -225,7 +222,7 @@ export function GenericTable<T extends Record<string, any>>({
       >
         {title && <Typography variant="h6">{title}</Typography>}
 
-        <Box sx={{ display: 'flex', gap: 2 }}>
+        {search && <Box sx={{ display: 'flex', gap: 2 }}>
           <TextField
             variant="outlined"
             size="small"
@@ -249,7 +246,7 @@ export function GenericTable<T extends Record<string, any>>({
               <FilterIcon />
             </IconButton>
           </Tooltip>
-        </Box>
+        </Box>}
       </Box>
 
       {selected.length > 0 && (

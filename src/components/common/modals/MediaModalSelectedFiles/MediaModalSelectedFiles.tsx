@@ -44,7 +44,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/useToast';
 import { IUserMedia, IUserMediaType } from '@/domain/core/IUserMedia';
 import { fileTypes } from '@/config/constants';
-
+import { formatFileSize, getFileIcon } from '@/lib/common/String';
+ 
 export interface IMedia {
   preview: string
   file: File
@@ -54,14 +55,7 @@ export interface MediaModalSelectedFilesProps {
   onSelected: (media: IUserMedia) => void
   type?:IUserMediaType
 }
-const fileTypeIcons = {
-  image: <ImageIcon />,
-  video: <VideoIcon />,
-  audio: <AudioIcon />,
-  document: <DocumentIcon />,
-  default: <FileIcon />,
-};
-
+ 
 
 const MediaModalSelectedFiles = ({ onSelected , type='custom'}: MediaModalSelectedFilesProps) => {
   const theme = useTheme()
@@ -111,27 +105,7 @@ const MediaModalSelectedFiles = ({ onSelected , type='custom'}: MediaModalSelect
 
     }
   }, [selectedType]);
-
-  const getFileIcon = (file: IUserMedia) => {
-    if (file.type.startsWith('image/')) return fileTypeIcons.image;
-    if (file.type.startsWith('video/')) return fileTypeIcons.video;
-    if (file.type.startsWith('audio/')) return fileTypeIcons.audio;
-    if (file.type.startsWith('application/pdf') ||
-      file.type.startsWith('text/') ||
-      file.type.includes('document')) {
-      return fileTypeIcons.document;
-    }
-    return fileTypeIcons.default;
-  };
-
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  };
-
+ 
   return (
     <Dialog
       open={open.open}

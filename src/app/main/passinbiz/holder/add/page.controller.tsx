@@ -5,21 +5,35 @@ import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
 
 import { emailRule, requiredRule } from '@/config/yupRules';
+import { createHolder } from "@/services/passinbiz/holder.service";
+import { useToast } from "@/hooks/useToast";
+import { useRouter } from "nextjs-toploader/app";
+import { useAppTheme } from "@/hooks/useTheme";
+import { useAuth } from "@/hooks/useAuth";
+import { useEntity } from "@/hooks/useEntity";
 
 export interface HolderFormValues {
   "fullName": string;
   "email": string;
   "phoneNumber": string;
   "customFields": DynamicFields;
+  isLinkedToUser: boolean
+  entityId: string
 };
 
 export default function useHolderController() {
   const t = useTranslations();
+  const { showToast } = useToast()
+  const { push } = useRouter()
+  const { token } = useAuth()
+  const { currentEntity } = useEntity()
   const [initialValues] = useState<HolderFormValues>({
     fullName: "",
     email: "",
     phoneNumber: "",
-    customFields: []
+    customFields: [],
+    isLinkedToUser: true,
+    entityId: currentEntity?.entity.id as string
   });
 
   const validationSchema = Yup.object().shape({
@@ -38,6 +52,18 @@ export default function useHolderController() {
 
   const setDinamicDataAction = async (values: HolderFormValues) => {
     console.log('llegando con los values:::', values);
+    try {
+      const data = await createHolder({
+        ...values,
+        isLinkedToUser: true,
+        entityId: currentEntity?.entity.id as string
+      }, token)
+      showToast(t('core.feedback.success'), 'success');
+
+      push('/main/dashboard')
+    } catch (error: any) {
+      showToast(error.message, 'error')
+    }
   };
 
   const fields = [

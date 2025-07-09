@@ -63,6 +63,7 @@
       "success": "La operación se realizó exitosamente"
     },
     "label": {
+      "filename":"Nombre de Archivo",
       "firstName": "Nombre",
       "uploadResourse": "Subir recurso",
       "lastName": "Apellido",
@@ -247,6 +248,7 @@
     "addHolder": "Adicionar Titular"
   },
   "media": {
+    "title": "Multimedias",
     "text1": "Archicos seleccionados",
     "labelType": "Seleccione el tipo de archivo a subir",
     "deleteConfirmModalTitle":"Emilinar archivo",

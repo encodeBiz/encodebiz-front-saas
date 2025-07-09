@@ -101,7 +101,7 @@ const EntityPreferencesPage = () => {
       <GenericTable
         data={items}
         columns={columns}
-        title={t("holders.holderList")}
+        title={t("media.title")}
         keyField="id"
         loading={loading}
         page={currentPage}

@@ -8,12 +8,18 @@ import { buildSearch, Column, IRowAction } from '@/components/common/table/Gener
 import { IUserMedia } from '@/domain/core/IUserMedia';
 import { deleteMedia, search, uploadMedia } from '@/services/common/media.service';
 import { useAuth } from '@/hooks/useAuth';
+import { Box, Avatar, Typography, Chip, useTheme } from '@mui/material';
+import { useStyles } from './page.styles';
+import { fileTypeIcons } from '@/config/theme';
+import { getFileIcon, formatFileSize } from '@/lib/common/String';
 
 
 
 
 export const useMediaList = () => {
     const t = useTranslations();
+    const theme = useTheme();
+    const classes = useStyles(theme)
     const { token, user } = useAuth()
     const { currentEntity } = useEntity()
     const { showToast } = useToast()
@@ -59,9 +65,47 @@ export const useMediaList = () => {
     }, [itemsHistory.length, rowsPerPage])
 
 
+
+
     const columns: Column<IUserMedia>[] = [
-        { id: 'id', label: 'ID', minWidth: 170 },
-        { id: 'filename', label: t("core.label.filename"), minWidth: 170 },
+        {
+            id: 'filename', label: t("core.label.filename"), minWidth: 170, format: (value, row) => <Box display="flex" alignItems="center">
+
+                <Box sx={classes.fileThumbnail}>
+                    {row.url ? (
+                        <Avatar
+                            variant="rounded"
+                            src={row.url}
+                            style={{ width: '100%', height: '100%' }}
+                        />
+                    ) : (
+                        <Avatar variant="rounded" style={{ backgroundColor: 'transparent' }}>
+                            {getFileIcon(row)}
+                        </Avatar>
+                    )}
+                </Box>
+
+                <Box sx={classes.fileInfo}>
+                    <Typography
+                        sx={{ overflow: 'hidden', width: '200px', whiteSpace: 'noWrap', textOverflow: 'ellipsis', }}
+                        variant="body2" noWrap>
+                        {row.filename}
+                    </Typography>
+                    <Typography variant="caption" color="textSecondary">
+                        {formatFileSize(row.sizeKB * 1024)}
+                    </Typography>
+                    <Box mt={0.5}>
+                        <Chip
+                            size="small"
+                            label={row.type}
+                            variant="outlined"
+                        />
+                    </Box>
+                </Box>
+
+
+            </Box>
+        },
     ];
 
     const fetchingData = () => {

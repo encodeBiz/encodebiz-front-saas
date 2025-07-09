@@ -13,7 +13,6 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'nextjs-toploader/app';
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
-import { EntityUpdatedFormValues } from '../../preferences/entity/page.controller';
 import { requiredRule } from '@/config/yupRules';
 
 

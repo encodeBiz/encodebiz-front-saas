@@ -1,8 +1,5 @@
 import { EntityFormValues } from "@/app/main/entity/create/page.controller";
-import {
-  BrandFormValues,
-  EntityUpdatedFormValues,
-} from "@/app/main/preferences/entity/page.controller";
+
 import IEntity from "@/domain/auth/IEntity";
 import IUserEntity from "@/domain/auth/IUserEntity";
 import { SearchParams } from "@/domain/firebase/firestore";
@@ -12,6 +9,8 @@ import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
+import { BrandFormValues, EntityUpdatedFormValues } from "@/app/main/preferences/entity/tabs/tabEntity/page.controller";
+import { HolderFormValues } from "@/app/main/passinbiz/holder/add/page.controller";
 
 export async function fetchEntity(id: string): Promise<IEntity> {
   try {
@@ -69,7 +68,7 @@ export async function saveStateCurrentEntity(
   }
 }
 
-export async function createEntity(data: EntityFormValues, token: string) {
+export async function createHolder(data: HolderFormValues, token: string) {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -81,7 +80,7 @@ export async function createEntity(data: EntityFormValues, token: string) {
         },
       });
       const response: any = await httpClientFetchInstance.post(
-        process.env.NEXT_PUBLIC_BACKEND_URI_CREATE_ENTITY as string,
+        process.env.NEXT_PUBLIC_BACKEND_URI_PASSINBIZ_CREATE_HOLDER as string,
         {
           ...data,
         }
