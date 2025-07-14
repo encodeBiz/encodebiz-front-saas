@@ -21,7 +21,8 @@
     "side": {
       "menu": {
         "Dashboard": "Panel",
-        "Products": "Productos",
+        "Services": "Servicios",
+        "Events": "Eventos",
         "Media": "Media",
         "home": "Inicio",
         "general": "General",
@@ -57,7 +58,8 @@
       "loader": "Cargando sesión de usuario",
       "loaderChangeEntity": "Cambiando entidad",
       "loaderAction": "Procesando información",
-      "mediaModaltitle": "Selector de Medias"
+      "mediaModaltitle": "Selector de Medias",
+      "loaderActionBilling": "Accediendo a la información de tu pasarela de pago"
     },
     "feedback": {
       "success": "La operación se realizó exitosamente"
@@ -149,7 +151,8 @@
       "stats": "Estadísticas",
       "card": {
         "btn1": "Mas informacion",
-        "btn2": "Productos",
+        "btn2": "Servicios",
+        "btn3": "Planes",
         "title": "Bienvenido a Encodebiz Saas",
         "subtitle": "En esta plataforma podras hacer varias cosas interesantes"
       }
@@ -191,11 +194,19 @@
       "tab3": {
         "title": "Configurar Billing",
         "btn": "Configurar Billing"
+      },
+      "tab4": {
+        "title": "Renovaciones",
+        "btn": "Configurar Billing"
+      },
+      "tab5": {
+        "title": "Facturación",
+        "btn": "Configurar Billing"
       }
     }
   },
   "salesPlan": {
-    "title": "Elige tu plan de ventas",
+    "title": "Elige un plan para adquirir este servicio",
     "subTitle": "Seleccione el plan que se ajuste a las necesidades de su negocio",
     "free": "Gratis",
     "standard": "Estandar",

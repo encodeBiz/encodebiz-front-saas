@@ -23,10 +23,11 @@ export interface HelpTab {
 
 export interface HelpTabsProps {
   tabs: Array<HelpTab>
+  ref?: any
 }
 
 
-const HelpTabs = ({ tabs }: HelpTabsProps) => {
+const HelpTabs = ({ tabs, ref }: HelpTabsProps) => {
   const [value, setValue] = React.useState(0);
   const theme = useTheme();
 
@@ -68,7 +69,7 @@ const HelpTabs = ({ tabs }: HelpTabsProps) => {
   );
 
   return (
-    <Box  >
+    <Box sx={{ mt: 4 }} ref={ref}>
       <Typography variant="h4" component="h2" align="left" gutterBottom>
         Más información
       </Typography>

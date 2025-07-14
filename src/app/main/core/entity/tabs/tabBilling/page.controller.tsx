@@ -61,18 +61,22 @@ export type TabItem = {
 export const useSettingEntityController = () => {
     const t = useTranslations();
     const { currentEntity } = useEntity();
-    const [iframeUrl, setIframeUrl] = useState(''); // Initial URL
     const { token } = useAuth()
+    const { changeLoaderState } = useLayout()
 
 
     const configBillingAction = async () => {
+        changeLoaderState({ show: true, args: { text: t('core.title.loaderActionBilling') } })
         const data: { url: string } = await configBilling({
             entityId: currentEntity?.entity.id as string
         }, token)
-        setIframeUrl(data.url)
+        if (data.url)
+            window.open(data.url, 'blank')
+        changeLoaderState({ show: false })
+
     }
 
 
-    return { configBillingAction, iframeUrl }
+    return { configBillingAction }
 }
 

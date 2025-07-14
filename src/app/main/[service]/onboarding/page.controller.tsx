@@ -1,40 +1,57 @@
+import { IPlan } from "@/domain/core/IPlan";
+import { IService } from "@/domain/core/IService";
+import { useAuth } from "@/hooks/useAuth";
+import { useEntity } from "@/hooks/useEntity";
+import { useLayout } from "@/hooks/useLayout";
+import { useToast } from "@/hooks/useToast";
+import { fetchAvailablePlans, fetchService } from "@/services/common/subscription.service";
+import { useTranslations } from "next-intl";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react"
 
-import { useTranslations } from 'next-intl';
-import { IPlan, IPlanData } from '@/domain/core/IPlan';
-import { useEntity } from '@/hooks/useEntity';
-import { useEffect, useState } from 'react';
-import { IService } from '@/domain/core/IService';
-import { useToast } from '@/hooks/useToast';
-import { fetchAvailablePlans, fetchService } from '@/services/common/subscription.service';
-
-export default function usePassInBizController() {
-
+export default function useDashboardController() {
+  const { service } = useParams<any>()
+  const { user } = useAuth()
+  const [serviceData, setServiceData] = useState<IService>()
+  const { showToast } = useToast()
+  const t = useTranslations()
+  const { changeLoaderState } = useLayout()
   const [notGetPlan, setnotGetPlan] = useState(false);
   const { currentEntity } = useEntity();
+  const [planList, setPlanList] = useState<Array<IPlan>>()
   const [dataEntity, setDataEntity] = useState({
     billingEmail: currentEntity?.entity?.billingEmail ?? "",
     legalName: currentEntity?.entity?.legal?.legalName ?? "",
     taxId: currentEntity?.entity?.legal?.taxId ?? ""
   });
-  const t = useTranslations();
-   
-  const { showToast } = useToast()
-  const [service, setService] = useState<IService>()
-  const [planList, setPlanList] = useState<Array<IPlan>>()
+
+  const fetchServiceData = async () => {
+    try {
+      changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+      setServiceData(await fetchService(service as string))
+      await fetchData()
+      changeLoaderState({ show: false })
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        showToast(error.message, 'error');
+      } else {
+        showToast(String(error), 'error');
+      }
+      changeLoaderState({ show: false })
+    }
+  }
 
   const [pending, setPending] = useState(false)
 
   const fetchData = async () => {
     try {
       setPending(true)
-      setService(await fetchService('passinbiz'))
-      const planData = await fetchAvailablePlans('passinbiz')
+      const planData = await fetchAvailablePlans(service)
       const planList: Array<IPlan> = []
       planData.forEach(element => {
         const featuredList = [
           t("salesPlan.unlimitedProducts"),
           t("salesPlan.limit"),
-
           t("salesPlan.priceMonthly"),
           t("salesPlan.costEstimated"),
           t("salesPlan.estimateRangeCustom"),
@@ -51,7 +68,7 @@ export default function usePassInBizController() {
       });
       setPlanList(planList)
 
-       setPending(false)
+      setPending(false)
     } catch (error: unknown) {
       if (error instanceof Error) {
         showToast(error.message, 'error');
@@ -63,8 +80,10 @@ export default function usePassInBizController() {
   }
 
   useEffect(() => {
-    fetchData()
-  }, []);
+    if (service && user?.id && currentEntity?.entity.id)
+      fetchServiceData()
+  }, [user?.id, service, currentEntity?.entity.id])
+
 
   useEffect(() => {
     if (currentEntity) {
@@ -84,5 +103,5 @@ export default function usePassInBizController() {
     }
   }, [dataEntity]);
 
-  return { notGetPlan, planList ,pending,service}
+  return { serviceData, pending, planList, notGetPlan }
 }

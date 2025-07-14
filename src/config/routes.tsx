@@ -2,26 +2,40 @@ import {
     Dashboard as DashboardIcon,
     BarChart as BarChartIcon,
     Settings as SettingsIcon,
-    ImageSearchOutlined
+    ImageSearchOutlined,
+    CreditCardOff
 } from '@mui/icons-material';
-import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
-import CreditCardOffIcon from '@mui/icons-material/CreditCardOff';
-import PersonIcon from '@mui/icons-material/Person';
 import BusinessIcon from '@mui/icons-material/Business';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import GroupIcon from '@mui/icons-material/Group';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import ViewColumnIcon from '@mui/icons-material/ViewColumn';
-export const menuItems = [{
-    id: 'home',
-    name: 'home',
-    header: true, subMenu: []
+
+export const MAIN_ROUTE = 'main'
+export const GENERAL_ROUTE = 'core'
+export const USER_ROUTE = 'user'
+
+export const PASSSINBIZ_MODULE_ROUTE = 'passinBiz'
+export const CHECKINBIZ_MODULE_ROUTE = 'checkinBiz'
+
+const PASSINBIZ = [{
+    name: 'Holders',
+    icon: <GroupIcon />,
+    link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/holder`,
+    subMenu: []
 }, {
+    name: 'Events',
+    icon: <GroupIcon />,
+    link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event`,
+    subMenu: []
+}]
+
+
+const CHECKINBIZ: any = []
+export const menuItems = [{
     id: 'dashboard',
     name: 'Dashboard',
     icon: <DashboardIcon />,
-    link: '/main/dashboard',
+    link: `/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`,
     subMenu: []
 },
 {
@@ -29,33 +43,23 @@ export const menuItems = [{
     subMenu: []
 }, {
     id: 'checkBiz360_products',
-    name: 'Products',
+    name: 'Services',
     header: true, subMenu: []
 }
 
-/*, {
+    , {
     id: 'checkinbiz_products',
     name: 'CheckinBiz',
-    icon: <CreditCardOffIcon />,
+    icon: <CreditCardOff />,
     link: '/main/checkinbiz',
-    subMenu: []
-}*/,
+    subMenu: CHECKINBIZ
+},
 {
     id: 'passinbiz_products',
     name: 'PassinBiz',
     icon: <CreditScoreIcon />,
     link: '/main/passinbiz',
-    subMenu: [{
-        name: 'Plans',
-        icon: <ViewColumnIcon />,
-        link: '/main/passinbiz/plans',
-        subMenu: []
-    }, {
-        name: 'Holders',
-        icon: <GroupIcon />,
-        link: '/main/passinbiz/holder',
-        subMenu: []
-    }]
+    subMenu: PASSINBIZ
 },
 {
     divider: true,
@@ -66,23 +70,7 @@ export const menuItems = [{
     name: 'general',
     header: true, subMenu: []
 },
-{
-    id: 'billing',
-    name: 'Billing',
-    icon: <BarChartIcon />,
-    link: '/main/billing',
-    subMenu: [{
-        name: 'Subscription',
-        icon: <WorkspacePremiumIcon />,
-        link: '/main/billing/suscription',
-        subMenu: []
-    }, {
-        name: 'Revenue',
-        icon: <BarChartIcon />,
-        link: '/main/billing/sales',
-        subMenu: []
-    }]
-},
+
 {
     divider: true,
     subMenu: []
@@ -95,24 +83,14 @@ export const menuItems = [{
     subMenu: [{
         name: 'Entity',
         icon: <BusinessIcon />,
-        link: '/main/preferences/entity',
+        link: `/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity`,
         subMenu: []
     },
     {
         name: 'Media',
         icon: <ImageSearchOutlined />,
-        link: '/main/preferences/media',
+        link: `/${MAIN_ROUTE}/${GENERAL_ROUTE}/media`,
         subMenu: []
     }
-    /* {
-        name: 'Notifications',
-        icon: <SettingsIcon />,
-        link: '/main/reports/sales',
-        subMenu: []
-    }, {
-        name: 'Security',
-        icon: <SettingsIcon />,
-        link: '/main/reports/sales',
-        subMenu: []
-    }*/]
+    ]
 }]

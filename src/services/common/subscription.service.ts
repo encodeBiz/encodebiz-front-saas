@@ -25,6 +25,15 @@ export async function fetchService(productId: string): Promise<IService> {
     }
 }
 
+export async function fetchServiceList(): Promise<Array<IService>> {
+    try {
+        const planDataList = await getAll<IService>(`service`);
+        return planDataList;
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
+}
+
 
 export async function subscribeInSassProduct(data: ISubscription, token: string) {
     try {

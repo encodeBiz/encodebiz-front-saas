@@ -17,28 +17,16 @@ import { BaseButton } from '@/components/common/buttons/BaseButton';
 
 const BillingPreferencesPage = () => {
     const t = useTranslations();
-    const { configBillingAction, iframeUrl } = useSettingEntityController();
+    const { configBillingAction } = useSettingEntityController();
     const { user } = useAuth()
     const { currentEntity } = useEntity()
     const { openModal } = useCommonModal()
     return (
         <>
-            <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' sx={{ width: '100%' }}>
+            <Box display={'flex'} justifyContent={'center'} alignItems='center' sx={{ width: '100%' }}>
                 <BaseButton disabled={!user?.id || !currentEntity} onClick={() => configBillingAction()} variant='contained' color='warning' >{t('entity.tabs.tab3.btn')}</BaseButton>
             </Box>
-            <div style={{ marginTop: '20px', border: '1px solid #ccc', height: '400px', width: '100%' }}>
-                {/* The key to dynamism is setting the src attribute to the state variable */}
-                {iframeUrl && <iframe
-                    src={iframeUrl}
-                    title="Dynamic Content"
-                    width="100%"
-                    height="100%"
-
-                    allowFullScreen
-                >
-                    Your browser does not support iframes.
-                </iframe>}
-            </div>
+            
         </>
     );
 };

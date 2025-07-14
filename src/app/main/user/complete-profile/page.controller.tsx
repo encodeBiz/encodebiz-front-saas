@@ -16,6 +16,7 @@ import IUser from '@/domain/auth/IUser';
 import { useRouter } from 'nextjs-toploader/app';
 import { useEntity } from '@/hooks/useEntity';
 import { useLayout } from '@/hooks/useLayout';
+import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
 export interface UserFormValues {
     "uid": string
     "name": string
@@ -162,7 +163,7 @@ export const useUserProfileController = () => {
 
     const checkProfile = async () => {
         const userData: IUser = await fetchUserAccount(user?.uid as string)
-        if (userData.email) push('/main/dashboard')
+        if (userData.email) push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
     }
 
     useEffect(() => {

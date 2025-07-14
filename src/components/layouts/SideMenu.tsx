@@ -12,12 +12,14 @@ import {
   Box,
   Typography,
   Avatar,
-  IconButton} from '@mui/material';
+  IconButton
+} from '@mui/material';
 import {
   ChevronLeft,
   ChevronRight,
   ExpandLess,
-  ExpandMore} from '@mui/icons-material';
+  ExpandMore
+} from '@mui/icons-material';
 import { styled, useTheme } from '@mui/material/styles';
 import { useLayout } from '@/hooks/useLayout';
 import { menuItems } from '@/config/routes';
@@ -98,13 +100,6 @@ export default function SideMenu() {
 
         {/* User Profile Section */}
         <Box sx={{ p: 2, textAlign: 'center', mt: 4 }}>
-          <Avatar
-            sx={{ width: 64, height: 64, mx: 'auto', mb: 1 }}
-            src="/path/to/user.jpg"
-          />
-
-          <Typography variant="subtitle1">{user?.displayName}</Typography>
-          <Typography variant="body2" color="text.secondary">{user?.email}</Typography>
           <EntitySwitcher />
         </Box>
 
@@ -117,12 +112,12 @@ export default function SideMenu() {
             if (item.divider) return <Divider key={i} />
             else
               if (item.subMenu.length == 0)
-                return <ListItem  key={i} disablePadding>
+                return <ListItem key={i} disablePadding>
                   <ListItemButton disabled={!currentEntity || item.header} onClick={() => push(item.link)} selected={pathname === item.link}>
-                   {!item.header && <ListItemIcon>
+                    {!item.header && <ListItemIcon>
                       {item.icon}
                     </ListItemIcon>}
-                    <ListItemText     primary={t(`layout.side.menu.${item.name}`)} />
+                    <ListItemText primary={t(`layout.side.menu.${item.name}`)} />
                   </ListItemButton>
                 </ListItem>
 
@@ -139,7 +134,7 @@ export default function SideMenu() {
                   </ListItem>
                   <Collapse in={openSubMenu[item.id]} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
-                      {item.subMenu.map((e: any, index: number) => <ListItem onClick={() => push(e.link)} key={i+'-'+index} disablePadding><ListItemButton   sx={{ pl: 4 }}>
+                      {item.subMenu.map((e: any, index: number) => <ListItem onClick={() => push(e.link)} key={i + '-' + index} disablePadding><ListItemButton sx={{ pl: 4 }}>
                         <ListItemIcon>
                           {e.icon}
                         </ListItemIcon>

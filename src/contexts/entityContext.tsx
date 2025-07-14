@@ -9,6 +9,7 @@ import { useRouter } from "nextjs-toploader/app";
 import { fetchUserEntities, saveStateCurrentEntity } from "@/services/common/entity.service";
 import IUser from "@/domain/auth/IUser";
 import { fetchUserAccount } from "@/services/common/account.service";
+import { MAIN_ROUTE, GENERAL_ROUTE } from "@/config/routes";
 
 interface EntityContextType {
     currentEntity: IUserEntity | undefined;
@@ -57,7 +58,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
             setEntityList(entityList)
             setCurrentEntity(entityList.find(e => e.isActive) as IUserEntity)
         } else {
-            push('/main/entity/create')
+            push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
         }
     }
 

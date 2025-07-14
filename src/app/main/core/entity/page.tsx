@@ -11,6 +11,8 @@ import { TabItem } from './page.controller';
 import EntityPreferencesTab from './tabs/tabEntity/page';
 import BrandPreferencesPage from './tabs/tabBranding/page';
 import BillingPreferencesPage from './tabs/tabBilling/page';
+import RenuewPreferencesPage from './tabs/tabRenuew/page';
+import FacturasPreferencesPage from './tabs/tabFacturas/page';
 
 const EntityPreferencesPage = () => {
     const t = useTranslations();
@@ -27,6 +29,14 @@ const EntityPreferencesPage = () => {
         }, {
             label: `${t("entity.tabs.tab3.title")}`,
             content: <BillingPreferencesPage />,
+        },
+        {
+            label: `${t("entity.tabs.tab4.title")}`,
+            content: <RenuewPreferencesPage />,
+        },
+        {
+            label: `${t("entity.tabs.tab5.title")}`,
+            content: <FacturasPreferencesPage />,
         },
 
     ];

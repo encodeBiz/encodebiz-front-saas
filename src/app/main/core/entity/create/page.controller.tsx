@@ -14,6 +14,7 @@ import { useRouter } from 'nextjs-toploader/app';
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { requiredRule } from '@/config/yupRules';
+import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
 
 
 export interface EntityFormValues {
@@ -66,8 +67,7 @@ export const useRegisterController = () => {
             const data = await createEntity(values, token)
             refrestList(user?.id as string)
             showToast(t('core.feedback.success'), 'success');
-
-            push('/main/dashboard')
+            push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
         } catch (error: any) {
             showToast(error.message, 'error')
         }

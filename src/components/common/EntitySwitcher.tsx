@@ -17,6 +17,8 @@ import { useEntity } from '@/hooks/useEntity';
 import IUserEntity from '@/domain/auth/IUserEntity';
 import { useRouter } from 'nextjs-toploader/app';
 import { useLayout } from '@/hooks/useLayout';
+import { GENERAL_ROUTE, MAIN_ROUTE } from '@/config/routes';
+import { Add, Check } from '@mui/icons-material';
 export const locales = ['en', 'es']; // Define your supported locales
 
 interface EntitySwitcherProps { }
@@ -31,13 +33,14 @@ const EntitySwitcher: React.FC<EntitySwitcherProps> = () => {
 
   const handleChange = (event: SelectChangeEvent) => {
     const newEntityId = event.target.value as string;
-    changeLoaderState({show: true, args: { text: t('core.title.loaderChangeEntity')}})
-    if (newEntityId)
+    if (newEntityId) {
+      changeLoaderState({ show: true, args: { text: t('core.title.loaderChangeEntity') } })
       changeCurrentEntity(newEntityId, () => changeLoaderState({ show: false }));
+    }
   };
 
   return (
-    <Box sx={{ minWidth: 120, mt: 4 }}>
+    <Box sx={{ minWidth: 120, mt: 2 }}>
 
       {currentEntity && <FormControl fullWidth >
         <InputLabel id="locale-switcher-label">
@@ -48,16 +51,16 @@ const EntitySwitcher: React.FC<EntitySwitcherProps> = () => {
           id="locale-switcher-select"
           value={currentEntity?.id}
           label={t('layout.header.entity')}
-          onChange={handleChange}
+          onChange={handleChange} style={{ textAlign: 'left' }}
         >
           {entityList.map((entity: IUserEntity, i: number) => (
-            <MenuItem key={i} value={entity.id}>
-              <Typography>{entity.entity.name}</Typography>
+            <MenuItem key={i} value={entity.id} style={{ textAlign: 'left'}}>
+              <Typography>  {entity.entity.name}</Typography>
             </MenuItem>
           ))}
 
-          <MenuItem onClick={() => push('/main/entity/create')} value={undefined}>
-            <Typography>Crear entidad</Typography>
+          <MenuItem style={{ textAlign: 'left', display:'flex', alignItems:'center', justifyContent:'flex-start',gap:4 }} onClick={() => push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)} value={undefined}>
+                <Add/><Typography>Crear entidad</Typography>
           </MenuItem>
         </Select>
       </FormControl>}

@@ -7,6 +7,7 @@ import {
   Settings as SettingsIcon,
   Logout as LogoutIcon} from '@mui/icons-material';
 import { useRouter } from "nextjs-toploader/app";
+import { MAIN_ROUTE, USER_ROUTE } from "@/config/routes";
 
 export const useHeader = () => {
   const t = useTranslations();
@@ -35,8 +36,7 @@ export const useHeader = () => {
 
 
   const contextMenu = [
-    { label: t('layout.header.profile'), icon: <AccountCircleIcon fontSize="small" />, action: () => { push('/main/preferences/account'); handleMenuClose(); } },
-   // { label: t('layout.header.setting'), icon: <SettingsIcon fontSize="small" />, action: () => { handleMenuClose(); } },
+    { label: t('layout.header.profile'), icon: <AccountCircleIcon fontSize="small" />, action: () => { push(`/${MAIN_ROUTE}/${USER_ROUTE}/account`); handleMenuClose(); } },
     { label: t('layout.header.logout'), icon: <LogoutIcon fontSize="small" />, action: () => { handleMenuClose(); handleLogout() } }
   ]
 

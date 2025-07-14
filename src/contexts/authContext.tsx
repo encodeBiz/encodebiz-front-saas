@@ -8,6 +8,7 @@ import IUser from "@/domain/auth/IUser";
 import { subscribeToAuthChanges } from "@/lib/firebase/authentication/stateChange";
 import { getUser } from "@/lib/firebase/authentication/login";
 import { fetchUserAccount, signInToken } from "@/services/common/account.service";
+import { MAIN_ROUTE, GENERAL_ROUTE, USER_ROUTE } from "@/config/routes";
 interface AuthContextType {
     user: IUser | null;
     userAuth: User | null;
@@ -45,13 +46,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             })
 
             if (!userData.email) {
-                push('/main/complete-profile')
+                push(`/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`)
             }
             setUserAuth(userAuth)
             if (redirectUri) push(redirectUri)
             else {
-                if (pathName === '/' || pathName === '/main')
-                    push('/main/dashboard')
+                if (pathName === '/' || pathName === '/main' || pathName === '/main/core')
+                    push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
+                else {
+                    if (pathName === '/' || pathName === '/main' || pathName === '/main/user')
+                        push(`/${MAIN_ROUTE}/${USER_ROUTE}/account`)
+                }
             }
             setPendAuth(false)
         } else {
@@ -83,7 +88,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     /** Refresh User Data */
     const updateUserData = async () => {
-        let userAuth: User =  await getUser() as User
+        let userAuth: User = await getUser() as User
         const extraData = await fetchUserAccount(userAuth.uid)
         const userData: IUser = {
             ...extraData,

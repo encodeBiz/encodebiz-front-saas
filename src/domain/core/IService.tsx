@@ -8,6 +8,8 @@ export interface IService {
     active: boolean
     metadata: Record<string, any>
 
+    image?: string
+
 }
 
 export type PlanType = "freemium" | "bronze" | "enterprise";

@@ -11,6 +11,7 @@ import { useRouter } from "nextjs-toploader/app";
 import { useAppTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
+import { GENERAL_ROUTE, MAIN_ROUTE } from "@/config/routes";
 
 export interface HolderFormValues {
   "fullName": string;
@@ -59,8 +60,7 @@ export default function useHolderController() {
         entityId: currentEntity?.entity.id as string
       }, token)
       showToast(t('core.feedback.success'), 'success');
-
-      push('/main/dashboard')
+      push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
     } catch (error: any) {
       showToast(error.message, 'error')
     }
