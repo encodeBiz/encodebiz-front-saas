@@ -10,6 +10,8 @@ import { fetchUserEntities, saveStateCurrentEntity } from "@/services/common/ent
 import IUser from "@/domain/auth/IUser";
 import { fetchUserAccount } from "@/services/common/account.service";
 import { MAIN_ROUTE, GENERAL_ROUTE } from "@/config/routes";
+import { IService } from "@/domain/core/IService";
+import { fetchServiceList } from "@/services/common/subscription.service";
 
 interface EntityContextType {
     currentEntity: IUserEntity | undefined;
@@ -17,13 +19,20 @@ interface EntityContextType {
     setCurrentEntity: (currentEntity: IUserEntity | undefined) => void;
     changeCurrentEntity: (id: string, callback?: Function) => void;
     refrestList: (userId: string) => void;
+    entityServiceList:Array<IService>
 
 }
 export const EntityContext = createContext<EntityContextType | undefined>(undefined);
 export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     const [currentEntity, setCurrentEntity] = useState<IUserEntity | undefined>(undefined);
     const [entityList, setEntityList] = useState<Array<IUserEntity>>([]);
+    const [entityServiceList, setEntityServiceList] = useState<Array<IService>>([]);
     const { push } = useRouter()
+
+    const fetchingServiceListState = async () => {
+        setEntityServiceList(await fetchServiceList())
+    }
+
     const watchSesionState = async (userAuth: User) => {
         if (userAuth) {
             const entityList: Array<IUserEntity> = await fetchUserEntities(userAuth.uid)
@@ -36,6 +45,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
                 }
                 setEntityList(entityList)
                 setCurrentEntity(entityList.find(e => e.isActive) as IUserEntity)
+                fetchingServiceListState()
             } else {
                 const userData: IUser = await fetchUserAccount(userAuth.uid)
                 if (userData.email)
@@ -46,7 +56,6 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
     const refrestList = async (userId: string) => {
         const entityList: Array<IUserEntity> = await fetchUserEntities(userId)
-        console.log(entityList);
 
         if (entityList.length > 0) {
             if (entityList.length > 0 && entityList.filter(e => e.isActive).length === 0) {
@@ -57,6 +66,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
             setEntityList(entityList)
             setCurrentEntity(entityList.find(e => e.isActive) as IUserEntity)
+            fetchingServiceListState()
         } else {
             push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
         }
@@ -90,7 +100,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     }, []);
 
     return (
-        <EntityContext.Provider value={{ entityList, currentEntity, refrestList, setCurrentEntity, changeCurrentEntity }}>
+        <EntityContext.Provider value={{ entityList, entityServiceList, currentEntity, refrestList, setCurrentEntity, changeCurrentEntity }}>
             {children}
         </EntityContext.Provider>
     );

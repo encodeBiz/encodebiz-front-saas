@@ -22,7 +22,7 @@ import {
 } from '@mui/icons-material';
 import { styled, useTheme } from '@mui/material/styles';
 import { useLayout } from '@/hooks/useLayout';
-import { menuItems } from '@/config/routes';
+import { menuItemsServices, menuItemsGeneral, menuItemsHome } from '@/config/routes';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import EntitySwitcher from '../common/EntitySwitcher';
@@ -46,14 +46,14 @@ export default function SideMenu() {
   const pathname = usePathname()
   const t = useTranslations();
   const { user } = useAuth();
-  const { currentEntity } = useEntity();
+  const { currentEntity, entityServiceList } = useEntity();
   const { push } = useRouter();
   const { layoutState, changeLayoutState } = useLayout()
   const [openSubMenu, setOpenSubMenu] = useState<any>({
     products: false,
     reports: false,
     settings: false,
-    ...menuItems.reduce((acc: any, key: any) => {
+    ...menuItemsServices.reduce((acc: any, key: any) => {
       acc[key] = false;
       return acc;
     }, {})
@@ -108,10 +108,24 @@ export default function SideMenu() {
         {/* Main Menu */}
         <List>
           {/* Dashboard */}
-          {menuItems.map((item: any, i: number) => {
+          {menuItemsHome.map((item: any, i: number) => {
             if (item.divider) return <Divider key={i} />
             else
-              if (item.subMenu.length == 0)
+              return <ListItem key={i} disablePadding>
+                <ListItemButton disabled={!currentEntity || item.header} onClick={() => push(item.link)} selected={pathname === item.link}>
+                  {!item.header && <ListItemIcon>
+                    {item.icon}
+                  </ListItemIcon>}
+                  <ListItemText primary={t(`layout.side.menu.${item.name}`)} />
+                </ListItemButton>
+              </ListItem>
+          })}
+
+
+          {menuItemsServices.map((item: any, i: number) => {
+            if (item.divider) return <Divider key={i} />
+            else
+              if ((item.subMenu.length == 0 || !entityServiceList.find(e => e.id === e.id)?.isBillingActive || item.header) && (entityServiceList.map(e => e.id).includes(item.id) || item.header))
                 return <ListItem key={i} disablePadding>
                   <ListItemButton disabled={!currentEntity || item.header} onClick={() => push(item.link)} selected={pathname === item.link}>
                     {!item.header && <ListItemIcon>
@@ -122,28 +136,43 @@ export default function SideMenu() {
                 </ListItem>
 
               else
-                return <div key={i} >
-                  <ListItem disablePadding>
-                    <ListItemButton disabled={!currentEntity} onClick={() => handleSubMenuToggle(item.id)}>
-                      <ListItemIcon>
-                        {item.icon}
-                      </ListItemIcon>
-                      <ListItemText primary={t(`layout.side.menu.${item.name}`)} />
-                      {openSubMenu.products ? <ExpandLess /> : <ExpandMore />}
-                    </ListItemButton>
-                  </ListItem>
-                  <Collapse in={openSubMenu[item.id]} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                      {item.subMenu.map((e: any, index: number) => <ListItem onClick={() => push(e.link)} key={i + '-' + index} disablePadding><ListItemButton sx={{ pl: 4 }}>
+                if (entityServiceList.map(e => e.id).includes(item.id)) {
+                  return <div key={i} >
+                    <ListItem disablePadding>
+                      <ListItemButton disabled={!currentEntity} onClick={() => handleSubMenuToggle(item.id)}>
                         <ListItemIcon>
-                          {e.icon}
+                          {item.icon}
                         </ListItemIcon>
-                        <ListItemText primary={t(`layout.side.menu.${e.name}`)} />
+                        <ListItemText primary={t(`layout.side.menu.${item.name}`)} />
+                        {openSubMenu.products ? <ExpandLess /> : <ExpandMore />}
                       </ListItemButton>
-                      </ListItem>)}
-                    </List>
-                  </Collapse>
-                </div>
+                    </ListItem>
+                    <Collapse in={openSubMenu[item.id]} timeout="auto" unmountOnExit>
+                      <List component="div" disablePadding>
+                        {item.subMenu.map((e: any, index: number) => <ListItem onClick={() => push(e.link)} key={i + '-' + index} disablePadding><ListItemButton sx={{ pl: 4 }}>
+                          <ListItemIcon>
+                            {e.icon}
+                          </ListItemIcon>
+                          <ListItemText primary={t(`layout.side.menu.${e.name}`)} />
+                        </ListItemButton>
+                        </ListItem>)}
+                      </List>
+                    </Collapse>
+                  </div>
+                } else return null
+          })}
+
+          {menuItemsGeneral.map((item: any, i: number) => {
+            if (item.divider) return <Divider key={i} />
+            else
+              return <ListItem key={i} disablePadding>
+                <ListItemButton disabled={!currentEntity || item.header} onClick={() => push(item.link)} selected={pathname === item.link}>
+                  {!item.header && <ListItemIcon>
+                    {item.icon}
+                  </ListItemIcon>}
+                  <ListItemText primary={t(`layout.side.menu.${item.name}`)} />
+                </ListItemButton>
+              </ListItem>
           })}
 
         </List>

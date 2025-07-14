@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -9,12 +9,12 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { IService } from '@/domain/core/IService';
 import { useToast } from '@/hooks/useToast';
-import { fetchServiceList } from '@/services/common/subscription.service';
 import { useTranslations } from 'next-intl';
 import image from '@/../public/assets/images/encodebiz-sass.png'
 import { useRouter } from 'nextjs-toploader/app';
 import { MAIN_ROUTE } from '@/config/routes';
 import { useAuth } from '@/hooks/useAuth';
+import { useEntity } from '@/hooks/useEntity';
 
 // Sample data for the cards
 const cardData = [
@@ -37,42 +37,22 @@ const ServiceList = ({ ref }: { ref: any }) => {
     const [serviceList, setServiceList] = useState<Array<IService>>([])
     const [pending, setPending] = useState(false)
     const { showToast } = useToast()
-    const { user } = useAuth()    
+    const { user } = useAuth()
     const t = useTranslations()
     const { push } = useRouter()
-
-    const fetchService = async () => {
-        try {
-            setPending(true)
-            setServiceList(await fetchServiceList())
-            setPending(false)
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                showToast(error.message, 'error');
-            } else {
-                showToast(String(error), 'error');
-            }
-            setPending(false)
-        }
-    }
-
-    useEffect(() => { 
-        if(user?.id)
-        fetchService()
-    }, [user?.id])
-
+    const { entityServiceList } = useEntity()
 
     const handleActionClick = (id: any) => {
-            push(`/${MAIN_ROUTE}/${id}/onboarding`)
+        push(`/${MAIN_ROUTE}/${id}/onboarding`)
     };
-    if (serviceList.length > 0)
+    if (entityServiceList.length > 0)
         return (
             <Box ref={ref} sx={{ flexGrow: 1, padding: 4 }}>
                 <Typography variant="h4" component="h2" gutterBottom align="left">
                     {t('features.dashboard.card.btn2')}
                 </Typography>
                 <Grid container spacing={4} justifyContent="center">
-                    {serviceList.map((card) => (
+                    {entityServiceList.map((card) => (
                         <Grid size={{
                             xs: 12, sm: 6, md: 4, lg: 3
                         }} key={card.id}>
@@ -80,7 +60,7 @@ const ServiceList = ({ ref }: { ref: any }) => {
                                 <CardMedia
                                     component="img"
                                     height="140"
-                                    image={card?.image?card?.image:image.src}
+                                    image={card?.image ? card?.image : image.src}
                                     alt={card.name}
                                 />
                                 <CardContent sx={{ flexGrow: 1 }}>

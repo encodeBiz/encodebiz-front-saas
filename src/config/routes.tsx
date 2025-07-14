@@ -30,8 +30,14 @@ const PASSINBIZ = [{
 }]
 
 
-const CHECKINBIZ: any = []
-export const menuItems = [{
+const CHECKINBIZ: any = [{
+    name: 'Events',
+    icon: <GroupIcon />,
+    link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event`,
+    subMenu: []
+}]
+
+export const menuItemsHome = [{
     id: 'dashboard',
     name: 'Dashboard',
     icon: <DashboardIcon />,
@@ -41,46 +47,45 @@ export const menuItems = [{
 {
     divider: true,
     subMenu: []
-}, {
-    id: 'checkBiz360_products',
+}
+]
+
+export const menuItemsServices = [{
+    id: 'services',
     name: 'Services',
     header: true, subMenu: []
-}
-
-    , {
-    id: 'checkinbiz_products',
+}, {
+    id: 'checkinbiz',
     name: 'CheckinBiz',
     icon: <CreditCardOff />,
-    link: '/main/checkinbiz',
+    link: `/${MAIN_ROUTE}/checkinbiz/onboarding`,
     subMenu: CHECKINBIZ
 },
 {
-    id: 'passinbiz_products',
+    id: 'passinbiz',
     name: 'PassinBiz',
     icon: <CreditScoreIcon />,
-    link: '/main/passinbiz',
+    link: `/${MAIN_ROUTE}/passinbiz/onboarding`,
     subMenu: PASSINBIZ
 },
 {
     divider: true,
     subMenu: []
-},
-{
-    id: 'general',
-    name: 'general',
-    header: true, subMenu: []
-},
+}]
 
-{
-    divider: true,
-    subMenu: []
-},
-{
-    id: 'settings',
-    name: 'Settings',
-    icon: <SettingsIcon />,
-    link: '/main/settings',
-    subMenu: [{
+
+export const menuItemsGeneral = [
+    {
+        id: 'Settings',
+        name: 'Settings',
+        header: true, subMenu: []
+    },
+
+    {
+        divider: true,
+        subMenu: []
+    },
+    {
         name: 'Entity',
         icon: <BusinessIcon />,
         link: `/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity`,
@@ -92,5 +97,4 @@ export const menuItems = [{
         link: `/${MAIN_ROUTE}/${GENERAL_ROUTE}/media`,
         subMenu: []
     }
-    ]
-}]
+]

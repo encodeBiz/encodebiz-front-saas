@@ -10,6 +10,8 @@ export interface IService {
 
     image?: string
 
+    isBillingActive: boolean
+
 }
 
 export type PlanType = "freemium" | "bronze" | "enterprise";
