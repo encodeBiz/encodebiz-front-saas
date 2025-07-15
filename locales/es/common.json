@@ -293,6 +293,15 @@
     "deleteConfirmModalTitle": "Eliminar Entidad",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente la entidad y todas sus configuraciones y compras asociadas"
   },
+   "employee": {
+    "title": "Empleados",
+    "list": "Empleados",
+    "add": "Adicionar",
+    "import": "Importar",
+    "description": "Rellene los campos para registrar el empleado",
+    "deleteConfirmModalTitle": "Eliminar empleado",
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el empleado"
+  },
   "media": {
     "title": "Multimedias",
     "text1": "Archicos seleccionados",

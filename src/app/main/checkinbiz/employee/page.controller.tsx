@@ -8,17 +8,17 @@ import { useEffect, useState } from "react";
 import { useStyles } from "./page.styles";
 
 import { useLayout } from "@/hooks/useLayout";
-import { IEvent } from "@/domain/features/passinbiz/IEvent";
-import { deleteEvent, search } from "@/services/passinbiz/event.service";
 import { useRouter } from "nextjs-toploader/app";
-import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
+import { CHECKINBIZ_MODULE_ROUTE, MAIN_ROUTE } from "@/config/routes";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
+import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
+import { deleteEmployee, search } from "@/services/checkinbiz/employee.service";
 
 
 
 
-export default function useIEventListController() {
+export default function useEmployeeListController() {
   const t = useTranslations();
   const theme = useTheme();
   const classes = useStyles()
@@ -33,8 +33,8 @@ export default function useIEventListController() {
   const [atEnd, setAtEnd] = useState(false)
   const [last, setLast] = useState<any>()
   const [pagination, setPagination] = useState(``);
-  const [items, setItems] = useState<IEvent[]>([]);
-  const [itemsHistory, setItemsHistory] = useState<IEvent[]>([]);
+  const [items, setItems] = useState<IEmployee[]>([]);
+  const [itemsHistory, setItemsHistory] = useState<IEmployee[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [total, setTotal] = useState(0);
   const { changeLoaderState } = useLayout()
@@ -70,27 +70,26 @@ export default function useIEventListController() {
 
 
 
-  const columns: Column<IEvent>[] = [
+  const columns: Column<IEmployee>[] = [
     {
-      id: 'name',
+      id: 'fullName',
       label: t("core.label.name"),
       minWidth: 170,
     },
     {
-      id: 'description',
-      label: t("core.label.description"),
+      id: 'email',
+      label: t("core.label.email"),
       minWidth: 170,
     },
     {
-      id: 'date',
-      label: t("core.label.date"),
+      id: 'phoneNumber',
+      label: t("core.label.phone"),
       minWidth: 170,
     },
     {
-      id: 'location',
-      label: t("core.label.location"),
+      id: 'role',
+      label: t("core.label.role"),
       minWidth: 170,
-
     },
 
 
@@ -145,7 +144,7 @@ export default function useIEventListController() {
 
   const [deleting, setDeleting] = useState(false)
   const onEdit = async (item: any) => {
-    push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event/${item.id}/edit`)
+    push(`/${MAIN_ROUTE}/${CHECKINBIZ_MODULE_ROUTE}/employee/${item.id}/edit`)
   }
 
 
@@ -153,7 +152,7 @@ export default function useIEventListController() {
     try {
       setDeleting(true)
       const id = item[0]
-      await deleteEvent(currentEntity?.entity.id as string, id, token)
+      await deleteEmployee(currentEntity?.entity.id as string, id, token)
       setItemsHistory(itemsHistory.filter(e => e.id !== id))
       setItems(itemsHistory.filter(e => e.id !== id))
       setDeleting(false)

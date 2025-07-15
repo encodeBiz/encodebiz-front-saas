@@ -1,193 +1,312 @@
 {
-    "locale": "en",
-    "layout": {
-        "header": {
-            "title": "EncodeBiz SaaS Platform",
-            "language": "Language",
-            "english": "English",
-            "spanish": "Spanish",
-            "french": "French",
-            "germany": "German",
-            "entity": "Current Entity",
-            "profile": "Profile",
-            "setting": "Settings",
-            "logout": "Logout",
-            "help": "Help",
-            "theme": "Theme",
-            "messages": "Menssages",
-            "notification": "Notifications"
-        },
-        "side": {
-            "menu": {
-                "Dashboard": "Panel",
-                "Products": "Products",
-                "CheckinBiz": "CheckinBiz",
-                "PassinBiz": "PassinBiz",
-                "Customers": "Customers",
-                "Reports": "Reports",
-                "Subscription": "Subscriptions",
-                "Revenue": "Renewals",
-                "Billing": "Billing",
-                "Settings": "Preferences",
-                "Account": "Account",
-                "Notifications": "Notifications",
-                "Security": "Security",
-                "Entity": "Entity",
-                "Holders": "Holders"
-            }
-        },
-        "footer": {
-            "copyright": "© {{year}} EncodeBiz. All rights reserved.",
-            "web": "Our Site",
-            "contactUs": "Contact Us",
-            "whatsApp": "WhatsApp",
-            "policy": "Policy and Privacy",
-            "terms": "Terms and Conditions"
-        }
+  "locale": "en",
+  "layout": {
+    "header": {
+      "title": "EncodeBiz SaaS Platform",
+      "language": "Language",
+      "english": "English",
+      "spanish": "Spanish",
+      "french": "French",
+      "germany": "German",
+      "entity": "Current Entity",
+      "profile": "Profile",
+      "setting": "Preferences",
+      "media": "Media",
+      "logout": "Logout",
+      "help": "Help",
+      "theme": "Theme",
+      "messages": "Messages",
+      "notification": "Notifications"
     },
-    "core": {
-        "title": {
-            "loader": "Loading user session"
-        },
-        "label": {
-            "firstName": "First Name",
-            "lastName": "Last Name",
-            "password": "Password",
-            "passwordConfirm": "Confirm Password",
-            "email": "Email",
-            "acceptTerms": "Accept Terms and Conditions",
-            "legalEntityName": "Legal Entity Name",
-            "phone": "Phone",
-            "avatar": "Avatar",
-            "sessionLastTime": "Last login",
-            "createAt": "Create at",
-            "logo": "Logo",
-            "color": "Color",
-            "label": "Label",
-            "value": "Value"
-        },
-        "button": {
-            "submitting": "Submitting...",
-            "submit": "Submit",
-            "cancel": "Cancel",
-            "download": "Download",
-            "delete": "Delete",
-            "update": "Update"
-        },
-        "formValidatorMessages": {
-            "required": "This field is required",
-            "email": "This field is required",
-            "password": "The password is too short: must be at least 8 characters.",
-            "passwordMatch": "The passwords do not match",
-            "avatarUpload": "Select a valid image to upload.",
-            "avatarMaxSize": "Image is too large. Maximum size allowed: 5MB."
-        },
-        "signup": {
-            "title": "Create an account",
-            "signup": "Create an account",
-            "subtitle": "Create an account and join EncodeBiz SaaS",
-            "or": "Or",
-            "google": "Join with Google",
-            "facebook": "Join with Facebook",
-            "existAccount": "Do you already have an account?",
-            "signIn": "Sign in"
-        },
-        "signin": {
-            "title": "Sign in",
-            "signup": "Sign in",
-            "subtitle": "Sign in and join EncodeBiz SaaS",
-            "or": "Or",
-            "google": "Join with Google",
-            "facebook": "Join with Facebook",
-            "noAccount": "Don't have an account?",
-            "signIn": "Sign in"
-        }
+    "side": {
+      "menu": {
+        "Dashboard": "Dashboard",
+        "Services": "Services",
+        "Events": "Events",
+        "Media": "Media",
+        "home": "Home",
+        "general": "General",
+        "CheckinBiz": "CheckinBiz",
+        "PassinBiz": "PassinBiz",
+        "Customers": "Customers",
+        "Reports": "Reports",
+        "Employee": "Employee",
+        "Subscription": "Subscriptions",
+        "Revenue": "Renewals",
+        "Billing": "Billing",
+        "Settings": "Preferences",
+        "Account": "Account",
+        "Notifications": "Notifications",
+        "Security": "Security",
+        "Entity": "Entity",
+        "HoldersList": "Holders List",
+        "AddHolders": "Add Holders",
+        "Plans": "Plans",
+        "Holders": "Holders"
+      }
     },
-    "features": {
-        "dashboard": {
-            "overview": "General Descriptions",
-            "stats": "Stats",
-            "card": {
-                "btn1": "More information",
-                "btn2": "Products",
-                "title": "Welcome to Encodebiz Saas",
-                "subtitle": "This platform offers a variety of interesting features."
-            }
-        }
+    "footer": {
+      "copyright": "EncodeBiz. All rights reserved.",
+      "web": "Our Website",
+      "contactUs": "Contact Us",
+      "whatsApp": "WhatsApp",
+      "policy": "Privacy Policy",
+      "terms": "Terms and Conditions"
+    }
+  },
+  "core": {
+    "title": {
+      "loader": "Loading user session",
+      "loaderChangeEntity": "Changing entity",
+      "loaderAction": "Processing information",
+      "mediaModaltitle": "Media Selector",
+      "loaderActionBilling": "Accessing your payment gateway information"
     },
-    "account": {
-        "title": "Account",
-        "tabs": {
-            "tab1": {
-                "title": "Profile Setting"
-            },
-            "tab2": {
-                "title": "Change Password"
-            }
-        },
-        "sessionLastTime": "Last login"
+    "feedback": {
+      "success": "The operation was completed successfully"
+    },
+    "label": {
+      "filename": "Filename",
+      "firstName": "First Name",
+      "sponsor": "Sponsor",
+      "ticketCapacity": "Capacity",
+      "date": "Date",
+      "location": "Location",
+      "designed": "Design",
+      "imageUrl": "Image",
+      "setting": "Preferences",
+      "colorPrimary": "Primary color",
+      "colorAccent": "Accent color",
+      "description": "Description",
+      "message": "Message",
+      "state": "Status",
+      "uploadResourse": "Upload resource",
+      "lastName": "Last Name",
+      "fullName": "Full Name",
+      "password": "Password",
+      "legalEntityName": "Company Legal Name",
+      "passwordConfirm": "Confirm password",
+      "email": "Email",
+      "acceptTerms": "Accept terms and conditions",
+      "phone": "Phone",
+      "accepTerm1": " I agree to the",
+      "accepTerm2": " Terms of Service",
+      "accepTerm3": " and ",
+      "accepTerm4": " Privacy Policy",
+      "billingEmail": "Email for payment management",
+      "avatar": "Avatar",
+      "sessionLastTime": "Last login",
+      "createAt": "Creation date",
+      "logo": "Logo",
+      "color": "Color",
+      "taxId": "NIF / CIF / NIE / VAT",
+      "street": "Street",
+      "city": "City",
+      "postalCode": "Postal code",
+      "region": "Region",
+      "country": "Country",
+      "backgroundColor": "Background color",
+      "labelColor": "Label color",
+      "textColor": "Text color",
+      "stripImageUrl": "Strip image",
+      "iconUrl": "Icon",
+      "address": "Address",
+      "legal": "Legal",
+      "name": "Name",
+      "currentPassword": "Current password",
+      "label": "Label",
+      "value": "Value"
+    },
+    "button": {
+      "revoke": "Revoke",
+      "resend": "Resend",
+      "submitting": "Submitting...",
+      "submit": "Submit",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "download": "Download",
+      "delete": "Delete",
+      "save": "Save",
+      "update": "Update"
+    },
+    "formValidatorMessages": {
+      "required": "This field is required",
+      "email": "This field is required",
+      "password": "Password is too short: minimum 8 characters required.",
+      "passwordMatch": "Passwords do not match",
+      "acceptTerm": "You must accept the terms and conditions",
+      "avatarUpload": "Select a valid image file.",
+      "avatarMaxSize": "Image is too large. Maximum allowed: 5MB."
+    },
+    "signup": {
+      "title": "Create an account",
+      "signup": "Create account",
+      "subtitle": "Create an account and join EncodeBiz SaaS",
+      "or": "Or",
+      "google": "Join with Google",
+      "facebook": "Join with Facebook",
+      "existAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "complete_profile": "Complete profile",
+      "complete_profile_desc": "Before you begin, you must complete your data on the platform and create your first entity. You can modify this data later in preferences"
+    },
+    "signin": {
+      "title": "Sign in",
+      "signup": "Sign in",
+      "subtitle": "Sign in and join EncodeBiz SaaS",
+      "or": "Or",
+      "google": "Join with Google",
+      "facebook": "Join with Facebook",
+      "noAccount": "Don't have an account?",
+      "signIn": "Sign in"
+    },
+    "upload": {
+      "title": "Upload CSV file",
+      "btn": "Select file",
+      "desc": "Please select a CSV file to preview the content and select it",
+      "file": "File",
+      "preview": "Preview (first 5 rows)",
+      "signIn": "Sign in"
+    }
+  },
+  "features": {
+    "dashboard": {
+      "overview": "Overview",
+      "stats": "Statistics",
+      "card": {
+        "btn1": "More information",
+        "btn2": "Services",
+        "btn3": "Plans",
+        "title": "Welcome to Encodebiz SaaS",
+        "subtitle": "On this platform you can do many interesting things"
+      }
     },
     "entity": {
-        "title": "Entity",
-        "tabs": {
-            "tab1": {
-                "title": "Entity Setting"
-            },
-            "tab2": {
-                "title": "Change Branding"
-            }
+      "create": {
+        "card": {
+          "title": "Create legal entity",
+          "subtitle": "On the platform you can associate multiple entities with the account, but at least one is required to start using our products"
         }
-    },
-    "salesPlan": {
-        "title": "Choose Your Sales Plan",
-        "subTitle": "Select the plan that fits your business needs",
-        "avancedAnalitics": "Advanced analytics",
-        "apiAcces": "API access",
-        "basicAnalitics": "Basic analytics",
-        "branding": "Branding: EncodeBiz's default logo and design",
-        "brandingCustom": "Branding: Complete pass customization",
-        "bronze": "Bronze",
-        "cost": "Estimated cost per pass: ~€0.01",
-        "costEstimated": "Estimated cost: Variable depending on use",
-        "custom": "Custom",
-        "customReport": "Custom reports",
-        "customerTime": "24/7 customer care",
-        "customIntegrations": "Custom integrations",
-        "dedicateManager": "Dedicated account manager",
-        "emailSuport": "Email support",
-        "emailPrioritySuport": "Priority email support",
-        "emailAndPhoneSuport": "Phone & email support",
-        "estimateRange": "Estimated margin per pass: ~€0.49",
-        "estimateRangeCustom": "Estimated margin: Variable, but with potential to be significant",
-        "enterprise": "Enterprise",
-        "free": "Freemium",
-        "limit": "Limit: No restrictions",
-        "month": "month",
-        "model": "Model: Usage-based payment",
-        "modelCustom": "Model: Customized according to customer needs",
-        "notAllowedPlan": "You must update your entity information before get a plan.",
-        "onsiteTraining": "On-site training",
-        "premium": "Premium",
-        "price": "Customer Price: Free",
-        "priceEmited": "Cost per ticket: €0.50",
-        "priceMonthly": "Monthly price: Negotiable (suggested range: €99-€499)",
-        "popular": "Most Popular",
-        "standard": "Standard",
-        "selectPlan": "Select Plan",
-        "upToTen": "Up to 10 products",
-        "upToFive": "Limit: Up to 5 pass holders.",
-        "unlimitedProducts": "Unlimited products",
-        "whiteLabel": "White-label solutions"
-    },
-    "terms": {
-        "title": "Terms and Conditions"
-    },
-    "policy": {
-        "title": "Policy and Privacy"
-    },
-    "holders": {
-        "title": "Holders",
-        "holderList": "Holders List",
-        "addHolder": "New Holder"
+      }
     }
+  },
+  "account": {
+    "title": "Account",
+    "tabs": {
+      "tab1": {
+        "title": "Manage Profile"
+      },
+      "tab2": {
+        "title": "Change Password"
+      }
+    },
+    "sessionLastTime": "Last login"
+  },
+  "entity": {
+    "title": "Entity",
+    "tabs": {
+      "tab1": {
+        "title": "Modify Entity",
+        "deleteConfirmModalTitle": "Delete Entity",
+        "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the entity and all its associated settings and purchases",
+        "deleteConfirmModalTitle3": "Please enter the following word to continue with the action"
+      },
+      "tab2": {
+        "title": "Modify Brand",
+        "btn": "Delete Entity"
+      },
+      "tab3": {
+        "title": "Configure Billing",
+        "btn": "Configure Billing"
+      },
+      "tab4": {
+        "title": "Renewals",
+        "btn": "Configure Billing"
+      },
+      "tab5": {
+        "title": "Billing",
+        "btn": "Configure Billing"
+      }
+    }
+  },
+  "salesPlan": {
+    "title": "Choose a plan to acquire this service",
+    "subTitle": "Select the plan that fits your business needs",
+    "free": "Free",
+    "standard": "Standard",
+    "month": "month",
+    "bronze": "Bronze",
+    "branding": "Branding: Default EncodeBiz logo and design",
+    "brandingCustom": "Branding: Complete pass customization",
+    "cost": "Estimated cost per pass: ~€0.01",
+    "costEstimated": "Estimated cost: Variable based on usage",
+    "selectPlan": "Select Plan",
+    "custom": "Custom",
+    "upToTen": "Up to 10 products",
+    "upToFive": "Limit: Up to 5 pass holders.",
+    "basicAnalitics": "Basic analytics",
+    "emailSuport": "Email support",
+    "emailPrioritySuport": "Priority email support",
+    "emailAndPhoneSuport": "Phone and email support",
+    "estimateRange": "Estimated margin per pass: ~€0.49",
+    "estimateRangeCustom": "Estimated margin: Variable, but with potential to be significant",
+    "enterprise": "Enterprise",
+    "customerTime": "24/7 customer support",
+    "apiAcces": "API access",
+    "customReport": "Custom reports",
+    "unlimitedProducts": "Unlimited products",
+    "premium": "Premium",
+    "price": "Customer price: Free",
+    "priceEmited": "Price per issued pass: €0.50",
+    "priceMonthly": "Monthly price: To be agreed (recommended between €99 and €499)",
+    "popular": "Most Popular",
+    "limit": "Limit: No restrictions",
+    "model": "Model: Pay per use",
+    "modelCustom": "Model: Customized according to customer needs",
+    "avancedAnalitics": "Advanced analytics",
+    "dedicateManager": "Dedicated account manager",
+    "customIntegrations": "Custom integrations",
+    "whiteLabel": "White label solutions",
+    "onsiteTraining": "On-site training",
+    "pay": "Get Plan",
+    "notAllowedPlan": "You must update the legal data of the selected entity before getting a plan."
+  },
+  "terms": {
+    "title": "Terms and Conditions"
+  },
+  "policy": {
+    "title": "Privacy Policy"
+  },
+  "holders": {
+    "title": "Holders",
+    "holderList": "Holders",
+    "addHolder": "Add",
+    "import": "Import",
+    "description": "Fill in the fields to register the holder"
+  },
+  "event": {
+    "title": "Events",
+    "list": "Events",
+    "add": "Add",
+    "import": "Import",
+    "description": "Fill in the fields to register the event",
+    "deleteConfirmModalTitle": "Delete Entity",
+    "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the entity and all its associated settings and purchases"
+  },
+  "employee": {
+    "title": "Employees",
+    "list": "Employees",
+    "add": "Add",
+    "import": "Import",
+    "description": "Fill in the fields to register the employee",
+    "deleteConfirmModalTitle": "Delete employee",
+    "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the employee"
+  },
+  "media": {
+    "title": "Media",
+    "text1": "Selected files",
+    "labelType": "Select the type of file to upload",
+    "deleteConfirmModalTitle": "Delete event",
+    "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the event"
+  }
 }
