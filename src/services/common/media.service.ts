@@ -3,8 +3,6 @@ import { getAll, getAllWithLimit } from "@/lib/firebase/firestore/readDocument";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { IUserMedia } from "@/domain/core/IUserMedia";
-import { addDocument } from "@/lib/firebase/firestore/addDocument";
-import { uploadFile } from "@/lib/firebase/storage/fileManager";
 import { SearchParams } from "@/domain/firebase/firestore";
 import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 
@@ -57,10 +55,7 @@ export async function uploadMedia(
    * @returns {Promise<ITrainer[]>}
    */
 export const search = async (entityId: string, params: SearchParams): Promise<IUserMedia[]> => {
-  console.log({
-    ...params,
-    collection: `${collection.ENTITIES}/${entityId}/${collection.MEDIA}`,
-  });
+  
   
   const result: IUserMedia[] = await searchFirestore({
     ...params,

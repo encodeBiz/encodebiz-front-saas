@@ -25,10 +25,11 @@ interface ImageFieldProps {
   accept: string
   typeUpload: IUserMediaType
 }
-const ImageUploadInput = ({ name, label, typeUpload = 'custom', accept = 'image/*', ...props }: any & FieldProps & TextFieldProps & ImageFieldProps) => {
+const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & FieldProps & TextFieldProps & ImageFieldProps) => {
   const t = useTranslations();
   const [field, meta, helper] = useField(name);
   const { touched, error } = meta
+  const { typeUpload } = props.options
   const helperText = touched && error;
   const { open, openModal } = useCommonModal()
   const {

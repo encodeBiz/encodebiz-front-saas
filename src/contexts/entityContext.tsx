@@ -49,7 +49,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
             } else {
                 const userData: IUser = await fetchUserAccount(userAuth.uid)
                 if (userData.email)
-                    push('/main/entity/create')
+                    push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
             }
         }
     }

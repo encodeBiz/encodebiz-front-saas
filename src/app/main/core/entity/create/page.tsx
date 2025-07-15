@@ -13,8 +13,7 @@ import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { useTranslations } from 'next-intl';
 import { useStyles } from './page.styles';
 import PresentationCard from '@/components/features/dashboard/PresentationCard/PresentationCard';
-import image from '../../../../../public/assets/images/encodebiz-sass.png'
-
+ 
 
 const FormEntityPage = () => {
     const { handleCreateEntity, initialValues, validationSchema, fields } = useRegisterController()

@@ -10,7 +10,7 @@ export interface Holder {
     email?: string;
 
     phoneNumber?: string;
-
+    failedFeedback: string;
 
     applePassUrl?: string;        // URL al .pkpass en Firebase Storage
 

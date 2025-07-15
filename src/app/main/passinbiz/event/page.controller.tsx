@@ -4,12 +4,11 @@ import { useEntity } from "@/hooks/useEntity";
 import { useToast } from "@/hooks/useToast";
 import { useTheme } from "@emotion/react";
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useState } from "react";
-import page from "./page";
+import { useEffect, useState } from "react";
 import { useStyles } from "./page.styles";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
 import { deleteHolder, importHolder, search } from "@/services/passinbiz/holder.service";
-import { ArrowBackIosNew, DeleteForever, RemoveDone, Send } from "@mui/icons-material";
+import { RemoveDone, Send } from "@mui/icons-material";
 import { useLayout } from "@/hooks/useLayout";
 import { Chip } from "@mui/material";
 
@@ -37,8 +36,8 @@ export default function useHolderListController() {
   const { changeLoaderState } = useLayout()
 
   const rowAction: Array<IRowAction> = [
-    { icon: <RemoveDone />, label: t('core.button.revoke'), onPress: (item: Holder) => { } },
-    { icon: <Send />, label: t('core.button.resend'), onPress: (item: Holder) => { } }
+    { icon: <RemoveDone />, label: 'Revocar', onPress: (item: Holder) => { } },
+    { icon: <Send />, label: 'Reenviar', onPress: (item: Holder) => { } }
   ]
 
   const onSearch = (term: string): void => {

@@ -12,19 +12,21 @@ import { useAppTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { GENERAL_ROUTE, MAIN_ROUTE } from "@/config/routes";
+import { createEvent } from "@/services/passinbiz/event.service";
+import DateInput from "@/components/common/forms/fields/Datenput";
+import ImageUploadInput from "@/components/common/forms/fields/ImageUploadInput";
+import ColorPickerInput from "@/components/common/forms/fields/ColorPickerInput";
 
-export interface HolderFormValues {
-  "fullName": string;
-  "email": string;
-  "phoneNumber": string;  
-  "customFields"?: DynamicFields;
-  isLinkedToUser: boolean
-  type: "credential" | "event",
-  entityId: string
-  uid?: string
-  parentId?: string
-  passStatus?: string
-  metadata?: any
+export interface EventFromValues {
+  "name": string
+  "description": string
+  "date": any
+  "location": string
+  "template": string
+  "logoUrl": string
+  "imageUrl": string
+  "colorPrimary": string
+  "colorAccent": string
 };
 
 export default function useHolderController() {
@@ -33,14 +35,16 @@ export default function useHolderController() {
   const { push } = useRouter()
   const { token, user } = useAuth()
   const { currentEntity } = useEntity()
-  const [initialValues] = useState<HolderFormValues>({
-    fullName: "",
-    email: "",
-    phoneNumber: "",
-    type: 'credential',
-    customFields: [],
-    isLinkedToUser: true,
-    entityId: currentEntity?.entity.id as string
+  const [initialValues] = useState<EventFromValues>({
+    "name": '',
+    "description": '',
+    "date": new Date(),
+    "location": '',
+    "template": '',
+    "logoUrl": '',
+    "imageUrl": '',
+    "colorPrimary": '',
+    "colorAccent": '',
   });
 
   const validationSchema = Yup.object().shape({
@@ -57,23 +61,25 @@ export default function useHolderController() {
     phoneNumber: Yup.string().optional(),
   });
 
-  const setDinamicDataAction = async (values: HolderFormValues) => {
+  const setDinamicDataAction = async (values: EventFromValues) => {
     try {
-      const data = await createHolder({
-        "uid": user?.id as string,  
+      /*
+      const data = await createEvent({
+        "uid": user?.id as string,
         "fullName": values.fullName,
         "email": values.email,
         "phoneNumber": values.phoneNumber,
         "entityId": currentEntity?.entity?.id as string,
         "passStatus": "pending",
-        "type": "credential", 
+        "type": "credential",
         "parentId": "",
-        "isLinkedToUser": false, 
+        "isLinkedToUser": false,
         "metadata": {
           "auxiliaryFields": values.customFields
         },
-        
+
       }, token)
+      */
       showToast(t('core.feedback.success'), 'success');
       push(`/${MAIN_ROUTE}/passinbiz/holder`)
     } catch (error: any) {
@@ -81,52 +87,61 @@ export default function useHolderController() {
     }
   };
 
-  /*
-  {
-    "uid": "K8PwV1Lr6gQA9eIIQ1bmeBMhlGl2", //Solo para dev es el id del owner o admin
-    "fullName": "Yasiel Pérez",
-    "email": "encodebiz@gmail.com",
-    "phoneNumber": "+34600111222",
-    "entityId": "7g7mzZUR3lSWy9tccDbS",
-    "passStatus": "pending",
-    "type": "event", // credential | event
-    "parentId" : "AeBSJvncY2jp1BK7KNLf",
-    "isLinkedToUser": false, //esto me indica si el usuario existe en la plataforma no es obligatorio que exista.
-    "metadata": {
-        "auxiliaryFields": []
-    }
-}
-  
-  */
 
   const fields = [
     {
-      name: 'fullName',
-      label: t('core.label.fullName'),
+      name: 'name',
+      label: t('core.label.name'),
       type: 'text',
       required: true,
       component: TextInput,
     },
     {
-      name: 'email',
-      label: t('core.label.email'),
-      type: 'email',
+      name: 'description',
+      label: t('core.label.description'),
+      type: 'textarea',
       required: true,
       component: TextInput,
     },
     {
-      name: 'phoneNumber',
-      label: t('core.label.phone'),
+      name: 'date',
+      label: t('core.label.date'),
+      type: 'text',
+      required: true,
+      component: DateInput,
+    },
+    {
+      name: 'location',
+      label: t('core.label.location'),
       type: 'text',
       required: true,
       component: TextInput,
     },
     {
-      name: 'customFields',
-      label: t('core.label.billingEmail'),
-      type: "text",
-      require: true,
-      component: DynamicKeyValueInput,
+      name: 'logoUrl',
+      label: t('core.label.logo'),
+      type: 'text',
+      required: true,
+      component: ImageUploadInput,
+    },
+    {
+      name: 'imageUrl',
+      label: t('core.label.imageUrl'),
+      type: 'text',
+      required: true,
+      component: ImageUploadInput,
+    }, {
+      name: 'colorPrimary',
+      label: t('core.label.colorPrimary'),
+      type: 'text',
+      required: true,
+      component: ColorPickerInput,
+    }, {
+      name: 'colorAccent',
+      label: t('core.label.colorAccent'),
+      type: 'text',
+      required: true,
+      component: ColorPickerInput,
     },
   ];
 

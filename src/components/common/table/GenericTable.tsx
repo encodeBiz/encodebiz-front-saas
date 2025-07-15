@@ -36,32 +36,32 @@ export interface Column<T> {
 }
 
 export interface IRowAction {
-    icon: any
-    label?: string
-    onPress: (row: any) => void
+  icon: any
+  label?: string
+  onPress: (row: any) => void
 }
 
 export const buildSearch = (term: string): Array<{
+  field: string;
+  operator: firebase.firestore.WhereFilterOp;
+  value: any;
+}> => {
+  const filters: Array<{
     field: string;
     operator: firebase.firestore.WhereFilterOp;
     value: any;
-}> => {
-    const filters: Array<{
-        field: string;
-        operator: firebase.firestore.WhereFilterOp;
-        value: any;
-    }> = []
-    const fieldSearch = ['name']
-    if (term) {
-        fieldSearch.forEach(field => {
-            filters.push({
-                field: field,
-                operator: '==',
-                value: term
-            })
-        });
-    }
-    return filters
+  }> = []
+  const fieldSearch = ['name']
+  if (term) {
+    fieldSearch.forEach(field => {
+      filters.push({
+        field: field,
+        operator: '==',
+        value: term
+      })
+    });
+  }
+  return filters
 }
 
 
@@ -80,8 +80,10 @@ interface GenericTableProps<T> {
   page?: number;
   rowsPerPage?: number;
   onRowsPerPageChange?: (rows: number) => void;
-  onBack:()=>void
-  onNext:()=>void
+  onBack: () => void
+  onNext: () => void
+  onSearch?: (text: string) => void
+  rowAction?: Array<IRowAction>
 }
 
 export function GenericTable<T extends Record<string, any>>({
@@ -99,13 +101,15 @@ export function GenericTable<T extends Record<string, any>>({
   search = false,
   onRowsPerPageChange,
   onBack,
-  onNext
+  onNext,
+  onSearch,
+  rowAction = []
 }: GenericTableProps<T>) {
   // State management
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [orderBy, setOrderBy] = useState<keyof T>(keyField);
   const [selected, setSelected] = useState<(string | number)[]>([]);
- 
+
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [totalItems, setTotalItems] = useState(0);
   const [searchText, setSearchText] = useState('');
@@ -119,7 +123,7 @@ export function GenericTable<T extends Record<string, any>>({
         return value?.toString().toLowerCase().includes(searchText.toLowerCase());
       })
     );
-  }, [data, searchText, columns, page, rowsPerPage]);
+  }, [data,  columns, page, rowsPerPage]);
 
   // Sort data
   const sortedData = useMemo(() => {
@@ -186,9 +190,9 @@ export function GenericTable<T extends Record<string, any>>({
 
   const handleChangePage = (event: any, newPage: number) => {
     let eventPage;
-    if(newPage > (page as number)) onNext()
+    if (newPage > (page as number)) onNext()
     else onBack()
- 
+
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -199,7 +203,7 @@ export function GenericTable<T extends Record<string, any>>({
   const isSelected = (id: string | number) => selected.indexOf(id) !== -1;
 
 
- 
+
 
   useEffect(() => {
     if (data.length !== 0) setTotalItems(data[0].totalItems);
@@ -230,20 +234,14 @@ export function GenericTable<T extends Record<string, any>>({
             value={searchText}
             onChange={(e) => {
               setSearchText(e.target.value);
-            
+
             }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              )
-            }}
+           
           />
 
           <Tooltip title="Filter">
-            <IconButton>
-              <FilterIcon />
+            <IconButton  onClick={() => { if (typeof onSearch === 'function') onSearch(searchText) }}>
+              <SearchIcon />
             </IconButton>
           </Tooltip>
         </Box>}
@@ -254,6 +252,11 @@ export function GenericTable<T extends Record<string, any>>({
           <Typography sx={{ flex: 1, alignSelf: 'center' }}>
             {selected.length} selected
           </Typography>
+          {rowAction.map((e, i) => <Tooltip key={i} title={e.label}>
+            <IconButton onClick={e.onPress}>
+              {e.icon}
+            </IconButton>
+          </Tooltip>)}
           {onDelete && (
             <Tooltip title="Delete">
               <IconButton onClick={() => onDelete(selected)}>
@@ -358,8 +361,19 @@ export function GenericTable<T extends Record<string, any>>({
                       );
                     })}
 
-                    {(onEdit || onDelete) && (
+                    {(onEdit || onDelete || rowAction.length > 0) && (
                       <TableCell align="right" sx={{ whiteSpace: 'nowrap' }}>
+                        
+
+                        {rowAction.map((e, i) => <Tooltip key={i} title={e.label}>
+                          <IconButton onClick={(event) => {
+                            event.stopPropagation();
+                            e.onPress(row);
+                          }}>
+                            {e.icon}
+                          </IconButton>
+                        </Tooltip>)}
+
                         {onEdit && (
                           <Tooltip title="Edit">
                             <IconButton
@@ -373,6 +387,8 @@ export function GenericTable<T extends Record<string, any>>({
                             </IconButton>
                           </Tooltip>
                         )}
+
+                        
                         {onDelete && (
                           <Tooltip title="Delete">
                             <IconButton
@@ -395,7 +411,7 @@ export function GenericTable<T extends Record<string, any>>({
           </TableBody>
         </Table>
       </TableContainer>
-           
+
       <TablePagination
         rowsPerPageOptions={[2, 5, 10, 25, 100]}
         component="div"

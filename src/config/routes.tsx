@@ -3,7 +3,8 @@ import {
     BarChart as BarChartIcon,
     Settings as SettingsIcon,
     ImageSearchOutlined,
-    CreditCardOff
+    CreditCardOff,
+    Person2TwoTone
 } from '@mui/icons-material';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import BusinessIcon from '@mui/icons-material/Business';
@@ -31,9 +32,9 @@ const PASSINBIZ = [{
 
 
 const CHECKINBIZ: any = [{
-    name: 'Events',
-    icon: <GroupIcon />,
-    link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event`,
+    name: 'Employee',
+    icon: <Person2TwoTone />,
+    link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/employee`,
     subMenu: []
 }]
 

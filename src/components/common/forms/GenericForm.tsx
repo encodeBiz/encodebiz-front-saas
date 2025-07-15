@@ -38,7 +38,7 @@ type GenericFormProps<T> = {
   onSubmit: (values: T, formikHelpers: FormikHelpers<T>) => void | Promise<any>;
   fields: FormField[];
   title?: string;
-btnFullWidth?: boolean;
+  btnFullWidth?: boolean;
   submitButtonText?: string;
   cancelButtonText?: string;
   onCancel?: () => void;
@@ -60,8 +60,8 @@ const GenericForm = <T extends Record<string, any>>({
   column = 1,
   formContainerProps,
   enableReinitialize,
-  btnFullWidth=false,
-  disabled=false
+  btnFullWidth = false,
+  disabled = false
 }: GenericFormProps<T>) => {
   const t = useTranslations()
 
@@ -69,7 +69,7 @@ const GenericForm = <T extends Record<string, any>>({
     <Paper
       elevation={0}
       sx={{
-        p:4,
+        p: 4,
         ...formContainerProps?.sx,
       }}
       {...formContainerProps}
@@ -90,15 +90,15 @@ const GenericForm = <T extends Record<string, any>>({
 
       >
         {(formikProps: FormikProps<T>) => (
-          <Form noValidate>       
-           
+          <Form noValidate>
+
             <Grid container spacing={3}>
-              {fields.map((field,i) => {
+              {fields.map((field, i) => {
                 const FieldComponent = field.component;
                 const isInvalid =
                   formikProps.touched[field.name] && Boolean(formikProps.errors[field.name]);
                 const errorText = formikProps.errors[field.name];
-                if (field.isDivider) return <Grid  size={{
+                if (field.isDivider) return <Grid size={{
                   xs: 12,
                   sm: 12
                 }} key={i} sx={{ width: '100%' }}>
@@ -114,7 +114,7 @@ const GenericForm = <T extends Record<string, any>>({
                       <FieldComponent
                         name={field.name}
                         label={field.label}
-                        typeUpload={field.typeUpload}
+
                         type={field.type}
                         required={field.required}
                         disabled={field.disabled || disabled}
@@ -129,7 +129,10 @@ const GenericForm = <T extends Record<string, any>>({
                             field.onChange(e)
                         }}
                         onBlur={formikProps.handleBlur}
-                        options={field.options}
+                        options={{
+                          ...field.options,
+                          typeUpload: field.typeUpload
+                        }}
                         {...field.extraProps}
                       />
                     </Grid>

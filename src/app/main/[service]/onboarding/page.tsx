@@ -9,12 +9,14 @@ import useDashboardController from "./page.controller";
 import { useRef } from "react";
 import SalesPlan from "@/components/features/profile/SalesPlan/SalesPlan";
 import { IPlan } from "@/domain/core/IPlan";
+import { useParams } from "next/navigation";
 
 export default function Dashboard() {
   const t = useTranslations()
   const { serviceData, pending, planList, notGetPlan } = useDashboardController()
   const sectionMoreInfofRef = useRef(null); // Create a ref for the section
   const sectionServicesRef = useRef(null); // Create a ref for the section
+  const { service } = useParams<any>()
 
   const scrollToMore = () => {
     if (sectionMoreInfofRef.current) {
@@ -48,7 +50,7 @@ export default function Dashboard() {
 
 
 
-      {!pending && Array.isArray(planList) && <SalesPlan ref={sectionServicesRef} salesPlans={planList as Array<IPlan>} notGetPlan={notGetPlan} fromService="checkinbiz" />}
+      {!pending && Array.isArray(planList) && <SalesPlan ref={sectionServicesRef} salesPlans={planList as Array<IPlan>} notGetPlan={notGetPlan} fromService={service} />}
 
 
 

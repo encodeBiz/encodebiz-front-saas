@@ -25,22 +25,17 @@ export default function HolderList() {
       <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
         <BaseButton
           role='link'
-          href='/main/passinbiz/holder/add'
+          href='/main/passinbiz/event/add'
           variant='contained'
-        ><Add /> {t('holders.addHolder')}</BaseButton>
-
-        <BaseButton
-          role='link'
-          onClick={() => setModalOpen(true)}
-          variant='contained'
-        ><UploadFile /> {t('holders.import')}</BaseButton>
+        ><Add /> {t('event.add')}</BaseButton>
+ 
       </Box>
       <br />
       <GenericTable
         data={items}
         rowAction={rowAction}
         columns={columns}
-        title={t("holders.holderList")}
+        title={t("event.list")}
         keyField="id"
         loading={loading}
         page={currentPage}

@@ -30,6 +30,7 @@
         "PassinBiz": "PassinBiz",
         "Customers": "Clientes",
         "Reports": "Reportes",
+        "Employee":"Empleado",
         "Subscription": "Suscripciones",
         "Revenue": "Renovaciones",
         "Billing": "Facturación",
@@ -67,6 +68,14 @@
     "label": {
       "filename":"Nombre de Archivo",
       "firstName": "Nombre",
+      "date":"Fecha",
+      "location":"Ubicación",
+      "imageUrl":"Imagen",
+      "colorPrimary":"Color primario",
+      "colorAccent":"Color de resaltado",
+      "description": "Descripción",
+      "message": "Mensaje",
+      "state": "Estado",
       "uploadResourse": "Subir recurso",
       "lastName": "Apellido",
       "fullName": "Nombre completo",
@@ -105,8 +114,11 @@
       "value": "Valor"
     },
     "button": {
+      "revoke":"Revocar",
+      "resend":"Reenviar",
       "submitting": "Enviando...",
       "submit": "Enviar",
+      "confirm":"Confirmar",
       "cancel": "Cancelar",
       "download": "Descargar",
       "delete": "Eliminar",
@@ -142,6 +154,14 @@
       "google": "Unete con Google",
       "facebook": "Unete con Facebook",
       "noAccount": "No tienes una cuenta?",
+      "signIn": "Inicia sesión"
+    },
+    "upload": {
+      "title": "Subir archico CSV",
+      "btn": "Seleccionar archico",
+      "desc": "Por favor seleccione un archivo CSV para previsualizar el contenido y seleccionarlo",
+      "file":"Archivo",
+      "preview":"Preview (first 5 rows)",
       "signIn": "Inicia sesión"
     }
   },
@@ -255,8 +275,17 @@
   },
   "holders": {
     "title": "Titulares",
-    "holderList": "Lista de Titulares",
-    "addHolder": "Adicionar Titular"
+    "holderList": "Titulares",
+    "addHolder": "Adicionar",
+    "import": "Importar",
+     "description":"Rellene los campos para registrar el titular"
+  },
+  "event": {
+    "title": "Eventos",
+    "list": "Eventos",
+    "add": "Adicionar",
+    "import": "Importar",
+    "description":"Rellene los campos para registrar el evento"
   },
   "media": {
     "title": "Multimedias",
