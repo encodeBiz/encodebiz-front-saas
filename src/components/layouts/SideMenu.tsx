@@ -29,7 +29,7 @@ import EntitySwitcher from '../common/EntitySwitcher';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'nextjs-toploader/app';
 import { useEntity } from '@/hooks/useEntity';
-
+import logo from '../../../public/assets/images/encodebiz_logo.jpeg'
 const drawerWidth = 240;
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -84,7 +84,7 @@ export default function SideMenu() {
           <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', p: 2 }}>
             <Avatar
               sx={{ width: 40, height: 40, mr: 1 }}
-              src="/path/to/logo.png"
+              src={logo.src}
               alt="Company Logo"
             />
             <Typography variant="h6" noWrap component="div">

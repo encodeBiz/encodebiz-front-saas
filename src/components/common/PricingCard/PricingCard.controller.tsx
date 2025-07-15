@@ -19,7 +19,7 @@ export default function usePricingCardController(id: string, fromService: "passi
                 serviceId: fromService,
                 planId: id
             }
-            console.log("token>>>", token)
+        
             await subscribeInSassProduct(data, token)
         } catch (error: unknown) {
             setLoadingGetPlan(false);

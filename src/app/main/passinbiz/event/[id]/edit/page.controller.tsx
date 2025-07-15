@@ -9,7 +9,7 @@ import { useRouter } from "nextjs-toploader/app";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { MAIN_ROUTE } from "@/config/routes";
-import { createEvent, fetchEvent } from "@/services/passinbiz/event.service";
+import { createEvent, fetchEvent, updateEvent } from "@/services/passinbiz/event.service";
 import DateInput from "@/components/common/forms/fields/Datenput";
 import ImageUploadInput from "@/components/common/forms/fields/ImageUploadInput";
 import ColorPickerInput from "@/components/common/forms/fields/ColorPickerInput";
@@ -19,6 +19,7 @@ import { useLayout } from "@/hooks/useLayout";
 import { ArrayToObject, objectToArray } from "@/lib/common/String";
 
 export interface EventFromValues {
+  id?: string
   uid?: string
   createdBy?: string
   entityId?: string
@@ -78,7 +79,7 @@ export default function useHolderController() {
   const setDinamicDataAction = async (values: EventFromValues) => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderActionBilling') } })
-      const data = await createEvent({
+      const data = await updateEvent({
         "uid": user?.id as string,
         "createdBy": user?.id as string,
         "name": values.name,
@@ -92,7 +93,8 @@ export default function useHolderController() {
         "logoUrl": values.logoUrl,
         "date": values.date,
         template: 'vip',
-        "metadata": ArrayToObject(values.metadata)
+        "metadata": ArrayToObject(values.metadata),
+        "id": id,
       }, token)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
@@ -150,20 +152,21 @@ export default function useHolderController() {
       label: t('core.label.colorAccent'),
       type: 'text',
       required: true,
+
       component: ColorPickerInput,
     },
     {
       name: 'logoUrl',
       label: t('core.label.logo'),
-      type: 'text',
       required: true,
+      type: 'custom',
       component: ImageUploadInput,
     },
     {
       name: 'imageUrl',
       label: t('core.label.imageUrl'),
-      type: 'text',
       required: true,
+      type: 'custom',
       component: ImageUploadInput,
     }, {
 
@@ -185,8 +188,8 @@ export default function useHolderController() {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderActionBilling') } })
       const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, id)
-       
-       setInitialValues({
+
+      setInitialValues({
         ...event,
         metadata: objectToArray(event.metadata)
       })

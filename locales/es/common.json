@@ -30,7 +30,7 @@
         "PassinBiz": "PassinBiz",
         "Customers": "Clientes",
         "Reports": "Reportes",
-        "Employee":"Empleado",
+        "Employee": "Empleado",
         "Subscription": "Suscripciones",
         "Revenue": "Renovaciones",
         "Billing": "Facturación",
@@ -66,17 +66,17 @@
       "success": "La operación se realizó exitosamente"
     },
     "label": {
-      "filename":"Nombre de Archivo",
+      "filename": "Nombre de Archivo",
       "firstName": "Nombre",
-      "sponsor":"Patrisonador",
-       "ticketCapacity":"Capacidad",
-      "date":"Fecha",
-      "location":"Ubicación",
-      "designed":"Diseño",
-      "imageUrl":"Imagen",
-      "setting":"Preferencias",
-      "colorPrimary":"Color primario",
-      "colorAccent":"Color de resaltado",
+      "sponsor": "Patrisonador",
+      "ticketCapacity": "Capacidad",
+      "date": "Fecha",
+      "location": "Ubicación",
+      "designed": "Diseño",
+      "imageUrl": "Imagen",
+      "setting": "Preferencias",
+      "colorPrimary": "Color primario",
+      "colorAccent": "Color de resaltado",
       "description": "Descripción",
       "message": "Mensaje",
       "state": "Estado",
@@ -118,11 +118,11 @@
       "value": "Valor"
     },
     "button": {
-      "revoke":"Revocar",
-      "resend":"Reenviar",
+      "revoke": "Revocar",
+      "resend": "Reenviar",
       "submitting": "Enviando...",
       "submit": "Enviar",
-      "confirm":"Confirmar",
+      "confirm": "Confirmar",
       "cancel": "Cancelar",
       "download": "Descargar",
       "delete": "Eliminar",
@@ -164,8 +164,8 @@
       "title": "Subir archico CSV",
       "btn": "Seleccionar archico",
       "desc": "Por favor seleccione un archivo CSV para previsualizar el contenido y seleccionarlo",
-      "file":"Archivo",
-      "preview":"Preview (first 5 rows)",
+      "file": "Archivo",
+      "preview": "Preview (first 5 rows)",
       "signIn": "Inicia sesión"
     }
   },
@@ -282,20 +282,22 @@
     "holderList": "Titulares",
     "addHolder": "Adicionar",
     "import": "Importar",
-     "description":"Rellene los campos para registrar el titular"
+    "description": "Rellene los campos para registrar el titular"
   },
   "event": {
     "title": "Eventos",
     "list": "Eventos",
     "add": "Adicionar",
     "import": "Importar",
-    "description":"Rellene los campos para registrar el evento"
+    "description": "Rellene los campos para registrar el evento",
+    "deleteConfirmModalTitle": "Eliminar Entidad",
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente la entidad y todas sus configuraciones y compras asociadas"
   },
   "media": {
     "title": "Multimedias",
     "text1": "Archicos seleccionados",
     "labelType": "Seleccione el tipo de archivo a subir",
-    "deleteConfirmModalTitle":"Emilinar archivo",
-    "deleteConfirmModalTitle2":"Esta acción no se puede deshacer. Eliminará permanentemente permanentemente el archivo"
+    "deleteConfirmModalTitle": "Eliminar evento",
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el evento"
   }
 }

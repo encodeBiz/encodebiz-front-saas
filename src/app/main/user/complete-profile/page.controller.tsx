@@ -73,6 +73,7 @@ export const useUserProfileController = () => {
             name: 'avatar',
             label: t('core.label.logo'),
             component: ImageUploadInput,
+            type:'custom',
             required: true,
         },
         {

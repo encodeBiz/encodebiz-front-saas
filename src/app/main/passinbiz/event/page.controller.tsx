@@ -23,7 +23,7 @@ export default function useIEventListController() {
   const { token, user } = useAuth()
   const { currentEntity } = useEntity()
   const { showToast } = useToast()
-    const { push } = useRouter()
+  const { push } = useRouter()
   const [rowsPerPage, setRowsPerPage] = useState<number>(5); // Límite inicial
   const [params, setParams] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(true);
@@ -150,10 +150,7 @@ export default function useIEventListController() {
     try {
       setDeleting(true)
       const id = item[0]
-      await deleteEvent({
-        "evenId": id,
-        "entityId": currentEntity?.entity.id
-      }, token)
+      await deleteEvent(currentEntity?.entity.id as string, id, token)
       setItemsHistory(itemsHistory.filter(e => e.id !== id))
       setItems(itemsHistory.filter(e => e.id !== id))
       setDeleting(false)
@@ -168,7 +165,7 @@ export default function useIEventListController() {
 
   return {
     onDelete, items,
-    atEnd, onEdit,onSearch,
+    atEnd, onEdit, onSearch,
     atStart, onBack, onNext,
     pagination, currentPage,
     columns, deleting, rowAction,

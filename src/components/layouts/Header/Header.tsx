@@ -42,7 +42,7 @@ export default function Header() {
   const t = useTranslations();
   const { anchorEl, contextMenu, handleMobileMenuClose, handleProfileMenuOpen, handleMobileMenuOpen,
     mobileMoreAnchorEl, handleMenuClose, showNotification, showMessages } = useHeader()
-    const { openModal } = useCommonModal()
+  const { openModal } = useCommonModal()
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -63,7 +63,23 @@ export default function Header() {
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
+      sx={{ mt: 6 }}
     >
+      <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', p: 2 }}>
+        <Avatar
+          sx={{ width: 40, height: 40, mr: 1 }}
+          src={user?.phoneNumber}
+          alt={user?.fullName}
+        />
+        <Box sx={{ display: 'flex',flexDirection:'column', alignItems: 'flex-start', width: '100%' }}>
+          <Typography variant="body2" noWrap component="div" sx={{fontWeight:'bold'}}>
+            {user?.fullName}
+          </Typography>
+          <Typography variant="caption" noWrap component="div">
+            {user?.email}
+          </Typography>
+        </Box>
+      </Box>
       {contextMenu.map((e, i: number) => <MenuItem key={i} onClick={e.action}>
         <ListItemIcon>
           {e.icon}
@@ -128,7 +144,7 @@ export default function Header() {
 
 
 
-      <MenuItem onClick={()=>openModal()}>
+      <MenuItem onClick={() => openModal()}>
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -212,7 +228,7 @@ export default function Header() {
             <Tooltip title={t('layout.header.help')}>
               <IconButton
                 size="large"
-                color="inherit" onClick={()=>openModal()}
+                color="inherit" onClick={() => openModal()}
               >
                 <HelpIcon />
               </IconButton>
@@ -230,7 +246,7 @@ export default function Header() {
               >
                 <Avatar
                   sx={{ width: 32, height: 32 }}
-                  src={user?.photoURL?user?.photoURL:''}
+                  src={user?.photoURL ? user?.photoURL : ''}
                   alt={user?.displayName as string}
                 />
               </IconButton>

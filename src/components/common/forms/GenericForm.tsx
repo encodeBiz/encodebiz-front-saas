@@ -115,7 +115,7 @@ const GenericForm = <T extends Record<string, any>>({
                       <FieldComponent
                         name={field.name}
                         label={field.label}
-                        type={field.type??field.typeUpload}                      
+                        type={field.type}                      
                         required={field.required}
                         disabled={field.disabled || disabled}
                         fullWidth

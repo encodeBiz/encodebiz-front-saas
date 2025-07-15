@@ -29,7 +29,7 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
   const t = useTranslations();
   const [field, meta, helper] = useField(name);
   const { touched, error } = meta
-  const typeUpload = props.type
+  const typeUpload = props.type   
    
   const helperText = touched && error;
   const { open, openModal } = useCommonModal()

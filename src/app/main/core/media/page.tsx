@@ -1,6 +1,6 @@
 
 'use client'
-import React, { useCallback, useState } from 'react';
+import React, { } from 'react';
 import {
   Box,
   Button,
@@ -15,7 +15,6 @@ import {
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { useMediaList } from './page.controller';
-import { BaseButton } from '@/components/common/buttons/BaseButton';
 import { GenericTable } from '@/components/common/table/GenericTable';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { useCommonModal } from '@/hooks/useCommonModal';
@@ -31,7 +30,7 @@ const EntityPreferencesPage = () => {
     currentPage, selectedType, handleFileChange, isUploading, setSelectedType,
     columns, deleting,
     loading, rowsPerPage, setRowsPerPage } = useMediaList();
-  const { open, openModal } = useCommonModal()
+  const { openModal } = useCommonModal()
 
 
 

@@ -46,7 +46,6 @@ export const useUserAccountController = () => {
 
 
     const [avatarSrc, setAvatarSrc] = useState<string | undefined>(undefined);
-    const [avatarFile, setAvatarFile] = useState<File | null>(null);
     const [initialValues, setInitialValues] = useState<UserFormValues>({
         uid: user?.uid as string | "",
         "name": user?.displayName as string | "",
@@ -81,6 +80,7 @@ export const useUserAccountController = () => {
         {
             name: 'avatar',
             label: t('core.label.logo'),
+            type:'custom',
             component: ImageUploadInput,
             required: true,
         },

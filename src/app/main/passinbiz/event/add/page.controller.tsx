@@ -20,6 +20,7 @@ import { ArrayToObject } from "@/lib/common/String";
 
 export interface EventFromValues {
   uid?: string
+  id?: string
   createdBy?: string
   entityId?: string
   "name": string
@@ -154,15 +155,16 @@ export default function useHolderController() {
     {
       name: 'logoUrl',
       label: t('core.label.logo'),
-      type: 'text',
+ 
       required: true,
       component: ImageUploadInput,
+      type: 'custom'
     },
     {
       name: 'imageUrl',
-      label: t('core.label.imageUrl'),
-      type: 'text',
+      label: t('core.label.imageUrl'),       
       required: true,
+      type: 'custom',
       component: ImageUploadInput,
     }, {
 

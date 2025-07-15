@@ -101,22 +101,21 @@ export const useSettingEntityController = () => {
             label: t('core.label.logo'),
             component: ImageUploadInput,
             required: true,
-            typeUpload: 'logo'
+            type: 'logo'
         },
         {
             name: 'stripImageUrl',
             label: t('core.label.stripImageUrl'),
             component: ImageUploadInput,
             required: true,
-            typeUpload: 'stripImage'
+            type: 'stripImage'
         },
         {
             name: 'iconUrl',
             label: t('core.label.iconUrl'),
             component: ImageUploadInput,
             required: true,
-
-            typeUpload: 'icon'
+            type: 'icon'
         },
     ];
  

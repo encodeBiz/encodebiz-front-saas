@@ -8,11 +8,12 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { Add } from '@mui/icons-material';
 import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
+import ConfirmModal from '@/components/common/modals/ConfirmModal';
 
 export default function HolderList() {
   const t = useTranslations();
   const {
-    items, rowAction,
+    items, rowAction,onDelete,deleting,
     onNext, onBack, onEdit,
     currentPage,
     columns, onSearch,
@@ -49,6 +50,13 @@ export default function HolderList() {
 
       />
 
+
+      <ConfirmModal
+        isLoading={deleting}
+        title={t('event.deleteConfirmModalTitle')}
+        description={t('event.deleteConfirmModalTitle2')}
+        onOKAction={(args: { data: Array<string> }) => onDelete(args.data)}
+      />
     </Container>
   );
 }

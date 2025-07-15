@@ -5,6 +5,7 @@ import { collection } from "@/config/collection";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { EventFromValues } from "@/app/main/passinbiz/event/add/page.controller";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
+import { deleteDocument } from "@/lib/firebase/firestore/deleteDocument";
 
 
 /**
@@ -17,8 +18,23 @@ import { getOne } from "@/lib/firebase/firestore/readDocument";
 export const fetchEvent = async (entityId: string, id: string): Promise<IEvent> => {
   return await getOne(
     `${collection.ENTITIES}/${entityId}/${collection.EVENT}`,
-    id); 
+    id);
 }
+
+/**
+   * Search trainer
+   *
+   * @async
+   * @param {SearchParams} params
+   * @returns {Promise<ITrainer[]>}
+   */
+export const deleteEvent = async (entityId: string, id: string, token: string): Promise<void> => {
+  await deleteDocument({
+    collection: `${collection.ENTITIES}/${entityId}/${collection.EVENT}`,
+    id
+  });
+}
+
 
 /**
    * Search trainer
@@ -95,29 +111,3 @@ export async function updateEvent(data: EventFromValues, token: string) {
 
 
 
-export async function deleteEvent(data: {
-  "eventId": string,
-  "entityId": string
-} | any, token: string) {
-  try {
-
-    if (!token) {
-      throw new Error('Error to fetch user auth token')
-    } else {
-      let httpClientFetchInstance: HttpClient = new HttpClient({
-        baseURL: '',
-        headers: {
-          token: `Bearer ${token}`
-        },
-      });
-      const response: any = await httpClientFetchInstance.delete(process.env.NEXT_PUBLIC_BACKEND_URI_DELETE_MEDIA as string, {
-        ...data
-      });
-      if (response.errCode && response.errCode !== 200) {
-        throw new Error(response.message)
-      }
-    }
-  } catch (error: any) {
-    throw new Error(error.message)
-  }
-}

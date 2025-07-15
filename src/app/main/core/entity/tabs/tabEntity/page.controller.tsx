@@ -229,7 +229,7 @@ export const useSettingEntityController = () => {
             "postalCode": currentEntity?.entity?.legal?.address.postalCode as string | "",
             "taxId": currentEntity?.entity?.legal?.taxId as string | "",
             "legalName": currentEntity?.entity?.legal?.legalName as string | "",
-            billingEmail: currentEntity?.entity?.billingEmail as string | ""
+            billingEmail: currentEntity?.entity?.billingEmail as string ??  user?.email as string ?? ''
         })
         setCityList(country.find(e => e.name === currentEntity?.entity?.legal?.address.country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
 
