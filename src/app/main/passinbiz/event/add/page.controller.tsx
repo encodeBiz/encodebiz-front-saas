@@ -4,7 +4,7 @@ import DynamicKeyValueInput, { DynamicFields } from "@/components/common/forms/f
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
 
-import { emailRule, requiredRule } from '@/config/yupRules';
+import { requiredRule } from '@/config/yupRules';
 import { createHolder } from "@/services/passinbiz/holder.service";
 import { useToast } from "@/hooks/useToast";
 import { useRouter } from "nextjs-toploader/app";
@@ -18,8 +18,12 @@ import ImageUploadInput from "@/components/common/forms/fields/ImageUploadInput"
 import ColorPickerInput from "@/components/common/forms/fields/ColorPickerInput";
 
 export interface EventFromValues {
+  uid?: string
+  createdBy?: string
+  entityId?: string
   "name": string
   "description": string
+  address?: string
   "date": any
   "location": string
   "template": string
@@ -27,6 +31,7 @@ export interface EventFromValues {
   "imageUrl": string
   "colorPrimary": string
   "colorAccent": string
+  metadata: any
 };
 
 export default function useHolderController() {
@@ -45,10 +50,11 @@ export default function useHolderController() {
     "imageUrl": '',
     "colorPrimary": '',
     "colorAccent": '',
+    metadata:{}
   });
 
   const validationSchema = Yup.object().shape({
-    customFields: Yup.array()
+    metadata: Yup.array()
       .of(
         Yup.object().shape({
           label: requiredRule(t),
@@ -56,32 +62,43 @@ export default function useHolderController() {
         })
       )
       .nullable(),
-    fullName: requiredRule(t),
-    email: emailRule(t),
-    phoneNumber: Yup.string().optional(),
+    name: requiredRule(t),
+    description: requiredRule(t),
+    date: requiredRule(t),
+    location: requiredRule(t),
+    logoUrl: requiredRule(t),
+    imageUrl: requiredRule(t),
+    colorPrimary: requiredRule(t),
+    colorAccent: requiredRule(t),
   });
 
   const setDinamicDataAction = async (values: EventFromValues) => {
     try {
-      /*
+
       const data = await createEvent({
         "uid": user?.id as string,
-        "fullName": values.fullName,
-        "email": values.email,
-        "phoneNumber": values.phoneNumber,
+        "createdBy": user?.id as string,
+        "name": values.name,
+        "description": values.description,
+        "location": values.location,
+        "address": values.location,
+
         "entityId": currentEntity?.entity?.id as string,
-        "passStatus": "pending",
-        "type": "credential",
-        "parentId": "",
-        "isLinkedToUser": false,
+        "colorPrimary": values.colorPrimary,
+        "colorAccent": values.colorAccent,
+        "imageUrl": values.imageUrl,
+        "logoUrl": values.logoUrl,
+        "date":values.date,
+        template:'vip',
         "metadata": {
-          "auxiliaryFields": values.customFields
+          "ticketCapacity": 5000,
+          "sponsor": "Coca-Cola"
         },
 
       }, token)
-      */
+
       showToast(t('core.feedback.success'), 'success');
-      push(`/${MAIN_ROUTE}/passinbiz/holder`)
+      push(`/${MAIN_ROUTE}/passinbiz/event`)
     } catch (error: any) {
       showToast(error.message, 'error')
     }
@@ -96,7 +113,7 @@ export default function useHolderController() {
       required: true,
       component: TextInput,
     },
-  
+
     {
       name: 'date',
       label: t('core.label.date'),
@@ -107,11 +124,12 @@ export default function useHolderController() {
     {
       name: 'location',
       label: t('core.label.location'),
-      type: 'text',
+   
       required: true,
+         type: 'textarea',
       component: TextInput,
     },
-      {
+    {
       name: 'description',
       label: t('core.label.description'),
       type: 'textarea',
@@ -155,19 +173,13 @@ export default function useHolderController() {
       label: t('core.label.setting'),
     },
     {
-      name: 'sponsor',
-      label: t('core.label.sponsor'),
+      name: 'metadata',
+      label: t('core.label.setting'),
       type: 'text',
       required: true,
-      component: TextInput,
+      component: DynamicKeyValueInput,
     },
-    {
-      name: 'ticketCapacity',
-      label: t('core.label.ticketCapacity'),
-      type: 'number',
-      required: true,
-      component: TextInput,
-    },
+    
   ];
 
   return { fields, initialValues, validationSchema, setDinamicDataAction }

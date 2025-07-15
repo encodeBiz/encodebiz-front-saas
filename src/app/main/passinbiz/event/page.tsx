@@ -2,21 +2,19 @@
 import { Container, Box } from '@mui/material';
 import { useTranslations } from "next-intl";
 import useHolderListController from './page.controller';
-
 import { GenericTable } from "@/components/common/table/GenericTable";
 import { BaseButton } from '@/components/common/buttons/BaseButton';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
-import CSVUploadModal from '@/components/common/modals/CSVUploadModal';
-import { Add, UploadFile } from '@mui/icons-material';
+import { Add } from '@mui/icons-material';
 
 export default function HolderList() {
   const t = useTranslations();
-  const { handleUploadConfirm,
+  const {  
     items, rowAction,
     onNext, onBack, onEdit,
     currentPage,
-    columns, modalOpen, setModalOpen,onSearch,
+    columns,  onSearch,
     loading, rowsPerPage, setRowsPerPage } = useHolderListController();
   const { openModal } = useCommonModal()
 
@@ -49,11 +47,7 @@ export default function HolderList() {
         search={true}
         
       />
-      <CSVUploadModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onConfirm={handleUploadConfirm}
-      />
+       
     </Container>
   );
 }

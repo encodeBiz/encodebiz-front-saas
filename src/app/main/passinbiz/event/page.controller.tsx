@@ -6,16 +6,15 @@ import { useTheme } from "@emotion/react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { useStyles } from "./page.styles";
-import { Holder } from "@/domain/features/passinbiz/IHolder";
-import { deleteHolder, importHolder, search } from "@/services/passinbiz/holder.service";
-import { RemoveDone, Send } from "@mui/icons-material";
+
 import { useLayout } from "@/hooks/useLayout";
-import { Chip } from "@mui/material";
+import { IEvent } from "@/domain/features/passinbiz/IEvent";
+import { deleteEvent, search } from "@/services/passinbiz/event.service";
 
 
 
 
-export default function useHolderListController() {
+export default function useIEventListController() {
   const t = useTranslations();
   const theme = useTheme();
   const classes = useStyles()
@@ -29,16 +28,13 @@ export default function useHolderListController() {
   const [atEnd, setAtEnd] = useState(false)
   const [last, setLast] = useState<any>()
   const [pagination, setPagination] = useState(``);
-  const [items, setItems] = useState<Holder[]>([]);
-  const [itemsHistory, setItemsHistory] = useState<Holder[]>([]);
+  const [items, setItems] = useState<IEvent[]>([]);
+  const [itemsHistory, setItemsHistory] = useState<IEvent[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [total, setTotal] = useState(0);
   const { changeLoaderState } = useLayout()
 
-  const rowAction: Array<IRowAction> = [
-    { icon: <RemoveDone />, label: 'Revocar', onPress: (item: Holder) => { } },
-    { icon: <Send />, label: 'Reenviar', onPress: (item: Holder) => { } }
-  ]
+  const rowAction: Array<IRowAction> = []
 
   const onSearch = (term: string): void => {
     setParams({ ...params, startAfter: null, filters: buildSearch(term) })
@@ -68,37 +64,29 @@ export default function useHolderListController() {
 
 
 
-  const columns: Column<Holder>[] = [
+  const columns: Column<IEvent>[] = [
     {
-      id: 'fullName',
-      label: t("core.label.fullName"),
+      id: 'name',
+      label: t("core.label.name"),
       minWidth: 170,
     },
     {
-      id: 'email',
-      label: t("core.label.email"),
+      id: 'description',
+      label: t("core.label.description"),
       minWidth: 170,
     },
     {
-      id: 'phoneNumber',
-      label: t("core.label.phone"),
+      id: 'date',
+      label: t("core.label.date"),
       minWidth: 170,
     },
     {
-      id: 'passStatus',
-      label: t("core.label.state"),
+      id: 'location',
+      label: t("core.label.location"),
       minWidth: 170,
-      format: (value, row) => <Chip
-        size="small"
-        label={row.passStatus}
-        variant="outlined"
-      />,
+
     },
-    {
-      id: 'failedFeedback',
-      label: t("core.label.message"),
-      minWidth: 170,
-    },
+
 
   ];
 
@@ -151,16 +139,16 @@ export default function useHolderListController() {
 
   const [deleting, setDeleting] = useState(false)
   const onEdit = async (item: any) => {
-    console.log(item);    
+    console.log(item);
   }
 
-   
+
   const onDelete = async (item: any) => {
     try {
       setDeleting(true)
       const id = item[0]
-      await deleteHolder({
-        "holderId": id,
+      await deleteEvent({
+        "evenId": id,
         "entityId": currentEntity?.entity.id
       }, token)
       setItemsHistory(itemsHistory.filter(e => e.id !== id))
@@ -173,36 +161,13 @@ export default function useHolderListController() {
   }
 
 
-  const [isUploading, setIsUploading] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const handleUploadConfirm = async (file: File, previewData: string) => {
-    try {
-      setIsUploading(true)
-      changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const form = new FormData();
-      form.append('uid', user?.id as string);
-      form.append('csv', file);
-      form.append('entityId', currentEntity?.entity.id as string);
-      form.append('passStatus', 'pending');
-      await importHolder(form, token)
-      setIsUploading(false)
-      changeLoaderState({ show: false })
-    } catch (e: any) {
-      showToast(e?.message, 'error')
-      setIsUploading(false)
-      changeLoaderState({ show: false })
-
-    }
-  };
 
 
   return {
     onDelete, items,
-    atEnd,onEdit,
-    atStart, handleUploadConfirm, isUploading,
-    onSearch, onNext, onBack,
-    pagination, currentPage, modalOpen, setModalOpen,
+    atEnd, onEdit,onSearch,
+    atStart, onBack, onNext,
+    pagination, currentPage,
     columns, deleting, rowAction,
     loading, rowsPerPage, setRowsPerPage
   }

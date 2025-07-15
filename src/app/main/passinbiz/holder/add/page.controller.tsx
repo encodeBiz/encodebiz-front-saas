@@ -81,23 +81,7 @@ export default function useHolderController() {
     }
   };
 
-  /*
-  {
-    "uid": "K8PwV1Lr6gQA9eIIQ1bmeBMhlGl2", //Solo para dev es el id del owner o admin
-    "fullName": "Yasiel Pérez",
-    "email": "encodebiz@gmail.com",
-    "phoneNumber": "+34600111222",
-    "entityId": "7g7mzZUR3lSWy9tccDbS",
-    "passStatus": "pending",
-    "type": "event", // credential | event
-    "parentId" : "AeBSJvncY2jp1BK7KNLf",
-    "isLinkedToUser": false, //esto me indica si el usuario existe en la plataforma no es obligatorio que exista.
-    "metadata": {
-        "auxiliaryFields": []
-    }
-}
   
-  */
 
   const fields = [
     {
