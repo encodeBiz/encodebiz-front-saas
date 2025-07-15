@@ -96,13 +96,7 @@ export default function useHolderController() {
       required: true,
       component: TextInput,
     },
-    {
-      name: 'description',
-      label: t('core.label.description'),
-      type: 'textarea',
-      required: true,
-      component: TextInput,
-    },
+  
     {
       name: 'date',
       label: t('core.label.date'),
@@ -116,6 +110,31 @@ export default function useHolderController() {
       type: 'text',
       required: true,
       component: TextInput,
+    },
+      {
+      name: 'description',
+      label: t('core.label.description'),
+      type: 'textarea',
+      required: true,
+      component: TextInput,
+    },
+    {
+
+      isDivider: true,
+      label: t('core.label.designed'),
+    },
+    {
+      name: 'colorPrimary',
+      label: t('core.label.colorPrimary'),
+      type: 'text',
+      required: true,
+      component: ColorPickerInput,
+    }, {
+      name: 'colorAccent',
+      label: t('core.label.colorAccent'),
+      type: 'text',
+      required: true,
+      component: ColorPickerInput,
     },
     {
       name: 'logoUrl',
@@ -131,17 +150,23 @@ export default function useHolderController() {
       required: true,
       component: ImageUploadInput,
     }, {
-      name: 'colorPrimary',
-      label: t('core.label.colorPrimary'),
+
+      isDivider: true,
+      label: t('core.label.setting'),
+    },
+    {
+      name: 'sponsor',
+      label: t('core.label.sponsor'),
       type: 'text',
       required: true,
-      component: ColorPickerInput,
-    }, {
-      name: 'colorAccent',
-      label: t('core.label.colorAccent'),
-      type: 'text',
+      component: TextInput,
+    },
+    {
+      name: 'ticketCapacity',
+      label: t('core.label.ticketCapacity'),
+      type: 'number',
       required: true,
-      component: ColorPickerInput,
+      component: TextInput,
     },
   ];
 

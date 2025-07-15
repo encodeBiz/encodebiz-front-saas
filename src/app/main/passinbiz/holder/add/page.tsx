@@ -28,7 +28,7 @@ export default function HolderList() {
   const { push } = useRouter()
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="xl">
       <PresentationCard
         title={t('holders.addHolder')}
         description={t('holders.description')}

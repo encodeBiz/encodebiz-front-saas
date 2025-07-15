@@ -14,7 +14,7 @@ export default function HolderList() {
   const t = useTranslations();
   const { push } = useRouter()
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="xl">
       <PresentationCard
         title={t('event.add')}
         description={t('event.description')}

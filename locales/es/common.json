@@ -68,9 +68,13 @@
     "label": {
       "filename":"Nombre de Archivo",
       "firstName": "Nombre",
+      "sponsor":"Patrisonador",
+       "ticketCapacity":"Capacidad",
       "date":"Fecha",
       "location":"Ubicación",
+      "designed":"Diseño",
       "imageUrl":"Imagen",
+      "setting":"Preferencias",
       "colorPrimary":"Color primario",
       "colorAccent":"Color de resaltado",
       "description": "Descripción",

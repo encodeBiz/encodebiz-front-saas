@@ -25,7 +25,7 @@ const DateInput: React.FC<FieldProps & TextFieldProps> = ({
         />
       }
       label={''}
-      sx={{ mt: 2,ml:0, width:'100%' }}
+      sx={{ ml:0, width:'100%' }}
     />
 
     {helperText && !!error && <FormHelperText sx={{
