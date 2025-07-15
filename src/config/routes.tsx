@@ -8,15 +8,14 @@ import {
 } from '@mui/icons-material';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import BusinessIcon from '@mui/icons-material/Business';
-import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import GroupIcon from '@mui/icons-material/Group';
 
 export const MAIN_ROUTE = 'main'
 export const GENERAL_ROUTE = 'core'
 export const USER_ROUTE = 'user'
 
-export const PASSSINBIZ_MODULE_ROUTE = 'passinBiz'
-export const CHECKINBIZ_MODULE_ROUTE = 'checkinBiz'
+export const PASSSINBIZ_MODULE_ROUTE = 'passinbiz'
+export const CHECKINBIZ_MODULE_ROUTE = 'checkinbiz'
 
 const PASSINBIZ = [{
     name: 'Holders',

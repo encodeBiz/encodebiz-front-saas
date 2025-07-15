@@ -7,14 +7,15 @@ import { BaseButton } from '@/components/common/buttons/BaseButton';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { Add } from '@mui/icons-material';
+import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
 
 export default function HolderList() {
   const t = useTranslations();
-  const {  
+  const {
     items, rowAction,
     onNext, onBack, onEdit,
     currentPage,
-    columns,  onSearch,
+    columns, onSearch,
     loading, rowsPerPage, setRowsPerPage } = useHolderListController();
   const { openModal } = useCommonModal()
 
@@ -23,10 +24,10 @@ export default function HolderList() {
       <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
         <BaseButton
           role='link'
-          href='/main/passinbiz/event/add'
+          href={`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event/add`}
           variant='contained'
         ><Add /> {t('event.add')}</BaseButton>
- 
+
       </Box>
       <br />
       <GenericTable
@@ -41,13 +42,13 @@ export default function HolderList() {
         onRowsPerPageChange={setRowsPerPage}
         onBack={onBack}
         onNext={onNext}
-        //onEdit={(data) => onEdit(data)}
+        onEdit={(data) => onEdit(data)}
         onDelete={(data) => openModal(CommonModalType.DELETE, { data })}
         onSearch={(data) => onSearch(data)}
         search={true}
-        
+
       />
-       
+
     </Container>
   );
 }

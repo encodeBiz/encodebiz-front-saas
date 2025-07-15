@@ -3,6 +3,7 @@ import { Box, Button, TextField } from '@mui/material';
 import { FieldProps, useField, useFormikContext } from 'formik';
 import { useTranslations } from 'next-intl';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { Add } from '@mui/icons-material';
 
 interface DynamicField {
     label: string;
@@ -18,12 +19,10 @@ const DynamicKeyValueInput: React.FC<FieldProps> = ({ ...props }) => {
     const [field, , meta] = useField(props);
     const { name, value } = field;
     const { setFieldValue } = useFormikContext<any>();
+ 
+    
     const t = useTranslations();
-
-    const initialValues: DynamicField[] = Array.isArray(value) ? value : [];
-
-    const [fields, setFields] = useState<DynamicField[]>(initialValues);
-
+    const [fields, setFields] = useState<DynamicField[]>([...field.value]);
     const handleAdd = () => {
         const newFields = [...fields, { ...emptyItem }];
         setFields(newFields);
@@ -32,7 +31,7 @@ const DynamicKeyValueInput: React.FC<FieldProps> = ({ ...props }) => {
 
     const handleRemove = (index: number) => () => {
         const newFields = fields.filter((_, i) => i !== index);
-        setFields(newFields);
+         setFields(newFields);
         setFieldValue(name, newFields);
     };
 
@@ -45,21 +44,19 @@ const DynamicKeyValueInput: React.FC<FieldProps> = ({ ...props }) => {
         setFieldValue(name, newFields);
     };
 
-    useEffect(() => {
-      handleAdd()
-    }, [])
-    
+
 
     return (
-        <Box>
-            {fields.map((item, index) => (
-                <Box key={index} sx={{ display: 'flex', gap: 2, mb:2, alignItems: 'center' }}>
+        <Box >
+           
+            {(field.value as Array<{label:string,value:string}>)?.map((item, index) => (
+                <Box key={index} sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'center' }}>
                     <TextField
                         label={t("core.label.label")}
                         value={item.label}
                         onChange={handleChange(index, 'label')}
                         fullWidth
-                        variant="outlined" 
+                        variant="outlined"
                     />
                     <TextField
                         label={t("core.label.value")}
@@ -69,35 +66,30 @@ const DynamicKeyValueInput: React.FC<FieldProps> = ({ ...props }) => {
                         variant="outlined"
                     />
                     <Button
-                        color={index === fields.length - 1 ? 'primary' : 'error'}
-                        onClick={index === fields.length - 1 ? handleAdd : handleRemove(index)}
+                        color={'error'}
+                        onClick={() => handleRemove(index)}
                         variant="contained"
                         size='large'
                     >
-                        {index === fields.length - 1 ? '+' : <DeleteForeverIcon />}
+                        {<DeleteForeverIcon />}
                     </Button>
+                    {fields.length - 1 === index && <Button
+                        color="primary"
+                        onClick={()=>handleAdd()}
+                        variant="contained"
+                        size="large">
+                        {<Add />}
+                    </Button>}
                 </Box>
             ))}
-
-            {fields.length === 0 && (
-                <Box sx={{ display: 'flex', gap: 2, mb:2}}>
-                    <TextField
-                        label={t("core.label.label")}
-                        disabled
-                        fullWidth
-                        variant="outlined"
-                    />
-                    <TextField
-                        label={t("core.label.value")}
-                        disabled
-                        fullWidth
-                        variant="outlined"
-                    />
-                    <Button color="primary" onClick={handleAdd} variant="contained" size="large">
-                        +
-                    </Button>
-                </Box>
-            )}
+            {fields.length === 0 &&
+                <Button
+                    color="primary"
+                    onClick={()=>handleAdd()}
+                    variant="contained"
+                    size="large">
+                    {<Add />} Crear campo personalizado
+                </Button>}
         </Box>
     );
 };

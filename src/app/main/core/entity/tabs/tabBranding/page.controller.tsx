@@ -5,25 +5,13 @@ import { useState, ReactNode, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useTranslations } from 'next-intl';
-import { Box, SxProps, Theme } from '@mui/material';
-import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
-import TextInput from '@/components/common/forms/fields/TextInput';
+import { SxProps, Theme } from '@mui/material';
 import ColorPickerInput from '@/components/common/forms/fields/ColorPickerInput';
-import UploadAvatar from '@/components/common/avatar/UploadAvatar';
 import { useToast } from '@/hooks/useToast';
-import moment from 'moment';
-import SelectInput from '@/components/common/forms/fields/SelectInput';
-import { country } from '@/config/country';
 import { formatDate } from '@/lib/common/Date';
-import { createSlug } from '@/lib/common/String';
-import { deleteEntity, fetchEntity, updateEntity, updateEntityBranding } from '@/services/common/entity.service';
+import { updateEntityBranding } from '@/services/common/entity.service';
 import ImageUploadInput from '@/components/common/forms/fields/ImageUploadInput';
-import { BaseButton } from '@/components/common/buttons/BaseButton';
-import { useCommonModal } from '@/hooks/useCommonModal';
-import { CommonModalType } from '@/contexts/commonModalContext';
-import ConfirmModal from '@/components/common/modals/ConfirmModal';
-import { configBilling } from '@/services/common/subscription.service';
-import { fileImageRule, requiredRule } from '@/config/yupRules';
+import { requiredRule } from '@/config/yupRules';
 import { useLayout } from '@/hooks/useLayout';
 
 

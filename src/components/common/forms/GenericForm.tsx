@@ -115,8 +115,7 @@ const GenericForm = <T extends Record<string, any>>({
                       <FieldComponent
                         name={field.name}
                         label={field.label}
-
-                        type={field.type}
+                        type={field.type??field.typeUpload}                      
                         required={field.required}
                         disabled={field.disabled || disabled}
                         fullWidth
@@ -130,10 +129,7 @@ const GenericForm = <T extends Record<string, any>>({
                             field.onChange(e)
                         }}
                         onBlur={formikProps.handleBlur}
-                        options={{
-                          ...field.options,
-                          typeUpload: field.typeUpload
-                        }}
+                        options={field.options}
                         {...field.extraProps}
                       />
                     </Grid>

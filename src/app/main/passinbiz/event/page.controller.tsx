@@ -10,6 +10,8 @@ import { useStyles } from "./page.styles";
 import { useLayout } from "@/hooks/useLayout";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { deleteEvent, search } from "@/services/passinbiz/event.service";
+import { useRouter } from "nextjs-toploader/app";
+import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
 
 
 
@@ -21,7 +23,8 @@ export default function useIEventListController() {
   const { token, user } = useAuth()
   const { currentEntity } = useEntity()
   const { showToast } = useToast()
-  const [rowsPerPage, setRowsPerPage] = useState<number>(2); // Límite inicial
+    const { push } = useRouter()
+  const [rowsPerPage, setRowsPerPage] = useState<number>(5); // Límite inicial
   const [params, setParams] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [atStart, setAtStart] = useState(true);
@@ -139,7 +142,7 @@ export default function useIEventListController() {
 
   const [deleting, setDeleting] = useState(false)
   const onEdit = async (item: any) => {
-    console.log(item);
+    push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event/${item.id}/edit`)
   }
 
 

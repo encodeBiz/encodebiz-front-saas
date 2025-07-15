@@ -88,3 +88,29 @@ export const formatFileSize = (bytes: number) => {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 };
+
+export const objectToArray = (arg: any) => {
+    const arr: Array<{
+        label: string,
+        value: any
+    }> = []
+    Object.keys(arg).forEach(element => {
+        arr.push({
+            label: element,
+            value: arg[element]
+        })
+    });
+    return arr
+}
+
+
+export const ArrayToObject = (arr: Array<{
+    label: string,
+    value: any
+}>) => {
+    const object: any = {}
+    arr.forEach(element => {
+        Object.assign(object, { [element.label]: element.value })
+    });
+    return object
+}
