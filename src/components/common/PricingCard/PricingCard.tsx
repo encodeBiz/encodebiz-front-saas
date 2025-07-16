@@ -7,7 +7,7 @@ import { IPlan } from '@/domain/core/IPlan';
 import { GenericButton } from '../buttons/BaseButton';
 import usePricingCardController from './PricingCard.controller';
 import { BizType } from '@/domain/core/IService';
- 
+
 const PlanCard = styled(Box)<{ featured?: string }>(({ theme, featured }) => ({
     maxWidth: 300,
     minWidth: 250,
@@ -45,9 +45,10 @@ const SelectButton = styled(GenericButton)<{ featured?: string }>(({ theme, feat
 export type PricingCardProps = IPlan & {
     fromService: BizType;
     getPlanAllow: boolean;
+    isContract: boolean;
 };
 
-export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, period, features, featured = false, fromService, getPlanAllow = false }) => {
+export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, period, isContract, features, featured = false, fromService, getPlanAllow = false }) => {
     const t = useTranslations();
     const { subcribeAction, loadingGetPlan, setLoadingGetPlan } = usePricingCardController(id as string, fromService);
 
@@ -94,14 +95,18 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
                     </List>
                 </span>
                 <SelectButton
-                    featured={String(featured)}
+                    featured={String(isContract)}
                     fullWidth
                     variant="contained"
-                    onClick={subcribeAction}
+                    onClick={() => {
+                        if (!isContract) {
+                            subcribeAction()
+                        }
+                    }}
                     disabled={loadingGetPlan}
                     loading={loadingGetPlan}
                 >
-                    {t("salesPlan.pay")}
+                    {!isContract?t("salesPlan.pay"):t("salesPlan.contract")}
                 </SelectButton>
             </CardContent>
         </PlanCard>

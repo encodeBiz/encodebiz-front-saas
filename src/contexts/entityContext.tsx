@@ -11,7 +11,8 @@ import IUser from "@/domain/auth/IUser";
 import { fetchUserAccount } from "@/services/common/account.service";
 import { MAIN_ROUTE, GENERAL_ROUTE } from "@/config/routes";
 import { IService } from "@/domain/core/IService";
-import { fetchServiceList } from "@/services/common/subscription.service";
+import { fetchServiceList, fetchSuscriptionByEntity } from "@/services/common/subscription.service";
+import { IEntitySuscription } from "@/domain/auth/ISubscription";
 
 interface EntityContextType {
     currentEntity: IUserEntity | undefined;
@@ -19,7 +20,8 @@ interface EntityContextType {
     setCurrentEntity: (currentEntity: IUserEntity | undefined) => void;
     changeCurrentEntity: (id: string, callback?: Function) => void;
     refrestList: (userId: string) => void;
-    entityServiceList:Array<IService>
+    entityServiceList: Array<IService>
+    entitySuscription: Array<IEntitySuscription>
 
 }
 export const EntityContext = createContext<EntityContextType | undefined>(undefined);
@@ -27,16 +29,20 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     const [currentEntity, setCurrentEntity] = useState<IUserEntity | undefined>(undefined);
     const [entityList, setEntityList] = useState<Array<IUserEntity>>([]);
     const [entityServiceList, setEntityServiceList] = useState<Array<IService>>([]);
+    const [entitySuscription, setEntitySuscription] = useState<Array<IEntitySuscription>>([])
     const { push } = useRouter()
 
-    const fetchingServiceListState = async () => {
-        setEntityServiceList(await fetchServiceList())
+
+    const fetchSuscriptionEntity = async () => {
+        const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
+        setEntitySuscription(serviceSuscription)
+        const serviceList: Array<IService> = await fetchServiceList()
+        setEntityServiceList(serviceList.map(e => ({ ...e, isBillingActive: !!serviceSuscription.find(service => service.serviceId === e.id) })))
     }
 
     const watchSesionState = async (userAuth: User) => {
         if (userAuth) {
             const entityList: Array<IUserEntity> = await fetchUserEntities(userAuth.uid)
-
             if (entityList.length > 0) {
                 if (entityList.length > 0 && entityList.filter(e => e.isActive).length === 0) {
                     const item = entityList[0]
@@ -45,7 +51,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
                 }
                 setEntityList(entityList)
                 setCurrentEntity(entityList.find(e => e.isActive) as IUserEntity)
-                fetchingServiceListState()
+
             } else {
                 const userData: IUser = await fetchUserAccount(userAuth.uid)
                 if (userData.email)
@@ -63,10 +69,8 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
                 item.isActive = true
                 entityList.splice(0, 1, item)
             }
-
             setEntityList(entityList)
             setCurrentEntity(entityList.find(e => e.isActive) as IUserEntity)
-            fetchingServiceListState()
         } else {
             push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
         }
@@ -99,8 +103,15 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
         return () => unsubscribe();
     }, []);
 
+
+    useEffect(() => {
+        if (currentEntity?.entity.id)
+            fetchSuscriptionEntity()
+    }, [currentEntity?.entity.id])
+
+
     return (
-        <EntityContext.Provider value={{ entityList, entityServiceList, currentEntity, refrestList, setCurrentEntity, changeCurrentEntity }}>
+        <EntityContext.Provider value={{ entityList, entitySuscription, entityServiceList, currentEntity, refrestList, setCurrentEntity, changeCurrentEntity }}>
             {children}
         </EntityContext.Provider>
     );

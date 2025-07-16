@@ -24,6 +24,7 @@
         "Services": "Servicios",
         "Events": "Eventos",
         "Media": "Media",
+        
         "home": "Inicio",
         "general": "General",
         "CheckinBiz": "CheckinBiz",
@@ -269,6 +270,7 @@
     "whiteLabel": "Soluciones de marca blanca",
     "onsiteTraining": "Capacitación en el lugar",
     "pay": "Obtener Plan",
+    "contract": "Plan Actual",
     "notAllowedPlan": "Debes actualizar los datos legales de la entidad seleccionada antes de obtener un plan."
   },
   "terms": {

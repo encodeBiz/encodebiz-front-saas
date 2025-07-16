@@ -47,13 +47,7 @@ export default function Dashboard() {
         action2Text={t('features.dashboard.card.btn3')}
       />
 
-
-
-
       {!pending && Array.isArray(planList) && <SalesPlan ref={sectionServicesRef} salesPlans={planList as Array<IPlan>} notGetPlan={notGetPlan} fromService={service} />}
-
-
-
       <HelpTabs ref={sectionMoreInfofRef} tabs={[
         {
           id: '1',

@@ -1,6 +1,6 @@
 import { collection } from "@/config/collection";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
-import { ISubscription, IUnSubscription } from "@/domain/auth/ISubscription";
+import { IEntitySuscription, ISubscription, IUnSubscription } from "@/domain/auth/ISubscription";
 import { IPlanData } from "@/domain/core/IPlan";
 import { getAll, getOne } from "@/lib/firebase/firestore/readDocument";
 import { IService } from "@/domain/core/IService";
@@ -102,3 +102,12 @@ export async function configBilling(data: {
     }
 }
 
+
+export async function fetchSuscriptionByEntity(entityId: string): Promise<Array<IEntitySuscription>> {
+    try {
+        const planDataList = await getAll<IEntitySuscription>(`${collection.ENTITIES}/${entityId}/subscriptions`);
+        return planDataList;
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
+}

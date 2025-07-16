@@ -9,5 +9,13 @@ export interface ISubscription {
 export interface IUnSubscription {
     entityId: string
     serviceId: BizType
-    
+}
+
+export interface IEntitySuscription {
+    createdAt: Date
+    entityId: string
+    plan: string
+    serviceId: string
+    startDate: Date
+    status: string
 }

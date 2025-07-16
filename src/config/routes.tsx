@@ -4,7 +4,10 @@ import {
     Settings as SettingsIcon,
     ImageSearchOutlined,
     CreditCardOff,
-    Person2TwoTone
+    Person2TwoTone,
+    Today,
+    CardGiftcard,
+    Home
 } from '@mui/icons-material';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import BusinessIcon from '@mui/icons-material/Business';
@@ -18,19 +21,29 @@ export const PASSSINBIZ_MODULE_ROUTE = 'passinbiz'
 export const CHECKINBIZ_MODULE_ROUTE = 'checkinbiz'
 
 const PASSINBIZ = [{
+    name: 'home',
+    icon: <Home />,
+    link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/onboarding`,
+    subMenu: []
+}, {
     name: 'Holders',
     icon: <GroupIcon />,
     link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/holder`,
     subMenu: []
 }, {
     name: 'Events',
-    icon: <GroupIcon />,
+    icon: <Today />,
     link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event`,
     subMenu: []
 }]
 
 
 const CHECKINBIZ: any = [{
+    name: 'home',
+    icon: <Home />,
+    link: `/${MAIN_ROUTE}/${CHECKINBIZ_MODULE_ROUTE}/onboarding`,
+    subMenu: []
+}, {
     name: 'Employee',
     icon: <Person2TwoTone />,
     link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/employee`,
