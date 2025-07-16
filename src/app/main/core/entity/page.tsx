@@ -13,6 +13,7 @@ import BrandPreferencesPage from './tabs/tabBranding/page';
 import BillingPreferencesPage from './tabs/tabBilling/page';
 import RenuewPreferencesPage from './tabs/tabRenuew/page';
 import FacturasPreferencesPage from './tabs/tabFacturas/page';
+import CollaboratorsPreferencesPage from './tabs/tabCollaborators/page';
 
 const EntityPreferencesPage = () => {
     const t = useTranslations();
@@ -37,6 +38,10 @@ const EntityPreferencesPage = () => {
         {
             label: `${t("entity.tabs.tab5.title")}`,
             content: <FacturasPreferencesPage />,
+        },
+        {
+            label: `${t("entity.tabs.tab6.title")}`,
+            content: <CollaboratorsPreferencesPage />,
         },
 
     ];

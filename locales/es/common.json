@@ -221,11 +221,15 @@
         "btn": "Configurar Billing"
       },
       "tab4": {
-        "title": "Renovaciones",
+        "title": "Suscripciones",
         "btn": "Configurar Billing"
       },
       "tab5": {
         "title": "Facturación",
+        "btn": "Configurar Billing"
+      },
+      "tab6": {
+        "title": "Colaboradores",
         "btn": "Configurar Billing"
       }
     }
@@ -311,5 +315,10 @@
     "labelType": "Seleccione el tipo de archivo a subir",
     "deleteConfirmModalTitle": "Eliminar evento",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el evento"
+  },
+  "renew": {
+    "title": "Facturas",
+    "text1": "Datos"
+    
   }
 }

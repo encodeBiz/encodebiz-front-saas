@@ -20,5 +20,12 @@ interface IUser extends User {
   password?: string;
   completeProfile?: boolean;   
   accessToken?: string;
+
+  role?: string;
+}
+
+export interface ICollaborator {
+  user:IUser
+  role?: string;
 }
 export default IUser;
