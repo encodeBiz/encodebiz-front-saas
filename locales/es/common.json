@@ -68,6 +68,9 @@
     },
     "label": {
       "filename": "Nombre de Archivo",
+      "typePass": "Tpo de pase",
+      "credencial": "Credenciales",
+      "event": "Evento",
       "firstName": "Nombre",
       "sponsor": "Patrisonador",
       "ticketCapacity": "Capacidad",
@@ -318,7 +321,11 @@
   },
   "renew": {
     "title": "Facturas",
-    "text1": "Datos"
-    
+    "text1": "Datos"    
+  },
+  "colaborators": {
+    "title": "Colaboradores",
+    "add": "Adicionar colaborador",
+    "search":"Buscar usuario"
   }
 }

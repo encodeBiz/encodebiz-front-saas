@@ -12,6 +12,7 @@ import { useAppTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { GENERAL_ROUTE, MAIN_ROUTE } from "@/config/routes";
+import SelectInput from "@/components/common/forms/fields/SelectInput";
 
 export interface HolderFormValues {
   "fullName": string;
@@ -66,7 +67,7 @@ export default function useHolderController() {
         "phoneNumber": values.phoneNumber,
         "entityId": currentEntity?.entity?.id as string,
         "passStatus": "pending",
-        "type": "credential", 
+        "type": values.type, 
         "parentId": "",
         "isLinkedToUser": false, 
         "metadata": {
@@ -104,6 +105,16 @@ export default function useHolderController() {
       type: 'text',
       required: true,
       component: TextInput,
+    },{
+      name: 'type',
+      label: t('core.label.typePass'),
+      type: 'text',
+      required: true,
+      options:[
+        {value:'credencial',label: t('core.label.credencial')},
+        {value:'event',label: t('core.label.event')}
+      ],
+      component: SelectInput,
     },
     {
       name: 'customFields',

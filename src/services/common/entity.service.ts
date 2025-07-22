@@ -9,6 +9,7 @@ import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { EntityFormValues } from "@/app/main/core/entity/create/page.controller";
 import { EntityUpdatedFormValues, BrandFormValues } from "@/app/main/core/entity/tabs/tabEntity/page.controller";
+import { IAssing } from "@/app/main/core/entity/tabs/tabCollaborators/page.controller";
 
 export async function fetchEntity(id: string): Promise<IEntity> {
   try {
@@ -206,7 +207,7 @@ export async function deleteEntity(data: {
 }
 
 
-export async function assignedUserToEntity(data: EntityFormValues, token: string) {
+export async function assignedUserToEntity(data: IAssing, token: string) {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");

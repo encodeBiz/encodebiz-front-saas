@@ -11,6 +11,8 @@ import IUser, { ICollaborator } from '@/domain/auth/IUser';
 import { EntityCollaboratorData } from '@/components/features/entity/UserAssignment';
 import { useToast } from '@/hooks/useToast';
 import { fetchUsers } from '@/services/common/users.service';
+import { assignedUserToEntity } from '@/services/common/entity.service';
+import { CommonModalType } from '@/contexts/commonModalContext';
 
 export interface IAssing {
     "fullName": string
@@ -76,9 +78,22 @@ export const useCollaboratorsController = () => {
             "phoneNumber": userData.phoneNumber,
             "entityId": projectId,
         }
-
-        
-
+        setLoading(true)
+        try {
+            changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+            await assignedUserToEntity(data, token)
+            changeLoaderState({ show: false })
+            showToast(t('core.feedback.success'), 'success');
+            setLoading(false)
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                showToast(error.message, 'error');
+            } else {
+                showToast(String(error), 'error');
+            }
+            setLoading(false)
+            changeLoaderState({ show: false })
+        }
     };
 
     const handleRemove = async ({ userId, projectId }: { userId: string, projectId: string }) => {

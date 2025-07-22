@@ -26,6 +26,7 @@ import {
 import { PersonAdd, Close, PersonRemove } from '@mui/icons-material';
 import { User } from 'firebase/auth';
 import IUser, { ICollaborator } from '@/domain/auth/IUser';
+import { useTranslations } from 'next-intl';
 
 const roleOptions = [
     { value: 'admin', label: 'Adminstrador' },
@@ -63,7 +64,7 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser }: Use
     const [selectedUser, setSelectedUser] = useState<ICollaborator | null>();
     const [selectedRole, setSelectedRole] = useState('write');
     const [filteredUsers, setFilteredUsers] = useState<Array<ICollaborator>>([]);
-
+    const t = useTranslations()
     useEffect(() => {
         // Filter out users already assigned to the project
         const assignedUserIds = project.collaborators.map(c => c.user.id);
@@ -110,7 +111,7 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser }: Use
     return (
         <Box sx={{ mt: 3 }}>
             <Typography variant="h6" gutterBottom>
-                Project Collaborators
+               {t('colaborators.title')}
             </Typography>
 
             <Paper elevation={1} sx={{ p: 2, mb: 2 }}>
@@ -123,7 +124,7 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser }: Use
                         startIcon={<PersonAdd />}
                         onClick={handleOpen}
                     >
-                        Add collaborator
+                       {t('colaborators.add')}
                     </Button>
                 </Box>
 
@@ -175,7 +176,7 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser }: Use
             </Paper>
 
             <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-                <DialogTitle>Add collaborator</DialogTitle>
+                <DialogTitle>{t('colaborators.add')}</DialogTitle>
                 <DialogContent>
                     <Box sx={{ mt: 2 }}>
                         <Autocomplete
@@ -184,7 +185,7 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser }: Use
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
-                                    label="Search by name, username or email"
+                                    label={t('colaborators.search')}
                                     fullWidth
                                     value={searchInput}
                                     onChange={(e) => setSearchInput(e.target.value)}
@@ -202,11 +203,11 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser }: Use
                         />
 
                         <FormControl fullWidth sx={{ mt: 3 }}>
-                            <InputLabel id="role-select-label">Role</InputLabel>
+                            <InputLabel id="role-select-label">{t('core.label.role')}</InputLabel>
                             <Select
                                 labelId="role-select-label"
                                 value={selectedRole}
-                                label="Role"
+                                label={t('core.label.role')}
                                 onChange={(e) => setSelectedRole(e.target.value)}
                             >
                                 {roleOptions.map((role) => (
@@ -219,13 +220,13 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser }: Use
                     </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={handleClose}>{t('colaborators.add')}</Button>
                     <Button
                         onClick={handleAssign}
                         variant="contained"
                         disabled={!selectedUser}
                     >
-                        Add collaborator
+                        {t('core.button.cancel')}
                     </Button>
                 </DialogActions>
             </Dialog>

@@ -20,12 +20,7 @@ export const USER_ROUTE = 'user'
 export const PASSSINBIZ_MODULE_ROUTE = 'passinbiz'
 export const CHECKINBIZ_MODULE_ROUTE = 'checkinbiz'
 
-const PASSINBIZ = [{
-    name: 'home',
-    icon: <Home />,
-    link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/onboarding`,
-    subMenu: []
-}, {
+const PASSINBIZ = [ {
     name: 'Holders',
     icon: <GroupIcon />,
     link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/holder`,
