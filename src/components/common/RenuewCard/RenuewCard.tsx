@@ -39,8 +39,7 @@ export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
     const t = useTranslations();
     const { renuewAction, loadingGetPlan } = usePricingCardController(plan);
 
-    console.log(plan);
-
+ 
 
     return (
         <PlanCard featured={String(false)}>

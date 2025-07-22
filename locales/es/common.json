@@ -278,7 +278,7 @@
     "onsiteTraining": "Capacitación en el lugar",
     "pay": "Obtener Plan",
     "contract": "Plan Actual",
-    "renew":"Renovar plan",
+    "renew":"Cambiar plan",
     "notAllowedPlan": "Debes actualizar los datos legales de la entidad seleccionada antes de obtener un plan."
   },
   "terms": {
