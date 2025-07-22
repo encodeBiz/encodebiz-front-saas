@@ -30,6 +30,7 @@ export type FormField = {
   isDivider?: boolean;
   fullWidth?: boolean;
   onChange?: (e: any) => void
+  
 };
 
 type GenericFormProps<T> = {

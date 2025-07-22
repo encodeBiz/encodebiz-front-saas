@@ -1,4 +1,5 @@
 import IEntity from "./IEntity";
+import IUser from "./IUser";
 
 /**
  * IUserEntity model interface
@@ -17,7 +18,7 @@ interface IUserEntity {
   createdAt: Date;
   updatedAt: Date;
   entity: IEntity
-
+  user:IUser
   isActive: boolean
 
 }

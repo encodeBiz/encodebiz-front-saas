@@ -10,6 +10,7 @@ import { collection } from "@/config/collection";
 import { EntityFormValues } from "@/app/main/core/entity/create/page.controller";
 import { EntityUpdatedFormValues, BrandFormValues } from "@/app/main/core/entity/tabs/tabEntity/page.controller";
 import { IAssing } from "@/app/main/core/entity/tabs/tabCollaborators/page.controller";
+import { fetchUser, fetchUsers } from "./users.service";
 
 export async function fetchEntity(id: string): Promise<IEntity> {
   try {
@@ -231,6 +232,41 @@ export async function assignedUserToEntity(data: IAssing, token: string) {
 
       return response;
     }
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+
+/**
+ * Servicio para obtener todas las entidades
+ */
+export async function fetchAllOwnerOfEntity(entityId:string): Promise<IUserEntity[]> {
+  console.log(entityId);
+  
+  const params: SearchParams = {
+    collection: collection.USER_ENTITY_ROLES,
+    filters: [
+      {
+        field: "entityId",
+        operator: "==",
+        value: entityId,
+      },
+    ],
+  };
+  try {
+    const resultList: IUserEntity[] = await searchFirestore(params);
+    return await Promise.all(
+      resultList.map(async (item) => {
+        const entity = await fetchEntity(item.entityId);
+        const user = await fetchUser(item.userId);
+        return {
+          ...item,
+          entity,
+          user
+        };
+      })
+    );
   } catch (error: any) {
     throw new Error(error.message);
   }

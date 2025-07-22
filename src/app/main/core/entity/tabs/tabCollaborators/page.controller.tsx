@@ -11,8 +11,9 @@ import IUser, { ICollaborator } from '@/domain/auth/IUser';
 import { EntityCollaboratorData } from '@/components/features/entity/UserAssignment';
 import { useToast } from '@/hooks/useToast';
 import { fetchUsers } from '@/services/common/users.service';
-import { assignedUserToEntity } from '@/services/common/entity.service';
+import { assignedUserToEntity, fetchAllOwnerOfEntity } from '@/services/common/entity.service';
 import { CommonModalType } from '@/contexts/commonModalContext';
+import IUserEntity from '@/domain/auth/IUserEntity';
 
 export interface IAssing {
     "fullName": string
@@ -85,6 +86,7 @@ export const useCollaboratorsController = () => {
             changeLoaderState({ show: false })
             showToast(t('core.feedback.success'), 'success');
             setLoading(false)
+            updateColaborators()
         } catch (error: unknown) {
             if (error instanceof Error) {
                 showToast(error.message, 'error');
@@ -114,9 +116,27 @@ export const useCollaboratorsController = () => {
     };
 
     useEffect(() => {
-        handleFetchUsers()
+        if (currentEntity?.entity.id) {
+            handleFetchUsers()
+            updateColaborators()
+        }
     }, [currentEntity?.entity.id])
 
+
+
+    const updateColaborators = async () => {
+        const data: Array<IUserEntity> = await fetchAllOwnerOfEntity(currentEntity?.entity.id as string)
+        console.log(data);
+        
+        setCurrentProject({
+            owner: {
+                user: data.find(e => e.role === 'owner')?.user as IUser,
+                role: 'owner'
+            },
+            collaborators: data.map(e => ({ user: e.user, role: e.role })),
+            id: currentEntity?.entity.id as string
+        })
+    }
 
 
     return { handleAssign, handleRemove, users, currentProject }
