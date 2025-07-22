@@ -152,7 +152,7 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser }: Use
                                     primary={collaborator.user.fullName}
                                     secondary={
                                         <>
-                                            <Chip
+                                           {collaborator.user.id !== project.owner.user.id && <Chip
                                                 label={collaborator.role}
                                                 size="small"
                                                 color={
@@ -161,7 +161,7 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser }: Use
                                                             'default'
                                                 }
                                                 sx={{ mr: 1 }}
-                                            />
+                                            /> }
                                             {collaborator.user.id === project.owner.user.id && (
                                                 <Chip label="Owner" size="small" color="primary" />
                                             )}

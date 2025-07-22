@@ -126,8 +126,7 @@ export const useCollaboratorsController = () => {
 
     const updateColaborators = async () => {
         const data: Array<IUserEntity> = await fetchAllOwnerOfEntity(currentEntity?.entity.id as string)
-        console.log(data);
-        
+         
         setCurrentProject({
             owner: {
                 user: data.find(e => e.role === 'owner')?.user as IUser,

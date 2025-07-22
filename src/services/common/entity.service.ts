@@ -242,8 +242,7 @@ export async function assignedUserToEntity(data: IAssing, token: string) {
  * Servicio para obtener todas las entidades
  */
 export async function fetchAllOwnerOfEntity(entityId:string): Promise<IUserEntity[]> {
-  console.log(entityId);
-  
+   
   const params: SearchParams = {
     collection: collection.USER_ENTITY_ROLES,
     filters: [
