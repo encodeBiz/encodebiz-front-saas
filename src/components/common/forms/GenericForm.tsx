@@ -30,7 +30,7 @@ export type FormField = {
   isDivider?: boolean;
   fullWidth?: boolean;
   onChange?: (e: any) => void
-  
+
 };
 
 type GenericFormProps<T> = {
@@ -71,7 +71,7 @@ const GenericForm = <T extends Record<string, any>>({
       elevation={0}
       sx={{
         p: 4,
-        width:'100%',
+        width: '100%',
         ...formContainerProps?.sx,
       }}
       {...formContainerProps}
@@ -111,12 +111,15 @@ const GenericForm = <T extends Record<string, any>>({
                   return (
                     <Grid size={{
                       xs: 12,
-                      sm: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4
+                      sm: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4,
+                      md: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4,
+                      lg: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4,
+                      xl: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4
                     }} key={field.name} sx={{ width: '100%' }}>
                       <FieldComponent
                         name={field.name}
                         label={field.label}
-                        type={field.type}                      
+                        type={field.type}
                         required={field.required}
                         disabled={field.disabled || disabled}
                         fullWidth

@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
 
 import { emailRule, requiredRule } from '@/config/yupRules';
-import { createHolder } from "@/services/passinbiz/holder.service";
+import { createHolder, fetchHolder, updateHolder } from "@/services/passinbiz/holder.service";
 import { useToast } from "@/hooks/useToast";
 import { useRouter } from "nextjs-toploader/app";
 import { useAppTheme } from "@/hooks/useTheme";
@@ -16,6 +16,9 @@ import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { search } from "@/services/passinbiz/event.service";
 import { FormField } from "@/components/common/forms/GenericForm";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
+import { useLayout } from "@/hooks/useLayout";
+import { useParams } from "next/navigation";
+import { Holder } from "@/domain/features/passinbiz/IHolder";
 
 export interface HolderFormValues {
   "fullName": string;
@@ -39,6 +42,9 @@ export default function useHolderController() {
   const { currentEntity } = useEntity()
   const [type, setType] = useState()
   const [eventList, setEventList] = useState<Array<IEvent>>([])
+  const { changeLoaderState } = useLayout()
+  const { id } = useParams<{ id: string }>()
+
   const [fields, setFields] = useState<FormField[]>([
     {
       name: 'fullName',
@@ -74,32 +80,17 @@ export default function useHolderController() {
         setType(value)
       }
     },
-    /*
-    {
-      name: 'type',
-      label: t('core.label.passStatus'),
-      type: 'text',
-      required: true,
-      options: [
-        { value: 'pending', label: t('core.label.pending') },
-        { value: 'revoke', label: t('core.label.revoke') }
-      ],
-      component: SelectInput,
-      onChange: (value: any) => {
-        console.log(value);
-        setType(value)
-      }
-    },
-    */
+
     {
       name: 'customFields',
       label: t('core.label.billingEmail'),
       type: "text",
       require: true,
+      fullWidth: true,
       component: DynamicKeyValueInput,
     },
   ])
-  const [initialValues] = useState<HolderFormValues>({
+  const [initialValues, setInitialValues] = useState<HolderFormValues>({
     fullName: "",
     email: "",
     phoneNumber: "",
@@ -123,9 +114,9 @@ export default function useHolderController() {
     phoneNumber: Yup.string().optional(),
   });
 
-  const setDinamicDataAction = async (values: HolderFormValues) => {
+  const submitForm = async (values: HolderFormValues) => {
     try {
-      const data = await createHolder({
+      const dataForm = {
         "uid": user?.id as string,
         "fullName": values.fullName,
         "email": values.email,
@@ -138,8 +129,12 @@ export default function useHolderController() {
         "metadata": {
           "auxiliaryFields": values.customFields
         },
-
-      }, token)
+        id
+      }
+      if (!id)
+        await createHolder(dataForm, token)
+      else
+        await updateHolder(dataForm, token)
       showToast(t('core.feedback.success'), 'success');
       push(`/${MAIN_ROUTE}/passinbiz/holder`)
     } catch (error: any) {
@@ -174,14 +169,41 @@ export default function useHolderController() {
     }
   }, [type])
 
+
+  const fetchData = async () => {
+    try {
+      changeLoaderState({ show: true, args: { text: t('core.title.loaderActionBilling') } })
+      const holder: Holder = await fetchHolder(currentEntity?.entity.id as string, id)
+      setInitialValues({
+        fullName: holder.fullName ?? "",
+        email: holder.email ?? "",
+        phoneNumber: holder.phoneNumber ?? "",
+        type: holder.type,
+        customFields: holder.metadata?.auxiliaryFields ?? [],
+        isLinkedToUser: holder.isLinkedToUser,
+        entityId: currentEntity?.entity.id as string
+      })
+      changeLoaderState({ show: false })
+    } catch (error: any) {
+      changeLoaderState({ show: false })
+      showToast(error.message, 'error')
+    }
+  }
+
   useEffect(() => {
     fetchingEvent()
   }, [])
+
+  useEffect(() => {
+    if (id)
+      fetchData()
+  }, [id])
+
 
 
 
 
   //setFields(fieldsList as FormField[])
 
-  return { fields, initialValues, validationSchema, setDinamicDataAction }
+  return { fields, initialValues, validationSchema, submitForm }
 }

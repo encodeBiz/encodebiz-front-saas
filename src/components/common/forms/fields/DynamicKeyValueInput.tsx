@@ -16,40 +16,38 @@ const emptyItem = { label: '', value: '' };
 
 const DynamicKeyValueInput: React.FC<FieldProps> = ({ ...props }) => {
 
-    const [field, , meta] = useField(props);
+    const [field, meta, helper] = useField(props);
     const { name, value } = field;
     const { setFieldValue } = useFormikContext<any>();
- 
-    
+
+
     const t = useTranslations();
-    const [fields, setFields] = useState<DynamicField[]>([...field.value]);
+
     const handleAdd = () => {
-        const newFields = [...fields, { ...emptyItem }];
-        setFields(newFields);
-        setFieldValue(name, newFields);
+        const newFields = [...field.value, { ...emptyItem }];
+        helper.setValue(newFields)
     };
 
-    const handleRemove = (index: number) => () => {
-        const newFields = fields.filter((_, i) => i !== index);
-         setFields(newFields);
-        setFieldValue(name, newFields);
+    const handleRemove = (index: number) => {
+        const newFields = field.value?.filter((_: any, i: number) => i !== index);
+        helper.setValue([...newFields])
     };
 
     const handleChange = (index: number, key: keyof DynamicField) => (
         e: React.ChangeEvent<HTMLInputElement>
     ) => {
-        const newFields = [...fields];
+        const newFields = [...field.value];
         newFields[index][key] = e.target.value;
-        setFields(newFields);
-        setFieldValue(name, newFields);
+        helper.setValue(newFields)
+
     };
 
 
 
     return (
         <Box >
-           
-            {(field.value as Array<{label:string,value:string}>)?.map((item, index) => (
+            
+            {(field.value as Array<{ label: string, value: string }>)?.map((item, index) => (
                 <Box key={index} sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'center' }}>
                     <TextField
                         label={t("core.label.label")}
@@ -73,19 +71,19 @@ const DynamicKeyValueInput: React.FC<FieldProps> = ({ ...props }) => {
                     >
                         {<DeleteForeverIcon />}
                     </Button>
-                    {fields.length - 1 === index && <Button
+                    {field.value?.length - 1 === index && <Button
                         color="primary"
-                        onClick={()=>handleAdd()}
+                        onClick={() => handleAdd()}
                         variant="contained"
                         size="large">
                         {<Add />}
                     </Button>}
                 </Box>
             ))}
-            {fields.length === 0 &&
+            {field.value?.length === 0 &&
                 <Button
                     color="primary"
-                    onClick={()=>handleAdd()}
+                    onClick={() => handleAdd()}
                     variant="contained"
                     size="large">
                     {<Add />} Crear campo personalizado

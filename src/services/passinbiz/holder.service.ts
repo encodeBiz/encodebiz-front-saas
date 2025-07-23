@@ -2,8 +2,9 @@ import { SearchParams } from "@/domain/firebase/firestore";
 import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
-import { HolderFormValues } from "@/app/main/passinbiz/holder/add/page.controller";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
+import { getOne } from "@/lib/firebase/firestore/readDocument";
+import { HolderFormValues } from "@/app/main/passinbiz/holder/form/page.controller";
 
 
 /**
@@ -20,6 +21,20 @@ export const search = async (entityId: string, params: SearchParams): Promise<Ho
   });
 
   return result;
+}
+
+
+/**
+   * Search trainer
+   *
+   * @async
+   * @param {SearchParams} params
+   * @returns {Promise<ITrainer[]>}
+   */
+export const fetchHolder = async (entityId: string, id: string): Promise<Holder> => {
+  return await getOne(
+    `${collection.ENTITIES}/${entityId}/${collection.HOLDER}`,
+    id);
 }
 
   
@@ -63,7 +78,7 @@ export async function updateHolder(data: HolderFormValues, token: string) {
         },
       });
       const response: any = await httpClientFetchInstance.post(
-        process.env.NEXT_PUBLIC_BACKEND_URI_PASSINBIZ_CREATE_HOLDER as string,
+        process.env.NEXT_PUBLIC_BACKEND_URI_PASSINBIZ_UPDATE_HOLDER as string,
         {
           ...data,
         }

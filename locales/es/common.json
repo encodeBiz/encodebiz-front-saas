@@ -295,9 +295,10 @@
     "title": "Titulares",
     "holderList": "Titulares",
     "addHolder": "Adicionar",
+    "editHolder": "Editar",
     "import": "Importar",
     "description": "Rellene los campos para registrar el titular",
-    "revokeConfirmModalTitle": "Revicar pase de este titular",
+    "revokeConfirmModalTitle": "Revocar pase de este titular",
     "revokeConfirmModalTitle2": "Esta acción no se puede deshacer. Revocará  permanentemente el pase de este titular",
     "sendConfirmModalTitle": "Relanzar pase",
     "sendConfirmModalTitle2": "Esta acción no se puede deshacer. Relanzará  el pase de este titular nuevamente"

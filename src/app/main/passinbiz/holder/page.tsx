@@ -49,7 +49,7 @@ export default function HolderList() {
         onRowsPerPageChange={setRowsPerPage}
         onBack={onBack}
         onNext={onNext}
-
+        onEdit={(data) => onEdit(data)}
         onSearch={(data) => onSearch(data)}
         search={true}
 
@@ -65,7 +65,7 @@ export default function HolderList() {
         title={t('holders.revokeConfirmModalTitle')}
         description={t('holders.revokeConfirmModalTitle2')}
         textBtn={t('core.button.revoke')}
-        onOKAction={(args: { data: Array<string> }) => onRevoke(args.data)}
+        onOKAction={(args: { data: any }) => onRevoke(args.data)}
       />}
 
       {open.type===CommonModalType.SEND && <ConfirmModal
@@ -73,7 +73,7 @@ export default function HolderList() {
         title={t('holders.sendConfirmModalTitle')}
         description={t('holders.sendConfirmModalTitle2')}
         textBtn={t('core.button.send')}
-        onOKAction={(args: { data: Array<string> }) => onSend(args.data)}
+        onOKAction={(args: { data: any }) => onSend(args.data)}
       />}
     </Container>
   );

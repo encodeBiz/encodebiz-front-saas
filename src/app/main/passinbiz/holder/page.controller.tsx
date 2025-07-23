@@ -14,6 +14,7 @@ import { useLayout } from "@/hooks/useLayout";
 import { Chip } from "@mui/material";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
+import { useRouter } from "nextjs-toploader/app";
 
 
 
@@ -39,10 +40,10 @@ export default function useHolderListController() {
   const { changeLoaderState } = useLayout()
   const { openModal, closeModal } = useCommonModal()
   const [revoking, setRevoking] = useState(false)
-
+  const { push } = useRouter()
   const rowAction: Array<IRowAction> = [
-    { icon: <RemoveDone />, label: t('core.button.revoke'), allowItem: (item: Holder) => (item.passStatus === 'pending' || item.passStatus === 'active'), onPress: (item: Holder) => openModal(CommonModalType.DELETE, { item }) },
-    { icon: <Send />, label: t('core.button.resend'), allowItem: (item: Holder) => (item.passStatus === 'revoked' || item.passStatus === 'not_generated'), onPress: (item: Holder) => openModal(CommonModalType.SEND, { item }) }
+    { icon: <RemoveDone />, label: t('core.button.revoke'), allowItem: (item: Holder) => (item.passStatus === 'pending' || item.passStatus === 'active'), onPress: (item: Holder) => openModal(CommonModalType.DELETE, { data:item }) },
+    { icon: <Send />, label: t('core.button.resend'), allowItem: (item: Holder) => (item.passStatus === 'revoked' || item.passStatus === 'not_generated'), onPress: (item: Holder) => openModal(CommonModalType.SEND, { data:item }) }
   ]
 
   const onSearch = (term: string): void => {
@@ -155,16 +156,18 @@ export default function useHolderListController() {
   }, [rowsPerPage])
 
   const onEdit = async (item: any) => {
-    console.log(item);
+    push(`/main/passinbiz/holder/${item.id}/edit`)
   }
 
 
   const onRevoke = async (item: any) => {
     try {
+      console.log(item);
+      
       setRevoking(true)
-      const id = item[0]
+      const id = item.id
       await updateHolder({
-        ...item,
+        ...{} as any, 
         passStatus: 'revoked'
       }, token)
       setItemsHistory(itemsHistory.filter(e => e.id !== id))
@@ -180,9 +183,9 @@ export default function useHolderListController() {
   const onSend = async (item: any) => {
     try {
       setRevoking(true)
-      const id = item[0]
+      const id = item.id
       await updateHolder({
-        ...item,
+        ...{} as any, 
         passStatus: 'pending'
       }, token)
       setItemsHistory(itemsHistory.filter(e => e.id !== id))

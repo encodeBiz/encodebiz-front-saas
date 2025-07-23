@@ -256,7 +256,7 @@ export function GenericTable<T extends Record<string, any>>({
           {rowAction.map((e, i) => {
             if (e.allowItem(e as any))
               return (<Tooltip key={i} title={e.label}>
-                <IconButton onClick={e.onPress}>
+                <IconButton onClick={()=>e.onPress(selected as any)}>
                   {e.icon}
                 </IconButton>
               </Tooltip>)
@@ -373,7 +373,7 @@ export function GenericTable<T extends Record<string, any>>({
                         {rowAction.map((e, i) => {
                           if (e.allowItem(row as any))
                             return (<Tooltip key={i} title={e.label}>
-                              <IconButton onClick={e.onPress}>
+                              <IconButton onClick={()=>e.onPress(row)}>
                                 {e.icon}
                               </IconButton>
                             </Tooltip>)
