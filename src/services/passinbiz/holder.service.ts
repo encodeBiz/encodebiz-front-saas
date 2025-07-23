@@ -51,6 +51,34 @@ export async function createHolder(data: HolderFormValues, token: string) {
   }
 }
 
+export async function updateHolder(data: HolderFormValues, token: string) {
+  try {
+    if (!token) {
+      throw new Error("Error to fetch user auth token");
+    } else {
+      let httpClientFetchInstance: HttpClient = new HttpClient({
+        baseURL: "",
+        headers: {
+          token: `Bearer ${token}`,
+        },
+      });
+      const response: any = await httpClientFetchInstance.post(
+        process.env.NEXT_PUBLIC_BACKEND_URI_PASSINBIZ_CREATE_HOLDER as string,
+        {
+          ...data,
+        }
+      );
+      if (response.errCode && response.errCode !== 200) {
+        throw new Error(response.message);
+      }
+
+      return response;
+    }
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
 export async function importHolder(data: FormData, token: string) {
   try {
     if (!token) {

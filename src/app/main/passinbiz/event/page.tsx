@@ -13,7 +13,7 @@ import ConfirmModal from '@/components/common/modals/ConfirmModal';
 export default function HolderList() {
   const t = useTranslations();
   const {
-    items, rowAction,onDelete,deleting,
+    items, rowAction, onDelete, deleting,
     onNext, onBack, onEdit,
     currentPage,
     columns, onSearch,

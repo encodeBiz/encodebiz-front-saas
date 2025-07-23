@@ -8,10 +8,12 @@ import { useCallback, useEffect, useState } from "react";
 import page from "./page";
 import { useStyles } from "./page.styles";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
-import { deleteHolder, importHolder, search } from "@/services/passinbiz/holder.service";
+import { deleteHolder, importHolder, search, updateHolder } from "@/services/passinbiz/holder.service";
 import { ArrowBackIosNew, DeleteForever, RemoveDone, Send } from "@mui/icons-material";
 import { useLayout } from "@/hooks/useLayout";
 import { Chip } from "@mui/material";
+import { useCommonModal } from "@/hooks/useCommonModal";
+import { CommonModalType } from "@/contexts/commonModalContext";
 
 
 
@@ -35,10 +37,12 @@ export default function useHolderListController() {
   const [currentPage, setCurrentPage] = useState(0);
   const [total, setTotal] = useState(0);
   const { changeLoaderState } = useLayout()
+  const { openModal, closeModal } = useCommonModal()
+  const [revoking, setRevoking] = useState(false)
 
   const rowAction: Array<IRowAction> = [
-    { icon: <RemoveDone />, label: t('core.button.revoke'), onPress: (item: Holder) => { } },
-    { icon: <Send />, label: t('core.button.resend'), onPress: (item: Holder) => { } }
+    { icon: <RemoveDone />, label: t('core.button.revoke'), allowItem: (item: Holder) => (item.passStatus === 'pending' || item.passStatus === 'active'), onPress: (item: Holder) => openModal(CommonModalType.DELETE, { item }) },
+    { icon: <Send />, label: t('core.button.resend'), allowItem: (item: Holder) => (item.passStatus === 'revoked' || item.passStatus === 'not_generated'), onPress: (item: Holder) => openModal(CommonModalType.SEND, { item }) }
   ]
 
   const onSearch = (term: string): void => {
@@ -150,26 +154,44 @@ export default function useHolderListController() {
     setAtStart(true)
   }, [rowsPerPage])
 
-  const [deleting, setDeleting] = useState(false)
   const onEdit = async (item: any) => {
-    console.log(item);    
+    console.log(item);
   }
 
-   
-  const onDelete = async (item: any) => {
+
+  const onRevoke = async (item: any) => {
     try {
-      setDeleting(true)
+      setRevoking(true)
       const id = item[0]
-      await deleteHolder({
-        "holderId": id,
-        "entityId": currentEntity?.entity.id
+      await updateHolder({
+        ...item,
+        passStatus: 'revoked'
       }, token)
       setItemsHistory(itemsHistory.filter(e => e.id !== id))
       setItems(itemsHistory.filter(e => e.id !== id))
-      setDeleting(false)
+      setRevoking(false)
+      closeModal(CommonModalType.DELETE)
     } catch (e: any) {
       showToast(e?.message, 'error')
-      setDeleting(false)
+      setRevoking(false)
+    }
+  }
+
+  const onSend = async (item: any) => {
+    try {
+      setRevoking(true)
+      const id = item[0]
+      await updateHolder({
+        ...item,
+        passStatus: 'pending'
+      }, token)
+      setItemsHistory(itemsHistory.filter(e => e.id !== id))
+      setItems(itemsHistory.filter(e => e.id !== id))
+      setRevoking(false)
+      closeModal(CommonModalType.SEND)
+    } catch (e: any) {
+      showToast(e?.message, 'error')
+      setRevoking(false)
     }
   }
 
@@ -199,13 +221,13 @@ export default function useHolderListController() {
 
 
   return {
-    onDelete, items,
-    atEnd,onEdit,
+    items,
+    atEnd, onEdit,
     atStart, handleUploadConfirm, isUploading,
     onSearch, onNext, onBack,
     pagination, currentPage, modalOpen, setModalOpen,
-    columns, deleting, rowAction,
-    loading, rowsPerPage, setRowsPerPage
+    columns, rowAction,
+    loading, rowsPerPage, setRowsPerPage, onRevoke, revoking, onSend
   }
 
 

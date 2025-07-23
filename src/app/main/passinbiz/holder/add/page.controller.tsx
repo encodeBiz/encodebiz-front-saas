@@ -71,10 +71,10 @@ export default function useHolderController() {
       ],
       component: SelectInput,
       onChange: (value: any) => {
-        console.log(value);
         setType(value)
       }
     },
+    /*
     {
       name: 'type',
       label: t('core.label.passStatus'),
@@ -90,6 +90,7 @@ export default function useHolderController() {
         setType(value)
       }
     },
+    */
     {
       name: 'customFields',
       label: t('core.label.billingEmail'),
@@ -165,7 +166,7 @@ export default function useHolderController() {
           type: 'text',
           required: true,
           options: [...eventList.map((e) => ({ value: e.id, label: e.name }))],
-          component: SelectInput,           
+          component: SelectInput,
         },
       ])
     } else {

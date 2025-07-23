@@ -19,13 +19,14 @@ interface ConfirmProps {
     word?: string
     title: string
     label?: string
+    textBtn?: string
     description: string
     codeValidator?: boolean
     isLoading?: boolean
     onOKAction: (args: any) => void
 
 }
-const ConfirmModal = ({ word, title, label, description, isLoading = false, codeValidator = false, onOKAction }: ConfirmProps): React.JSX.Element => {
+const ConfirmModal = ({ word, title, label, textBtn, description, isLoading = false, codeValidator = false, onOKAction }: ConfirmProps): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const [confirmationText, setConfirmationText] = useState('');
     const [isDeleting, setIsDeleting] = useState(false);
@@ -100,7 +101,7 @@ const ConfirmModal = ({ word, title, label, description, isLoading = false, code
                     variant="contained"
                     startIcon={isLoading ? <CircularProgress size={20} /> : null}
                 >
-                    {codeValidator?t('core.button.submit'):t('core.button.delete')}
+                    {textBtn ? textBtn : codeValidator ? t('core.button.submit') : t('core.button.delete')}
                 </Button>
             </DialogActions>
         </Dialog>

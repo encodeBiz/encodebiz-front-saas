@@ -6,7 +6,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 export enum CommonModalType {
     ONBOARDING = 'ONBOARDING',
     DELETE = 'DELETE',
-    FILES = 'FILES'
+    FILES = 'FILES',
+    SEND = 'FILES'
 }
 interface CommonModalContextType {
     open: { type: CommonModalType, open: boolean, args?: any }

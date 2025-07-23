@@ -9,16 +9,17 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import CSVUploadModal from '@/components/common/modals/CSVUploadModal';
 import { Add, UploadFile } from '@mui/icons-material';
+import ConfirmModal from '@/components/common/modals/ConfirmModal';
 
 export default function HolderList() {
   const t = useTranslations();
   const { handleUploadConfirm,
     items, rowAction,
-    onNext, onBack, onEdit,
+    onNext, onBack, onEdit, onRevoke, revoking, onSend,
     currentPage,
-    columns, modalOpen, setModalOpen,onSearch,
+    columns, modalOpen, setModalOpen, onSearch,
     loading, rowsPerPage, setRowsPerPage } = useHolderListController();
-  const { openModal } = useCommonModal()
+  const {  open } = useCommonModal()
 
   return (
     <Container maxWidth="lg">
@@ -48,17 +49,32 @@ export default function HolderList() {
         onRowsPerPageChange={setRowsPerPage}
         onBack={onBack}
         onNext={onNext}
-        //onEdit={(data) => onEdit(data)}
-        onDelete={(data) => openModal(CommonModalType.DELETE, { data })}
+
         onSearch={(data) => onSearch(data)}
         search={true}
-        
+
       />
       <CSVUploadModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         onConfirm={handleUploadConfirm}
       />
+
+      {open.type===CommonModalType.DELETE && <ConfirmModal
+        isLoading={revoking}
+        title={t('holders.revokeConfirmModalTitle')}
+        description={t('holders.revokeConfirmModalTitle2')}
+        textBtn={t('core.button.revoke')}
+        onOKAction={(args: { data: Array<string> }) => onRevoke(args.data)}
+      />}
+
+      {open.type===CommonModalType.SEND && <ConfirmModal
+        isLoading={revoking}
+        title={t('holders.sendConfirmModalTitle')}
+        description={t('holders.sendConfirmModalTitle2')}
+        textBtn={t('core.button.send')}
+        onOKAction={(args: { data: Array<string> }) => onSend(args.data)}
+      />}
     </Container>
   );
 }

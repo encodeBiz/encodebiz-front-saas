@@ -30,7 +30,7 @@ import { useTranslations } from 'next-intl';
 
 const roleOptions = [
     { value: 'admin', label: 'Adminstrador' },
-    { value: 'owner', label: 'Propietario' },   
+    { value: 'owner', label: 'Propietario' },
 ];
 export interface EntityCollaboratorData {
     id: string
@@ -111,7 +111,7 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser }: Use
     return (
         <Box sx={{ mt: 3 }}>
             <Typography variant="h6" gutterBottom>
-               {t('colaborators.title')}
+                {t('colaborators.title')}
             </Typography>
 
             <Paper elevation={1} sx={{ p: 2, mb: 2 }}>
@@ -124,7 +124,7 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser }: Use
                         startIcon={<PersonAdd />}
                         onClick={handleOpen}
                     >
-                       {t('colaborators.add')}
+                        {t('colaborators.add')}
                     </Button>
                 </Box>
 
@@ -152,7 +152,7 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser }: Use
                                     primary={collaborator.user.fullName}
                                     secondary={
                                         <>
-                                           {collaborator.user.id !== project.owner.user.id && <Chip
+                                            {collaborator.user.id !== project.owner.user.id && <Chip
                                                 label={collaborator.role}
                                                 size="small"
                                                 color={
@@ -161,7 +161,7 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser }: Use
                                                             'default'
                                                 }
                                                 sx={{ mr: 1 }}
-                                            /> }
+                                            />}
                                             {collaborator.user.id === project.owner.user.id && (
                                                 <Chip label="Owner" size="small" color="primary" />
                                             )}

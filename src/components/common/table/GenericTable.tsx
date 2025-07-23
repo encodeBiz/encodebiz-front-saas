@@ -38,7 +38,8 @@ export interface Column<T> {
 export interface IRowAction {
   icon: any
   label?: string
-  onPress: (row: any) => void
+  onPress: (row: any) => void,
+  allowItem: (row: any) => boolean,
 }
 
 export const buildSearch = (term: string): Array<{
@@ -123,7 +124,7 @@ export function GenericTable<T extends Record<string, any>>({
         return value?.toString().toLowerCase().includes(searchText.toLowerCase());
       })
     );
-  }, [data,  columns, page, rowsPerPage]);
+  }, [data, columns, page, rowsPerPage]);
 
   // Sort data
   const sortedData = useMemo(() => {
@@ -236,11 +237,11 @@ export function GenericTable<T extends Record<string, any>>({
               setSearchText(e.target.value);
 
             }}
-           
+
           />
 
           <Tooltip title="Filter">
-            <IconButton  onClick={() => { if (typeof onSearch === 'function') onSearch(searchText) }}>
+            <IconButton onClick={() => { if (typeof onSearch === 'function') onSearch(searchText) }}>
               <SearchIcon />
             </IconButton>
           </Tooltip>
@@ -252,11 +253,15 @@ export function GenericTable<T extends Record<string, any>>({
           <Typography sx={{ flex: 1, alignSelf: 'center' }}>
             {selected.length} selected
           </Typography>
-          {rowAction.map((e, i) => <Tooltip key={i} title={e.label}>
-            <IconButton onClick={e.onPress}>
-              {e.icon}
-            </IconButton>
-          </Tooltip>)}
+          {rowAction.map((e, i) => {
+            if (e.allowItem(e as any))
+              return (<Tooltip key={i} title={e.label}>
+                <IconButton onClick={e.onPress}>
+                  {e.icon}
+                </IconButton>
+              </Tooltip>)
+            else return null
+          })}
           {onDelete && (
             <Tooltip title="Delete">
               <IconButton onClick={() => onDelete(selected)}>
@@ -363,16 +368,17 @@ export function GenericTable<T extends Record<string, any>>({
 
                     {(onEdit || onDelete || rowAction.length > 0) && (
                       <TableCell align="right" sx={{ whiteSpace: 'nowrap' }}>
-                        
 
-                        {rowAction.map((e, i) => <Tooltip key={i} title={e.label}>
-                          <IconButton onClick={(event) => {
-                            event.stopPropagation();
-                            e.onPress(row);
-                          }}>
-                            {e.icon}
-                          </IconButton>
-                        </Tooltip>)}
+
+                        {rowAction.map((e, i) => {
+                          if (e.allowItem(row as any))
+                            return (<Tooltip key={i} title={e.label}>
+                              <IconButton onClick={e.onPress}>
+                                {e.icon}
+                              </IconButton>
+                            </Tooltip>)
+                          else return null
+                        })}
 
                         {onEdit && (
                           <Tooltip title="Edit">
@@ -388,7 +394,7 @@ export function GenericTable<T extends Record<string, any>>({
                           </Tooltip>
                         )}
 
-                        
+
                         {onDelete && (
                           <Tooltip title="Delete">
                             <IconButton

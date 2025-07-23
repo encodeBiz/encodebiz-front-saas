@@ -12,6 +12,7 @@ import { Box, Avatar, Typography, Chip, useTheme } from '@mui/material';
 import { useStyles } from './page.styles';
 import { fileTypeIcons } from '@/config/theme';
 import { getFileIcon, formatFileSize } from '@/lib/common/String';
+import { IMedia } from '@/components/common/modals/MediaModalSelectedFiles/MediaModalSelectedFiles';
 
 
 
@@ -36,7 +37,7 @@ export const useMediaList = () => {
     const [total, setTotal] = useState(0);
 
     const rowAction: Array<IRowAction> = [
-        { icon: "delete", label: 'Eliminar', onPress: (item: IUserMedia) => { } }
+        { icon: "delete", label: 'Eliminar', allowItem: (item: IMedia) => true, onPress: (item: IUserMedia) => { } }
     ]
 
     const onSearch = (term: string): void => {

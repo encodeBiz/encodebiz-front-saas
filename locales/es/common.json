@@ -129,6 +129,7 @@
       "resend": "Reenviar",
       "submitting": "Enviando...",
       "submit": "Enviar",
+      "send":"Relanzar",   
       "confirm": "Confirmar",
       "cancel": "Cancelar",
       "download": "Descargar",
@@ -295,7 +296,12 @@
     "holderList": "Titulares",
     "addHolder": "Adicionar",
     "import": "Importar",
-    "description": "Rellene los campos para registrar el titular"
+    "description": "Rellene los campos para registrar el titular",
+    "revokeConfirmModalTitle": "Revicar pase de este titular",
+    "revokeConfirmModalTitle2": "Esta acción no se puede deshacer. Revocará  permanentemente el pase de este titular",
+    "sendConfirmModalTitle": "Relanzar pase",
+    "sendConfirmModalTitle2": "Esta acción no se puede deshacer. Relanzará  el pase de este titular nuevamente"
+ 
   },
   "event": {
     "title": "Eventos",
@@ -303,8 +309,8 @@
     "add": "Adicionar",
     "import": "Importar",
     "description": "Rellene los campos para registrar el evento",
-    "deleteConfirmModalTitle": "Eliminar Entidad",
-    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente la entidad y todas sus configuraciones y compras asociadas"
+    "deleteConfirmModalTitle": "Eliminar Evento",
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el evento y todas sus configuraciones"
   },
    "employee": {
     "title": "Empleados",
@@ -319,8 +325,8 @@
     "title": "Multimedias",
     "text1": "Archicos seleccionados",
     "labelType": "Seleccione el tipo de archivo a subir",
-    "deleteConfirmModalTitle": "Eliminar evento",
-    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el evento"
+    "deleteConfirmModalTitle": "Eliminar archivo",
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el archivo"
   },
   "renew": {
     "title": "Facturas",
