@@ -15,7 +15,7 @@ import IUser from '@/domain/auth/IUser';
 
 const CollaboratorsPreferencesPage = () => {
     const t = useTranslations();
-    const { handleAssign, handleRemove, users, currentProject } = useCollaboratorsController();
+    const { handleAssign, handleRemove, users, currentProject, loading } = useCollaboratorsController();
     const { user } = useAuth()
     const { currentEntity } = useEntity()
     const { openModal } = useCommonModal()
@@ -25,6 +25,7 @@ const CollaboratorsPreferencesPage = () => {
             users={users}
             onAssign={handleAssign}
             onRemove={handleRemove}
+            proccesing={loading}
             currentUser={user as IUser} // from your auth context
         />
     );

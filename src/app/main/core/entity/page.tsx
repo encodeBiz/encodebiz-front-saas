@@ -14,9 +14,11 @@ import BillingPreferencesPage from './tabs/tabBilling/page';
 import RenuewPreferencesPage from './tabs/tabRenuew/page';
 import FacturasPreferencesPage from './tabs/tabFacturas/page';
 import CollaboratorsPreferencesPage from './tabs/tabCollaborators/page';
+import { useEntity } from '@/hooks/useEntity';
 
 const EntityPreferencesPage = () => {
     const t = useTranslations();
+    const { currentEntity } = useEntity();
 
 
     const tabsRender: TabItem[] = [
@@ -52,10 +54,11 @@ const EntityPreferencesPage = () => {
                 title={t('entity.title')}
                 description={t('features.entity.create.card.subtitle')}
 
-            >
+            >{currentEntity?.role === 'owner' &&
                 <GenericTabs
                     tabs={tabsRender}
                 />
+            }
             </PresentationCard>
         </Container>
     );

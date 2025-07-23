@@ -3,9 +3,9 @@ import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
-import { EventFromValues } from "@/app/main/passinbiz/event/add/page.controller";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import { deleteDocument } from "@/lib/firebase/firestore/deleteDocument";
+import { EventFromValues } from "@/app/main/passinbiz/event/form/page.controller";
 
 
 /**

@@ -5,6 +5,7 @@ import { collection } from "@/config/collection";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import { HolderFormValues } from "@/app/main/passinbiz/holder/form/page.controller";
+import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
 
 
 /**
@@ -37,7 +38,7 @@ export const fetchHolder = async (entityId: string, id: string): Promise<Holder>
     id);
 }
 
-  
+
 export async function createHolder(data: HolderFormValues, token: string) {
   try {
     if (!token) {
@@ -71,6 +72,26 @@ export async function updateHolder(data: HolderFormValues, token: string) {
     if (!token) {
       throw new Error("Error to fetch user auth token");
     } else {
+      await updateDocument<Partial<any>>({
+        collection: `${collection.ENTITIES}/${data.entityId}/${collection.HOLDER}`,
+        data: {
+          ...data,
+          updatedAt: new Date(),
+        },
+        id: data.id as string,
+      });
+    }
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+/*
+export async function updateHolder(data: HolderFormValues, token: string) {
+  try {
+    if (!token) {
+      throw new Error("Error to fetch user auth token");
+    } else {
       let httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
@@ -93,7 +114,7 @@ export async function updateHolder(data: HolderFormValues, token: string) {
     throw new Error(error.message);
   }
 }
-
+*/
 export async function importHolder(data: FormData, token: string) {
   try {
     if (!token) {
@@ -120,7 +141,7 @@ export async function importHolder(data: FormData, token: string) {
   }
 }
 
- 
+
 
 
 export async function deleteHolder(data: {

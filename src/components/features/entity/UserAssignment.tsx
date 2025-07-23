@@ -21,12 +21,17 @@ import {
     ListItemAvatar,
     ListItemText,
     IconButton,
-    Divider
+    Divider,
+    CircularProgress
 } from '@mui/material';
 import { PersonAdd, Close, PersonRemove } from '@mui/icons-material';
 import { User } from 'firebase/auth';
 import IUser, { ICollaborator } from '@/domain/auth/IUser';
 import { useTranslations } from 'next-intl';
+import IUserEntity from '@/domain/auth/IUserEntity';
+import { useCommonModal } from '@/hooks/useCommonModal';
+import { CommonModalType } from '@/contexts/commonModalContext';
+import ConfirmModal from '@/components/common/modals/ConfirmModal';
 
 const roleOptions = [
     { value: 'admin', label: 'Adminstrador' },
@@ -36,6 +41,7 @@ export interface EntityCollaboratorData {
     id: string
     owner: ICollaborator
     collaborators: Array<ICollaborator>
+    data: Array<IUserEntity>
 }
 export interface UserAssignmentProps {
     project: EntityCollaboratorData
@@ -57,14 +63,16 @@ export interface UserAssignmentProps {
         projectId: string
     }) => void
     currentUser: IUser
+    proccesing?: boolean
 }
-const UserAssignment = ({ project, users, onAssign, onRemove, currentUser }: UserAssignmentProps) => {
-    const [open, setOpen] = useState(false);
+const UserAssignment = ({ project, users, onAssign, onRemove, currentUser, proccesing = false }: UserAssignmentProps) => {
+    const [openModalAdd, setOpenModalAdd] = useState(false);
     const [searchInput, setSearchInput] = useState('');
     const [selectedUser, setSelectedUser] = useState<ICollaborator | null>();
     const [selectedRole, setSelectedRole] = useState('write');
     const [filteredUsers, setFilteredUsers] = useState<Array<ICollaborator>>([]);
     const t = useTranslations()
+    const { openModal, open } = useCommonModal()
     useEffect(() => {
         // Filter out users already assigned to the project
         const assignedUserIds = project.collaborators.map(c => c.user.id);
@@ -83,9 +91,9 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser }: Use
         setFilteredUsers(filtered);
     }, [users, project.collaborators, searchInput, currentUser]);
 
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => setOpenModalAdd(true);
     const handleClose = () => {
-        setOpen(false);
+        setOpenModalAdd(false);
         setSearchInput('');
         setSelectedUser(null);
     };
@@ -112,12 +120,15 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser }: Use
         <Box sx={{ mt: 3 }}>
             <Typography variant="h6" gutterBottom>
                 {t('colaborators.title')}
+                {proccesing && <CircularProgress
+                    variant={'indeterminate'}
+                />}
             </Typography>
 
             <Paper elevation={1} sx={{ p: 2, mb: 2 }}>
                 <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                     <Typography variant="subtitle1">
-                        {project.collaborators.length} {project.collaborators.length === 1 ? 'collaborator' : 'collaborators'}
+                        {project.collaborators.length} {project.collaborators.length === 1 ?  t('colaborators.titles') :  t('colaborators.title')}
                     </Typography>
                     <Button
                         variant="contained"
@@ -137,7 +148,7 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser }: Use
                                         <IconButton
                                             edge="end"
                                             aria-label="remove"
-                                            onClick={() => handleRemove(collaborator.user.uid)}
+                                            onClick={() => openModal(CommonModalType.DELETE, { data: collaborator.user.uid })}
                                             disabled={collaborator.user.uid === currentUser.id}
                                         >
                                             <PersonRemove />
@@ -175,7 +186,7 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser }: Use
                 </List>
             </Paper>
 
-            <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+            <Dialog open={openModalAdd} onClose={handleClose} fullWidth maxWidth="sm">
                 <DialogTitle>{t('colaborators.add')}</DialogTitle>
                 <DialogContent>
                     <Box sx={{ mt: 2 }}>
@@ -220,16 +231,24 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser }: Use
                     </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>{t('colaborators.add')}</Button>
+                    <Button onClick={handleClose}>{t('colaborators.cancel')}</Button>
                     <Button
                         onClick={handleAssign}
                         variant="contained"
                         disabled={!selectedUser}
                     >
-                        {t('core.button.cancel')}
+                        {t('core.button.add')}
                     </Button>
                 </DialogActions>
             </Dialog>
+
+
+            {open.type === CommonModalType.DELETE && <ConfirmModal
+                isLoading={proccesing}
+                title={t('colaborators.deleteConfirmModalTitle')}
+                description={t('colaborators.deleteConfirmModalTitle2')}              
+                onOKAction={(args: { data: any }) => handleRemove(args.data)}
+            />}
         </Box>
     );
 };

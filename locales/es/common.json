@@ -24,7 +24,6 @@
         "Services": "Servicios",
         "Events": "Eventos",
         "Media": "Media",
-        
         "home": "Inicio",
         "general": "General",
         "CheckinBiz": "CheckinBiz",
@@ -129,7 +128,7 @@
       "resend": "Reenviar",
       "submitting": "Enviando...",
       "submit": "Enviar",
-      "send":"Relanzar",   
+      "send": "Relanzar",
       "confirm": "Confirmar",
       "cancel": "Cancelar",
       "download": "Descargar",
@@ -282,7 +281,7 @@
     "onsiteTraining": "Capacitación en el lugar",
     "pay": "Obtener Plan",
     "contract": "Plan Actual",
-    "renew":"Cambiar plan",
+    "renew": "Cambiar plan",
     "notAllowedPlan": "Debes actualizar los datos legales de la entidad seleccionada antes de obtener un plan."
   },
   "terms": {
@@ -302,19 +301,18 @@
     "revokeConfirmModalTitle2": "Esta acción no se puede deshacer. Revocará  permanentemente el pase de este titular",
     "sendConfirmModalTitle": "Relanzar pase",
     "sendConfirmModalTitle2": "Esta acción no se puede deshacer. Relanzará  el pase de este titular nuevamente"
- 
   },
   "event": {
     "title": "Eventos",
     "list": "Eventos",
     "add": "Adicionar",
-    "edit":"Editar",
+    "edit": "Editar",
     "import": "Importar",
     "description": "Rellene los campos para registrar el evento",
     "deleteConfirmModalTitle": "Eliminar Evento",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el evento y todas sus configuraciones"
   },
-   "employee": {
+  "employee": {
     "title": "Empleados",
     "list": "Empleados",
     "add": "Adicionar",
@@ -332,11 +330,14 @@
   },
   "renew": {
     "title": "Facturas",
-    "text1": "Datos"    
+    "text1": "Datos"
   },
   "colaborators": {
     "title": "Colaboradores",
+    "titles":"Colaborador",
     "add": "Adicionar colaborador",
-    "search":"Buscar usuario"
+    "search": "Buscar usuario",
+    "deleteConfirmModalTitle": "Eliminar colaborador",
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará los permisos del usuario sobre la entidad"
   }
 }

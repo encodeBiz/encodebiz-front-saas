@@ -11,9 +11,10 @@ import IUser, { ICollaborator } from '@/domain/auth/IUser';
 import { EntityCollaboratorData } from '@/components/features/entity/UserAssignment';
 import { useToast } from '@/hooks/useToast';
 import { fetchUsers } from '@/services/common/users.service';
-import { assignedUserToEntity, fetchAllOwnerOfEntity } from '@/services/common/entity.service';
+import { assignedUserToEntity, deleteOwnerOfEntity, fetchAllOwnerOfEntity } from '@/services/common/entity.service';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import IUserEntity from '@/domain/auth/IUserEntity';
+import { useCommonModal } from '@/hooks/useCommonModal';
 
 export interface IAssing {
     "fullName": string
@@ -61,12 +62,14 @@ export const useCollaboratorsController = () => {
     const { token, user } = useAuth()
     const { changeLoaderState } = useLayout()
     const { showToast } = useToast()
+    const { closeModal } = useCommonModal()
     const [loading, setLoading] = useState(false)
     const [users, setUsers] = useState<Array<ICollaborator>>([]);
     const [currentProject, setCurrentProject] = useState<EntityCollaboratorData>({
         owner: { user: user as IUser, role: 'owner' },
         collaborators: [],
-        id: currentEntity?.entity.id as string
+        id: currentEntity?.entity.id as string,
+        data: []
     });
 
     const handleAssign = async ({ userId, role, projectId }: { userId: string, role: string, projectId: string }) => {
@@ -98,8 +101,25 @@ export const useCollaboratorsController = () => {
         }
     };
 
-    const handleRemove = async ({ userId, projectId }: { userId: string, projectId: string }) => {
-        // API call to remove user
+    const handleRemove = async ({ userId }: { userId: string, projectId: string }) => {
+        try {
+            const data = currentProject.data.find(e => e.user.id === userId)
+            changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+            await deleteOwnerOfEntity(data?.id as string)
+            changeLoaderState({ show: false })
+            showToast(t('core.feedback.success'), 'success');
+            setLoading(false)
+            updateColaborators()
+            closeModal()
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                showToast(error.message, 'error');
+            } else {
+                showToast(String(error), 'error');
+            }
+            setLoading(false)
+            changeLoaderState({ show: false })
+        }
 
     };
 
@@ -126,18 +146,18 @@ export const useCollaboratorsController = () => {
 
     const updateColaborators = async () => {
         const data: Array<IUserEntity> = await fetchAllOwnerOfEntity(currentEntity?.entity.id as string)
-         
         setCurrentProject({
             owner: {
                 user: data.find(e => e.role === 'owner')?.user as IUser,
                 role: 'owner'
             },
             collaborators: data.map(e => ({ user: e.user, role: e.role })),
-            id: currentEntity?.entity.id as string
+            id: currentEntity?.entity.id as string,
+            data
         })
     }
 
 
-    return { handleAssign, handleRemove, users, currentProject }
+    return { handleAssign, handleRemove, users, currentProject, loading }
 }
 

@@ -11,6 +11,7 @@ import { EntityFormValues } from "@/app/main/core/entity/create/page.controller"
 import { EntityUpdatedFormValues, BrandFormValues } from "@/app/main/core/entity/tabs/tabEntity/page.controller";
 import { IAssing } from "@/app/main/core/entity/tabs/tabCollaborators/page.controller";
 import { fetchUser, fetchUsers } from "./users.service";
+import { deleteDocument } from "@/lib/firebase/firestore/deleteDocument";
 
 export async function fetchEntity(id: string): Promise<IEntity> {
   try {
@@ -241,8 +242,8 @@ export async function assignedUserToEntity(data: IAssing, token: string) {
 /**
  * Servicio para obtener todas las entidades
  */
-export async function fetchAllOwnerOfEntity(entityId:string): Promise<IUserEntity[]> {
-   
+export async function fetchAllOwnerOfEntity(entityId: string): Promise<IUserEntity[]> {
+
   const params: SearchParams = {
     collection: collection.USER_ENTITY_ROLES,
     filters: [
@@ -266,6 +267,18 @@ export async function fetchAllOwnerOfEntity(entityId:string): Promise<IUserEntit
         };
       })
     );
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+
+export async function deleteOwnerOfEntity(id: string): Promise<void> {
+  try {
+    await deleteDocument({
+      collection: `${collection.USER_ENTITY_ROLES}`,
+      id
+    });
   } catch (error: any) {
     throw new Error(error.message);
   }

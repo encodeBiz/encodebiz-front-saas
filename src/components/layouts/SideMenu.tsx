@@ -47,7 +47,9 @@ export default function SideMenu() {
   const t = useTranslations();
   const { user } = useAuth();
   const { currentEntity, entityServiceList } = useEntity();
-   
+
+
+
   const { push } = useRouter();
   const { layoutState, changeLayoutState } = useLayout()
   const [openSubMenu, setOpenSubMenu] = useState<any>({
@@ -129,7 +131,7 @@ export default function SideMenu() {
               if ((item.subMenu.length == 0 || !entityServiceList.find(e => e.id === item.id)?.isBillingActive || item.header))
                 return <ListItem key={i} disablePadding>
                   <ListItemButton disabled={!currentEntity || item.header} onClick={() => push(item.link)} selected={pathname === item.link}>
-                    {!item.header && <ListItemIcon> 
+                    {!item.header && <ListItemIcon>
                       {item.icon}
                     </ListItemIcon>}
                     <ListItemText primary={t(`layout.side.menu.${item.name}`)} />
@@ -162,20 +164,20 @@ export default function SideMenu() {
                   </div>
                 } else return null
           })}
-
-          {menuItemsGeneral.map((item: any, i: number) => {
-            if (item.divider) return <Divider key={i} />
-            else
-              return <ListItem key={i} disablePadding>
-                <ListItemButton disabled={!currentEntity || item.header} onClick={() => push(item.link)} selected={pathname === item.link}>
-                  {!item.header && <ListItemIcon>
-                    {item.icon}
-                  </ListItemIcon>}
-                  <ListItemText primary={t(`layout.side.menu.${item.name}`)} />
-                </ListItemButton>
-              </ListItem>
-          })}
-
+          {currentEntity?.role === 'owner' && <>
+            {menuItemsGeneral.map((item: any, i: number) => {
+              if (item.divider) return <Divider key={i} />
+              else
+                return <ListItem key={i} disablePadding>
+                  <ListItemButton disabled={!currentEntity || item.header} onClick={() => push(item.link)} selected={pathname === item.link}>
+                    {!item.header && <ListItemIcon>
+                      {item.icon}
+                    </ListItemIcon>}
+                    <ListItemText primary={t(`layout.side.menu.${item.name}`)} />
+                  </ListItemButton>
+                </ListItem>
+            })}
+          </>}
         </List>
 
 
