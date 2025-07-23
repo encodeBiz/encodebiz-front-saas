@@ -2,10 +2,12 @@
 
 import PasswordInput from '@/components/common/forms/fields/PasswordInput';
 import TextInput from '@/components/common/forms/fields/TextInput';
+import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
 import { emailRule, passwordRestrictionRule } from '@/config/yupRules';
 import { useToast } from '@/hooks/useToast';
 import { signInEmail, signInGoogle } from '@/services/common/account.service';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'nextjs-toploader/app';
 import { useState } from 'react';
 import * as Yup from 'yup';
 
@@ -18,6 +20,7 @@ export interface LoginFormValues {
 export const useRegisterController = () => {
     const t = useTranslations()
     const { showToast } = useToast()
+    const { push } = useRouter()
     const [initialValues, setInitialValues] = useState<LoginFormValues>({
         email: '',
         password: '',
@@ -30,9 +33,10 @@ export const useRegisterController = () => {
 
     });
 
-   const signInWithGoogle = async () => {
+    const signInWithGoogle = async () => {
         try {
             await signInGoogle()
+            push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
         } catch (error: any) {
             showToast(error.message, 'error')
         }
@@ -45,6 +49,7 @@ export const useRegisterController = () => {
     const signInWithEmail = async (values: LoginFormValues, actions: any) => {
         try {
             await signInEmail(values.email, values.password)
+            push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
         } catch (error: any) {
             showToast(error.message, 'error')
         }

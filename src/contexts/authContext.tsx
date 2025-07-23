@@ -31,12 +31,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const inPublicPage = pathName.startsWith('/auth')
 
     const watchSesionState = async (userAuth: User) => {
-
+ 
         if (userAuth) {
             updateUserData()
             setToken(await userAuth.getIdToken())
             const extraData = await fetchUserAccount(userAuth.uid)
-             
+
             const userData: IUser = {
                 ...extraData,
                 completeProfile: extraData.email ? true : false

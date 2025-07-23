@@ -22,6 +22,7 @@ interface EntityContextType {
     refrestList: (userId: string) => void;
     entityServiceList: Array<IService>
     entitySuscription: Array<IEntitySuscription>
+    fetchSuscriptionEntity:()=>void
 
 }
 export const EntityContext = createContext<EntityContextType | undefined>(undefined);
@@ -111,7 +112,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
 
     return (
-        <EntityContext.Provider value={{ entityList, entitySuscription, entityServiceList, currentEntity, refrestList, setCurrentEntity, changeCurrentEntity }}>
+        <EntityContext.Provider value={{ entityList,fetchSuscriptionEntity, entitySuscription, entityServiceList, currentEntity, refrestList, setCurrentEntity, changeCurrentEntity }}>
             {children}
         </EntityContext.Provider>
     );

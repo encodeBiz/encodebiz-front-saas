@@ -111,8 +111,7 @@ export default function useHolderListController() {
   const fetchingData = () => {
     setLoading(true)
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
-      console.log(res);
-
+ 
       if (res.length < rowsPerPage || res.length === 0)
         setAtEnd(true)
       else

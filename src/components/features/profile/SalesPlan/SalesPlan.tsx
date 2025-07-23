@@ -10,6 +10,7 @@ import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
 
 export default function SalesPlan({fromService,salesPlans, notGetPlan,ref}:{ref?: any,fromService:BizType,salesPlans:Array<IPlan>, notGetPlan:boolean}) {
     const t = useTranslations()
+    
  
     return (
         <Box maxWidth="xl" sx={{mt:4}} ref={ref}>
@@ -39,7 +40,7 @@ export default function SalesPlan({fromService,salesPlans, notGetPlan,ref}:{ref?
                 </Box>
             }
             <br />
-            <SalesPlans pricingPlans={salesPlans} getPlanAllow={notGetPlan} fromService={fromService} />
+            <SalesPlans pricingPlans={salesPlans}   fromService={fromService} />
         </Box>
     );
 }

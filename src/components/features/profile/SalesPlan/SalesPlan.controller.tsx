@@ -5,9 +5,7 @@ import { useEffect, useState } from 'react';
  
 export default function useSalesPlanController() {
 
-  const { currentEntity } = useEntity();
-  const  notGetPlan = !currentEntity || !currentEntity?.entity?.billingEmail || !currentEntity?.entity?.legal?.legalName || !currentEntity?.entity?.legal?.taxId
-   
+ 
   const t = useTranslations();
   const salesPlans: IPlan[] = [
     {
@@ -59,5 +57,5 @@ export default function useSalesPlanController() {
 
 
 
-  return { salesPlans, notGetPlan }
+  return { salesPlans }
 }

@@ -7,6 +7,7 @@ import { IPlan } from '@/domain/core/IPlan';
 import { GenericButton } from '../buttons/BaseButton';
 import usePricingCardController from './PricingCard.controller';
 import { BizType } from '@/domain/core/IService';
+import { useEntity } from '@/hooks/useEntity';
 
 const PlanCard = styled(Box)<{ featured?: string }>(({ theme, featured }) => ({
     maxWidth: 300,
@@ -41,20 +42,27 @@ const SelectButton = styled(GenericButton)<{ featured?: string }>(({ theme, feat
     backgroundColor: featured === "true" ? theme.palette.primary.contrastText : theme.palette.primary.main,
 }));
 
+const DangerButton = styled(GenericButton)(({ theme }) => ({
+    marginBottom: 0,
+    width: '100%',
+    color: theme.palette.text.primary,
+    backgroundColor: theme.palette.error.light,
+}));
+
 
 export type PricingCardProps = IPlan & {
-    fromService: BizType;
-    getPlanAllow: boolean;
+    fromService: BizType; 
     isContract: boolean;
 };
 
-export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, period, isContract, features, featured = false, fromService, getPlanAllow = false }) => {
+export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, period, isContract, features, featured = false, fromService }) => {
     const t = useTranslations();
-    const { subcribeAction, loadingGetPlan, setLoadingGetPlan } = usePricingCardController(id as string, fromService);
+    const { subcribeAction, loadingGetPlan, setLoadingGetPlan, ubSubcribeAction } = usePricingCardController(id as string, fromService);
+    const { currentEntity } = useEntity();
 
     useEffect(() => {
-        setLoadingGetPlan(getPlanAllow);
-    }, [getPlanAllow]);
+        setLoadingGetPlan(!currentEntity || !currentEntity?.entity?.billingEmail || !currentEntity?.entity?.legal?.legalName || !currentEntity?.entity?.legal?.taxId);
+    }, [currentEntity?.entity?.id]);
 
     return (
         <PlanCard featured={String(featured)}>
@@ -106,8 +114,22 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
                     disabled={loadingGetPlan}
                     loading={loadingGetPlan}
                 >
-                    {!isContract?t("salesPlan.pay"):t("salesPlan.contract")}
+                    {!isContract ? t("salesPlan.pay") : t("salesPlan.contract")}
                 </SelectButton>
+
+                {isContract && <DangerButton
+                    fullWidth
+                    variant="contained"
+                    onClick={() => {
+                        if (isContract) {
+                            ubSubcribeAction()
+                        }
+                    }}
+                    disabled={loadingGetPlan}
+                    loading={loadingGetPlan}
+                >
+                    {t("salesPlan.del")}
+                </DangerButton>}
             </CardContent>
         </PlanCard>
     );

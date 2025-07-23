@@ -282,6 +282,7 @@
     "pay": "Obtener Plan",
     "contract": "Plan Actual",
     "renew": "Cambiar plan",
+    "del": "Eliminar suscripción",
     "notAllowedPlan": "Debes actualizar los datos legales de la entidad seleccionada antes de obtener un plan."
   },
   "terms": {
@@ -334,7 +335,7 @@
   },
   "colaborators": {
     "title": "Colaboradores",
-    "titles":"Colaborador",
+    "titles": "Colaborador",
     "add": "Adicionar colaborador",
     "search": "Buscar usuario",
     "deleteConfirmModalTitle": "Eliminar colaborador",
