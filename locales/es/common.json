@@ -308,6 +308,7 @@
     "title": "Eventos",
     "list": "Eventos",
     "add": "Adicionar",
+    "edit":"Editar",
     "import": "Importar",
     "description": "Rellene los campos para registrar el evento",
     "deleteConfirmModalTitle": "Eliminar Evento",

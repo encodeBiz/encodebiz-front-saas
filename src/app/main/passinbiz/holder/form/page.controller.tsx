@@ -191,14 +191,15 @@ export default function useHolderController() {
   }
 
   useEffect(() => {
-    fetchingEvent()
-  }, [])
+    if (currentEntity?.entity.id && user?.id)
+      fetchingEvent()
+  }, [currentEntity?.entity.id, user?.id])
+
 
   useEffect(() => {
-    if (id)
+    if (currentEntity?.entity.id && user?.id && id)
       fetchData()
-  }, [id])
-
+  }, [currentEntity?.entity.id, user?.id, id])
 
 
 

@@ -1,26 +1,26 @@
 import { useTranslations } from "next-intl";
-import { useState } from 'react';
-import DynamicKeyValueInput, { DynamicFields } from "@/components/common/forms/fields/DynamicKeyValueInput";
+import { useEffect, useState } from 'react';
+import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
-
 import { requiredRule } from '@/config/yupRules';
-import { createHolder } from "@/services/passinbiz/holder.service";
 import { useToast } from "@/hooks/useToast";
 import { useRouter } from "nextjs-toploader/app";
-import { useAppTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
-import { GENERAL_ROUTE, MAIN_ROUTE } from "@/config/routes";
-import { createEvent } from "@/services/passinbiz/event.service";
+import { MAIN_ROUTE } from "@/config/routes";
+import { createEvent, fetchEvent, updateEvent } from "@/services/passinbiz/event.service";
 import DateInput from "@/components/common/forms/fields/Datenput";
 import ImageUploadInput from "@/components/common/forms/fields/ImageUploadInput";
 import ColorPickerInput from "@/components/common/forms/fields/ColorPickerInput";
-import { ArrayToObject } from "@/lib/common/String";
+import { IEvent } from "@/domain/features/passinbiz/IEvent";
+import { useParams } from "next/navigation";
+import { useLayout } from "@/hooks/useLayout";
+import { ArrayToObject, objectToArray } from "@/lib/common/String";
 
 export interface EventFromValues {
-  uid?: string
   id?: string
+  uid?: string
   createdBy?: string
   entityId?: string
   "name": string
@@ -41,8 +41,10 @@ export default function useHolderController() {
   const { showToast } = useToast()
   const { push } = useRouter()
   const { token, user } = useAuth()
+  const { id } = useParams<{ id: string }>()
   const { currentEntity } = useEntity()
-  const [initialValues] = useState<EventFromValues>({
+  const { changeLoaderState } = useLayout()
+  const [initialValues, setInitialValues] = useState<EventFromValues>({
     "name": '',
     "description": '',
     "date": new Date(),
@@ -76,15 +78,14 @@ export default function useHolderController() {
 
   const setDinamicDataAction = async (values: EventFromValues) => {
     try {
-
-      const data = await createEvent({
+      changeLoaderState({ show: true, args: { text: t('core.title.loaderActionBilling') } })
+      const data = {
         "uid": user?.id as string,
         "createdBy": user?.id as string,
         "name": values.name,
         "description": values.description,
         "location": values.location,
         "address": values.location,
-
         "entityId": currentEntity?.entity?.id as string,
         "colorPrimary": values.colorPrimary,
         "colorAccent": values.colorAccent,
@@ -92,12 +93,16 @@ export default function useHolderController() {
         "logoUrl": values.logoUrl,
         "date": values.date,
         template: 'vip',
-        "metadata": ArrayToObject(values.metadata)
-      }, token)
-
+        "metadata": ArrayToObject(values.metadata),
+        "id": id,
+      }
+      if (id) await updateEvent(data, token)
+      else await createEvent(data, token)
+      changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
       push(`/${MAIN_ROUTE}/passinbiz/event`)
     } catch (error: any) {
+      changeLoaderState({ show: false })
       showToast(error.message, 'error')
     }
   };
@@ -122,7 +127,6 @@ export default function useHolderController() {
     {
       name: 'location',
       label: t('core.label.location'),
-
       required: true,
       type: 'textarea',
       component: TextInput,
@@ -150,19 +154,19 @@ export default function useHolderController() {
       label: t('core.label.colorAccent'),
       type: 'text',
       required: true,
+
       component: ColorPickerInput,
     },
     {
       name: 'logoUrl',
       label: t('core.label.logo'),
- 
       required: true,
+      type: 'custom',
       component: ImageUploadInput,
-      type: 'custom'
     },
     {
       name: 'imageUrl',
-      label: t('core.label.imageUrl'),       
+      label: t('core.label.imageUrl'),
       required: true,
       type: 'custom',
       component: ImageUploadInput,
@@ -176,10 +180,34 @@ export default function useHolderController() {
       label: t('core.label.setting'),
       type: 'text',
       required: true,
+      fullWidth:true,
       component: DynamicKeyValueInput,
     },
 
   ];
+
+  const fetchData = async () => {
+
+    try {
+      changeLoaderState({ show: true, args: { text: t('core.title.loaderActionBilling') } })
+      const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, id)
+
+      setInitialValues({
+        ...event,
+        metadata: objectToArray(event.metadata)
+      })
+      changeLoaderState({ show: false })
+    } catch (error: any) {
+      changeLoaderState({ show: false })
+      showToast(error.message, 'error')
+    }
+  }
+
+  useEffect(() => {
+    if (currentEntity?.entity.id && user?.id && id)
+      fetchData()
+  }, [currentEntity?.entity.id, user?.id, id])
+
 
   return { fields, initialValues, validationSchema, setDinamicDataAction }
 }

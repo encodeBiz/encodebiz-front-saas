@@ -49,7 +49,7 @@ export default function HolderList() {
         onRowsPerPageChange={setRowsPerPage}
         onBack={onBack}
         onNext={onNext}
-        onEdit={(data) => onEdit(data)}
+        //onEdit={(data) => onEdit(data)}
         onSearch={(data) => onSearch(data)}
         search={true}
 
