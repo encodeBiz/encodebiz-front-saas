@@ -17,8 +17,9 @@ import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { ArrayToObject, objectToArray } from "@/lib/common/String";
+import { createEmployee, updateEmployee } from "@/services/checkinbiz/employee.service";
 
-export interface EventFromValues {
+export interface EmployeeFormValues {
   id?: string
   uid?: string
   createdBy?: string
@@ -42,9 +43,9 @@ export default function useHolderController() {
   const { push } = useRouter()
   const { token, user } = useAuth()
   const { id } = useParams<{ id: string }>()
-  const { currentEntity, watchServiceAccess } = useEntity()
+  const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
-  const [initialValues, setInitialValues] = useState<EventFromValues>({
+  const [initialValues, setInitialValues] = useState<EmployeeFormValues>({
     "name": '',
     "description": '',
     "date": new Date(),
@@ -76,7 +77,7 @@ export default function useHolderController() {
     colorAccent: requiredRule(t),
   });
 
-  const setDinamicDataAction = async (values: EventFromValues) => {
+  const handleSubmit = async (values: EmployeeFormValues) => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderActionBilling') } })
       const data = {
@@ -96,8 +97,10 @@ export default function useHolderController() {
         "metadata": ArrayToObject(values.metadata),
         "id": id,
       }
-      if (id) await updateEvent(data, token)
-      else await createEvent(data, token)
+      if (id)
+        await updateEmployee(data, token)
+      else
+        await createEmployee(data, token)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
       push(`/${MAIN_ROUTE}/passinbiz/event`)
@@ -180,7 +183,6 @@ export default function useHolderController() {
       label: t('core.label.setting'),
       type: 'text',
       required: true,
-      fullWidth: true,
       component: DynamicKeyValueInput,
     },
 
@@ -204,12 +206,10 @@ export default function useHolderController() {
   }
 
   useEffect(() => {
-    if (currentEntity?.entity.id && user?.id && id) {
+    if (currentEntity?.entity.id && user?.id && id)
       fetchData()
-      watchServiceAccess('passinbiz')
-    }
   }, [currentEntity?.entity.id, user?.id, id])
 
 
-  return { fields, initialValues, validationSchema, setDinamicDataAction }
+  return { fields, initialValues, validationSchema, handleSubmit }
 }

@@ -40,7 +40,7 @@ export default function useHolderController() {
   const { showToast } = useToast()
   const { push } = useRouter()
   const { token, user } = useAuth()
-  const { currentEntity } = useEntity()
+  const { currentEntity, watchServiceAccess } = useEntity()
   const [type, setType] = useState()
   const [eventList, setEventList] = useState<Array<IEvent>>([])
   const { changeLoaderState } = useLayout()
@@ -192,14 +192,17 @@ export default function useHolderController() {
   }
 
   useEffect(() => {
-    if (currentEntity?.entity.id && user?.id)
+    if (currentEntity?.entity.id && user?.id) {
       fetchingEvent()
+      watchServiceAccess('passinbiz')
+    }
   }, [currentEntity?.entity.id, user?.id])
 
 
   useEffect(() => {
     if (currentEntity?.entity.id && user?.id && id)
       fetchData()
+
   }, [currentEntity?.entity.id, user?.id, id])
 
 
@@ -209,3 +212,5 @@ export default function useHolderController() {
 
   return { fields, initialValues, validationSchema, submitForm }
 }
+
+ 

@@ -24,7 +24,7 @@ export default function useHolderListController() {
   const theme = useTheme();
   const classes = useStyles()
   const { token, user } = useAuth()
-  const { currentEntity } = useEntity()
+  const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
   const [rowsPerPage, setRowsPerPage] = useState<number>(2); // Límite inicial
   const [params, setParams] = useState<any>({});
@@ -42,8 +42,8 @@ export default function useHolderListController() {
   const [revoking, setRevoking] = useState(false)
   const { push } = useRouter()
   const rowAction: Array<IRowAction> = [
-    { icon: <RemoveDone />, label: t('core.button.revoke'), allowItem: (item: Holder) => (item.passStatus === 'pending' || item.passStatus === 'active'), onPress: (item: Holder) => openModal(CommonModalType.DELETE, { data:item }) },
-    { icon: <Send />, label: t('core.button.resend'), allowItem: (item: Holder) => (item.passStatus === 'revoked' || item.passStatus === 'not_generated'), onPress: (item: Holder) => openModal(CommonModalType.SEND, { data:item }) }
+    { icon: <RemoveDone />, label: t('core.button.revoke'), allowItem: (item: Holder) => (item.passStatus === 'pending' || item.passStatus === 'active'), onPress: (item: Holder) => openModal(CommonModalType.DELETE, { data: item }) },
+    { icon: <Send />, label: t('core.button.resend'), allowItem: (item: Holder) => (item.passStatus === 'revoked' || item.passStatus === 'not_generated'), onPress: (item: Holder) => openModal(CommonModalType.SEND, { data: item }) }
   ]
 
   const onSearch = (term: string): void => {
@@ -111,7 +111,7 @@ export default function useHolderListController() {
   const fetchingData = () => {
     setLoading(true)
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
- 
+
       if (res.length < rowsPerPage || res.length === 0)
         setAtEnd(true)
       else
@@ -144,8 +144,10 @@ export default function useHolderListController() {
   }
 
   useEffect(() => {
-    if (params && currentEntity?.entity?.id)
+    if (params && currentEntity?.entity?.id) {
       fetchingData()
+      watchServiceAccess('passinbiz')
+    }
   }, [params, currentEntity?.entity?.id])
 
   useEffect(() => {
@@ -162,11 +164,11 @@ export default function useHolderListController() {
   const onRevoke = async (item: any) => {
     try {
       console.log(item);
-      
+
       setRevoking(true)
       const id = item.id
       await updateHolder({
-        ...{} as any, 
+        ...{} as any,
         passStatus: 'revoked'
       }, token)
       setItemsHistory(itemsHistory.filter(e => e.id !== id))
@@ -184,7 +186,7 @@ export default function useHolderListController() {
       setRevoking(true)
       const id = item.id
       await updateHolder({
-        ...{} as any, 
+        ...{} as any,
         passStatus: 'pending'
       }, token)
       setItemsHistory(itemsHistory.filter(e => e.id !== id))

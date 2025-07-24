@@ -10,9 +10,10 @@ import { fetchUserEntities, saveStateCurrentEntity } from "@/services/common/ent
 import IUser from "@/domain/auth/IUser";
 import { fetchUserAccount } from "@/services/common/account.service";
 import { MAIN_ROUTE, GENERAL_ROUTE } from "@/config/routes";
-import { IService } from "@/domain/core/IService";
+import { BizType, IService } from "@/domain/core/IService";
 import { fetchServiceList, fetchSuscriptionByEntity } from "@/services/common/subscription.service";
 import { IEntitySuscription } from "@/domain/auth/ISubscription";
+import { useToast } from "@/hooks/useToast";
 
 interface EntityContextType {
     currentEntity: IUserEntity | undefined;
@@ -22,7 +23,8 @@ interface EntityContextType {
     refrestList: (userId: string) => void;
     entityServiceList: Array<IService>
     entitySuscription: Array<IEntitySuscription>
-    fetchSuscriptionEntity:()=>void
+    fetchSuscriptionEntity: () => void
+    watchServiceAccess: (serviceId: BizType) => void
 
 }
 export const EntityContext = createContext<EntityContextType | undefined>(undefined);
@@ -32,6 +34,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     const [entityServiceList, setEntityServiceList] = useState<Array<IService>>([]);
     const [entitySuscription, setEntitySuscription] = useState<Array<IEntitySuscription>>([])
     const { push } = useRouter()
+    const { showToast } = useToast()
 
 
     const fetchSuscriptionEntity = async () => {
@@ -39,6 +42,15 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
         setEntitySuscription(serviceSuscription)
         const serviceList: Array<IService> = await fetchServiceList()
         setEntityServiceList(serviceList.map(e => ({ ...e, isBillingActive: !!serviceSuscription.find(service => service.serviceId === e.id) })))
+    }
+
+    const watchServiceAccess = async (serviceId: BizType) => {
+        const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
+        const check = serviceSuscription.find(e => e.serviceId === serviceId && currentEntity?.entity.id === e.entityId)
+        if (!check) {
+            showToast('No tiene permiso para acceder a este recurso', 'info')
+            push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
+        }
     }
 
     const watchSesionState = async (userAuth: User) => {
@@ -112,7 +124,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
 
     return (
-        <EntityContext.Provider value={{ entityList,fetchSuscriptionEntity, entitySuscription, entityServiceList, currentEntity, refrestList, setCurrentEntity, changeCurrentEntity }}>
+        <EntityContext.Provider value={{ entityList, watchServiceAccess, fetchSuscriptionEntity, entitySuscription, entityServiceList, currentEntity, refrestList, setCurrentEntity, changeCurrentEntity }}>
             {children}
         </EntityContext.Provider>
     );

@@ -317,6 +317,7 @@
     "title": "Empleados",
     "list": "Empleados",
     "add": "Adicionar",
+    "update": "Editar",
     "import": "Importar",
     "description": "Rellene los campos para registrar el empleado",
     "deleteConfirmModalTitle": "Eliminar empleado",

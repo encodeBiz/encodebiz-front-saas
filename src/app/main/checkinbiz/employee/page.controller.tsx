@@ -23,7 +23,7 @@ export default function useEmployeeListController() {
   const theme = useTheme();
   const classes = useStyles()
   const { token, user } = useAuth()
-  const { currentEntity } = useEntity()
+  const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
   const { push } = useRouter()
   const [rowsPerPage, setRowsPerPage] = useState<number>(5); // Límite inicial
@@ -98,7 +98,7 @@ export default function useEmployeeListController() {
   const fetchingData = () => {
     setLoading(true)
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
- 
+
       if (res.length < rowsPerPage || res.length === 0)
         setAtEnd(true)
       else
@@ -131,9 +131,11 @@ export default function useEmployeeListController() {
   }
 
   useEffect(() => {
-    if (params && currentEntity?.entity?.id)
+    if (params && currentEntity?.entity?.id && user?.id) {
       fetchingData()
-  }, [params, currentEntity?.entity?.id])
+      watchServiceAccess('checkinbiz')
+    }
+  }, [params, currentEntity?.entity?.id, user?.id])
 
   useEffect(() => {
     setCurrentPage(0)
