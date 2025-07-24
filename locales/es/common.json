@@ -331,7 +331,10 @@
   },
   "renew": {
     "title": "Facturas",
-    "text1": "Datos"
+    "text1": "Datos",
+    "deleteConfirmModalTitle": "Eliminar plan",
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente todas las acciones realizadas sobre el servicio solicitado"
+  
   },
   "colaborators": {
     "title": "Colaboradores",

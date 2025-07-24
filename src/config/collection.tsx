@@ -6,5 +6,6 @@ export const collection = {
     ENTITIES:'entities',
     EMAIL_SENT:'email-sent',
     USER_ENTITY_ROLES:'user_entity_roles',
-    MEDIA:'media'
+    MEDIA:'media',
+    INVOICES:'invoices'
 }

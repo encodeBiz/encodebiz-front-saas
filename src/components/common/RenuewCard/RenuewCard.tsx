@@ -7,6 +7,9 @@ import { GenericButton } from '../buttons/BaseButton';
 import usePricingCardController from './RenuewCard.controller';
 import { IEntitySuscription } from '@/domain/auth/ISubscription';
 import { format_date } from '@/lib/common/Date';
+import ConfirmModal from '../modals/ConfirmModal';
+import { useCommonModal } from '@/hooks/useCommonModal';
+import { CommonModalType } from '@/contexts/commonModalContext';
 
 const PlanCard = styled(Box)<{ featured?: string }>(({ theme, featured }) => ({
     maxWidth: 300,
@@ -23,11 +26,11 @@ const PlanCard = styled(Box)<{ featured?: string }>(({ theme, featured }) => ({
 }));
 
 
-const SelectButton = styled(GenericButton)<{ featured?: string }>(({ theme, featured }) => ({
+const DangerButton = styled(GenericButton)(({ theme }) => ({
     marginBottom: 0,
     width: '100%',
-    color: featured === "true" ? theme.palette.text.primary : theme.palette.text.primary,
-    backgroundColor: featured === "true" ? theme.palette.primary.contrastText : theme.palette.primary.main,
+    color: theme.palette.text.primary,
+    backgroundColor: theme.palette.error.light,
 }));
 
 
@@ -37,9 +40,9 @@ export type PricingCardProps = {
 
 export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
     const t = useTranslations();
-    const { renuewAction, loadingGetPlan } = usePricingCardController(plan);
+    const { ubSubcribeAction, loadingGetPlan } = usePricingCardController(plan);
+    const { openModal, open } = useCommonModal()
 
- 
 
     return (
         <PlanCard featured={String(false)}>
@@ -70,7 +73,7 @@ export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
                             </ListItemIcon>
                             <Typography variant="body2">Estado: {plan.status}</Typography>
                         </ListItem>
-                         <ListItem disableGutters>
+                        <ListItem disableGutters>
                             <ListItemIcon sx={{ minWidth: 30 }}>
                                 <CheckCircleOutline color="primary" fontSize="small" />
                             </ListItemIcon>
@@ -78,19 +81,25 @@ export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
                         </ListItem>
                     </List>
                 </span>
-                <SelectButton
-                    featured={String(false)}
+                <DangerButton
                     fullWidth
                     variant="contained"
                     onClick={() => {
-                        renuewAction()
+                        openModal(CommonModalType.DELETE)
                     }}
                     disabled={loadingGetPlan}
                     loading={loadingGetPlan}
                 >
-                    {t("salesPlan.renew")}
-                </SelectButton>
+                    {t("salesPlan.del")}
+                </DangerButton>
             </CardContent>
+
+            <ConfirmModal
+                isLoading={loadingGetPlan}
+                title={t('renew.deleteConfirmModalTitle')}
+                description={t('renew.deleteConfirmModalTitle2')}
+                onOKAction={(args: { data: Array<string> }) => ubSubcribeAction()}
+            />
         </PlanCard>
     );
 };

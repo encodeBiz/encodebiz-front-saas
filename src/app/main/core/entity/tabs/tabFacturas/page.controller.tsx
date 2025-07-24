@@ -1,18 +1,17 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useTranslations } from 'next-intl';
-import { configBilling } from '@/services/common/subscription.service';
-import { IRowAction, buildSearch, Column } from '@/components/common/table/GenericTable';
-import { IUserMedia } from '@/domain/core/IUserMedia';
+import { fetchInvoicesByEntity } from '@/services/common/subscription.service';
+import { buildSearch, Column } from '@/components/common/table/GenericTable';
 import { useToast } from '@/hooks/useToast';
-import { getFileIcon, formatFileSize } from '@/lib/common/String';
-import { search, deleteMedia, uploadMedia } from '@/services/common/media.service';
-import { Box, Avatar, Typography, Chip } from '@mui/material';
+import { formatFileSize } from '@/lib/common/String';
+import { Box, Typography, Chip } from '@mui/material';
 import { useStyles } from './page.styles';
 import { PictureAsPdf } from '@mui/icons-material';
+import { StripeInvoice } from '@/domain/auth/ISubscription';
 
 export const useFacturaController = () => {
     const t = useTranslations();
@@ -27,14 +26,11 @@ export const useFacturaController = () => {
     const [atEnd, setAtEnd] = useState(false)
     const [last, setLast] = useState<any>()
     const [pagination, setPagination] = useState(``);
-    const [items, setItems] = useState<IUserMedia[]>([]);
-    const [itemsHistory, setItemsHistory] = useState<IUserMedia[]>([]);
+    const [items, setItems] = useState<StripeInvoice[]>([]);
+    const [itemsHistory, setItemsHistory] = useState<StripeInvoice[]>([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [total, setTotal] = useState(0);
 
-    const rowAction: Array<IRowAction> = [
-        { icon: "delete", label: 'Eliminar', onPress: (item: IUserMedia) => { } }
-    ]
 
     const onSearch = (term: string): void => {
         setParams({ ...params, startAfter: null, filters: buildSearch(term) })
@@ -64,40 +60,19 @@ export const useFacturaController = () => {
 
 
 
-    const columns: Column<IUserMedia>[] = [
+    const columns: Column<StripeInvoice>[] = [
         {
-            id: 'filename', label: t("renew.text1"), minWidth: 170, format: (value, row) => <Box display="flex" alignItems="center">
-
+            id: 'hosted_invoice_url', label: t("renew.text1"), minWidth: 170, format: (value, row) => <Box onClick={() => window.open(row.hosted_invoice_url as string, '_blank')} display="flex" alignItems="center">
                 <Box sx={classes.fileThumbnail}>
-                    <PictureAsPdf sx={{fontSize:100}}/>
+                    <PictureAsPdf sx={{ fontSize: 100 }} />
                 </Box>
-
-                <Box sx={classes.fileInfo}>
-                    <Typography
-                        sx={{ overflow: 'hidden', width: '200px', whiteSpace: 'noWrap', textOverflow: 'ellipsis', }}
-                        variant="body2" noWrap>
-                        {row.filename}
-                    </Typography>
-                    <Typography variant="caption" color="textSecondary">
-                        {formatFileSize(row.sizeKB * 1024)}
-                    </Typography>
-                    <Box mt={0.5}>
-                        <Chip
-                            size="small"
-                            label={'Invoice'}
-                            variant="outlined"
-                        />
-                    </Box>
-                </Box>
-
-
             </Box>
         },
     ];
 
     const fetchingData = () => {
         setLoading(true)
-        search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
+        fetchInvoicesByEntity(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
             if (res.length < rowsPerPage || res.length === 0)
                 setAtEnd(true)
             else
