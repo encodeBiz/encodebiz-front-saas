@@ -39,20 +39,22 @@ export default async function RootLayout({
             <body className={`${geistSans.variable} ${geistMono.variable}`}>
                 <LocaleProvider>
                     <AuthProvider>
-                        <EntityProvider>
-                            <LayoutProvider>
-                                <ThemeProvider>
-                                    <ToastProvider>
+                        <ToastProvider>
+                            <EntityProvider>
+                                <LayoutProvider>
+                                    <ThemeProvider>
+
                                         <CommonModalProvider>
                                             <MediaProvider>
                                                 <NextTopLoader showSpinner={false} color="#456456" />
                                                 {children}
                                             </MediaProvider>
                                         </CommonModalProvider>
-                                    </ToastProvider>
-                                </ThemeProvider>
-                            </LayoutProvider>
-                        </EntityProvider>
+
+                                    </ThemeProvider>
+                                </LayoutProvider>
+                            </EntityProvider>
+                        </ToastProvider>
                     </AuthProvider>
                 </LocaleProvider>
             </body>
