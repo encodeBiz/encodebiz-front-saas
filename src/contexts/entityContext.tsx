@@ -49,7 +49,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
         const check = serviceSuscription.find(e => e.serviceId === serviceId && currentEntity?.entity.id === e.entityId)
         if (!check) {
             showToast('No tiene permiso para acceder a este recurso', 'info')
-            push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
+            push(`/${MAIN_ROUTE}/${serviceId}/onboarding`)
         }
     }
 
