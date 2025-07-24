@@ -13,6 +13,7 @@ import { useStyles } from './page.styles';
 import { fileTypeIcons } from '@/config/theme';
 import { getFileIcon, formatFileSize } from '@/lib/common/String';
 import { IMedia } from '@/components/common/modals/MediaModalSelectedFiles/MediaModalSelectedFiles';
+import ImagePreview from '@/components/common/ImagePreview';
 
 
 
@@ -74,15 +75,19 @@ export const useMediaList = () => {
 
                 <Box sx={classes.fileThumbnail}>
                     {row.url ? (
-                        <Avatar
-                            variant="rounded"
+                        <ImagePreview
                             src={row.url}
-                            style={{ width: '100%', height: '100%' }}
+                            alt=""
+                            width={'80px'}
+                            height={'80px'}
+                            style={{ border: '1px solid #ddd' }}
+                            zoomIconPosition="center"
                         />
+                        
                     ) : (
-                        <Avatar variant="rounded" style={{ backgroundColor: 'transparent' }}>
-                            {getFileIcon(row)}
-                        </Avatar>
+                    <Avatar variant="rounded" style={{ backgroundColor: 'transparent' }}>
+                        {getFileIcon(row)}
+                    </Avatar>
                     )}
                 </Box>
 

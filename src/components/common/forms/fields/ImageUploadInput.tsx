@@ -20,6 +20,7 @@ import MediaModalSelectedFiles from '../../modals/MediaModalSelectedFiles/MediaM
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { IUserMedia, IUserMediaType } from '@/domain/core/IUserMedia';
+import ImageCropper from '../../ImageCropper/ImageCropper';
 
 interface ImageFieldProps {
   accept: string
@@ -29,8 +30,8 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
   const t = useTranslations();
   const [field, meta, helper] = useField(name);
   const { touched, error } = meta
-  const typeUpload = props.type   
-   
+  const typeUpload = props.type
+
   const helperText = touched && error;
   const { open, openModal } = useCommonModal()
   const {
@@ -103,6 +104,7 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
         <FormHelperText error={!!helperText}>{helperText as string}</FormHelperText>
       </Box>
       {CommonModalType.FILES && open.open && open.args.name === name && <MediaModalSelectedFiles type={typeUpload} key={name} onSelected={handleOnSelected} />}
+      
     </FormControl>
 
   );

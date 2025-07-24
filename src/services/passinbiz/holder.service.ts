@@ -170,3 +170,28 @@ export async function deleteHolder(data: {
     throw new Error(error.message)
   }
 }
+
+
+export async function validateHolder(data: any) {
+  try {
+
+    let httpClientFetchInstance: HttpClient = new HttpClient({
+      baseURL: "",
+      headers: {},
+    });
+    const response: any = await httpClientFetchInstance.post(
+      process.env.NEXT_PUBLIC_BACKEND_URI_PASSINBIZ_VALIDATE_HOLDER as string,
+      {
+        ...data,
+      }
+    );
+    if (response.errCode && response.errCode !== 200) {
+      throw new Error(response.message);
+    }
+
+    return response;
+
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}

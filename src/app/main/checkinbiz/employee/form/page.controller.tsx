@@ -79,7 +79,7 @@ export default function useHolderController() {
 
   const handleSubmit = async (values: EmployeeFormValues) => {
     try {
-      changeLoaderState({ show: true, args: { text: t('core.title.loaderActionBilling') } })
+      changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const data = {
         "uid": user?.id as string,
         "createdBy": user?.id as string,
@@ -191,7 +191,7 @@ export default function useHolderController() {
   const fetchData = async () => {
 
     try {
-      changeLoaderState({ show: true, args: { text: t('core.title.loaderActionBilling') } })
+      changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, id)
 
       setInitialValues({

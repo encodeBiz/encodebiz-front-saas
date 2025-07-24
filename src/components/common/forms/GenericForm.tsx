@@ -70,7 +70,7 @@ const GenericForm = <T extends Record<string, any>>({
     <Paper
       elevation={0}
       sx={{
-        p: 4,
+      
         width: '100%',
         ...formContainerProps?.sx,
       }}

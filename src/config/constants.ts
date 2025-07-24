@@ -144,13 +144,11 @@ export const countries = [
 ];
 
 
-export const fileTypes = [
-  { label: 'Logo', value: 'logo' },
-  { label: 'background', value: 'background' },
-  { label: 'stripImage', value: 'stripImage' },
-  { label: 'icon', value: 'icon' },
-  { label: 'eventLogo', value: 'eventLogo' },
-  { label: 'eventBackground', value: 'eventBackground' },
-  { label: 'eventStripImage', value: 'eventStripImage' },
-  { label: 'custom', value: 'custom' },
+export const fileTypes = (t: any) => [
+  { label: t('core.label.logo'), value: 'logo' },
+  { label: t('core.label.background'), value: 'background' },
+  { label: t('core.label.stripImage'), value: 'stripImage' },
+  { label: t('core.label.icon'), value: 'icon' },
+  { label: t('core.label.icon2x'), value: 'icon2x' },
+  { label: t('core.label.custom'), value: 'custom' },
 ]

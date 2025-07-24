@@ -7,6 +7,7 @@ import {
 import { useTranslations } from 'next-intl';
 import { useEntity } from '@/hooks/useEntity';
 import { RenuewCard } from '@/components/common/RenuewCard/RenuewCard';
+import EmptyState from '@/components/common/EmptyState/EmptyState';
 
 const RenuewPreferencesPage = () => {
     const t = useTranslations();
@@ -17,6 +18,7 @@ const RenuewPreferencesPage = () => {
             {entitySuscription.map((plan, index) => (
                 <RenuewCard  key={index} plan={plan}  />
             ))}
+           {entitySuscription.length === 0 && <EmptyState />}
         </Grid>
     );
 };

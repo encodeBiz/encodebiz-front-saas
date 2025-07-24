@@ -92,5 +92,10 @@ checkbiz360-backoffice/
 └── tsconfig.json             # TypeScript configuration
 
 
-novedades
-pasos en como usar la plataforma
+Errores:
+
+1- Cuadrar boton de login y registro con formulario y el selected de idioma que se sale hace un overflow
+2- Logo en comeplar perfil add placehoder (desde las preferencia del perfil..subtexto), aqui el email disabled
+3- Media (quitar) media eventlogo....que es lo mismo que lo de antes logo....ajustar tamaño de logo en el formulario
+
+4- quitar

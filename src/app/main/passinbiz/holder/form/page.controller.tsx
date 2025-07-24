@@ -173,7 +173,7 @@ export default function useHolderController() {
 
   const fetchData = async () => {
     try {
-      changeLoaderState({ show: true, args: { text: t('core.title.loaderActionBilling') } })
+      changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const holder: Holder = await fetchHolder(currentEntity?.entity.id as string, id)
       setInitialValues({
         fullName: holder.fullName ?? "",

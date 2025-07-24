@@ -63,7 +63,9 @@
       "loaderActionBilling": "Accediendo a la información de tu pasarela de pago"
     },
     "feedback": {
-      "success": "La operación se realizó exitosamente"
+      "success": "La operación se realizó exitosamente",
+      "empthy":"Nada que mostrar",
+      "empthytext":"No existen elementos para mostrar en este momento"
     },
     "label": {
       "filename": "Nombre de Archivo",
@@ -104,6 +106,11 @@
       "sessionLastTime": "Último inicio de sesión",
       "createAt": "Fecha de creación",
       "logo": "Logo",
+      "background": "Fondo",
+      "custom": "Personalizado",
+      "stripImage": "Imagen de tira",
+      "icon": "Icono",
+      "iconx2": "Icono Grande",
       "color": "Color",
       "taxId": "NIF / CIF / NIE / VAT",
       "street": "Calle",
@@ -328,14 +335,13 @@
     "text1": "Archicos seleccionados",
     "labelType": "Seleccione el tipo de archivo a subir",
     "deleteConfirmModalTitle": "Eliminar archivo",
-    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el archivo"
+    "deleteConfirmModalTitle2": "¡Tenga cuidaddo!. Esta acción no se puede deshacer. Si elimina un archivo que este asociado a algún servicio o entidad, podría atentar con el correcto funcionamiento de estos elementos en la plataforma."
   },
   "renew": {
     "title": "Facturas",
     "text1": "Datos",
     "deleteConfirmModalTitle": "Eliminar plan",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente todas las acciones realizadas sobre el servicio solicitado"
-  
   },
   "colaborators": {
     "title": "Colaboradores",
@@ -344,5 +350,18 @@
     "search": "Buscar usuario",
     "deleteConfirmModalTitle": "Eliminar colaborador",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará los permisos del usuario sobre la entidad"
+  },
+  "billing": {
+    "title": "Configurar Billing",
+    "subtitle": "Configura los métodos de pago para poder realizar las compras en la plataforma"
+  },
+  "scan":{
+    "title":"Validar pase",
+    "subtitle":"Escanee el código QR para confirmar si es valido el pase",
+    "camaraFocus":"Apunta tu cámara a un código QR",
+    "resultTitle":"Pase confirmado",
+    "scanOther":"Escanear otro código",
+    "failed":"Ha fallado el escaneo del código",
+    "tryagain":"Intentar de nuevo"
   }
 }

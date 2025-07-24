@@ -87,7 +87,7 @@ const EntityPreferencesPage = () => {
               disabled={isUploading}
               onChange={(e) => setSelectedType(e.target.value as string)}
             >
-              {fileTypes.map((item: { label: string, value: string }, i: number) => (
+              {fileTypes(t).map((item: { label: string, value: string }, i: number) => (
                 <MenuItem key={i} value={item.value}>
                   <Typography sx={{ textTransform: 'capitalize' }}>{item.label}</Typography>
                 </MenuItem>
