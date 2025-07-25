@@ -129,7 +129,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
 
 
             <Box sx={{ ...classes.header, gap: 4 }} >
-              {crop ? <ImageCropper isUploading={isUploading} onComplete={handleFile} /> :
+              {crop ? <ImageCropper size={type !== 'custom' ? fileTypes(t).find(e => e.value === type)?.size : { locked: false, w: 0, h: 0 }} isUploading={isUploading} onComplete={handleFile} /> :
                 <Button
                   component="label"
                   variant="outlined"

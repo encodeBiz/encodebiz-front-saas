@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import {
     Box,
     Button,
@@ -8,28 +8,24 @@ import {
     DialogActions,
     IconButton,
     Typography,
-    CircularProgress,
-    Card,
-    CardContent,
-    Slider,
-    Tooltip
+    CircularProgress
 } from '@mui/material';
-import { Close, Crop, CloudUpload, ZoomIn, ZoomOut } from '@mui/icons-material';
+import { Close, Crop, CloudUpload, AspectRatio } from '@mui/icons-material';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
-import Image from 'next/image';
 import { useImageCropper } from './ImageCropper.controller';
 import { useTranslations } from 'next-intl';
 import { NumberInput } from '../forms/fields/NumberField';
+import { BaseButton } from '../buttons/BaseButton';
 
-export const ImageCropper = ({ onComplete, isUploading }: { onComplete: (file: File) => void, isUploading: boolean }) => {
-    const { zoom, handleZoomIn, file, handleZoomOut, handleZoomChange, image, crop, setCrop, open, handleClose, setCompletedCrop, handleCrop, completedCrop, isLoading, imgRef, handleFileChange } = useImageCropper(onComplete)
+export const ImageCropper = ({ onComplete, disabled = false, isUploading, size = { w: 80, h: 80, locked: true } }: { disabled?: boolean, onComplete: (file: File) => void, isUploading: boolean, size?: { locked: boolean, w: number, h: number } }) => {
+    const { scale, setScale, toggleAspect, onImageLoad, aspect, image, crop, setCrop, open, handleClose, setCompletedCrop, handleCrop, completedCrop, isLoading, imgRef, handleFileChange } = useImageCropper(onComplete, size)
     const fileInputRef: any = useRef(null);
     const t = useTranslations()
-
+    
     return (
         <Box>
-            <input
+            <input disabled={disabled}
                 type="file"
                 accept="image/*"
                 onChange={handleFileChange}
@@ -37,7 +33,7 @@ export const ImageCropper = ({ onComplete, isUploading }: { onComplete: (file: F
                 style={{ display: 'none' }}
             />
 
-            <Button
+            <Button disabled={disabled}
                 variant="outlined"
                 startIcon={<CloudUpload />}
                 onClick={() => fileInputRef.current.click()}
@@ -53,8 +49,8 @@ export const ImageCropper = ({ onComplete, isUploading }: { onComplete: (file: F
             <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
                 <DialogTitle>
                     <Box display="flex" alignItems="center">
-                        <Crop sx={{ mr: 1 }} />
-                        <Typography variant="h6">Crop Image {crop && <>({Math.floor(crop?.width)}x{Math.floor(crop?.height)})</>}</Typography>
+                        <Crop sx={{ mr: 1 }} /> {JSON.stringify(size)}
+                        <Typography variant="h6">Crop Image {crop && <>({Math.floor(crop?.width)}x{Math.floor(crop?.height)}){crop?.unit}</>}</Typography>
                         <Box flexGrow={1} />
                         <IconButton onClick={handleClose}>
                             <Close />
@@ -67,72 +63,67 @@ export const ImageCropper = ({ onComplete, isUploading }: { onComplete: (file: F
                         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
                             <ReactCrop
                                 crop={crop}
-                                onChange={setCrop}
-                                onComplete={setCompletedCrop}
-                                style={{
-                                    maxHeight: 'calc(90vh - 200px)',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-around',
-                                    transform: `scale(${zoom})`,
-                                    transformOrigin: 'center center'
-                                }}
+                                onChange={(cropPixel) => setCrop(cropPixel)}
+                                onComplete={(cropPixel) => setCompletedCrop(cropPixel)}
+                                aspect={aspect}
+                                locked={size.locked}
+                                minHeight={100}
+
                             >
-                                <img ref={imgRef} alt='' src={image} />
+                                <img
+                                    ref={imgRef}
+                                    alt="Crop me"
+                                    src={image}
+                                    style={{ transform: `scale(${scale})` }}
+                                    onLoad={onImageLoad}
+                                />
                             </ReactCrop>
                         </Box>
                     )}
                 </DialogContent>
 
                 <DialogActions>
-                    <Box display="flex" alignItems="center" sx={{ mr: 2 }}>
+                    <Box display="flex" alignItems="center" sx={{ mr: 2 }} gap={2}>
+
+                        <BaseButton disabled={size.locked} variant='contained' onClick={toggleAspect}>
+                            <AspectRatio />
+                        </BaseButton>
 
                         <NumberInput
+                            label={'Escala'}
                             min={0}
                             max={1000}
-                            step={1}
-                            value={Math.floor(crop.width) ?? 0}
-                            onChange={(value: number) => {
-                                setCrop({ ...crop, width: Math.floor(value) });
-                            }}
-                        />
-
-                        <NumberInput
-                            min={0}
-                            max={1000}
-                            step={1}
-                            value={Math.floor(crop.height) ?? 0}
-                            onChange={(value: number) => {
-                                setCrop({ ...crop, height: Math.floor(value) });
-                            }}
-                        />
-
-                        <Tooltip title="Zoom Out">
-                            <IconButton onClick={handleZoomOut} disabled={zoom <= 1}>
-                                <ZoomOut />
-                            </IconButton>
-                        </Tooltip>
-
-                        <Slider
-                            value={zoom}
-                            onChange={handleZoomChange}
-                            min={1}
-                            max={3}
                             step={0.1}
-                            sx={{ width: 100, mx: 1 }}
-                            aria-label="Zoom"
+                            value={scale}
+                            onChange={(value: number) => {
+                                setScale(value);
+                            }}
+                        />
+                        <NumberInput
+                            label={'Ancho'}
+                            disabled={size.locked}
+                            min={0}
+                            max={1000}
+                            step={1}
+                            value={crop?.width ? Math.floor(crop?.width) : 0}
+                            onChange={(value: number) => {
+                                setCrop({ ...(crop as any), width: Math.floor(value) });
+                            }}
                         />
 
-                        <Tooltip title="Zoom In">
-                            <IconButton onClick={handleZoomIn} disabled={zoom >= 3}>
-                                <ZoomIn />
-                            </IconButton>
-                        </Tooltip>
+                        <NumberInput
+                            label={'Largo'}
+                            disabled={size.locked}
+                            min={0}
+                            max={1000}
+                            step={1}
+                            value={crop?.height ? Math.floor(crop?.height) : 0}
+                            onChange={(value: number) => {
+                                setCrop({ ...(crop as any), height: Math.floor(value) });
+                            }}
+                        />
                     </Box>
-                    <Button onClick={handleClose} color="secondary">
-                        {t('core.button.cancel')}
-                    </Button>
-
+                 
 
 
                     <Button

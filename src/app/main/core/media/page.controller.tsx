@@ -83,11 +83,11 @@ export const useMediaList = () => {
                             style={{ border: '1px solid #ddd' }}
                             zoomIconPosition="center"
                         />
-                        
+
                     ) : (
-                    <Avatar variant="rounded" style={{ backgroundColor: 'transparent' }}>
-                        {getFileIcon(row)}
-                    </Avatar>
+                        <Avatar variant="rounded" style={{ backgroundColor: 'transparent' }}>
+                            {getFileIcon(row)}
+                        </Avatar>
                     )}
                 </Box>
 
@@ -183,9 +183,8 @@ export const useMediaList = () => {
     const [isUploading, setIsUploading] = useState(false);
 
 
-    const handleFileChange = useCallback(async (event: any) => {
+    const handleFileChange = useCallback(async (file: File) => {
         try {
-            const file = event.currentTarget.files[0];
             if (!file) return;
             setIsUploading(true);
             const form = new FormData();

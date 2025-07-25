@@ -1,4 +1,29 @@
 import { useRef, useState } from "react";
+import { centerCrop, convertToPixelCrop, Crop, makeAspectCrop, PixelCrop } from "react-image-crop";
+import { useDebounceEffect } from "./useDebounceEffect";
+import { canvasPreview } from "./canvasPreview";
+
+
+function centerAspectCrop(
+  mediaWidth: number,
+  mediaHeight: number,
+  aspect: number,
+) {
+  return centerCrop(
+    makeAspectCrop(
+      {
+        unit: 'px',
+        width: mediaWidth,
+        height: mediaHeight
+      },
+      aspect,
+      mediaWidth,
+      mediaHeight,
+    ),
+    mediaWidth,
+    mediaHeight,
+  )
+}
 
 
 const getCroppedImg = (image: any, crop: any, fileName: any) => {
@@ -35,15 +60,36 @@ const getCroppedImg = (image: any, crop: any, fileName: any) => {
 };
 
 
-export const useImageCropper = (onComplete: (file: File) => void) => {
+export const useImageCropper = (onComplete: (file: File) => void, size: { w: number, h: number }) => {
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState(null);
-  const [crop, setCrop] = useState<any>({ width: 80, height: 80 });
-  const [completedCrop, setCompletedCrop] = useState<any>(null);
+  const [crop, setCrop] = useState<Crop>()
+  const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
   const [isLoading, setIsLoading] = useState(false);
-  const imgRef: any = useRef(null);
-  const [zoom, setZoom] = useState(1);
- const [file, setFile] = useState<File>();
+  const [scale, setScale] = useState(1)
+
+  const previewCanvasRef = useRef<HTMLCanvasElement>(null)
+  const imgRef = useRef<HTMLImageElement>(null)
+ 
+
+
+  const [file, setFile] = useState<File>();
+  const [aspect, setAspect] = useState<number | undefined>(size.w / size.h)
+
+  function toggleAspect() {
+    if (aspect) {
+      setAspect(undefined)
+    } else {
+      setAspect(size.w  / size.h)
+      if (imgRef.current) {
+        const { width, height } = imgRef.current
+        const newCrop = centerAspectCrop(width, height, size.w / size.h)
+        setCrop(newCrop)
+        setCompletedCrop(convertToPixelCrop(newCrop, width, height))
+      }
+    }
+  }
+
   const handleFileChange = (e: any) => {
     if (e.target.files && e.target.files.length > 0) {
       setFile(e.target.files[0])
@@ -51,7 +97,6 @@ export const useImageCropper = (onComplete: (file: File) => void) => {
       reader.addEventListener('load', () => {
         setImage(reader.result as any);
         setOpen(true);
-        setZoom(1);
       });
       reader.readAsDataURL(e.target.files[0]);
     }
@@ -72,9 +117,7 @@ export const useImageCropper = (onComplete: (file: File) => void) => {
         completedCrop,
         'cropped.jpg'
       );
-      console.log(croppedImage);      
       onComplete(croppedImage.file)
-      
       setOpen(false);
     } catch (err) {
       console.error('Error cropping image:', err);
@@ -83,22 +126,37 @@ export const useImageCropper = (onComplete: (file: File) => void) => {
     }
   };
 
+  function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
+    if (aspect) {
+      const { width, height } = e.currentTarget
+      setCrop(centerAspectCrop(size.w, size.h, aspect))
+    }
+  }
 
-  const handleZoomIn = () => {
-    setZoom(prev => Math.min(prev + 0.1, 3));
-  };
-
-  const handleZoomOut = () => {
-    setZoom(prev => Math.max(prev - 0.1, 1));
-  };
-
-  const handleZoomChange = (event: any, newValue: any) => {
-    setZoom(newValue);
-  };
+  useDebounceEffect(
+    async () => {
+      if (
+        completedCrop?.width &&
+        completedCrop?.height &&
+        imgRef.current &&
+        previewCanvasRef.current
+      ) {
+        // We use canvasPreview as it's much faster than imgPreview.
+        canvasPreview(
+          imgRef.current,
+          previewCanvasRef.current,
+          completedCrop,
+          scale
+        )
+      }
+    },
+    100,
+    [completedCrop, scale],
+  )
 
   return {
-    open, image, crop, setCrop, setCompletedCrop, completedCrop, isLoading, handleFileChange, imgRef, handleClose, handleCrop,
-    zoom, handleZoomIn, handleZoomOut, handleZoomChange,file
+    open, image, aspect, crop, setCrop,toggleAspect, setCompletedCrop, completedCrop, isLoading, handleFileChange, imgRef, handleClose, handleCrop,
+    scale, setScale, file, onImageLoad
   }
 }
 

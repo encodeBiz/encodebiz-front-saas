@@ -52,7 +52,7 @@ export const useUserProfileController = () => {
         "name": user?.displayName as string | "",
         "email": user?.email as string | "",
         "phone": user?.phoneNumber as string | "",
-        avatar: user?.photoURL as string | "",
+        avatar: user?.photoURL as string | null,
         legalEntityName: '',
         "active": true,
     });
@@ -88,6 +88,7 @@ export const useUserProfileController = () => {
             label: t('core.label.email'),
             type: 'email',
             required: true,
+            disabled:true,
             component: TextInput,
         },
         {

@@ -21,6 +21,7 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { CloudUpload } from '@mui/icons-material';
 import { fileTypes } from '@/config/constants';
+import { ImageCropper } from '@/components/common/ImageCropper/ImageCropper';
 
 const EntityPreferencesPage = () => {
   const t = useTranslations();
@@ -38,44 +39,8 @@ const EntityPreferencesPage = () => {
     <Container maxWidth="lg">
       <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' sx={{ width: '100%' }}>
         <Box display={'flex'} flexDirection={'row-reverse'} justifyContent={'flex-end'} gap={4} alignItems='flex-end' sx={{ width: '100%' }} >
-          <Button
-            component="label"
-            variant="outlined"
-            color="primary"
-            startIcon={<CloudUpload />}
-            disabled={!selectedType}
-            style={{ width: 340, height: 55 }}
-          >
-
-            {isUploading ? (
-              <CircularProgress size={24} />
-            ) : (
-              t('core.label.uploadResourse')
-            )}
-
-            <TextField
-              onChange={handleFileChange}
-
-              type="file"
-
-              style={{
-                border: 1,
-                clip: 'rect(0 0 0 0)',
-                height: '1px',
-                margin: '-1px',
-                overflow: 'hidden',
-                padding: 0,
-                position: 'absolute',
-                whiteSpace: 'nowrap',
-                width: '1px',
-              }}
-
-              //accept={accept}
-              //
-              disabled={!selectedType}
-            />
-
-          </Button>
+          <ImageCropper  disabled={!selectedType} size={selectedType !== 'custom' ? fileTypes(t).find(e => e.value === selectedType)?.size : { locked: false, w: 0, h: 0 }} isUploading={isUploading} onComplete={handleFileChange} />
+         
           <FormControl required sx={{ width: '100%' }}>
             <InputLabel id="demo-simple-select-required-label">{t('media.labelType')}</InputLabel>
             <Select

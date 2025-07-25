@@ -31,13 +31,14 @@ export const NumberInput = ({
 
     const handleIncrement = () => {
         const newValue = Math.min(Number(value) + step, max);
-        onChange?.(newValue);
+        if (!props.disabled)
+            onChange?.(newValue);
     };
 
     const handleDecrement = () => {
         const newValue = Math.max(Number(value) - step, min);
-
-        onChange?.(newValue);
+        if (!props.disabled)
+            onChange?.(newValue);
     };
 
     const handleChange = (e: any) => {
@@ -49,7 +50,8 @@ export const NumberInput = ({
         const numValue = Number(inputValue);
         if (!isNaN(numValue)) {
             const clampedValue = Math.min(Math.max(numValue, min), max);
-            onChange?.(clampedValue);
+            if (!props.disabled)
+                onChange?.(clampedValue);
         }
     };
 
