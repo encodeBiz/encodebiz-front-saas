@@ -30,6 +30,11 @@ const PASSINBIZ = [ {
     icon: <Today />,
     link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event`,
     subMenu: []
+}, {
+    name: 'Staff',
+    icon: <Person2TwoTone />,
+    link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff`,
+    subMenu: []
 }]
 
 

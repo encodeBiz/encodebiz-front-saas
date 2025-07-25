@@ -6,39 +6,38 @@ import { useTheme } from "@emotion/react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { useStyles } from "./page.styles";
-
+import { RemoveDone, Send } from "@mui/icons-material";
 import { useLayout } from "@/hooks/useLayout";
-import { IEvent } from "@/domain/features/passinbiz/IEvent";
-import { deleteEvent, search } from "@/services/passinbiz/event.service";
-import { useRouter } from "nextjs-toploader/app";
-import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
+import { Chip } from "@mui/material";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
+import { useRouter } from "nextjs-toploader/app";
+import { IStaff } from "@/domain/features/passinbiz/IStaff";
+import { deleteStaff, search } from "@/services/passinbiz/staff.service";
 
 
 
 
-export default function useIEventListController() {
+export default function useStaffListController() {
   const t = useTranslations();
-  const theme = useTheme();
-  const classes = useStyles()
   const { token, user } = useAuth()
-  const { currentEntity } = useEntity()
+  const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
-  const { push } = useRouter()
-  const [rowsPerPage, setRowsPerPage] = useState<number>(5); // Límite inicial
+  const [rowsPerPage, setRowsPerPage] = useState<number>(2); // Límite inicial
   const [params, setParams] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false)
   const [last, setLast] = useState<any>()
   const [pagination, setPagination] = useState(``);
-  const [items, setItems] = useState<IEvent[]>([]);
-  const [itemsHistory, setItemsHistory] = useState<IEvent[]>([]);
+  const [items, setItems] = useState<IStaff[]>([]);
+  const [itemsHistory, setItemsHistory] = useState<IStaff[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [total, setTotal] = useState(0);
   const { changeLoaderState } = useLayout()
-  const { closeModal } = useCommonModal()
+  const { openModal, closeModal } = useCommonModal()
+  const [revoking, setRevoking] = useState(false)
+  const { push } = useRouter()
   const rowAction: Array<IRowAction> = []
 
   const onSearch = (term: string): void => {
@@ -69,36 +68,44 @@ export default function useIEventListController() {
 
 
 
-  const columns: Column<IEvent>[] = [
+  const columns: Column<IStaff>[] = [
     {
-      id: 'name',
-      label: t("core.label.name"),
+      id: 'fullName',
+      label: t("core.label.fullName"),
       minWidth: 170,
     },
     {
-      id: 'description',
-      label: t("core.label.description"),
+      id: 'email',
+      label: t("core.label.email"),
       minWidth: 170,
     },
     {
-      id: 'date',
-      label: t("core.label.date"),
+      id: 'phoneNumber',
+      label: t("core.label.phone"),
       minWidth: 170,
     },
     {
-      id: 'location',
-      label: t("core.label.location"),
+      id: 'passStatus',
+      label: t("core.label.state"),
       minWidth: 170,
-
+      format: (value, row) => <Chip
+        size="small"
+        label={row.passStatus}
+        variant="outlined"
+      />,
     },
-
+    {
+      id: 'failedFeedback',
+      label: t("core.label.message"),
+      minWidth: 170,
+    },
 
   ];
 
   const fetchingData = () => {
     setLoading(true)
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
- 
+
       if (res.length < rowsPerPage || res.length === 0)
         setAtEnd(true)
       else
@@ -131,8 +138,10 @@ export default function useIEventListController() {
   }
 
   useEffect(() => {
-    if (params && currentEntity?.entity?.id)
+    if (params && currentEntity?.entity?.id) {
       fetchingData()
+      watchServiceAccess('passinbiz')
+    }
   }, [params, currentEntity?.entity?.id])
 
   useEffect(() => {
@@ -141,17 +150,16 @@ export default function useIEventListController() {
     setAtStart(true)
   }, [rowsPerPage])
 
-  const [deleting, setDeleting] = useState(false)
   const onEdit = async (item: any) => {
-    push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event/${item.id}/edit`)
+    push(`/main/passinbiz/staff/${item.id}/edit`)
   }
 
-
+  const [deleting, setDeleting] = useState(false)
   const onDelete = async (item: any) => {
     try {
       setDeleting(true)
       const id = item[0]
-      await deleteEvent(currentEntity?.entity.id as string, id, token)
+      await deleteStaff(currentEntity?.entity.id as string, id, token)
       setItemsHistory(itemsHistory.filter(e => e.id !== id))
       setItems(itemsHistory.filter(e => e.id !== id))
       setDeleting(false)
@@ -162,13 +170,16 @@ export default function useIEventListController() {
     }
   }
 
+
+
   return {
-    onDelete, items,
-    atEnd, onEdit, onSearch,
-    atStart, onBack, onNext,
+    items,
+    atEnd, onEdit,
+    atStart,
+    onSearch, onNext, onBack,
     pagination, currentPage,
-    columns, deleting, rowAction,
-    loading, rowsPerPage, setRowsPerPage
+    columns, rowAction,onDelete,
+    loading, rowsPerPage, setRowsPerPage, deleting
   }
 
 

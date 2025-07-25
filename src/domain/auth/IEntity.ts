@@ -20,6 +20,7 @@ interface IEntity {
     backgroundColor: string
     entityId: string
     icon: string
+    iconx2: string
     labelColor: string
     logo: string
     stripImage: string

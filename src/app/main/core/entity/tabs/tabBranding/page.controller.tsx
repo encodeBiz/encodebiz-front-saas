@@ -37,6 +37,7 @@ export interface BrandFormValues {
     logoUrl: File | string,
     stripImageUrl: File | string,
     iconUrl: File | string,
+    icon2Url: File | string,
 };
 
 export type TabItem = {
@@ -64,6 +65,7 @@ export const useSettingEntityController = () => {
         logoUrl: '',
         stripImageUrl: '',
         iconUrl: '',
+        icon2Url: '',
     });
 
     const brandValidationSchema = Yup.object().shape({
@@ -119,7 +121,7 @@ export const useSettingEntityController = () => {
         },
 
         {
-            name: 'iconx2',
+            name: 'icon2Url',
             label: t('core.label.icon2x'),
             component: ImageUploadInput,
             required: true,
@@ -137,6 +139,7 @@ export const useSettingEntityController = () => {
             form.append('textColor', values.textColor);
             form.append('logo', values.logoUrl);
             form.append('icon', values.iconUrl);
+            form.append('iconx2', values.icon2Url);
             form.append('stripImage', values.stripImageUrl);
             const data = {
                 'entityId': currentEntity?.entity.id,
@@ -146,6 +149,7 @@ export const useSettingEntityController = () => {
                 files: {
                     'logo': values.logoUrl,
                     'icon': values.iconUrl,
+                    'iconx2': values.icon2Url,
                     'stripImage': values.stripImageUrl
                 }
             }
@@ -175,6 +179,7 @@ export const useSettingEntityController = () => {
             logoUrl: currentEntity?.entity?.branding?.logo as string | "",
             stripImageUrl: currentEntity?.entity?.branding?.stripImage as string | "",
             iconUrl: currentEntity?.entity?.branding?.icon as string | "",
+            icon2Url: currentEntity?.entity?.branding?.iconx2 as string | "",
         })
     }
     useEffect(() => {

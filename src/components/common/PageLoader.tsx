@@ -42,8 +42,9 @@ const PageLoader: React.FC<PageLoaderProps> = ({
       left: 0,
       width: '100vw',
       height: '100vh',
-      backgroundColor: backdrop?'rgba(0,0,0,0.4)':theme.palette.background.default,
-      zIndex: theme.zIndex.modal + 1
+      backgroundColor: backdrop?'rgba(0,0,0,0.7)':theme.palette.background.default,
+      zIndex: theme.zIndex.modal + 1,
+      color: theme.palette.text.secondary
     }),
     ...(!fullScreen && {
      

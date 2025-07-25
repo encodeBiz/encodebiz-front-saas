@@ -1,6 +1,7 @@
 export const collection = {
     USER:'users',
     HOLDER:'holders',
+    STAFF:'staff',
     EMPLOYEE:'employee',
     EVENT:'events',
     ENTITIES:'entities',

@@ -49,7 +49,7 @@ export const ImageCropper = ({ onComplete, disabled = false, isUploading, size =
             <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
                 <DialogTitle>
                     <Box display="flex" alignItems="center">
-                        <Crop sx={{ mr: 1 }} /> {JSON.stringify(size)}
+                        <Crop sx={{ mr: 1 }} /> 
                         <Typography variant="h6">Crop Image {crop && <>({Math.floor(crop?.width)}x{Math.floor(crop?.height)}){crop?.unit}</>}</Typography>
                         <Box flexGrow={1} />
                         <IconButton onClick={handleClose}>

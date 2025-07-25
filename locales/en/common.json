@@ -131,19 +131,23 @@
       "send": "Resend",
       "confirm": "Confirm",
       "cancel": "Cancel",
+      "crop": "Crop Image",
+      "file": "Original Image",
       "download": "Download",
       "delete": "Delete",
       "save": "Save",
+      "ok": "Got it",
+      "configurenow": "Configure now",
       "update": "Update"
     },
     "formValidatorMessages": {
       "required": "This field is required",
       "email": "This field is required",
-      "password": "Password is too short: minimum of 8 characters required.",
+      "password": "The password is too short: it must be at least 8 characters.",
       "passwordMatch": "Passwords do not match",
       "acceptTerm": "You must accept the terms and conditions",
-      "avatarUpload": "Please select a valid image file.",
-      "avatarMaxSize": "Image is too large. Maximum allowed: 5MB."
+      "avatarUpload": "Select a valid image file.",
+      "avatarMaxSize": "The image is too large. Maximum allowed: 5MB."
     },
     "signup": {
       "title": "Create an account",
