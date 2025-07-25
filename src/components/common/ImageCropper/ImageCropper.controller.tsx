@@ -38,7 +38,7 @@ const getCroppedImg = (image: any, crop: any, fileName: any) => {
 export const useImageCropper = (onComplete: (file: File) => void) => {
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState(null);
-  const [crop, setCrop] = useState<any>({ width: 80, heigth: 80 });
+  const [crop, setCrop] = useState<any>({ width: 80, height: 80 });
   const [completedCrop, setCompletedCrop] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   const imgRef: any = useRef(null);
@@ -72,8 +72,9 @@ export const useImageCropper = (onComplete: (file: File) => void) => {
         completedCrop,
         'cropped.jpg'
       );
+      console.log(croppedImage);      
       onComplete(croppedImage.file)
-      //onCropComplete(croppedImage);
+      
       setOpen(false);
     } catch (err) {
       console.error('Error cropping image:', err);

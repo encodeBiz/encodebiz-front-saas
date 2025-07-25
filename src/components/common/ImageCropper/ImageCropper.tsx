@@ -22,7 +22,7 @@ import { useImageCropper } from './ImageCropper.controller';
 import { useTranslations } from 'next-intl';
 import { NumberInput } from '../forms/fields/NumberField';
 
-export const ImageCropper = ({ onComplete }: { onComplete: (file: File) => void }) => {
+export const ImageCropper = ({ onComplete, isUploading }: { onComplete: (file: File) => void, isUploading: boolean }) => {
     const { zoom, handleZoomIn, file, handleZoomOut, handleZoomChange, image, crop, setCrop, open, handleClose, setCompletedCrop, handleCrop, completedCrop, isLoading, imgRef, handleFileChange } = useImageCropper(onComplete)
     const fileInputRef: any = useRef(null);
     const t = useTranslations()
@@ -43,7 +43,11 @@ export const ImageCropper = ({ onComplete }: { onComplete: (file: File) => void 
                 onClick={() => fileInputRef.current.click()}
                 style={{ width: 180, height: 55 }}
             >
-                {t('core.label.uploadResourse')}
+                {isUploading ? (
+                    <CircularProgress size={24} />
+                ) : (
+                    t('core.label.uploadResourse')
+                )}
             </Button>
 
             <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
@@ -87,7 +91,7 @@ export const ImageCropper = ({ onComplete }: { onComplete: (file: File) => void 
                             min={0}
                             max={1000}
                             step={1}
-                            value={crop.width ?? 0}
+                            value={Math.floor(crop.width) ?? 0}
                             onChange={(value: number) => {
                                 setCrop({ ...crop, width: Math.floor(value) });
                             }}
@@ -97,13 +101,12 @@ export const ImageCropper = ({ onComplete }: { onComplete: (file: File) => void 
                             min={0}
                             max={1000}
                             step={1}
-                            value={crop.height ?? 0}
+                            value={Math.floor(crop.height) ?? 0}
                             onChange={(value: number) => {
                                 setCrop({ ...crop, height: Math.floor(value) });
                             }}
                         />
 
-                        
                         <Tooltip title="Zoom Out">
                             <IconButton onClick={handleZoomOut} disabled={zoom <= 1}>
                                 <ZoomOut />
@@ -130,7 +133,7 @@ export const ImageCropper = ({ onComplete }: { onComplete: (file: File) => void 
                         {t('core.button.cancel')}
                     </Button>
 
-                    
+
 
                     <Button
                         onClick={handleCrop}

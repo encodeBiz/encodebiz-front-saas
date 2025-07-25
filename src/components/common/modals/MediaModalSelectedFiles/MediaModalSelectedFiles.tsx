@@ -129,7 +129,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
 
 
             <Box sx={{ ...classes.header, gap: 4 }} >
-              {crop ? <ImageCropper onComplete={handleFile} /> :
+              {crop ? <ImageCropper isUploading={isUploading} onComplete={handleFile} /> :
                 <Button
                   component="label"
                   variant="outlined"
@@ -254,7 +254,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
 
           <Box sx={classes.footer}>
             <Typography variant="body2" color="textSecondary">
-              {userMediaList.length} file{userMediaList.length !== 1 ? 's' : ''} disponibles
+              {userMediaList.filter(e => (type === 'custom' ? true : (e.type === type))).length} media{userMediaList.filter(e => (type === 'custom' ? true : (e.type === type))).length > 1 ? 's' : ''} disponibles
             </Typography>
             <Button
               variant="contained"
@@ -262,7 +262,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
               onClick={() => handleSelectedChange()}
               disabled={selectedFile.length === 0}
             >
-              Insert Selected
+              {t('core.button.selected')}
             </Button>
           </Box>
         </Paper>
