@@ -144,6 +144,8 @@
       "download": "Descargar",
       "delete": "Eliminar",
       "save": "Guardar",
+      "ok": "Entiendo",
+      "configurenow":"Configurar ahora",
       "update": "Actualizar"
     },
     "formValidatorMessages": {
@@ -293,6 +295,8 @@
     "contract": "Plan Actual",
     "renew": "Cambiar plan",
     "del": "Eliminar suscripción",
+    "imageConfirmModalTitle":"Entidad no configurada",
+    "imageConfirmModalTitle2":"Para poder realizar una suscripción debe previamente configurar los datos legales de al entidad y el billing",
     "notAllowedPlan": "Debes actualizar los datos legales de la entidad seleccionada antes de obtener un plan."
   },
   "terms": {

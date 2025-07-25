@@ -50,13 +50,13 @@ export type TabItem = {
 export const useSettingEntityController = () => {
     const t = useTranslations();
     const { currentEntity, refrestList } = useEntity();
- 
+
     const { changeLoaderState } = useLayout()
     const { user, token } = useAuth();
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
-    
-    
+
+
     const [initialBrandValues, setInitialBrandValues] = useState<BrandFormValues>({
         "backgroundColor": "#417505" as string,
         "labelColor": "#b62929" as string,
@@ -117,8 +117,16 @@ export const useSettingEntityController = () => {
             required: true,
             type: 'icon'
         },
+
+        {
+            name: 'iconx2',
+            label: t('core.label.icon2x'),
+            component: ImageUploadInput,
+            required: true,
+            type: 'icon'
+        },
     ];
- 
+
     const changeBrandAction = async (values: BrandFormValues) => {
         try {
             setPending(true)

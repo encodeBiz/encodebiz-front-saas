@@ -6,6 +6,7 @@ import useSalesPlanController from './SalesPlan.controller';
 import { BizType } from '@/domain/core/IService';
 import { IPlan } from '@/domain/core/IPlan';
 import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
+import { BaseButton } from '@/components/common/buttons/BaseButton';
  
 
 export default function SalesPlan({fromService,salesPlans, notGetPlan,ref}:{ref?: any,fromService:BizType,salesPlans:Array<IPlan>, notGetPlan:boolean}) {
@@ -26,15 +27,15 @@ export default function SalesPlan({fromService,salesPlans, notGetPlan,ref}:{ref?
                 <Box display="flex" justifyContent="center" paddingBottom="20px">
                     <Alert
                         sx={{ alignItems: "center" }}
-                        severity="warning"
+                        severity="info"
                         variant='filled'
                         action={
-                            <Link
-                                paddingLeft="20px"
-                                color='#FFFFFF'
+                            <BaseButton
+                                variant='contained'
+                                color='warning'
                                 href={`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity`}
                                  
-                            >{`${t('core.button.update')} ${t('entity.title')}`}</Link>
+                            >{`${t('core.button.update')} ${t('entity.title')}`}</BaseButton>
                         }
                     >{t("salesPlan.notAllowedPlan")}</Alert>
                 </Box>

@@ -7,7 +7,8 @@ export enum CommonModalType {
     ONBOARDING = 'ONBOARDING',
     DELETE = 'DELETE',
     FILES = 'FILES',
-    SEND = 'FILES'
+    SEND = 'SEND',
+    BILLING = 'BILLING'
 }
 interface CommonModalContextType {
     open: { type: CommonModalType, open: boolean, args?: any }

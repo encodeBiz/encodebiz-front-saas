@@ -4,10 +4,16 @@ import { styled } from '@mui/material/styles';
 import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
 import { useTranslations } from 'next-intl';
 import { IPlan } from '@/domain/core/IPlan';
-import { GenericButton } from '../buttons/BaseButton';
+import { BaseButton, GenericButton } from '../buttons/BaseButton';
 import usePricingCardController from './PricingCard.controller';
 import { BizType } from '@/domain/core/IService';
 import { useEntity } from '@/hooks/useEntity';
+import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
+import { CommonModalType } from '@/contexts/commonModalContext';
+import ConfirmModal from '../modals/ConfirmModal';
+import { useRouter } from 'nextjs-toploader/app';
+import { useCommonModal } from '@/hooks/useCommonModal';
+import SheetModalModal from '../modals/SheetModal';
 
 const PlanCard = styled(Box)<{ featured?: string }>(({ theme, featured }) => ({
     maxWidth: 300,
@@ -51,7 +57,7 @@ const DangerButton = styled(GenericButton)(({ theme }) => ({
 
 
 export type PricingCardProps = IPlan & {
-    fromService: BizType; 
+    fromService: BizType;
     isContract: boolean;
 };
 
@@ -59,16 +65,25 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
     const t = useTranslations();
     const { subcribeAction, loadingGetPlan, setLoadingGetPlan, ubSubcribeAction } = usePricingCardController(id as string, fromService);
     const { currentEntity } = useEntity();
+    const { push } = useRouter()
+    const { open, openModal, closeModal } = useCommonModal()
 
+    const watch = () => {
+        const disabledPlan = !currentEntity || !currentEntity?.entity?.billingEmail || !currentEntity?.entity?.legal?.legalName || !currentEntity?.entity?.legal?.taxId || !currentEntity?.entity?.billinConfig?.payment_method
+        setLoadingGetPlan(disabledPlan)
+        if (disabledPlan) openModal(CommonModalType.BILLING)
+    }
     useEffect(() => {
-        setLoadingGetPlan(!currentEntity || !currentEntity?.entity?.billingEmail || !currentEntity?.entity?.legal?.legalName || !currentEntity?.entity?.legal?.taxId || !currentEntity?.entity?.billinConfig?.payment_method);
+        watch()
     }, [currentEntity?.entity?.id]);
 
-    return (
+    return (<>
         <PlanCard featured={String(featured)}>
             {featured && (
                 <FeaturedBadge>{t("salesPlan.popular")}</FeaturedBadge>
             )}
+
+
 
             <CardContent sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
                 <span>
@@ -102,20 +117,24 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
                         ))}
                     </List>
                 </span>
-                <SelectButton
-                    featured={String(isContract)}
+                <BaseButton
+                  
                     fullWidth
                     variant="contained"
                     onClick={() => {
-                        if (!isContract) {
-                            subcribeAction()
+                        if (loadingGetPlan) {
+                            watch()
+                        } else {
+                            if (!isContract) {
+                                subcribeAction()
+                            }
                         }
                     }}
-                    disabled={loadingGetPlan}
-                    loading={loadingGetPlan}
+                    disabled={false}
+                    
                 >
                     {!isContract ? t("salesPlan.pay") : t("salesPlan.contract")}
-                </SelectButton>
+                </BaseButton>
 
                 {isContract && <DangerButton
                     fullWidth
@@ -125,12 +144,27 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
                             ubSubcribeAction()
                         }
                     }}
-                    disabled={loadingGetPlan}
-                    loading={loadingGetPlan}
+                
+                  
                 >
                     {t("salesPlan.del")}
                 </DangerButton>}
             </CardContent>
         </PlanCard>
+        {open.type === CommonModalType.BILLING && <SheetModalModal
+            title={t('salesPlan.imageConfirmModalTitle')}
+            description={t('salesPlan.imageConfirmModalTitle2')}
+            textBtn={t('core.button.configurenow')}
+            type={CommonModalType.BILLING}
+            onOKAction={(args: { data: any }) => {
+                closeModal(CommonModalType.BILLING)
+                push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity`)
+            }}
+        />}
+    </>
     );
 };
+
+//Crop
+//Crup de Staf
+//Ajustar formulario de evento
