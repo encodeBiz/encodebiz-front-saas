@@ -170,7 +170,6 @@ export const useSettingEntityController = () => {
     };
 
     const fetchData = async () => {
-changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
 
         setInitialBrandValues({
             "backgroundColor": currentEntity?.entity?.branding?.backgroundColor as string | "",

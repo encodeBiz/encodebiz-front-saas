@@ -12,6 +12,7 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 function AnimatedLogo() {
 	const didAnimate = useRef(false);
 	 
+	 
 	useEffect(() => {
         if (didAnimate.current) return;
         gsap.timeline({ repeat: -1, yoyo: true })
@@ -25,6 +26,12 @@ function AnimatedLogo() {
                 { x: 50, y: 15, opacity: 0 },
                 { x: 0, y: 0, opacity: 1, duration: 0.5 },
                 "-=0.25"
+            )
+			.fromTo(
+                ".logo_2",
+                { x: 50, y: 15, opacity: 0 },
+                { x: 0, y: 0, opacity: 1, duration: 0.5 },
+                "-=0.25"
             );
         didAnimate.current = true;
     }, []);
@@ -35,7 +42,7 @@ function AnimatedLogo() {
 			<div className={`${style.images} ${style.img_1} logo_1`}>
 				<Image height={400} alt="logo" src={logo_1} />
 			</div>
-			<div className={`${style.images} ${style.img_2} logo_1`}>
+			<div className={`${style.images} ${style.img_2} logo_2`}>
 				<Image fill alt="logo" src={logo_2} />
 			</div>
 			<div className={`${style.img_3} logo`}>
