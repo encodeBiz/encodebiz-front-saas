@@ -8,6 +8,7 @@ import {
   Typography,
   useTheme
 } from '@mui/material';
+import AnimatedLogo from '../layouts/LogoLoader/LogoLoader';
 
 type PageLoaderProps = {
   type?: 'circular' | 'linear';
@@ -31,6 +32,7 @@ const PageLoader: React.FC<PageLoaderProps> = ({
   const theme = useTheme();
 
   const loaderStyle = {
+    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -73,10 +75,10 @@ const PageLoader: React.FC<PageLoaderProps> = ({
 
   return (
     <Box sx={loaderStyle}>
-      {progressComponent}
+      <AnimatedLogo/>
       {message && (
-        <Typography variant="body1" color="textSecondary">
-          {message}
+        <Typography style={{color:'#FFF'}} variant="body1" color="textSecondary">
+          {message}...
         </Typography>
       )}
     </Box>

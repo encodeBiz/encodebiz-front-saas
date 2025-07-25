@@ -1,0 +1,33 @@
+ .AnimatedLogo {
+   position: relative;
+   width: 207px;
+   height: 150px;
+   z-index: -1;
+   transform: scale(.4);
+ }
+
+ .img_1 {
+   position: absolute;
+   transform: scale(.5);
+   height: 80px !important;
+   width: 140px !important;
+   top: -55px;
+   left: -30px;
+ }
+
+ .img_2>img {
+   position: absolute;
+   transform: scale(.7);
+   height: 200px !important;
+   width: 140px !important;
+   top: 80px;
+
+ }
+
+ .img_3>img {
+   position: absolute;
+   transform: scale(.7);
+   height: 300px !important;
+   width: 200px !important;
+   top: 10px;
+ }

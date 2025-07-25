@@ -32,6 +32,8 @@ import IUserEntity from '@/domain/auth/IUserEntity';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
+import { useAuth } from '@/hooks/useAuth';
+import { useEntity } from '@/hooks/useEntity';
 
 const roleOptions = [
     { value: 'admin', label: 'Adminstrador' },
@@ -73,6 +75,8 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser, procc
     const [filteredUsers, setFilteredUsers] = useState<Array<ICollaborator>>([]);
     const t = useTranslations()
     const { openModal, open } = useCommonModal()
+    const { user } = useAuth()
+    const { currentEntity } = useEntity()
     useEffect(() => {
         // Filter out users already assigned to the project
         const assignedUserIds = project.collaborators.map(c => c.user.id);
@@ -128,7 +132,7 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser, procc
             <Paper elevation={1} sx={{ p: 2, mb: 2 }}>
                 <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                     <Typography variant="subtitle1">
-                        {project.collaborators.length} {project.collaborators.length === 1 ?  t('colaborators.titles') :  t('colaborators.title')}
+                        {project.collaborators.length} {project.collaborators.length === 1 ? t('colaborators.titles') : t('colaborators.title')}
                     </Typography>
                     <Button
                         variant="contained"
@@ -144,7 +148,7 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser, procc
                         <React.Fragment key={collaborator.user.id}>
                             <ListItem
                                 secondaryAction={
-                                    collaborator.user.id !== project.owner.user.id && (
+                                    currentEntity?.role === 'owner' && collaborator.user.id !== user?.id && (
                                         <IconButton
                                             edge="end"
                                             aria-label="remove"
@@ -164,17 +168,17 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser, procc
                                     secondary={
                                         <>
                                             {collaborator.user.id !== project.owner.user.id && <Chip
-                                                label={collaborator.role}
+                                                label={t('core.label.'+collaborator.role)}
                                                 size="small"
                                                 color={
-                                                    collaborator.role === 'admin' ? 'error' :
-                                                        collaborator.role === 'maintain' ? 'warning' :
+                                                    collaborator.role === 'admin' ? 'secondary' :
+                                                        collaborator.role === 'owner' ? 'primary' :
                                                             'default'
                                                 }
                                                 sx={{ mr: 1 }}
                                             />}
                                             {collaborator.user.id === project.owner.user.id && (
-                                                <Chip label="Owner" size="small" color="primary" />
+                                                <Chip label={t('core.label.owner')} size="small" color="primary" />
                                             )}
                                         </>
                                     }
@@ -231,7 +235,7 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser, procc
                     </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>{t('colaborators.cancel')}</Button>
+                    <Button onClick={handleClose}>{t('core.button.cancel')}</Button>
                     <Button
                         onClick={handleAssign}
                         variant="contained"
@@ -246,7 +250,7 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser, procc
             {open.type === CommonModalType.DELETE && <ConfirmModal
                 isLoading={proccesing}
                 title={t('colaborators.deleteConfirmModalTitle')}
-                description={t('colaborators.deleteConfirmModalTitle2')}              
+                description={t('colaborators.deleteConfirmModalTitle2')}
                 onOKAction={(args: { data: any }) => handleRemove(args.data)}
             />}
         </Box>

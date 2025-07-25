@@ -137,6 +137,9 @@
       "delete": "Delete",
       "save": "Save",
       "ok": "Got it",
+      "add": "Add",
+      "edit": "Edit",
+      "close": "Close",
       "configurenow": "Configure now",
       "update": "Update"
     },

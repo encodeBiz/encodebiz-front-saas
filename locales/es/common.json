@@ -69,6 +69,8 @@
     },
     "label": {
       "filename": "Nombre de Archivo",
+      "owner": "Propietario",
+      "admin": "Administrador",
       "typePass": "Tpo de pase",
       "credencial": "Credenciales",
       "event": "Evento",
@@ -136,6 +138,8 @@
       "submitting": "Enviando...",
       "submit": "Enviar",
       "send": "Relanzar",
+      "add": "Adicionar",
+      "edit": "Editar",
       "selected": "Seleccionar",
       "confirm": "Confirmar",
       "cancel": "Cancelar",

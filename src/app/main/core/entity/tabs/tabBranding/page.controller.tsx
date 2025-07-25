@@ -57,7 +57,6 @@ export const useSettingEntityController = () => {
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
 
-
     const [initialBrandValues, setInitialBrandValues] = useState<BrandFormValues>({
         "backgroundColor": "#417505" as string,
         "labelColor": "#b62929" as string,
@@ -171,6 +170,7 @@ export const useSettingEntityController = () => {
     };
 
     const fetchData = async () => {
+changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
 
         setInitialBrandValues({
             "backgroundColor": currentEntity?.entity?.branding?.backgroundColor as string | "",
