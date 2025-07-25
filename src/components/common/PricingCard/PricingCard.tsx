@@ -61,7 +61,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
     const { currentEntity } = useEntity();
 
     useEffect(() => {
-        setLoadingGetPlan(!currentEntity || !currentEntity?.entity?.billingEmail || !currentEntity?.entity?.legal?.legalName || !currentEntity?.entity?.legal?.taxId);
+        setLoadingGetPlan(!currentEntity || !currentEntity?.entity?.billingEmail || !currentEntity?.entity?.legal?.legalName || !currentEntity?.entity?.legal?.taxId || !currentEntity?.entity?.billinConfig?.payment_method);
     }, [currentEntity?.entity?.id]);
 
     return (

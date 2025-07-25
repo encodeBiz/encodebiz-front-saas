@@ -22,7 +22,8 @@ export default function useDashboardController() {
   const [dataEntity, setDataEntity] = useState({
     billingEmail: currentEntity?.entity?.billingEmail ?? "",
     legalName: currentEntity?.entity?.legal?.legalName ?? "",
-    taxId: currentEntity?.entity?.legal?.taxId ?? ""
+    taxId: currentEntity?.entity?.legal?.taxId ?? "",
+    billinConfig: !!currentEntity?.entity?.billinConfig?.payment_method
   });
 
   const fetchServiceData = async () => {
@@ -90,13 +91,14 @@ export default function useDashboardController() {
       setDataEntity({
         billingEmail: currentEntity.entity.billingEmail ?? "",
         legalName: currentEntity.entity.legal?.legalName ?? "",
-        taxId: currentEntity.entity.legal?.taxId ?? ""
+        taxId: currentEntity.entity.legal?.taxId ?? "",
+        billinConfig: !!currentEntity?.entity?.billinConfig?.payment_method
       })
     }
   }, [currentEntity]);
 
   useEffect(() => {
-    if (dataEntity.billingEmail === "" || dataEntity.legalName === "" || dataEntity.taxId === "") {
+    if (dataEntity.billingEmail === "" || dataEntity.legalName === "" || dataEntity.taxId === "" || !dataEntity.billinConfig) {
       setnotGetPlan(true);
     } else {
       setnotGetPlan(false);

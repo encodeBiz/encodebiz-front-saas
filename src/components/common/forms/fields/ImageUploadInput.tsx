@@ -20,7 +20,8 @@ import MediaModalSelectedFiles from '../../modals/MediaModalSelectedFiles/MediaM
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { IUserMedia, IUserMediaType } from '@/domain/core/IUserMedia';
-import ImageCropper from '../../ImageCropper/ImageCropper';
+import ImagePreview from '../../ImagePreview';
+import { ImageCropper } from '../../ImageCropper/ImageCropper';
 
 interface ImageFieldProps {
   accept: string
@@ -69,11 +70,13 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
       <Box sx={{ paddingTop: 5 }}>
         {preview ? (
           <Box sx={{ position: 'relative', display: 'inline-block', borderRadius: '1px solid red' }}>
-            <Avatar
+            <ImagePreview
               src={preview}
-              alt="Preview"
-              sx={{ width: '100%', height: '100%', mb: 1, maxWidth: 300 }}
-              variant="rounded"
+              alt=""
+              width={'200px'}
+              height={'200px'}
+              style={{ border: '1px solid #ddd' }}
+              zoomIconPosition="center"
             />
             <IconButton disabled={props.disabled}
               onClick={handleRemoveImage}

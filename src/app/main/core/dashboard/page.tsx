@@ -75,59 +75,7 @@ export default function Dashboard() {
 
       <ServiceList ref={sectionServicesRef}  />
 
-
-      <Typography variant="h4" component="h2" align="left" gutterBottom>
-        {t('features.dashboard.stats')}
-      </Typography>
-
-
-      <Grid container spacing={3}>
-        {/* Sales Trend Chart */}
-        <Grid size={{
-          xs: 12,
-          sm: 6,
-          md: 6
-        }}> {/* Takes full width on small, 8/12 on medium+ */}
-          <DashboardCard title="PassinBiz Product Stats">
-            <LineChart />
-          </DashboardCard>
-        </Grid>
-
-        <Grid size={{
-          xs: 12,
-          sm: 6,
-          md: 6
-        }}> {/* Takes full width on small, 8/12 on medium+ */}
-          <DashboardCard title="CkeckinBiz Product Stats">
-            <LineChart />
-          </DashboardCard>
-        </Grid>
-
-        {/* Departmental Budget Chart */}
-        <Grid size={{
-          xs: 12,
-          sm: 6,
-          md: 6
-        }}> {/* Takes full width on small, 4/12 on medium+ */}
-          <DashboardCard title="Budget Allocation">
-            <DoughnutChart />
-          </DashboardCard>
-        </Grid>
-
-        {/* Departmental Budget Chart */}
-        <Grid size={{
-          xs: 12,
-          sm: 6,
-          md: 6
-        }}> {/* Takes full width on small, 4/12 on medium+ */}
-          <DashboardCard title="Budget Allocation">
-            <DoughnutChart />
-          </DashboardCard>
-        </Grid>
-      </Grid>
-
-
-
+ 
     </Container>
   );
 }

@@ -45,7 +45,8 @@ import { useToast } from '@/hooks/useToast';
 import { IUserMedia, IUserMediaType } from '@/domain/core/IUserMedia';
 import { fileTypes } from '@/config/constants';
 import { formatFileSize, getFileIcon } from '@/lib/common/String';
- 
+import { ImageCropper } from '../../ImageCropper/ImageCropper';
+
 export interface IMedia {
   preview: string
   file: File
@@ -53,11 +54,12 @@ export interface IMedia {
 
 export interface MediaModalSelectedFilesProps {
   onSelected: (media: IUserMedia) => void
-  type?:IUserMediaType
+  type?: IUserMediaType
+  crop?: boolean
 }
- 
 
-const MediaModalSelectedFiles = ({ onSelected , type='custom'}: MediaModalSelectedFilesProps) => {
+
+const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: MediaModalSelectedFilesProps) => {
   const theme = useTheme()
   const classes = useStyles(theme);
   const { userMediaList, fetchUserMedia } = useMedia()
@@ -80,10 +82,8 @@ const MediaModalSelectedFiles = ({ onSelected , type='custom'}: MediaModalSelect
   }
 
 
-
-  const handleFileChange = useCallback(async (event: any) => {
+  const handleFile = useCallback(async (file: File) => {
     try {
-      const file = event.currentTarget.files[0];
       if (!file) return;
       setIsUploading(true);
       const form = new FormData();
@@ -102,10 +102,15 @@ const MediaModalSelectedFiles = ({ onSelected , type='custom'}: MediaModalSelect
         showToast(String(error), 'error');
       }
       setIsUploading(false);
-
     }
+  }, []);
+
+
+  const handleFileChange = useCallback(async (event: any) => {
+    const file = event.currentTarget.files[0];
+    handleFile(file)
   }, [selectedType]);
- 
+
   return (
     <Dialog
       open={open.open}
@@ -124,44 +129,44 @@ const MediaModalSelectedFiles = ({ onSelected , type='custom'}: MediaModalSelect
 
 
             <Box sx={{ ...classes.header, gap: 4 }} >
-              <Button
-                component="label"
-                variant="outlined"
-                color="primary"
-                startIcon={<CloudUpload />}
-                disabled={!selectedType}
-                style={{ width: 340, height: 55 }}
-              >
-
-                {isUploading ? (
-                  <CircularProgress size={24} />
-                ) : (
-                  t('core.label.uploadResourse')
-                )}
-
-                <TextField
-                  onChange={handleFileChange}
-
-                  type="file"
-
-                  style={{
-                    border: 1,
-                    clip: 'rect(0 0 0 0)',
-                    height: '1px',
-                    margin: '-1px',
-                    overflow: 'hidden',
-                    padding: 0,
-                    position: 'absolute',
-                    whiteSpace: 'nowrap',
-                    width: '1px',
-                  }}
-
-                  //accept={accept}
-                  //
+              {crop ? <ImageCropper onComplete={handleFile} /> :
+                <Button
+                  component="label"
+                  variant="outlined"
+                  color="primary"
+                  startIcon={<CloudUpload />}
                   disabled={!selectedType}
-                />
+                  style={{ width: 340, height: 55 }}
+                >
 
-              </Button>
+                  {isUploading ? (
+                    <CircularProgress size={24} />
+                  ) : (
+                    t('core.label.uploadResourse')
+                  )}
+
+                  <TextField
+                    onChange={handleFileChange}
+
+                    type="file"
+
+                    style={{
+                      border: 1,
+                      clip: 'rect(0 0 0 0)',
+                      height: '1px',
+                      margin: '-1px',
+                      overflow: 'hidden',
+                      padding: 0,
+                      position: 'absolute',
+                      whiteSpace: 'nowrap',
+                      width: '1px',
+                    }}
+
+                    //accept={accept}
+                    //
+                    disabled={!selectedType}
+                  />
+                </Button>}
               <FormControl required sx={{ width: '100%' }}>
                 <InputLabel id="demo-simple-select-required-label">{t('media.labelType')}</InputLabel>
                 <Select
@@ -185,14 +190,14 @@ const MediaModalSelectedFiles = ({ onSelected , type='custom'}: MediaModalSelect
 
           <Divider />
 
-          <Box sx={classes.content}>  
-            {userMediaList.filter(e=>(type==='custom'?true:(e.type===type))).length === 0 ? (
+          <Box sx={classes.content}>
+            {userMediaList.filter(e => (type === 'custom' ? true : (e.type === type))).length === 0 ? (
               <Typography variant="body2" color="textSecondary" align="center">
                 No files uplaoded
               </Typography>
             ) : (
               <Grid container spacing={2}>
-                {userMediaList.filter(e=>(type==='custom'?true:(e.type===type))).map((file: IUserMedia, index: number) => (
+                {userMediaList.filter(e => (type === 'custom' ? true : (e.type === type))).map((file: IUserMedia, index: number) => (
                   <Grid sx={{ position: 'relative', cursor: 'pointer' }} size={{ xs: 12, sm: 6, md: 4 }} key={index}>
                     <Box
                       sx={selectedFile !== file.id ? { ...classes.fileItem } : { ...classes.selectedFile }}

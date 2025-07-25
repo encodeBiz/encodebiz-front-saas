@@ -39,6 +39,9 @@ interface IEntity {
       country: string;
     };
   };
+  billinConfig: {
+    payment_method: string
+  }
   updatedAt: Date;
 }
 
