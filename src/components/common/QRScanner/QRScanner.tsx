@@ -24,24 +24,24 @@ import { useTranslations } from 'next-intl';
 import { useQRScanner } from './QRScanner.controller';
 
 const QRScanner = () => {
-    const { handleScan, handleError , resetScanner, scanRessult, scanning, error} = useQRScanner()
+    const { handleScan, handleError, resetScanner, scanRessult, scanning, error } = useQRScanner()
     const t = useTranslations()
     const { position, isLoading } = useGeolocation({
         enableHighAccuracy: true,
         timeout: 10000
     });
 
-    
+
 
     const copyToClipboard = () => {
-        navigator.clipboard.writeText(scanRessult?.companyName as string);
+        navigator.clipboard.writeText(scanRessult?.fullName as string);
     };
 
     const shareResult = async () => {
         try {
             await navigator.share({
                 title: 'QR Code Result',
-                text: scanRessult?.companyName as string
+                text: scanRessult?.fullName as string
             });
         } catch (err) {
             console.error('Error sharing:', err);
@@ -62,7 +62,7 @@ const QRScanner = () => {
                 </Typography>
             </Box>}
 
-            {!scanRessult && !error  && (
+            {!scanRessult && !error && (
                 <StyledCard>
                     <ScannerContainer elevation={1}>
                         <PreviewContainer>
@@ -91,7 +91,7 @@ const QRScanner = () => {
                 </StyledCard>
             )}
 
-            {scanRessult && (
+            {scanRessult && !error && (
                 <StyledCard>
                     <CardContent>
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
@@ -99,7 +99,7 @@ const QRScanner = () => {
                             <Typography variant="h5" gutterBottom>
                                 {t('scan.resultTitle')}
                             </Typography>
-
+                            <Typography variant="body1">{scanRessult?.fullName}</Typography>
                             <Typography variant="body1">{scanRessult?.companyName}</Typography>
                             <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
                                 <Tooltip title="Copy to clipboard">
@@ -130,15 +130,15 @@ const QRScanner = () => {
                 </StyledCard>
             )}
 
-            {error && (
+            {!!error && (
                 <StyledCard>
                     <CardContent>
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                             <Error color="error" sx={{ fontSize: 100 }} />
-                            <Typography variant="h5" gutterBottom  sx={{ textAlign:'center' }}>
+                            <Typography variant="h5" gutterBottom sx={{ textAlign: 'center' }}>
                                 {t('scan.failed')}
                             </Typography>
-                            <Alert severity="error" sx={{ width: '100%', textAlign:'center' }}>
+                            <Alert severity="error" sx={{ width: '100%', textAlign: 'center' }}>
                                 {'Pase no encontrado'}
                             </Alert>
                             <Button
@@ -147,7 +147,7 @@ const QRScanner = () => {
                                 onClick={resetScanner}
                                 sx={{ mt: 2 }}
                             >
-                                 {t('scan.tryagain')}
+                                {t('scan.tryagain')}
                             </Button>
                         </Box>
                     </CardContent>

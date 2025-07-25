@@ -9,6 +9,9 @@ interface IQRResult {
     "entityId": string
     "productId": string
     entityType: string
+
+    message?: string
+    fullName?: string
 }
 
 export const useQRScanner = () => {
@@ -24,9 +27,9 @@ export const useQRScanner = () => {
     const validateData = async (data: any) => {
         try {
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-            const response = await validateHolder(data)
+            const response = await validateHolder(data)                     
             setScanRessult({
-                ...JSON.parse(data[0].rawValue),
+                ...data,
                 ...response
             });
             setError(null);
@@ -39,10 +42,8 @@ export const useQRScanner = () => {
     }
 
     const handleScan = (data: any) => {
-
         if (data && data?.length > 0 && data[0].rawValue) {
             validateData(JSON.parse(data[0].rawValue))
-
         }
     };
 
