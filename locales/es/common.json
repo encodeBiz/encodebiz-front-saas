@@ -21,6 +21,7 @@
     "side": {
       "menu": {
         "Dashboard": "Panel",
+        "Staff": "Personal de Apoyo",
         "Services": "Servicios",
         "Events": "Eventos",
         "Media": "Media",
@@ -330,6 +331,16 @@
     "description": "Rellene los campos para registrar el evento",
     "deleteConfirmModalTitle": "Eliminar Evento",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el evento y todas sus configuraciones"
+  },
+  "staff": {
+    "title": "Personal de Apoyo",
+    "list": "Personal de Apoyo",
+    "add": "Adicionar",
+    "edit": "Editar",
+    "import": "Importar",
+    "description": "Rellene los campos para registrar el personal de apoyo",
+    "deleteConfirmModalTitle": "Eliminar Personal de Apoyo",
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el personal de apoyo y todas sus configuraciones"
   },
   "employee": {
     "title": "Empleados",

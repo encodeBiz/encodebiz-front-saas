@@ -67,7 +67,8 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
     const { currentEntity } = useEntity();
     const { push } = useRouter()
     const { open, openModal, closeModal } = useCommonModal()
-
+    console.log(currentEntity);
+    
     const watch = () => {
         const disabledPlan = !currentEntity || !currentEntity?.entity?.billingEmail || !currentEntity?.entity?.legal?.legalName || !currentEntity?.entity?.legal?.taxId || !currentEntity?.entity?.billinConfig?.payment_method
         setLoadingGetPlan(disabledPlan)

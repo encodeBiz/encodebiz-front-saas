@@ -7,8 +7,7 @@ import { GenericTable } from "@/components/common/table/GenericTable";
 import { BaseButton } from '@/components/common/buttons/BaseButton';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
-import CSVUploadModal from '@/components/common/modals/CSVUploadModal';
-import { Add, UploadFile } from '@mui/icons-material';
+import { Add } from '@mui/icons-material';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 
 export default function HolderList() {
@@ -35,7 +34,7 @@ export default function HolderList() {
         data={items}
         rowAction={rowAction}
         columns={columns}
-        title={t("staff.holderList")}
+        title={t("staff.list")}
         keyField="id"
         loading={loading}
         page={currentPage}

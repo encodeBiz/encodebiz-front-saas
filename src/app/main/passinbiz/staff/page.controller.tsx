@@ -2,11 +2,8 @@ import { buildSearch, Column, IRowAction } from "@/components/common/table/Gener
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useToast } from "@/hooks/useToast";
-import { useTheme } from "@emotion/react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import { useStyles } from "./page.styles";
-import { RemoveDone, Send } from "@mui/icons-material";
 import { useLayout } from "@/hooks/useLayout";
 import { Chip } from "@mui/material";
 import { useCommonModal } from "@/hooks/useCommonModal";
@@ -20,7 +17,7 @@ import { deleteStaff, search } from "@/services/passinbiz/staff.service";
 
 export default function useStaffListController() {
   const t = useTranslations();
-  const { token, user } = useAuth()
+  const { token } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
   const [rowsPerPage, setRowsPerPage] = useState<number>(2); // Límite inicial
@@ -35,7 +32,7 @@ export default function useStaffListController() {
   const [currentPage, setCurrentPage] = useState(0);
   const [total, setTotal] = useState(0);
   const { changeLoaderState } = useLayout()
-  const { openModal, closeModal } = useCommonModal()
+  const { closeModal } = useCommonModal()
   const [revoking, setRevoking] = useState(false)
   const { push } = useRouter()
   const rowAction: Array<IRowAction> = []
@@ -78,28 +75,7 @@ export default function useStaffListController() {
       id: 'email',
       label: t("core.label.email"),
       minWidth: 170,
-    },
-    {
-      id: 'phoneNumber',
-      label: t("core.label.phone"),
-      minWidth: 170,
-    },
-    {
-      id: 'passStatus',
-      label: t("core.label.state"),
-      minWidth: 170,
-      format: (value, row) => <Chip
-        size="small"
-        label={row.passStatus}
-        variant="outlined"
-      />,
-    },
-    {
-      id: 'failedFeedback',
-      label: t("core.label.message"),
-      minWidth: 170,
-    },
-
+    } 
   ];
 
   const fetchingData = () => {

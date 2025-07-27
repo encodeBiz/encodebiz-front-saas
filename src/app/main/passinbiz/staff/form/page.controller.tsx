@@ -17,19 +17,12 @@ import { useLayout } from "@/hooks/useLayout";
 import { useParams } from "next/navigation";
 import { createStaff, fetchStaff, updateStaff } from "@/services/passinbiz/staff.service";
 import { IStaff } from "@/domain/features/passinbiz/IStaff";
- 
+
 export interface StaffFormValues {
   "fullName": string;
   "email": string;
-  "phoneNumber": string;
-  "customFields"?: DynamicFields;
-  isLinkedToUser: boolean
-  type: "credential" | "event",
-  entityId: string
-  uid?: string
-  parentId?: string
-  passStatus?: string
-  metadata?: any
+  entityId?: string
+  allowedTypes?: Array<string>;
   id?: string
 };
 
@@ -39,8 +32,7 @@ export default function useStaffController() {
   const { push } = useRouter()
   const { token, user } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
-  const [type, setType] = useState()
-  const [eventList, setEventList] = useState<Array<IEvent>>([])
+
   const { changeLoaderState } = useLayout()
   const { id } = useParams<{ id: string }>()
 
@@ -59,75 +51,26 @@ export default function useStaffController() {
       required: true,
       component: TextInput,
     },
-    {
-      name: 'phoneNumber',
-      label: t('core.label.phone'),
-      type: 'text',
-      required: true,
-      component: TextInput,
-    }, {
-      name: 'type',
-      label: t('core.label.typePass'),
-      type: 'text',
-      required: true,
-      options: [
-        { value: 'credential', label: t('core.label.credencial') },
-        { value: 'event', label: t('core.label.event') }
-      ],
-      component: SelectInput,
-      onChange: (value: any) => {
-        setType(value)
-      }
-    },
 
-    {
-      name: 'customFields',
-      label: t('core.label.billingEmail'),
-      type: "text",
-      require: true,
-      fullWidth: true,
-      component: DynamicKeyValueInput,
-    },
   ])
   const [initialValues, setInitialValues] = useState<StaffFormValues>({
     fullName: "",
     email: "",
-    phoneNumber: "",
-    type: 'credential',
-    customFields: [],
-    isLinkedToUser: true,
-    entityId: currentEntity?.entity.id as string
+
   });
 
   const validationSchema = Yup.object().shape({
-    customFields: Yup.array()
-      .of(
-        Yup.object().shape({
-          label: requiredRule(t),
-          value: requiredRule(t)
-        })
-      )
-      .nullable(),
     fullName: requiredRule(t),
     email: emailRule(t),
-    phoneNumber: Yup.string().optional(),
   });
 
   const submitForm = async (values: StaffFormValues) => {
     try {
       const dataForm = {
-        "uid": user?.id as string,
         "fullName": values.fullName,
         "email": values.email,
-        "phoneNumber": values.phoneNumber,
         "entityId": currentEntity?.entity?.id as string,
-        "passStatus": "pending",
-        "type": values.type,
-        "parentId": "",
-        "isLinkedToUser": false,
-        "metadata": {
-          "auxiliaryFields": values.customFields
-        },
+        allowedTypes: ['event'],
         id
       }
       if (!id)
@@ -142,23 +85,16 @@ export default function useStaffController() {
   };
 
 
-  const fetchingEvent = () => {
-    const params: any = []
-    return search(currentEntity?.entity.id as string, { ...params, limit: 100 }).then(e => setEventList(e as Array<IEvent>))
 
-  }
 
- const fetchData = async () => {
+  const fetchData = async () => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const Staff: IStaff = await fetchStaff(currentEntity?.entity.id as string, id)
       setInitialValues({
         fullName: Staff.fullName ?? "",
         email: Staff.email ?? "",
-        phoneNumber: Staff.phoneNumber ?? "",
-        type: Staff.type,
-        customFields: Staff.metadata?.auxiliaryFields ?? [],
-        isLinkedToUser: Staff.isLinkedToUser,
+
         entityId: currentEntity?.entity.id as string
       })
       changeLoaderState({ show: false })
@@ -170,7 +106,7 @@ export default function useStaffController() {
 
   useEffect(() => {
     if (currentEntity?.entity.id && user?.id) {
-      fetchingEvent()
+
       watchServiceAccess('passinbiz')
     }
   }, [currentEntity?.entity.id, user?.id])
@@ -185,4 +121,4 @@ export default function useStaffController() {
   return { fields, initialValues, validationSchema, submitForm }
 }
 
- 
+
