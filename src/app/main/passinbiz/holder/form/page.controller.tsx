@@ -132,14 +132,17 @@ export default function useHolderController() {
         },
         id
       }
+      changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       if (!id)
         await createHolder(dataForm, token)
       else
         await updateHolder(dataForm, token)
       showToast(t('core.feedback.success'), 'success');
       push(`/${MAIN_ROUTE}/passinbiz/holder`)
+      changeLoaderState({ show: false })
     } catch (error: any) {
       showToast(error.message, 'error')
+      changeLoaderState({ show: false })
     }
   };
 

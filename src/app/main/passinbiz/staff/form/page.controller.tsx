@@ -73,14 +73,19 @@ export default function useStaffController() {
         allowedTypes: ['event'],
         id
       }
+      changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       if (!id)
         await createStaff(dataForm, token)
       else
         await updateStaff(dataForm, token)
       showToast(t('core.feedback.success'), 'success');
+      changeLoaderState({ show: false })
+
       push(`/${MAIN_ROUTE}/passinbiz/Staff`)
     } catch (error: any) {
       showToast(error.message, 'error')
+      changeLoaderState({ show: false })
+
     }
   };
 
