@@ -67,7 +67,7 @@ const QRScanner = () => {
                     <ScannerContainer elevation={1}>
                         <PreviewContainer>
                             <Scanner
-                                scanDelay={500}
+                                scanDelay={1500}
                                 sound
                                 onScan={handleScan}
                                 onError={handleError}
