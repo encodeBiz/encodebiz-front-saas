@@ -15,9 +15,9 @@ function string_to_slug(str: string) {
     str = str.toLowerCase();
 
     // remove accents, swap ñ for n, etc
-    var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
-    var to = "aaaaeeeeiiiioooouuuunc------";
-    for (var i = 0, l = from.length; i < l; i++) {
+    const from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+    const to = "aaaaeeeeiiiioooouuuunc------";
+    for (let i = 0, l = from.length; i < l; i++) {
         str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
     }
 
@@ -51,8 +51,8 @@ export function uuidv4() {
 
 
 export function stripe_price_format(price: number) {
-    let res = `${price}`.slice(-2);
-    let before = `${price}`.substring(0, `${price}`.length - 2);
+    const res = `${price}`.slice(-2);
+    const before = `${price}`.substring(0, `${price}`.length - 2);
     return `${before},${res}€`;
 }
 

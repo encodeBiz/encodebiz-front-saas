@@ -46,7 +46,7 @@ export const getOne = async <T>(
       id: querySnapshot.docs[0].id,
     } as T;
   } else {
-    let docRef = doc(db, `${collectionName}`, id);
+    const docRef = doc(db, `${collectionName}`, id);
     const docSnap = await getDoc(docRef);
     return { ...docSnap.data(), id: docSnap.id } as T;
   }
@@ -65,7 +65,7 @@ export const getIndex = async <T>(
   collectionName: string,
   id: string
 ): Promise<T> => {
-  let docRef = doc(db, `${collectionName}`, id);
+  const docRef = doc(db, `${collectionName}`, id);
   const docSnap = await getDoc(docRef);
   return docSnap as T;
 };

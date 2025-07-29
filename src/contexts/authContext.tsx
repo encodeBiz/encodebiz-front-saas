@@ -89,7 +89,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     /** Refresh User Data */
     const updateUserData = async () => {
-        let userAuth: User = await getUser() as User
+        const userAuth: User = await getUser() as User
         const extraData = await fetchUserAccount(userAuth.uid)
         const userData: IUser = {
             ...extraData,

@@ -222,7 +222,7 @@ export class HttpClient {
 /**
  * Singleton instance of HttpClient
  */
-let httpClientFetchInstance: HttpClient = new HttpClient({
+const httpClientFetchInstance: HttpClient = new HttpClient({
   baseURL: process.env.NEXT_PUBLIC_URI,
   headers: {},
 });

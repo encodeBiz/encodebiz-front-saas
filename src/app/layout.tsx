@@ -10,6 +10,8 @@ import NextTopLoader from 'nextjs-toploader';
 import { ToastProvider } from "@/contexts/toastContext";
 import { CommonModalProvider } from "@/contexts/commonModalContext";
 import { MediaProvider } from "@/contexts/mediaContext";
+import { Suspense } from "react";   // ✅ Importar Suspense
+
 const geistSans = Geist({
     variable: "--font-geist-sans",
     subsets: ["latin"],
@@ -30,32 +32,28 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-
-
-
-
     return (
         <html lang="en">
             <body className={`${geistSans.variable} ${geistMono.variable}`}>
                 <LocaleProvider>
-                    <AuthProvider>
-                        <ToastProvider>
-                            <EntityProvider>
-                                <LayoutProvider>
-                                    <ThemeProvider>
-
-                                        <CommonModalProvider>
-                                            <MediaProvider>
-                                                <NextTopLoader showSpinner={false} color="#456456" />
-                                                {children}
-                                            </MediaProvider>
-                                        </CommonModalProvider>
-
-                                    </ThemeProvider>
-                                </LayoutProvider>
-                            </EntityProvider>
-                        </ToastProvider>
-                    </AuthProvider>
+                    <Suspense fallback={<div>Loading session...</div>}>  {/* ✅ Suspense envuelve AuthProvider */}
+                        <AuthProvider>
+                            <ToastProvider>
+                                <EntityProvider>
+                                    <LayoutProvider>
+                                        <ThemeProvider>
+                                            <CommonModalProvider>
+                                                <MediaProvider>
+                                                    <NextTopLoader showSpinner={false} color="#456456" />
+                                                    {children}
+                                                </MediaProvider>
+                                            </CommonModalProvider>
+                                        </ThemeProvider>
+                                    </LayoutProvider>
+                                </EntityProvider>
+                            </ToastProvider>
+                        </AuthProvider>
+                    </Suspense>
                 </LocaleProvider>
             </body>
         </html>

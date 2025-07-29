@@ -39,7 +39,7 @@ export async function fetchServiceList(): Promise<Array<IService>> {
 
 export async function subscribeInSassProduct(data: ISubscription, token: string) {
     try {
-        let httpClientFetchInstance: HttpClient = new HttpClient({
+        const httpClientFetchInstance: HttpClient = new HttpClient({
             baseURL: '',
             headers: {
                 token: `Bearer ${token}`
@@ -63,7 +63,7 @@ export async function subscribeInSassProduct(data: ISubscription, token: string)
 
 export async function unSubscribeInSassProduct(data: IUnSubscription, token: string) {
     try {
-        let httpClientFetchInstance: HttpClient = new HttpClient({
+        const httpClientFetchInstance: HttpClient = new HttpClient({
             baseURL: '',
             headers: {
                 token: `Bearer ${token}`
@@ -86,7 +86,7 @@ export async function configBilling(data: {
     "entityId": string
 }, token: string) {
     try {
-        let httpClientFetchInstance: HttpClient = new HttpClient({
+        const httpClientFetchInstance: HttpClient = new HttpClient({
             baseURL: '',
             headers: {
                 token: `Bearer ${token}`

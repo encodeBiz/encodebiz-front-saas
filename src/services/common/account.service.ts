@@ -61,7 +61,7 @@ export async function signInEmail(
 
 export async function signUpEmail(data: RegisterFormValues, sessionToken?: string, uid?: string) {
     try {
-        let httpClientFetchInstance: HttpClient = new HttpClient({
+        const httpClientFetchInstance: HttpClient = new HttpClient({
             baseURL: process.env.NEXT_PUBLIC_BACKEND_URI_CREATE_USER,
             headers: {
                 token: `Bearer ${sessionToken}`

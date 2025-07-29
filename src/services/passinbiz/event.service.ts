@@ -58,7 +58,7 @@ export async function createEvent(data: EventFromValues, token: string) {
     if (!token) {
       throw new Error("Error to fetch user auth token");
     } else {
-      let httpClientFetchInstance: HttpClient = new HttpClient({
+      const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
           token: `Bearer ${token}`,
@@ -86,7 +86,7 @@ export async function updateEvent(data: EventFromValues, token: string) {
     if (!token) {
       throw new Error("Error to fetch user auth token");
     } else {
-      let httpClientFetchInstance: HttpClient = new HttpClient({
+      const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
           token: `Bearer ${token}`,

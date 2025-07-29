@@ -33,7 +33,7 @@ export const deleteEmployee = async (entityId: string, id: string, token: string
     if (!token) {
       throw new Error("Error to fetch user auth token");
     } else {
-      let httpClientFetchInstance: HttpClient = new HttpClient({
+      const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
           token: `Bearer ${token}`,
@@ -79,7 +79,7 @@ export async function createEmployee(data: EmployeeFromValues, token: string) {
     if (!token) {
       throw new Error("Error to fetch user auth token");
     } else {
-      let httpClientFetchInstance: HttpClient = new HttpClient({
+      const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
           token: `Bearer ${token}`,
@@ -107,7 +107,7 @@ export async function updateEmployee(data: EmployeeFromValues, token: string) {
     if (!token) {
       throw new Error("Error to fetch user auth token");
     } else {
-      let httpClientFetchInstance: HttpClient = new HttpClient({
+      const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
           token: `Bearer ${token}`,

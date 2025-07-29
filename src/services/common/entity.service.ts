@@ -76,7 +76,7 @@ export async function createEntity(data: EntityFormValues, token: string) {
     if (!token) {
       throw new Error("Error to fetch user auth token");
     } else {
-      let httpClientFetchInstance: HttpClient = new HttpClient({
+      const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
           token: `Bearer ${token}`,
@@ -108,7 +108,7 @@ export async function updateEntity(
     if (!token) {
       throw new Error("Error to fetch user auth token");
     } else {
-      let httpClientFetchInstance: HttpClient = new HttpClient({
+      const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
           token: `Bearer ${token}`,
@@ -137,7 +137,7 @@ export async function updateEntityBranding(
     if (!token) {
       throw new Error("Error to fetch user auth token");
     } else {
-      let httpClientFetchInstance: HttpClient = new HttpClient({
+      const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
           token: `Bearer ${token}`,
@@ -190,7 +190,7 @@ export async function deleteEntity(data: {
     if (!token) {
       throw new Error('Error to fetch user auth token')
     } else {
-      let httpClientFetchInstance: HttpClient = new HttpClient({
+      const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: '',
         headers: {
           token: `Bearer ${token}`
@@ -214,7 +214,7 @@ export async function assignedUserToEntity(data: IAssing, token: string) {
     if (!token) {
       throw new Error("Error to fetch user auth token");
     } else {
-      let httpClientFetchInstance: HttpClient = new HttpClient({
+      const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
           token: `Bearer ${token}`,

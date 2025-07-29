@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "eslint \"src/**/*.{js,ts,tsx}\" --fix"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -23,7 +24,7 @@
     "axios": "^1.9.0",
     "chart.js": "^4.4.9",
     "dayjs": "^1.11.13",
-    "firebase": "^11.9.1",
+    "firebase": "^11.10.0",
     "firebase-admin": "^13.4.0",
     "formik": "^2.4.6",
     "gsap": "^3.13.0",
@@ -44,7 +45,6 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@types/firebase": "^3.2.3",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-color": "^3.0.13",

@@ -17,7 +17,7 @@ export const formatMonthDate = (dd: Date) => {
 }
 
 export function toDateTime(secs: number) {
-    var t = new Date(1970, 0, 1); // Epoch
+    const t = new Date(1970, 0, 1); // Epoch
     t.setSeconds(secs);
     return t;
 }
@@ -74,7 +74,7 @@ export function remainTime(nextDate: Timestamp | Date | string | any): string {
         date = (nextDate as Timestamp).toDate()
     }
 
-    var b = moment(date).fromNow();
+    const b = moment(date).fromNow();
     return b; // "a day ago"
 }
 export function diffTime(nextDate: Timestamp | Date | string | any): number {
@@ -88,7 +88,7 @@ export function diffTime(nextDate: Timestamp | Date | string | any): number {
         date = (nextDate as Timestamp).toDate()
     }
 
-    var b = moment(date).diff(moment());
+    const b = moment(date).diff(moment());
     return b; // "a day ago"
 }
 
@@ -105,8 +105,8 @@ export function format_range(range: Array<Timestamp>): string {
 
 
     let date: string = "02 - 05 Octubre"
-    let start: string = ""
-    let end: string = ""
+    const start: string = ""
+    const end: string = ""
     if (range?.length === 2) {
         const dateStart: Date = new Date(range[0]?.seconds * 1000);
         const dateEnd: Date = new Date(range[1]?.seconds * 1000);
