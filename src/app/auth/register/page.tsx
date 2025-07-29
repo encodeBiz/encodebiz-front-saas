@@ -19,7 +19,6 @@ import { RegisterFormValues, useRegisterController } from './page.controller';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { useTranslations } from 'next-intl';
 import { useStyles } from './page.styles';
-import { PrimaryButton } from '@/components/common/buttons/GenericButton';
 import { BaseButton } from '@/components/common/buttons/BaseButton';
 import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 
@@ -69,6 +68,7 @@ const SignUpPage = () => {
                     validationSchema={validationSchema}
                     onSubmit={signInWithEmail}
                     fields={fields as FormField[]}
+                    btnFullWidth
                     submitButtonText={t('core.signup.signup')}
                 />
 

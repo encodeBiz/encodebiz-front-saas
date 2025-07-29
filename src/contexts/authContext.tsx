@@ -4,10 +4,11 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { User } from "firebase/auth";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
-import IUser from "@/types/auth/IUser";
+import IUser from "@/domain/auth/IUser";
 import { subscribeToAuthChanges } from "@/lib/firebase/authentication/stateChange";
 import { getUser } from "@/lib/firebase/authentication/login";
 import { fetchUserAccount, signInToken } from "@/services/common/account.service";
+import { MAIN_ROUTE, GENERAL_ROUTE, USER_ROUTE } from "@/config/routes";
 interface AuthContextType {
     user: IUser | null;
     userAuth: User | null;
@@ -30,17 +31,35 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const inPublicPage = pathName.startsWith('/auth')
 
     const watchSesionState = async (userAuth: User) => {
+ 
         if (userAuth) {
-
-            updateUserData(userAuth)
+            updateUserData()
             setToken(await userAuth.getIdToken())
+            const extraData = await fetchUserAccount(userAuth.uid)
+
+            const userData: IUser = {
+                ...extraData,
+                completeProfile: extraData.email ? true : false
+            }
             setUser({
-                ...await fetchUserAccount(userAuth.uid),
-                ...userAuth
+                ...userAuth,
+                ...userData,
             })
+
+            if (!userData.completeProfile) {
+                push(`/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`)
+            }
             setUserAuth(userAuth)
             if (redirectUri) push(redirectUri)
-            else push('/main/dashboard')
+            else {
+                if (pathName === '/' || pathName === '/main' || pathName === '/main/core')
+                    push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
+                else {
+                    if (pathName === '/' || pathName === '/main' || pathName === '/main/user')
+                        push(`/${MAIN_ROUTE}/${USER_ROUTE}/account`)
+                }
+            }
+            setPendAuth(false)
         } else {
             setUser(null);
             setPendAuth(false)
@@ -69,10 +88,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 
     /** Refresh User Data */
-    const updateUserData = async (loggedUser?: User) => {
-        let userAuth: User = loggedUser as User
-        if (!user)
-            userAuth = await getUser() as User
+    const updateUserData = async () => {
+        const userAuth: User = await getUser() as User
+        const extraData = await fetchUserAccount(userAuth.uid)
+        const userData: IUser = {
+            ...extraData,
+            completeProfile: extraData.email ? true : false
+        }
+        setUser({
+            ...userAuth,
+            ...userData,
+        })
 
         setTimeout(() => {
             if (redirectUri) push(redirectUri)

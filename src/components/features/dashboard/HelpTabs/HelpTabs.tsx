@@ -23,10 +23,11 @@ export interface HelpTab {
 
 export interface HelpTabsProps {
   tabs: Array<HelpTab>
+  ref?: any
 }
 
 
-const HelpTabs = ({ tabs }: HelpTabsProps) => {
+const HelpTabs = ({ tabs, ref }: HelpTabsProps) => {
   const [value, setValue] = React.useState(0);
   const theme = useTheme();
 
@@ -68,7 +69,7 @@ const HelpTabs = ({ tabs }: HelpTabsProps) => {
   );
 
   return (
-    <Box  >
+    <Box sx={{ mt: 4 }} ref={ref}>
       <Typography variant="h4" component="h2" align="left" gutterBottom>
         Más información
       </Typography>
@@ -104,9 +105,9 @@ const HelpTabs = ({ tabs }: HelpTabsProps) => {
 
         {/* Tab content */}
         <Box sx={{ p: 3, border: `1px solid ${theme.palette.divider}`, borderTop: 0, width: '100%' }}>
-          {tabs.map((e, i) => <>
+          {tabs.map((e, i) => <span key={i}>
             {value === i && (<> {e.tabContent} </>)}
-          </>)}
+          </span>)}
         </Box>
       </Paper>
 

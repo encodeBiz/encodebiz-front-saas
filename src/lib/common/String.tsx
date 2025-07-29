@@ -1,3 +1,6 @@
+import { fileTypeIcons } from "@/config/theme";
+import { IUserMedia } from "@/domain/core/IUserMedia";
+
 export const createSlug = (str: string) => string_to_slug(str)
 
 
@@ -12,9 +15,9 @@ function string_to_slug(str: string) {
     str = str.toLowerCase();
 
     // remove accents, swap ñ for n, etc
-    var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
-    var to = "aaaaeeeeiiiioooouuuunc------";
-    for (var i = 0, l = from.length; i < l; i++) {
+    const from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+    const to = "aaaaeeeeiiiioooouuuunc------";
+    for (let i = 0, l = from.length; i < l; i++) {
         str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
     }
 
@@ -48,8 +51,8 @@ export function uuidv4() {
 
 
 export function stripe_price_format(price: number) {
-    let res = `${price}`.slice(-2);
-    let before = `${price}`.substring(0, `${price}`.length - 2);
+    const res = `${price}`.slice(-2);
+    const before = `${price}`.substring(0, `${price}`.length - 2);
     return `${before},${res}€`;
 }
 
@@ -62,4 +65,52 @@ export function roundToTwoDecimalPlaces(number: number) {
 
 export function isDecimal(number: number) {
     return number % 1 !== 0;
-  }
+}
+
+
+
+export const getFileIcon = (file: IUserMedia) => {
+    if (file.type.startsWith('image/')) return fileTypeIcons.image;
+    if (file.type.startsWith('video/')) return fileTypeIcons.video;
+    if (file.type.startsWith('audio/')) return fileTypeIcons.audio;
+    if (file.type.startsWith('application/pdf') ||
+        file.type.startsWith('text/') ||
+        file.type.includes('document')) {
+        return fileTypeIcons.document;
+    }
+    return fileTypeIcons.default;
+};
+
+export const formatFileSize = (bytes: number) => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+};
+
+export const objectToArray = (arg: any) => {
+    const arr: Array<{
+        label: string,
+        value: any
+    }> = []
+    Object.keys(arg).forEach(element => {
+        arr.push({
+            label: element,
+            value: arg[element]
+        })
+    });
+    return arr
+}
+
+
+export const ArrayToObject = (arr: Array<{
+    label: string,
+    value: any
+}>) => {
+    const object: any = {}
+    arr.forEach(element => {
+        Object.assign(object, { [element.label]: element.value })
+    });
+    return object
+}

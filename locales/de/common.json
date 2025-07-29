@@ -1,7 +1,7 @@
 { 
 "layout":{ 
 "header": { 
-"title": "Checkbiz360 SaaS Platform", 
+"title": "Encodebiz SaaS Platform", 
 "language": "Language", 
 "english": "English", 
 "spanish": "Spanish", 
@@ -9,7 +9,7 @@
 "germany": "German" 
 }, 
 "footer": { 
-"copyright": "© {{year}} My Company. All rights reserved." 
+"copyright": "© {{year}} EncodeBiz. All rights reserved." 
 } 
 }
 }

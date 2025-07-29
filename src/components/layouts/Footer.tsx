@@ -1,22 +1,24 @@
 // src/components/Footer.tsx
 import React from 'react';
 import { Box, Typography, Container } from '@mui/material';
+import { useTranslations } from 'next-intl';
 
 const Footer: React.FC = () => {
+  const t = useTranslations()
   return (
     <Box
       sx={{
         width: '100%',
         bgcolor: (theme) => theme.palette.background.paper,
-        
+
         py: 3,
       }}
     >
       <Container maxWidth="lg">
         <Typography variant="body2" color="inherit" align="center">
           {'© '}
-          {new Date().getFullYear()}
-          {' My Company. All rights reserved.'}
+          {new Date().getFullYear()}{' '}
+          {t('layout.footer.copyright')}
         </Typography>
       </Container>
     </Box>

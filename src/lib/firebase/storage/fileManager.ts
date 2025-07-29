@@ -12,7 +12,7 @@ export const uploadFile = async (
   onProgress: Function
 ): Promise<string> => {
   // Crea una referencia al archivo en Firebase Storage
-  let uniquePath = path.split("/");
+  const uniquePath = path.split("/");
   uniquePath[uniquePath.length - 1] = `${Date.now()}_${
     uniquePath[uniquePath.length - 1]
   }`;
@@ -75,7 +75,7 @@ export function dataURLtoFile(
   dataurl: string,
   filename: string = "generateFile"
 ) {
-  var arr: any = dataurl.split(","),
+  let arr: any = dataurl.split(","),
     mime = arr[0].match(/:(.*?);/)[1],
     bstr = atob(arr[arr.length - 1]),
     n = bstr.length,

@@ -1,5 +1,6 @@
+import { SxProps, Theme } from "@mui/material";
 
-export const useStyles = () => ({
+export const useStyles = (): Record<string, SxProps<Theme>> => ({
   base: {
     width: '100%',
     borderRadius: 2, display: 'flex', flexDirection: 'column', justifyContent: 'space-around',pt:4,pb:4
@@ -16,6 +17,16 @@ export const useStyles = () => ({
       xl: 'row',
 
     }, alignItems: 'center', justifyContent: 'space-between'
+  },
+   rootSimple: {
+     pl: 4, pr: 4, borderRadius: 2, display: 'flex', flexDirection: {
+      xs: 'column-reverse',
+      sm: 'column-reverse',
+      md: 'column-reverse',
+      lg: 'row',
+      xl: 'row',
+
+    }, alignItems: 'flex-start', justifyContent: 'flex-start'
   },
   container: { display: 'flex', flexDirection: 'column', alignItems: 'flex-start' },
   stack: {

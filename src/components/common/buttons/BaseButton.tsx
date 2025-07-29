@@ -12,6 +12,7 @@ export const BaseButton = styled(Button)<ButtonProps>(({ theme, variant, color =
     fontWeight: 600,
     /*textTransform: 'none',*/
     padding: theme.spacing(1.5, 3),
+    gap:2,
     boxShadow: 'none',
     '&:hover': {
         boxShadow: 'none',

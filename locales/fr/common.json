@@ -1,15 +1,343 @@
-{ 
-"layout":{ 
-"header": { 
-"title": "Checkbiz360 SaaS Platform", 
-"language": "Language", 
-"english": "English", 
-"spanish": "Spanish", 
-"french": "French", 
-"germany": "German" 
-}, 
-"footer": { 
-"copyright": "© {{year}} My Company. All rights reserved." 
-} 
-}
+{
+  "locale": "fr",
+  "layout": {
+    "header": {
+      "title": "Plateforme SaaS EncodeBiz",
+      "language": "Langue",
+      "english": "Anglais",
+      "spanish": "Espagnol",
+      "french": "Français",
+      "germany": "Allemand",
+      "entity": "Entité actuelle",
+      "profile": "Profil",
+      "setting": "Préférences",
+      "media": "Médias",
+      "logout": "Déconnexion",
+      "help": "Aide",
+      "theme": "Thème",
+      "messages": "Messages",
+      "notification": "Notifications"
+    },
+    "side": {
+      "menu": {
+        "Dashboard": "Tableau de bord",
+        "Services": "Services",
+        "Events": "Événements",
+        "Media": "Médias",
+        "home": "Accueil",
+        "general": "Général",
+        "CheckinBiz": "CheckinBiz",
+        "PassinBiz": "PassinBiz",
+        "Customers": "Clients",
+        "Reports": "Rapports",
+        "Employee": "Employé",
+        "Subscription": "Abonnements",
+        "Revenue": "Renouvellements",
+        "Billing": "Facturation",
+        "Settings": "Préférences",
+        "Account": "Compte",
+        "Notifications": "Notifications",
+        "Security": "Sécurité",
+        "Entity": "Entité",
+        "HoldersList": "Liste des titulaires",
+        "AddHolders": "Ajouter des titulaires",
+        "Plans": "Plans",
+        "Holders": "Titulaires"
+      }
+    },
+    "footer": {
+      "copyright": "EncodeBiz. Tous droits réservés.",
+      "web": "Notre site web",
+      "contactUs": "Contactez-nous",
+      "whatsApp": "WhatsApp",
+      "policy": "Politique de confidentialité",
+      "terms": "Conditions générales"
+    }
+  },
+  "core": {
+    "title": {
+      "loader": "Chargement de la session utilisateur",
+      "loaderChangeEntity": "Changement d'entité",
+      "loaderAction": "Traitement des informations",
+      "mediaModaltitle": "Sélecteur de médias",
+      "loaderActionBilling": "Accès aux informations de votre passerelle de paiement"
+    },
+    "feedback": {
+      "success": "L'opération a été réalisée avec succès"
+    },
+    "label": {
+      "filename": "Nom du fichier",
+      "typePass": "Type de pass",
+      "credencial": "Identifiants",
+      "event": "Événement",
+      "passStatus": "Statut du pass",
+      "pending": "En attente",
+      "revoke": "Révoquer",
+      "firstName": "Prénom",
+      "sponsor": "Sponsor",
+      "ticketCapacity": "Capacité",
+      "date": "Date",
+      "location": "Emplacement",
+      "designed": "Conception",
+      "imageUrl": "Image",
+      "setting": "Préférences",
+      "colorPrimary": "Couleur primaire",
+      "colorAccent": "Couleur d'accentuation",
+      "description": "Description",
+      "message": "Message",
+      "state": "État",
+      "uploadResourse": "Téléverser une ressource",
+      "lastName": "Nom de famille",
+      "fullName": "Nom complet",
+      "password": "Mot de passe",
+      "legalEntityName": "Nom légal de l'entreprise",
+      "passwordConfirm": "Confirmer le mot de passe",
+      "email": "E-mail",
+      "acceptTerms": "Accepter les conditions générales",
+      "phone": "Téléphone",
+      "accepTerm1": "J'accepte les",
+      "accepTerm2": "Conditions d'utilisation",
+      "accepTerm3": "et la",
+      "accepTerm4": "Politique de confidentialité",
+      "billingEmail": "E-mail pour gérer les paiements",
+      "avatar": "Avatar",
+      "sessionLastTime": "Dernière connexion",
+      "createAt": "Date de création",
+      "logo": "Logo",
+      "color": "Couleur",
+      "taxId": "NIF / CIF / NIE / TVA",
+      "street": "Rue",
+      "city": "Ville",
+      "postalCode": "Code postal",
+      "region": "Région",
+      "country": "Pays",
+      "backgroundColor": "Couleur de fond",
+      "labelColor": "Couleur de l'étiquette",
+      "textColor": "Couleur du texte",
+      "stripImageUrl": "Image de bande",
+      "iconUrl": "Icône",
+      "address": "Adresse",
+      "legal": "Légal",
+      "name": "Nom",
+      "currentPassword": "Mot de passe actuel",
+      "label": "Étiquette",
+      "value": "Valeur"
+    },
+    "button": {
+      "revoke": "Révoquer",
+      "resend": "Renvoyer",
+      "submitting": "Envoi en cours...",
+      "submit": "Envoyer",
+      "send": "Renvoyer",
+      "confirm": "Confirmer",
+      "cancel": "Annuler",
+      "download": "Télécharger",
+      "delete": "Supprimer",
+      "save": "Enregistrer",
+      "update": "Mettre à jour"
+    },
+    "formValidatorMessages": {
+      "required": "Ce champ est obligatoire",
+      "email": "Ce champ est obligatoire",
+      "password": "Le mot de passe est trop court : il doit comporter au moins 8 caractères.",
+      "passwordMatch": "Les mots de passe ne correspondent pas",
+      "acceptTerm": "Vous devez accepter les conditions générales",
+      "avatarUpload": "Veuillez sélectionner un fichier image valide.",
+      "avatarMaxSize": "L'image est trop volumineuse. Taille maximale autorisée : 5 Mo."
+    },
+    "signup": {
+      "title": "Créer un compte",
+      "signup": "Créer un compte",
+      "subtitle": "Créez un compte et rejoignez EncodeBiz SaaS",
+      "or": "Ou",
+      "google": "Rejoindre avec Google",
+      "facebook": "Rejoindre avec Facebook",
+      "existAccount": "Vous avez déjà un compte ?",
+      "signIn": "Se connecter",
+      "complete_profile": "Compléter le profil",
+      "complete_profile_desc": "Avant de commencer, vous devez compléter vos données sur la plateforme et créer votre première entité. Vous pourrez modifier ces données ultérieurement dans les préférences"
+    },
+    "signin": {
+      "title": "Se connecter",
+      "signup": "Se connecter",
+      "subtitle": "Connectez-vous et rejoignez EncodeBiz SaaS",
+      "or": "Ou",
+      "google": "Rejoindre avec Google",
+      "facebook": "Rejoindre avec Facebook",
+      "noAccount": "Vous n'avez pas de compte ?",
+      "signIn": "Se connecter"
+    },
+    "upload": {
+      "title": "Téléverser un fichier CSV",
+      "btn": "Sélectionner un fichier",
+      "desc": "Veuillez sélectionner un fichier CSV pour prévisualiser le contenu et le sélectionner",
+      "file": "Fichier",
+      "preview": "Aperçu (5 premières lignes)",
+      "signIn": "Se connecter"
+    }
+  },
+  "features": {
+    "dashboard": {
+      "overview": "Aperçu",
+      "stats": "Statistiques",
+      "card": {
+        "btn1": "Plus d'informations",
+        "btn2": "Services",
+        "btn3": "Plans",
+        "title": "Bienvenue sur Encodebiz SaaS",
+        "subtitle": "Sur cette plateforme, vous pouvez faire plusieurs choses intéressantes"
+      }
+    },
+    "entity": {
+      "create": {
+        "card": {
+          "title": "Créer une entité légale",
+          "subtitle": "Sur la plateforme, vous pouvez associer plusieurs entités à votre compte, mais au moins une est nécessaire pour commencer à utiliser nos produits"
+        }
+      }
+    }
+  },
+  "account": {
+    "title": "Compte",
+    "tabs": {
+      "tab1": {
+        "title": "Gérer le profil"
+      },
+      "tab2": {
+        "title": "Changer le mot de passe"
+      }
+    },
+    "sessionLastTime": "Dernière connexion"
+  },
+  "entity": {
+    "title": "Entité",
+    "tabs": {
+      "tab1": {
+        "title": "Modifier l'entité",
+        "deleteConfirmModalTitle": "Supprimer l'entité",
+        "deleteConfirmModalTitle2": "Cette action est irréversible. Elle supprimera définitivement l'entité et tous ses paramètres et achats associés",
+        "deleteConfirmModalTitle3": "Veuillez entrer le mot suivant pour continuer l'action"
+      },
+      "tab2": {
+        "title": "Modifier la marque",
+        "btn": "Supprimer l'entité"
+      },
+      "tab3": {
+        "title": "Configurer la facturation",
+        "btn": "Configurer la facturation"
+      },
+      "tab4": {
+        "title": "Abonnements",
+        "btn": "Configurer la facturation"
+      },
+      "tab5": {
+        "title": "Facturation",
+        "btn": "Configurer la facturation"
+      },
+      "tab6": {
+        "title": "Collaborateurs",
+        "btn": "Configurer la facturation"
+      }
+    }
+  },
+  "salesPlan": {
+    "title": "Choisissez un plan pour acquérir ce service",
+    "subTitle": "Sélectionnez le plan qui correspond le mieux aux besoins de votre entreprise",
+    "free": "Gratuit",
+    "standard": "Standard",
+    "month": "mois",
+    "bronze": "Bronze",
+    "branding": "Branding : Logo et design par défaut d'EncodeBiz",
+    "brandingCustom": "Branding : Personnalisation complète du pass",
+    "cost": "Coût estimé par pass : ~0,01 €",
+    "costEstimated": "Coût estimé : Variable selon l'utilisation",
+    "selectPlan": "Sélectionner un plan",
+    "custom": "Personnalisé",
+    "upToTen": "Jusqu'à 10 produits",
+    "upToFive": "Limite : Jusqu'à 5 titulaires de pass.",
+    "basicAnalitics": "Analyse de base",
+    "emailSuport": "Support par e-mail",
+    "emailPrioritySuport": "Support prioritaire par e-mail",
+    "emailAndPhoneSuport": "Support téléphonique et e-mail",
+    "estimateRange": "Marge estimée par pass : ~0,49 €",
+    "estimateRangeCustom": "Marge estimée : Variable, mais avec un potentiel significatif",
+    "enterprise": "Entreprise",
+    "customerTime": "Support client 24/7",
+    "apiAcces": "Accès aux API",
+    "customReport": "Rapports personnalisés",
+    "unlimitedProducts": "Produits illimités",
+    "premium": "Premium",
+    "price": "Prix pour le client : Gratuit",
+    "priceEmited": "Prix par pass émis : 0,50 €",
+    "priceMonthly": "Prix mensuel : À convenir (recommandé entre 99 € et 499 €)",
+    "popular": "Le plus populaire",
+    "limit": "Limite : Aucune restriction",
+    "model": "Modèle : Paiement à l'usage",
+    "modelCustom": "Modèle : Personnalisé selon les besoins du client",
+    "avancedAnalitics": "Analyses avancées",
+    "dedicateManager": "Gestionnaire de compte dédié",
+    "customIntegrations": "Intégrations personnalisées",
+    "whiteLabel": "Solutions en marque blanche",
+    "onsiteTraining": "Formation sur site",
+    "pay": "Obtenir le plan",
+    "contract": "Plan actuel",
+    "renew": "Changer de plan",
+    "notAllowedPlan": "Vous devez mettre à jour les données légales de l'entité sélectionnée avant d'obtenir un plan."
+  },
+  "terms": {
+    "title": "Conditions générales"
+  },
+  "policy": {
+    "title": "Politique de confidentialité"
+  },
+  "holders": {
+    "title": "Titulaires",
+    "holderList": "Titulaires",
+    "addHolder": "Ajouter",
+    "editHolder": "Modifier",
+    "import": "Importer",
+    "description": "Remplissez les champs pour enregistrer le titulaire",
+    "revokeConfirmModalTitle": "Révoquer le pass de ce titulaire",
+    "revokeConfirmModalTitle2": "Cette action est irréversible. Elle révoquera définitivement le pass de ce titulaire",
+    "sendConfirmModalTitle": "Renvoyer le pass",
+    "sendConfirmModalTitle2": "Cette action est irréversible. Elle renverra le pass à ce titulaire"
+  },
+  "event": {
+    "title": "Événements",
+    "list": "Événements",
+    "add": "Ajouter",
+    "edit": "Modifier",
+    "import": "Importer",
+    "description": "Remplissez les champs pour enregistrer l'événement",
+    "deleteConfirmModalTitle": "Supprimer l'événement",
+    "deleteConfirmModalTitle2": "Cette action est irréversible. Elle supprimera définitivement l'événement et tous ses paramètres"
+  },
+  "employee": {
+    "title": "Employés",
+    "list": "Employés",
+    "add": "Ajouter",
+    "import": "Importer",
+    "description": "Remplissez les champs pour enregistrer l'employé",
+    "deleteConfirmModalTitle": "Supprimer l'employé",
+    "deleteConfirmModalTitle2": "Cette action est irréversible. Elle supprimera définitivement l'employé"
+  },
+  "media": {
+    "title": "Médias",
+    "text1": "Fichiers sélectionnés",
+    "labelType": "Sélectionnez le type de fichier à téléverser",
+    "deleteConfirmModalTitle": "Supprimer le fichier",
+    "deleteConfirmModalTitle2": "Cette action est irréversible. Elle supprimera définitivement le fichier"
+  },
+  "renew": {
+    "title": "Factures",
+    "text1": "Données"
+  },
+  "colaborators": {
+    "title": "Collaborateurs",
+    "titles": "Collaborateur",
+    "add": "Ajouter un collaborateur",
+    "search": "Rechercher un utilisateur",
+    "deleteConfirmModalTitle": "Supprimer le collaborateur",
+    "deleteConfirmModalTitle2": "Cette action est irréversible. Elle supprimera les permissions de l'utilisateur sur l'entité"
+  }
 }

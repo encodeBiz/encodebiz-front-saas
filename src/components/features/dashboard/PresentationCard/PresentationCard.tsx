@@ -28,7 +28,7 @@ export default function PresentationCard({ children, title, description, image, 
   return (
     <Box  >
       <Paper elevation={2} sx={styles.base}>
-        <Box sx={styles.root}>
+        <Box sx={image?styles.root:styles.rootSimple}>
           <Box sx={styles.container}>
             <Typography variant="h4" component="h1" align="center" gutterBottom>
               {title}

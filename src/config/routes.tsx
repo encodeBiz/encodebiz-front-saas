@@ -1,83 +1,113 @@
 import {
     Dashboard as DashboardIcon,
-    ShoppingCart as ShoppingCartIcon,
-    People as PeopleIcon,
     BarChart as BarChartIcon,
-    Layers as LayersIcon,
     Settings as SettingsIcon,
-    ChevronLeft,
-    ChevronRight,
-    ExpandLess,
-    ExpandMore,
-    Mail as MailIcon,
-    Notifications as NotificationsIcon,
-    Menu as MenuIcon
+    ImageSearchOutlined,
+    CreditCardOff,
+    Person2TwoTone,
+    Today,
+    CardGiftcard,
+    Home
 } from '@mui/icons-material';
-import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
-import CreditCardOffIcon from '@mui/icons-material/CreditCardOff';
-export const menuItems = [{
+import BusinessIcon from '@mui/icons-material/Business';
+import GroupIcon from '@mui/icons-material/Group';
+
+export const MAIN_ROUTE = 'main'
+export const GENERAL_ROUTE = 'core'
+export const USER_ROUTE = 'user'
+
+export const PASSSINBIZ_MODULE_ROUTE = 'passinbiz'
+export const CHECKINBIZ_MODULE_ROUTE = 'checkinbiz'
+
+const PASSINBIZ = [ {
+    name: 'Holders',
+    icon: <GroupIcon />,
+    link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/holder`,
+    subMenu: []
+}, {
+    name: 'Events',
+    icon: <Today />,
+    link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event`,
+    subMenu: []
+}, {
+    name: 'Staff',
+    icon: <Person2TwoTone />,
+    link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff`,
+    subMenu: []
+}]
+
+
+const CHECKINBIZ: any = [{
+    name: 'home',
+    icon: <Home />,
+    link: `/${MAIN_ROUTE}/${CHECKINBIZ_MODULE_ROUTE}/onboarding`,
+    subMenu: []
+}, {
+    name: 'Employee',
+    icon: <Person2TwoTone />,
+    link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/employee`,
+    subMenu: []
+}]
+
+export const menuItemsHome = [{
     id: 'dashboard',
     name: 'Dashboard',
     icon: <DashboardIcon />,
-    link: '/main/dashboard',
+    link: `/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`,
     subMenu: []
-}, {
-    id: 'checkBiz360_products',
-    name: 'Products',
-    icon: <AutoGraphIcon />,
-    link: '/main/dashboard',
-    subMenu: [{
-        name: 'CheckinBiz',
-        icon: <CreditCardOffIcon />,
-        link: '/main/checkinbiz',
-        subMenu: []
-    }, {
-        name: 'PassinBiz',
-        icon: <CreditScoreIcon />,
-        link: '/main/passinbiz',
-        subMenu: []
-    }]
-}, {
-    id: 'billing',
-    name: 'Billing',
-    icon: <BarChartIcon />,
-    link: '/main/billing',
-    subMenu: [{
-        name: 'Subcription',
-        icon: <BarChartIcon />,
-        link: '/main/billing/sales',
-        subMenu: []
-    }, {
-        name: 'Revenue',
-        icon: <BarChartIcon />,
-        link: '/main/billing/sales',
-        subMenu: []
-    }]
 },
 {
     divider: true,
     subMenu: []
+}
+]
+
+export const menuItemsServices = [{
+    id: 'services',
+    name: 'Services',
+    header: true, subMenu: []
+}, {
+    id: 'checkinbiz',
+    name: 'CheckinBiz',
+    icon: <CreditCardOff />,
+    link: `/${MAIN_ROUTE}/checkinbiz/onboarding`,
+    subMenu: CHECKINBIZ
 },
 {
-    id: 'settings',
-    name: 'Settings',
-    icon: <SettingsIcon />,
-    link: '/main/settings',
-    subMenu: [{
-        name: 'Account',
-        icon: <SettingsIcon />,
-        link: '/main/reports/sales',
-        subMenu: []
-    }, {
-        name: 'Notifications',
-        icon: <SettingsIcon />,
-        link: '/main/reports/sales',
-        subMenu: []
-    }, {
-        name: 'Security',
-        icon: <SettingsIcon />,
-        link: '/main/reports/sales',
-        subMenu: []
-    }]
+    id: 'passinbiz',
+    name: 'PassinBiz',
+    icon: <CreditScoreIcon />,
+    link: `/${MAIN_ROUTE}/passinbiz/onboarding`,
+    subMenu: PASSINBIZ
+},
+{
+    divider: true,
+    subMenu: []
 }]
+
+
+export const menuItemsGeneral = [
+    {
+        id: 'Settings',
+        name: 'Settings',
+        header: true, subMenu: []
+    },
+
+    {
+        divider: true,
+        subMenu: []
+    },
+    {
+        name: 'Entity',
+        icon: <BusinessIcon />,
+        link: `/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity`,
+        subMenu: []
+    },
+    {
+        name: 'Media',
+        icon: <ImageSearchOutlined />,
+        link: `/${MAIN_ROUTE}/${GENERAL_ROUTE}/media`,
+        subMenu: []
+    }
+]

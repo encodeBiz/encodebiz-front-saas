@@ -1,5 +1,6 @@
+import { SxProps, Theme } from "@mui/material";
 
-export const useStyles = () => ({
+export const useStyles = (): Record<string, SxProps<Theme>> => ({
   root: {
     p: 4,
     mt: 8,
@@ -8,7 +9,7 @@ export const useStyles = () => ({
   },
   containerTop: { textAlign: 'center', mb: 4 },
   fullWidth: { width: '100%' },
-  locale:{
+ locale:{
     position:{
       xs:'relative',
       sm:'relative',
@@ -19,21 +20,21 @@ export const useStyles = () => ({
     right:{
       xs:0,
       sm:0,
-      md:0,
-      xl:40,
-      lg:40
+      md:140,
+      xl:140,
+      lg:140
     },
     top:{
       xs:20,
       sm:20,
-      md:20,
+      md:40,
       xl:40,
       lg:40
     },
     width:{
       xs:'100%',
       sm:'100%',
-      md:'100%',
+      md:40,
       xl:40,
       lg:40
     }

@@ -7,16 +7,20 @@ const TextInput: React.FC<FieldProps & TextFieldProps> = ({
   ...props
 }) => {
   const [field, meta, helper] = useField(props.name);
-  const { touched, error } = meta 
+  const { touched, error } = meta
   const helperText = touched && error;
-
+ 
   return (
     <TextField
       {...field}
       {...props}
+      value={field.value ?? ``}
       error={!!error}
+      multiline={props.type==='textarea'}
+      rows={2}
+      disabled={props.disabled}
       helperText={helperText as string}
-       
+
     />
   );
 };

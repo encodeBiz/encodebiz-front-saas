@@ -12,9 +12,6 @@ import {
   MenuItem,
   ListItemIcon,
   Tooltip,
-  InputBase,
-  styled,
-  alpha,
   useTheme
 } from '@mui/material';
 import {
@@ -33,15 +30,19 @@ import { useTranslations } from 'next-intl';
 import LocaleSwitcher from '../../common/LocaleSwitcher';
 import { handleLogout } from '@/services/common/account.service';
 import { useHeader } from './Header.controller';
+import { useCommonModal } from '@/hooks/useCommonModal';
+import { useAuth } from '@/hooks/useAuth';
 
 
 export default function Header() {
   const { changeLayoutState, layoutState } = useLayout()
+  const { user } = useAuth()
   const { changeColorMode } = useAppTheme()
   const theme = useTheme();
   const t = useTranslations();
   const { anchorEl, contextMenu, handleMobileMenuClose, handleProfileMenuOpen, handleMobileMenuOpen,
     mobileMoreAnchorEl, handleMenuClose, showNotification, showMessages } = useHeader()
+  const { openModal } = useCommonModal()
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -62,8 +63,24 @@ export default function Header() {
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
+      sx={{ mt: 6 }}
     >
-      {contextMenu.map((e, i: number) => <MenuItem onClick={e.action}>
+      <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', p: 2 }}>
+        <Avatar
+          sx={{ width: 40, height: 40, mr: 1 }}
+          src={user?.phoneNumber}
+          alt={user?.fullName}
+        />
+        <Box sx={{ display: 'flex',flexDirection:'column', alignItems: 'flex-start', width: '100%' }}>
+          <Typography variant="body2" noWrap component="div" sx={{fontWeight:'bold'}}>
+            {user?.fullName}
+          </Typography>
+          <Typography variant="caption" noWrap component="div">
+            {user?.email}
+          </Typography>
+        </Box>
+      </Box>
+      {contextMenu.map((e, i: number) => <MenuItem key={i} onClick={e.action}>
         <ListItemIcon>
           {e.icon}
         </ListItemIcon>
@@ -127,7 +144,7 @@ export default function Header() {
 
 
 
-      <MenuItem onClick={() => { }}>
+      <MenuItem onClick={() => openModal()}>
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -211,7 +228,7 @@ export default function Header() {
             <Tooltip title={t('layout.header.help')}>
               <IconButton
                 size="large"
-                color="inherit"
+                color="inherit" onClick={() => openModal()}
               >
                 <HelpIcon />
               </IconButton>
@@ -229,8 +246,8 @@ export default function Header() {
               >
                 <Avatar
                   sx={{ width: 32, height: 32 }}
-                  src="/path/to/user.jpg"
-                  alt="User Avatar"
+                  src={user?.photoURL ? user?.photoURL : ''}
+                  alt={user?.displayName as string}
                 />
               </IconButton>
             </Tooltip>

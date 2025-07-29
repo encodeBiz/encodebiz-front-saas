@@ -4,6 +4,11 @@ import { DateTimeFormatOptions } from "next-intl";
 import 'moment/locale/es';
 moment.locale('es')
 
+export type FirestoreTimestamp = {
+    seconds: number;
+    nanoseconds: number;
+};
+
 export const formatDay = (dd: number): any => {
     return dd < 10 ? '0' + dd : dd;
 }
@@ -12,7 +17,7 @@ export const formatMonthDate = (dd: Date) => {
 }
 
 export function toDateTime(secs: number) {
-    var t = new Date(1970, 0, 1); // Epoch
+    const t = new Date(1970, 0, 1); // Epoch
     t.setSeconds(secs);
     return t;
 }
@@ -39,6 +44,25 @@ export function format_date(str: Timestamp | Date | string | any, format: string
     return date;
 }
 
+   export const formatDate = async (
+        timestamp: FirestoreTimestamp | Date,
+        locale:string='es'
+    ) => {
+        // Configurar el idioma
+       
+        moment.locale(locale);
+
+        let jsDate: Date;
+        if (timestamp instanceof Date) {
+            jsDate = timestamp;
+        } else {
+            jsDate = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1_000_000);
+        }
+        const format = locale === 'es' ? 'D [de] MMMM [de] YYYY' : 'MMMM D, YYYY';
+        return moment(jsDate).format(format)
+      
+    };
+
 export function remainTime(nextDate: Timestamp | Date | string | any): string {
     let date: Date = new Date()
     if (typeof nextDate === 'string')
@@ -50,7 +74,7 @@ export function remainTime(nextDate: Timestamp | Date | string | any): string {
         date = (nextDate as Timestamp).toDate()
     }
 
-    var b = moment(date).fromNow();
+    const b = moment(date).fromNow();
     return b; // "a day ago"
 }
 export function diffTime(nextDate: Timestamp | Date | string | any): number {
@@ -64,7 +88,7 @@ export function diffTime(nextDate: Timestamp | Date | string | any): number {
         date = (nextDate as Timestamp).toDate()
     }
 
-    var b = moment(date).diff(moment());
+    const b = moment(date).diff(moment());
     return b; // "a day ago"
 }
 
@@ -81,8 +105,8 @@ export function format_range(range: Array<Timestamp>): string {
 
 
     let date: string = "02 - 05 Octubre"
-    let start: string = ""
-    let end: string = ""
+    const start: string = ""
+    const end: string = ""
     if (range?.length === 2) {
         const dateStart: Date = new Date(range[0]?.seconds * 1000);
         const dateEnd: Date = new Date(range[1]?.seconds * 1000);

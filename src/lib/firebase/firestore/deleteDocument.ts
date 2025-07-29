@@ -1,6 +1,6 @@
  import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "../initializeApp";
-import { DeleteDocumentParams } from "@/types/firebase/firestore";
+import { DeleteDocumentParams } from "@/domain/firebase/firestore";
 
 
 

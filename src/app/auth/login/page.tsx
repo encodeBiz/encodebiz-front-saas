@@ -5,21 +5,17 @@ import {
     Container,
     Box,
     Typography,
-    Button,
     Divider,
     Paper,
     Grid,
     Link
 } from '@mui/material';
 import {
-    Google as GoogleIcon,
-    Facebook as FacebookIcon
-} from '@mui/icons-material';
+    Google as GoogleIcon} from '@mui/icons-material';
 import { LoginFormValues, useRegisterController } from './page.controller';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { useTranslations } from 'next-intl';
 import { useStyles } from './page.styles';
-import { PrimaryButton } from '@/components/common/buttons/GenericButton';
 import { BaseButton } from '@/components/common/buttons/BaseButton';
 import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 
@@ -69,6 +65,7 @@ const SignInPage = () => {
                     validationSchema={validationSchema}
                     onSubmit={signInWithEmail}
                     fields={fields as FormField[]}
+                    btnFullWidth
                     submitButtonText={t('core.signin.signup')}
                 />
 

@@ -4,9 +4,13 @@ import PasswordInput from '@/components/common/forms/fields/PasswordInput';
 import PhoneNumberInput from '@/components/common/forms/fields/PhoneNumberInput';
 import SimpleCheckTerm from '@/components/common/forms/fields/SimpleCheckTerm';
 import TextInput from '@/components/common/forms/fields/TextInput';
+import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
+import { emailRule, passwordRestrictionRule, requiredRule } from '@/config/yupRules';
 import { useToast } from '@/hooks/useToast';
+import { createUser } from '@/lib/firebase/authentication/create';
 import { signInGoogle, signUpEmail } from '@/services/common/account.service';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'nextjs-toploader/app';
 import { useState } from 'react';
 import * as Yup from 'yup';
 
@@ -23,6 +27,7 @@ export interface RegisterFormValues {
 
 export const useRegisterController = () => {
     const { showToast } = useToast()
+    const { push } = useRouter()
 
     const t = useTranslations()
     const [initialValues, setInitialValues] = useState<RegisterFormValues>({
@@ -36,16 +41,14 @@ export const useRegisterController = () => {
     })
 
     const validationSchema = Yup.object().shape({
-        fullName: Yup.string().required(t('core.formValidatorMessages.required')),
-        legalEntityName: Yup.string().required(t('core.formValidatorMessages.required')),
-        email: Yup.string().email(t('core.formValidatorMessages.email')).required(t('core.formValidatorMessages.required')),
-        phone: Yup.string().required(t('core.formValidatorMessages.required')),
+        fullName: requiredRule(t),
+        legalEntityName: requiredRule(t),
+        email: emailRule(t),
+        phone: requiredRule(t),
         acceptTerms: Yup.boolean().oneOf([true], t('core.formValidatorMessages.acceptTerm'))
             .required(t('core.formValidatorMessages.required')),
-        password: Yup.string()
-            .required(t('core.formValidatorMessages.required'))
-            .min(8, t('core.formValidatorMessages.password')),
-        passwordConfirm: Yup.string().required(t('core.formValidatorMessages.required'))
+        password: passwordRestrictionRule(t),
+        passwordConfirm: requiredRule(t)
             .oneOf([Yup.ref('password'), ''], t('core.formValidatorMessages.passwordMatch'))
 
 
@@ -56,17 +59,25 @@ export const useRegisterController = () => {
 
     const signInWithGoogle = async () => {
         try {
-            await signInGoogle()
+            const data = await signInGoogle()
+            push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
         } catch (error: any) {
             showToast(error.message, 'error')
         }
     };
 
-    const signInWithFacebook: any = (values: RegisterFormValues) => {};
+    const signInWithFacebook: any = (values: RegisterFormValues) => { };
 
     const signInWithEmail = async (values: RegisterFormValues) => {
         try {
-            await signUpEmail(values)
+            const responseAuth = await createUser(values.email, values.password);
+            const sessionToken = await responseAuth.user.getIdToken();
+            if (!responseAuth) {
+                showToast('Error to fetch user auth token', 'error')
+            } else {
+                await signUpEmail(values, sessionToken, responseAuth.user.uid as string)
+                 push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
+            }
         } catch (error: any) {
             showToast(error.message, 'error')
         }

@@ -8,9 +8,11 @@ import {
   Typography,
   useTheme
 } from '@mui/material';
+import AnimatedLogo from '../layouts/LogoLoader/LogoLoader';
 
 type PageLoaderProps = {
   type?: 'circular' | 'linear';
+  backdrop?:boolean
   size?: number | string;
   thickness?: number;
   message?: string;
@@ -24,11 +26,13 @@ const PageLoader: React.FC<PageLoaderProps> = ({
   thickness = 3.6,
   message,
   fullScreen = true,
+  backdrop = false,
   progress
 }) => {
   const theme = useTheme();
 
   const loaderStyle = {
+    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -40,15 +44,16 @@ const PageLoader: React.FC<PageLoaderProps> = ({
       left: 0,
       width: '100vw',
       height: '100vh',
-      backgroundColor: theme.palette.background.default,
-      zIndex: theme.zIndex.modal + 1
+      backgroundColor: backdrop?'rgba(0,0,0,0.7)':theme.palette.background.default,
+      zIndex: theme.zIndex.modal + 1,
+      color: theme.palette.text.secondary
     }),
     ...(!fullScreen && {
      
       width: '100%',
       height: 'calc(50vh - 200px)',
       backgroundColor: theme.palette.background.default,
-      zIndex: theme.zIndex.modal + 1
+     // zIndex: theme.zIndex.modal + 1
     })
   };
 
@@ -70,10 +75,10 @@ const PageLoader: React.FC<PageLoaderProps> = ({
 
   return (
     <Box sx={loaderStyle}>
-      {progressComponent}
+      <AnimatedLogo/>
       {message && (
-        <Typography variant="body1" color="textSecondary">
-          {message}
+        <Typography style={{color:'#FFF'}} variant="body1" color="textSecondary">
+          {message}...
         </Typography>
       )}
     </Box>

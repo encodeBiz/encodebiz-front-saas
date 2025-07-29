@@ -55,7 +55,7 @@ export const getUser = async (): Promise<User | null> => {
   return auth.currentUser;
 };
 
-export const changePassword = async function (
+export const changePass = async function (
   user: User,
   password: string
 ): Promise<void> {

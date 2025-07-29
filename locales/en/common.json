@@ -1,85 +1,351 @@
 {
-    "layout": {
-        "header": {
-            "title": "Checkbiz360 SaaS Platform",
-            "language": "Language",
-            "english": "English",
-            "spanish": "Spanish",
-            "french": "French",
-            "germany": "German",
-            "entity": "Current Entity"
-        },
-        "side": {
-            "menu": {
-                "Dashboard": "Panel",
-                "Products": "Products",
-                "CheckinBiz": "CheckinBiz",
-                "PassinBiz": "PassinBiz",
-                "Customers": "Customers",
-                "Reports": "Reports",
-                "Subscription": "Subscriptions",
-                "Revenue": "Renewals",
-                "Billing": "Billing",
-                "Settings": "Preferences",
-                "Account": "Account",
-                "Notifications": "Notifications",
-                "Security": "Security"
-            }
-        },
-        "footer": {
-            "copyright": "© {{year}} My Company. All rights reserved."
-        }
+  "locale": "en",
+  "layout": {
+    "header": {
+      "title": "EncodeBiz SaaS Platform",
+      "language": "Language",
+      "english": "English",
+      "spanish": "Spanish",
+      "french": "French",
+      "germany": "German",
+      "entity": "Current Entity",
+      "profile": "Profile",
+      "setting": "Preferences",
+      "media": "Media",
+      "logout": "Logout",
+      "help": "Help",
+      "theme": "Theme",
+      "messages": "Messages",
+      "notification": "Notifications"
     },
-    "core": {
-        "label": {
-            "firstName": "First Name",
-            "lastName": "Last Name",
-            "password": "Password",
-            "passwordConfirm": "Confirm Password",
-            "email": "Email",
-            "acceptTerms": "Accept Terms and Conditions",
-            "phone": "Phone"
-        },
-        "button": {
-            "submitting": "Submitting...",
-            "submit": "Submit",
-            "cancel": "Cancel",
-            "download": "Download",
-            "delete": "Delete"
-        },
-        "formValidatorMessages": {
-            "required": "This field is required",
-            "email": "This field is required",
-            "password": "The password is too short: must be at least 8 characters.",
-            "passwordMatch": "The passwords do not match"
-        },
-        "signup": {
-            "title": "Create an account",
-            "signup": "Create an account",
-            "subtitle": "Create an account and join EncodeBiz SaaS",
-            "or": "Or",
-            "google": "Join with Google",
-            "facebook": "Join with Facebook",
-            "existAccount": "Do you already have an account?",
-            "signIn": "Sign in"
-        },
-        "signin": {
-            "title": "Sign in",
-            "signup": "Sign in",
-            "subtitle": "Sign in and join EncodeBiz SaaS",
-            "or": "Or",
-            "google": "Join with Google",
-            "facebook": "Join with Facebook",
-            "noAccount": "Don't have an account?",
-            "signIn": "Sign in"
-        }
+    "side": {
+      "menu": {
+        "Dashboard": "Dashboard",
+        "Services": "Services",
+        "Events": "Events",
+        "Media": "Media",
+        "home": "Home",
+        "general": "General",
+        "CheckinBiz": "CheckinBiz",
+        "PassinBiz": "PassinBiz",
+        "Customers": "Customers",
+        "Reports": "Reports",
+        "Employee": "Employee",
+        "Subscription": "Subscriptions",
+        "Revenue": "Renewals",
+        "Billing": "Billing",
+        "Settings": "Preferences",
+        "Account": "Account",
+        "Notifications": "Notifications",
+        "Security": "Security",
+        "Entity": "Entity",
+        "HoldersList": "Holders List",
+        "AddHolders": "Add Holders",
+        "Plans": "Plans",
+        "Holders": "Holders"
+      }
     },
-    "features":{
-    "dashboard":{
-      "card":{
-        "btn1":"More information",
-        "btn2":"Products"
+    "footer": {
+      "copyright": "EncodeBiz. All rights reserved.",
+      "web": "Our Website",
+      "contactUs": "Contact Us",
+      "whatsApp": "WhatsApp",
+      "policy": "Privacy Policy",
+      "terms": "Terms and Conditions"
+    }
+  },
+  "core": {
+    "title": {
+      "loader": "Loading user session",
+      "loaderChangeEntity": "Changing entity",
+      "loaderAction": "Processing information",
+      "mediaModaltitle": "Media Selector",
+      "loaderActionBilling": "Accessing your payment gateway information"
+    },
+    "feedback": {
+      "success": "Operation completed successfully"
+    },
+    "label": {
+      "filename": "File Name",
+      "typePass": "Pass Type",
+      "credencial": "Credentials",
+      "event": "Event",
+      "passStatus": "Pass Status",
+      "pending": "Pending",
+      "revoke": "Revoke",
+      "firstName": "First Name",
+      "sponsor": "Sponsor",
+      "ticketCapacity": "Capacity",
+      "date": "Date",
+      "location": "Location",
+      "designed": "Design",
+      "imageUrl": "Image",
+      "setting": "Preferences",
+      "colorPrimary": "Primary Color",
+      "colorAccent": "Accent Color",
+      "description": "Description",
+      "message": "Message",
+      "state": "State",
+      "uploadResourse": "Upload Resource",
+      "lastName": "Last Name",
+      "fullName": "Full Name",
+      "password": "Password",
+      "legalEntityName": "Legal Company Name",
+      "passwordConfirm": "Confirm Password",
+      "email": "Email",
+      "acceptTerms": "Accept terms and conditions",
+      "phone": "Phone",
+      "accepTerm1": "I agree to the",
+      "accepTerm2": "Terms of Service",
+      "accepTerm3": "and",
+      "accepTerm4": "Privacy Policy",
+      "billingEmail": "Email for payment management",
+      "avatar": "Avatar",
+      "sessionLastTime": "Last Login",
+      "createAt": "Creation Date",
+      "logo": "Logo",
+      "color": "Color",
+      "taxId": "NIF / CIF / NIE / VAT",
+      "street": "Street",
+      "city": "City",
+      "postalCode": "Postal Code",
+      "region": "Region",
+      "country": "Country",
+      "backgroundColor": "Background Color",
+      "labelColor": "Label Color",
+      "textColor": "Text Color",
+      "stripImageUrl": "Strip Image",
+      "iconUrl": "Icon",
+      "address": "Address",
+      "legal": "Legal",
+      "name": "Name",
+      "currentPassword": "Current Password",
+      "label": "Label",
+      "value": "Value"
+    },
+    "button": {
+      "revoke": "Revoke",
+      "resend": "Resend",
+      "submitting": "Submitting...",
+      "submit": "Submit",
+      "send": "Resend",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "crop": "Crop Image",
+      "file": "Original Image",
+      "download": "Download",
+      "delete": "Delete",
+      "save": "Save",
+      "ok": "Got it",
+      "add": "Add",
+      "edit": "Edit",
+      "close": "Close",
+      "configurenow": "Configure now",
+      "update": "Update"
+    },
+    "formValidatorMessages": {
+      "required": "This field is required",
+      "email": "This field is required",
+      "password": "The password is too short: it must be at least 8 characters.",
+      "passwordMatch": "Passwords do not match",
+      "acceptTerm": "You must accept the terms and conditions",
+      "avatarUpload": "Select a valid image file.",
+      "avatarMaxSize": "The image is too large. Maximum allowed: 5MB."
+    },
+    "signup": {
+      "title": "Create an account",
+      "signup": "Create Account",
+      "subtitle": "Create an account and join EncodeBiz SaaS",
+      "or": "Or",
+      "google": "Join with Google",
+      "facebook": "Join with Facebook",
+      "existAccount": "Already have an account?",
+      "signIn": "Sign In",
+      "complete_profile": "Complete Profile",
+      "complete_profile_desc": "Before you begin, you must complete your data on the platform and create your first entity. You can modify this data later in the preferences"
+    },
+    "signin": {
+      "title": "Sign In",
+      "signup": "Sign In",
+      "subtitle": "Sign in and join EncodeBiz SaaS",
+      "or": "Or",
+      "google": "Join with Google",
+      "facebook": "Join with Facebook",
+      "noAccount": "Don't have an account?",
+      "signIn": "Sign In"
+    },
+    "upload": {
+      "title": "Upload CSV File",
+      "btn": "Select File",
+      "desc": "Please select a CSV file to preview the content and select it",
+      "file": "File",
+      "preview": "Preview (first 5 rows)",
+      "signIn": "Sign In"
+    }
+  },
+  "features": {
+    "dashboard": {
+      "overview": "Overview",
+      "stats": "Statistics",
+      "card": {
+        "btn1": "More Information",
+        "btn2": "Services",
+        "btn3": "Plans",
+        "title": "Welcome to Encodebiz SaaS",
+        "subtitle": "On this platform you can do many interesting things"
+      }
+    },
+    "entity": {
+      "create": {
+        "card": {
+          "title": "Create Legal Entity",
+          "subtitle": "You can associate multiple entities with your account on the platform, but at least one is required to start using our products"
+        }
       }
     }
+  },
+  "account": {
+    "title": "Account",
+    "tabs": {
+      "tab1": {
+        "title": "Manage Profile"
+      },
+      "tab2": {
+        "title": "Change Password"
+      }
+    },
+    "sessionLastTime": "Last Login"
+  },
+  "entity": {
+    "title": "Entity",
+    "tabs": {
+      "tab1": {
+        "title": "Modify Entity",
+        "deleteConfirmModalTitle": "Delete Entity",
+        "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the entity and all its associated settings and purchases",
+        "deleteConfirmModalTitle3": "Please enter the following word to proceed with the action"
+      },
+      "tab2": {
+        "title": "Modify Brand",
+        "btn": "Delete Entity"
+      },
+      "tab3": {
+        "title": "Configure Billing",
+        "btn": "Configure Billing"
+      },
+      "tab4": {
+        "title": "Subscriptions",
+        "btn": "Configure Billing"
+      },
+      "tab5": {
+        "title": "Billing",
+        "btn": "Configure Billing"
+      },
+      "tab6": {
+        "title": "Collaborators",
+        "btn": "Configure Billing"
+      }
+    }
+  },
+  "salesPlan": {
+    "title": "Choose a plan to acquire this service",
+    "subTitle": "Select the plan that best fits your business needs",
+    "free": "Free",
+    "standard": "Standard",
+    "month": "month",
+    "bronze": "Bronze",
+    "branding": "Branding: EncodeBiz default logo and design",
+    "brandingCustom": "Branding: Complete pass customization",
+    "cost": "Estimated cost per pass: ~€0.01",
+    "costEstimated": "Estimated cost: Variable based on usage",
+    "selectPlan": "Select Plan",
+    "custom": "Custom",
+    "upToTen": "Up to 10 products",
+    "upToFive": "Limit: Up to 5 pass holders.",
+    "basicAnalitics": "Basic Analytics",
+    "emailSuport": "Email Support",
+    "emailPrioritySuport": "Priority Email Support",
+    "emailAndPhoneSuport": "Phone and Email Support",
+    "estimateRange": "Estimated margin per pass: ~€0.49",
+    "estimateRangeCustom": "Estimated margin: Variable, but with potential to be significant",
+    "enterprise": "Enterprise",
+    "customerTime": "24/7 Customer Support",
+    "apiAcces": "API Access",
+    "customReport": "Custom Reports",
+    "unlimitedProducts": "Unlimited Products",
+    "premium": "Premium",
+    "price": "Customer Price: Free",
+    "priceEmited": "Price per issued pass: €0.50",
+    "priceMonthly": "Monthly Price: To be agreed (recommended between €99 and €499)",
+    "popular": "Most Popular",
+    "limit": "Limit: No restrictions",
+    "model": "Model: Pay per use",
+    "modelCustom": "Model: Customized based on customer needs",
+    "avancedAnalitics": "Advanced Analytics",
+    "dedicateManager": "Dedicated Account Manager",
+    "customIntegrations": "Custom Integrations",
+    "whiteLabel": "White Label Solutions",
+    "onsiteTraining": "Onsite Training",
+    "pay": "Get Plan",
+    "contract": "Current Plan",
+    "del": "Delete suscription",
+    "renew": "Change Plan",
+    "notAllowedPlan": "You must update the legal data of the selected entity before obtaining a plan."
+  },
+  "terms": {
+    "title": "Terms and Conditions"
+  },
+  "policy": {
+    "title": "Privacy Policy"
+  },
+  "holders": {
+    "title": "Holders",
+    "holderList": "Holders",
+    "addHolder": "Add",
+    "editHolder": "Edit",
+    "import": "Import",
+    "description": "Fill in the fields to register the holder",
+    "revokeConfirmModalTitle": "Revoke this holder's pass",
+    "revokeConfirmModalTitle2": "This action cannot be undone. It will permanently revoke this holder's pass",
+    "sendConfirmModalTitle": "Resend pass",
+    "sendConfirmModalTitle2": "This action cannot be undone. It will resend the pass to this holder"
+  },
+  "event": {
+    "title": "Events",
+    "list": "Events",
+    "add": "Add",
+    "edit": "Edit",
+    "import": "Import",
+    "description": "Fill in the fields to register the event",
+    "deleteConfirmModalTitle": "Delete Event",
+    "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the event and all its settings"
+  },
+  "employee": {
+    "title": "Employees",
+    "list": "Employees",
+    "add": "Add",
+    "import": "Import",
+    "description": "Fill in the fields to register the employee",
+    "deleteConfirmModalTitle": "Delete Employee",
+    "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the employee"
+  },
+  "media": {
+    "title": "Media",
+    "text1": "Selected Files",
+    "labelType": "Select the type of file to upload",
+    "deleteConfirmModalTitle": "Delete File",
+    "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the file"
+  },
+  "renew": {
+    "title": "Invoices",
+    "text1": "Data"
+  },
+  "colaborators": {
+    "title": "Collaborators",
+    "titles": "Collaborator",
+    "add": "Add Collaborator",
+    "search": "Search User",
+    "deleteConfirmModalTitle": "Delete Collaborator",
+    "deleteConfirmModalTitle2": "This action cannot be undone. It will remove the user's permissions for the entity"
   }
 }

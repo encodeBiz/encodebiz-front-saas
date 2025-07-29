@@ -1,7 +1,8 @@
 {
+  "locale": "es",
   "layout": {
     "header": {
-      "title": "Plataforma SaaS Checkbiz360",
+      "title": "Plataforma SaaS EncodeBiz",
       "language": "Idioma",
       "english": "Inglés",
       "spanish": "Español",
@@ -10,6 +11,7 @@
       "entity": "Entidad Actual",
       "profile": "Perfil",
       "setting": "Preferencias",
+      "media": "Media",
       "logout": "Cerrar sesión",
       "help": "Ayuda",
       "theme": "Tema",
@@ -19,34 +21,81 @@
     "side": {
       "menu": {
         "Dashboard": "Panel",
-        "Products": "Productos",
+        "Staff": "Personal de Apoyo",
+        "Services": "Servicios",
+        "Events": "Eventos",
+        "Media": "Media",
+        "home": "Inicio",
+        "general": "General",
         "CheckinBiz": "CheckinBiz",
         "PassinBiz": "PassinBiz",
         "Customers": "Clientes",
         "Reports": "Reportes",
-        "Subcription": "Subcripciones",
+        "Employee": "Empleado",
+        "Subscription": "Suscripciones",
         "Revenue": "Renovaciones",
         "Billing": "Facturación",
         "Settings": "Preferencias",
         "Account": "Cuenta",
         "Notifications": "Notificaciones",
-        "Security": "Securidad"
+        "Security": "Securidad",
+        "Entity": "Entidad",
+        "HoldersList": "Listado de Titulares",
+        "AddHolders": "Adicionar Titulares",
+        "Plans": "Planes",
+        "Holders": "Titulares"
       }
     },
     "footer": {
-      "copyright": "© {{year}} My Company. All rights reserved."
+      "copyright": "EncodeBiz. Todos los derechos reservados.",
+      "web": "Nuestra Web",
+      "contactUs": "Contáctenos",
+      "whatsApp": "WhatsApp",
+      "policy": "Política y Privacidad",
+      "terms": "Términos y Condiciones"
     }
   },
   "core": {
-    "title":{
-      "loader":"Cargando sesión de usuario"
+    "title": {
+      "loader": "Cargando sesión de usuario",
+      "loaderChangeEntity": "Cambiando entidad",
+      "loaderAction": "Procesando información",
+      "mediaModaltitle": "Selector de Medias",
+      "loaderActionBilling": "Accediendo a la información de tu pasarela de pago"
+    },
+    "feedback": {
+      "success": "La operación se realizó exitosamente",
+      "empthy":"Nada que mostrar",
+      "empthytext":"No existen elementos para mostrar en este momento"
     },
     "label": {
+      "filename": "Nombre de Archivo",
+      "owner": "Propietario",
+      "admin": "Administrador",
+      "typePass": "Tpo de pase",
+      "credencial": "Credenciales",
+      "event": "Evento",
+      "passStatus": "Estado del pase",
+      "pending": "Pendiente",
+      "revoke": "Revocar",
       "firstName": "Nombre",
+      "sponsor": "Patrisonador",
+      "ticketCapacity": "Capacidad",
+      "date": "Fecha",
+      "location": "Ubicación",
+      "designed": "Diseño",
+      "imageUrl": "Imagen",
+      "setting": "Preferencias",
+      "colorPrimary": "Color primario",
+      "colorAccent": "Color de resaltado",
+      "description": "Descripción",
+      "message": "Mensaje",
+      "state": "Estado",
+      "uploadResourse": "Subir recurso",
       "lastName": "Apellido",
       "fullName": "Nombre completo",
       "password": "Contraseña",
-      "legalEntityName": "Npmbre Legal de la Empresa",
+      "legalEntityName": "Nombre Legal de la Empresa",
       "passwordConfirm": "Confirmar contraseña",
       "email": "Correo electrónico",
       "acceptTerms": "Aceptar términos y condiciones",
@@ -55,21 +104,63 @@
       "accepTerm2": " Terms of Service",
       "accepTerm3": " and ",
       "accepTerm4": " Privacy Policy",
-      "billingEmail": "Email para gestionar los pagos"
+      "billingEmail": "Email para gestionar los pagos",
+      "avatar": "Avatar",
+      "sessionLastTime": "Último inicio de sesión",
+      "createAt": "Fecha de creación",
+      "logo": "Logo",
+      "background": "Fondo",
+      "custom": "Personalizado",
+      "stripImage": "Imagen de tira",
+      "icon": "Icono",
+      "icon2x": "Icono Grande",
+      "color": "Color",
+      "taxId": "NIF / CIF / NIE / VAT",
+      "street": "Calle",
+      "city": "Ciudad",
+      "postalCode": "Código postal",
+      "region": "Región",
+      "country": "País",
+      "backgroundColor": "Color de fondo",
+      "labelColor": "Color de etiqueta",
+      "textColor": "Color de texto",
+      "stripImageUrl": "Imagen de tira",
+      "iconUrl": "Icono",
+      "address": "Dirección",
+      "legal": "Legal",
+      "name": "Nombre",
+      "currentPassword": "Contraseña actual",
+      "label": "Etiqueta",
+      "value": "Valor"
     },
     "button": {
+      "revoke": "Revocar",
+      "resend": "Reenviar",
       "submitting": "Enviando...",
       "submit": "Enviar",
+      "send": "Relanzar",
+      "add": "Adicionar",
+      "edit": "Editar",
+      "selected": "Seleccionar",
+      "confirm": "Confirmar",
       "cancel": "Cancelar",
+      "crop":"Recortar Imagen",
+      "file":"Imagen original",
       "download": "Descargar",
-      "delete": "Eliminar"
+      "delete": "Eliminar",
+      "save": "Guardar",
+      "ok": "Entiendo",
+      "configurenow":"Configurar ahora",
+      "update": "Actualizar"
     },
     "formValidatorMessages": {
       "required": "Este campo es requerido",
       "email": "Este campo es requerido",
       "password": "La contraseña es demasiado corta: debe tener un mínimo de 8 caracteres.",
       "passwordMatch": "La contraseñas no coinciden",
-      "acceptTerm": "Debe aceptar los términos y condiciones"
+      "acceptTerm": "Debe aceptar los términos y condiciones",
+      "avatarUpload": "Selecciona un archivo de imagen válido.",
+      "avatarMaxSize": "La imagen es demasiado grande. Máximo permitido: 5MB."
     },
     "signup": {
       "title": "Crear una cuenta",
@@ -79,7 +170,9 @@
       "google": "Unete con Google",
       "facebook": "Unete con Facebook",
       "existAccount": "¿Ya tienes una cuenta?",
-      "signIn": "Inicia sesión"
+      "signIn": "Inicia sesión",
+      "complete_profile": "Completar perfil",
+      "complete_profile_desc": "Antes de comenzar debes completar tus datos en la plataforma y crear tu primera entidad, estos datos luego los puedes modificar desde las preferencias"
     },
     "signin": {
       "title": "Iniciar sesión",
@@ -90,6 +183,14 @@
       "facebook": "Unete con Facebook",
       "noAccount": "No tienes una cuenta?",
       "signIn": "Inicia sesión"
+    },
+    "upload": {
+      "title": "Subir archico CSV",
+      "btn": "Seleccionar archico",
+      "desc": "Por favor seleccione un archivo CSV para previsualizar el contenido y seleccionarlo",
+      "file": "Archivo",
+      "preview": "Preview (first 5 rows)",
+      "signIn": "Inicia sesión"
     }
   },
   "features": {
@@ -98,18 +199,191 @@
       "stats": "Estadísticas",
       "card": {
         "btn1": "Mas informacion",
-        "btn2": "Productos",
+        "btn2": "Servicios",
+        "btn3": "Planes",
         "title": "Bienvenido a Encodebiz Saas",
         "subtitle": "En esta plataforma podras hacer varias cosas interesantes"
       }
     },
     "entity": {
-      "create": {     
-        "card": {         
+      "create": {
+        "card": {
           "title": "Crear entidad legal",
           "subtitle": "En la plataforma puedes asociar varias entidades a la cuenta, pero es necesario al menos una para comenzar a utilixar nuestros productos"
         }
       }
     }
+  },
+  "account": {
+    "title": "Cuenta",
+    "tabs": {
+      "tab1": {
+        "title": "Gestionar Perfil"
+      },
+      "tab2": {
+        "title": "Cambiar Contraseña"
+      }
+    },
+    "sessionLastTime": "Último inicio de sesión"
+  },
+  "entity": {
+    "title": "Entidad",
+    "tabs": {
+      "tab1": {
+        "title": "Modificar Entidad",
+        "deleteConfirmModalTitle": "Eliminar Entidad",
+        "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente la entidad y todas sus configuraciones y compras asociadas",
+        "deleteConfirmModalTitle3": "Por favor entre la siguiente palabra para continuar con la accion"
+      },
+      "tab2": {
+        "title": "Modificar Marca",
+        "btn": "Eliminar Entidad"
+      },
+      "tab3": {
+        "title": "Configurar Billing",
+        "btn": "Configurar Billing"
+      },
+      "tab4": {
+        "title": "Suscripciones",
+        "btn": "Configurar Billing"
+      },
+      "tab5": {
+        "title": "Facturación",
+        "btn": "Configurar Billing"
+      },
+      "tab6": {
+        "title": "Colaboradores",
+        "btn": "Configurar Billing"
+      }
+    }
+  },
+  "salesPlan": {
+    "title": "Elige un plan para adquirir este servicio",
+    "subTitle": "Seleccione el plan que se ajuste a las necesidades de su negocio",
+    "free": "Gratis",
+    "standard": "Estandar",
+    "month": "mes",
+    "bronze": "Bronce",
+    "branding": "Branding: Logo y diseño predeterminados de EncodeBiz",
+    "brandingCustom": "Branding: Personalización completa del pase",
+    "cost": "Costo estimado por pase: ~0,01 €",
+    "costEstimated": "Costo estimado: Variable según uso",
+    "selectPlan": "Seleccionar Plan",
+    "custom": "Personalizado",
+    "upToTen": "Hasta 10 productos",
+    "upToFive": "Límite: Hasta 5 titulares de pases.",
+    "basicAnalitics": "Análisis básico",
+    "emailSuport": "Soporte por correo electrónico",
+    "emailPrioritySuport": "Soporte piorizado por correo electrónico",
+    "emailAndPhoneSuport": "Soporte telefónico y correo electrónico",
+    "estimateRange": "Margen estimado por pase: ~0,49 €",
+    "estimateRangeCustom": "Margen estimado: Variable, pero con potencial de ser significativo",
+    "enterprise": "Empresarial",
+    "customerTime": "Atención al cliente 24/7",
+    "apiAcces": "Acceso a APIs",
+    "customReport": "Informes personalizados",
+    "unlimitedProducts": "Productos ilimitados",
+    "premium": "Premium",
+    "price": "Precio para el cliente: Gratuito",
+    "priceEmited": "Precio por pase emitido: 0,50 €",
+    "priceMonthly": "Precio mensual: A convenir (recomendado entre 99 € y 499 €)",
+    "popular": "Más Popular",
+    "limit": "Límite: Sin restricciones",
+    "model": "Modelo: Pago por uso",
+    "modelCustom": "Modelo: Personalizado según necesidades del cliente",
+    "avancedAnalitics": "Análisis avanzados",
+    "dedicateManager": " Gestor de cuentas dedicado",
+    "customIntegrations": "Integraciones personalizadas",
+    "whiteLabel": "Soluciones de marca blanca",
+    "onsiteTraining": "Capacitación en el lugar",
+    "pay": "Obtener Plan",
+    "contract": "Plan Actual",
+    "renew": "Cambiar plan",
+    "del": "Eliminar suscripción",
+    "imageConfirmModalTitle":"Entidad no configurada",
+    "imageConfirmModalTitle2":"Para poder realizar una suscripción debe previamente configurar los datos legales de al entidad y el billing",
+    "notAllowedPlan": "Debes actualizar los datos legales de la entidad seleccionada antes de obtener un plan."
+  },
+  "terms": {
+    "title": "Términos y Condiciones"
+  },
+  "policy": {
+    "title": "Política y Privacidad"
+  },
+  "holders": {
+    "title": "Titulares",
+    "holderList": "Titulares",
+    "addHolder": "Adicionar",
+    "editHolder": "Editar",
+    "import": "Importar",
+    "description": "Rellene los campos para registrar el titular",
+    "revokeConfirmModalTitle": "Revocar pase de este titular",
+    "revokeConfirmModalTitle2": "Esta acción no se puede deshacer. Revocará  permanentemente el pase de este titular",
+    "sendConfirmModalTitle": "Relanzar pase",
+    "sendConfirmModalTitle2": "Esta acción no se puede deshacer. Relanzará  el pase de este titular nuevamente"
+  },
+  "event": {
+    "title": "Eventos",
+    "list": "Eventos",
+    "add": "Adicionar",
+    "edit": "Editar",
+    "import": "Importar",
+    "description": "Rellene los campos para registrar el evento",
+    "deleteConfirmModalTitle": "Eliminar Evento",
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el evento y todas sus configuraciones"
+  },
+  "staff": {
+    "title": "Personal de Apoyo",
+    "list": "Personal de Apoyo",
+    "add": "Adicionar",
+    "edit": "Editar",
+    "import": "Importar",
+    "description": "Rellene los campos para registrar el personal de apoyo",
+    "deleteConfirmModalTitle": "Eliminar Personal de Apoyo",
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el personal de apoyo y todas sus configuraciones"
+  },
+  "employee": {
+    "title": "Empleados",
+    "list": "Empleados",
+    "add": "Adicionar",
+    "update": "Editar",
+    "import": "Importar",
+    "description": "Rellene los campos para registrar el empleado",
+    "deleteConfirmModalTitle": "Eliminar empleado",
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el empleado"
+  },
+  "media": {
+    "title": "Multimedias",
+    "text1": "Archicos seleccionados",
+    "labelType": "Seleccione el tipo de archivo a subir",
+    "deleteConfirmModalTitle": "Eliminar archivo",
+    "deleteConfirmModalTitle2": "¡Tenga cuidaddo!. Esta acción no se puede deshacer. Si elimina un archivo que este asociado a algún servicio o entidad, podría atentar con el correcto funcionamiento de estos elementos en la plataforma."
+  },
+  "renew": {
+    "title": "Facturas",
+    "text1": "Datos",
+    "deleteConfirmModalTitle": "Eliminar plan",
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente todas las acciones realizadas sobre el servicio solicitado"
+  },
+  "colaborators": {
+    "title": "Colaboradores",
+    "titles": "Colaborador",
+    "add": "Adicionar colaborador",
+    "search": "Buscar usuario",
+    "deleteConfirmModalTitle": "Eliminar colaborador",
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará los permisos del usuario sobre la entidad"
+  },
+  "billing": {
+    "title": "Configurar Billing",
+    "subtitle": "Configura los métodos de pago para poder realizar las compras en la plataforma"
+  },
+  "scan":{
+    "title":"Validar pase",
+    "subtitle":"Escanee el código QR para confirmar si es valido el pase",
+    "camaraFocus":"Apunta tu cámara a un código QR",
+    "resultTitle":"Pase confirmado",
+    "scanOther":"Escanear otro código",
+    "failed":"Ha fallado la lectura del código",
+    "tryagain":"Intentar de nuevo"
   }
 }

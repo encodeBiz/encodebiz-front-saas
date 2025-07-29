@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
 import { ThemeProvider } from "@/contexts/themeContext";
 import { LocaleProvider } from "@/contexts/localeContext";
 import { LayoutProvider } from "@/contexts/layoutContext";
@@ -9,6 +8,10 @@ import { AuthProvider } from "@/contexts/authContext";
 import { EntityProvider } from "@/contexts/entityContext";
 import NextTopLoader from 'nextjs-toploader';
 import { ToastProvider } from "@/contexts/toastContext";
+import { CommonModalProvider } from "@/contexts/commonModalContext";
+import { MediaProvider } from "@/contexts/mediaContext";
+import { Suspense } from "react";   // ✅ Importar Suspense
+
 const geistSans = Geist({
     variable: "--font-geist-sans",
     subsets: ["latin"],
@@ -20,8 +23,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "CheckBiz360 Platform SaaS",
-    description: "CheckBiz360 Platform SaaS",
+    title: "EncodeBiz Platform SaaS",
+    description: "EncodeBiz Platform SaaS",
 };
 
 export default async function RootLayout({
@@ -29,26 +32,28 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-
-
-
-
     return (
         <html lang="en">
             <body className={`${geistSans.variable} ${geistMono.variable}`}>
                 <LocaleProvider>
-                    <AuthProvider>
-                        <EntityProvider>
-                            <LayoutProvider>
-                                <ThemeProvider>
-                                    <ToastProvider>
-                                        <NextTopLoader showSpinner={false} color="#1976d2" />
-                                        {children}
-                                    </ToastProvider>
-                                </ThemeProvider>
-                            </LayoutProvider>
-                        </EntityProvider>
-                    </AuthProvider>
+                    <Suspense fallback={<div>Loading session...</div>}>  {/* ✅ Suspense envuelve AuthProvider */}
+                        <AuthProvider>
+                            <ToastProvider>
+                                <EntityProvider>
+                                    <LayoutProvider>
+                                        <ThemeProvider>
+                                            <CommonModalProvider>
+                                                <MediaProvider>
+                                                    <NextTopLoader showSpinner={false} color="#456456" />
+                                                    {children}
+                                                </MediaProvider>
+                                            </CommonModalProvider>
+                                        </ThemeProvider>
+                                    </LayoutProvider>
+                                </EntityProvider>
+                            </ToastProvider>
+                        </AuthProvider>
+                    </Suspense>
                 </LocaleProvider>
             </body>
         </html>
