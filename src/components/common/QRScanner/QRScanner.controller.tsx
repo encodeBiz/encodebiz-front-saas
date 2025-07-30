@@ -1,8 +1,9 @@
 import { useLayout } from "@/hooks/useLayout"
 import { useToast } from "@/hooks/useToast"
-import { validateHolder } from "@/services/passinbiz/holder.service"
+import { validateHolder, validateStaff } from "@/services/passinbiz/holder.service"
 import { useTranslations } from "next-intl"
-import { useState } from "react"
+import { useSearchParams } from "next/navigation"
+import { useEffect, useState } from "react"
 interface IQRResult {
     "holderId": string
     "companyName": string
@@ -21,13 +22,29 @@ export const useQRScanner = () => {
     const [scanning, setScanning] = useState<boolean>(false);
     const [scanRessult, setScanRessult] = useState<IQRResult | null>();
     const [error, setError] = useState<any>(null);
+    const searchParams = useSearchParams()
+    const tokenBase64 = searchParams.get('token') || null;
+    const [tokenValidateStaff, settokenValidateStaff] = useState('')
 
+    const handleValidateStaff = async () => {
+        try {
+            changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+            const response: any = await validateStaff(tokenBase64 as string)
+            settokenValidateStaff(response.token)
+            setError(null);
+            changeLoaderState({ show: false })
+        } catch (error: any) {
+            changeLoaderState({ show: false })
+            setError(error.message);
+            showToast(error.message, 'error')
+        }
+    }
 
 
     const validateData = async (data: any) => {
         try {
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-            const response = await validateHolder(data)                     
+            const response = await validateHolder(data, tokenValidateStaff)
             setScanRessult({
                 ...data,
                 ...response
@@ -58,6 +75,11 @@ export const useQRScanner = () => {
         setError(null);
         setScanning(false);
     };
+
+    useEffect(() => {
+        if (tokenBase64) handleValidateStaff()
+    }, [tokenBase64])
+
 
 
     return { handleScan, handleError, resetScanner, scanRessult, scanning, error }

@@ -17,9 +17,10 @@ export interface LoginFormValues {
     password: string
 };
 
-export const useRegisterController = () => {
+export const useScannerController = () => {
     const t = useTranslations()
     const { showToast } = useToast()
+
     const { push } = useRouter()
     const [initialValues, setInitialValues] = useState<LoginFormValues>({
         email: '',

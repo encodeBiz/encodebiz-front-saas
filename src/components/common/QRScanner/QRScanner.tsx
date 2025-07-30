@@ -26,6 +26,7 @@ import { useQRScanner } from './QRScanner.controller';
 const QRScanner = () => {
     const { handleScan, handleError, resetScanner, scanRessult, scanning, error } = useQRScanner()
     const t = useTranslations()
+
     const { position, isLoading } = useGeolocation({
         enableHighAccuracy: true,
         timeout: 10000
