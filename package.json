@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@firebase/firestore": "^4.9.0",
     "@icons/material": "^0.4.1",
     "@mui/icons-material": "^7.1.2",
     "@mui/material": "^7.1.0",
@@ -45,6 +46,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@types/firebase": "^3.2.3",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-color": "^3.0.13",
