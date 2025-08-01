@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 //PROD
 
 
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyADQWsgPcrYiiVJveu8nslgpWtL-SFOZaQ",
   authDomain: "encodebiz-services.firebaseapp.com",
   projectId: "encodebiz-services",
@@ -18,6 +18,5 @@ const firebaseConfig = {
 
 export const DEV_PREFIX = "";
 // Inicializar Firebase
-const firebaseApp = initializeApp(firebaseConfig);
-export default firebaseApp;
+ 
 

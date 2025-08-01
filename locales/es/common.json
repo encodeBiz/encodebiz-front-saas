@@ -384,6 +384,8 @@
     "resultTitle":"Pase confirmado",
     "scanOther":"Escanear otro código",
     "failed":"Ha fallado la lectura del código",
-    "tryagain":"Intentar de nuevo"
+    "failedStaff":"Usted no tiene permisos para validar el pase",
+    "tryagain":"Intentar de nuevo",
+    "validatingStaff":"Validando personal de apoyo"
   }
 }

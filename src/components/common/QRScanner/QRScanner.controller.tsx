@@ -25,18 +25,25 @@ export const useQRScanner = () => {
     const searchParams = useSearchParams()
     const tokenBase64 = searchParams.get('token') || null;
     const [tokenValidateStaff, settokenValidateStaff] = useState('')
+    const [staffValidating, setStaffValidating] = useState(false)
+    const [staffValid, setStaffValid] = useState(false)
+
 
     const handleValidateStaff = async () => {
         try {
+            setStaffValidating(true)
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             const response: any = await validateStaff(tokenBase64 as string)
             settokenValidateStaff(response.token)
             setError(null);
             changeLoaderState({ show: false })
+            setStaffValidating(false)
+            setStaffValid(true)
         } catch (error: any) {
-            changeLoaderState({ show: false })
-            setError(error.message);
+            changeLoaderState({ show: false })          
             showToast(error.message, 'error')
+            setStaffValidating(false)
+            setStaffValid(false)
         }
     }
 
@@ -82,6 +89,6 @@ export const useQRScanner = () => {
 
 
 
-    return { handleScan, handleError, resetScanner, scanRessult, scanning, error }
+    return { handleScan, handleError, resetScanner, scanRessult, scanning, error, staffValidating, staffValid }
 }
 

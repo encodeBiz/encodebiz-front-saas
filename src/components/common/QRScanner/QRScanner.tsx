@@ -24,7 +24,7 @@ import { useTranslations } from 'next-intl';
 import { useQRScanner } from './QRScanner.controller';
 
 const QRScanner = () => {
-    const { handleScan, handleError, resetScanner, scanRessult, scanning, error } = useQRScanner()
+    const { handleScan, handleError, resetScanner, scanRessult, staffValidating, staffValid, error } = useQRScanner()
     const t = useTranslations()
 
     const { position, isLoading } = useGeolocation({
@@ -54,7 +54,16 @@ const QRScanner = () => {
 
     return (
         <Box sx={{ p: 1, maxWidth: 600, margin: '0 auto' }}>
-            {!scanRessult && !error && <Box sx={{ textAlign: 'center', mb: 4 }}>
+
+            {staffValidating && (
+                <Box sx={{ textAlign: 'center', mb: 4 }}>
+                    <Typography variant="h6" component="h2" gutterBottom>
+                        {t('scan.validatingStaff')}
+                    </Typography>
+                    <LinearProgress />
+                </Box>
+            )}
+            {!scanRessult && !staffValidating && staffValid && !error && <Box sx={{ textAlign: 'center', mb: 4 }}>
                 <Typography variant="h4" component="h1" gutterBottom>
                     {t('scan.title')}
                 </Typography>
@@ -63,7 +72,7 @@ const QRScanner = () => {
                 </Typography>
             </Box>}
 
-            {!scanRessult && !error && (
+            {!scanRessult && !staffValidating && staffValid && !error && (
                 <StyledCard>
                     <ScannerContainer elevation={1}>
                         <PreviewContainer>
@@ -92,7 +101,7 @@ const QRScanner = () => {
                 </StyledCard>
             )}
 
-            {scanRessult && !error && (
+            {scanRessult && !staffValidating && staffValid && !error && (
                 <StyledCard>
                     <CardContent>
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
@@ -142,6 +151,29 @@ const QRScanner = () => {
                             <Alert severity="error" sx={{ width: '100%', textAlign: 'center' }}>
                                 {'Pase no encontrado'}
                             </Alert>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={resetScanner}
+                                sx={{ mt: 2 }}
+                            >
+                                {t('scan.tryagain')}
+                            </Button>
+                        </Box>
+                    </CardContent>
+                </StyledCard>
+            )}
+
+
+            {!staffValid && !staffValidating && (
+                <StyledCard>
+                    <CardContent>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                            <Error color="error" sx={{ fontSize: 100 }} />
+                            <Typography variant="h5" gutterBottom sx={{ textAlign: 'center' }}>
+                                {t('scan.failedStaff')}
+                            </Typography>
+                            
                             <Button
                                 variant="contained"
                                 color="primary"
