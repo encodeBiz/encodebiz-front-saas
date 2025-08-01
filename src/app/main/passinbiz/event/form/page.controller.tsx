@@ -17,6 +17,7 @@ import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { ArrayToObject, objectToArray } from "@/lib/common/String";
+import SelectInput from "@/components/common/forms/fields/SelectInput";
 
 export interface EventFromValues {
   id?: string
@@ -49,7 +50,7 @@ export default function useHolderController() {
     "description": '',
     "date": new Date(),
     "location": '',
-    "template": '',
+    "template": 'default',
     "logoUrl": '',
     "imageUrl": '',
     "colorPrimary": '',
@@ -58,22 +59,15 @@ export default function useHolderController() {
   });
 
   const validationSchema = Yup.object().shape({
-    metadata: Yup.array()
-      .of(
-        Yup.object().shape({
-          label: requiredRule(t),
-          value: requiredRule(t)
-        })
-      )
-      .nullable(),
+
     name: requiredRule(t),
-    description: requiredRule(t),
+    //description: requiredRule(t),
     date: requiredRule(t),
     location: requiredRule(t),
-    logoUrl: requiredRule(t),
-    imageUrl: requiredRule(t),
-    colorPrimary: requiredRule(t),
-    colorAccent: requiredRule(t),
+    //logoUrl: requiredRule(t),
+    //imageUrl: requiredRule(t),
+    //colorPrimary: requiredRule(t),
+    //colorAccent: requiredRule(t),
   });
 
   const setDinamicDataAction = async (values: EventFromValues) => {
@@ -92,7 +86,7 @@ export default function useHolderController() {
         "imageUrl": values.imageUrl,
         "logoUrl": values.logoUrl,
         "date": values.date,
-        template: 'vip',
+        template: values.template,
         "metadata": ArrayToObject(values.metadata),
         "id": id,
       }
@@ -138,6 +132,7 @@ export default function useHolderController() {
       required: true,
       component: TextInput,
     },
+
     {
 
       isDivider: true,
@@ -161,15 +156,28 @@ export default function useHolderController() {
       name: 'logoUrl',
       label: t('core.label.logo'),
       required: true,
-      type: 'custom',
+      type: 'logo',
       component: ImageUploadInput,
     },
     {
       name: 'imageUrl',
       label: t('core.label.imageUrl'),
       required: true,
-      type: 'custom',
+      type: 'stripImage',
       component: ImageUploadInput,
+    }, {
+      name: 'template',
+      label: t('core.label.template'),
+      type: 'text',
+      required: true,
+      options: [
+        { value: 'default', label: t('core.label.default') },
+        { value: 'vip', label: t('core.label.vip') },
+        { value: 'expo', label: t('core.label.expo') },
+        { value: 'festival', label: t('core.label.festival') }
+      ],
+      component: SelectInput,
+
     }, {
 
       isDivider: true,

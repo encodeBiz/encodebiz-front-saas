@@ -9,12 +9,15 @@ import page from "./page";
 import { useStyles } from "./page.styles";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
 import { deleteHolder, importHolder, search, updateHolder } from "@/services/passinbiz/holder.service";
-import { ArrowBackIosNew, DeleteForever, RemoveDone, Send } from "@mui/icons-material";
+import { ArrowBackIosNew, DeleteForever, RemoveDone, Search, Send } from "@mui/icons-material";
 import { useLayout } from "@/hooks/useLayout";
-import { Chip } from "@mui/material";
+import { Box, Chip, IconButton, MenuItem, Select, TextField, Tooltip } from "@mui/material";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useRouter } from "nextjs-toploader/app";
+import { format } from "path";
+import { format_date } from "@/lib/common/Date";
+
 
 
 
@@ -27,7 +30,7 @@ export default function useHolderListController() {
   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
   const [rowsPerPage, setRowsPerPage] = useState<number>(2); // Límite inicial
-  const [params, setParams] = useState<any>({});
+  const [params, setParams] = useState<any>({filters: [], startAfter: null, limit: rowsPerPage });
   const [loading, setLoading] = useState<boolean>(true);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false)
@@ -41,10 +44,48 @@ export default function useHolderListController() {
   const { openModal, closeModal } = useCommonModal()
   const [revoking, setRevoking] = useState(false)
   const { push } = useRouter()
+
+  const [sort, setSort] = useState<{ field: string, order: 'desc' | 'asc' }>({ field: 'createdAt', order: 'desc' })
+  const [filter, setFilter] = useState<any>({ state: 'all', email: '' });
+
   const rowAction: Array<IRowAction> = [
     { icon: <RemoveDone />, label: t('core.button.revoke'), allowItem: (item: Holder) => (item.passStatus === 'pending' || item.passStatus === 'active'), onPress: (item: Holder) => openModal(CommonModalType.DELETE, { data: item }) },
     { icon: <Send />, label: t('core.button.resend'), allowItem: (item: Holder) => (item.passStatus === 'revoked' || item.passStatus === 'not_generated'), onPress: (item: Holder) => openModal(CommonModalType.SEND, { data: item }) }
   ]
+
+  const holderState = [
+    { value: 'all', label: t('core.label.select') },
+    { value: 'pending', label: t('holders.pending') },
+    { value: 'failed', label: t('holders.failed') }
+  ]
+
+  const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
+  
+    <Select sx={{ minWidth: 120, height: 55 }}
+      value={filter.state}
+      defaultValue={'all'}
+      onChange={(e: any) => setFilter({ ...filter, state: e.target.value })}  >
+      {holderState.map((option) => (
+        <MenuItem key={option.value} value={option.value}>
+          {option.label}
+        </MenuItem>
+      ))}
+    </Select>
+    <TextField
+      variant="outlined"
+      placeholder={t('holders.filter.email')}
+      value={filter.email}
+      onChange={(e) => {
+
+        setFilter({ ...filter, email: e.target.value });
+      }}
+    />
+    <Tooltip title="Filter">
+      <IconButton onClick={() => { if (typeof onFilter === 'function') onFilter() }}>
+        <Search />
+      </IconButton>
+    </Tooltip>
+  </Box>
 
   const onSearch = (term: string): void => {
     setParams({ ...params, startAfter: null, filters: buildSearch(term) })
@@ -77,8 +118,9 @@ export default function useHolderListController() {
   const columns: Column<Holder>[] = [
     {
       id: 'fullName',
-      label: t("core.label.fullName"),
+      label: t("core.label.name"),
       minWidth: 170,
+      sortable: true,
     },
     {
       id: 'email',
@@ -105,13 +147,23 @@ export default function useHolderListController() {
       label: t("core.label.message"),
       minWidth: 170,
     },
-
+    {
+      id: 'createdAt',
+      sortable: true,
+      label: t("core.label.createAt"),
+      minWidth: 170,
+      format: (value, row) => format_date(row.createdAt, 'DD/MM/yyyy HH:mm:ss')
+    },
   ];
 
   const fetchingData = () => {
     setLoading(true)
-    search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
+    if (params.filters.find((e: any) => e === 'state' && e.value === 'all'))
+      params.filters = params.filters.filter((e: any) => e.field !== 'state')
 
+    console.log({ ...params, limit: rowsPerPage });
+
+    search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
       if (res.length < rowsPerPage || res.length === 0)
         setAtEnd(true)
       else
@@ -144,17 +196,40 @@ export default function useHolderListController() {
   }
 
   useEffect(() => {
+    if (currentEntity?.entity?.id) {
+      watchServiceAccess('passinbiz')
+    }
+  }, [currentEntity?.entity?.id])
+
+  useEffect(() => {
     if (params && currentEntity?.entity?.id) {
       fetchingData()
-      watchServiceAccess('passinbiz')
     }
   }, [params, currentEntity?.entity?.id])
 
   useEffect(() => {
     setCurrentPage(0)
-    setParams({ limit: rowsPerPage })
+    const paramsData = { ...params, startAfter: null, limit: rowsPerPage }
+
+    if (sort.field && sort.order)
+      Object.assign(paramsData, {
+        orderBy: sort.field,
+        orderDirection: sort.order,
+      })
+
+    setParams({ ...paramsData })
     setAtStart(true)
-  }, [rowsPerPage])
+  }, [rowsPerPage, sort])
+
+  const onFilter = () => {
+    const filterData: Array<{ field: string, operator: string, value: any }> = []
+    Object.keys(filter).forEach((key) => {
+      filterData.push({ field: key, operator: '==', value: filter[key] })
+    })
+    const paramsData = { ...params, startAfter: null, limit: rowsPerPage, filters: filterData }
+    setParams({ ...paramsData })
+  }
+
 
   const onEdit = async (item: any) => {
     push(`/main/passinbiz/holder/${item.id}/edit`)
@@ -225,12 +300,12 @@ export default function useHolderListController() {
 
 
   return {
-    items,
+    items, topFilter,
     atEnd, onEdit,
     atStart, handleUploadConfirm, isUploading,
     onSearch, onNext, onBack,
     pagination, currentPage, modalOpen, setModalOpen,
-    columns, rowAction,
+    columns, rowAction, setSort, sort,
     loading, rowsPerPage, setRowsPerPage, onRevoke, revoking, onSend
   }
 

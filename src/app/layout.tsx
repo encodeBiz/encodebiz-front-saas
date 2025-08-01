@@ -11,6 +11,7 @@ import { ToastProvider } from "@/contexts/toastContext";
 import { CommonModalProvider } from "@/contexts/commonModalContext";
 import { MediaProvider } from "@/contexts/mediaContext";
 import { Suspense } from "react";   // ✅ Importar Suspense
+import PageLoader from "@/components/common/PageLoader";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -36,7 +37,7 @@ export default async function RootLayout({
         <html lang="en">
             <body className={`${geistSans.variable} ${geistMono.variable}`}>
                 <LocaleProvider>
-                    <Suspense fallback={<div>Loading session...</div>}>  {/* ✅ Suspense envuelve AuthProvider */}
+                    <Suspense fallback={<PageLoader />}>  {/* ✅ Suspense envuelve AuthProvider */}
                         <AuthProvider>
                             <ToastProvider>
                                 <EntityProvider>

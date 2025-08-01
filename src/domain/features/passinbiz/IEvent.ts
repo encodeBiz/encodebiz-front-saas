@@ -5,7 +5,7 @@ export interface IEvent {
     "description": string
     "date": string
     "location": string
-    "template": string
+    "template": "default" | "vip" | "expo" | "festival"
     "logoUrl": string
     "imageUrl": string
     "colorPrimary": string

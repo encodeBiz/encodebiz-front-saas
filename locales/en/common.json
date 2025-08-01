@@ -67,6 +67,11 @@
     },
     "label": {
       "filename": "File Name",
+      "default": "Por defecto",
+      "vip": "VIP",
+      "template": "Plantilla",
+      "expo": "Expositivo",
+      "festival": "Festival",
       "typePass": "Pass Type",
       "credencial": "Credentials",
       "event": "Event",

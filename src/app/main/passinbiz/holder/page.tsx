@@ -15,8 +15,8 @@ export default function HolderList() {
   const t = useTranslations();
   const { handleUploadConfirm,
     items, rowAction,
-    onNext, onBack, onEdit, onRevoke, revoking, onSend,
-    currentPage,
+    onNext, onBack, setSort,sort, onRevoke, revoking, onSend,
+    currentPage,topFilter,
     columns, modalOpen, setModalOpen, onSearch,
     loading, rowsPerPage, setRowsPerPage } = useHolderListController();
   const {  open } = useCommonModal()
@@ -47,11 +47,14 @@ export default function HolderList() {
         page={currentPage}
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={setRowsPerPage}
+        onSorteable={setSort}
+        sort={sort}
         onBack={onBack}
         onNext={onNext}
+        topFilter={topFilter}
         //onEdit={(data) => onEdit(data)}
         onSearch={(data) => onSearch(data)}
-        search={true}
+         
 
       />
       <CSVUploadModal

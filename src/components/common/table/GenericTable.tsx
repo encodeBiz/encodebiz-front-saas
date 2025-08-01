@@ -72,7 +72,6 @@ interface GenericTableProps<T> {
   keyField: keyof T;
   title?: string;
   selectable?: boolean;
-  search?: boolean;
   onRowClick?: (row: T) => void;
   onDelete?: (ids: (string | number)[]) => void;
   onEdit?: (row: T) => void;
@@ -81,10 +80,13 @@ interface GenericTableProps<T> {
   page?: number;
   rowsPerPage?: number;
   onRowsPerPageChange?: (rows: number) => void;
+  onSorteable?: (sort: { field: string, order: 'desc' | 'asc' }) => void;
+  sort?: { field: string, order: 'desc' | 'asc' }
   onBack: () => void
   onNext: () => void
   onSearch?: (text: string) => void
   rowAction?: Array<IRowAction>
+  topFilter?: React.ReactNode
 }
 
 export function GenericTable<T extends Record<string, any>>({
@@ -99,16 +101,18 @@ export function GenericTable<T extends Record<string, any>>({
   onEdit,
   onBulkAction,
   loading = false,
-  search = false,
   onRowsPerPageChange,
+  onSorteable,
+  sort,
   onBack,
   onNext,
   onSearch,
-  rowAction = []
+  rowAction = [],
+  topFilter = <></>
 }: GenericTableProps<T>) {
   // State management
-  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
-  const [orderBy, setOrderBy] = useState<keyof T>(keyField);
+  const [order, setOrder] = useState<'asc' | 'desc'>(sort?.order ?? 'asc');
+  const [orderBy, setOrderBy] = useState<keyof T>(sort?.field ?? keyField);
   const [selected, setSelected] = useState<(string | number)[]>([]);
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -151,6 +155,10 @@ export function GenericTable<T extends Record<string, any>>({
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
+    if (typeof onSorteable === 'function') {
+      onSorteable({ field: property as string, order: isAsc ? 'desc' : 'asc' });
+    }
+
   };
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -227,25 +235,7 @@ export function GenericTable<T extends Record<string, any>>({
       >
         {title && <Typography variant="h6">{title}</Typography>}
 
-        {search && <Box sx={{ display: 'flex', gap: 2 }}>
-          <TextField
-            variant="outlined"
-            size="small"
-            placeholder="Search..."
-            value={searchText}
-            onChange={(e) => {
-              setSearchText(e.target.value);
-
-            }}
-
-          />
-
-          <Tooltip title="Filter">
-            <IconButton onClick={() => { if (typeof onSearch === 'function') onSearch(searchText) }}>
-              <SearchIcon />
-            </IconButton>
-          </Tooltip>
-        </Box>}
+        {topFilter}
       </Box>
 
       {selected.length > 0 && (
@@ -256,7 +246,7 @@ export function GenericTable<T extends Record<string, any>>({
           {rowAction.map((e, i) => {
             if (e.allowItem(e as any))
               return (<Tooltip key={i} title={e.label}>
-                <IconButton onClick={()=>e.onPress(selected as any)}>
+                <IconButton onClick={() => e.onPress(selected as any)}>
                   {e.icon}
                 </IconButton>
               </Tooltip>)
@@ -373,7 +363,7 @@ export function GenericTable<T extends Record<string, any>>({
                         {rowAction.map((e, i) => {
                           if (e.allowItem(row as any))
                             return (<Tooltip key={i} title={e.label}>
-                              <IconButton onClick={()=>e.onPress(row)}>
+                              <IconButton onClick={() => e.onPress(row)}>
                                 {e.icon}
                               </IconButton>
                             </Tooltip>)
