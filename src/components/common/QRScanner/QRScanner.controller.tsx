@@ -1,3 +1,4 @@
+'use client'
 import { useLayout } from "@/hooks/useLayout"
 import { useToast } from "@/hooks/useToast"
 import { validateHolder, validateStaff } from "@/services/passinbiz/holder.service"
