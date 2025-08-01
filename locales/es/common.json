@@ -2,7 +2,7 @@
   "locale": "es",
   "layout": {
     "header": {
-      "title": "Plataforma SaaS EncodeBiz",
+      "title": "EncodeBiz-SaaS",
       "language": "Idioma",
       "english": "Inglés",
       "spanish": "Español",
@@ -21,7 +21,7 @@
     "side": {
       "menu": {
         "Dashboard": "Panel",
-        "Staff": "Personal de Apoyo",
+        "Staff": "Personal",
         "Services": "Servicios",
         "Events": "Eventos",
         "Media": "Media",
@@ -43,7 +43,7 @@
         "HoldersList": "Listado de Titulares",
         "AddHolders": "Adicionar Titulares",
         "Plans": "Planes",
-        "Holders": "Titulares"
+        "Holders": "Pases Digitales"
       }
     },
     "footer": {
@@ -201,7 +201,7 @@
         "btn1": "Mas informacion",
         "btn2": "Servicios",
         "btn3": "Planes",
-        "title": "Bienvenido a Encodebiz Saas",
+        "title": "Bienvenido a EncodeBiz Saas",
         "subtitle": "En esta plataforma podras hacer varias cosas interesantes"
       }
     },
