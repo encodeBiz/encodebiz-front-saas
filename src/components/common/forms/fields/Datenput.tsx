@@ -2,7 +2,7 @@
 import React from 'react';
 import { FormControlLabel, FormHelperText, Link, TextField, TextFieldProps, Typography } from '@mui/material';
 import { FieldProps, useField } from 'formik';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
@@ -16,7 +16,8 @@ const DateInput: React.FC<FieldProps & TextFieldProps> = ({
   return (<LocalizationProvider dateAdapter={AdapterDayjs}>
     <FormControlLabel   
       control={
-        <DatePicker label={props.label}
+        <DateTimePicker  label={props.label}
+  
           defaultValue={dayjs(field.value ?? new Date())}
           value={dayjs(field.value ?? new Date())}
           onChange={(e) => helper.setValue(e)}

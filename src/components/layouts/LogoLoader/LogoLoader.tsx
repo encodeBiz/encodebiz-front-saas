@@ -14,6 +14,7 @@ function AnimatedLogo() {
 	 
 	 
 	useEffect(() => {
+        
         if (didAnimate.current) return;
         gsap.timeline({ repeat: -1, yoyo: true })
             .fromTo(
@@ -34,6 +35,7 @@ function AnimatedLogo() {
                 "-=0.25"
             );
         didAnimate.current = true;
+        
     }, []);
 	 
 

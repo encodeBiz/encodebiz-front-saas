@@ -3,31 +3,34 @@
    width: 207px;
    height: 150px;
    z-index: -1;
-  transform: scale(.4);
+   transform: scale(.4);
+   top:-40px;
+   left: -20px;
  }
 
- .img_1 >img{
+ .img_1>img {
    position: absolute;
-   transform: scale(.3);
+   transform: scale(.4) rotate(-1deg);
    height: 280px !important;
    width: 240px !important;
-   top: -130px;
-   left: -45px;
+   top: 38px;
+   left: 24px;
  }
 
  .img_2>img {
    position: absolute;
-   transform: scale(.7);
-   height: 200px !important;
-   width: 140px !important;
-   top: 80px;
+   transform: scale(.7) rotate(2deg);
+   height: 190px !important;
+   width: 178px !important;
+   top: 229px;
+   left: 32px;
 
  }
 
  .img_3>img {
    position: absolute;
    transform: scale(.7);
-   height: 300px !important;
+   height: 340px !important;
    width: 200px !important;
    top: 10px;
  }

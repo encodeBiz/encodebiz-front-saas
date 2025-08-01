@@ -28,6 +28,7 @@ export interface EventFromValues {
   "description": string
   address?: string
   "date": any
+  endDate: any
   "location": string
   "template": string
   "logoUrl": string
@@ -49,6 +50,7 @@ export default function useHolderController() {
     "name": '',
     "description": '',
     "date": new Date(),
+    "endDate": new Date(),
     "location": '',
     "template": 'default',
     "logoUrl": '',
@@ -63,6 +65,7 @@ export default function useHolderController() {
     name: requiredRule(t),
     //description: requiredRule(t),
     date: requiredRule(t),
+    endDate: requiredRule(t),
     location: requiredRule(t),
     //logoUrl: requiredRule(t),
     //imageUrl: requiredRule(t),
@@ -79,13 +82,14 @@ export default function useHolderController() {
         "name": values.name,
         "description": values.description,
         "location": values.location,
-        "address": values.location,
+        "address": values.address,
         "entityId": currentEntity?.entity?.id as string,
         "colorPrimary": values.colorPrimary,
         "colorAccent": values.colorAccent,
         "imageUrl": values.imageUrl,
         "logoUrl": values.logoUrl,
         "date": values.date,
+        "endDate": values.endDate,
         template: values.template,
         "metadata": ArrayToObject(values.metadata),
         "id": id,
@@ -110,14 +114,6 @@ export default function useHolderController() {
       required: true,
       component: TextInput,
     },
-
-    {
-      name: 'date',
-      label: t('core.label.date'),
-      type: 'text',
-      required: true,
-      component: DateInput,
-    },
     {
       name: 'location',
       label: t('core.label.location'),
@@ -125,11 +121,35 @@ export default function useHolderController() {
       type: 'textarea',
       component: TextInput,
     },
+
+    {
+      name: 'date',
+      label: t('core.label.startDate'),
+      type: 'text',
+      required: true,
+      component: DateInput,
+    },
+    {
+      name: 'endDate',
+      label: t('core.label.endDate'),
+      type: 'text',
+      required: true,
+      component: DateInput,
+    },
+    {
+      name: 'address',
+      label: t('core.label.address'),
+      type: 'textarea',
+      required: true,
+      fullWidth: true,
+      component: TextInput,
+    },
     {
       name: 'description',
       label: t('core.label.description'),
       type: 'textarea',
       required: true,
+      fullWidth: true,
       component: TextInput,
     },
 
@@ -204,7 +224,7 @@ export default function useHolderController() {
         ...event,
         metadata: objectToArray(event.metadata)
       })
-      changeLoaderState({ show: false })
+     changeLoaderState({ show: false })
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
