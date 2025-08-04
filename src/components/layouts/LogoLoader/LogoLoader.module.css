@@ -22,8 +22,8 @@
    transform: scale(.7) rotate(2deg);
    height: 190px !important;
    width: 178px !important;
-   top: 229px;
-   left: 32px;
+   top: 229px !important;
+   left: 32px !important;
 
  }
 

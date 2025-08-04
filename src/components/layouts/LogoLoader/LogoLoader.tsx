@@ -36,6 +36,7 @@ function AnimatedLogo() {
             );
         didAnimate.current = true;
         
+        
     }, []);
 	 
 

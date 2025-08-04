@@ -293,6 +293,8 @@
     "customReport": "Custom reports",
     "unlimitedProducts": "Unlimited products",
     "premium": "Premium",
+    "freemium": "Freemium",
+     
     "price": "Customer price: Free",
     "priceEmited": "Price per issued pass: €0.50",
     "priceMonthly": "Monthly price: To be agreed (recommended between €99 and €499)",

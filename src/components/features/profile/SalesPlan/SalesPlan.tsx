@@ -23,7 +23,7 @@ export default function SalesPlan({fromService,salesPlans, notGetPlan,ref}:{ref?
                 {t("salesPlan.subTitle")}
             </Typography>
 
-            {notGetPlan &&
+            {/*notGetPlan &&
                 <Box display="flex" justifyContent="center" paddingBottom="20px">
                     <Alert
                         sx={{ alignItems: "center" }}
@@ -39,7 +39,7 @@ export default function SalesPlan({fromService,salesPlans, notGetPlan,ref}:{ref?
                         }
                     >{t("salesPlan.notAllowedPlan")}</Alert>
                 </Box>
-            }
+            */}
             <br />
             <SalesPlans pricingPlans={salesPlans}   fromService={fromService} />
         </Box>

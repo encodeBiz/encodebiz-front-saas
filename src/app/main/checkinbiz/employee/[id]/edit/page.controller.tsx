@@ -27,6 +27,7 @@ export interface EventFromValues {
   "description": string
   address?: string
   "date": any
+  endDate: any
   "location": string
   "template": string
   "logoUrl": string
@@ -48,6 +49,7 @@ export default function useHolderController() {
     "name": '',
     "description": '',
     "date": new Date(),
+    "endDate": new Date(),
     "location": '',
     "template": '',
     "logoUrl": '',
@@ -95,6 +97,7 @@ export default function useHolderController() {
         template: 'vip',
         "metadata": ArrayToObject(values.metadata),
         "id": id,
+        endDate: values.endDate,
       }, token)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');

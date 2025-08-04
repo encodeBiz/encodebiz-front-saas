@@ -6,6 +6,7 @@ import { useEffect } from "react"
 export default function useDashboardController() {
   const { openModal } = useCommonModal()
   const { user } = useAuth()
+ 
   const { refrestList } = useEntity()
   useEffect(() => {
     if (user?.id) {
@@ -17,6 +18,8 @@ export default function useDashboardController() {
         }, 2000);
       }
     }
+
+ 
   }, [user?.id])
 
   return {}
