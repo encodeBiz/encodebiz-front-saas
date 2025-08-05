@@ -70,7 +70,7 @@ const ImagePreview = ({
         }}
         onClick={handleClickOpen}
       >
-        <Image 
+        <img 
           src={src}
           alt={alt}
           style={{
@@ -168,9 +168,10 @@ const ImagePreview = ({
           )}
 
           {/* Preview Image */}
-          <Image
+          <img
             src={src}
             alt={alt}
+            
             style={{
               maxWidth: '100%',
               maxHeight: '100%',

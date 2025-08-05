@@ -5,7 +5,6 @@ import { collection } from "@/config/collection";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import { deleteDocument } from "@/lib/firebase/firestore/deleteDocument";
-import { EventFromValues } from "@/app/main/passinbiz/event/form/page.controller";
 
 
 /**
@@ -13,7 +12,7 @@ import { EventFromValues } from "@/app/main/passinbiz/event/form/page.controller
    *
    * @async
    * @param {SearchParams} params
-   * @returns {Promise<ITrainer[]>}
+   * @returns {Promise<IEvent[]>}
    */
 export const fetchEvent = async (entityId: string, id: string): Promise<IEvent> => {
   return await getOne(
@@ -53,7 +52,7 @@ export const search = async (entityId: string, params: SearchParams): Promise<IE
 }
 
 
-export async function createEvent(data: EventFromValues, token: string) {
+export async function createEvent(data: Partial<IEvent>, token: string) {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -81,7 +80,7 @@ export async function createEvent(data: EventFromValues, token: string) {
   }
 }
 
-export async function updateEvent(data: EventFromValues, token: string) {
+export async function updateEvent(data: Partial<IEvent>, token: string) {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");

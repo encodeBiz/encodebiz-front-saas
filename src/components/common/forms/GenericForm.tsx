@@ -86,11 +86,12 @@ const GenericForm = <T extends Record<string, any>>({
         enableReinitialize={enableReinitialize}
         validateOnBlur={true}
         validateOnChange={true}
+        
 
       >
         {(formikProps: FormikProps<T>) => (
           <Form noValidate>
-
+              {/*JSON.stringify(formikProps.errors)*/}
             <Grid container spacing={3}>
               {fields.map((field, i) => {
                 const FieldComponent = field.component;
@@ -132,6 +133,7 @@ const GenericForm = <T extends Record<string, any>>({
                         onBlur={formikProps.handleBlur}
                         options={field.options}
                         {...field.extraProps}
+                        
                       />
                     </Grid>
                   );

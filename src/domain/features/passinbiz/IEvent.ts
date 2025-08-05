@@ -3,18 +3,19 @@ export interface IEvent {
     "uid": string
     "name": string
     "description": string
-    "date": string
-    "endDate": string
+    "date": any
+    "endDate": any
     "location": string
+    address: string
     "template": "default" | "vip" | "expo" | "festival"
+    status?: "draft" | "published" | "archived";
     "logoUrl": string
     "imageUrl": string
     "colorPrimary": string
     "colorAccent": string
     "createdBy": string
     "entityId": string
-    "metadata": {
-        "ticketCapacity": number
-        "sponsor": string
-    }
+    assignedStaff: string[]
+    "isPublished": boolean
+    "metadata": any
 }
