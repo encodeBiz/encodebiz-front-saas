@@ -1,6 +1,5 @@
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from 'react';
-import DynamicKeyValueInput, { DynamicFields } from "@/components/common/forms/fields/DynamicKeyValueInput";
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { emailRule, requiredRule } from '@/config/yupRules';
@@ -9,10 +8,7 @@ import { useRouter } from "nextjs-toploader/app";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { MAIN_ROUTE } from "@/config/routes";
-import SelectInput from "@/components/common/forms/fields/SelectInput";
-import { search } from "@/services/passinbiz/event.service";
 import { FormField } from "@/components/common/forms/GenericForm";
-import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { useLayout } from "@/hooks/useLayout";
 import { useParams } from "next/navigation";
 import { createStaff, fetchStaff, updateStaff } from "@/services/passinbiz/staff.service";
@@ -36,7 +32,7 @@ export default function useStaffController() {
   const { changeLoaderState } = useLayout()
   const { id } = useParams<{ id: string }>()
 
-  const [fields, setFields] = useState<FormField[]>([
+  const [fields] = useState<FormField[]>([
     {
       name: 'fullName',
       label: t('core.label.fullName'),

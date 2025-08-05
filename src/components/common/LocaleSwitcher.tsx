@@ -1,7 +1,7 @@
 'use client'
 // components/LocaleSwitcher.tsx
 import React, { useState, useEffect } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import {
   FormControl,
   InputLabel,
@@ -15,9 +15,7 @@ import {
 import { useAppLocale } from '@/hooks/useAppLocale';
 export const locales = ['en', 'es']; // Define your supported locales
 
-interface LocaleSwitcherProps { }
-
-const LocaleSwitcher: React.FC<LocaleSwitcherProps> = () => {
+const LocaleSwitcher: React.FC = () => {
   const t = useTranslations(); // 'LocaleSwitcher' refers to the key in your message files
   const { changeLocale, currentLocale } = useAppLocale()
   const [selectedLocale, setSelectedLocale] = useState(currentLocale);

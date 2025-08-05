@@ -1,14 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useTranslations } from 'next-intl';
 import { fetchInvoicesByEntity } from '@/services/common/subscription.service';
 import { buildSearch, Column } from '@/components/common/table/GenericTable';
 import { useToast } from '@/hooks/useToast';
-import { formatFileSize } from '@/lib/common/String';
-import { Box, Typography, Chip } from '@mui/material';
+import { Box } from '@mui/material';
 import { useStyles } from './page.styles';
 import { PictureAsPdf } from '@mui/icons-material';
 import { StripeInvoice } from '@/domain/auth/ISubscription';
@@ -16,7 +14,6 @@ import { StripeInvoice } from '@/domain/auth/ISubscription';
 export const useFacturaController = () => {
     const t = useTranslations();
     const classes = useStyles()
-    const { token, user } = useAuth()
     const { currentEntity } = useEntity()
     const { showToast } = useToast()
     const [rowsPerPage, setRowsPerPage] = useState<number>(2); // Límite inicial
@@ -126,7 +123,7 @@ export const useFacturaController = () => {
         atStart,
         onSearch, onNext, onBack,
         pagination, currentPage,
-        columns,
+        columns,total,
         loading, rowsPerPage, setRowsPerPage
     }
 }

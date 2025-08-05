@@ -1,8 +1,8 @@
-import React, { ChangeEvent, useState } from 'react';
-import { ColorChangeHandler, ColorResult, SketchPicker, TwitterPicker } from 'react-color';
-import { Box, Button, FormControl, FormHelperText, InputAdornment, InputLabel, Popover, TextField, TextFieldProps } from '@mui/material';
-import { FieldProps, useField, useFormikContext } from 'formik';
-import { AccountCircle, PaletteRounded } from '@mui/icons-material';
+import React, { ChangeEvent } from 'react';
+import { ColorResult, SketchPicker } from 'react-color';
+import { InputAdornment, Popover, TextField, TextFieldProps } from '@mui/material';
+import { FieldProps, useField } from 'formik';
+import { PaletteRounded } from '@mui/icons-material';
 
 
 

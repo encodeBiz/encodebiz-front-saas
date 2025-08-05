@@ -4,19 +4,14 @@ import { useState, useEffect, useCallback } from 'react';
 import { useEntity } from '@/hooks/useEntity';
 import { useTranslations } from 'next-intl';
 import { useToast } from '@/hooks/useToast';
-import { buildSearch, Column, IRowAction } from '@/components/common/table/GenericTable';
+import { buildSearch, Column } from '@/components/common/table/GenericTable';
 import { IUserMedia } from '@/domain/core/IUserMedia';
 import { deleteMedia, search, uploadMedia } from '@/services/common/media.service';
 import { useAuth } from '@/hooks/useAuth';
 import { Box, Avatar, Typography, Chip, useTheme } from '@mui/material';
 import { useStyles } from './page.styles';
-import { fileTypeIcons } from '@/config/theme';
 import { getFileIcon, formatFileSize } from '@/lib/common/String';
-import { IMedia } from '@/components/common/modals/MediaModalSelectedFiles/MediaModalSelectedFiles';
 import ImagePreview from '@/components/common/ImagePreview';
-
-
-
 
 export const useMediaList = () => {
     const t = useTranslations();
@@ -37,9 +32,7 @@ export const useMediaList = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [total, setTotal] = useState(0);
 
-    const rowAction: Array<IRowAction> = [
-        { icon: "delete", label: 'Eliminar', allowItem: (item: IMedia) => true, onPress: (item: IUserMedia) => { } }
-    ]
+  
 
     const onSearch = (term: string): void => {
         setParams({ ...params, startAfter: null, filters: buildSearch(term) })
@@ -210,7 +203,7 @@ export const useMediaList = () => {
 
     return {
         onDelete, selectedType, handleFileChange, isUploading, setSelectedType,
-        items,
+        items,total,
         atEnd,
         atStart,
         onSearch, onNext, onBack,

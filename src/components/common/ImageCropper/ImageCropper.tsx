@@ -17,6 +17,7 @@ import { useImageCropper } from './ImageCropper.controller';
 import { useTranslations } from 'next-intl';
 import { NumberInput } from '../forms/fields/NumberField';
 import { BaseButton } from '../buttons/BaseButton';
+import Image from 'next/image';
 
 export const ImageCropper = ({ onComplete, disabled = false, isUploading, size = { w: 80, h: 80, locked: true } }: { disabled?: boolean, onComplete: (file: File) => void, isUploading: boolean, size?: { locked: boolean, w: number, h: number } }) => {
     const { scale, setScale, toggleAspect, onImageLoad, aspect, image, crop, setCrop, open, handleClose, setCompletedCrop, handleCrop, completedCrop, isLoading, imgRef, handleFileChange } = useImageCropper(onComplete, size)
@@ -70,7 +71,7 @@ export const ImageCropper = ({ onComplete, disabled = false, isUploading, size =
                                 minHeight={100}
 
                             >
-                                <img
+                                <Image
                                     ref={imgRef}
                                     alt="Crop me"
                                     src={image}

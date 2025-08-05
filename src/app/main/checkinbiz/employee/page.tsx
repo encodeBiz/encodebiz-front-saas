@@ -7,7 +7,7 @@ import { BaseButton } from '@/components/common/buttons/BaseButton';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { Add } from '@mui/icons-material';
-import { CHECKINBIZ_MODULE_ROUTE, MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
+import { CHECKINBIZ_MODULE_ROUTE, MAIN_ROUTE } from '@/config/routes';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 
 export default function EmployeeList() {

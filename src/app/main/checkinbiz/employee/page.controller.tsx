@@ -2,12 +2,8 @@ import { buildSearch, Column, IRowAction } from "@/components/common/table/Gener
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useToast } from "@/hooks/useToast";
-import { useTheme } from "@emotion/react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import { useStyles } from "./page.styles";
-
-import { useLayout } from "@/hooks/useLayout";
 import { useRouter } from "nextjs-toploader/app";
 import { CHECKINBIZ_MODULE_ROUTE, MAIN_ROUTE } from "@/config/routes";
 import { useCommonModal } from "@/hooks/useCommonModal";
@@ -20,8 +16,7 @@ import { deleteEmployee, search } from "@/services/checkinbiz/employee.service";
 
 export default function useEmployeeListController() {
   const t = useTranslations();
-  const theme = useTheme();
-  const classes = useStyles()
+ 
   const { token, user } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
@@ -37,7 +32,7 @@ export default function useEmployeeListController() {
   const [itemsHistory, setItemsHistory] = useState<IEmployee[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [total, setTotal] = useState(0);
-  const { changeLoaderState } = useLayout()
+ 
   const { closeModal } = useCommonModal()
 
   const rowAction: Array<IRowAction> = []
@@ -168,7 +163,7 @@ export default function useEmployeeListController() {
 
 
   return {
-    onDelete, items,
+    onDelete, items,total,
     atEnd, onEdit, onSearch,
     atStart, onBack, onNext,
     pagination, currentPage,

@@ -5,14 +5,12 @@ import {
     Container,
     Box,
     Paper} from '@mui/material';
-import { useTranslations } from 'next-intl';
 import { useStyles } from './page.styles';
 import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 import QRScanner from '@/components/common/QRScanner/QRScanner';
 
 
 const QRScannerPage = () => {
-    const t = useTranslations()
     const classes = useStyles();
 
     return (

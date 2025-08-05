@@ -216,7 +216,7 @@ export const useSettingEntityController = () => {
 
 
     const fetchData = async () => {
-        const entity = await fetchEntity(currentEntity?.entity.id as string)
+        await fetchEntity(currentEntity?.entity.id as string)
 
 
         setInitialValues({

@@ -21,7 +21,7 @@ import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 
 
 const SignInPage = () => {
-    const { signInWithGoogle, initialValues, signInWithFacebook, validationSchema, fields, signInWithEmail } = useRegisterController()
+    const { signInWithGoogle, initialValues, validationSchema, fields, signInWithEmail } = useRegisterController()
     const t = useTranslations()
     const classes = useStyles();
 

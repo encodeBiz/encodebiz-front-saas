@@ -3,25 +3,19 @@ import { FieldProps, useField, useFormikContext } from 'formik';
 import {
   Box,
   Button,
-  Typography,
-  Avatar,
   IconButton,
-  CircularProgress,
   TextFieldProps,
   FormHelperText,
   InputLabel,
   FormControl,
-  TextField,
 } from '@mui/material';
 import { CloudUpload, Delete } from '@mui/icons-material';
-import { styled } from '@mui/material/styles';
 import { useTranslations } from 'next-intl';
 import MediaModalSelectedFiles from '../../modals/MediaModalSelectedFiles/MediaModalSelectedFiles';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { IUserMedia, IUserMediaType } from '@/domain/core/IUserMedia';
 import ImagePreview from '../../ImagePreview';
-import { ImageCropper } from '../../ImageCropper/ImageCropper';
 
 interface ImageFieldProps {
   accept: string

@@ -14,6 +14,7 @@ import {
   Fullscreen as FullscreenIcon,
   FullscreenExit as FullscreenExitIcon
 } from '@mui/icons-material';
+import Image from 'next/image';
 
 const ImagePreview = ({
   src='',
@@ -69,7 +70,7 @@ const ImagePreview = ({
         }}
         onClick={handleClickOpen}
       >
-        <img
+        <Image 
           src={src}
           alt={alt}
           style={{
@@ -167,7 +168,7 @@ const ImagePreview = ({
           )}
 
           {/* Preview Image */}
-          <img
+          <Image
             src={src}
             alt={alt}
             style={{

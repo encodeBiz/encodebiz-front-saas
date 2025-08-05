@@ -4,16 +4,13 @@ import { Formik, Form, FormikProps, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import {
   Box,
-  Button,
   Divider,
   Grid,
   Paper,
   Typography,
-  useTheme,
 } from '@mui/material';
 import { BaseButton } from '../buttons/BaseButton';
 import { useTranslations } from 'next-intl';
-import { createSlug } from '@/lib/common/String';
 import { IUserMedia } from '@/domain/core/IUserMedia';
 
 // Define types for our form component

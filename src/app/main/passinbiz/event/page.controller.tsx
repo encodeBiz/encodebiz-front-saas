@@ -2,12 +2,8 @@ import { buildSearch, Column, IRowAction } from "@/components/common/table/Gener
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useToast } from "@/hooks/useToast";
-import { useTheme } from "@emotion/react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import { useStyles } from "./page.styles";
-
-import { useLayout } from "@/hooks/useLayout";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { deleteEvent, search } from "@/services/passinbiz/event.service";
 import { useRouter } from "nextjs-toploader/app";
@@ -20,9 +16,7 @@ import { CommonModalType } from "@/contexts/commonModalContext";
 
 export default function useIEventListController() {
   const t = useTranslations();
-  const theme = useTheme();
-  const classes = useStyles()
-  const { token, user } = useAuth()
+  const { token } = useAuth()
   const { currentEntity } = useEntity()
   const { showToast } = useToast()
   const { push } = useRouter()
@@ -37,7 +31,6 @@ export default function useIEventListController() {
   const [itemsHistory, setItemsHistory] = useState<IEvent[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [total, setTotal] = useState(0);
-  const { changeLoaderState } = useLayout()
   const { closeModal } = useCommonModal()
   const rowAction: Array<IRowAction> = []
 
@@ -163,7 +156,7 @@ export default function useIEventListController() {
   }
 
   return {
-    onDelete, items,
+    onDelete, items,total,
     atEnd, onEdit, onSearch,
     atStart, onBack, onNext,
     pagination, currentPage,

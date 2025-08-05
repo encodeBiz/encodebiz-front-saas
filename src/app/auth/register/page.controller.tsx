@@ -30,7 +30,7 @@ export const useRegisterController = () => {
     const { push } = useRouter()
 
     const t = useTranslations()
-    const [initialValues, setInitialValues] = useState<RegisterFormValues>({
+    const [initialValues] = useState<RegisterFormValues>({
         fullName: '',
         email: '',
         phone: '',
@@ -59,15 +59,14 @@ export const useRegisterController = () => {
 
     const signInWithGoogle = async () => {
         try {
-            const data = await signInGoogle()
+            await signInGoogle()
             push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
         } catch (error: any) {
             showToast(error.message, 'error')
         }
     };
 
-    const signInWithFacebook: any = (values: RegisterFormValues) => { };
-
+ 
     const signInWithEmail = async (values: RegisterFormValues) => {
         try {
             const responseAuth = await createUser(values.email, values.password);
@@ -142,6 +141,6 @@ export const useRegisterController = () => {
 
 
 
-    return { signInWithGoogle, signInWithFacebook, signInWithEmail, validationSchema, initialValues, fields }
+    return { signInWithGoogle, signInWithEmail, validationSchema, initialValues, fields }
 }
 

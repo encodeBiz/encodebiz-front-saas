@@ -21,7 +21,7 @@ export const useRegisterController = () => {
     const t = useTranslations()
     const { showToast } = useToast()
     const { push } = useRouter()
-    const [initialValues, setInitialValues] = useState<LoginFormValues>({
+    const [initialValues] = useState<LoginFormValues>({
         email: '',
         password: '',
 
@@ -42,11 +42,8 @@ export const useRegisterController = () => {
         }
     };
 
-    const signInWithFacebook: any = (values: LoginFormValues, actions: any) => {
-
-    };
-
-    const signInWithEmail = async (values: LoginFormValues, actions: any) => {
+ 
+    const signInWithEmail = async (values: LoginFormValues) => {
         try {
             await signInEmail(values.email, values.password)
             push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
@@ -78,6 +75,6 @@ export const useRegisterController = () => {
 
 
 
-    return { signInWithGoogle, signInWithFacebook, signInWithEmail, validationSchema, initialValues, fields }
+    return { signInWithGoogle, signInWithEmail, validationSchema, initialValues, fields }
 }
 

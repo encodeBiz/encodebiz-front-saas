@@ -5,7 +5,6 @@ import {
     Button,
     Paper,
     SvgIcon,
-    useTheme,
     styled
 } from '@mui/material';
 import {
@@ -49,7 +48,6 @@ const EmptyState = ({
     fullHeight = false,
     sx = {}
 }: any) => {
-    const theme = useTheme();
     const t = useTranslations();
     
 

@@ -2,20 +2,16 @@ import { buildSearch, Column, IRowAction } from "@/components/common/table/Gener
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useToast } from "@/hooks/useToast";
-import { useTheme } from "@emotion/react";
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useState } from "react";
-import page from "./page";
-import { useStyles } from "./page.styles";
+import { useEffect, useState } from "react";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
-import { deleteHolder, importHolder, search, updateHolder } from "@/services/passinbiz/holder.service";
-import { ArrowBackIosNew, DeleteForever, RemoveDone, Search, Send } from "@mui/icons-material";
+import { importHolder, search, updateHolder } from "@/services/passinbiz/holder.service";
+import { RemoveDone, Search, Send } from "@mui/icons-material";
 import { useLayout } from "@/hooks/useLayout";
 import { Box, Chip, IconButton, MenuItem, Select, TextField, Tooltip } from "@mui/material";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useRouter } from "nextjs-toploader/app";
-import { format } from "path";
 import { format_date } from "@/lib/common/Date";
 
 
@@ -24,8 +20,6 @@ import { format_date } from "@/lib/common/Date";
 
 export default function useHolderListController() {
   const t = useTranslations();
-  const theme = useTheme();
-  const classes = useStyles()
   const { token, user } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
@@ -305,7 +299,7 @@ export default function useHolderListController() {
     atStart, handleUploadConfirm, isUploading,
     onSearch, onNext, onBack,
     pagination, currentPage, modalOpen, setModalOpen,
-    columns, rowAction, setSort, sort,
+    columns, rowAction, setSort, sort,total,
     loading, rowsPerPage, setRowsPerPage, onRevoke, revoking, onSend
   }
 

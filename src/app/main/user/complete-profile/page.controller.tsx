@@ -6,12 +6,12 @@ import { useTranslations } from 'next-intl';
 import { SxProps, Theme } from '@mui/material';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { useToast } from '@/hooks/useToast';
-import { fetchUserAccount, signUpEmail, updateAccout } from '@/services/common/account.service';
+import { fetchUserAccount, signUpEmail } from '@/services/common/account.service';
 import ImageUploadInput from '@/components/common/forms/fields/ImageUploadInput';
 import { uploadFile } from '@/lib/firebase/storage/fileManager';
 import { emailRule, fileImageRule, requiredRule } from '@/config/yupRules';
 import { getUser } from '@/lib/firebase/authentication/login';
-import { getIdToken, User } from 'firebase/auth';
+import { User } from 'firebase/auth';
 import IUser from '@/domain/auth/IUser';
 import { useRouter } from 'nextjs-toploader/app';
 import { useEntity } from '@/hooks/useEntity';
@@ -64,18 +64,12 @@ export const useUserProfileController = () => {
         name: requiredRule(t),
         legalEntityName: requiredRule(t),
         phone: Yup.string().optional(),
-        avatar: fileImageRule(t)
+      
     });
 
 
     const fields = [
-        {
-            name: 'avatar',
-            label: t('core.label.logo'),
-            component: ImageUploadInput,
-            type:'custom',
-            required: true,
-        },
+        
         {
             name: 'name',
             label: t('core.label.firstName'),
@@ -113,15 +107,9 @@ export const useUserProfileController = () => {
 
     const setUserDataAction = async (values: UserFormValues) => {
         try {
-            let uri
+           
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-
-            setPending(true)
-            if (typeof values.avatar === 'object') {
-                uri = await uploadFile(values.avatar, `user-avatar/${values.avatar}`, () => { })
-            } else {
-                uri = values.avatar
-            }
+            setPending(true)           
 
             const sessionToken = await user?.accessToken;
             if (!user) {

@@ -5,14 +5,12 @@ import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useTranslations } from 'next-intl';
 import { SxProps, Theme } from '@mui/material';
-import { configBilling } from '@/services/common/subscription.service';
 import { useLayout } from '@/hooks/useLayout';
 import IUser, { ICollaborator } from '@/domain/auth/IUser';
 import { EntityCollaboratorData } from '@/components/features/entity/UserAssignment';
 import { useToast } from '@/hooks/useToast';
 import { fetchUsers } from '@/services/common/users.service';
 import { assignedUserToEntity, deleteOwnerOfEntity, fetchAllOwnerOfEntity } from '@/services/common/entity.service';
-import { CommonModalType } from '@/contexts/commonModalContext';
 import IUserEntity from '@/domain/auth/IUserEntity';
 import { useCommonModal } from '@/hooks/useCommonModal';
 
