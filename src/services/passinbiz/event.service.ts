@@ -61,7 +61,7 @@ export async function createEvent(data: EventFromValues, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          Authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -89,7 +89,7 @@ export async function updateEvent(data: EventFromValues, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          Authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       });
       const response: any = await httpClientFetchInstance.post(

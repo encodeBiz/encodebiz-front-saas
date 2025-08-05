@@ -42,7 +42,7 @@ export async function subscribeInSassProduct(data: ISubscription, token: string)
         const httpClientFetchInstance: HttpClient = new HttpClient({
             baseURL: '',
             headers: {
-                Authorization: `Bearer ${token}`
+                authorization: `Bearer ${token}`
             },
         });
         const response: any = await httpClientFetchInstance.post(process.env.NEXT_PUBLIC_BACKEND_URI_SUBCRIBE as string, {
@@ -66,7 +66,7 @@ export async function unSubscribeInSassProduct(data: IUnSubscription, token: str
         const httpClientFetchInstance: HttpClient = new HttpClient({
             baseURL: '',
             headers: {
-                Authorization: `Bearer ${token}`
+                authorization: `Bearer ${token}`
             },
         });
         const response: any = await httpClientFetchInstance.post(process.env.NEXT_PUBLIC_BACKEND_URI_UNSUBCRIBE as string, {
@@ -89,7 +89,7 @@ export async function configBilling(data: {
         const httpClientFetchInstance: HttpClient = new HttpClient({
             baseURL: '',
             headers: {
-                Authorization: `Bearer ${token}`
+                authorization: `Bearer ${token}`
             },
         });
         const response: any = await httpClientFetchInstance.post(process.env.NEXT_PUBLIC_BACKEND_URI_CONFIGBILLING as string, {

@@ -20,12 +20,12 @@ export async function uploadMedia(
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          Authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       });
       const headers = {
         headers: {
-          Authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         }
       }
       const response: any = await httpClientFetchInstance.upload(
@@ -102,7 +102,7 @@ export async function deleteMedia(data: {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: '',
         headers: {
-          Authorization: `Bearer ${token}`
+          authorization: `Bearer ${token}`
         },
       });
       const response: any = await httpClientFetchInstance.delete(process.env.NEXT_PUBLIC_BACKEND_URI_DELETE_MEDIA as string, {

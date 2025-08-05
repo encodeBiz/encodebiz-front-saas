@@ -19,7 +19,7 @@ import {
     CopyAll
 } from '@mui/icons-material';
 import { PreviewContainer, ScannerContainer, StyledCard } from './QRScanner.style';
-import { useGeolocation } from '@/hooks/useGeolocation';
+//import { useGeolocation } from '@/hooks/useGeolocation';
 import { useTranslations } from 'next-intl';
 import { useQRScanner } from './QRScanner.controller';
 
@@ -27,10 +27,10 @@ const QRScanner = () => {
     const { handleScan, handleError, resetScanner, scanRessult, staffValidating, staffValid, error } = useQRScanner()
     const t = useTranslations()
 
-    const { position, isLoading } = useGeolocation({
+    /* const { position, isLoading } = useGeolocation({
         enableHighAccuracy: true,
         timeout: 10000
-    });
+    }); */
 
 
 

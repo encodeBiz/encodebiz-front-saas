@@ -79,7 +79,7 @@ export async function createEntity(data: EntityFormValues, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          Authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -111,7 +111,7 @@ export async function updateEntity(
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          Authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -140,7 +140,7 @@ export async function updateEntityBranding(
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          Authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -193,7 +193,7 @@ export async function deleteEntity(data: {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: '',
         headers: {
-          Authorization: `Bearer ${token}`
+          authorization: `Bearer ${token}`
         },
       });
       const response: any = await httpClientFetchInstance.delete(process.env.NEXT_PUBLIC_BACKEND_URI_DELETE_ENTITY as string, {
@@ -217,7 +217,7 @@ export async function assignedUserToEntity(data: IAssing, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          Authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       });
       const response: any = await httpClientFetchInstance.post(
