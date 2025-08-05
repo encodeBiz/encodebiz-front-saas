@@ -125,7 +125,7 @@ export default function useHolderController() {
         "entityId": currentEntity?.entity?.id as string,
         "passStatus": "pending",
         "type": values.type,
-        "parentId": "",
+        "parentId":values.parentId ?? "",
         "isLinkedToUser": false,
         "metadata": {
           "auxiliaryFields": values.customFields
