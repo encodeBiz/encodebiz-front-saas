@@ -47,7 +47,7 @@ export async function createHolder(data: HolderFormValues, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          token: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -95,7 +95,7 @@ export async function updateHolder(data: HolderFormValues, token: string) {
       let httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          token: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -123,7 +123,7 @@ export async function importHolder(data: FormData, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          token: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       const response: any = await httpClientFetchInstance.upload(
@@ -156,7 +156,7 @@ export async function deleteHolder(data: {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: '',
         headers: {
-          token: `Bearer ${token}`
+          Authorization: `Bearer ${token}`
         },
       });
       const response: any = await httpClientFetchInstance.delete(process.env.NEXT_PUBLIC_BACKEND_URI_DELETE_MEDIA as string, {
@@ -178,7 +178,7 @@ export async function validateHolder(data: any, tokenValidateStaff: string) {
     const httpClientFetchInstance: HttpClient = new HttpClient({
       baseURL: "",
       headers: {
-        token: `Bearer ${tokenValidateStaff}`,
+        'A': `Bearer ${tokenValidateStaff}`,
       },
     });
     const response: any = await httpClientFetchInstance.post(

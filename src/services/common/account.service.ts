@@ -64,7 +64,7 @@ export async function signUpEmail(data: RegisterFormValues, sessionToken?: strin
         const httpClientFetchInstance: HttpClient = new HttpClient({
             baseURL: process.env.NEXT_PUBLIC_BACKEND_URI_CREATE_USER,
             headers: {
-                token: `Bearer ${sessionToken}`
+                Authorization: `Bearer ${sessionToken}`
             },
         });
         const response: any = await httpClientFetchInstance.post('', {
