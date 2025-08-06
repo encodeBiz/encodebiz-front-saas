@@ -33,10 +33,11 @@ export default function useStaffController() {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
 
+
       await Promise.all(
         values.event.map(async (eventId) => {
           const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, eventId);
-          if(!event.assignedStaff) event.assignedStaff=[]
+          if (!event.assignedStaff) event.assignedStaff = []
           if (!event.assignedStaff.includes(id)) {
             event.assignedStaff = [...event.assignedStaff, id]
             await updateEvent({
@@ -44,23 +45,26 @@ export default function useStaffController() {
               entityId: event.entityId,
               assignedStaff: event.assignedStaff
             }, token);
+            console.log('1');
             console.log(event);
-            
+
           }
         })
       );
+
 
       await Promise.all(
         initialValues.event.map(async (eventId) => {
           const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, eventId);
           if (!values.event.includes(eventId)) {
-            event.assignedStaff = event.assignedStaff.filter(e => e !== eventId)
+            event.assignedStaff = event.assignedStaff.filter(e => e !== id)
             await updateEvent({
               id: event.id,
               entityId: event.entityId,
               assignedStaff: event.assignedStaff
             }, token);
-             console.log(event);
+            console.log('2');
+            console.log(event);
           }
         })
       );
@@ -98,12 +102,12 @@ export default function useStaffController() {
   const fetchData = useCallback(async () => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const eventList: Array<IEvent> = await searchEventsByStaff(id)
+      const eventStaffList: Array<IEvent> = await searchEventsByStaff(id)
       setInitialValues({
-        event: eventList.map(e => e.id)
+        event: eventStaffList.map(e => e.id)
       })
-      const staffList: IEvent[] = await search(currentEntity?.entity.id as string, { limit: 100 } as any)
-      setEventList(staffList)
+      const eventList: IEvent[] = await search(currentEntity?.entity.id as string, { limit: 100 } as any)
+      setEventList(eventList)
       changeLoaderState({ show: false })
     } catch (error: any) {
       changeLoaderState({ show: false })
