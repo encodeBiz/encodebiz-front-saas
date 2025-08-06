@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
@@ -18,7 +18,7 @@ import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { ArrayToObject, objectToArray } from "@/lib/common/String";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
- 
+
 
 export default function useHolderController() {
   const t = useTranslations();
@@ -66,7 +66,7 @@ export default function useHolderController() {
         "name": values.name,
         "description": values.description,
         "location": values.location,
-     
+
         "address": values.address as string,
         "entityId": currentEntity?.entity?.id as string,
         "colorPrimary": values.colorPrimary,
@@ -196,7 +196,7 @@ export default function useHolderController() {
       ],
       component: SelectInput,
 
-    } ,
+    },
     {
 
       isDivider: true,
@@ -215,12 +215,11 @@ export default function useHolderController() {
 
   ];
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
 
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, id)
- 
       setInitialValues({
         ...event,
         metadata: objectToArray(event.metadata)
@@ -230,20 +229,18 @@ export default function useHolderController() {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
     }
-  }
+  }, [changeLoaderState, currentEntity?.entity.id, id, showToast, t])
 
-  
+
   useEffect(() => {
     if (currentEntity?.entity.id && user?.id && id) {
       fetchData()
     }
 
     if (currentEntity?.entity.id && user?.id) {
-    
       watchServiceAccess('passinbiz')
-
     }
-  }, [currentEntity?.entity.id, user?.id, id])
+  }, [currentEntity?.entity.id, user?.id, id, fetchData, watchServiceAccess])
 
 
   return { fields, initialValues, validationSchema, setDinamicDataAction }

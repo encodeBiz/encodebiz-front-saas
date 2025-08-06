@@ -46,8 +46,6 @@ export default function EmployeeList() {
         onEdit={(data) => onEdit(data)}
         onDelete={(data) => openModal(CommonModalType.DELETE, { data })}
         onSearch={(data) => onSearch(data)}
-        
-
       />
 
 

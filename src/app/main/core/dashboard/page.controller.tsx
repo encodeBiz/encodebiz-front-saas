@@ -18,7 +18,7 @@ export default function useDashboardController() {
       }
     }
  
-  }, [user?.id])
+  }, [openModal, refrestList, user?.id])
 
   return {}
 }

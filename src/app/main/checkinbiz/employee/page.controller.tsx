@@ -3,7 +3,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useToast } from "@/hooks/useToast";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "nextjs-toploader/app";
 import { CHECKINBIZ_MODULE_ROUTE, MAIN_ROUTE } from "@/config/routes";
 import { useCommonModal } from "@/hooks/useCommonModal";
@@ -11,12 +11,9 @@ import { CommonModalType } from "@/contexts/commonModalContext";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import { deleteEmployee, search } from "@/services/checkinbiz/employee.service";
 
-
-
-
 export default function useEmployeeListController() {
   const t = useTranslations();
- 
+
   const { token, user } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
@@ -32,7 +29,7 @@ export default function useEmployeeListController() {
   const [itemsHistory, setItemsHistory] = useState<IEmployee[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [total, setTotal] = useState(0);
- 
+
   const { closeModal } = useCommonModal()
 
   const rowAction: Array<IRowAction> = []
@@ -90,7 +87,7 @@ export default function useEmployeeListController() {
 
   ];
 
-  const fetchingData = () => {
+  const fetchingData = useCallback(() => {
     setLoading(true)
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
 
@@ -104,7 +101,7 @@ export default function useEmployeeListController() {
         if (!params.startAfter)
           setItemsHistory([...res])
         else
-          setItemsHistory([...itemsHistory, ...res])
+          setItemsHistory(prev => [...prev, ...res])
         setLoading(false)
       }
 
@@ -122,15 +119,14 @@ export default function useEmployeeListController() {
     }).finally(() => {
       setLoading(false)
     })
-
-  }
+  }, [currentEntity?.entity.id, params, rowsPerPage, showToast])
 
   useEffect(() => {
     if (params && currentEntity?.entity?.id && user?.id) {
       fetchingData()
       watchServiceAccess('checkinbiz')
     }
-  }, [params, currentEntity?.entity?.id, user?.id])
+  }, [params, currentEntity?.entity?.id, user?.id, fetchingData, watchServiceAccess])
 
   useEffect(() => {
     setCurrentPage(0)
@@ -163,7 +159,7 @@ export default function useEmployeeListController() {
 
 
   return {
-    onDelete, items,total,
+    onDelete, items, total,
     atEnd, onEdit, onSearch,
     atStart, onBack, onNext,
     pagination, currentPage,

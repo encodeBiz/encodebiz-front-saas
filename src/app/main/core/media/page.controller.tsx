@@ -107,7 +107,7 @@ export const useMediaList = () => {
         },
     ];
 
-    const fetchingData = () => {
+    const fetchingData =useCallback(() => {
         setLoading(true)
         search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
             if (res.length < rowsPerPage || res.length === 0)
@@ -120,7 +120,7 @@ export const useMediaList = () => {
                 if (!params.startAfter)
                     setItemsHistory([...res])
                 else
-                    setItemsHistory([...itemsHistory, ...res])
+                    setItemsHistory(prev => [...prev, ...res])
                 setLoading(false)
             }
 
@@ -139,12 +139,12 @@ export const useMediaList = () => {
             setLoading(false)
         })
 
-    }
+    },[currentEntity?.entity.id, params, rowsPerPage, showToast])
 
     useEffect(() => {
         if (params && currentEntity?.entity?.id)
             fetchingData()
-    }, [params, currentEntity?.entity?.id])
+    }, [params, currentEntity?.entity?.id, fetchingData])
 
     useEffect(() => {
         setCurrentPage(0)
@@ -185,7 +185,7 @@ export const useMediaList = () => {
             form.append('uid', user?.id as string);
             form.append('type', selectedType);
             form.append('file', file);
-            (await uploadMedia(form, token) as { mediaId: string })?.mediaId
+            await uploadMedia(form, token)
             setCurrentPage(0)
             setParams({ limit: rowsPerPage })
             setAtStart(true)
@@ -199,7 +199,7 @@ export const useMediaList = () => {
             setIsUploading(false);
 
         }
-    }, [selectedType]);
+    }, [currentEntity?.entity.id, rowsPerPage, selectedType, showToast, token, user?.id]);
 
     return {
         onDelete, selectedType, handleFileChange, isUploading, setSelectedType,

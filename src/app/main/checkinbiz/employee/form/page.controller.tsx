@@ -193,7 +193,6 @@ export default function useHolderController() {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, id)
-
       setInitialValues({
         ...event,
         metadata: objectToArray(event.metadata)
@@ -203,12 +202,12 @@ export default function useHolderController() {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
     }
-  }, [])
+  }, [changeLoaderState, currentEntity?.entity.id, id, showToast, t])
 
   useEffect(() => {
     if (currentEntity?.entity.id && user?.id && id)
       fetchData()
-  }, [currentEntity?.entity.id, user?.id, id])
+  }, [currentEntity?.entity.id, user?.id, id, fetchData])
 
 
   return { fields, initialValues, validationSchema, handleSubmit }
