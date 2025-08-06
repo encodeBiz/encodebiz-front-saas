@@ -41,7 +41,7 @@ export type PricingCardProps = {
 export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
     const t = useTranslations();
     const { ubSubcribeAction, loadingGetPlan } = usePricingCardController(plan);
-    const { openModal, open } = useCommonModal()
+    const { openModal } = useCommonModal()
 
 
     return (
@@ -98,7 +98,7 @@ export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
                 isLoading={loadingGetPlan}
                 title={t('renew.deleteConfirmModalTitle')}
                 description={t('renew.deleteConfirmModalTitle2')}
-                onOKAction={(args: { data: Array<string> }) => ubSubcribeAction()}
+                onOKAction={() => ubSubcribeAction()}
             />
         </PlanCard>
     );

@@ -1,7 +1,7 @@
 import { subscribeInSassProduct, unSubscribeInSassProduct } from '@/services/common/subscription.service';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { useToast } from '@/hooks/useToast';
 import { ISubscription, IUnSubscription } from '@/domain/auth/ISubscription';
@@ -28,7 +28,7 @@ export default function usePricingCardController(id: string, fromService: "passi
             }
             changeLoaderState({ show: true, args: { text: t('core.title.loaderActionBilling') } })
 
-            const dataResult = await subscribeInSassProduct(data, token)
+            await subscribeInSassProduct(data, token)
             fetchSuscriptionEntity()
             showToast(`La suscripción al plan ${id} del servicio ${fromService} se ha completado con exito'`, 'success');
             setLoadingGetPlan(false);
@@ -53,7 +53,7 @@ export default function usePricingCardController(id: string, fromService: "passi
             }
             changeLoaderState({ show: true, args: { text: t('core.title.loaderActionBilling') } })
 
-            const dataResult = await unSubscribeInSassProduct(data, token)
+            await unSubscribeInSassProduct(data, token)
             fetchSuscriptionEntity()
             showToast(`La suscripción al servicio ${fromService} se ha eliminado con exito`, 'success');
             setLoadingGetPlan(false);

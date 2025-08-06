@@ -123,7 +123,7 @@ export function GenericTable<T extends Record<string, any>>({
         return value?.toString().toLowerCase().includes(searchText.toLowerCase());
       })
     );
-  }, [data, columns, page, rowsPerPage]);
+  }, [searchText, data, columns]);
 
   // Sort data
   const sortedData = useMemo(() => {
@@ -143,7 +143,7 @@ export function GenericTable<T extends Record<string, any>>({
         ? aValue.toString().localeCompare(bValue.toString())
         : bValue.toString().localeCompare(aValue.toString());
     });
-  }, [filteredData, order, orderBy, data, rowsPerPage, page]);
+  }, [filteredData, order, orderBy]);
 
   // Handlers
   const handleRequestSort = (property: keyof T) => {
@@ -192,8 +192,7 @@ export function GenericTable<T extends Record<string, any>>({
     setSelected(newSelected);
   };
 
-  const handleChangePage = (event: any, newPage: number) => {
-    let eventPage;
+  const handleChangePage = (event: any, newPage: number) => { 
     if (newPage > (page as number)) onNext()
     else onBack()
 
@@ -214,9 +213,9 @@ export function GenericTable<T extends Record<string, any>>({
   }, [data]);
 
   useEffect(() => {
-    if (onRowsPerPageChange)
+    if (typeof onRowsPerPageChange === 'function')
       onRowsPerPageChange(rowsPerPage)
-  }, [rowsPerPage]);
+  }, [onRowsPerPageChange, rowsPerPage]);
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>

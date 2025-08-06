@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { CardContent, Typography, Box, List, ListItem, ListItemIcon } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
@@ -10,7 +10,6 @@ import { BizType } from '@/domain/core/IService';
 import { useEntity } from '@/hooks/useEntity';
 import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
 import { CommonModalType } from '@/contexts/commonModalContext';
-import ConfirmModal from '../modals/ConfirmModal';
 import { useRouter } from 'nextjs-toploader/app';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import SheetModalModal from '../modals/SheetModal';
@@ -68,14 +67,14 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
     const { push } = useRouter()
     const { open, openModal, closeModal } = useCommonModal()
 
-    const watch = () => {
+    const watch = useCallback(() => {
         const disabledPlan = !currentEntity || !currentEntity?.entity?.billingEmail || !currentEntity?.entity?.legal?.legalName || !currentEntity?.entity?.legal?.taxId || !currentEntity?.entity?.billinConfig?.payment_method
         setLoadingGetPlan(disabledPlan)
         if (disabledPlan) openModal(CommonModalType.BILLING)
-    }
+    }, [currentEntity, openModal, setLoadingGetPlan])
     useEffect(() => {
         watch()
-    }, [currentEntity?.entity?.id]);
+    }, [currentEntity?.entity?.id, watch]);
 
     return (<>
         <PlanCard featured={String(featured)}>

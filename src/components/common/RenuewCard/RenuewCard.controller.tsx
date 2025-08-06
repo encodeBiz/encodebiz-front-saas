@@ -1,11 +1,10 @@
-import { subscribeInSassProduct, unSubscribeInSassProduct } from '@/services/common/subscription.service';
+import { unSubscribeInSassProduct } from '@/services/common/subscription.service';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useState } from 'react';
 
 import { useToast } from '@/hooks/useToast';
-import { IEntitySuscription, ISubscription, IUnSubscription } from '@/domain/auth/ISubscription';
-import { BizType } from '@/domain/core/IService';
+import { IEntitySuscription, IUnSubscription } from '@/domain/auth/ISubscription';
 export default function usePricingCardController(plan: IEntitySuscription) {
     const { currentEntity, fetchSuscriptionEntity } = useEntity();
     const { token } = useAuth()
@@ -19,7 +18,7 @@ export default function usePricingCardController(plan: IEntitySuscription) {
                     entityId: currentEntity?.entity?.id ? currentEntity.entity.id : "",
                     serviceId: plan.serviceId as any
                 }
-                const dataResult = await unSubscribeInSassProduct(data, token)
+                await unSubscribeInSassProduct(data, token)
                 fetchSuscriptionEntity()
                 showToast(`La suscripción al servicio ${plan.serviceId as any} se ha eliminado con exito`, 'success');
                 setLoadingGetPlan(false);
