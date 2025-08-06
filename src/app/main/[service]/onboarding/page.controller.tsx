@@ -6,8 +6,8 @@ import { useLayout } from "@/hooks/useLayout";
 import { useToast } from "@/hooks/useToast";
 import { fetchAvailablePlans, fetchService } from "@/services/common/subscription.service";
 import { useTranslations } from "next-intl";
-import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react"
+import { useParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react"
 
 export default function useDashboardController() {
   const { service } = useParams<any>()
@@ -26,25 +26,11 @@ export default function useDashboardController() {
     billinConfig: !!currentEntity?.entity?.billinConfig?.payment_method
   });
 
-  const fetchServiceData = async () => {
-    try {
-      changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      setServiceData(await fetchService(service as string))
-      await fetchData()
-      changeLoaderState({ show: false })
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        showToast(error.message, 'error');
-      } else {
-        showToast(String(error), 'error');
-      }
-      changeLoaderState({ show: false })
-    }
-  }
+
 
   const [pending, setPending] = useState(false)
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setPending(true)
       const planData = await fetchAvailablePlans(service)
@@ -78,12 +64,28 @@ export default function useDashboardController() {
       }
       setPending(false)
     }
-  }
+  }, [service, showToast, t])
+
+  const fetchServiceData = useCallback(async () => {
+    try {
+      changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+      setServiceData(await fetchService(service as string))
+      await fetchData()
+      changeLoaderState({ show: false })
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        showToast(error.message, 'error');
+      } else {
+        showToast(String(error), 'error');
+      }
+      changeLoaderState({ show: false })
+    }
+  }, [changeLoaderState, fetchData, service, showToast, t])
 
   useEffect(() => {
     if (service && user?.id && currentEntity?.entity.id)
       fetchServiceData()
-  }, [user?.id, service, currentEntity?.entity.id])
+  }, [user?.id, service, currentEntity?.entity.id, fetchServiceData])
 
 
   useEffect(() => {

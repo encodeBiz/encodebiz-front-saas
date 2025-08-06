@@ -21,9 +21,7 @@ export default function EmployeeForm() {
       <PresentationCard
         title={id?t('employee.update'):t('employee.add')}
         description={t('event.description')}
-
-      >
-       
+      >       
         <GenericForm<EmployeeFormValues>
           column={2}
           initialValues={initialValues}

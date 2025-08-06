@@ -1,6 +1,6 @@
 // SelectInput.tsx
 import React from 'react';
-import { TextField, TextFieldProps, MenuItem, Select, FormHelperText, FormControl, InputLabel } from '@mui/material';
+import { TextFieldProps, MenuItem, Select, FormHelperText, FormControl, InputLabel } from '@mui/material';
 import { FieldProps, useField } from 'formik';
 import { createSlug } from '@/lib/common/String';
 

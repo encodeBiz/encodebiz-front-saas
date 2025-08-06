@@ -4,8 +4,7 @@ import React, { useState } from "react";
 
 import {
   AccountCircle as AccountCircleIcon,
-  Settings as SettingsIcon,
-  Logout as LogoutIcon} from '@mui/icons-material';
+   Logout as LogoutIcon} from '@mui/icons-material';
 import { useRouter } from "nextjs-toploader/app";
 import { MAIN_ROUTE, USER_ROUTE } from "@/config/routes";
 
@@ -14,8 +13,8 @@ export const useHeader = () => {
   const { push } = useRouter()
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-  const [showNotification, setShowNotification] = useState(0)
-  const [showMessages, setShowMessages] = useState(0)
+  const [showNotification] = useState(0)
+  const [showMessages] = useState(0)
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);

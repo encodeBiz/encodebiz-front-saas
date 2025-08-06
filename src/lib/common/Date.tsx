@@ -105,8 +105,7 @@ export function format_range(range: Array<Timestamp>): string {
 
 
     let date: string = "02 - 05 Octubre"
-    const start: string = ""
-    const end: string = ""
+   
     if (range?.length === 2) {
         const dateStart: Date = new Date(range[0]?.seconds * 1000);
         const dateEnd: Date = new Date(range[1]?.seconds * 1000);

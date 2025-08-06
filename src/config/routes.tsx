@@ -1,14 +1,15 @@
 import {
     Dashboard as DashboardIcon,
-    BarChart as BarChartIcon,
-    Settings as SettingsIcon,
+ 
     ImageSearchOutlined,
     EventAvailable,
     Security,
     Today,
+
     Home,
     Person2TwoTone,
     
+
 } from '@mui/icons-material';
 import Badge from '@mui/icons-material/Badge';
 import BusinessIcon from '@mui/icons-material/Business';

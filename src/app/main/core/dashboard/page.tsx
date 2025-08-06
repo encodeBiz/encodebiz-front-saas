@@ -1,11 +1,8 @@
 'use client';
-import DoughnutChart from "@/components/common/charts/DoughnutChart";
-import LineChart from "@/components/common/charts/LineChart";
-import DashboardCard from "@/components/common/DashboardCard";
 import HelpTabs from "@/components/features/dashboard/HelpTabs/HelpTabs";
 import PresentationCard from "@/components/features/dashboard/PresentationCard/PresentationCard";
 import image from '@/../public/assets/images/encodebiz-sass.png'
-import { Container, Grid, Typography } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 import { useTranslations } from "next-intl";
 import { Cloud } from "@mui/icons-material";
 import useDashboardController from "./page.controller";
@@ -14,7 +11,7 @@ import ServiceList from "@/components/features/dashboard/ServiceList/ServiceList
 
 export default function Dashboard() {
   const t = useTranslations()
-  const _ = useDashboardController()
+  const {} = useDashboardController()
   const sectionMoreInfofRef = useRef(null); // Create a ref for the section
   const sectionServicesRef = useRef(null); // Create a ref for the section
 

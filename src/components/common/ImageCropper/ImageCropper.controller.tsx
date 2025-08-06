@@ -126,9 +126,8 @@ export const useImageCropper = (onComplete: (file: File) => void, size: { w: num
     }
   };
 
-  function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
-    if (aspect) {
-      const { width, height } = e.currentTarget
+  function onImageLoad() {
+    if (aspect) {       
       setCrop(centerAspectCrop(size.w, size.h, aspect))
     }
   }

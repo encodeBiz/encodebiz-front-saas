@@ -4,11 +4,9 @@ import Footer from '@/components/layouts/Footer';
 import Header from '@/components/layouts/Header/Header';
 import Onboarding from '@/components/layouts/Onboarding/Onboarding';
 import SideMenu from '@/components/layouts/SideMenu';
-import Sidebar from '@/components/layouts/SideMenu';
-import { LayoutProvider } from '@/contexts/layoutContext';
 import { useAuth } from '@/hooks/useAuth';
 import { useLayout } from '@/hooks/useLayout';
-import { Box, CssBaseline, Grid, Toolbar } from '@mui/material';
+import { Box, CssBaseline, Grid } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import CustomFooter from '@/components/layouts/CustomFooter/CustomFooter';
 

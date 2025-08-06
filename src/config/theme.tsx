@@ -1,18 +1,12 @@
 'use client';
 
-import { PaletteOptions, ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import { ReactNode } from 'react';
+import { PaletteOptions } from '@mui/material/styles';
 import {
-  Close as CloseIcon,
-  CheckCircle as CheckCircleIcon,
   InsertDriveFile as FileIcon,
   Image as ImageIcon,
   VideoLibrary as VideoIcon,
   Audiotrack as AudioIcon,
-  Description as DocumentIcon,
-  CloudUpload
-} from '@mui/icons-material';
+  Description as DocumentIcon} from '@mui/icons-material';
 
 export const fileTypeIcons = {
   image: <ImageIcon />,

@@ -1,8 +1,8 @@
 // pages/api/verify-token.ts
 import { verifyToken } from '@/lib/firebase/authentication/auth_utils';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
-export async function POST(request: any, response: any) {
+export async function POST(request: any) {
 
   const data = await request.json();
   const { token } = data
@@ -14,9 +14,9 @@ export async function POST(request: any, response: any) {
   try {     
     const decodedToken = await verifyToken(token);       
     return NextResponse.json({ user:decodedToken }, { status: 200 })
-  } catch (error) {
+  } catch (error: any) {
     return NextResponse.json(
-      { message: "Invalid token" },
+      { message: "Invalid token" + error?.message as string },
       { status: 401 }
     );
 

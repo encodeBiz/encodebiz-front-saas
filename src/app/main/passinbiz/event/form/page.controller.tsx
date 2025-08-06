@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
@@ -17,24 +17,8 @@ import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { ArrayToObject, objectToArray } from "@/lib/common/String";
+import SelectInput from "@/components/common/forms/fields/SelectInput";
 
-export interface EventFromValues {
-  id?: string
-  uid?: string
-  createdBy?: string
-  entityId?: string
-  "name": string
-  "description": string
-  address?: string
-  "date": any
-  "location": string
-  "template": string
-  "logoUrl": string
-  "imageUrl": string
-  "colorPrimary": string
-  "colorAccent": string
-  metadata: any
-};
 
 export default function useHolderController() {
   const t = useTranslations();
@@ -44,55 +28,55 @@ export default function useHolderController() {
   const { id } = useParams<{ id: string }>()
   const { currentEntity, watchServiceAccess } = useEntity()
   const { changeLoaderState } = useLayout()
-  const [initialValues, setInitialValues] = useState<EventFromValues>({
+  const [initialValues, setInitialValues] = useState<Partial<IEvent>>({
     "name": '',
     "description": '',
     "date": new Date(),
+    "endDate": new Date(),
     "location": '',
-    "template": '',
+    "template": 'default',
     "logoUrl": '',
     "imageUrl": '',
+    assignedStaff: [],
     "colorPrimary": '',
     "colorAccent": '',
+    'status': 'published',
     metadata: []
   });
 
   const validationSchema = Yup.object().shape({
-    metadata: Yup.array()
-      .of(
-        Yup.object().shape({
-          label: requiredRule(t),
-          value: requiredRule(t)
-        })
-      )
-      .nullable(),
+
     name: requiredRule(t),
-    description: requiredRule(t),
+    //description: requiredRule(t),
     date: requiredRule(t),
+    endDate: requiredRule(t),
     location: requiredRule(t),
-    logoUrl: requiredRule(t),
-    imageUrl: requiredRule(t),
-    colorPrimary: requiredRule(t),
-    colorAccent: requiredRule(t),
+    address: requiredRule(t),
+    //imageUrl: requiredRule(t),
+    //colorPrimary: requiredRule(t),
+    //colorAccent: requiredRule(t),
   });
 
-  const setDinamicDataAction = async (values: EventFromValues) => {
+  const setDinamicDataAction = async (values: Partial<IEvent>) => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const data = {
+      const data: Partial<IEvent> = {
         "uid": user?.id as string,
         "createdBy": user?.id as string,
         "name": values.name,
         "description": values.description,
         "location": values.location,
-        "address": values.location,
+
+        "address": values.address as string,
         "entityId": currentEntity?.entity?.id as string,
         "colorPrimary": values.colorPrimary,
         "colorAccent": values.colorAccent,
         "imageUrl": values.imageUrl,
         "logoUrl": values.logoUrl,
         "date": values.date,
-        template: 'vip',
+        "status": values.status as "draft" | "published" | "archived",
+        "endDate": values.endDate,
+        template: values.template as "default" | "vip" | "expo" | "festival",
         "metadata": ArrayToObject(values.metadata),
         "id": id,
       }
@@ -116,14 +100,6 @@ export default function useHolderController() {
       required: true,
       component: TextInput,
     },
-
-    {
-      name: 'date',
-      label: t('core.label.date'),
-      type: 'text',
-      required: true,
-      component: DateInput,
-    },
     {
       name: 'location',
       label: t('core.label.location'),
@@ -131,13 +107,38 @@ export default function useHolderController() {
       type: 'textarea',
       component: TextInput,
     },
+
+    {
+      name: 'date',
+      label: t('core.label.startDate'),
+      type: 'text',
+      required: true,
+      component: DateInput,
+    },
+    {
+      name: 'endDate',
+      label: t('core.label.endDate'),
+      type: 'text',
+      required: true,
+      component: DateInput,
+    },
+    {
+      name: 'address',
+      label: t('core.label.address'),
+      type: 'textarea',
+      required: true,
+      fullWidth: true,
+      component: TextInput,
+    },
     {
       name: 'description',
       label: t('core.label.description'),
       type: 'textarea',
-      required: true,
+      required: false,
+      fullWidth: true,
       component: TextInput,
     },
+
     {
 
       isDivider: true,
@@ -147,51 +148,78 @@ export default function useHolderController() {
       name: 'colorPrimary',
       label: t('core.label.colorPrimary'),
       type: 'text',
-      required: true,
+      required: false,
       component: ColorPickerInput,
     }, {
       name: 'colorAccent',
       label: t('core.label.colorAccent'),
       type: 'text',
-      required: true,
+      required: false,
 
       component: ColorPickerInput,
     },
     {
       name: 'logoUrl',
       label: t('core.label.logo'),
-      required: true,
-      type: 'custom',
+      required: false,
+      type: 'logo',
       component: ImageUploadInput,
     },
     {
       name: 'imageUrl',
       label: t('core.label.imageUrl'),
-      required: true,
-      type: 'custom',
+      required: false,
+      type: 'stripImage',
       component: ImageUploadInput,
     }, {
+      name: 'template',
+      label: t('core.label.template'),
+      type: 'text',
+      required: false,
+      options: [
+        { value: 'default', label: t('core.label.default') },
+        { value: 'vip', label: t('core.label.vip') },
+        { value: 'expo', label: t('core.label.expo') },
+        { value: 'festival', label: t('core.label.festival') }
+      ],
+      component: SelectInput,
+
+    }, {
+      name: 'status',
+      label: t('core.label.status'),
+      type: 'text',
+      required: false,
+      options: [
+        { value: 'draft', label: t('core.label.draft') },
+        { value: 'published', label: t('core.label.published') },
+        { value: 'archived', label: t('core.label.archived') },
+      ],
+      component: SelectInput,
+
+    },
+    {
 
       isDivider: true,
       label: t('core.label.setting'),
     },
+
+
     {
       name: 'metadata',
       label: t('core.label.setting'),
       type: 'text',
-      required: true,
+      required: false,
       fullWidth: true,
       component: DynamicKeyValueInput,
     },
 
   ];
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
 
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, id)
-
       setInitialValues({
         ...event,
         metadata: objectToArray(event.metadata)
@@ -201,14 +229,18 @@ export default function useHolderController() {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
     }
-  }
+  }, [changeLoaderState, currentEntity?.entity.id, id, showToast, t])
+
 
   useEffect(() => {
     if (currentEntity?.entity.id && user?.id && id) {
       fetchData()
+    }
+
+    if (currentEntity?.entity.id && user?.id) {
       watchServiceAccess('passinbiz')
     }
-  }, [currentEntity?.entity.id, user?.id, id])
+  }, [currentEntity?.entity.id, user?.id, id, fetchData, watchServiceAccess])
 
 
   return { fields, initialValues, validationSchema, setDinamicDataAction }

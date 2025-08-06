@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, {  } from 'react';
 import { Box, Button, TextField } from '@mui/material';
-import { FieldProps, useField, useFormikContext } from 'formik';
+import { FieldProps, useField } from 'formik';
 import { useTranslations } from 'next-intl';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Add } from '@mui/icons-material';
@@ -16,10 +16,8 @@ const emptyItem = { label: '', value: '' };
 
 const DynamicKeyValueInput: React.FC<FieldProps> = ({ ...props }) => {
 
-    const [field, meta, helper] = useField(props);
-    const { name, value } = field;
-    const { setFieldValue } = useFormikContext<any>();
-
+    const [field, , helper] = useField(props);
+     
 
     const t = useTranslations();
 

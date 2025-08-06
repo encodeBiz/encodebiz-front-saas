@@ -2,27 +2,23 @@ import { buildSearch, Column, IRowAction } from "@/components/common/table/Gener
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useToast } from "@/hooks/useToast";
-import { useTheme } from "@emotion/react";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
-import { useStyles } from "./page.styles";
-
-import { useLayout } from "@/hooks/useLayout";
+import { useCallback, useEffect, useState } from "react";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { deleteEvent, search } from "@/services/passinbiz/event.service";
 import { useRouter } from "nextjs-toploader/app";
 import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
+import { Person2 } from "@mui/icons-material";
+import { Chip } from "@mui/material";
 
 
 
 
 export default function useIEventListController() {
   const t = useTranslations();
-  const theme = useTheme();
-  const classes = useStyles()
-  const { token, user } = useAuth()
+  const { token } = useAuth()
   const { currentEntity } = useEntity()
   const { showToast } = useToast()
   const { push } = useRouter()
@@ -37,9 +33,7 @@ export default function useIEventListController() {
   const [itemsHistory, setItemsHistory] = useState<IEvent[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [total, setTotal] = useState(0);
-  const { changeLoaderState } = useLayout()
   const { closeModal } = useCommonModal()
-  const rowAction: Array<IRowAction> = []
 
   const onSearch = (term: string): void => {
     setParams({ ...params, startAfter: null, filters: buildSearch(term) })
@@ -89,16 +83,24 @@ export default function useIEventListController() {
       id: 'location',
       label: t("core.label.location"),
       minWidth: 170,
-
     },
-
+    {
+      id: 'status',
+      label: t("core.label.status"),
+      minWidth: 170,
+      format: (value, row) => <Chip
+        size="small"
+        label={t(`core.label.${row.status}`)}
+        variant="outlined"
+      />,
+    },
 
   ];
 
-  const fetchingData = () => {
+  const fetchingData = useCallback(() => {
     setLoading(true)
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
- 
+
       if (res.length < rowsPerPage || res.length === 0)
         setAtEnd(true)
       else
@@ -109,7 +111,7 @@ export default function useIEventListController() {
         if (!params.startAfter)
           setItemsHistory([...res])
         else
-          setItemsHistory([...itemsHistory, ...res])
+          setItemsHistory(prev => [...prev, ...res])
         setLoading(false)
       }
 
@@ -128,12 +130,12 @@ export default function useIEventListController() {
       setLoading(false)
     })
 
-  }
+  }, [params, rowsPerPage, currentEntity?.entity.id, showToast])
 
   useEffect(() => {
     if (params && currentEntity?.entity?.id)
       fetchingData()
-  }, [params, currentEntity?.entity?.id])
+  }, [params, currentEntity?.entity?.id, fetchingData])
 
   useEffect(() => {
     setCurrentPage(0)
@@ -162,8 +164,13 @@ export default function useIEventListController() {
     }
   }
 
+  const rowAction: Array<IRowAction> = [
+    { icon: <Person2 />, label: t('core.label.staff'), allowItem: () => true, onPress: (item: IEvent) => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event/${item.id}/staff`) },
+  ]
+
+
   return {
-    onDelete, items,
+    onDelete, items, total,
     atEnd, onEdit, onSearch,
     atStart, onBack, onNext,
     pagination, currentPage,

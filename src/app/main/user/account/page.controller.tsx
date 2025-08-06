@@ -42,10 +42,6 @@ export const useUserAccountController = () => {
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
     const { changeLoaderState } = useLayout()
-
-
-
-    const [avatarSrc, setAvatarSrc] = useState<string | undefined>(undefined);
     const [initialValues, setInitialValues] = useState<UserFormValues>({
         uid: user?.uid as string | "",
         "name": user?.displayName as string | "",
@@ -142,7 +138,7 @@ export const useUserAccountController = () => {
             } else {
                 uri = values.avatar
             }
-            ({ show: true, args: { text: t('core.title.loaderAction') } })
+            changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             await updateAccout(uri, values.phone, values.name)
             updateUserData()
 
@@ -240,7 +236,7 @@ export const useUserAccountController = () => {
             avatar: user?.photoURL as string | "",
             "active": true,
         });
-        setAvatarSrc(user?.photoURL as string | "");
+        
     }, [user]);
 
     return { validationSchema, initialValues, tabsRender }

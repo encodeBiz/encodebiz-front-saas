@@ -4,16 +4,13 @@ import { Formik, Form, FormikProps, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import {
   Box,
-  Button,
   Divider,
   Grid,
   Paper,
   Typography,
-  useTheme,
 } from '@mui/material';
 import { BaseButton } from '../buttons/BaseButton';
 import { useTranslations } from 'next-intl';
-import { createSlug } from '@/lib/common/String';
 import { IUserMedia } from '@/domain/core/IUserMedia';
 
 // Define types for our form component
@@ -89,11 +86,12 @@ const GenericForm = <T extends Record<string, any>>({
         enableReinitialize={enableReinitialize}
         validateOnBlur={true}
         validateOnChange={true}
+        
 
       >
         {(formikProps: FormikProps<T>) => (
           <Form noValidate>
-
+              {/*JSON.stringify(formikProps.errors)*/}
             <Grid container spacing={3}>
               {fields.map((field, i) => {
                 const FieldComponent = field.component;
@@ -135,6 +133,7 @@ const GenericForm = <T extends Record<string, any>>({
                         onBlur={formikProps.handleBlur}
                         options={field.options}
                         {...field.extraProps}
+                        
                       />
                     </Grid>
                   );

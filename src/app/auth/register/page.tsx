@@ -5,16 +5,13 @@ import {
     Container,
     Box,
     Typography,
-    Button,
     Divider,
     Paper,
     Grid,
     Link
 } from '@mui/material';
 import {
-    Google as GoogleIcon,
-    Facebook as FacebookIcon
-} from '@mui/icons-material';
+    Google as GoogleIcon} from '@mui/icons-material';
 import { RegisterFormValues, useRegisterController } from './page.controller';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { useTranslations } from 'next-intl';
@@ -24,7 +21,7 @@ import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 
 
 const SignUpPage = () => {
-    const { signInWithGoogle, initialValues, signInWithFacebook, validationSchema, fields, signInWithEmail } = useRegisterController()
+    const { signInWithGoogle, initialValues, validationSchema, fields, signInWithEmail } = useRegisterController()
     const t = useTranslations()
     const classes = useStyles();
 

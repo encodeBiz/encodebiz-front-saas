@@ -47,7 +47,7 @@ export async function createHolder(data: HolderFormValues, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          token: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -95,7 +95,7 @@ export async function updateHolder(data: HolderFormValues, token: string) {
       let httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          token: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -123,7 +123,7 @@ export async function importHolder(data: FormData, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          token: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       });
       const response: any = await httpClientFetchInstance.upload(
@@ -156,7 +156,7 @@ export async function deleteHolder(data: {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: '',
         headers: {
-          token: `Bearer ${token}`
+          authorization: `Bearer ${token}`
         },
       });
       const response: any = await httpClientFetchInstance.delete(process.env.NEXT_PUBLIC_BACKEND_URI_DELETE_MEDIA as string, {
@@ -172,7 +172,34 @@ export async function deleteHolder(data: {
 }
 
 
-export async function validateHolder(data: any) {
+export async function validateHolder(data: any, tokenValidateStaff: string) {
+  try {
+
+    const httpClientFetchInstance: HttpClient = new HttpClient({
+      baseURL: "",
+      headers: {
+        'A': `Bearer ${tokenValidateStaff}`,
+      },
+    });
+    const response: any = await httpClientFetchInstance.post(
+      process.env.NEXT_PUBLIC_BACKEND_URI_PASSINBIZ_VALIDATE_HOLDER as string,
+      {
+        ...data,
+      }
+    );
+    if (response.errCode && response.errCode !== 200) {
+      throw new Error(response.message);
+    }
+
+    return response;
+
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+
+export async function validateStaff(base64: string) {
   try {
 
     const httpClientFetchInstance: HttpClient = new HttpClient({
@@ -180,9 +207,9 @@ export async function validateHolder(data: any) {
       headers: {},
     });
     const response: any = await httpClientFetchInstance.post(
-      process.env.NEXT_PUBLIC_BACKEND_URI_PASSINBIZ_VALIDATE_HOLDER as string,
+      process.env.NEXT_PUBLIC_BACKEND_URI_PASSINBIZ_VALIDATE_STAFF as string,
       {
-        ...data,
+        token:base64,
       }
     );
     if (response.errCode && response.errCode !== 200) {

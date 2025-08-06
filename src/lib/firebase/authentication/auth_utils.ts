@@ -1,4 +1,4 @@
-import { signInWithCustomToken, updatePassword, User, UserCredential } from "firebase/auth";
+import { signInWithCustomToken,  UserCredential } from "firebase/auth";
 import { auth } from "../initializeAdminSDKApp";
 
 export const verifyToken = async function (token: string): Promise<string> {

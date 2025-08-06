@@ -1,7 +1,7 @@
 'use client'
 // components/EntitySwitcher.tsx
-import React, { useState, useEffect } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
+import React, {  } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   FormControl,
   InputLabel,
@@ -18,12 +18,11 @@ import IUserEntity from '@/domain/auth/IUserEntity';
 import { useRouter } from 'nextjs-toploader/app';
 import { useLayout } from '@/hooks/useLayout';
 import { GENERAL_ROUTE, MAIN_ROUTE } from '@/config/routes';
-import { Add, Check } from '@mui/icons-material';
+import { Add } from '@mui/icons-material';
 export const locales = ['en', 'es']; // Define your supported locales
 
-interface EntitySwitcherProps { }
-
-const EntitySwitcher: React.FC<EntitySwitcherProps> = () => {
+ 
+const EntitySwitcher: React.FC= () => {
   const t = useTranslations(); // 'EntitySwitcher' refers to the key in your message files
   const { entityList, currentEntity, changeCurrentEntity } = useEntity()
   const { changeLoaderState } = useLayout()

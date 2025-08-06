@@ -3,14 +3,11 @@
 import React, { } from 'react';
 import {
   Box,
-  Button,
-  CircularProgress,
   Container,
   FormControl,
   InputLabel,
   MenuItem,
   Select,
-  TextField,
   Typography,
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
@@ -19,7 +16,6 @@ import { GenericTable } from '@/components/common/table/GenericTable';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
-import { CloudUpload } from '@mui/icons-material';
 import { fileTypes } from '@/config/constants';
 import { ImageCropper } from '@/components/common/ImageCropper/ImageCropper';
 
@@ -27,7 +23,7 @@ const EntityPreferencesPage = () => {
   const t = useTranslations();
   const { items,
     onDelete,
-    onSearch, onNext, onBack,
+    onNext, onBack,
     currentPage, selectedType, handleFileChange, isUploading, setSelectedType,
     columns, deleting,
     loading, rowsPerPage, setRowsPerPage } = useMediaList();

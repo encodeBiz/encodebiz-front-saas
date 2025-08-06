@@ -4,19 +4,14 @@ import { useState, useEffect, useCallback } from 'react';
 import { useEntity } from '@/hooks/useEntity';
 import { useTranslations } from 'next-intl';
 import { useToast } from '@/hooks/useToast';
-import { buildSearch, Column, IRowAction } from '@/components/common/table/GenericTable';
+import { buildSearch, Column } from '@/components/common/table/GenericTable';
 import { IUserMedia } from '@/domain/core/IUserMedia';
 import { deleteMedia, search, uploadMedia } from '@/services/common/media.service';
 import { useAuth } from '@/hooks/useAuth';
 import { Box, Avatar, Typography, Chip, useTheme } from '@mui/material';
 import { useStyles } from './page.styles';
-import { fileTypeIcons } from '@/config/theme';
 import { getFileIcon, formatFileSize } from '@/lib/common/String';
-import { IMedia } from '@/components/common/modals/MediaModalSelectedFiles/MediaModalSelectedFiles';
 import ImagePreview from '@/components/common/ImagePreview';
-
-
-
 
 export const useMediaList = () => {
     const t = useTranslations();
@@ -37,9 +32,7 @@ export const useMediaList = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [total, setTotal] = useState(0);
 
-    const rowAction: Array<IRowAction> = [
-        { icon: "delete", label: 'Eliminar', allowItem: (item: IMedia) => true, onPress: (item: IUserMedia) => { } }
-    ]
+  
 
     const onSearch = (term: string): void => {
         setParams({ ...params, startAfter: null, filters: buildSearch(term) })
@@ -114,7 +107,7 @@ export const useMediaList = () => {
         },
     ];
 
-    const fetchingData = () => {
+    const fetchingData =useCallback(() => {
         setLoading(true)
         search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
             if (res.length < rowsPerPage || res.length === 0)
@@ -127,7 +120,7 @@ export const useMediaList = () => {
                 if (!params.startAfter)
                     setItemsHistory([...res])
                 else
-                    setItemsHistory([...itemsHistory, ...res])
+                    setItemsHistory(prev => [...prev, ...res])
                 setLoading(false)
             }
 
@@ -146,12 +139,12 @@ export const useMediaList = () => {
             setLoading(false)
         })
 
-    }
+    },[currentEntity?.entity.id, params, rowsPerPage, showToast])
 
     useEffect(() => {
         if (params && currentEntity?.entity?.id)
             fetchingData()
-    }, [params, currentEntity?.entity?.id])
+    }, [params, currentEntity?.entity?.id, fetchingData])
 
     useEffect(() => {
         setCurrentPage(0)
@@ -192,7 +185,7 @@ export const useMediaList = () => {
             form.append('uid', user?.id as string);
             form.append('type', selectedType);
             form.append('file', file);
-            (await uploadMedia(form, token) as { mediaId: string })?.mediaId
+            await uploadMedia(form, token)
             setCurrentPage(0)
             setParams({ limit: rowsPerPage })
             setAtStart(true)
@@ -206,11 +199,11 @@ export const useMediaList = () => {
             setIsUploading(false);
 
         }
-    }, [selectedType]);
+    }, [currentEntity?.entity.id, rowsPerPage, selectedType, showToast, token, user?.id]);
 
     return {
         onDelete, selectedType, handleFileChange, isUploading, setSelectedType,
-        items,
+        items,total,
         atEnd,
         atStart,
         onSearch, onNext, onBack,

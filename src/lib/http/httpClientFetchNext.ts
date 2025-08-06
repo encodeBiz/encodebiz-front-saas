@@ -32,6 +32,7 @@ export const codeError: any = {
     "Se requiere correo electrónico. Por favor, introduzca su correo electrónico.",
   "auth/missing-password":
     "Se requiere contraseña. Por favor, introduzca su contraseña.",
+  "unavailable": "Servicio no disponible. Inténtalo de nuevo más tarde",
 };
 
 /**
@@ -186,11 +187,11 @@ export class HttpClient {
    */
   async upload<T>(url: string, data?: any, headers?: any): Promise<T> {
     try {
-       
-      
+
+
       const response = await fetch(url, {
         method: 'POST',
-        body: data,        
+        body: data,
         ...headers
       }
       );

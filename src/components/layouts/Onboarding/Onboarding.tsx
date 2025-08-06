@@ -64,7 +64,7 @@ function Onboarding() {
     const classes = useStyles()
 
     // Handler for closing the dialog
-    const handleClose = (event: {}, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
+    const handleClose = (event: any, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
         if (reason !== 'backdropClick')
             closeModal(CommonModalType.ONBOARDING);
     };
@@ -131,7 +131,7 @@ function Onboarding() {
                 {/* Stepper to show progress */}
                 <Box className="flex-grow w-full sm:w-auto mb-4 sm:mb-0">
                     <Stepper activeStep={activeStep} alternativeLabel className="w-full">
-                        {onboardingSteps.map((step, index) => (
+                        {onboardingSteps.map((step) => (
                             <Step key={step.title}>
                                 <StepLabel>{/* Step labels are optional, could display step.title here */}</StepLabel>
                             </Step>

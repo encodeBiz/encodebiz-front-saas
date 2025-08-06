@@ -24,8 +24,7 @@ import {
     Divider,
     CircularProgress
 } from '@mui/material';
-import { PersonAdd, Close, PersonRemove } from '@mui/icons-material';
-import { User } from 'firebase/auth';
+import { PersonAdd, PersonRemove } from '@mui/icons-material';
 import IUser, { ICollaborator } from '@/domain/auth/IUser';
 import { useTranslations } from 'next-intl';
 import IUserEntity from '@/domain/auth/IUserEntity';

@@ -1,13 +1,10 @@
 'use client'
-
-import PasswordInput from '@/components/common/forms/fields/PasswordInput';
 import SelectInput from '@/components/common/forms/fields/SelectInput';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { country } from '@/config/country';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useToast } from '@/hooks/useToast';
-import { signInEmail, signInGoogle } from '@/services/common/account.service';
 import { createEntity } from '@/services/common/entity.service';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'nextjs-toploader/app';
@@ -35,7 +32,7 @@ export const useRegisterController = () => {
     const t = useTranslations()
     const { showToast } = useToast()
     const { user, token } = useAuth()
-    const { refrestList, changeCurrentEntity } = useEntity()
+    const { refrestList } = useEntity()
     const { push } = useRouter()
     const [cityList, setCityList] = useState<any>([])
     const [initialValues, setInitialValues] = useState<EntityFormValues>({
@@ -64,7 +61,7 @@ export const useRegisterController = () => {
     });
     const handleCreateEntity = async (values: EntityFormValues) => {
         try {
-            const data = await createEntity(values, token)
+            await createEntity(values, token)
             refrestList(user?.id as string)
             showToast(t('core.feedback.success'), 'success');
             push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
@@ -134,14 +131,7 @@ export const useRegisterController = () => {
             component: SelectInput,
             options: cityList
         },
-        /*
-        {
-            name: 'region',
-            label: t('core.label.region'),
-            component: TextInput,
-            options: cityList
-        },
-        */
+         
         {
             name: 'postalCode',
             label: t('core.label.postalCode'),
@@ -170,7 +160,7 @@ export const useRegisterController = () => {
             })
         }
         return () => { }
-    }, [user?.id])
+    }, [user?.email, user?.id, user?.uid])
 
 
 

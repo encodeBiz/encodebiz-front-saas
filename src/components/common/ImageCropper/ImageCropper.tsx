@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useRef } from 'react';
 import {
     Box,
@@ -10,19 +11,18 @@ import {
     Typography,
     CircularProgress
 } from '@mui/material';
-import { Close, Crop, CloudUpload, AspectRatio } from '@mui/icons-material';
+import { Close, Crop, CloudUpload } from '@mui/icons-material';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import { useImageCropper } from './ImageCropper.controller';
 import { useTranslations } from 'next-intl';
 import { NumberInput } from '../forms/fields/NumberField';
-import { BaseButton } from '../buttons/BaseButton';
 
 export const ImageCropper = ({ onComplete, disabled = false, isUploading, size = { w: 80, h: 80, locked: true } }: { disabled?: boolean, onComplete: (file: File) => void, isUploading: boolean, size?: { locked: boolean, w: number, h: number } }) => {
-    const { scale, setScale, toggleAspect, onImageLoad, aspect, image, crop, setCrop, open, handleClose, setCompletedCrop, handleCrop, completedCrop, isLoading, imgRef, handleFileChange } = useImageCropper(onComplete, size)
+    const { scale, setScale,onImageLoad, aspect, image, crop, setCrop, open, handleClose, setCompletedCrop, handleCrop, completedCrop, isLoading, imgRef, handleFileChange } = useImageCropper(onComplete, size)
     const fileInputRef: any = useRef(null);
     const t = useTranslations()
-    
+
     return (
         <Box>
             <input disabled={disabled}
@@ -49,7 +49,7 @@ export const ImageCropper = ({ onComplete, disabled = false, isUploading, size =
             <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
                 <DialogTitle>
                     <Box display="flex" alignItems="center">
-                        <Crop sx={{ mr: 1 }} /> 
+                        <Crop sx={{ mr: 1 }} />
                         <Typography variant="h6">Crop Image {crop && <>({Math.floor(crop?.width)}x{Math.floor(crop?.height)}){crop?.unit}</>}</Typography>
                         <Box flexGrow={1} />
                         <IconButton onClick={handleClose}>
@@ -61,33 +61,35 @@ export const ImageCropper = ({ onComplete, disabled = false, isUploading, size =
                 <DialogContent dividers>
                     {image && (
                         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                            <ReactCrop
-                                crop={crop}
-                                onChange={(cropPixel) => setCrop(cropPixel)}
-                                onComplete={(cropPixel) => setCompletedCrop(cropPixel)}
-                                aspect={aspect}
-                                locked={size.locked}
-                                minHeight={100}
 
-                            >
-                                <img
-                                    ref={imgRef}
-                                    alt="Crop me"
-                                    src={image}
-                                    style={{ transform: `scale(${scale})` }}
-                                    onLoad={onImageLoad}
-                                />
-                            </ReactCrop>
-                        </Box>
+                            
+                                <ReactCrop
+                                    crop={crop}
+                                    onChange={(cropPixel) => setCrop(cropPixel)}
+                                    onComplete={(cropPixel) => setCompletedCrop(cropPixel)}
+                                    aspect={aspect}
+                                    locked={size.locked}
+                                    minHeight={100}
+
+                                >
+                                    <img
+                                        ref={imgRef}
+                                        alt="Crop me"                                        
+                                        src={image}
+                                        style={{ transform: `scale(${scale})` }}
+                                        onLoad={onImageLoad}                                        
+                                    />
+
+                                </ReactCrop>
+                            </Box>
+                      
                     )}
                 </DialogContent>
 
                 <DialogActions>
                     <Box display="flex" alignItems="center" sx={{ mr: 2 }} gap={2}>
 
-                        <BaseButton disabled={size.locked} variant='contained' onClick={toggleAspect}>
-                            <AspectRatio />
-                        </BaseButton>
+                      
 
                         <NumberInput
                             label={'Escala'}
@@ -123,7 +125,7 @@ export const ImageCropper = ({ onComplete, disabled = false, isUploading, size =
                             }}
                         />
                     </Box>
-                 
+
 
 
                     <Button

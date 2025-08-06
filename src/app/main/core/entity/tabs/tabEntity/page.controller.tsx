@@ -1,7 +1,7 @@
 'use client'
 
 import * as Yup from 'yup';
-import { useState, ReactNode, useEffect } from 'react';
+import { useState, ReactNode, useEffect, useCallback } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useTranslations } from 'next-intl';
@@ -215,30 +215,35 @@ export const useSettingEntityController = () => {
     };
 
 
-    const fetchData = async () => {
-        const entity = await fetchEntity(currentEntity?.entity.id as string)
+    const fetchData = useCallback(async () => {
+        try {
+            await fetchEntity(currentEntity?.entity.id as string)
+            setInitialValues({
+                uid: currentEntity?.entity?.id as string | "",
+                "name": currentEntity?.entity?.name as string | "",
+                "active": currentEntity?.entity?.active as boolean | true,
+                "street": currentEntity?.entity?.legal?.address.street as string | "",
+                "country": currentEntity?.entity?.legal?.address.country as string | "",
+                "city": currentEntity?.entity?.legal?.address.city as string | "",
+                "postalCode": currentEntity?.entity?.legal?.address.postalCode as string | "",
+                "taxId": currentEntity?.entity?.legal?.taxId as string | "",
+                "legalName": currentEntity?.entity?.legal?.legalName as string | "",
+                billingEmail: currentEntity?.entity?.billingEmail as string ?? user?.email as string ?? ''
+            })
+            setCityList(country.find(e => e.name === currentEntity?.entity?.legal?.address.country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message, 'error');
+            } else {
+                showToast(String(error), 'error');
+            }
 
-
-        setInitialValues({
-            uid: currentEntity?.entity?.id as string | "",
-            "name": currentEntity?.entity?.name as string | "",
-            "active": currentEntity?.entity?.active as boolean | true,
-            "street": currentEntity?.entity?.legal?.address.street as string | "",
-            "country": currentEntity?.entity?.legal?.address.country as string | "",
-            "city": currentEntity?.entity?.legal?.address.city as string | "",
-            "postalCode": currentEntity?.entity?.legal?.address.postalCode as string | "",
-            "taxId": currentEntity?.entity?.legal?.taxId as string | "",
-            "legalName": currentEntity?.entity?.legal?.legalName as string | "",
-            billingEmail: currentEntity?.entity?.billingEmail as string ??  user?.email as string ?? ''
-        })
-        setCityList(country.find(e => e.name === currentEntity?.entity?.legal?.address.country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
-
-
-    }
+        }
+    }, [currentEntity?.entity?.active, currentEntity?.entity?.billingEmail, currentEntity?.entity.id, currentEntity?.entity?.legal?.address.city, currentEntity?.entity?.legal?.address.country, currentEntity?.entity?.legal?.address.postalCode, currentEntity?.entity?.legal?.address.street, currentEntity?.entity?.legal?.legalName, currentEntity?.entity?.legal?.taxId, currentEntity?.entity?.name, showToast, user?.email])
     useEffect(() => {
         if (currentEntity?.entity.id)
             fetchData()
-    }, [currentEntity?.entity.id])
+    }, [currentEntity?.entity.id, fetchData])
 
 
 
@@ -272,7 +277,7 @@ export const useSettingEntityController = () => {
     useEffect(() => {
         if (currentEntity?.entity?.createdAt)
             formatDate(currentEntity.entity.createdAt, t('locale'));
-    }, [currentEntity]);
+    }, [currentEntity, t]);
 
 
 

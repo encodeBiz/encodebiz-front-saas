@@ -1,7 +1,6 @@
 "use client";
 
-import { createContext, useEffect, useState } from "react";
-
+import { createContext, useEffect, useState, useCallback } from "react";
 import { subscribeToAuthChanges } from "@/lib/firebase/authentication/stateChange";
 import { User } from "firebase/auth";
 import IUserEntity from "@/domain/auth/IUserEntity";
@@ -19,7 +18,7 @@ interface EntityContextType {
     currentEntity: IUserEntity | undefined;
     entityList: Array<IUserEntity> | [];
     setCurrentEntity: (currentEntity: IUserEntity | undefined) => void;
-    changeCurrentEntity: (id: string, callback?: Function) => void;
+    changeCurrentEntity: (id: string, callback?: () => void) => void;
     refrestList: (userId: string) => void;
     entityServiceList: Array<IService>
     entitySuscription: Array<IEntitySuscription>
@@ -37,23 +36,23 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     const { showToast } = useToast()
 
 
-    const fetchSuscriptionEntity = async () => {
+    const fetchSuscriptionEntity = useCallback(async () => {
         const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
         setEntitySuscription(serviceSuscription)
         const serviceList: Array<IService> = await fetchServiceList()
         setEntityServiceList(serviceList.map(e => ({ ...e, isBillingActive: !!serviceSuscription.find(service => service.serviceId === e.id) })))
-    }
+    }, [currentEntity?.entity.id])
 
-    const watchServiceAccess = async (serviceId: BizType) => {
+    const watchServiceAccess = useCallback(async (serviceId: BizType) => {
         const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
         const check = serviceSuscription.find(e => e.serviceId === serviceId && currentEntity?.entity.id === e.entityId)
         if (!check) {
             showToast('No tiene permiso para acceder a este recurso', 'info')
             push(`/${MAIN_ROUTE}/${serviceId}/onboarding`)
         }
-    }
+    }, [currentEntity?.entity.id, push, showToast])
 
-    const watchSesionState = async (userAuth: User) => {
+    const watchSesionState = useCallback(async (userAuth: User) => {
         if (userAuth) {
             const entityList: Array<IUserEntity> = await fetchUserEntities(userAuth.uid)
             if (entityList.length > 0) {
@@ -66,14 +65,23 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
                 setCurrentEntity(entityList.find(e => e.isActive) as IUserEntity)
 
             } else {
-                const userData: IUser = await fetchUserAccount(userAuth.uid)
-                if (userData.email)
-                    push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
+                try {
+                    const userData: IUser = await fetchUserAccount(userAuth.uid)
+                    if (userData.email)
+                        push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
+                } catch (error) {
+                    if (error instanceof Error) {
+                        showToast(error.message, 'error');
+                    } else {
+                        showToast('Unknown error', 'error');
+                    }
+                }
+
             }
         }
-    }
+    }, [push, showToast]);
 
-    const refrestList = async (userId: string) => {
+    const refrestList = useCallback(async (userId: string) => {
         const entityList: Array<IUserEntity> = await fetchUserEntities(userId)
 
         if (entityList.length > 0) {
@@ -87,10 +95,10 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
         } else {
             push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
         }
-    }
+    }, [push])
 
 
-    const changeCurrentEntity = async (id: string, callback?: Function) => {
+    const changeCurrentEntity = async (id: string, callback?: () => void) => {
         const current: IUserEntity = entityList.find(e => e.id === id) as IUserEntity
         if (current) {
             const updatedList: Array<IUserEntity> = []
@@ -114,13 +122,13 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         const unsubscribe = subscribeToAuthChanges(watchSesionState);
         return () => unsubscribe();
-    }, []);
+    }, [watchSesionState]);
 
 
     useEffect(() => {
         if (currentEntity?.entity.id)
             fetchSuscriptionEntity()
-    }, [currentEntity?.entity.id])
+    }, [currentEntity?.entity.id, fetchSuscriptionEntity])
 
 
     return (

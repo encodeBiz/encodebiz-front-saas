@@ -3,8 +3,6 @@
 import React from 'react';
 import { 
   Box,
-  CircularProgress,
-  LinearProgress,
   Typography,
   useTheme
 } from '@mui/material';
@@ -20,14 +18,11 @@ type PageLoaderProps = {
   progress?: number; // For determinate mode
 };
 
-const PageLoader: React.FC<PageLoaderProps> = ({
-  type = 'circular',
-  size = 40,
-  thickness = 3.6,
+const PageLoader: React.FC<PageLoaderProps> = ({  
   message,
   fullScreen = true,
   backdrop = false,
-  progress
+  
 }) => {
   const theme = useTheme();
 
@@ -57,21 +52,7 @@ const PageLoader: React.FC<PageLoaderProps> = ({
     })
   };
 
-  const progressComponent = type === 'circular' ? (
-    <CircularProgress
-      size={size}
-      thickness={thickness}
-      variant={progress !== undefined ? 'determinate' : 'indeterminate'}
-      value={progress}
-    />
-  ) : (
-    <Box sx={{ width: '100%', maxWidth: 400, px: 2 }}>
-      <LinearProgress
-        variant={progress !== undefined ? 'determinate' : 'indeterminate'}
-        value={progress}
-      />
-    </Box>
-  );
+   
 
   return (
     <Box sx={loaderStyle}>

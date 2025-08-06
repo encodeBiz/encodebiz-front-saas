@@ -65,13 +65,22 @@
     },
     "feedback": {
       "success": "La operación se realizó exitosamente",
-      "empthy":"Nada que mostrar",
-      "empthytext":"No existen elementos para mostrar en este momento"
+      "empthy": "Nada que mostrar",
+      "empthytext": "No existen elementos para mostrar en este momento"
     },
     "label": {
       "filename": "Nombre de Archivo",
+      "default": "Por defecto",
+      "vip": "VIP",
+      "template": "Plantilla",
+      "expo": "Expositivo",
+      "festival": "Festival",
       "owner": "Propietario",
+      "availableEvent": "Eventos disponibles",
+      "selectedEvent": "Eventos seleccionados",
+      "events": "Eventos",
       "admin": "Administrador",
+      "select": "Seleccionar",
       "typePass": "Tpo de pase",
       "credencial": "Credenciales",
       "event": "Evento",
@@ -79,9 +88,19 @@
       "pending": "Pendiente",
       "revoke": "Revocar",
       "firstName": "Nombre",
-      "sponsor": "Patrisonador",
+      "status": "Estado",
+      "staff": "Personal de apoyo",
+      "draft": "Borrador",
+      "published": "Publicado",
+      "archived": "Archivado",
+      "selectedStaff": "Personal de apoyo seleccionado",
+      "availableStaff": "Personal de apoyo disponible",
+      "sponsor": "Patrosinador",
       "ticketCapacity": "Capacidad",
       "date": "Fecha",
+      "endDate": "Fecha de finalización",
+      "startDate": "Fecha de inicio",
+      "time": "Hora",
       "location": "Ubicación",
       "designed": "Diseño",
       "imageUrl": "Imagen",
@@ -144,13 +163,13 @@
       "selected": "Seleccionar",
       "confirm": "Confirmar",
       "cancel": "Cancelar",
-      "crop":"Recortar Imagen",
-      "file":"Imagen original",
+      "crop": "Recortar Imagen",
+      "file": "Imagen original",
       "download": "Descargar",
       "delete": "Eliminar",
       "save": "Guardar",
       "ok": "Entiendo",
-      "configurenow":"Configurar ahora",
+      "configurenow": "Configurar ahora",
       "update": "Actualizar"
     },
     "formValidatorMessages": {
@@ -264,6 +283,7 @@
     "standard": "Estandar",
     "month": "mes",
     "bronze": "Bronce",
+    "freemium": "Gratis",
     "branding": "Branding: Logo y diseño predeterminados de EncodeBiz",
     "brandingCustom": "Branding: Personalización completa del pase",
     "cost": "Costo estimado por pase: ~0,01 €",
@@ -300,8 +320,8 @@
     "contract": "Plan Actual",
     "renew": "Cambiar plan",
     "del": "Eliminar suscripción",
-    "imageConfirmModalTitle":"Entidad no configurada",
-    "imageConfirmModalTitle2":"Para poder realizar una suscripción debe previamente configurar los datos legales de al entidad y el billing",
+    "imageConfirmModalTitle": "Entidad no configurada",
+    "imageConfirmModalTitle2": "Para poder realizar una suscripción debe previamente configurar los datos legales de al entidad y el billing",
     "notAllowedPlan": "Debes actualizar los datos legales de la entidad seleccionada antes de obtener un plan."
   },
   "terms": {
@@ -315,12 +335,18 @@
     "holderList": "Titulares",
     "addHolder": "Adicionar",
     "editHolder": "Editar",
+    "pending": "Pending",
+    "failed": "Fallo",
     "import": "Importar",
     "description": "Rellene los campos para registrar el titular",
     "revokeConfirmModalTitle": "Revocar pase de este titular",
     "revokeConfirmModalTitle2": "Esta acción no se puede deshacer. Revocará  permanentemente el pase de este titular",
     "sendConfirmModalTitle": "Relanzar pase",
-    "sendConfirmModalTitle2": "Esta acción no se puede deshacer. Relanzará  el pase de este titular nuevamente"
+    "sendConfirmModalTitle2": "Esta acción no se puede deshacer. Relanzará  el pase de este titular nuevamente",
+    "filter": {
+      "email": "Filtro por correo electrónico",
+      "state": "Filtro por estado"
+    }
   },
   "event": {
     "title": "Eventos",
@@ -329,6 +355,7 @@
     "edit": "Editar",
     "import": "Importar",
     "description": "Rellene los campos para registrar el evento",
+    "description2": "Asocie o retire el personal de apoyo al evento",
     "deleteConfirmModalTitle": "Eliminar Evento",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el evento y todas sus configuraciones"
   },
@@ -338,6 +365,7 @@
     "add": "Adicionar",
     "edit": "Editar",
     "import": "Importar",
+    "description2": "Asocie o retire eventos al personal de apoyo",
     "description": "Rellene los campos para registrar el personal de apoyo",
     "deleteConfirmModalTitle": "Eliminar Personal de Apoyo",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el personal de apoyo y todas sus configuraciones"
@@ -377,13 +405,15 @@
     "title": "Configurar Billing",
     "subtitle": "Configura los métodos de pago para poder realizar las compras en la plataforma"
   },
-  "scan":{
-    "title":"Validar pase",
-    "subtitle":"Escanee el código QR para confirmar si es valido el pase",
-    "camaraFocus":"Apunta tu cámara a un código QR",
-    "resultTitle":"Pase confirmado",
-    "scanOther":"Escanear otro código",
-    "failed":"Ha fallado la lectura del código",
-    "tryagain":"Intentar de nuevo"
+  "scan": {
+    "title": "Validar pase",
+    "subtitle": "Escanee el código QR para confirmar si es valido el pase",
+    "camaraFocus": "Apunta tu cámara a un código QR",
+    "resultTitle": "Pase confirmado",
+    "scanOther": "Escanear otro código",
+    "failed": "Ha fallado la lectura del código",
+    "failedStaff": "Usted no tiene permisos para validar el pase",
+    "tryagain": "Intentar de nuevo",
+    "validatingStaff": "Validando personal de apoyo"
   }
 }

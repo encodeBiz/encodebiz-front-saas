@@ -44,7 +44,7 @@ export default function HolderList() {
         onNext={onNext}
         onEdit={(data) => onEdit(data)}
         onSearch={(data) => onSearch(data)}
-        search={true}
+        
 
       />
      

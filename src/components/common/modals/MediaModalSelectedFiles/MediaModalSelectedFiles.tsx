@@ -4,7 +4,6 @@ import {
   Paper,
   Typography,
   Grid,
-  IconButton,
   Divider,
   Button,
   Avatar,
@@ -21,19 +20,10 @@ import {
   FormControl
 } from '@mui/material';
 import {
-  Close as CloseIcon,
   CheckCircle as CheckCircleIcon,
-  InsertDriveFile as FileIcon,
-  Image as ImageIcon,
-  VideoLibrary as VideoIcon,
-  Audiotrack as AudioIcon,
-  Description as DocumentIcon,
   CloudUpload
 } from '@mui/icons-material';
-import { makeStyles } from '@mui/styles';
 import { useStyles } from './MediaModalSelectedFiles.styles';
-import { BaseButton } from '../../buttons/BaseButton';
-import { title } from 'process';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useMedia } from '@/hooks/useMedia';
@@ -103,13 +93,13 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
       }
       setIsUploading(false);
     }
-  }, []);
+  }, [currentEntity?.entity.id, fetchUserMedia, selectedType, showToast, token, user?.id]);
 
 
   const handleFileChange = useCallback(async (event: any) => {
     const file = event.currentTarget.files[0];
     handleFile(file)
-  }, [selectedType]);
+  }, [handleFile]);
 
   return (
     <Dialog
@@ -270,27 +260,4 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
     </Dialog>
   );
 };
-
-// Example usage:
-/*
-<MediaModalSelectedFiles 
-  files={[
-    { 
-      name: 'example.jpg', 
-      type: 'image/jpeg', 
-      size: 102456, 
-      preview: 'https://example.com/example.jpg' 
-    },
-    { 
-      name: 'document.pdf', 
-      type: 'application/pdf', 
-      size: 204800 
-    }
-  ]}
-  onRemove={(index) => console.log('Remove file at index:', index)}
-  onInsert={(files) => console.log('Insert files:', files)}
-  onClearAll={() => console.log('Clear all files')}
-/>
-*/
-
 export default MediaModalSelectedFiles;

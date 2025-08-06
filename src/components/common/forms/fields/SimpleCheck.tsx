@@ -7,10 +7,8 @@ import Link from 'next/link';
 const SimpleCheck: React.FC<FieldProps & TextFieldProps> = ({
   ...props
 }) => {
-  const [field, meta, helper] = useField(props.name);
-  const { touched, error } = meta
-  const helperText = touched && error;
-
+  const [field, , helper] = useField(props.name);
+  
 
   return (
     <FormControlLabel

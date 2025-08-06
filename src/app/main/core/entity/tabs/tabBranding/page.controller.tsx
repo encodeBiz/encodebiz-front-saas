@@ -1,7 +1,7 @@
 'use client'
 
 import * as Yup from 'yup';
-import { useState, ReactNode, useEffect } from 'react';
+import { useState, ReactNode, useEffect, useCallback } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useTranslations } from 'next-intl';
@@ -169,7 +169,7 @@ export const useSettingEntityController = () => {
         }
     };
 
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
 
         setInitialBrandValues({
             "backgroundColor": currentEntity?.entity?.branding?.backgroundColor as string | "",
@@ -180,10 +180,12 @@ export const useSettingEntityController = () => {
             iconUrl: currentEntity?.entity?.branding?.icon as string | "",
             icon2Url: currentEntity?.entity?.branding?.iconx2 as string | "",
         })
-    }
+    }, [currentEntity?.entity?.branding?.backgroundColor, currentEntity?.entity?.branding?.icon, currentEntity?.entity?.branding?.iconx2, currentEntity?.entity?.branding?.labelColor, currentEntity?.entity?.branding?.logo, currentEntity?.entity?.branding?.stripImage, currentEntity?.entity?.branding?.textColor])
+
+
     useEffect(() => {
         fetchData()
-    }, [currentEntity?.entity.id])
+    }, [currentEntity?.entity.id, fetchData])
 
 
 
@@ -191,7 +193,7 @@ export const useSettingEntityController = () => {
     useEffect(() => {
         if (currentEntity?.entity?.createdAt)
             formatDate(currentEntity.entity.createdAt, t('locale'));
-    }, [currentEntity]);
+    }, [currentEntity, t]);
 
 
 

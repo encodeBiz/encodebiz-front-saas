@@ -5,19 +5,19 @@ import { SearchParams } from "@/domain/firebase/firestore";
 import { getOne, getAll, getAllWithLimit } from "@/lib/firebase/firestore/readDocument";
 import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
-import { HttpClient } from "@/lib/http/httpClientFetchNext";
+import { codeError, HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { EntityFormValues } from "@/app/main/core/entity/create/page.controller";
 import { EntityUpdatedFormValues, BrandFormValues } from "@/app/main/core/entity/tabs/tabEntity/page.controller";
 import { IAssing } from "@/app/main/core/entity/tabs/tabCollaborators/page.controller";
-import { fetchUser, fetchUsers } from "./users.service";
+import { fetchUser } from "./users.service";
 import { deleteDocument } from "@/lib/firebase/firestore/deleteDocument";
 
 export async function fetchEntity(id: string): Promise<IEntity> {
   try {
     return await getOne(collection.ENTITIES, id);
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
   }
 }
 
@@ -46,7 +46,7 @@ export async function fetchUserEntities(
       })
     );
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
   }
 }
 
@@ -65,7 +65,7 @@ export async function saveStateCurrentEntity(
       });
     });
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
   }
 }
 
@@ -79,7 +79,7 @@ export async function createEntity(data: EntityFormValues, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          token: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -111,7 +111,7 @@ export async function updateEntity(
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          token: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -140,7 +140,7 @@ export async function updateEntityBranding(
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          token: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -193,7 +193,7 @@ export async function deleteEntity(data: {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: '',
         headers: {
-          token: `Bearer ${token}`
+          authorization: `Bearer ${token}`
         },
       });
       const response: any = await httpClientFetchInstance.delete(process.env.NEXT_PUBLIC_BACKEND_URI_DELETE_ENTITY as string, {
@@ -217,7 +217,7 @@ export async function assignedUserToEntity(data: IAssing, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          token: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       });
       const response: any = await httpClientFetchInstance.post(

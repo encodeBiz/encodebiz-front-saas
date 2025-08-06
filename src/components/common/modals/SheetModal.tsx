@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     Button,
     Dialog,
@@ -6,9 +6,6 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    TextField,
-    Box,
-    Typography,
     CircularProgress,
     Slide
 } from '@mui/material';
@@ -49,7 +46,7 @@ const SheetModalModal = ({ title, textBtn, description, type = CommonModalType.D
     };
 
     // Handler for closing the dialog
-    const handleClose = (event: {}, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
+    const handleClose = (event: any, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
         if (reason !== 'backdropClick') {
             closeModal(type);
         }
@@ -67,7 +64,7 @@ const SheetModalModal = ({ title, textBtn, description, type = CommonModalType.D
             slots={{
                 transition: Transition,
             }}
- 
+
         >
             <DialogTitle id="alert-dialog-title">
                 {title}

@@ -26,7 +26,6 @@ import { menuItemsServices, menuItemsGeneral, menuItemsHome } from '@/config/rou
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import EntitySwitcher from '../common/EntitySwitcher';
-import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'nextjs-toploader/app';
 import { useEntity } from '@/hooks/useEntity';
 import logo from '../../../public/assets/images/encodebiz_logo.jpeg'
@@ -45,7 +44,6 @@ export default function SideMenu() {
   const theme = useTheme();
   const pathname = usePathname()
   const t = useTranslations();
-  const { user } = useAuth();
   const { currentEntity, entityServiceList } = useEntity();
 
 

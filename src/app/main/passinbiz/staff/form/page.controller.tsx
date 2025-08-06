@@ -1,6 +1,5 @@
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from 'react';
-import DynamicKeyValueInput, { DynamicFields } from "@/components/common/forms/fields/DynamicKeyValueInput";
+import { useCallback, useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { emailRule, requiredRule } from '@/config/yupRules';
@@ -9,10 +8,7 @@ import { useRouter } from "nextjs-toploader/app";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { MAIN_ROUTE } from "@/config/routes";
-import SelectInput from "@/components/common/forms/fields/SelectInput";
-import { search } from "@/services/passinbiz/event.service";
 import { FormField } from "@/components/common/forms/GenericForm";
-import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { useLayout } from "@/hooks/useLayout";
 import { useParams } from "next/navigation";
 import { createStaff, fetchStaff, updateStaff } from "@/services/passinbiz/staff.service";
@@ -36,7 +32,7 @@ export default function useStaffController() {
   const { changeLoaderState } = useLayout()
   const { id } = useParams<{ id: string }>()
 
-  const [fields, setFields] = useState<FormField[]>([
+  const [fields] = useState<FormField[]>([
     {
       name: 'fullName',
       label: t('core.label.fullName'),
@@ -81,7 +77,7 @@ export default function useStaffController() {
       showToast(t('core.feedback.success'), 'success');
       changeLoaderState({ show: false })
 
-      push(`/${MAIN_ROUTE}/passinbiz/Staff`)
+      push(`/${MAIN_ROUTE}/passinbiz/staff`)
     } catch (error: any) {
       showToast(error.message, 'error')
       changeLoaderState({ show: false })
@@ -92,7 +88,7 @@ export default function useStaffController() {
 
 
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const Staff: IStaff = await fetchStaff(currentEntity?.entity.id as string, id)
@@ -107,20 +103,19 @@ export default function useStaffController() {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
     }
-  }
+  }, [changeLoaderState, currentEntity?.entity.id, id, showToast, t])
 
   useEffect(() => {
     if (currentEntity?.entity.id && user?.id) {
-
       watchServiceAccess('passinbiz')
     }
-  }, [currentEntity?.entity.id, user?.id])
+  }, [currentEntity?.entity.id, watchServiceAccess, user?.id])
 
 
   useEffect(() => {
     if (currentEntity?.entity.id && user?.id && id)
       fetchData()
-  }, [currentEntity?.entity.id, user?.id, id])
+  }, [currentEntity?.entity.id, user?.id, id, fetchData])
 
 
   return { fields, initialValues, validationSchema, submitForm }

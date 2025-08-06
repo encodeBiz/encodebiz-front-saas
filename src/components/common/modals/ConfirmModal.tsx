@@ -29,7 +29,6 @@ interface ConfirmProps {
 const ConfirmModal = ({ word, title, label, textBtn, description, isLoading = false, codeValidator = false, onOKAction }: ConfirmProps): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const [confirmationText, setConfirmationText] = useState('');
-    const [isDeleting, setIsDeleting] = useState(false);
     const [error, setError] = useState('');
     const requiredText = word; // The word user must type to confirm
     const t = useTranslations()
@@ -47,7 +46,7 @@ const ConfirmModal = ({ word, title, label, textBtn, description, isLoading = fa
     };
 
     // Handler for closing the dialog
-    const handleClose = (event: {}, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
+    const handleClose = (event: any, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
         if (reason !== 'backdropClick')
             closeModal(CommonModalType.DELETE);
     };

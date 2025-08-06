@@ -3,14 +3,14 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useToast } from "@/hooks/useToast";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
-import { useLayout } from "@/hooks/useLayout";
-import { Chip } from "@mui/material";
+import { useCallback, useEffect, useState } from "react";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useRouter } from "nextjs-toploader/app";
 import { IStaff } from "@/domain/features/passinbiz/IStaff";
 import { deleteStaff, search } from "@/services/passinbiz/staff.service";
+import { Event } from "@mui/icons-material";
+import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
 
 
 
@@ -31,12 +31,11 @@ export default function useStaffListController() {
   const [itemsHistory, setItemsHistory] = useState<IStaff[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [total, setTotal] = useState(0);
-  const { changeLoaderState } = useLayout()
   const { closeModal } = useCommonModal()
-  const [revoking, setRevoking] = useState(false)
   const { push } = useRouter()
-  const rowAction: Array<IRowAction> = []
-
+  const rowAction: Array<IRowAction> = [
+    { icon: <Event />, label: t('core.label.staff'), allowItem: () => true, onPress: (item: IStaff) => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff/${item.id}/events`) },
+  ]
   const onSearch = (term: string): void => {
     setParams({ ...params, startAfter: null, filters: buildSearch(term) })
   }
@@ -75,13 +74,13 @@ export default function useStaffListController() {
       id: 'email',
       label: t("core.label.email"),
       minWidth: 170,
-    } 
+    }
   ];
 
-  const fetchingData = () => {
+  const fetchingData = useCallback(() => {
+
     setLoading(true)
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
-
       if (res.length < rowsPerPage || res.length === 0)
         setAtEnd(true)
       else
@@ -92,7 +91,7 @@ export default function useStaffListController() {
         if (!params.startAfter)
           setItemsHistory([...res])
         else
-          setItemsHistory([...itemsHistory, ...res])
+          setItemsHistory(prev => [...prev, ...res])
         setLoading(false)
       }
 
@@ -110,15 +109,14 @@ export default function useStaffListController() {
     }).finally(() => {
       setLoading(false)
     })
-
-  }
+  }, [params, rowsPerPage, currentEntity?.entity.id, showToast])
 
   useEffect(() => {
     if (params && currentEntity?.entity?.id) {
       fetchingData()
       watchServiceAccess('passinbiz')
     }
-  }, [params, currentEntity?.entity?.id])
+  }, [params, currentEntity?.entity?.id, fetchingData, watchServiceAccess])
 
   useEffect(() => {
     setCurrentPage(0)
@@ -150,11 +148,11 @@ export default function useStaffListController() {
 
   return {
     items,
-    atEnd, onEdit,
+    atEnd, onEdit, total,
     atStart,
     onSearch, onNext, onBack,
     pagination, currentPage,
-    columns, rowAction,onDelete,
+    columns, rowAction, onDelete,
     loading, rowsPerPage, setRowsPerPage, deleting
   }
 

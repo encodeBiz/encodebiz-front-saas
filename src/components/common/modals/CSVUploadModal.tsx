@@ -16,14 +16,14 @@ import {
 } from '@mui/material';
 import { CloudUpload } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
-interface ICSVUploadModal{
-  open:boolean
-  onClose:Function
-  onConfirm:Function
+interface ICSVUploadModal {
+  open: boolean
+  onClose: () => void
+  onConfirm: (file: File | null) => void
 }
-const CSVUploadModal = ({ open, onClose, onConfirm }:ICSVUploadModal) => {
+const CSVUploadModal = ({ open, onClose, onConfirm }: ICSVUploadModal) => {
   const [file, setFile] = useState<File | null>(null);
-  const [previewData, setPreviewData] = useState([]);
+  const [previewData, setPreviewData] = useState<any>({});
   const [headers, setHeaders] = useState([]);
   const t = useTranslations()
   const handleFileChange = (event: any) => {
@@ -34,8 +34,8 @@ const CSVUploadModal = ({ open, onClose, onConfirm }:ICSVUploadModal) => {
 
     // Read the file content
     const reader = new FileReader();
-    reader.onload = (e:any) => {
-      const content = e.target.result as  string;
+    reader.onload = (e: any) => {
+      const content = e.target.result as string;
       parseCSV(content);
     };
     reader.readAsText(selectedFile);
@@ -51,8 +51,8 @@ const CSVUploadModal = ({ open, onClose, onConfirm }:ICSVUploadModal) => {
     for (let i = 1; i <= previewRowCount; i++) {
       if (lines[i].trim() === '') continue;
       const values = lines[i].split(',');
-      const row: any = {};
-      headers.forEach((header:string, index:number) => {
+      const row: Record<string,any> = {};
+      headers.forEach((header: string, index: number) => {
         row[header] = values[index] ? values[index].trim() : '';
       });
       data.push(row);
@@ -63,7 +63,7 @@ const CSVUploadModal = ({ open, onClose, onConfirm }:ICSVUploadModal) => {
   };
 
   const handleConfirm = () => {
-    onConfirm(file, previewData);
+    onConfirm(file);
     handleClose();
   };
 
@@ -119,7 +119,7 @@ const CSVUploadModal = ({ open, onClose, onConfirm }:ICSVUploadModal) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {previewData.map((row, index) => (
+                  {previewData.map((row: { [x: string]: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined; }, index: React.Key | null | undefined) => (
                     <TableRow key={index}>
                       {headers.map((header) => (
                         <TableCell key={`${index}-${header}`}>
@@ -151,7 +151,7 @@ const CSVUploadModal = ({ open, onClose, onConfirm }:ICSVUploadModal) => {
   );
 };
 
-export default CSVUploadModal; 
+export default CSVUploadModal;
 
 
 /*

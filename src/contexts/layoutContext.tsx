@@ -1,7 +1,7 @@
 "use client";
 
 import PageLoader from "@/components/common/PageLoader";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useState } from "react";
 
 interface ILayout {
     openDraw: boolean;
@@ -19,13 +19,13 @@ export const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
     const [layoutState, setLayoutState] = useState<ILayout>({ openDraw: true });
     const [loader, setLoader] = useState<{ show: boolean, args?: any }>({ show: false });
 
-    const changeLayoutState = (layout: ILayout) => {
+    const changeLayoutState = useCallback((layout: ILayout) => {
         setLayoutState({ ...layout })
-    }
+    }, [])
 
-    const changeLoaderState = (loader: { show: boolean, args?: any }) => {
+    const changeLoaderState = useCallback((loader: { show: boolean, args?: any }) => {
         setLoader({ ...loader })
-    }
+    }, [])
 
     return (
         <LayoutContext.Provider value={{ layoutState, changeLayoutState, changeLoaderState }}>

@@ -1,6 +1,5 @@
 import {
   deleteUser,
-  getAuth,
   GoogleAuthProvider,
   signInWithCustomToken,
   signInWithEmailAndPassword,
@@ -12,7 +11,7 @@ import {
 import { auth } from "../initializeApp";
 import { codeError } from "@/lib/http/httpClientFetchNext";
 
-export const login = async (params: LoginParams): Promise<UserCredential> => {
+export const login = async (params: {email:string, password:string}): Promise<UserCredential> => {
   const { email, password } = params;
 
   try {
@@ -66,4 +65,4 @@ export const deleteAccount = async function (user: User): Promise<void> {
   await deleteUser(user);
 };
 
-export const recovery = async function ({ email }: any): Promise<void> { };
+ 

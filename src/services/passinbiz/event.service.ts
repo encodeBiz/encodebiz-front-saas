@@ -5,7 +5,6 @@ import { collection } from "@/config/collection";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import { deleteDocument } from "@/lib/firebase/firestore/deleteDocument";
-import { EventFromValues } from "@/app/main/passinbiz/event/form/page.controller";
 
 
 /**
@@ -13,7 +12,7 @@ import { EventFromValues } from "@/app/main/passinbiz/event/form/page.controller
    *
    * @async
    * @param {SearchParams} params
-   * @returns {Promise<ITrainer[]>}
+   * @returns {Promise<IEvent[]>}
    */
 export const fetchEvent = async (entityId: string, id: string): Promise<IEvent> => {
   return await getOne(
@@ -29,10 +28,12 @@ export const fetchEvent = async (entityId: string, id: string): Promise<IEvent> 
    * @returns {Promise<ITrainer[]>}
    */
 export const deleteEvent = async (entityId: string, id: string, token: string): Promise<void> => {
-  await deleteDocument({
-    collection: `${collection.ENTITIES}/${entityId}/${collection.EVENT}`,
-    id
-  });
+  if (token) {
+    await deleteDocument({
+      collection: `${collection.ENTITIES}/${entityId}/${collection.EVENT}`,
+      id
+    });
+  }
 }
 
 
@@ -53,7 +54,7 @@ export const search = async (entityId: string, params: SearchParams): Promise<IE
 }
 
 
-export async function createEvent(data: EventFromValues, token: string) {
+export async function createEvent(data: Partial<IEvent>, token: string) {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -61,7 +62,7 @@ export async function createEvent(data: EventFromValues, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          token: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -81,7 +82,7 @@ export async function createEvent(data: EventFromValues, token: string) {
   }
 }
 
-export async function updateEvent(data: EventFromValues, token: string) {
+export async function updateEvent(data: Partial<IEvent>, token: string) {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -89,7 +90,7 @@ export async function updateEvent(data: EventFromValues, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          token: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -107,6 +108,29 @@ export async function updateEvent(data: EventFromValues, token: string) {
   } catch (error: any) {
     throw new Error(error.message);
   }
+}
+
+
+export const searchEventsByStaff = async (staffId: string): Promise<IEvent[]> => {
+  const params: SearchParams = {
+    collection: `${collection.EVENT}`,
+    filters: [
+      {
+        field: 'assignedStaff',
+        value: staffId,
+        operator: 'array-contains'
+      }
+    ],
+    limit: 1000, // Adjust the limit as needed
+    orderBy: 'createdAt',
+    orderDirection: 'desc'
+  };
+
+  const result: IEvent[] = await searchFirestore({
+    ...params,
+  }, true);
+
+  return result;
 }
 
 

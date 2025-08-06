@@ -19,13 +19,13 @@ export interface SearchParams {
     includeCount?:boolean
   }
 
-  export interface AddDocumentParams<T> {
+  export interface AddDocumentParams {
     id?:string,
     collection: string;
     data: WithFieldValue<DocumentData>;
   }
 
-  export interface SetDocumentParams<T> {
+  export interface SetDocumentParams {
     collection: string;
     id: string;
     data: PartialWithFieldValue<DocumentData>;

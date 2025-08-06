@@ -14,9 +14,10 @@ import {
   Fullscreen as FullscreenIcon,
   FullscreenExit as FullscreenExitIcon
 } from '@mui/icons-material';
+import Image from 'next/image';
 
 const ImagePreview = ({
-  src='',
+  src = '',
   alt = 'Preview image',
   width = '100%',
   height = 'auto',
@@ -69,9 +70,7 @@ const ImagePreview = ({
         }}
         onClick={handleClickOpen}
       >
-        <img
-          src={src}
-          alt={alt}
+        <Box
           style={{
             width: '100%',
             height: '100%',
@@ -79,9 +78,22 @@ const ImagePreview = ({
             borderRadius: theme.shape.borderRadius,
             ...props.style
           }}
-          {...props}
-        />
+        >
 
+
+          <Image fill
+            src={src}
+            alt={alt}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              borderRadius: theme.shape.borderRadius,
+              ...props.style
+            }}
+            {...props}
+          />
+        </Box>
         {showZoomIcon && (
           <Box
             sx={{
@@ -167,17 +179,31 @@ const ImagePreview = ({
           )}
 
           {/* Preview Image */}
-          <img
-            src={src}
-            alt={alt}
-            style={{
+          <Box
+            sx={{
+              position: 'relative',
+              width: '100%',
+              height: '80vh',
               maxWidth: '100%',
               maxHeight: '100%',
-              objectFit: 'contain',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               cursor: 'zoom-out'
             }}
             onClick={handleClose}
-          />
+          >
+            <Image
+              src={src}
+              alt={alt}
+              fill
+              style={{
+                objectFit: 'contain'
+              }}
+              sizes="(max-width: 1200px) 100vw, 1200px"
+              priority
+            />
+          </Box>
         </DialogContent>
       </Dialog>
     </>

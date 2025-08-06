@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box, InputAdornment, MenuItem, Select, TextField, TextFieldProps, Typography } from '@mui/material';
 import { FieldProps, useField } from 'formik';
 import { countries } from '@/config/constants';
+import Image from 'next/image';
 
 const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
     ...props
@@ -80,7 +81,7 @@ const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
                             {countries.map((country) => (
                                 <MenuItem key={country.code} value={country.dial_code}>
                                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                        <img
+                                        <Image width={20} height={20}
                                             src={`https://flagcdn.com/w20/${country.code.toLowerCase()}.png`}
                                             alt={country.name}
                                             style={{ marginRight: 8, width: 20 }}

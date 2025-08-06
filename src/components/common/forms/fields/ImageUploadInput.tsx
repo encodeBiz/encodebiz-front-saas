@@ -3,31 +3,25 @@ import { FieldProps, useField, useFormikContext } from 'formik';
 import {
   Box,
   Button,
-  Typography,
-  Avatar,
   IconButton,
-  CircularProgress,
   TextFieldProps,
   FormHelperText,
   InputLabel,
   FormControl,
-  TextField,
 } from '@mui/material';
 import { CloudUpload, Delete } from '@mui/icons-material';
-import { styled } from '@mui/material/styles';
 import { useTranslations } from 'next-intl';
 import MediaModalSelectedFiles from '../../modals/MediaModalSelectedFiles/MediaModalSelectedFiles';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { IUserMedia, IUserMediaType } from '@/domain/core/IUserMedia';
 import ImagePreview from '../../ImagePreview';
-import { ImageCropper } from '../../ImageCropper/ImageCropper';
 
 interface ImageFieldProps {
   accept: string
   typeUpload: IUserMediaType
 }
-const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & FieldProps & TextFieldProps & ImageFieldProps) => {
+const ImageUploadInput = ({ name, label, ...props }: any & FieldProps & TextFieldProps & ImageFieldProps) => {
   const t = useTranslations();
   const [field, meta, helper] = useField(name);
   const { touched, error } = meta
@@ -53,7 +47,7 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
     setTimeout(() => {
       validateField(name)
     }, 1);
-  }, [name]);
+  }, [helper, name, validateField]);
 
 
 
@@ -62,7 +56,7 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
   const handleRemoveImage = useCallback(() => {
     setPreview(null);
     helper.setValue(null);
-  }, [name]);
+  }, [helper]);
 
   return (
     <FormControl key={name} required sx={{ m: 1, width: '100%' }}>

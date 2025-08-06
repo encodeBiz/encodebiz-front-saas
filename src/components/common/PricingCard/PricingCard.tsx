@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { CardContent, Typography, Box, List, ListItem, ListItemIcon } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
@@ -10,7 +10,6 @@ import { BizType } from '@/domain/core/IService';
 import { useEntity } from '@/hooks/useEntity';
 import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
 import { CommonModalType } from '@/contexts/commonModalContext';
-import ConfirmModal from '../modals/ConfirmModal';
 import { useRouter } from 'nextjs-toploader/app';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import SheetModalModal from '../modals/SheetModal';
@@ -41,12 +40,7 @@ const FeaturedBadge = styled(Box)(({ theme }) => ({
     fontWeight: 'bold',
 }));
 
-const SelectButton = styled(GenericButton)<{ featured?: string }>(({ theme, featured }) => ({
-    marginBottom: 0,
-    width: '100%',
-    color: featured === "true" ? theme.palette.text.primary : theme.palette.text.primary,
-    backgroundColor: featured === "true" ? theme.palette.primary.contrastText : theme.palette.primary.main,
-}));
+ 
 
 const DangerButton = styled(GenericButton)(({ theme }) => ({
     marginBottom: 0,
@@ -67,16 +61,15 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
     const { currentEntity } = useEntity();
     const { push } = useRouter()
     const { open, openModal, closeModal } = useCommonModal()
-    console.log(currentEntity);
-    
-    const watch = () => {
+
+    const watch = useCallback(() => {
         const disabledPlan = !currentEntity || !currentEntity?.entity?.billingEmail || !currentEntity?.entity?.legal?.legalName || !currentEntity?.entity?.legal?.taxId || !currentEntity?.entity?.billinConfig?.payment_method
         setLoadingGetPlan(disabledPlan)
         if (disabledPlan) openModal(CommonModalType.BILLING)
-    }
+    }, [currentEntity, openModal, setLoadingGetPlan])
     useEffect(() => {
         watch()
-    }, [currentEntity?.entity?.id]);
+    }, [currentEntity?.entity?.id, watch]);
 
     return (<>
         <PlanCard featured={String(featured)}>
@@ -93,7 +86,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
                         gutterBottom
                         sx={{ display: "flex", justifyContent: "center" }}
                     >
-                        {name}
+                        {t(`salesPlan.${name}`) || name}
                     </Typography>
 
                     {price && <Typography
@@ -119,20 +112,24 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
                     </List>
                 </span>
                 <BaseButton
-                  
+
                     fullWidth
                     variant="contained"
                     onClick={() => {
-                        if (loadingGetPlan) {
-                            watch()
+                        if (name === 'freemium') {
+                            subcribeAction()
                         } else {
-                            if (!isContract) {
-                                subcribeAction()
+                            if (loadingGetPlan) {
+                                watch()
+                            } else {
+                                if (!isContract) {
+                                    subcribeAction()
+                                }
                             }
                         }
                     }}
                     disabled={false}
-                    
+
                 >
                     {!isContract ? t("salesPlan.pay") : t("salesPlan.contract")}
                 </BaseButton>
@@ -145,8 +142,8 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
                             ubSubcribeAction()
                         }
                     }}
-                
-                  
+
+
                 >
                     {t("salesPlan.del")}
                 </DangerButton>}
@@ -157,7 +154,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
             description={t('salesPlan.imageConfirmModalTitle2')}
             textBtn={t('core.button.configurenow')}
             type={CommonModalType.BILLING}
-            onOKAction={(args: { data: any }) => {
+            onOKAction={() => {
                 closeModal(CommonModalType.BILLING)
                 push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity`)
             }}

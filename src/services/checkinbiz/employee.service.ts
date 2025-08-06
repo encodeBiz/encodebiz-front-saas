@@ -3,10 +3,8 @@ import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
-import { deleteDocument } from "@/lib/firebase/firestore/deleteDocument";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
-import { EmployeeFromValues } from "@/app/main/checkinbiz/employee/add/page.controller";
-
+ 
 
 /**
    * Search trainer
@@ -36,7 +34,7 @@ export const deleteEmployee = async (entityId: string, id: string, token: string
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          token: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -74,7 +72,7 @@ export const search = async (entityId: string, params: SearchParams): Promise<IE
 }
 
 
-export async function createEmployee(data: EmployeeFromValues, token: string) {
+export async function createEmployee(data: Partial<IEmployee>, token: string) {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -82,7 +80,7 @@ export async function createEmployee(data: EmployeeFromValues, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          token: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -102,7 +100,7 @@ export async function createEmployee(data: EmployeeFromValues, token: string) {
   }
 }
 
-export async function updateEmployee(data: EmployeeFromValues, token: string) {
+export async function updateEmployee(data: Partial<IEmployee>, token: string) {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -110,7 +108,7 @@ export async function updateEmployee(data: EmployeeFromValues, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          token: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       });
       const response: any = await httpClientFetchInstance.post(
