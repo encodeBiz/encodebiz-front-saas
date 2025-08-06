@@ -11,6 +11,7 @@ import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { Person2 } from "@mui/icons-material";
+import { Chip } from "@mui/material";
 
 
 
@@ -33,7 +34,7 @@ export default function useIEventListController() {
   const [currentPage, setCurrentPage] = useState(0);
   const [total, setTotal] = useState(0);
   const { closeModal } = useCommonModal()
- 
+
   const onSearch = (term: string): void => {
     setParams({ ...params, startAfter: null, filters: buildSearch(term) })
   }
@@ -82,16 +83,24 @@ export default function useIEventListController() {
       id: 'location',
       label: t("core.label.location"),
       minWidth: 170,
-
     },
-
+    {
+      id: 'status',
+      label: t("core.label.status"),
+      minWidth: 170,
+      format: (value, row) => <Chip
+        size="small"
+        label={t(`core.label.${row.status}`)}
+        variant="outlined"
+      />,
+    },
 
   ];
 
   const fetchingData = () => {
     setLoading(true)
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
- 
+
       if (res.length < rowsPerPage || res.length === 0)
         setAtEnd(true)
       else
@@ -156,12 +165,12 @@ export default function useIEventListController() {
   }
 
   const rowAction: Array<IRowAction> = [
-      { icon: <Person2 />, label: t('core.label.staff'), allowItem: (item: IEvent) =>  true, onPress: (item: IEvent) => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event/${item.id}/staff`)   },
-    ]
-  
+    { icon: <Person2 />, label: t('core.label.staff'), allowItem: (item: IEvent) => true, onPress: (item: IEvent) => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event/${item.id}/staff`) },
+  ]
+
 
   return {
-    onDelete, items,total,
+    onDelete, items, total,
     atEnd, onEdit, onSearch,
     atStart, onBack, onNext,
     pagination, currentPage,

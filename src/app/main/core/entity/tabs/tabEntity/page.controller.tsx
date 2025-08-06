@@ -216,22 +216,29 @@ export const useSettingEntityController = () => {
 
 
     const fetchData = async () => {
-        await fetchEntity(currentEntity?.entity.id as string)
+        try {
+            await fetchEntity(currentEntity?.entity.id as string)
+            setInitialValues({
+                uid: currentEntity?.entity?.id as string | "",
+                "name": currentEntity?.entity?.name as string | "",
+                "active": currentEntity?.entity?.active as boolean | true,
+                "street": currentEntity?.entity?.legal?.address.street as string | "",
+                "country": currentEntity?.entity?.legal?.address.country as string | "",
+                "city": currentEntity?.entity?.legal?.address.city as string | "",
+                "postalCode": currentEntity?.entity?.legal?.address.postalCode as string | "",
+                "taxId": currentEntity?.entity?.legal?.taxId as string | "",
+                "legalName": currentEntity?.entity?.legal?.legalName as string | "",
+                billingEmail: currentEntity?.entity?.billingEmail as string ?? user?.email as string ?? ''
+            })
+            setCityList(country.find(e => e.name === currentEntity?.entity?.legal?.address.country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message, 'error');
+            } else {
+                showToast(String(error), 'error');
+            }
 
-
-        setInitialValues({
-            uid: currentEntity?.entity?.id as string | "",
-            "name": currentEntity?.entity?.name as string | "",
-            "active": currentEntity?.entity?.active as boolean | true,
-            "street": currentEntity?.entity?.legal?.address.street as string | "",
-            "country": currentEntity?.entity?.legal?.address.country as string | "",
-            "city": currentEntity?.entity?.legal?.address.city as string | "",
-            "postalCode": currentEntity?.entity?.legal?.address.postalCode as string | "",
-            "taxId": currentEntity?.entity?.legal?.taxId as string | "",
-            "legalName": currentEntity?.entity?.legal?.legalName as string | "",
-            billingEmail: currentEntity?.entity?.billingEmail as string ??  user?.email as string ?? ''
-        })
-        setCityList(country.find(e => e.name === currentEntity?.entity?.legal?.address.country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
+        }
 
 
     }

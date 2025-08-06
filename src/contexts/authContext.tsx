@@ -8,6 +8,7 @@ import { subscribeToAuthChanges } from "@/lib/firebase/authentication/stateChang
 import { getUser } from "@/lib/firebase/authentication/login";
 import { fetchUserAccount, signInToken } from "@/services/common/account.service";
 import { MAIN_ROUTE, GENERAL_ROUTE, USER_ROUTE } from "@/config/routes";
+import { useToast } from "@/hooks/useToast";
 interface AuthContextType {
     user: IUser | null;
     userAuth: User | null;
@@ -23,6 +24,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [token, setToken] = useState<string>('');
     const [pendAuth, setPendAuth] = useState(true);
     const { push } = useRouter()
+    const { showToast } = useToast()
 
     const searchParams = useSearchParams()
     const pathName = usePathname()
@@ -30,41 +32,50 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const inPublicPage = pathName.startsWith('/auth')
 
     const watchSesionState = async (userAuth: User) => {
- 
-        if (userAuth) {
-            updateUserData()
-            setToken(await userAuth.getIdToken())
-            const extraData = await fetchUserAccount(userAuth.uid)
+        try {
 
-            const userData: IUser = {
-                ...extraData,
-                completeProfile: extraData.email ? true : false
-            }
-            setUser({
-                ...userAuth,
-                ...userData,
-            })
+            if (userAuth) {
+                updateUserData()
+                setToken(await userAuth.getIdToken())
 
-            if (!userData.completeProfile) {
-                push(`/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`)
-            }
-            setUserAuth(userAuth)
-            if (redirectUri) push(redirectUri)
-            else {
-                if (pathName === '/' || pathName === '/main' || pathName === '/main/core')
-                    push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
-                else {
-                    if (pathName === '/' || pathName === '/main' || pathName === '/main/user')
-                        push(`/${MAIN_ROUTE}/${USER_ROUTE}/account`)
+                const extraData = await fetchUserAccount(userAuth.uid)
+
+                const userData: IUser = {
+                    ...extraData,
+                    completeProfile: extraData.email ? true : false
                 }
+                setUser({
+                    ...userAuth,
+                    ...userData,
+                })
+
+                if (!userData.completeProfile) {
+                    push(`/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`)
+                }
+                setUserAuth(userAuth)
+                if (redirectUri) push(redirectUri)
+                else {
+                    if (pathName === '/' || pathName === '/main' || pathName === '/main/core')
+                        push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
+                    else {
+                        if (pathName === '/' || pathName === '/main' || pathName === '/main/user')
+                            push(`/${MAIN_ROUTE}/${USER_ROUTE}/account`)
+                    }
+                }
+                setPendAuth(false)
+            } else {
+                setUser(null);
+                setPendAuth(false)
+                if (!inPublicPage)
+                    push('/auth/login')
             }
-            setPendAuth(false)
-        } else {
-            setUser(null);
-            setPendAuth(false)
-            if (!inPublicPage)
-                push('/auth/login')
+        } catch (error) {
+            if (error instanceof Error)
+                showToast(error.message, 'error');
+            else
+                showToast(String(error), 'error');
         }
+
     }
 
 

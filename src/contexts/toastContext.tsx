@@ -1,5 +1,5 @@
 'use client'
-import React, { createContext, useContext, useState, useRef, useEffect } from 'react';
+import React, { createContext, useState, useRef } from 'react';
 import { Snackbar, Alert, AlertColor } from '@mui/material';
 
 type ToastMessage = {
@@ -13,20 +13,13 @@ type ToastContextType = {
 };
 
 export const ToastContext = createContext<ToastContextType | undefined>(undefined);
- 
+
 export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
-    const [toasts, setToasts] = useState<ToastMessage[]>([]);
     const [open, setOpen] = useState(false);
     const [messageInfo, setMessageInfo] = useState<ToastMessage | undefined>(undefined);
     const queueRef = useRef<ToastMessage[]>([]);
 
-    const processQueue = () => {
-        if (queueRef.current.length > 0) {
-            setMessageInfo(queueRef.current.shift());
-            setOpen(true);
-        }
-    };
-
+ 
     const showToast = (message: string, severity: AlertColor = 'info') => {
         const key = new Date().getTime();
         const newToast = { message, severity, key };
@@ -46,10 +39,7 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
         setOpen(false);
     };
 
-    const handleExited = () => {
-        processQueue();
-    };
-
+    
     return (
         <ToastContext.Provider value={{ showToast }}>
             {children}
@@ -58,7 +48,7 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
                 open={open}
                 autoHideDuration={6000}
                 onClose={handleClose}
-   
+
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
             >
                 <Alert

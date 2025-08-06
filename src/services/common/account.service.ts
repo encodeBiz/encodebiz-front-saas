@@ -1,12 +1,11 @@
 import { RegisterFormValues } from "@/app/auth/register/page.controller";
 import { collection } from "@/config/collection";
-import { createUser } from "@/lib/firebase/authentication/create";
 import { changePass, getUser, login, loginWithGoogle, loginWithToken } from "@/lib/firebase/authentication/login";
 import { logout } from "@/lib/firebase/authentication/logout";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import httpClientFetchInstance, { codeError, HttpClient } from "@/lib/http/httpClientFetchNext";
 import IUser from "@/domain/auth/IUser";
-import { EmailAuthProvider, reauthenticateWithCredential, reload, updateProfile, User, UserCredential } from "firebase/auth";
+import { EmailAuthProvider, reauthenticateWithCredential, updateProfile, User, UserCredential } from "firebase/auth";
 import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
 
 
@@ -96,8 +95,8 @@ export async function fetchUserAccount(
 ): Promise<IUser> {
     try {
         return await getOne(collection.USER, uid);
-    } catch (error: any) {
-        throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
+    } catch (error: any) {       
+        throw new Error(codeError[error.code] ? codeError[error.code] : error?.message)
 
     }
 }

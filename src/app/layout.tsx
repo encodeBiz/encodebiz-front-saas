@@ -38,8 +38,9 @@ export default async function RootLayout({
             <body className={`${geistSans.variable} ${geistMono.variable}`}>
                 <LocaleProvider>
                     <Suspense fallback={<PageLoader />}>  {/* ✅ Suspense envuelve AuthProvider */}
-                        <AuthProvider>
-                            <ToastProvider>
+                        <ToastProvider>
+
+                            <AuthProvider>
                                 <EntityProvider>
                                     <LayoutProvider>
                                         <ThemeProvider>
@@ -52,8 +53,8 @@ export default async function RootLayout({
                                         </ThemeProvider>
                                     </LayoutProvider>
                                 </EntityProvider>
-                            </ToastProvider>
-                        </AuthProvider>
+                            </AuthProvider>
+                        </ToastProvider>
                     </Suspense>
                 </LocaleProvider>
             </body>

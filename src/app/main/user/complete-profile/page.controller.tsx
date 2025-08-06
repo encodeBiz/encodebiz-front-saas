@@ -1,15 +1,13 @@
 'use client'
 import * as Yup from 'yup';
-import { useState, ReactNode, useEffect } from 'react';
+import { useState, ReactNode, useEffect, useCallback } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useTranslations } from 'next-intl';
 import { SxProps, Theme } from '@mui/material';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { useToast } from '@/hooks/useToast';
 import { fetchUserAccount, signUpEmail } from '@/services/common/account.service';
-import ImageUploadInput from '@/components/common/forms/fields/ImageUploadInput';
-import { uploadFile } from '@/lib/firebase/storage/fileManager';
-import { emailRule, fileImageRule, requiredRule } from '@/config/yupRules';
+import { emailRule, requiredRule } from '@/config/yupRules';
 import { getUser } from '@/lib/firebase/authentication/login';
 import { User } from 'firebase/auth';
 import IUser from '@/domain/auth/IUser';
@@ -25,10 +23,7 @@ export interface UserFormValues {
     "active": boolean
     legalEntityName: string
     "avatar": any
-
 };
-
-
 
 export type TabItem = {
     label: string | ReactNode;
@@ -64,12 +59,12 @@ export const useUserProfileController = () => {
         name: requiredRule(t),
         legalEntityName: requiredRule(t),
         phone: Yup.string().optional(),
-      
+
     });
 
 
     const fields = [
-        
+
         {
             name: 'name',
             label: t('core.label.firstName'),
@@ -82,7 +77,7 @@ export const useUserProfileController = () => {
             label: t('core.label.email'),
             type: 'email',
             required: true,
-            disabled:true,
+            disabled: true,
             component: TextInput,
         },
         {
@@ -107,9 +102,9 @@ export const useUserProfileController = () => {
 
     const setUserDataAction = async (values: UserFormValues) => {
         try {
-           
+
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-            setPending(true)           
+            setPending(true)
 
             const sessionToken = await user?.accessToken;
             if (!user) {
@@ -150,11 +145,18 @@ export const useUserProfileController = () => {
     };
 
 
-
-    const checkProfile = async () => {
-        const userData: IUser = await fetchUserAccount(user?.uid as string)
-        if (userData.email) push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
-    }
+    const checkProfile = useCallback(async () => {
+        try {
+            const userData: IUser = await fetchUserAccount(user?.uid as string)
+            if (userData.email) push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast(error.message, 'error');
+            } else {
+                showToast(String(error), 'error');
+            }
+        }
+    }, [push, showToast, user?.uid])
 
     useEffect(() => {
         checkProfile()
@@ -168,9 +170,7 @@ export const useUserProfileController = () => {
             "active": true,
         });
 
-
-
-    }, [user]);
+    }, [user, checkProfile]);
 
     return { validationSchema, initialValues, setUserDataAction, pending, fields }
 }
