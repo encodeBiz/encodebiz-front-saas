@@ -21,7 +21,7 @@ interface ImageFieldProps {
   accept: string
   typeUpload: IUserMediaType
 }
-const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & FieldProps & TextFieldProps & ImageFieldProps) => {
+const ImageUploadInput = ({ name, label, ...props }: any & FieldProps & TextFieldProps & ImageFieldProps) => {
   const t = useTranslations();
   const [field, meta, helper] = useField(name);
   const { touched, error } = meta
@@ -47,7 +47,7 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
     setTimeout(() => {
       validateField(name)
     }, 1);
-  }, [name]);
+  }, [helper, name, validateField]);
 
 
 
@@ -56,7 +56,7 @@ const ImageUploadInput = ({ name, label, accept = 'image/*', ...props }: any & F
   const handleRemoveImage = useCallback(() => {
     setPreview(null);
     helper.setValue(null);
-  }, [name]);
+  }, [helper]);
 
   return (
     <FormControl key={name} required sx={{ m: 1, width: '100%' }}>

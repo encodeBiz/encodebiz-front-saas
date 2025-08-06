@@ -1,6 +1,5 @@
 'use client'
 import { NextIntlClientProvider } from 'next-intl';
-import { getLocale, getMessages } from 'next-intl/server';
 import React, { createContext, useMemo, useState } from 'react';
 
 import messagesDe from '../../locales/de/common.json';

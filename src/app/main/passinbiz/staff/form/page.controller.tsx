@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { emailRule, requiredRule } from '@/config/yupRules';
@@ -88,7 +88,7 @@ export default function useStaffController() {
 
 
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const Staff: IStaff = await fetchStaff(currentEntity?.entity.id as string, id)
@@ -103,20 +103,19 @@ export default function useStaffController() {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
     }
-  }
+  }, [changeLoaderState, currentEntity?.entity.id, id, showToast, t])
 
   useEffect(() => {
     if (currentEntity?.entity.id && user?.id) {
-
       watchServiceAccess('passinbiz')
     }
-  }, [currentEntity?.entity.id, user?.id])
+  }, [currentEntity?.entity.id, watchServiceAccess, user?.id])
 
 
   useEffect(() => {
     if (currentEntity?.entity.id && user?.id && id)
       fetchData()
-  }, [currentEntity?.entity.id, user?.id, id])
+  }, [currentEntity?.entity.id, user?.id, id, fetchData])
 
 
   return { fields, initialValues, validationSchema, submitForm }

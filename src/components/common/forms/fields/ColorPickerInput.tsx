@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import { ColorResult, SketchPicker } from 'react-color';
 import { InputAdornment, Popover, TextField, TextFieldProps } from '@mui/material';
 import { FieldProps, useField } from 'formik';
@@ -7,7 +7,6 @@ import { PaletteRounded } from '@mui/icons-material';
 
 
 const ColorPickerInput: React.FC<FieldProps & TextFieldProps> = ({
-    onChange,
     ...props
 }) => {
     const [field, meta, helper] = useField(props.name);
@@ -68,7 +67,7 @@ const ColorPickerInput: React.FC<FieldProps & TextFieldProps> = ({
                     horizontal: 'left',
                 }}
             >
-                <SketchPicker color={field && field.value ? field.value : '#ffffff'} onChange={(color: ColorResult, event: ChangeEvent<HTMLInputElement>) => {
+                <SketchPicker color={field && field.value ? field.value : '#ffffff'} onChange={(color: ColorResult) => {
                     helper.setValue(color.hex)
                 }} />
 

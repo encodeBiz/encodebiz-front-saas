@@ -1,5 +1,5 @@
 'use client';
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 import { User } from "firebase/auth";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
@@ -31,7 +31,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const redirectUri = searchParams.get('redirect')
     const inPublicPage = pathName.startsWith('/auth')
 
-    const watchSesionState = async (userAuth: User) => {
+
+    /** Refresh User Data */
+    const updateUserData = useCallback(async () => {
+        const userAuth: User = await getUser() as User
+        const extraData = await fetchUserAccount(userAuth.uid)
+        const userData: IUser = {
+            ...extraData,
+            completeProfile: extraData.email ? true : false
+        }
+        setUser({
+            ...userAuth,
+            ...userData,
+        })
+
+        setTimeout(() => {
+            if (redirectUri) push(redirectUri)
+            setPendAuth(false)
+        }, 1000)
+
+
+    }, [push, redirectUri])
+
+    const watchSesionState = useCallback(async (userAuth: User) => {
         try {
 
             if (userAuth) {
@@ -76,17 +98,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 showToast(String(error), 'error');
         }
 
-    }
+    }, [inPublicPage, pathName, push, redirectUri, showToast, updateUserData])
 
 
     useEffect(() => {
         setPendAuth(true)
         const unsubscribe = subscribeToAuthChanges(watchSesionState);
         return () => unsubscribe(); // Cleanup on unmount
-    }, []);
+    }, [watchSesionState]);
 
     const authWithToken = async (authToken: string) => {
-        const data = await signInToken(authToken);
+        await signInToken(authToken);
     }
 
     /** Auth By Token */
@@ -97,26 +119,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, [authToken]);
 
 
-    /** Refresh User Data */
-    const updateUserData = async () => {
-        const userAuth: User = await getUser() as User
-        const extraData = await fetchUserAccount(userAuth.uid)
-        const userData: IUser = {
-            ...extraData,
-            completeProfile: extraData.email ? true : false
-        }
-        setUser({
-            ...userAuth,
-            ...userData,
-        })
 
-        setTimeout(() => {
-            if (redirectUri) push(redirectUri)
-            setPendAuth(false)
-        }, 1000)
-
-
-    }
 
 
 

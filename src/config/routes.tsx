@@ -1,12 +1,11 @@
 import {
     Dashboard as DashboardIcon,
-    BarChart as BarChartIcon,
-    Settings as SettingsIcon,
+ 
     ImageSearchOutlined,
     CreditCardOff,
     Person2TwoTone,
     Today,
-    CardGiftcard,
+    
     Home
 } from '@mui/icons-material';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';

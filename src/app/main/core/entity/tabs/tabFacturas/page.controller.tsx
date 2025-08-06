@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useEntity } from '@/hooks/useEntity';
 import { useTranslations } from 'next-intl';
 import { fetchInvoicesByEntity } from '@/services/common/subscription.service';
@@ -67,7 +67,7 @@ export const useFacturaController = () => {
         },
     ];
 
-    const fetchingData = () => {
+    const fetchingData = useCallback(() => {
         setLoading(true)
         fetchInvoicesByEntity(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
             if (res.length < rowsPerPage || res.length === 0)
@@ -80,7 +80,7 @@ export const useFacturaController = () => {
                 if (!params.startAfter)
                     setItemsHistory([...res])
                 else
-                    setItemsHistory([...itemsHistory, ...res])
+                    setItemsHistory(prev => [...prev, ...res])
                 setLoading(false)
             }
 
@@ -99,12 +99,12 @@ export const useFacturaController = () => {
             setLoading(false)
         })
 
-    }
+    }, [currentEntity?.entity.id, params, rowsPerPage, showToast])
 
     useEffect(() => {
         if (params && currentEntity?.entity?.id)
             fetchingData()
-    }, [params, currentEntity?.entity?.id])
+    }, [params, currentEntity?.entity?.id, fetchingData])
 
     useEffect(() => {
         setCurrentPage(0)
@@ -123,7 +123,7 @@ export const useFacturaController = () => {
         atStart,
         onSearch, onNext, onBack,
         pagination, currentPage,
-        columns,total,
+        columns, total,
         loading, rowsPerPage, setRowsPerPage
     }
 }

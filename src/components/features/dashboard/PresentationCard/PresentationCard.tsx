@@ -3,8 +3,6 @@ import {
   Box,
   Typography,
   Paper,
-  Container,
-  Button,
   Stack
 } from '@mui/material';
 import Image from 'next/image';

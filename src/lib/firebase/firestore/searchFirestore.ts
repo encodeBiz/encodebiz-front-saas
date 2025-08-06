@@ -8,8 +8,6 @@
   getDocs,
   CollectionReference,
   DocumentData,
-  getDoc,
-  count,
   doc,
   getCountFromServer,
   collectionGroup,
@@ -130,7 +128,7 @@ export const countFirestore = async (params: SearchParams): Promise<number> => {
   return querySnapshot.data().count;
 };
 
-export const searchFirestoreCount = async <T>(
+export const searchFirestoreCount = async (
   params: SearchParams
 ): Promise<number> => {
   const {
@@ -160,15 +158,15 @@ export const searchFirestoreCount = async <T>(
     ) as CollectionReference<DocumentData, DocumentData>;
   }
 
-  let count: number;
+ 
   const countSnapshot = await getCountFromServer(firestoreQuery);
-  count = countSnapshot.data().count;
+  const count = countSnapshot.data().count;
   return count;
 };
 
 export const onSnapshotFirestore = (
   collectionName: string,
-  onEnd: Function
+  onEnd: (data: any)=>void
 ) => {
   const docRef = doc(db, `${collectionName}`);
   return onSnapshot(docRef, { includeMetadataChanges: true }, (doc) => {

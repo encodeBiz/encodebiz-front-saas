@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/hooks/useAuth";
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useState } from "react";
 
 export enum CommonModalType {
     ONBOARDING = 'ONBOARDING',

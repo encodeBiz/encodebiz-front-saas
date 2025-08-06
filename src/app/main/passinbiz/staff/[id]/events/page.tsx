@@ -6,16 +6,10 @@ import PresentationCard from '@/components/features/dashboard/PresentationCard/P
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
 import { useRouter } from 'nextjs-toploader/app';
-import { useParams } from 'next/navigation';
-import { IEvent } from '@/domain/features/passinbiz/IEvent';
-
-
-
 export default function EventForm() {
   const { fields, initialValues, validationSchema, setDinamicDataAction } = useStaffController();
   const t = useTranslations();
   const { push } = useRouter()
-  const { id } = useParams<{ id: string }>()
 
   return (
     <Container maxWidth="xl">

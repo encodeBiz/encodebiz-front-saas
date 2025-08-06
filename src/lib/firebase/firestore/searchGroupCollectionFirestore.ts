@@ -118,7 +118,7 @@ export const countFirestore = async(
 
 
 
-export const searchFirestoreCount = async <T>(
+export const searchFirestoreCount = async (
   params: SearchParams
 ): Promise<number> => {
   const {
@@ -148,8 +148,7 @@ export const searchFirestoreCount = async <T>(
     ) as CollectionReference<DocumentData, DocumentData>;
   }
 
-  let count: number;
   const countSnapshot = await getCountFromServer(firestoreQuery);
-  count = countSnapshot.data().count;
+  const count = countSnapshot.data().count;
   return count;
 };

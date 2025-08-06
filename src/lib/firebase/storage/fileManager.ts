@@ -9,15 +9,14 @@ import { storage } from "../initializeApp";
 export const uploadFile = async (
   file: File,
   path: string,
-  onProgress: Function
+  onProgress: () => void
 ): Promise<string> => {
   // Crea una referencia al archivo en Firebase Storage
   const uniquePath = path.split("/");
-  uniquePath[uniquePath.length - 1] = `${Date.now()}_${
-    uniquePath[uniquePath.length - 1]
-  }`;
+  uniquePath[uniquePath.length - 1] = `${Date.now()}_${uniquePath[uniquePath.length - 1]
+    }`;
 
- 
+
   const storageRef = ref(storage, uniquePath.join("/"));
   try {
     // Sube el archivo
@@ -47,7 +46,7 @@ export const getFileURL = async (path: string): Promise<string> => {
   }
 };
 
-async function UploadImage(uploadTask: UploadTask, onProgress: Function) {
+async function UploadImage(uploadTask: UploadTask, onProgress: (progress: any) => void) {
   return new Promise((resolve, reject) => {
     uploadTask.on(
       "state_changed",
@@ -75,11 +74,11 @@ export function dataURLtoFile(
   dataurl: string,
   filename: string = "generateFile"
 ) {
-  let arr: any = dataurl.split(","),
+  const arr: any = dataurl.split(","),
     mime = arr[0].match(/:(.*?);/)[1],
-    bstr = atob(arr[arr.length - 1]),
-    n = bstr.length,
-    u8arr = new Uint8Array(n);
+    bstr = atob(arr[arr.length - 1])
+  let n = bstr.length
+  const u8arr = new Uint8Array(n);
   while (n--) {
     u8arr[n] = bstr.charCodeAt(n);
   }

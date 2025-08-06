@@ -14,7 +14,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { useField, useFormikContext } from 'formik';
+import { useField } from 'formik';
 import { useStyles } from './TransferListField.styles.';
 
 
@@ -43,16 +43,16 @@ const TransferList = ({ name, leftTitle, rightTitle, options }: ITransferListPro
   const [rightChecked, setRigthChecked] = useState<Array<{ value: string, label: string }>>([])
 
   const [loaded, setLoaded] = useState(false)
- 
+
 
   React.useEffect(() => {
     setLeft(options);
-  }, [options.length]);
+  }, [options, options.length]);
 
   React.useEffect(() => {
     setLeftChecked(intersection(checked, left))
     setRigthChecked(intersection(checked, right))
-  }, [checked.length]);
+  }, [checked, checked.length, left, right]);
 
 
   React.useEffect(() => {
@@ -62,12 +62,12 @@ const TransferList = ({ name, leftTitle, rightTitle, options }: ITransferListPro
       setLoaded(true)
       setLeft(options.filter(e => !rigthtItems.map((r: { value: any; }) => r.value).includes(e.value)));
     }
-  }, [field.value?.length, options.length]);
+  }, [field.value, field.value.length, loaded, options, options.length]);
 
 
   React.useEffect(() => {
     helpers.setValue(right.map(e => e.value));
-  }, [right, name]);
+  }, [right, name, helpers]);
 
 
 

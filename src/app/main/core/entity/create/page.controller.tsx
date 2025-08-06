@@ -131,14 +131,7 @@ export const useRegisterController = () => {
             component: SelectInput,
             options: cityList
         },
-        /*
-        {
-            name: 'region',
-            label: t('core.label.region'),
-            component: TextInput,
-            options: cityList
-        },
-        */
+         
         {
             name: 'postalCode',
             label: t('core.label.postalCode'),
@@ -167,7 +160,7 @@ export const useRegisterController = () => {
             })
         }
         return () => { }
-    }, [user?.id])
+    }, [user?.email, user?.id, user?.uid])
 
 
 

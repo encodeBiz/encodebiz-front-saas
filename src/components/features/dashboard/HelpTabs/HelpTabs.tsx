@@ -7,11 +7,6 @@ import {
   Paper,
   useTheme
 } from '@mui/material';
-import {
-  Cloud,
-  Storage,
-  Security
-} from '@mui/icons-material';
 
 export interface HelpTab {
   id: string,

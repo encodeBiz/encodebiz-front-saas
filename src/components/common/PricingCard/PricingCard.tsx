@@ -40,12 +40,7 @@ const FeaturedBadge = styled(Box)(({ theme }) => ({
     fontWeight: 'bold',
 }));
 
-const SelectButton = styled(GenericButton)<{ featured?: string }>(({ theme, featured }) => ({
-    marginBottom: 0,
-    width: '100%',
-    color: featured === "true" ? theme.palette.text.primary : theme.palette.text.primary,
-    backgroundColor: featured === "true" ? theme.palette.primary.contrastText : theme.palette.primary.main,
-}));
+ 
 
 const DangerButton = styled(GenericButton)(({ theme }) => ({
     marginBottom: 0,
@@ -159,7 +154,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
             description={t('salesPlan.imageConfirmModalTitle2')}
             textBtn={t('core.button.configurenow')}
             type={CommonModalType.BILLING}
-            onOKAction={(args: { data: any }) => {
+            onOKAction={() => {
                 closeModal(CommonModalType.BILLING)
                 push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity`)
             }}

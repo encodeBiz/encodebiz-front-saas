@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -7,37 +7,15 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import { IService } from '@/domain/core/IService';
-import { useToast } from '@/hooks/useToast';
 import { useTranslations } from 'next-intl';
 import image from '@/../public/assets/images/encodebiz-sass.png'
 import { useRouter } from 'nextjs-toploader/app';
 import { MAIN_ROUTE } from '@/config/routes';
-import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
-
-// Sample data for the cards
-const cardData = [
-    {
-        id: 'passinBiz',
-        name: 'Misty Mountains',
-        description: 'Breathtaking views of the misty peaks, perfect for a peaceful getaway.',
-        image: 'https://images.unsplash.com/photo-1542204620-e220267781b2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTU5OTl8MHwxfHNlYXJjaHwxfHw0NTU5OTl8fGVufDB8fHx8MTcwNDc0OTAzMXwx&ixlib=rb-4.0.3&q=80&w=1080',
-    },
-    {
-        id: 2,
-        name: 'checkinBiz',
-        description: 'Enjoy the calming sounds of waves and endless ocean horizons.',
-        image: 'https://images.unsplash.com/photo-1507525428034-b723cf961c3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTU5OTl8MHwxfHNlYXJjaHwxfHw0NTU5OTl8fGVufDB8fHx8MTcwNDc0OTAyNnwx&ixlib=rb-4.0.3&q=80&w=1080',
-    },
-
-];
+ 
 
 const ServiceList = ({ ref }: { ref: any }) => {
-    const [serviceList, setServiceList] = useState<Array<IService>>([])
-    const [pending, setPending] = useState(false)
-    const { showToast } = useToast()
-    const { user } = useAuth()
+   
     const t = useTranslations()
     const { push } = useRouter()
     const { entityServiceList } = useEntity()

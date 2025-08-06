@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { useToast } from "@/hooks/useToast";
 import { useRouter } from "nextjs-toploader/app";
@@ -14,7 +14,7 @@ import TransferList from "@/components/common/forms/fields/TransferListField/Tra
 import { search } from "@/services/passinbiz/staff.service";
 import { IStaff } from "@/domain/features/passinbiz/IStaff";
 
- 
+
 export default function useStaffController() {
   const t = useTranslations();
   const { showToast } = useToast()
@@ -73,12 +73,12 @@ export default function useStaffController() {
     },
   ];
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
 
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, id)
-       
+
       setInitialValues({
         ...event
       })
@@ -87,9 +87,9 @@ export default function useStaffController() {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
     }
-  }
+  }, [changeLoaderState, currentEntity?.entity.id, id, showToast, t])
 
-  const fetchStaffList = async () => {
+  const fetchStaffList = useCallback(async () => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const staffList: IStaff[] = await search(currentEntity?.entity.id as string, { limit: 100 } as any)
@@ -99,7 +99,7 @@ export default function useStaffController() {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
     }
-  }
+  }, [changeLoaderState, currentEntity?.entity.id, showToast, t])
   useEffect(() => {
     if (currentEntity?.entity.id && user?.id && id) {
       fetchData()
@@ -110,7 +110,7 @@ export default function useStaffController() {
       watchServiceAccess('passinbiz')
 
     }
-  }, [currentEntity?.entity.id, user?.id, id])
+  }, [currentEntity?.entity.id, user?.id, id, fetchData, fetchStaffList, watchServiceAccess])
 
 
   return { fields, initialValues, validationSchema, setDinamicDataAction, staffList }

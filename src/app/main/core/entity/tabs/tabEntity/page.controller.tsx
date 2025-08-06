@@ -1,7 +1,7 @@
 'use client'
 
 import * as Yup from 'yup';
-import { useState, ReactNode, useEffect } from 'react';
+import { useState, ReactNode, useEffect, useCallback } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useTranslations } from 'next-intl';
@@ -215,7 +215,7 @@ export const useSettingEntityController = () => {
     };
 
 
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
         try {
             await fetchEntity(currentEntity?.entity.id as string)
             setInitialValues({
@@ -239,13 +239,11 @@ export const useSettingEntityController = () => {
             }
 
         }
-
-
-    }
+    }, [currentEntity?.entity?.active, currentEntity?.entity?.billingEmail, currentEntity?.entity.id, currentEntity?.entity?.legal?.address.city, currentEntity?.entity?.legal?.address.country, currentEntity?.entity?.legal?.address.postalCode, currentEntity?.entity?.legal?.address.street, currentEntity?.entity?.legal?.legalName, currentEntity?.entity?.legal?.taxId, currentEntity?.entity?.name, showToast, user?.email])
     useEffect(() => {
         if (currentEntity?.entity.id)
             fetchData()
-    }, [currentEntity?.entity.id])
+    }, [currentEntity?.entity.id, fetchData])
 
 
 
@@ -279,7 +277,7 @@ export const useSettingEntityController = () => {
     useEffect(() => {
         if (currentEntity?.entity?.createdAt)
             formatDate(currentEntity.entity.createdAt, t('locale'));
-    }, [currentEntity]);
+    }, [currentEntity, t]);
 
 
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useTranslations } from 'next-intl';
@@ -121,7 +121,7 @@ export const useCollaboratorsController = () => {
 
     };
 
-    const handleFetchUsers = async () => {
+    const handleFetchUsers = useCallback(async () => {
         setLoading(true)
         fetchUsers().then(async res => {
             setUsers(res.map(e => ({ user: e, role: 'admin' })))
@@ -130,19 +130,11 @@ export const useCollaboratorsController = () => {
         }).finally(() => {
             setLoading(false)
         })
-
-    };
-
-    useEffect(() => {
-        if (currentEntity?.entity.id) {
-            handleFetchUsers()
-            updateColaborators()
-        }
-    }, [currentEntity?.entity.id])
+    }, [showToast]);
 
 
 
-    const updateColaborators = async () => {
+    const updateColaborators = useCallback(async () => {
         const data: Array<IUserEntity> = await fetchAllOwnerOfEntity(currentEntity?.entity.id as string)
         setCurrentProject({
             owner: {
@@ -153,7 +145,17 @@ export const useCollaboratorsController = () => {
             id: currentEntity?.entity.id as string,
             data
         })
-    }
+    }, [currentEntity?.entity.id])
+
+
+    useEffect(() => {
+        if (currentEntity?.entity.id) {
+            handleFetchUsers()
+            updateColaborators()
+        }
+    }, [currentEntity?.entity.id, handleFetchUsers, updateColaborators])
+
+
 
 
     return { handleAssign, handleRemove, users, currentProject, loading }
