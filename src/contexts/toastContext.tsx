@@ -1,5 +1,5 @@
 'use client'
-import React, { createContext, useState, useRef } from 'react';
+import React, { createContext, useState, useRef, useCallback } from 'react';
 import { Snackbar, Alert, AlertColor } from '@mui/material';
 
 type ToastMessage = {
@@ -20,17 +20,16 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
     const queueRef = useRef<ToastMessage[]>([]);
 
  
-    const showToast = (message: string, severity: AlertColor = 'info') => {
+    const showToast = useCallback((message: string, severity: AlertColor = 'info') => {
         const key = new Date().getTime();
         const newToast = { message, severity, key };
-
         if (open) {
             queueRef.current.push(newToast);
         } else {
             setMessageInfo(newToast);
             setOpen(true);
         }
-    };
+    }, [open]);
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {

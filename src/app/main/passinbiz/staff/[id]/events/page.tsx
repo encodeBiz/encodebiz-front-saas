@@ -16,7 +16,7 @@ export default function EventForm() {
   const t = useTranslations();
   const { push } = useRouter()
   const { id } = useParams<{ id: string }>()
-  
+
   return (
     <Container maxWidth="xl">
       <PresentationCard
@@ -24,8 +24,8 @@ export default function EventForm() {
         description={t('event.description')}
 
       >
-       
-        <GenericForm<Partial<IEvent>>
+
+        <GenericForm<{ event: Array<string> }>
           column={2}
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -33,7 +33,7 @@ export default function EventForm() {
           fields={fields as FormField[]}
           submitButtonText={t('core.button.save')}
           enableReinitialize
-          onCancel={() => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event`)}
+          onCancel={() => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff`)}
         />
       </PresentationCard>
     </Container>

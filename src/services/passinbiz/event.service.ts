@@ -28,10 +28,12 @@ export const fetchEvent = async (entityId: string, id: string): Promise<IEvent> 
    * @returns {Promise<ITrainer[]>}
    */
 export const deleteEvent = async (entityId: string, id: string, token: string): Promise<void> => {
-  await deleteDocument({
-    collection: `${collection.ENTITIES}/${entityId}/${collection.EVENT}`,
-    id
-  });
+  if (token) {
+    await deleteDocument({
+      collection: `${collection.ENTITIES}/${entityId}/${collection.EVENT}`,
+      id
+    });
+  }
 }
 
 
@@ -106,6 +108,29 @@ export async function updateEvent(data: Partial<IEvent>, token: string) {
   } catch (error: any) {
     throw new Error(error.message);
   }
+}
+
+
+export const searchEventsByStaff = async (staffId: string): Promise<IEvent[]> => {
+  const params: SearchParams = {
+    collection: `${collection.EVENT}`,
+    filters: [
+      {
+        field: 'assignedStaff',
+        value: staffId,
+        operator: 'array-contains'
+      }
+    ],
+    limit: 1000, // Adjust the limit as needed
+    orderBy: 'createdAt',
+    orderDirection: 'desc'
+  };
+
+  const result: IEvent[] = await searchFirestore({
+    ...params,
+  }, true);
+
+  return result;
 }
 
 

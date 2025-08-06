@@ -43,16 +43,14 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
         setEntityServiceList(serviceList.map(e => ({ ...e, isBillingActive: !!serviceSuscription.find(service => service.serviceId === e.id) })))
     }, [currentEntity?.entity.id])
 
-    const watchServiceAccess = async (serviceId: BizType) => {
+    const watchServiceAccess = useCallback( async (serviceId: BizType) => {
         const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
         const check = serviceSuscription.find(e => e.serviceId === serviceId && currentEntity?.entity.id === e.entityId)
         if (!check) {
             showToast('No tiene permiso para acceder a este recurso', 'info')
             push(`/${MAIN_ROUTE}/${serviceId}/onboarding`)
         }
-
-
-    }
+    },[currentEntity?.entity.id, push, showToast])
 
     const watchSesionState = useCallback(async (userAuth: User) => {
         if (userAuth) {
