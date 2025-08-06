@@ -1,17 +1,15 @@
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import DynamicKeyValueInput, { DynamicFields } from "@/components/common/forms/fields/DynamicKeyValueInput";
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
-
 import { emailRule, requiredRule } from '@/config/yupRules';
 import { createHolder, fetchHolder, updateHolder } from "@/services/passinbiz/holder.service";
 import { useToast } from "@/hooks/useToast";
 import { useRouter } from "nextjs-toploader/app";
-import { useAppTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
-import { GENERAL_ROUTE, MAIN_ROUTE } from "@/config/routes";
+import { MAIN_ROUTE } from "@/config/routes";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { search } from "@/services/passinbiz/event.service";
 import { FormField } from "@/components/common/forms/GenericForm";
@@ -125,7 +123,7 @@ export default function useHolderController() {
         "entityId": currentEntity?.entity?.id as string,
         "passStatus": "pending",
         "type": values.type,
-        "parentId":values.parentId ?? "",
+        "parentId": values.parentId ?? "",
         "isLinkedToUser": false,
         "metadata": {
           "auxiliaryFields": values.customFields
@@ -147,18 +145,17 @@ export default function useHolderController() {
   };
 
 
-  const fetchingEvent = () => {
+  const fetchingEvent = useCallback(() => {
     const params: any = []
     return search(currentEntity?.entity.id as string, { ...params, limit: 100 }).then(e => setEventList(e as Array<IEvent>))
 
-  }
+  }, [currentEntity?.entity.id])
 
 
   useEffect(() => {
     if (type === 'event') {
-      setFields([
-        ...fields,
-
+      setFields(prev => [
+        ...prev,
         {
           name: 'parentId',
           label: t('core.label.event'),
@@ -169,12 +166,12 @@ export default function useHolderController() {
         },
       ])
     } else {
-      setFields([...fields.filter(e => e.name !== 'parentId')])
+      setFields(prev => [...prev.filter(e => e.name !== 'parentId')])
     }
-  }, [type])
+  }, [eventList, t, type])
 
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const holder: Holder = await fetchHolder(currentEntity?.entity.id as string, id)
@@ -192,28 +189,22 @@ export default function useHolderController() {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
     }
-  }
+  }, [changeLoaderState, currentEntity?.entity.id, id, showToast, t])
 
   useEffect(() => {
     if (currentEntity?.entity.id && user?.id) {
       fetchingEvent()
       watchServiceAccess('passinbiz')
     }
-  }, [currentEntity?.entity.id, user?.id])
+  }, [currentEntity?.entity.id, fetchingEvent, user?.id, watchServiceAccess])
 
 
   useEffect(() => {
     if (currentEntity?.entity.id && user?.id && id)
       fetchData()
-
-  }, [currentEntity?.entity.id, user?.id, id])
-
-
-
-
-  //setFields(fieldsList as FormField[])
+  }, [currentEntity?.entity.id, user?.id, id, fetchData])
 
   return { fields, initialValues, validationSchema, submitForm }
 }
 
- 
+

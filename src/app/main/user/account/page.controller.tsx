@@ -138,7 +138,7 @@ export const useUserAccountController = () => {
             } else {
                 uri = values.avatar
             }
-            ({ show: true, args: { text: t('core.title.loaderAction') } })
+            changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             await updateAccout(uri, values.phone, values.name)
             updateUserData()
 

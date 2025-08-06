@@ -4,7 +4,7 @@ import { useToast } from "@/hooks/useToast"
 import { validateHolder, validateStaff } from "@/services/passinbiz/holder.service"
 import { useTranslations } from "next-intl"
 import { useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 interface IQRResult {
     "holderId": string
     "companyName": string
@@ -30,7 +30,7 @@ export const useQRScanner = () => {
     const [staffValid, setStaffValid] = useState(false)
 
 
-    const handleValidateStaff = async () => {
+    const handleValidateStaff = useCallback(async () => {
         try {
             setStaffValidating(true)
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
@@ -41,12 +41,12 @@ export const useQRScanner = () => {
             setStaffValidating(false)
             setStaffValid(true)
         } catch (error: any) {
-            changeLoaderState({ show: false })          
+            changeLoaderState({ show: false })
             showToast(error.message, 'error')
             setStaffValidating(false)
             setStaffValid(false)
         }
-    }
+    }, [changeLoaderState, showToast, t, tokenBase64])
 
 
     const validateData = async (data: any) => {
@@ -86,7 +86,7 @@ export const useQRScanner = () => {
 
     useEffect(() => {
         if (tokenBase64) handleValidateStaff()
-    }, [tokenBase64])
+    }, [handleValidateStaff, tokenBase64])
 
 
 

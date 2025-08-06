@@ -202,16 +202,14 @@ export default function useHolderListController() {
   useEffect(() => {
     setCurrentPage(0)
     const paramsData = { ...params, startAfter: null, limit: rowsPerPage }
-
     if (sort.field && sort.order)
       Object.assign(paramsData, {
         orderBy: sort.field,
         orderDirection: sort.order,
       })
-
     setParams({ ...paramsData })
     setAtStart(true)
-  }, [rowsPerPage, sort])
+  }, [params, rowsPerPage, sort])
 
   const onFilter = () => {
     const filterData: Array<{ field: string, operator: string, value: any }> = []
@@ -270,7 +268,7 @@ export default function useHolderListController() {
   const [isUploading, setIsUploading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const handleUploadConfirm = async (file: File, previewData: string) => {
+  const handleUploadConfirm = async (file: File) => {
     try {
       setIsUploading(true)
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })

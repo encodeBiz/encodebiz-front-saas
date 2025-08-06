@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {  } from 'react';
 import {
     Box,
     Button,
@@ -14,23 +14,16 @@ import { Scanner } from '@yudiel/react-qr-scanner';
 import {
     CheckCircle,
     Error,
-    Download,
     Share,
     CopyAll
 } from '@mui/icons-material';
 import { PreviewContainer, ScannerContainer, StyledCard } from './QRScanner.style';
-//import { useGeolocation } from '@/hooks/useGeolocation';
 import { useTranslations } from 'next-intl';
 import { useQRScanner } from './QRScanner.controller';
 
 const QRScanner = () => {
     const { handleScan, handleError, resetScanner, scanRessult, staffValidating, staffValid, error } = useQRScanner()
     const t = useTranslations()
-
-    /* const { position, isLoading } = useGeolocation({
-        enableHighAccuracy: true,
-        timeout: 10000
-    }); */
 
 
 

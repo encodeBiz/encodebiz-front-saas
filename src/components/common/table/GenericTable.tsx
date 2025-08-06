@@ -11,16 +11,12 @@ import {
   Paper,
   Checkbox,
   TablePagination,
-  TextField,
-  InputAdornment,
   IconButton,
   Tooltip,
   Box,
   Typography
 } from '@mui/material';
 import {
-  Search as SearchIcon,
-  FilterList as FilterIcon,
   Delete as DeleteIcon,
   Edit as EditIcon
 } from '@mui/icons-material';
@@ -106,7 +102,6 @@ export function GenericTable<T extends Record<string, any>>({
   sort,
   onBack,
   onNext,
-  onSearch,
   rowAction = [],
   topFilter = <></>
 }: GenericTableProps<T>) {
@@ -117,7 +112,7 @@ export function GenericTable<T extends Record<string, any>>({
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [totalItems, setTotalItems] = useState(0);
-  const [searchText, setSearchText] = useState('');
+  const [searchText] = useState('');
 
   // Filter data based on search text
   const filteredData = useMemo(() => {
