@@ -9,7 +9,7 @@ import { db } from "../initializeApp";
 import { AddDocumentParams } from "@/domain/firebase/firestore";
  
 export const addDocument = async <T>(
-  params: AddDocumentParams<T>
+  params: AddDocumentParams
 ): Promise<DocumentReference<T>> => {
   const { collection: collectionName, data } = params;
   try {
@@ -26,7 +26,7 @@ export const addDocument = async <T>(
 };
 
 export const createDocumentWithId = async <T>(
-  params: AddDocumentParams<T>
+  params: AddDocumentParams
 ): Promise<DocumentReference<T>> => {
   const { collection: collectionName, id, data } = params;
 

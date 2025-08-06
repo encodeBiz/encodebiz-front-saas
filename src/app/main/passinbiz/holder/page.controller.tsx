@@ -268,13 +268,13 @@ export default function useHolderListController() {
   const [isUploading, setIsUploading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const handleUploadConfirm = async (file: File) => {
+  const handleUploadConfirm = async (file: File | null) => {
     try {
       setIsUploading(true)
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const form = new FormData();
       form.append('uid', user?.id as string);
-      form.append('csv', file);
+      form.append('csv', file as File);
       form.append('entityId', currentEntity?.entity.id as string);
       form.append('passStatus', 'pending');
       await importHolder(form, token)

@@ -18,7 +18,7 @@ export const updateDocument = async <T>(params: UpdateDocumentParams<T>): Promis
   }
 };
 
-export const setDocument = async <T>(params: SetDocumentParams<T>): Promise<DocumentReference<T>> => {
+export const setDocument = async <T>(params: SetDocumentParams): Promise<DocumentReference<T>> => {
   const { collection: collectionName, id, data, merge = true } = params;
 
   try {

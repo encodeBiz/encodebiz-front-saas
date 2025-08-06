@@ -19,7 +19,7 @@ import { useTranslations } from 'next-intl';
 interface ICSVUploadModal {
   open: boolean
   onClose: () => void
-  onConfirm: (file: File | null, previewData: any) => void
+  onConfirm: (file: File | null) => void
 }
 const CSVUploadModal = ({ open, onClose, onConfirm }: ICSVUploadModal) => {
   const [file, setFile] = useState<File | null>(null);
@@ -63,7 +63,7 @@ const CSVUploadModal = ({ open, onClose, onConfirm }: ICSVUploadModal) => {
   };
 
   const handleConfirm = () => {
-    onConfirm(file, previewData);
+    onConfirm(file);
     handleClose();
   };
 
