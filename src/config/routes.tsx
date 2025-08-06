@@ -2,15 +2,18 @@ import {
     Dashboard as DashboardIcon,
  
     ImageSearchOutlined,
-    CreditCardOff,
-    Person2TwoTone,
+    EventAvailable,
+    Security,
     Today,
+
+    Home,
+    Person2TwoTone,
     
-    Home
+
 } from '@mui/icons-material';
-import CreditScoreIcon from '@mui/icons-material/CreditScore';
+import Badge from '@mui/icons-material/Badge';
 import BusinessIcon from '@mui/icons-material/Business';
-import GroupIcon from '@mui/icons-material/Group';
+import BookOnline from '@mui/icons-material/BookOnline';
 
 export const MAIN_ROUTE = 'main'
 export const GENERAL_ROUTE = 'core'
@@ -21,7 +24,7 @@ export const CHECKINBIZ_MODULE_ROUTE = 'checkinbiz'
 
 const PASSINBIZ = [ {
     name: 'Holders',
-    icon: <GroupIcon />,
+    icon: <BookOnline />,
     link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/holder`,
     subMenu: []
 }, {
@@ -31,7 +34,7 @@ const PASSINBIZ = [ {
     subMenu: []
 }, {
     name: 'Staff',
-    icon: <Person2TwoTone />,
+    icon: <Security />,
     link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff`,
     subMenu: []
 }]
@@ -69,14 +72,14 @@ export const menuItemsServices = [{
 }, {
     id: 'checkinbiz',
     name: 'CheckinBiz',
-    icon: <CreditCardOff />,
+    icon: <EventAvailable />,
     link: `/${MAIN_ROUTE}/checkinbiz/onboarding`,
     subMenu: CHECKINBIZ
 },
 {
     id: 'passinbiz',
     name: 'PassinBiz',
-    icon: <CreditScoreIcon />,
+    icon: <Badge />,
     link: `/${MAIN_ROUTE}/passinbiz/onboarding`,
     subMenu: PASSINBIZ
 },

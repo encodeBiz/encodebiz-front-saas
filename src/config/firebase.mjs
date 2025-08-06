@@ -1,7 +1,7 @@
 //PROD
 
-
 export const firebaseConfig = {
+
   apiKey: "AIzaSyADQWsgPcrYiiVJveu8nslgpWtL-SFOZaQ",
   authDomain: "encodebiz-services.firebaseapp.com",
   projectId: "encodebiz-services",
