@@ -1,0 +1,117 @@
+import { useTranslations } from "next-intl";
+import { useEffect, useState } from 'react';
+import * as Yup from 'yup';
+import { useToast } from "@/hooks/useToast";
+import { useRouter } from "nextjs-toploader/app";
+import { useAuth } from "@/hooks/useAuth";
+import { useEntity } from "@/hooks/useEntity";
+import { MAIN_ROUTE } from "@/config/routes";
+import { fetchEvent, updateEvent } from "@/services/passinbiz/event.service";
+import { IEvent } from "@/domain/features/passinbiz/IEvent";
+import { useParams } from "next/navigation";
+import { useLayout } from "@/hooks/useLayout";
+import TransferList from "@/components/common/forms/fields/TransferListField/TransferListField";
+import { search } from "@/services/passinbiz/staff.service";
+import { IStaff } from "@/domain/features/passinbiz/IStaff";
+
+ 
+export default function useStaffController() {
+  const t = useTranslations();
+  const { showToast } = useToast()
+  const { push } = useRouter()
+  const { token, user } = useAuth()
+  const { id } = useParams<{ id: string }>()
+  const { currentEntity, watchServiceAccess } = useEntity()
+  const [staffList, setStaffList] = useState<Array<IStaff>>([])
+  const { changeLoaderState } = useLayout()
+  const [initialValues, setInitialValues] = useState<Partial<IEvent>>({
+    assignedStaff: [],
+  });
+
+  const validationSchema = Yup.object().shape({
+
+  });
+
+  const setDinamicDataAction = async (values: Partial<IEvent>) => {
+    try {
+      changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+      const data: Partial<IEvent> = {
+        "uid": user?.id as string,
+        "createdBy": user?.id as string,
+        "assignedStaff": values.assignedStaff || [],
+        "entityId": currentEntity?.entity?.id as string,
+        "id": id,
+      }
+      if (id) await updateEvent(data, token)
+      changeLoaderState({ show: false })
+      showToast(t('core.feedback.success'), 'success');
+      push(`/${MAIN_ROUTE}/passinbiz/event`)
+    } catch (error: any) {
+      changeLoaderState({ show: false })
+      showToast(error.message, 'error')
+    }
+  };
+
+
+  const fields = [
+    {
+      isDivider: true,
+      label: t('core.label.staff'),
+    },
+    {
+      name: 'assignedStaff',
+      label: t('core.label.staff'),
+      type: 'text',
+      required: false,
+      fullWidth: true,
+      options: [staffList.map(staff => ({ value: staff.id as string, label: `${staff.fullName} (${staff.email})` }))].flat(),
+      component: TransferList,
+      extraProps: {
+        leftTitle: t('core.label.availableStaff'),
+        rightTitle: t('core.label.selectedStaff'),
+      }
+    },
+  ];
+
+  const fetchData = async () => {
+
+    try {
+      changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+      const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, id)
+       
+      setInitialValues({
+        ...event
+      })
+      changeLoaderState({ show: false })
+    } catch (error: any) {
+      changeLoaderState({ show: false })
+      showToast(error.message, 'error')
+    }
+  }
+
+  const fetchStaffList = async () => {
+    try {
+      changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+      const staffList: IStaff[] = await search(currentEntity?.entity.id as string, { limit: 100 } as any)
+      setStaffList(staffList)
+      changeLoaderState({ show: false })
+    } catch (error: any) {
+      changeLoaderState({ show: false })
+      showToast(error.message, 'error')
+    }
+  }
+  useEffect(() => {
+    if (currentEntity?.entity.id && user?.id && id) {
+      fetchData()
+    }
+
+    if (currentEntity?.entity.id && user?.id) {
+      fetchStaffList()
+      watchServiceAccess('passinbiz')
+
+    }
+  }, [currentEntity?.entity.id, user?.id, id])
+
+
+  return { fields, initialValues, validationSchema, setDinamicDataAction, staffList }
+}

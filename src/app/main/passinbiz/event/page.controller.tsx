@@ -3,7 +3,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useToast } from "@/hooks/useToast";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { deleteEvent, search } from "@/services/passinbiz/event.service";
 import { useRouter } from "nextjs-toploader/app";
@@ -97,7 +97,7 @@ export default function useIEventListController() {
 
   ];
 
-  const fetchingData = () => {
+  const fetchingData = useCallback(() => {
     setLoading(true)
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
 
@@ -111,7 +111,7 @@ export default function useIEventListController() {
         if (!params.startAfter)
           setItemsHistory([...res])
         else
-          setItemsHistory([...itemsHistory, ...res])
+          setItemsHistory(prev => [...prev, ...res])
         setLoading(false)
       }
 
@@ -130,12 +130,12 @@ export default function useIEventListController() {
       setLoading(false)
     })
 
-  }
+  }, [params, rowsPerPage, currentEntity?.entity.id, showToast])
 
   useEffect(() => {
     if (params && currentEntity?.entity?.id)
       fetchingData()
-  }, [params, currentEntity?.entity?.id])
+  }, [params, currentEntity?.entity?.id, fetchingData])
 
   useEffect(() => {
     setCurrentPage(0)
@@ -165,7 +165,7 @@ export default function useIEventListController() {
   }
 
   const rowAction: Array<IRowAction> = [
-    { icon: <Person2 />, label: t('core.label.staff'), allowItem: (item: IEvent) => true, onPress: (item: IEvent) => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event/${item.id}/staff`) },
+    { icon: <Person2 />, label: t('core.label.staff'), allowItem: () => true, onPress: (item: IEvent) => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event/${item.id}/staff`) },
   ]
 
 

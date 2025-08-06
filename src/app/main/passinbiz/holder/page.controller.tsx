@@ -3,7 +3,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useToast } from "@/hooks/useToast";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
 import { importHolder, search, updateHolder } from "@/services/passinbiz/holder.service";
 import { RemoveDone, Search, Send } from "@mui/icons-material";
@@ -24,7 +24,7 @@ export default function useHolderListController() {
   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
   const [rowsPerPage, setRowsPerPage] = useState<number>(2); // Límite inicial
-  const [params, setParams] = useState<any>({filters: [], startAfter: null, limit: rowsPerPage });
+  const [params, setParams] = useState<any>({ filters: [], startAfter: null, limit: rowsPerPage });
   const [loading, setLoading] = useState<boolean>(true);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false)
@@ -54,7 +54,7 @@ export default function useHolderListController() {
   ]
 
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
-  
+
     <Select sx={{ minWidth: 120, height: 55 }}
       value={filter.state}
       defaultValue={'all'}
@@ -150,12 +150,11 @@ export default function useHolderListController() {
     },
   ];
 
-  const fetchingData = () => {
+
+  const fetchingData = useCallback(() => {
     setLoading(true)
     if (params.filters.find((e: any) => e === 'state' && e.value === 'all'))
       params.filters = params.filters.filter((e: any) => e.field !== 'state')
-
-    console.log({ ...params, limit: rowsPerPage });
 
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
       if (res.length < rowsPerPage || res.length === 0)
@@ -168,7 +167,7 @@ export default function useHolderListController() {
         if (!params.startAfter)
           setItemsHistory([...res])
         else
-          setItemsHistory([...itemsHistory, ...res])
+          setItemsHistory(prev => [...prev, ...res])
         setLoading(false)
       }
 
@@ -187,19 +186,18 @@ export default function useHolderListController() {
       setLoading(false)
     })
 
-  }
+  }, [params, rowsPerPage, currentEntity?.entity.id, showToast]);
 
   useEffect(() => {
     if (currentEntity?.entity?.id) {
       watchServiceAccess('passinbiz')
     }
-  }, [currentEntity?.entity?.id])
+  }, [currentEntity?.entity?.id, watchServiceAccess])
 
   useEffect(() => {
-    if (params && currentEntity?.entity?.id) {
+    if (params && currentEntity?.entity?.id)
       fetchingData()
-    }
-  }, [params, currentEntity?.entity?.id])
+  }, [params, currentEntity?.entity?.id, fetchingData])
 
   useEffect(() => {
     setCurrentPage(0)
@@ -299,7 +297,7 @@ export default function useHolderListController() {
     atStart, handleUploadConfirm, isUploading,
     onSearch, onNext, onBack,
     pagination, currentPage, modalOpen, setModalOpen,
-    columns, rowAction, setSort, sort,total,
+    columns, rowAction, setSort, sort, total,
     loading, rowsPerPage, setRowsPerPage, onRevoke, revoking, onSend
   }
 
