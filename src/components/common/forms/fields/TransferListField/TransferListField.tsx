@@ -44,11 +44,6 @@ const TransferList = ({ name, leftTitle, rightTitle, options }: ITransferListPro
 
   const [loaded, setLoaded] = useState(false)
 
-  /*
-  React.useEffect(() => {
-    setLeft(options);
-  }, [options, options.length]);
-  */
 
   React.useEffect(() => {
     setLeftChecked(intersection(checked, left))

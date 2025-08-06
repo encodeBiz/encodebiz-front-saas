@@ -78,7 +78,8 @@ export default function useStaffController() {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, id)
-
+      const staffList: IStaff[] = await search(currentEntity?.entity.id as string, { limit: 100 } as any)
+      setStaffList(staffList)
       setInitialValues({
         ...event
       })
@@ -89,28 +90,17 @@ export default function useStaffController() {
     }
   }, [changeLoaderState, currentEntity?.entity.id, id, showToast, t])
 
-  const fetchStaffList = useCallback(async () => {
-    try {
-      changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const staffList: IStaff[] = await search(currentEntity?.entity.id as string, { limit: 100 } as any)
-      setStaffList(staffList)
-      changeLoaderState({ show: false })
-    } catch (error: any) {
-      changeLoaderState({ show: false })
-      showToast(error.message, 'error')
-    }
-  }, [changeLoaderState, currentEntity?.entity.id, showToast, t])
+
   useEffect(() => {
     if (currentEntity?.entity.id && user?.id && id) {
       fetchData()
     }
 
     if (currentEntity?.entity.id && user?.id) {
-      fetchStaffList()
       watchServiceAccess('passinbiz')
 
     }
-  }, [currentEntity?.entity.id, user?.id, id, fetchData, fetchStaffList, watchServiceAccess])
+  }, [currentEntity?.entity.id, user?.id, id, fetchData, watchServiceAccess])
 
 
   return { fields, initialValues, validationSchema, setDinamicDataAction, staffList }

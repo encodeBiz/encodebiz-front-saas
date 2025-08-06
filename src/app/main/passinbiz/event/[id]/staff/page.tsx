@@ -19,7 +19,7 @@ export default function EventForm() {
     <Container maxWidth="xl">
       <PresentationCard
         title={t('staff.title')}
-        description={t('event.description')}
+        description={t('staff.description2')}
 
       >
        

@@ -68,8 +68,6 @@
       "empthy": "Nada que mostrar",
       "empthytext": "No existen elementos para mostrar en este momento"
     },
-
-  
     "label": {
       "filename": "Nombre de Archivo",
       "default": "Por defecto",
@@ -90,13 +88,13 @@
       "pending": "Pendiente",
       "revoke": "Revocar",
       "firstName": "Nombre",
-      "status": "Estado",  
-      "staff":"Personal de apoyo",
-      "draft":"Borrador",
+      "status": "Estado",
+      "staff": "Personal de apoyo",
+      "draft": "Borrador",
       "published": "Publicado",
       "archived": "Archivado",
-      "selectedStaff":"Personal de apoyo seleccionado",
-      "availableStaff":"Personal de apoyo disponible",
+      "selectedStaff": "Personal de apoyo seleccionado",
+      "availableStaff": "Personal de apoyo disponible",
       "sponsor": "Patrosinador",
       "ticketCapacity": "Capacidad",
       "date": "Fecha",
@@ -357,6 +355,7 @@
     "edit": "Editar",
     "import": "Importar",
     "description": "Rellene los campos para registrar el evento",
+    "description2": "Asocie o retire el personal de apoyo al evento",
     "deleteConfirmModalTitle": "Eliminar Evento",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el evento y todas sus configuraciones"
   },
@@ -366,6 +365,7 @@
     "add": "Adicionar",
     "edit": "Editar",
     "import": "Importar",
+    "description2": "Asocie o retire eventos al personal de apoyo",
     "description": "Rellene los campos para registrar el personal de apoyo",
     "deleteConfirmModalTitle": "Eliminar Personal de Apoyo",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el personal de apoyo y todas sus configuraciones"
