@@ -195,21 +195,22 @@ export default function useHolderListController() {
   }, [currentEntity?.entity?.id, watchServiceAccess])
 
   useEffect(() => {
-    if (params && currentEntity?.entity?.id)
+    console.log(params);
+    if (currentEntity?.entity?.id)
       fetchingData()
   }, [params, currentEntity?.entity?.id, fetchingData])
 
   useEffect(() => {
     setCurrentPage(0)
-    const paramsData = { ...params, startAfter: null, limit: rowsPerPage }
+    const paramsData = {startAfter: null, limit: rowsPerPage }
     if (sort.field && sort.order)
       Object.assign(paramsData, {
         orderBy: sort.field,
         orderDirection: sort.order,
       })
-    setParams({ ...paramsData })
+    setParams((prev: any) => ({ ...prev, ...paramsData }))
     setAtStart(true)
-  }, [params, rowsPerPage, sort])
+  }, [rowsPerPage, sort])
 
   const onFilter = () => {
     const filterData: Array<{ field: string, operator: string, value: any }> = []
