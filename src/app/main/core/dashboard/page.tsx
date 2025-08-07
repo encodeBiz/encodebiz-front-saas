@@ -55,14 +55,14 @@ export default function Dashboard() {
         },
         {
           id: '2',
-          title: "¿Cuanto me costará Encodebiz Sass?",
+          title: "¿Cuanto me costará EncodeBiz SaaS?",
           description: "Consultar los planes de cada producto",
           icon: <Cloud fontSize="small" />,
           tabContent: <>2</>
         },
         {
           id: '3',
-          title: "¿Como me puede ayudar Encodebiz Sass?",
+          title: "¿Como me puede ayudar EncodeBiz SaaS?",
           description: "Ver el video",
           icon: <Cloud fontSize="small" />,
           tabContent: <>3</>
