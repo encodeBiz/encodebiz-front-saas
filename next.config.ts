@@ -5,7 +5,7 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig: NextConfig = {    
         
     images: {
-        domains: ['lh3.googleusercontent.com','example.com','placehold.co','storage.googleapis.com'], // Add your image domains here
+        domains: ['lh3.googleusercontent.com','flagcdn.com','example.com','placehold.co','storage.googleapis.com'], // Add your image domains here
     },
 };
 
