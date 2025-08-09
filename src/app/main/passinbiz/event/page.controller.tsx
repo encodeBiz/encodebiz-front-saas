@@ -68,12 +68,7 @@ export default function useIEventListController() {
       id: 'name',
       label: t("core.label.name"),
       minWidth: 170,
-    },
-    {
-      id: 'description',
-      label: t("core.label.description"),
-      minWidth: 170,
-    },
+    },   
     {
       id: 'date',
       label: t("core.label.date"),
@@ -82,6 +77,11 @@ export default function useIEventListController() {
     {
       id: 'location',
       label: t("core.label.location"),
+      minWidth: 170,
+    },
+    {
+      id: 'address',
+      label: t("core.label.address"),
       minWidth: 170,
     },
     {
