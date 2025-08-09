@@ -52,7 +52,7 @@ export default function AdminLayout({
         }}
       >
         <Grid container spacing={3} sx={{ display: 'flex', minHeight: 'calc(100vh - 200px)', justifyContent: 'flex-start', alignItems: 'flex-start', padding:"24px" }}>
-          {pendAuth && <PageLoader message={t('core.title.loader')} type={'circular'} fullScreen={false} />}
+          {pendAuth && <PageLoader backdrop message={t('core.title.loader')} type={'circular'} fullScreen={false} />}
           {!pendAuth && children}
           <Onboarding />
         </Grid>

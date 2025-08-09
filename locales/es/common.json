@@ -206,6 +206,7 @@
     "upload": {
       "title": "Subir archico CSV",
       "btn": "Seleccionar archico",
+      "descFile":"Descargue el archivo de referencia",
       "desc": "Por favor seleccione un archivo CSV para previsualizar el contenido y seleccionarlo",
       "file": "Archivo",
       "preview": "Preview (first 5 rows)",

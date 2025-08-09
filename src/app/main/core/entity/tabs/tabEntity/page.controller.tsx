@@ -17,6 +17,7 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { requiredRule } from '@/config/yupRules';
 import { useLayout } from '@/hooks/useLayout';
+import IEntity from '@/domain/auth/IEntity';
 
 
 
@@ -217,20 +218,20 @@ export const useSettingEntityController = () => {
 
     const fetchData = useCallback(async () => {
         try {
-            await fetchEntity(currentEntity?.entity.id as string)
+            const entity: IEntity = await fetchEntity(currentEntity?.entity.id as string)
             setInitialValues({
-                uid: currentEntity?.entity?.id as string | "",
-                "name": currentEntity?.entity?.name as string | "",
-                "active": currentEntity?.entity?.active as boolean | true,
-                "street": currentEntity?.entity?.legal?.address.street as string | "",
-                "country": currentEntity?.entity?.legal?.address.country as string | "",
-                "city": currentEntity?.entity?.legal?.address.city as string | "",
-                "postalCode": currentEntity?.entity?.legal?.address.postalCode as string | "",
-                "taxId": currentEntity?.entity?.legal?.taxId as string | "",
-                "legalName": currentEntity?.entity?.legal?.legalName as string | "",
-                billingEmail: currentEntity?.entity?.billingEmail as string ?? user?.email as string ?? ''
+                uid: entity?.id as string | "",
+                "name": entity?.name as string | "",
+                "active": entity?.active as boolean | true,
+                "street": entity?.legal?.address.street as string | "",
+                "country": entity?.legal?.address.country as string | "",
+                "city": entity?.legal?.address.city as string | "",
+                "postalCode": entity?.legal?.address.postalCode as string | "",
+                "taxId": entity?.legal?.taxId as string | "",
+                "legalName": entity?.legal?.legalName as string | "",
+                billingEmail: entity?.billingEmail as string ?? user?.email as string ?? ''
             })
-            setCityList(country.find(e => e.name === currentEntity?.entity?.legal?.address.country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
+            setCityList(country.find(e => e.name === entity?.legal?.address.country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
         } catch (error) {
             if (error instanceof Error) {
                 showToast(error.message, 'error');
@@ -239,7 +240,8 @@ export const useSettingEntityController = () => {
             }
 
         }
-    }, [currentEntity?.entity?.active, currentEntity?.entity?.billingEmail, currentEntity?.entity.id, currentEntity?.entity?.legal?.address.city, currentEntity?.entity?.legal?.address.country, currentEntity?.entity?.legal?.address.postalCode, currentEntity?.entity?.legal?.address.street, currentEntity?.entity?.legal?.legalName, currentEntity?.entity?.legal?.taxId, currentEntity?.entity?.name, showToast, user?.email])
+    }, [currentEntity?.entity.id, showToast, user?.email])
+
     useEffect(() => {
         if (currentEntity?.entity.id)
             fetchData()
@@ -277,7 +279,7 @@ export const useSettingEntityController = () => {
     useEffect(() => {
         if (currentEntity?.entity?.createdAt)
             formatDate(currentEntity.entity.createdAt, t('locale'));
-    }, [currentEntity, t]);
+    }, [currentEntity?.entity.createdAt, t]);
 
 
 

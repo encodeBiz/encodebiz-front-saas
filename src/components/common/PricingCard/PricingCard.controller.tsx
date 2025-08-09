@@ -9,16 +9,14 @@ import { useLayout } from '@/hooks/useLayout';
 import { useTranslations } from 'next-intl';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useCommonModal } from '@/hooks/useCommonModal';
-export default function usePricingCardController(id: string, name: string, isContract: boolean, fromService: "passinbiz" | "checkinbiz") {
-    const { currentEntity, fetchSuscriptionEntity } = useEntity();
+export default function usePricingCardController(id: string, name: string, fromService: "passinbiz" | "checkinbiz") {
+    const { currentEntity, fetchSuscriptionEntity, entitySuscription } = useEntity();
     const { token } = useAuth()
     const [loadingGetPlan, setLoadingGetPlan] = useState(false);
     const { showToast } = useToast()
     const { changeLoaderState } = useLayout()
     const t = useTranslations()
     const { openModal } = useCommonModal()
-
-
 
     const subcribeAction = async () => {
         try {
@@ -74,7 +72,7 @@ export default function usePricingCardController(id: string, name: string, isCon
     }
 
     const watch = useCallback(() => {
-        const disabledPlan = !currentEntity || !currentEntity?.entity?.billingEmail || !currentEntity?.entity?.legal?.legalName || !currentEntity?.entity?.legal?.taxId || !currentEntity?.entity?.billinConfig?.payment_method
+        const disabledPlan = !currentEntity || !currentEntity?.entity?.billingEmail || !currentEntity?.entity?.legal?.legalName || !currentEntity?.entity?.legal?.taxId || !currentEntity?.entity?.billingConfig?.payment_method
         setLoadingGetPlan(disabledPlan)
         if (disabledPlan) openModal(CommonModalType.BILLING)
     }, [currentEntity, openModal, setLoadingGetPlan])
@@ -89,7 +87,7 @@ export default function usePricingCardController(id: string, name: string, isCon
             if (loadingGetPlan) {
                 watch()
             } else {
-                if (!isContract) {
+                if (entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length === 0) {
                     subcribeAction()
                 }
             }

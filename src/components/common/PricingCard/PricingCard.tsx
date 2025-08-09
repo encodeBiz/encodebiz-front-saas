@@ -52,25 +52,21 @@ const DangerButton = styled(GenericButton)(({ theme }) => ({
 
 export type PricingCardProps = IPlan & {
     fromService: BizType;
-    isContract: boolean;
+
 };
 
-export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, period, isContract, features, featured = false, fromService }) => {
+export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, period, features, featured = false, fromService }) => {
     const t = useTranslations();
-    const { ubSubcribeAction, handleSubscripe } = usePricingCardController(id as string, name as string, isContract, fromService);
+    const { ubSubcribeAction, handleSubscripe } = usePricingCardController(id as string, name as string, fromService);
     const { push } = useRouter()
     const { open, closeModal } = useCommonModal()
-
-
+    const { entitySuscription } = useEntity()
 
     return (<>
         <PlanCard featured={String(featured)}>
             {featured && (
                 <FeaturedBadge>{t("salesPlan.popular")}</FeaturedBadge>
             )}
-
-
-
             <CardContent sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
                 <span>
                     <Typography
@@ -104,21 +100,20 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
                     </List>
                 </span>
                 <BaseButton
-
                     fullWidth
                     variant="contained"
                     onClick={handleSubscripe}
                     disabled={false}
 
                 >
-                    {!isContract ? t("salesPlan.pay") : t("salesPlan.contract")}
+                    {entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length > 0 ? t("salesPlan.contract") : t("salesPlan.pay")}
                 </BaseButton>
 
-                {isContract && <DangerButton
+                {entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length > 0 && <DangerButton
                     fullWidth
                     variant="contained"
                     onClick={() => {
-                        if (isContract) {
+                        if (entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length > 0) {
                             ubSubcribeAction()
                         }
                     }}
