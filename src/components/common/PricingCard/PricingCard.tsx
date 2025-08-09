@@ -40,7 +40,7 @@ const FeaturedBadge = styled(Box)(({ theme }) => ({
     fontWeight: 'bold',
 }));
 
- 
+
 
 const DangerButton = styled(GenericButton)(({ theme }) => ({
     marginBottom: 0,
@@ -57,19 +57,11 @@ export type PricingCardProps = IPlan & {
 
 export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, period, isContract, features, featured = false, fromService }) => {
     const t = useTranslations();
-    const { subcribeAction, loadingGetPlan, setLoadingGetPlan, ubSubcribeAction } = usePricingCardController(id as string, fromService);
-    const { currentEntity } = useEntity();
+    const { ubSubcribeAction, handleSubscripe } = usePricingCardController(id as string, name as string, isContract, fromService);
     const { push } = useRouter()
-    const { open, openModal, closeModal } = useCommonModal()
+    const { open, closeModal } = useCommonModal()
 
-    const watch = useCallback(() => {
-        const disabledPlan = !currentEntity || !currentEntity?.entity?.billingEmail || !currentEntity?.entity?.legal?.legalName || !currentEntity?.entity?.legal?.taxId || !currentEntity?.entity?.billinConfig?.payment_method
-        setLoadingGetPlan(disabledPlan)
-        if (disabledPlan) openModal(CommonModalType.BILLING)
-    }, [currentEntity, openModal, setLoadingGetPlan])
-    useEffect(() => {
-        watch()
-    }, [currentEntity?.entity?.id, watch]);
+
 
     return (<>
         <PlanCard featured={String(featured)}>
@@ -115,19 +107,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
 
                     fullWidth
                     variant="contained"
-                    onClick={() => {
-                        if (name === 'freemium') {
-                            subcribeAction()
-                        } else {
-                            if (loadingGetPlan) {
-                                watch()
-                            } else {
-                                if (!isContract) {
-                                    subcribeAction()
-                                }
-                            }
-                        }
-                    }}
+                    onClick={handleSubscripe}
                     disabled={false}
 
                 >
