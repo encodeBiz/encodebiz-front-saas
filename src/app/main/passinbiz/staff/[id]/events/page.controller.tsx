@@ -76,7 +76,7 @@ export default function useStaffController() {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
     }
-  };
+  }; 
 
 
   const fields = [

@@ -77,12 +77,14 @@ export default function useStaffController() {
 
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, id)
-      const staffList: IStaff[] = await search(currentEntity?.entity.id as string, { limit: 100 } as any)
-      setStaffList(staffList)
+      const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, id)     
+      
       setInitialValues({
         ...event
       })
+
+       const staffList: IStaff[] = await search(currentEntity?.entity.id as string, { limit: 100 } as any)
+      setStaffList(staffList)
       changeLoaderState({ show: false })
     } catch (error: any) {
       changeLoaderState({ show: false })
