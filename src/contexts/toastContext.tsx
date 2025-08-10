@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 import React, { createContext, useState, useRef, useCallback } from 'react';
 import { Snackbar, Alert, AlertColor } from '@mui/material';
@@ -29,7 +30,7 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
             setMessageInfo(newToast);
             setOpen(true);
         }
-    }, [open]);
+    }, []);
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
@@ -42,12 +43,10 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
     return (
         <ToastContext.Provider value={{ showToast }}>
             {children}
-            <Snackbar
-                key={messageInfo?.key}
+            <Snackbar                 
                 open={open}
                 autoHideDuration={6000}
                 onClose={handleClose}
-
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
             >
                 <Alert

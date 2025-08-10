@@ -40,8 +40,8 @@ interface IEntity {
       country: string;
     };
   };
-  billinConfig: {
-    payment_method: string
+  billingConfig: {
+    payment_method: Array<string>
   }
   updatedAt: Date;
 }

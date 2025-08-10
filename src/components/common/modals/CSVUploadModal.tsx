@@ -16,6 +16,9 @@ import {
 } from '@mui/material';
 import { CloudUpload } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+// Use public URL for static assets in Next.js
+const HOLDER_USUARIOS_TYPE_CREDENTIAL_URL = '/holder_usuarios_type_credential.csv';
 interface ICSVUploadModal {
   open: boolean
   onClose: () => void
@@ -51,7 +54,7 @@ const CSVUploadModal = ({ open, onClose, onConfirm }: ICSVUploadModal) => {
     for (let i = 1; i <= previewRowCount; i++) {
       if (lines[i].trim() === '') continue;
       const values = lines[i].split(',');
-      const row: Record<string,any> = {};
+      const row: Record<string, any> = {};
       headers.forEach((header: string, index: number) => {
         row[header] = values[index] ? values[index].trim() : '';
       });
@@ -99,6 +102,10 @@ const CSVUploadModal = ({ open, onClose, onConfirm }: ICSVUploadModal) => {
             </label>
             <Typography variant="body2" style={{ marginTop: '10px' }}>
               {t('core.upload.desc')}
+              <br/>
+              <Link href={HOLDER_USUARIOS_TYPE_CREDENTIAL_URL} download>
+                {t('core.upload.descFile')}
+              </Link>
             </Typography>
           </div>
         ) : (

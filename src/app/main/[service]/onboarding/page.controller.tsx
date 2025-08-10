@@ -23,7 +23,7 @@ export default function useDashboardController() {
     billingEmail: currentEntity?.entity?.billingEmail ?? "",
     legalName: currentEntity?.entity?.legal?.legalName ?? "",
     taxId: currentEntity?.entity?.legal?.taxId ?? "",
-    billinConfig: !!currentEntity?.entity?.billinConfig?.payment_method
+    billingConfig: !!currentEntity?.entity?.billingConfig?.payment_method
   });
 
 
@@ -94,13 +94,13 @@ export default function useDashboardController() {
         billingEmail: currentEntity.entity.billingEmail ?? "",
         legalName: currentEntity.entity.legal?.legalName ?? "",
         taxId: currentEntity.entity.legal?.taxId ?? "",
-        billinConfig: !!currentEntity?.entity?.billinConfig?.payment_method
+        billingConfig: !!currentEntity?.entity?.billingConfig?.payment_method
       })
     }
   }, [currentEntity]);
 
   useEffect(() => {
-    if (dataEntity.billingEmail === "" || dataEntity.legalName === "" || dataEntity.taxId === "" || !dataEntity.billinConfig) {
+    if (dataEntity.billingEmail === "" || dataEntity.legalName === "" || dataEntity.taxId === "" || !dataEntity.billingConfig) {
       setnotGetPlan(true);
     } else {
       setnotGetPlan(false);

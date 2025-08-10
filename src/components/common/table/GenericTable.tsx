@@ -299,7 +299,7 @@ export function GenericTable<T extends Record<string, any>>({
                 </TableCell>
               ))}
 
-              {(onEdit || onDelete) && (
+              {(onEdit || onDelete || rowAction.length > 0) && (
                 <TableCell align="right">Actions</TableCell>
               )}
             </TableRow>

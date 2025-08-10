@@ -111,7 +111,7 @@ export async function updateEntity(
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,
+          token: `Bearer ${token}`,
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -140,7 +140,7 @@ export async function updateEntityBranding(
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,
+          token: `Bearer ${token}`,
         },
       });
       const response: any = await httpClientFetchInstance.post(
