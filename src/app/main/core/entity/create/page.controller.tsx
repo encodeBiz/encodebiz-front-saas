@@ -61,7 +61,7 @@ export const useRegisterController = () => {
     });
     const handleCreateEntity = async (values: EntityFormValues) => {
         try {
-            await createEntity(values, token)
+            await createEntity(values, token) 
             refrestList(user?.id as string)
             showToast(t('core.feedback.success'), 'success');
             push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
@@ -131,7 +131,7 @@ export const useRegisterController = () => {
             component: SelectInput,
             options: cityList
         },
-         
+
         {
             name: 'postalCode',
             label: t('core.label.postalCode'),

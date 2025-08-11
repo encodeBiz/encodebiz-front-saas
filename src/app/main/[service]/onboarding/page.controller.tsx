@@ -16,16 +16,10 @@ export default function useDashboardController() {
   const { showToast } = useToast()
   const t = useTranslations()
   const { changeLoaderState } = useLayout()
-  const [notGetPlan, setnotGetPlan] = useState(false);
+ 
   const { currentEntity } = useEntity();
   const [planList, setPlanList] = useState<Array<IPlan>>()
-  const [dataEntity, setDataEntity] = useState({
-    billingEmail: currentEntity?.entity?.billingEmail ?? "",
-    legalName: currentEntity?.entity?.legal?.legalName ?? "",
-    taxId: currentEntity?.entity?.legal?.taxId ?? "",
-    billingConfig: !!currentEntity?.entity?.billingConfig?.payment_method
-  });
-
+ 
 
 
   const [pending, setPending] = useState(false)
@@ -88,24 +82,6 @@ export default function useDashboardController() {
   }, [user?.id, service, currentEntity?.entity.id, fetchServiceData])
 
 
-  useEffect(() => {
-    if (currentEntity) {
-      setDataEntity({
-        billingEmail: currentEntity.entity.billingEmail ?? "",
-        legalName: currentEntity.entity.legal?.legalName ?? "",
-        taxId: currentEntity.entity.legal?.taxId ?? "",
-        billingConfig: !!currentEntity?.entity?.billingConfig?.payment_method
-      })
-    }
-  }, [currentEntity]);
 
-  useEffect(() => {
-    if (dataEntity.billingEmail === "" || dataEntity.legalName === "" || dataEntity.taxId === "" || !dataEntity.billingConfig) {
-      setnotGetPlan(true);
-    } else {
-      setnotGetPlan(false);
-    }
-  }, [dataEntity]);
-
-  return { serviceData, pending, planList, notGetPlan }
+  return { serviceData, pending, planList }
 }

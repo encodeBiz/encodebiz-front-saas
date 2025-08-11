@@ -151,4 +151,6 @@ export const fileTypes = (t: any) => [
   { label: t('core.label.icon'), value: 'icon', size: { w: 26, h: 26, locked: true } },
   { label: t('core.label.icon2x'), value: 'icon2x', size: { w: 80, h: 80, locked: true } },
   { label: t('core.label.custom'), value: 'custom', size: { w: 0, h: 0, locked: false } },
+  { label: t('core.label.thumbnail'), value: 'thumbnail', size: { w: 612, h: 612, locked: true } },
+
 ]

@@ -101,6 +101,11 @@ const ImagePreview = ({
               backgroundColor: 'rgba(0, 0, 0, 0.5)',
               borderRadius: '50%',
               padding: '4px',
+              width: 40,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-around',
+              height: 40,
               ...getZoomIconPosition()
             }}
           >

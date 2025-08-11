@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const watchSesionState = useCallback(async (userAuth: User) => {
         try {
-
+           
             if (userAuth) {
                 updateUserData()
                 setToken(await userAuth.getIdToken())
@@ -104,7 +104,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 
     useEffect(() => {
-        console.log('watchSesionState');
         setPendAuth(true)
         const unsubscribe = subscribeToAuthChanges(watchSesionState);
         return () => unsubscribe(); // Cleanup on unmount

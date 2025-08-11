@@ -13,6 +13,7 @@ import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useRouter } from "nextjs-toploader/app";
 import { format_date } from "@/lib/common/Date";
+import ImagePreview from "@/components/common/ImagePreview";
 
 
 
@@ -24,7 +25,7 @@ export default function useHolderListController() {
   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
   const [rowsPerPage, setRowsPerPage] = useState<number>(2); // Límite inicial
-  const [params, setParams] = useState<any>({ filters: [], startAfter: null, limit: rowsPerPage });
+  const [params, setParams] = useState<any>({ filters: [{ field: 'passStatus', operator: '==', value: 'pending' }], startAfter: null, limit: rowsPerPage });
   const [loading, setLoading] = useState<boolean>(true);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false)
@@ -40,7 +41,7 @@ export default function useHolderListController() {
   const { push } = useRouter()
 
   const [sort, setSort] = useState<{ field: string, order: 'desc' | 'asc' }>({ field: 'createdAt', order: 'desc' })
-  const [filter, setFilter] = useState<any>({ state: 'all', email: '' });
+  const [filter, setFilter] = useState<any>({ passStatus: 'pending', type: 'all', email: '' });
 
   const rowAction: Array<IRowAction> = [
     { icon: <RemoveDone />, label: t('core.button.revoke'), allowItem: (item: Holder) => (item.passStatus === 'pending' || item.passStatus === 'active'), onPress: (item: Holder) => openModal(CommonModalType.DELETE, { data: item }) },
@@ -50,15 +51,35 @@ export default function useHolderListController() {
   const holderState = [
     { value: 'all', label: t('core.label.select') },
     { value: 'pending', label: t('holders.pending') },
-    { value: 'failed', label: t('holders.failed') }
+    { value: 'failed', label: t('holders.failed') },
+    { value: 'active', label: t('holders.active') },
+    { value: 'revoked', label: t('holders.revoked') }
+  ]
+
+  const holderType = [
+    { value: 'all', label: t('core.label.select') },
+    { value: 'event', label: t('core.label.event') },
+    { value: 'credential', label: t('core.label.credential') },
+
   ]
 
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
 
     <Select sx={{ minWidth: 120, height: 55 }}
-      value={filter.state}
+      value={filter.type}
       defaultValue={'all'}
-      onChange={(e: any) => setFilter({ ...filter, state: e.target.value })}  >
+      onChange={(e: any) => setFilter({ ...filter, type: e.target.value })}  >
+      {holderType.map((option) => (
+        <MenuItem key={option.value} value={option.value}>
+          {option.label}
+        </MenuItem>
+      ))}
+    </Select>
+
+    <Select sx={{ minWidth: 120, height: 55 }}
+      value={filter.passStatus}
+      defaultValue={'pending'}
+      onChange={(e: any) => setFilter({ ...filter, passStatus: e.target.value })}  >
       {holderState.map((option) => (
         <MenuItem key={option.value} value={option.value}>
           {option.label}
@@ -111,6 +132,19 @@ export default function useHolderListController() {
 
   const columns: Column<Holder>[] = [
     {
+      id: 'thumbnail',
+      label: t("core.label.thumbnail"),
+      minWidth: 170,
+      format: (value, row) => <ImagePreview
+        src={row.thumbnail}
+        alt=""
+        width={'80px'}
+        height={'80px'}
+        style={{ border: '1px solid #ddd' }}
+        zoomIconPosition="center"
+      />
+    },
+    {
       id: 'fullName',
       label: t("core.label.name"),
       minWidth: 170,
@@ -153,8 +187,13 @@ export default function useHolderListController() {
 
   const fetchingData = useCallback(() => {
     setLoading(true)
-    if (params.filters.find((e: any) => e === 'state' && e.value === 'all'))
-      params.filters = params.filters.filter((e: any) => e.field !== 'state')
+    if (params.filters.find((e: any) => e.field === 'passStatus' && e.value === 'all'))
+      params.filters = params.filters.filter((e: any) => e.field !== 'passStatus')
+    if (params.filters.find((e: any) => e.field === 'type' && e.value === 'all'))
+      params.filters = params.filters.filter((e: any) => e.field !== 'type')
+    if (params.filters.find((e: any) => e.field === 'email' && e.value === ''))
+      params.filters = params.filters.filter((e: any) => e.field !== 'email')
+
 
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
       if (res.length < rowsPerPage || res.length === 0)
@@ -195,14 +234,14 @@ export default function useHolderListController() {
   }, [currentEntity?.entity?.id, watchServiceAccess])
 
   useEffect(() => {
-    console.log(params);
+
     if (currentEntity?.entity?.id)
       fetchingData()
   }, [params, currentEntity?.entity?.id, fetchingData])
 
   useEffect(() => {
     setCurrentPage(0)
-    const paramsData = {startAfter: null, limit: rowsPerPage }
+    const paramsData = { startAfter: null, limit: rowsPerPage }
     if (sort.field && sort.order)
       Object.assign(paramsData, {
         orderBy: sort.field,
@@ -229,12 +268,12 @@ export default function useHolderListController() {
 
   const onRevoke = async (item: any) => {
     try {
-      console.log(item);
-
       setRevoking(true)
       const id = item.id
       await updateHolder({
         ...{} as any,
+        id: item.id,
+        entityId: currentEntity?.entity?.id,
         passStatus: 'revoked'
       }, token)
       setItemsHistory(itemsHistory.filter(e => e.id !== id))
@@ -253,6 +292,8 @@ export default function useHolderListController() {
       const id = item.id
       await updateHolder({
         ...{} as any,
+        id: item.id,
+        entityId: currentEntity?.entity?.id,
         passStatus: 'pending'
       }, token)
       setItemsHistory(itemsHistory.filter(e => e.id !== id))

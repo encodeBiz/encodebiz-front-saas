@@ -17,22 +17,9 @@ import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { useLayout } from "@/hooks/useLayout";
 import { useParams } from "next/navigation";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
+import ImageUploadInput from "@/components/common/forms/fields/ImageUploadInput";
 
-export interface HolderFormValues {
-  "fullName": string;
-  "email": string;
-  "phoneNumber": string;
-  "customFields"?: DynamicFields;
-  isLinkedToUser: boolean
-  type: "credential" | "event",
-  entityId: string
-  uid?: string
-  parentId?: string
-  passStatus?: string
-  metadata?: any
-  id?: string
-};
-
+ 
 export default function useHolderController() {
   const t = useTranslations();
   const { showToast } = useToast()
@@ -88,12 +75,23 @@ export default function useHolderController() {
       fullWidth: true,
       component: DynamicKeyValueInput,
     },
+
+    {
+      name: 'thumbnail',
+      label: t('core.label.thumbnail'),
+      type: 'thumbnail',
+      required: true,
+      component: ImageUploadInput,
+    },
   ])
-  const [initialValues, setInitialValues] = useState<HolderFormValues>({
+
+
+  const [initialValues, setInitialValues] = useState<Partial<Holder>>({
     fullName: "",
     email: "",
     phoneNumber: "",
     type: 'credential',
+    thumbnail: '',
     customFields: [],
     isLinkedToUser: true,
     entityId: currentEntity?.entity.id as string
@@ -113,9 +111,9 @@ export default function useHolderController() {
     phoneNumber: Yup.string().optional(),
   });
 
-  const submitForm = async (values: HolderFormValues) => {
+  const submitForm = async (values: Partial<Holder>) => {
     try {
-      const dataForm = {
+      const dataForm: Partial<Holder> = {
         "uid": user?.id as string,
         "fullName": values.fullName,
         "email": values.email,
@@ -123,6 +121,7 @@ export default function useHolderController() {
         "entityId": currentEntity?.entity?.id as string,
         "passStatus": "pending",
         "type": values.type,
+        "thumbnail": values.thumbnail,
         "parentId": values.parentId ?? "",
         "isLinkedToUser": false,
         "metadata": {
@@ -155,7 +154,7 @@ export default function useHolderController() {
   useEffect(() => {
     if (type === 'event') {
       setFields(prev => [
-        ...prev,
+        ...prev.filter(e => e.name !== 'thumbnail'),
         {
           name: 'parentId',
           label: t('core.label.event'),
@@ -166,7 +165,17 @@ export default function useHolderController() {
         },
       ])
     } else {
-      setFields(prev => [...prev.filter(e => e.name !== 'parentId')])
+      setFields(prev => [
+        ...prev.filter(e => e.name !== 'parentId'),
+        {
+          name: 'thumbnail',
+          label: t('core.label.thumbnail'),
+          type: 'thumbnail',
+          required: true,
+          component: ImageUploadInput,
+        }
+
+      ])
     }
   }, [eventList, t, type])
 
@@ -182,6 +191,7 @@ export default function useHolderController() {
         type: holder.type,
         customFields: holder.metadata?.auxiliaryFields ?? [],
         isLinkedToUser: holder.isLinkedToUser,
+        thumbnail: holder.thumbnail,
         entityId: currentEntity?.entity.id as string
       })
       changeLoaderState({ show: false })

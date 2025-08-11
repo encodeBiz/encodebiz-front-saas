@@ -36,9 +36,11 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     const { showToast } = useToast()
 
 
-    const fetchSuscriptionEntity = useCallback(async () => {
+    const fetchSuscriptionEntity = useCallback(async () => {       
+        
         const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
         setEntitySuscription(serviceSuscription)
+        console.log(serviceSuscription);
         const serviceList: Array<IService> = await fetchServiceList()
         setEntityServiceList(serviceList.map(e => ({ ...e, isBillingActive: !!serviceSuscription.find(service => service.serviceId === e.id) })))
     }, [currentEntity?.entity.id])
@@ -83,6 +85,8 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
     const refrestList = useCallback(async (userId: string) => {
         const entityList: Array<IUserEntity> = await fetchUserEntities(userId)
+        console.log(entityList);
+        
 
         if (entityList.length > 0) {
             if (entityList.length > 0 && entityList.filter(e => e.isActive).length === 0) {

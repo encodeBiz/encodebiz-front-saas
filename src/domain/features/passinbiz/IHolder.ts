@@ -1,6 +1,7 @@
 export interface Holder {
     id: string; // UUID o user.uid si está vinculado
     isLinkedToUser: boolean;
+    thumbnail: any
     userId?: string;              // Si está vinculado a un user del sistema
     fullName?: string;            // Solo si es externo
     email?: string;
@@ -14,4 +15,9 @@ export interface Holder {
     generatedBy?: string;         // userId del admin que lo generó
     metadata?: Record<string, any>;
     createdAt: string;
+    customFields?: any
+
+    entityId?:string
+    parentId?:string
+    uid?:string
 }

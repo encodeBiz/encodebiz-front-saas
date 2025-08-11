@@ -18,7 +18,7 @@ export type FormField = {
   name: string;
   typeUpload?: IUserMedia;
   label: string | React.ComponentType<any>;
-  type?: 'text' | 'email' | 'password' | 'number' | 'select' | 'checkbox' | 'date' | 'textarea';
+  type?: 'text' | 'email' | 'password' | 'number' | 'select' | 'checkbox' | 'date' | 'textarea' | string;
   required?: boolean;
   component: React.ComponentType<any>;
   options?: Array<{ value: any; label: string }>; // For select inputs
