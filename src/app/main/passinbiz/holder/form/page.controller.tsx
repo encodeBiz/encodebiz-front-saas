@@ -19,7 +19,7 @@ import { useParams } from "next/navigation";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
 import ImageUploadInput from "@/components/common/forms/fields/ImageUploadInput";
 
- 
+
 export default function useHolderController() {
   const t = useTranslations();
   const { showToast } = useToast()
@@ -31,7 +31,9 @@ export default function useHolderController() {
   const { changeLoaderState } = useLayout()
   const { id } = useParams<{ id: string }>()
 
-  const [fields, setFields] = useState<FormField[]>([
+
+
+  const [fields, setFields] = useState<any[]>([
     {
       name: 'fullName',
       label: t('core.label.fullName'),
@@ -63,17 +65,8 @@ export default function useHolderController() {
       ],
       component: SelectInput,
       onChange: (value: any) => {
-        setType(value)
+        onChangeType(value)
       }
-    },
-
-    {
-      name: 'customFields',
-      label: t('core.label.billingEmail'),
-      type: "text",
-      require: true,
-      fullWidth: true,
-      component: DynamicKeyValueInput,
     },
 
     {
@@ -83,6 +76,18 @@ export default function useHolderController() {
       required: true,
       component: ImageUploadInput,
     },
+    {
+      isDivider: true,
+      label: t('core.label.customFields'),
+    },
+    {
+      name: 'customFields',
+      label: t('core.label.billingEmail'),
+      type: "text",
+      require: true,
+      fullWidth: true,
+      component: DynamicKeyValueInput,
+    }
   ])
 
 
@@ -151,8 +156,9 @@ export default function useHolderController() {
   }, [currentEntity?.entity.id])
 
 
-  useEffect(() => {
-    if (type === 'event') {
+  const onChangeType = (typeValue: any) => {
+    setType(typeValue)
+    if (typeValue === 'event') {
       setFields(prev => [
         ...prev.filter(e => e.name !== 'thumbnail'),
         {
@@ -174,10 +180,9 @@ export default function useHolderController() {
           required: true,
           component: ImageUploadInput,
         }
-
       ])
     }
-  }, [eventList, t, type])
+  }
 
 
   const fetchData = useCallback(async () => {

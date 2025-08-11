@@ -25,7 +25,7 @@ export default function useHolderListController() {
   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
   const [rowsPerPage, setRowsPerPage] = useState<number>(2); // Límite inicial
-  const [params, setParams] = useState<any>({ filters: [{ field: 'passStatus', operator: '==', value: 'pending' }], startAfter: null, limit: rowsPerPage });
+  const [params, setParams] = useState<any>({ filters: [{ field: 'passStatus', operator: '==', value: 'active' }], startAfter: null, limit: rowsPerPage });
   const [loading, setLoading] = useState<boolean>(true);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false)
@@ -41,7 +41,7 @@ export default function useHolderListController() {
   const { push } = useRouter()
 
   const [sort, setSort] = useState<{ field: string, order: 'desc' | 'asc' }>({ field: 'createdAt', order: 'desc' })
-  const [filter, setFilter] = useState<any>({ passStatus: 'pending', type: 'all', email: '' });
+  const [filter, setFilter] = useState<any>({ passStatus: 'active', type: 'all', email: '' });
 
   const rowAction: Array<IRowAction> = [
     { icon: <RemoveDone />, label: t('core.button.revoke'), allowItem: (item: Holder) => (item.passStatus === 'pending' || item.passStatus === 'active'), onPress: (item: Holder) => openModal(CommonModalType.DELETE, { data: item }) },
@@ -153,15 +153,11 @@ export default function useHolderListController() {
       minWidth: 170,
       format: (value, row) => <Chip
         size="small"
-        label={row.passStatus}
+        label={t("core.label."+row.passStatus)}
         variant="outlined"
       />,
     },
-    {
-      id: 'failedFeedback',
-      label: t("core.label.message"),
-      minWidth: 170,
-    },
+   
     {
       id: 'createdAt',
       sortable: true,

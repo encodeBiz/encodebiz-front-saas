@@ -21,8 +21,8 @@ export default function HolderForm() {
       <PresentationCard
         title={id?t('holders.editHolder'):t('holders.addHolder')}
         description={t('holders.description')}
-
       >
+        {JSON.stringify(fields.map(e=>e.name))}
         <GenericForm<Partial<Holder>>
           column={2}
           initialValues={initialValues}

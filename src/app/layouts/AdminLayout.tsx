@@ -50,10 +50,10 @@ export default function AdminLayout({
             duration: theme.transitions.duration.leavingScreen,
           })
         }}
-      >
-        <Grid container spacing={3} sx={{ display: 'flex', minHeight: 'calc(100vh - 200px)', justifyContent: 'flex-start', alignItems: 'flex-start', padding:"24px" }}>
-          {pendAuth && <PageLoader backdrop message={t('core.title.loader')} type={'circular'} fullScreen={false} />}
-          {!pendAuth && children}
+      > 
+        <Grid container spacing={3} sx={{ display: 'flex',   minHeight: 'calc(100vh - 200px)', justifyContent: 'flex-start', alignItems: 'flex-start', padding:"24px" }}>
+          {pendAuth && <PageLoader width={drawerWidth} backdrop message={t('core.title.loader')} type={'circular'} fullScreen={false} />}
+          {children}
           <Onboarding />
         </Grid>
         <CustomFooter />

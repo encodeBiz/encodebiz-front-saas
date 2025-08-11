@@ -93,6 +93,7 @@
       "revoke": "Revocar",
       "firstName": "Nombre",
       "status": "Estado",
+      "customFields":"Campos personalizados",
       "staff": "Personal de apoyo",
       "draft": "Borrador",
       "published": "Publicado",
