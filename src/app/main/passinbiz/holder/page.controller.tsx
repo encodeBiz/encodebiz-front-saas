@@ -130,20 +130,7 @@ export default function useHolderListController() {
 
 
 
-  const columns: Column<Holder>[] = [
-    {
-      id: 'thumbnail',
-      label: t("core.label.thumbnail"),
-      minWidth: 170,
-      format: (value, row) => <ImagePreview
-        src={row.thumbnail}
-        alt=""
-        width={'80px'}
-        height={'80px'}
-        style={{ border: '1px solid #ddd' }}
-        zoomIconPosition="center"
-      />
-    },
+  const columns: Column<Holder>[] = [    
     {
       id: 'fullName',
       label: t("core.label.name"),
