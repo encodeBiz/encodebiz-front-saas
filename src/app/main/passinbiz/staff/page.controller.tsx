@@ -79,11 +79,11 @@ export default function useStaffListController() {
       id: 'role',
       label: t("core.label.role"),
       minWidth: 170,
-      format: (value) => t("core.label." + value)
+      format: (value) => !value?'':t("core.label." + value)
     },
     {
       id: 'allowedTypes',
-      label: t("core.label.allowedTypes"),
+      label: t("core.label.typeStaff"),
       minWidth: 170,
       format: (value) =>  value.join(', ')
     },

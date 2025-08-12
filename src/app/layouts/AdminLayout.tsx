@@ -44,14 +44,14 @@ export default function AdminLayout({
           // Margin top to clear the fixed AppBar
           mt: (theme) => `${theme.mixins.toolbar.minHeight}px`,
           // Adjust padding for drawer if it were permanent/persistent
-          ml: { sm: `${layoutState.openDraw ? drawerWidth : 0}px` }, // For persistent drawer
+          ml: { sm: `${pendAuth ? 0 : layoutState.openDraw ? drawerWidth : 0}px` }, // For persistent drawer
           transition: (theme) => theme.transitions.create('margin', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
           })
         }}
-      > 
-        <Grid container spacing={3} sx={{ display: 'flex',   minHeight: 'calc(100vh - 200px)', justifyContent: 'flex-start', alignItems: 'flex-start', padding:"24px" }}>
+      >
+        <Grid container spacing={3} sx={{ display: 'flex', minHeight: 'calc(100vh - 200px)', justifyContent: 'flex-start', alignItems: 'flex-start', padding: "24px" }}>
           {pendAuth && <PageLoader width={drawerWidth} backdrop message={t('core.title.loader')} type={'circular'} fullScreen={false} />}
           {children}
           <Onboarding />

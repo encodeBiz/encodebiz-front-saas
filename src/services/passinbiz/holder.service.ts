@@ -177,7 +177,7 @@ export async function validateHolder(data: any, tokenValidateStaff: string) {
     const httpClientFetchInstance: HttpClient = new HttpClient({
       baseURL: "",
       headers: {
-        'A': `Bearer ${tokenValidateStaff}`,
+        'authorization': `Bearer ${tokenValidateStaff}`,
       },
     });
     const response: any = await httpClientFetchInstance.post(
