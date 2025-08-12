@@ -13,14 +13,9 @@ import { useLayout } from "@/hooks/useLayout";
 import { useParams } from "next/navigation";
 import { createStaff, fetchStaff, updateStaff } from "@/services/passinbiz/staff.service";
 import { IStaff } from "@/domain/features/passinbiz/IStaff";
+import SelectInput from "@/components/common/forms/fields/SelectInput";
+import SelectMultipleInput from "@/components/common/forms/fields/SelectMultipleInput";
 
-export interface StaffFormValues {
-  "fullName": string;
-  "email": string;
-  entityId?: string
-  allowedTypes?: Array<string>;
-  id?: string
-};
 
 export default function useStaffController() {
   const t = useTranslations();
@@ -48,25 +43,55 @@ export default function useStaffController() {
       component: TextInput,
     },
 
+    {
+      name: 'role',
+      label: t('core.label.role'),
+      type: 'text',
+      required: true,
+      options: [
+        { value: 'root', label: t('core.label.root') },
+        { value: 'validator_event', label: t('core.label.validator_event') },
+        { value: 'validator_credential', label: t('core.label.validator_credential') }
+      ],
+      component: SelectInput,
+    },
+
+    {
+      name: 'allowedTypes',
+      label: t('core.label.typeStaff'),
+      type: 'text',
+      required: true,
+      options: [
+        { value: 'event', label: t('core.label.event') },
+        { value: 'credential', label: t('core.label.credential') }
+      ],
+      component: SelectMultipleInput,
+    },
+
+
   ])
-  const [initialValues, setInitialValues] = useState<StaffFormValues>({
+  const [initialValues, setInitialValues] = useState<Partial<IStaff>>({
     fullName: "",
     email: "",
+    role: "validator_credential",
+    allowedTypes: []
 
   });
 
   const validationSchema = Yup.object().shape({
     fullName: requiredRule(t),
     email: emailRule(t),
+    role: requiredRule(t),
   });
 
-  const submitForm = async (values: StaffFormValues) => {
+  const submitForm = async (values: Partial<IStaff>) => {
     try {
       const dataForm = {
         "fullName": values.fullName,
         "email": values.email,
         "entityId": currentEntity?.entity?.id as string,
-        allowedTypes: ['event'],
+        allowedTypes: values.allowedTypes,
+        role: values.role,
         id
       }
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
@@ -91,12 +116,12 @@ export default function useStaffController() {
   const fetchData = useCallback(async () => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const Staff: IStaff = await fetchStaff(currentEntity?.entity.id as string, id)
+      const staff: IStaff = await fetchStaff(currentEntity?.entity.id as string, id)
       setInitialValues({
-        fullName: Staff.fullName ?? "",
-        email: Staff.email ?? "",
-
-        entityId: currentEntity?.entity.id as string
+        fullName: staff.fullName ?? "",
+        email: staff.email ?? "",
+        entityId: currentEntity?.entity.id as string,
+        ...staff
       })
       changeLoaderState({ show: false })
     } catch (error: any) {

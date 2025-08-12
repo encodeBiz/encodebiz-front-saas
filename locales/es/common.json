@@ -155,7 +155,12 @@
       "name": "Nombre",
       "currentPassword": "Contraseña actual",
       "label": "Etiqueta",
-      "value": "Valor"
+      "value": "Valor",
+      "root":"Administrador",
+      "role":"Role",
+      "typeStaff":"Tipo de pase",
+      "validator_event":"Verificador de eventos",
+      "validator_credential":"Verificador de credenciales"
     },
     "button": {
       "revoke": "Revocar",

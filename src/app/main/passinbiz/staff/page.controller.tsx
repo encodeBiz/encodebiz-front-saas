@@ -74,7 +74,19 @@ export default function useStaffListController() {
       id: 'email',
       label: t("core.label.email"),
       minWidth: 170,
-    }
+    },
+    {
+      id: 'role',
+      label: t("core.label.role"),
+      minWidth: 170,
+      format: (value) => t("core.label." + value)
+    },
+    {
+      id: 'allowedTypes',
+      label: t("core.label.allowedTypes"),
+      minWidth: 170,
+      format: (value) =>  value.join(', ')
+    },
   ];
 
   const fetchingData = useCallback(() => {

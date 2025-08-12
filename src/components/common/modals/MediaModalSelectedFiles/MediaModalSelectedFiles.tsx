@@ -72,7 +72,20 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
   }
 
 
+  const renameFile = async (originalFile: File, newName: string) => {
+    // Get the file data
+    const buffer = await originalFile.arrayBuffer();
+
+    // Create new file with same data but new name
+    return new File([buffer], newName, {
+      type: originalFile.type,
+      lastModified: originalFile.lastModified
+    });
+  }
+
   const handleFile = useCallback(async (file: File) => {
+    const renameF = await renameFile(file, file.name)
+
     try {
       if (!file) return;
       setIsUploading(true);
@@ -80,8 +93,11 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
       form.append('entityId', currentEntity?.entity.id as string);
       form.append('uid', user?.id as string);
       form.append('type', selectedType);
-      form.append('file', file);
+      form.append('file', renameF);
       const mediaId = (await uploadMedia(form, token) as { mediaId: string })?.mediaId
+
+      console.log(mediaId);
+
       setSelectedFile(mediaId)
       fetchUserMedia()
       setIsUploading(false);
@@ -157,7 +173,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
                     disabled={!selectedType}
                   />
                 </Button>}
-              <FormControl required sx={{ width: '100%' }}>
+              {type === 'custom' && <FormControl required sx={{ width: '100%' }}>
                 <InputLabel id="demo-simple-select-required-label">{t('media.labelType')}</InputLabel>
                 <Select
                   style={{ minWidth: 100 }}
@@ -174,7 +190,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
                     </MenuItem>
                   ))}
                 </Select>
-              </FormControl>
+              </FormControl>}
             </Box>
           </Box>
 

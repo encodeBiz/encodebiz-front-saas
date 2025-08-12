@@ -7,13 +7,8 @@ import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
 import { useRouter } from 'nextjs-toploader/app';
 import { useParams } from 'next/navigation';
-
-export interface StaffFormValues {
-  "fullName": string;
-  "email": string;
-  
-};
-
+import { IStaff } from '@/domain/features/passinbiz/IStaff';
+ 
 export default function StaffForm() {
   const { fields, initialValues, validationSchema, submitForm } = useStaffController();
   const t = useTranslations();
@@ -26,7 +21,7 @@ export default function StaffForm() {
         title={id?t('staff.edit'):t('staff.add')}
         description={t('staff.description')}
       >
-        <GenericForm<StaffFormValues>
+        <GenericForm<Partial<IStaff>>
           column={2}
           initialValues={initialValues}
           validationSchema={validationSchema}
