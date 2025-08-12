@@ -41,13 +41,7 @@ const RecoveryPage = () => {
                     </Typography>
                 </Box>
 
-
-
-                <Divider sx={{ my: 3 }}>
-                    <Typography variant="body2" color="text.secondary">
-                        {t('core.recovery.or')}
-                    </Typography>
-                </Divider>
+ 
 
 
                 <GenericForm<RecoveryFormValues>

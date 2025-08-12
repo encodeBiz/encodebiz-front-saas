@@ -33,11 +33,9 @@ const ImageUploadInput = ({ name, label, ...props }: any & FieldProps & TextFiel
     validateField,
   } = useFormikContext();
 
-
   useEffect(() => {
     if (typeof field.value === 'string') setPreview(field.value)
   }, [field.value])
-
 
 
   const handleOnSelected = useCallback((file: IUserMedia) => {

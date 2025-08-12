@@ -8,7 +8,7 @@ import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
 import { useRouter } from 'nextjs-toploader/app';
 import { useParams } from 'next/navigation';
 import { Holder } from '@/domain/features/passinbiz/IHolder';
- 
+
 
 export default function HolderForm() {
   const { fields, initialValues, validationSchema, submitForm } = useHolderController();
@@ -19,10 +19,10 @@ export default function HolderForm() {
   return (
     <Container maxWidth="xl">
       <PresentationCard
-        title={id?t('holders.editHolder'):t('holders.addHolder')}
+        title={id ? t('holders.editHolder') : t('holders.addHolder')}
         description={t('holders.description')}
       >
-        {JSON.stringify(fields.map(e=>e.name))}
+
         <GenericForm<Partial<Holder>>
           column={2}
           initialValues={initialValues}

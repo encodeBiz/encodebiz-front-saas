@@ -165,7 +165,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
                   id="locale-switcher-select"
                   value={selectedType}
                   label={t('media.labelType')}
-                  disabled={isUploading}
+                  disabled={isUploading || type !== 'custom'}
                   onChange={(e) => setSelectedType(e.target.value as string)}
                 >
                   {fileTypes(t).map((item: { label: string, value: string }, i: number) => (

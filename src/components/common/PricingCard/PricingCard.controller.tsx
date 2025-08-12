@@ -1,7 +1,7 @@
 import { subscribeInSassProduct, unSubscribeInSassProduct } from '@/services/common/subscription.service';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
-import { useCallback, useEffect, useState } from 'react';
+import {  useState } from 'react';
 
 import { useToast } from '@/hooks/useToast';
 import { ISubscription, IUnSubscription } from '@/domain/auth/ISubscription';

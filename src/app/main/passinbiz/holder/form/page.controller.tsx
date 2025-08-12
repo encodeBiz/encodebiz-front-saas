@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from 'react';
-import DynamicKeyValueInput, { DynamicFields } from "@/components/common/forms/fields/DynamicKeyValueInput";
+import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { emailRule, requiredRule } from '@/config/yupRules';
@@ -12,7 +12,6 @@ import { useEntity } from "@/hooks/useEntity";
 import { MAIN_ROUTE } from "@/config/routes";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { search } from "@/services/passinbiz/event.service";
-import { FormField } from "@/components/common/forms/GenericForm";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { useLayout } from "@/hooks/useLayout";
 import { useParams } from "next/navigation";
@@ -26,7 +25,6 @@ export default function useHolderController() {
   const { push } = useRouter()
   const { token, user } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
-  const [type, setType] = useState()
   const [eventList, setEventList] = useState<Array<IEvent>>([])
   const { changeLoaderState } = useLayout()
   const { id } = useParams<{ id: string }>()
@@ -157,7 +155,6 @@ export default function useHolderController() {
 
 
   const onChangeType = (typeValue: any) => {
-    setType(typeValue)
     if (typeValue === 'event') {
       setFields(prev => [
         ...prev.filter(e => e.name !== 'thumbnail'),
