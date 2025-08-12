@@ -12,12 +12,11 @@ import { useEntity } from "@/hooks/useEntity";
 import { MAIN_ROUTE } from "@/config/routes";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { search } from "@/services/passinbiz/event.service";
-import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { useLayout } from "@/hooks/useLayout";
 import { useParams } from "next/navigation";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
 import ImageUploadInput from "@/components/common/forms/fields/ImageUploadInput";
-
+ 
 
 export default function useHolderController() {
   const t = useTranslations();
@@ -25,11 +24,9 @@ export default function useHolderController() {
   const { push } = useRouter()
   const { token, user } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
-  const [eventList, setEventList] = useState<Array<IEvent>>([])
   const { changeLoaderState } = useLayout()
   const { id } = useParams<{ id: string }>()
-
-
+ 
 
   const [fields, setFields] = useState<any[]>([
     {
@@ -37,6 +34,7 @@ export default function useHolderController() {
       label: t('core.label.fullName'),
       type: 'text',
       required: true,
+      fullWidth: true,
       component: TextInput,
     },
     {
@@ -57,6 +55,7 @@ export default function useHolderController() {
       label: t('core.label.typePass'),
       type: 'text',
       required: true,
+      fullWidth: true,
       options: [
         { value: 'credential', label: t('core.label.credencial') },
         { value: 'event', label: t('core.label.event') }
@@ -67,13 +66,7 @@ export default function useHolderController() {
       }
     },
 
-    {
-      name: 'thumbnail',
-      label: t('core.label.thumbnail'),
-      type: 'thumbnail',
-      required: true,
-      component: ImageUploadInput,
-    },
+
     {
       isDivider: true,
       label: t('core.label.customFields'),
@@ -85,7 +78,14 @@ export default function useHolderController() {
       require: true,
       fullWidth: true,
       component: DynamicKeyValueInput,
-    }
+    },
+    {
+      name: 'thumbnail',
+      label: t('core.label.thumbnail'),
+      type: 'thumbnail',
+      fullWidth: true,
+      component: ImageUploadInput,
+    },
   ])
 
 
@@ -147,26 +147,25 @@ export default function useHolderController() {
   };
 
 
-  const fetchingEvent = useCallback(() => {
-    const params: any = []
-    return search(currentEntity?.entity.id as string, { ...params, limit: 100 }).then(e => setEventList(e as Array<IEvent>))
-
-  }, [currentEntity?.entity.id])
 
 
-  const onChangeType = (typeValue: any) => {
+
+  const onChangeType = async (typeValue: any) => {
     if (typeValue === 'event') {
-      setFields(prev => [
-        ...prev.filter(e => e.name !== 'thumbnail'),
-        {
-          name: 'parentId',
-          label: t('core.label.event'),
-          type: 'text',
-          required: true,
-          options: [...eventList.map((e) => ({ value: e.id, label: e.name }))],
-          component: SelectInput,
-        },
+  
+      const eventList = await search(currentEntity?.entity.id as string, { ...{} as any, limit: 100 })
+      setFields(prev => [...prev.filter(e => e.name !== 'thumbnail'),
+      {
+        name: 'parentId',
+        label: t('core.label.event'),
+        type: 'text',
+        required: true,
+        fullWidth: true,
+        options: [... eventList.map((e) => ({ value: e.id, label: e.name }))],
+        component: SelectInput,
+      }
       ])
+
     } else {
       setFields(prev => [
         ...prev.filter(e => e.name !== 'parentId'),
@@ -175,9 +174,11 @@ export default function useHolderController() {
           label: t('core.label.thumbnail'),
           type: 'thumbnail',
           required: true,
+          fullWidth: true,
           component: ImageUploadInput,
         }
       ])
+
     }
   }
 
@@ -205,15 +206,16 @@ export default function useHolderController() {
 
   useEffect(() => {
     if (currentEntity?.entity.id && user?.id) {
-      fetchingEvent()
       watchServiceAccess('passinbiz')
     }
-  }, [currentEntity?.entity.id, fetchingEvent, user?.id, watchServiceAccess])
+  }, [currentEntity?.entity.id, user?.id, watchServiceAccess])
 
 
   useEffect(() => {
     if (currentEntity?.entity.id && user?.id && id)
       fetchData()
+
+    
   }, [currentEntity?.entity.id, user?.id, id, fetchData])
 
   return { fields, initialValues, validationSchema, submitForm }

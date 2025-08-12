@@ -46,12 +46,12 @@ const PageLoader: React.FC<PageLoaderProps> = ({
       color: theme.palette.text.secondary
     }),
     ...(!fullScreen && {
-      width: `calc(100vw - ${width ? width+40 : 200}px)`,
-      height: 'calc(100vh - 200px)',
+      width: `calc(100vw - ${width ? width : 200}px)`,
+      height: 'calc(100vh)',
       position: 'absolute',
-      zIndex: theme.zIndex.modal + 1,
-      borderRadius:2,
-      backgroundColor: backdrop ? 'rgba(0,0,0,0.3)' : theme.palette.background.default,
+      zIndex: theme.zIndex.modal - 1,
+    
+      backgroundColor: backdrop ? 'rgba(0,0,0,0.1)' : theme.palette.background.default,
       // zIndex: theme.zIndex.modal + 1
     })
   };
