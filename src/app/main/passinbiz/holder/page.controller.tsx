@@ -228,7 +228,6 @@ export default function useHolderListController() {
   }, [currentEntity?.entity?.id, watchServiceAccess])
 
   useEffect(() => {
-
     if (currentEntity?.entity?.id)
       fetchingData()
   }, [params, currentEntity?.entity?.id, fetchingData])
@@ -314,6 +313,7 @@ export default function useHolderListController() {
       form.append('entityId', currentEntity?.entity.id as string);
       form.append('passStatus', 'pending');
       await importHolder(form, token)
+      fetchingData()
       setIsUploading(false)
       changeLoaderState({ show: false })
     } catch (e: any) {
