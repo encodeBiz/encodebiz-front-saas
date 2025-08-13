@@ -13,7 +13,7 @@ import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useRouter } from "nextjs-toploader/app";
 import { format_date } from "@/lib/common/Date";
- 
+
 
 
 
@@ -23,7 +23,7 @@ export default function useHolderListController() {
   const { token, user } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
-  const [rowsPerPage, setRowsPerPage] = useState<number>(2); // Límite inicial
+  const [rowsPerPage, setRowsPerPage] = useState<number>(5); // Límite inicial
   const [params, setParams] = useState<any>({ filters: [{ field: 'passStatus', operator: '==', value: 'active' }], startAfter: null, limit: rowsPerPage });
   const [loading, setLoading] = useState<boolean>(true);
   const [atStart, setAtStart] = useState(true);
@@ -129,7 +129,7 @@ export default function useHolderListController() {
 
 
 
-  const columns: Column<Holder>[] = [    
+  const columns: Column<Holder>[] = [
     {
       id: 'fullName',
       label: t("core.label.name"),
@@ -150,13 +150,23 @@ export default function useHolderListController() {
       id: 'passStatus',
       label: t("core.label.state"),
       minWidth: 170,
+      format: (value, row) => <><Chip
+        size="small"
+        label={t("core.label." + row.passStatus)}
+        variant="outlined"
+      /> {row.passStatus === 'failed' ? row.failedFeedback : ''}</>,
+    },
+    {
+      id: 'type',
+      label: t("core.label.typePass"),
+      minWidth: 170,
       format: (value, row) => <Chip
         size="small"
-        label={t("core.label."+row.passStatus)}
+        label={t("core.label." + row.type)}
         variant="outlined"
       />,
     },
-   
+
     {
       id: 'createdAt',
       sortable: true,
@@ -177,7 +187,9 @@ export default function useHolderListController() {
       params.filters = params.filters.filter((e: any) => e.field !== 'email')
 
 
+
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
+
       if (res.length < rowsPerPage || res.length === 0)
         setAtEnd(true)
       else

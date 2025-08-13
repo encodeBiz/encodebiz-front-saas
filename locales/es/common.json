@@ -156,6 +156,7 @@
       "currentPassword": "Contraseña actual",
       "label": "Etiqueta",
       "value": "Valor",
+      "failed": "Fallo",
       "root":"Administrador",
       "role":"Role",
       "typeStaff":"Tipo de pase",

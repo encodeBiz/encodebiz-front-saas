@@ -42,19 +42,7 @@ export default function useStaffController() {
       required: true,
       component: TextInput,
     },
-
-    {
-      name: 'role',
-      label: t('core.label.role'),
-      type: 'text',
-      required: true,
-      options: [
-        { value: 'root', label: t('core.label.root') },
-        { value: 'validator_event', label: t('core.label.validator_event') },
-        { value: 'validator_credential', label: t('core.label.validator_credential') }
-      ],
-      component: SelectInput,
-    },
+    
 
     {
       name: 'allowedTypes',
@@ -91,7 +79,7 @@ export default function useStaffController() {
         "email": values.email,
         "entityId": currentEntity?.entity?.id as string,
         allowedTypes: values.allowedTypes,
-        role: values.role,
+        
         id
       }
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })

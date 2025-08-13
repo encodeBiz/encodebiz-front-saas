@@ -20,7 +20,7 @@ export default function useStaffListController() {
   const { token } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
-  const [rowsPerPage, setRowsPerPage] = useState<number>(2); // Límite inicial
+  const [rowsPerPage, setRowsPerPage] = useState<number>(5); // Límite inicial
   const [params, setParams] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [atStart, setAtStart] = useState(true);
