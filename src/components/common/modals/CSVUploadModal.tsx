@@ -26,7 +26,7 @@ interface ICSVUploadModal {
 }
 const CSVUploadModal = ({ open, onClose, onConfirm }: ICSVUploadModal) => {
   const [file, setFile] = useState<File | null>(null);
-  const [previewData, setPreviewData] = useState<any>({});
+  const [previewData, setPreviewData] = useState<any>([]);
   const [headers, setHeaders] = useState([]);
   const t = useTranslations()
   const handleFileChange = (event: any) => {
@@ -62,6 +62,7 @@ const CSVUploadModal = ({ open, onClose, onConfirm }: ICSVUploadModal) => {
     }
 
     setHeaders(headers);
+    if(data)
     setPreviewData(data);
   };
 
