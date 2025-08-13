@@ -52,9 +52,11 @@ export default function useHolderController() {
     endDate: requiredRule(t),
     location: requiredRule(t),
     address: requiredRule(t),
-    //imageUrl: requiredRule(t),
-    //colorPrimary: requiredRule(t),
-    //colorAccent: requiredRule(t),
+    imageUrl: requiredRule(t),
+    logoUrl: requiredRule(t),
+    template: requiredRule(t),
+    colorPrimary: requiredRule(t),
+    colorAccent: requiredRule(t),
   });
 
   const setDinamicDataAction = async (values: Partial<IEvent>) => {
@@ -147,34 +149,35 @@ export default function useHolderController() {
       name: 'colorPrimary',
       label: t('core.label.colorPrimary'),
       type: 'text',
-      required: false,
+      required: true,
       component: ColorPickerInput,
     }, {
       name: 'colorAccent',
       label: t('core.label.colorAccent'),
       type: 'text',
-      required: false,
+      required: true,
 
       component: ColorPickerInput,
     },
     {
       name: 'logoUrl',
       label: t('core.label.logo'),
-      required: false,
+      required: true,
       type: 'logo',
       component: ImageUploadInput,
     },
     {
       name: 'imageUrl',
       label: t('core.label.imageUrl'),
-      required: false,
+      required: true,
       type: 'stripImage',
       component: ImageUploadInput,
-    }, {
+    },
+    /* {
       name: 'template',
       label: t('core.label.template'),
       type: 'text',
-      required: false,
+      required: true,
       options: [
         { value: 'default', label: t('core.label.default') },
         { value: 'vip', label: t('core.label.vip') },
@@ -183,11 +186,12 @@ export default function useHolderController() {
       ],
       component: SelectInput,
 
-    }, {
+    },*/ {
       name: 'status',
       label: t('core.label.status'),
       type: 'text',
       required: false,
+       fullWidth: true,
       options: [
         { value: 'draft', label: t('core.label.draft') },
         { value: 'published', label: t('core.label.published') },
