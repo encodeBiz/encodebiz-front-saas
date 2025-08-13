@@ -32,7 +32,7 @@ export const useRegisterController = () => {
     const t = useTranslations()
     const { showToast } = useToast()
     const { user, token } = useAuth()
-    const { refrestList } = useEntity()
+    const { changeCurrentEntity } = useEntity()
     const { push } = useRouter()
     const [cityList, setCityList] = useState<any>([])
     const [initialValues, setInitialValues] = useState<EntityFormValues>({
@@ -61,10 +61,19 @@ export const useRegisterController = () => {
     });
     const handleCreateEntity = async (values: EntityFormValues) => {
         try {
-            await createEntity(values, token) 
-            refrestList(user?.id as string)
-            showToast(t('core.feedback.success'), 'success');
-            push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
+            const data: { entity: { id: string } } = await createEntity(values, token)
+ 
+            if (data.entity.id) {
+                changeCurrentEntity(data.entity.id, user?.id as string, () => {
+                    showToast(t('core.feedback.success'), 'success');
+                    push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
+                })
+            } else {
+                showToast(t('core.feedback.success'), 'success');
+                //push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
+
+            }
+
         } catch (error: any) {
             showToast(error.message, 'error')
         }

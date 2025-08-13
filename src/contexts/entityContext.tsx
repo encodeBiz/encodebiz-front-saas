@@ -18,7 +18,7 @@ interface EntityContextType {
     currentEntity: IUserEntity | undefined;
     entityList: Array<IUserEntity> | [];
     setCurrentEntity: (currentEntity: IUserEntity | undefined) => void;
-    changeCurrentEntity: (id: string, callback?: () => void) => void;
+    changeCurrentEntity: (id: string, userId: string, callback?: () => void) => void;
     refrestList: (userId: string) => void;
     entityServiceList: Array<IService>
     entitySuscription: Array<IEntitySuscription>
@@ -36,8 +36,8 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     const { showToast } = useToast()
 
 
-    const fetchSuscriptionEntity = useCallback(async () => {       
-        
+    const fetchSuscriptionEntity = useCallback(async () => {
+
         const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
         setEntitySuscription(serviceSuscription)
         console.log(serviceSuscription);
@@ -85,8 +85,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
     const refrestList = useCallback(async (userId: string) => {
         const entityList: Array<IUserEntity> = await fetchUserEntities(userId)
-        console.log(entityList);
-        
+
 
         if (entityList.length > 0) {
             if (entityList.length > 0 && entityList.filter(e => e.isActive).length === 0) {
@@ -102,8 +101,11 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     }, [push])
 
 
-    const changeCurrentEntity = async (id: string, callback?: () => void) => {
-        const current: IUserEntity = entityList.find(e => e.id === id) as IUserEntity
+    const changeCurrentEntity = async (id: string, userId: string, callback?: () => void) => {
+        const entityList: Array<IUserEntity> = await fetchUserEntities(userId)
+        console.log(entityList);
+        
+        const current: IUserEntity = entityList.find(e => e.entity.id === id) as IUserEntity
         if (current) {
             const updatedList: Array<IUserEntity> = []
             entityList.forEach(element => {
