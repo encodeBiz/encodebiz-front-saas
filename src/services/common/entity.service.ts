@@ -71,7 +71,7 @@ export async function saveStateCurrentEntity(
 
 
 
-export async function createEntity(data: EntityFormValues, token: string) {
+export async function createEntity(data: EntityFormValues  | any, token: string) {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");

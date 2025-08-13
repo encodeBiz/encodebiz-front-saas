@@ -2,7 +2,7 @@
 import React from 'react';
 import { TextFieldProps, MenuItem, Select, FormHelperText, FormControl, InputLabel } from '@mui/material';
 import { FieldProps, useField } from 'formik';
- 
+
 type SelectMultipleInputProps = FieldProps & TextFieldProps & {
   options: Array<{ value: any; label: string }>;
 };
@@ -19,7 +19,7 @@ const SelectMultipleInput: React.FC<SelectMultipleInputProps> = ({
 
 
   return (<FormControl required sx={{ width: '100%' }}>
-  
+
     <InputLabel id="demo-simple-select-required-label">{props.label}</InputLabel>
     <Select
       disabled={props.disabled}
@@ -27,11 +27,10 @@ const SelectMultipleInput: React.FC<SelectMultipleInputProps> = ({
       label={props.label}
       error={!!error}
       value={[...(field.value ?? [])]}
-
       onChange={(e: any) => {
         const value = e.target.value
         helper.setValue([...value])
-        if (typeof onChange === 'function') onChange(e.target.value)
+        if (typeof onChange === 'function') onChange(value)
       }}
     >
       {options.map((option) => (

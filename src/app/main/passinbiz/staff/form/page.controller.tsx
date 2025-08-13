@@ -15,6 +15,7 @@ import { createStaff, fetchStaff, updateStaff } from "@/services/passinbiz/staff
 import { IStaff } from "@/domain/features/passinbiz/IStaff";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import SelectMultipleInput from "@/components/common/forms/fields/SelectMultipleInput";
+import { search } from "@/services/passinbiz/event.service";
 
 
 export default function useStaffController() {
@@ -27,7 +28,7 @@ export default function useStaffController() {
   const { changeLoaderState } = useLayout()
   const { id } = useParams<{ id: string }>()
 
-  const [fields] = useState<FormField[]>([
+  const [fields, setFields] = useState<FormField[]>([
     {
       name: 'fullName',
       label: t('core.label.fullName'),
@@ -42,7 +43,7 @@ export default function useStaffController() {
       required: true,
       component: TextInput,
     },
-    
+
 
     {
       name: 'allowedTypes',
@@ -54,6 +55,9 @@ export default function useStaffController() {
         { value: 'credential', label: t('core.label.credential') }
       ],
       component: SelectMultipleInput,
+      onChange: (value: any) => {
+        onChangeType(value)
+      }
     },
 
 
@@ -72,6 +76,29 @@ export default function useStaffController() {
     role: requiredRule(t),
   });
 
+  const onChangeType = async (typeValue: Array<'credential' | 'event'>) => {
+    console.log(typeValue);
+    
+    if (typeValue.includes('event')) {
+      const eventList = await search(currentEntity?.entity.id as string, { ...{} as any, limit: 100 })
+      setFields(prev => [...prev,
+      {
+        name: 'eventList',
+        label: t('core.label.event'),
+        type: 'text',
+        required: true,
+        options: [...eventList.map(e => ({ label: e.name, value: e.id }))],
+        component: SelectMultipleInput,
+      }
+      ])
+
+    } else {
+      setFields(prev => [...prev.filter(e => e.name !== 'eventList')])
+
+    }
+  }
+
+
   const submitForm = async (values: Partial<IStaff>) => {
     try {
       const dataForm = {
@@ -79,7 +106,7 @@ export default function useStaffController() {
         "email": values.email,
         "entityId": currentEntity?.entity?.id as string,
         allowedTypes: values.allowedTypes,
-        
+
         id
       }
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })

@@ -7,10 +7,12 @@ import {
    Logout as LogoutIcon} from '@mui/icons-material';
 import { useRouter } from "nextjs-toploader/app";
 import { MAIN_ROUTE, USER_ROUTE } from "@/config/routes";
+import { useEntity } from "@/hooks/useEntity";
 
 export const useHeader = () => {
   const t = useTranslations();
   const { push } = useRouter()
+  const { cleanEntityContext } = useEntity()
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [showNotification] = useState(0)
@@ -36,7 +38,12 @@ export const useHeader = () => {
 
   const contextMenu = [
     { label: t('layout.header.profile'), icon: <AccountCircleIcon fontSize="small" />, action: () => { push(`/${MAIN_ROUTE}/${USER_ROUTE}/account`); handleMenuClose(); } },
-    { label: t('layout.header.logout'), icon: <LogoutIcon fontSize="small" />, action: () => { handleMenuClose(); handleLogout() } }
+    { label: t('layout.header.logout'), icon: <LogoutIcon fontSize="small" />, action: () => { 
+      handleMenuClose(); 
+      handleLogout(()=>{
+        cleanEntityContext()
+      })
+     } }
   ]
 
   return {

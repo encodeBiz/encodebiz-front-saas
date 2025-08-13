@@ -120,9 +120,10 @@ export async function fetchUserAccount(
 
 
 
-export async function handleLogout(): Promise<void> {
+export async function handleLogout(callback: () => void): Promise<void> {
     try {
         await logout()
+        if (typeof callback === 'function') callback()
     } catch (error: any) {
         throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
 

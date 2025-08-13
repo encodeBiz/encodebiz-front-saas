@@ -1,7 +1,7 @@
 import { subscribeInSassProduct, unSubscribeInSassProduct } from '@/services/common/subscription.service';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
-import {  useState } from 'react';
+import { useState } from 'react';
 
 import { useToast } from '@/hooks/useToast';
 import { ISubscription, IUnSubscription } from '@/domain/auth/ISubscription';
@@ -76,12 +76,12 @@ export default function usePricingCardController(id: string, name: string, fromS
 
     const handleSubscripe = () => {
         if (name === 'freemium') {
-            if (!currentEntity || !currentEntity?.entity?.billingEmail || !currentEntity?.entity?.legal?.legalName || !currentEntity?.entity?.legal?.taxId || !currentEntity?.entity?.branding)
-                openModal(CommonModalType.BILLING)
-            else
-                subcribeAction()
+            //if (!currentEntity || !currentEntity?.entity?.billingEmail || !currentEntity?.entity?.legal?.legalName || !currentEntity?.entity?.legal?.taxId || !currentEntity?.entity?.branding)
+            //    openModal(CommonModalType.BILLING)
+            //else
+            subcribeAction()
         } else {
-            if (!currentEntity || !currentEntity?.entity?.billingEmail || !currentEntity?.entity?.legal?.legalName  || !currentEntity?.entity?.legal?.taxId || !currentEntity?.entity?.legal?.taxId || !currentEntity?.entity?.branding|| !currentEntity?.entity?.billingConfig?.payment_method) {
+            if (!currentEntity || !currentEntity?.entity?.billingEmail || !currentEntity?.entity?.legal?.legalName || !currentEntity?.entity?.legal?.taxId || !currentEntity?.entity?.legal?.taxId || !currentEntity?.entity?.branding || !currentEntity?.entity?.billingConfig?.payment_method) {
                 openModal(CommonModalType.BILLING)
             } else {
                 if (entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length === 0) {

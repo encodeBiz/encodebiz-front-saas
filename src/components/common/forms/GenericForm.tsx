@@ -67,7 +67,7 @@ const GenericForm = <T extends Record<string, any>>({
     <Paper
       elevation={0}
       sx={{
-      
+
         width: '100%',
         ...formContainerProps?.sx,
       }}
@@ -86,12 +86,12 @@ const GenericForm = <T extends Record<string, any>>({
         enableReinitialize={enableReinitialize}
         validateOnBlur={true}
         validateOnChange={true}
-        
+
 
       >
         {(formikProps: FormikProps<T>) => (
           <Form noValidate>
-              {/*JSON.stringify(formikProps.errors)*/}
+            {/*JSON.stringify(formikProps.errors)*/}
             <Grid container spacing={3}>
               {fields.map((field, i) => {
                 const FieldComponent = field.component;
@@ -126,14 +126,17 @@ const GenericForm = <T extends Record<string, any>>({
                         helperText={isInvalid ? errorText : ''}
                         value={formikProps.values[field.name]}
                         onChange={(e: any) => {
-                          formikProps.handleChange(e)
+                          console.log(e);
+
+                          if (typeof formikProps.handleChange === 'function')
+                            formikProps.handleChange(e)
                           if (typeof field.onChange === 'function')
                             field.onChange(e)
                         }}
                         onBlur={formikProps.handleBlur}
                         options={field.options}
                         {...field.extraProps}
-                        
+
                       />
                     </Grid>
                   );

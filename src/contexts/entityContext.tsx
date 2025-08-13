@@ -24,6 +24,7 @@ interface EntityContextType {
     entitySuscription: Array<IEntitySuscription>
     fetchSuscriptionEntity: () => void
     watchServiceAccess: (serviceId: BizType) => void
+    cleanEntityContext: () => void
 
 }
 export const EntityContext = createContext<EntityContextType | undefined>(undefined);
@@ -37,7 +38,6 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
 
     const fetchSuscriptionEntity = useCallback(async () => {
-
         const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
         setEntitySuscription(serviceSuscription)
         console.log(serviceSuscription);
@@ -104,7 +104,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     const changeCurrentEntity = async (id: string, userId: string, callback?: () => void) => {
         const entityList: Array<IUserEntity> = await fetchUserEntities(userId)
         console.log(entityList);
-        
+
         const current: IUserEntity = entityList.find(e => e.entity.id === id) as IUserEntity
         if (current) {
             const updatedList: Array<IUserEntity> = []
@@ -125,6 +125,13 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }
 
+    const cleanEntityContext = async () => {
+        setCurrentEntity(undefined);
+        setEntityList([]);
+        setEntityServiceList([]);
+        setEntitySuscription([])
+    }
+
     useEffect(() => {
         const unsubscribe = subscribeToAuthChanges(watchSesionState);
         return () => unsubscribe();
@@ -138,7 +145,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
 
     return (
-        <EntityContext.Provider value={{ entityList, watchServiceAccess, fetchSuscriptionEntity, entitySuscription, entityServiceList, currentEntity, refrestList, setCurrentEntity, changeCurrentEntity }}>
+        <EntityContext.Provider value={{ entityList, cleanEntityContext, watchServiceAccess, fetchSuscriptionEntity, entitySuscription, entityServiceList, currentEntity, refrestList, setCurrentEntity, changeCurrentEntity }}>
             {children}
         </EntityContext.Provider>
     );
