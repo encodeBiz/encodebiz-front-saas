@@ -19,23 +19,23 @@ const SelectInput: React.FC<SelectInputProps> = ({
 
 
 
-  return (<FormControl required sx={{  width: '100%' }}>
-    
+  return (<FormControl required sx={{ width: '100%' }}>
+
     <InputLabel id="demo-simple-select-required-label">{props.label}</InputLabel>
     <Select
       disabled={props.disabled}
       label={props.label}
       error={!!error}
       value={field.value}
-      key={createSlug(field?.value??'')}      
+      key={createSlug(field?.value ?? '')}
       onChange={(e: any) => {
-         
+
         if (typeof onChange === 'function') onChange(e.target.value)
         helper.setValue(e.target.value)
       }}
     >
-      {options.map((option) => (
-        <MenuItem key={option.value} value={option.value}>
+      {options.map((option, index) => (
+        <MenuItem key={option.value + '-' + index} value={option.value}>
           {option.label}
         </MenuItem>
       ))}
