@@ -26,71 +26,77 @@ export default function useHolderController() {
   const { currentEntity, watchServiceAccess } = useEntity()
   const { changeLoaderState } = useLayout()
   const { id } = useParams<{ id: string }>()
-  const [fields, setFields] = useState<any[]>([])
+
+
+  const fieldList = [
+    {
+      name: 'fullName',
+      label: t('core.label.fullName'),
+      type: 'text',
+      required: true,
+      fullWidth: true,
+      component: TextInput,
+    },
+    {
+      name: 'email',
+      label: t('core.label.email'),
+      type: 'email',
+      required: true,
+      component: TextInput,
+    },
+    {
+      name: 'phoneNumber',
+      label: t('core.label.phone'),
+      type: 'text',
+      required: true,
+      component: TextInput,
+    }, {
+      name: 'type',
+      label: t('core.label.typePass'),
+      type: 'text',
+      required: true,
+      fullWidth: true,
+      options: [
+        { value: 'credential', label: t('core.label.credencial') },
+        { value: 'event', label: t('core.label.event') }
+      ],
+      component: SelectInput,
+      onChange: (value: any) => {
+        onChangeType(value)
+      }
+    },
+
+
+    {
+      isDivider: true,
+      label: t('core.label.customFields'),
+    },
+    {
+      name: 'customFields',
+      label: t('core.label.billingEmail'),
+      type: "text",
+      require: true,
+      fullWidth: true,
+      component: DynamicKeyValueInput,
+    },
+    {
+      name: 'thumbnail',
+      label: t('core.label.thumbnail'),
+      type: 'thumbnail',
+      fullWidth: true,
+      component: ImageUploadInput,
+    },
+  ]
+  const [loadForm, setLoadForm] = useState(false)
+  const [fields, setFields] = useState<any[]>([...fieldList])
 
   const inicializeField = () => {
-
-    setFields([
-      {
-        name: 'fullName',
-        label: t('core.label.fullName'),
-        type: 'text',
-        required: true,
-        fullWidth: true,
-        component: TextInput,
-      },
-      {
-        name: 'email',
-        label: t('core.label.email'),
-        type: 'email',
-        required: true,
-        component: TextInput,
-      },
-      {
-        name: 'phoneNumber',
-        label: t('core.label.phone'),
-        type: 'text',
-        required: true,
-        component: TextInput,
-      }, {
-        name: 'type',
-        label: t('core.label.typePass'),
-        type: 'text',
-        required: true,
-        fullWidth: true,
-        options: [
-          { value: 'credential', label: t('core.label.credencial') },
-          { value: 'event', label: t('core.label.event') }
-        ],
-        component: SelectInput,
-        onChange: (value: any) => {
-          onChangeType(value)
-        }
-      },
-
-
-      {
-        isDivider: true,
-        label: t('core.label.customFields'),
-      },
-      {
-        name: 'customFields',
-        label: t('core.label.billingEmail'),
-        type: "text",
-        require: true,
-        fullWidth: true,
-        component: DynamicKeyValueInput,
-      },
-      {
-        name: 'thumbnail',
-        label: t('core.label.thumbnail'),
-        type: 'thumbnail',
-        fullWidth: true,
-        component: ImageUploadInput,
-      },
-    ])
-
+    setFields(fieldList)
+    setLoadForm(true)
   }
+
+  if (currentEntity?.entity.id && !loadForm) inicializeField()
+
 
 
   const [initialValues, setInitialValues] = useState<Partial<Holder>>({
@@ -152,7 +158,6 @@ export default function useHolderController() {
   };
 
 
-if(currentEntity?.entity.id && fields.length==0) inicializeField()
 
 
   const onChangeType = async (typeValue: any) => {
@@ -220,10 +225,10 @@ if(currentEntity?.entity.id && fields.length==0) inicializeField()
     if (currentEntity?.entity.id && user?.id && id)
       fetchData()
 
-    
+
   }, [currentEntity?.entity.id, user?.id, id, fetchData])
 
-  
+
   return { fields, initialValues, validationSchema, submitForm }
 }
 
