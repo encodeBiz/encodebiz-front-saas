@@ -2,8 +2,7 @@
 import React from 'react';
 import { TextFieldProps, MenuItem, Select, FormHelperText, FormControl, InputLabel } from '@mui/material';
 import { FieldProps, useField } from 'formik';
-import { createSlug } from '@/lib/common/String';
-
+ 
 type SelectMultipleInputProps = FieldProps & TextFieldProps & {
   options: Array<{ value: any; label: string }>;
 };

@@ -8,8 +8,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useLayout } from '@/hooks/useLayout';
 import { Box, CssBaseline, Grid } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import CustomFooter from '@/components/layouts/CustomFooter/CustomFooter';
-
+ 
 const drawerWidth = 240; // Define the width of your drawer
 
 export default function AdminLayout({

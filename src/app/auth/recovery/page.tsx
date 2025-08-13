@@ -5,7 +5,6 @@ import {
     Container,
     Box,
     Typography,
-    Divider,
     Paper,
     Link
 } from '@mui/material';
