@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
@@ -16,7 +16,7 @@ import { useLayout } from "@/hooks/useLayout";
 import { useParams } from "next/navigation";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
 import ImageUploadInput from "@/components/common/forms/fields/ImageUploadInput";
- 
+
 
 export default function useHolderController() {
   const t = useTranslations();
@@ -26,67 +26,71 @@ export default function useHolderController() {
   const { currentEntity, watchServiceAccess } = useEntity()
   const { changeLoaderState } = useLayout()
   const { id } = useParams<{ id: string }>()
- 
+  const [fields, setFields] = useState<any[]>([])
 
-  const [fields, setFields] = useState<any[]>([
-    {
-      name: 'fullName',
-      label: t('core.label.fullName'),
-      type: 'text',
-      required: true,
-      fullWidth: true,
-      component: TextInput,
-    },
-    {
-      name: 'email',
-      label: t('core.label.email'),
-      type: 'email',
-      required: true,
-      component: TextInput,
-    },
-    {
-      name: 'phoneNumber',
-      label: t('core.label.phone'),
-      type: 'text',
-      required: true,
-      component: TextInput,
-    }, {
-      name: 'type',
-      label: t('core.label.typePass'),
-      type: 'text',
-      required: true,
-      fullWidth: true,
-      options: [
-        { value: 'credential', label: t('core.label.credencial') },
-        { value: 'event', label: t('core.label.event') }
-      ],
-      component: SelectInput,
-      onChange: (value: any) => {
-        onChangeType(value)
-      }
-    },
+  const inicializeField = () => {
+
+    setFields([
+      {
+        name: 'fullName',
+        label: t('core.label.fullName'),
+        type: 'text',
+        required: true,
+        fullWidth: true,
+        component: TextInput,
+      },
+      {
+        name: 'email',
+        label: t('core.label.email'),
+        type: 'email',
+        required: true,
+        component: TextInput,
+      },
+      {
+        name: 'phoneNumber',
+        label: t('core.label.phone'),
+        type: 'text',
+        required: true,
+        component: TextInput,
+      }, {
+        name: 'type',
+        label: t('core.label.typePass'),
+        type: 'text',
+        required: true,
+        fullWidth: true,
+        options: [
+          { value: 'credential', label: t('core.label.credencial') },
+          { value: 'event', label: t('core.label.event') }
+        ],
+        component: SelectInput,
+        onChange: (value: any) => {
+          onChangeType(value)
+        }
+      },
 
 
-    {
-      isDivider: true,
-      label: t('core.label.customFields'),
-    },
-    {
-      name: 'customFields',
-      label: t('core.label.billingEmail'),
-      type: "text",
-      require: true,
-      fullWidth: true,
-      component: DynamicKeyValueInput,
-    },
-    {
-      name: 'thumbnail',
-      label: t('core.label.thumbnail'),
-      type: 'thumbnail',
-      fullWidth: true,
-      component: ImageUploadInput,
-    },
-  ])
+      {
+        isDivider: true,
+        label: t('core.label.customFields'),
+      },
+      {
+        name: 'customFields',
+        label: t('core.label.billingEmail'),
+        type: "text",
+        require: true,
+        fullWidth: true,
+        component: DynamicKeyValueInput,
+      },
+      {
+        name: 'thumbnail',
+        label: t('core.label.thumbnail'),
+        type: 'thumbnail',
+        fullWidth: true,
+        component: ImageUploadInput,
+      },
+    ])
+
+  }
 
 
   const [initialValues, setInitialValues] = useState<Partial<Holder>>({
@@ -110,6 +114,7 @@ export default function useHolderController() {
       )
       .nullable(),
     fullName: requiredRule(t),
+    type: requiredRule(t),
     email: emailRule(t),
     phoneNumber: Yup.string().optional(),
   });
@@ -147,12 +152,12 @@ export default function useHolderController() {
   };
 
 
-
+if(currentEntity?.entity.id && fields.length==0) inicializeField()
 
 
   const onChangeType = async (typeValue: any) => {
+
     if (typeValue === 'event') {
-  
       const eventList = await search(currentEntity?.entity.id as string, { ...{} as any, limit: 100 })
       setFields(prev => [...prev.filter(e => e.name !== 'thumbnail'),
       {
@@ -161,7 +166,7 @@ export default function useHolderController() {
         type: 'text',
         required: true,
         fullWidth: true,
-        options: [... eventList.map((e) => ({ value: e.id, label: e.name }))],
+        options: [...eventList.map((e) => ({ value: e.id, label: e.name }))],
         component: SelectInput,
       }
       ])
@@ -218,6 +223,7 @@ export default function useHolderController() {
     
   }, [currentEntity?.entity.id, user?.id, id, fetchData])
 
+  
   return { fields, initialValues, validationSchema, submitForm }
 }
 
