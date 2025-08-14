@@ -3,6 +3,8 @@ export interface IStaff {
     fullName?: string;
     email?: string;
     entityId?: string;
-    allowedTypes: Array<string>;
+    allowedTypes:  Array<'credential' | 'event'>;
     role: "root" | "validator_event" | "validator_credential"
+
+    eventList?: Array<string>
 }

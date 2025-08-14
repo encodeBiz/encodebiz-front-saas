@@ -33,6 +33,7 @@ export const codeError: any = {
   "auth/missing-password":
     "Se requiere contraseña. Por favor, introduzca su contraseña.",
   "unavailable": "Servicio no disponible. Inténtalo de nuevo más tarde",
+  "staff/email_already_exists":"Ya existe un personal de apoyo con ese correo electronico "
 };
 
 /**

@@ -5,16 +5,18 @@ import { FieldProps, useField } from 'formik';
 
 type SelectMultipleInputProps = FieldProps & TextFieldProps & {
   options: Array<{ value: any; label: string }>;
+  onHandleChange: (value: any) => void
 };
 
 const SelectMultipleInput: React.FC<SelectMultipleInputProps> = ({
   options,
-  onChange,
+  onHandleChange,
   ...props
 }) => {
   const [field, meta, helper] = useField(props.name);
   const { touched, error } = meta
   const helperText = touched && error;
+
 
 
 
@@ -30,7 +32,8 @@ const SelectMultipleInput: React.FC<SelectMultipleInputProps> = ({
       onChange={(e: any) => {
         const value = e.target.value
         helper.setValue([...value])
-        if (typeof onChange === 'function') onChange(value)
+        if (typeof onHandleChange === 'function') onHandleChange(value)
+
       }}
     >
       {options.map((option) => (

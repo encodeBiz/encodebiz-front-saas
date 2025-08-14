@@ -44,14 +44,11 @@ export default function useStaffController() {
               id: event.id,
               entityId: event.entityId,
               assignedStaff: event.assignedStaff
-            }, token);
-            console.log('1');
-            console.log(event);
+            }, token);         
 
           }
         })
       );
-
 
       await Promise.all(
         initialValues.event.map(async (eventId) => {
@@ -63,8 +60,7 @@ export default function useStaffController() {
               entityId: event.entityId,
               assignedStaff: event.assignedStaff
             }, token);
-            console.log('2');
-            console.log(event);
+            
           }
         })
       );

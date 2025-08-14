@@ -16,6 +16,7 @@ import { useLayout } from "@/hooks/useLayout";
 import { useParams } from "next/navigation";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
 import ImageUploadInput from "@/components/common/forms/fields/ImageUploadInput";
+import { IEvent } from "@/domain/features/passinbiz/IEvent";
 
 
 export default function useHolderController() {
@@ -61,8 +62,10 @@ export default function useHolderController() {
         { value: 'event', label: t('core.label.event') }
       ],
       component: SelectInput,
-      onChange: (value: any) => {
-        onChangeType(value)
+      extraProps: {
+        onHandleChange: (value: any) => {
+          onChangeType(value)
+        },
       }
     },
 
@@ -89,11 +92,20 @@ export default function useHolderController() {
   ]
   const [loadForm, setLoadForm] = useState(false)
   const [fields, setFields] = useState<any[]>([...fieldList])
+  const [eventData, setEventData] = useState<{ loaded: boolean, eventList: Array<IEvent> }>({ loaded: false, eventList: [] })
 
-  const inicializeField = () => {
+  const inicializeField = async () => {
+    console.log(eventData);
     setFields(fieldList)
     setLoadForm(true)
   }
+  const inicializeEvent = async () => {
+    const eventList = await search(currentEntity?.entity.id as string, { ...{} as any, limit: 100 })
+    setEventData({ loaded: true, eventList })
+  }
+
+  if (currentEntity?.entity.id && !eventData.loaded) inicializeEvent()
+  if (currentEntity?.entity.id && !loadForm && eventData.loaded) inicializeField()
 
   if (currentEntity?.entity.id && !loadForm) inicializeField()
 
@@ -163,7 +175,6 @@ export default function useHolderController() {
   const onChangeType = async (typeValue: any) => {
 
     if (typeValue === 'event') {
-      const eventList = await search(currentEntity?.entity.id as string, { ...{} as any, limit: 100 })
       setFields(prev => [...prev.filter(e => e.name !== 'thumbnail'),
       {
         name: 'parentId',
@@ -171,7 +182,7 @@ export default function useHolderController() {
         type: 'text',
         required: true,
         fullWidth: true,
-        options: [...eventList.map((e) => ({ value: e.id, label: e.name }))],
+        options: [...eventData.eventList.map((e) => ({ value: e.id, label: e.name }))],
         component: SelectInput,
       }
       ])

@@ -94,6 +94,7 @@ const GenericForm = <T extends Record<string, any>>({
             {/*JSON.stringify(formikProps.errors)*/}
             <Grid container spacing={3}>
               {fields.map((field, i) => {
+                 
                 const FieldComponent = field.component;
                 const isInvalid =
                   formikProps.touched[field.name] && Boolean(formikProps.errors[field.name]);
@@ -115,6 +116,7 @@ const GenericForm = <T extends Record<string, any>>({
                       xl: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4
                     }} key={field.name} sx={{ width: '100%' }}>
                       <FieldComponent
+                       
                         name={field.name}
                         label={field.label}
                         type={field.type}
@@ -124,18 +126,10 @@ const GenericForm = <T extends Record<string, any>>({
                         variant="outlined"
                         error={isInvalid}
                         helperText={isInvalid ? errorText : ''}
-                        value={formikProps.values[field.name]}
-                        onChange={(e: any) => {
-                          console.log(e);
-
-                          if (typeof formikProps.handleChange === 'function')
-                            formikProps.handleChange(e)
-                          if (typeof field.onChange === 'function')
-                            field.onChange(e)
-                        }}
+                        value={formikProps.values[field.name]}                       
                         onBlur={formikProps.handleBlur}
                         options={field.options}
-                        {...field.extraProps}
+                       {...field.extraProps}
 
                       />
                     </Grid>

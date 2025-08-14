@@ -6,11 +6,13 @@ import { createSlug } from '@/lib/common/String';
 
 type SelectInputProps = FieldProps & TextFieldProps & {
   options: Array<{ value: any; label: string }>;
+  onHandleChange: (value: any) => void
+
 };
 
 const SelectInput: React.FC<SelectInputProps> = ({
   options,
-  onChange,
+  onHandleChange,
   ...props
 }) => {
   const [field, meta, helper] = useField(props.name);
@@ -29,8 +31,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
       value={field.value}
       key={createSlug(field?.value ?? '')}
       onChange={(e: any) => {
-
-        if (typeof onChange === 'function') onChange(e.target.value)
+        if (typeof onHandleChange === 'function') onHandleChange(e.target.value)
         helper.setValue(e.target.value)
       }}
     >
