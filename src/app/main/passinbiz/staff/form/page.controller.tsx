@@ -82,7 +82,7 @@ export default function useStaffController() {
 
 
   const onChangeType = async (typeValue: Array<'credential' | 'event'>) => {
-    if (typeValue.includes('event')) {
+    if (typeValue.includes('event') && id) {
       setFields([...fieldList,
       {
         name: 'eventList',
@@ -159,6 +159,7 @@ export default function useStaffController() {
       else
         await updateStaff(dataForm, token)
 
+      if(id)
       await saveEventByStaff(values.eventList as Array<string>)
 
       showToast(t('core.feedback.success'), 'success');

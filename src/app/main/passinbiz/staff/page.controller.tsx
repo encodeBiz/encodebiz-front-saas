@@ -34,7 +34,7 @@ export default function useStaffListController() {
   const { closeModal } = useCommonModal()
   const { push } = useRouter()
   const rowAction: Array<IRowAction> = [
-    { icon: <Event />, label: t('core.label.staff'), allowItem: () => true, onPress: (item: IStaff) => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff/${item.id}/events`) },
+    { icon: <Event />, label: t('core.label.staff'), allowItem: (item: IStaff) => item.allowedTypes.includes('event'), onPress: (item: IStaff) => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff/${item.id}/events`) },
   ]
   const onSearch = (term: string): void => {
     setParams({ ...params, startAfter: null, filters: buildSearch(term) })
