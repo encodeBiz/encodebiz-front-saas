@@ -6,9 +6,10 @@ import SimpleCheckTerm from '@/components/common/forms/fields/SimpleCheckTerm';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
 import { emailRule, passwordRestrictionRule, requiredRule } from '@/config/yupRules';
+import { useLayout } from '@/hooks/useLayout';
 import { useToast } from '@/hooks/useToast';
 import { createUser } from '@/lib/firebase/authentication/create';
-import { signInGoogle, signUpEmail } from '@/services/common/account.service';
+import { signUpEmail } from '@/services/common/account.service';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'nextjs-toploader/app';
 import { useState } from 'react';
@@ -28,6 +29,7 @@ export interface RegisterFormValues {
 export const useRegisterController = () => {
     const { showToast } = useToast()
     const { push } = useRouter()
+    const { changeLoaderState } = useLayout()
 
     const t = useTranslations()
     const [initialValues] = useState<RegisterFormValues>({
@@ -56,26 +58,19 @@ export const useRegisterController = () => {
 
 
 
-
-    const signInWithGoogle = async () => {
-        try {
-            await signInGoogle()
-            push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
-        } catch (error: any) {
-            showToast(error.message, 'error')
-        }
-    };
-
  
+
     const signInWithEmail = async (values: RegisterFormValues) => {
         try {
+            changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             const responseAuth = await createUser(values.email, values.password);
             const sessionToken = await responseAuth.user.getIdToken();
             if (!responseAuth) {
                 showToast('Error to fetch user auth token', 'error')
             } else {
                 await signUpEmail(values, sessionToken, responseAuth.user.uid as string)
-                 push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
+                changeLoaderState({ show: false })
+                push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
             }
         } catch (error: any) {
             showToast(error.message, 'error')
@@ -141,6 +136,6 @@ export const useRegisterController = () => {
 
 
 
-    return { signInWithGoogle, signInWithEmail, validationSchema, initialValues, fields }
+    return { signInWithEmail, validationSchema, initialValues, fields }
 }
 
