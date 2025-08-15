@@ -15,7 +15,7 @@ export default function HolderList() {
   const {
     items, rowAction,
     onNext, onBack, onEdit, onDelete, deleting,
-    currentPage,
+    currentPage,topFilter,
     columns, onSearch,
     loading, rowsPerPage, setRowsPerPage } = useHolderListController();
   const { open } = useCommonModal()
@@ -27,7 +27,7 @@ export default function HolderList() {
           role='link'
           href='/main/passinbiz/staff/add'
           variant='contained'
-        ><Add /> {t('staff.add')}</BaseButton>       
+        ><Add /> {t('staff.add')}</BaseButton>
       </Box>
       <br />
       <GenericTable
@@ -44,16 +44,16 @@ export default function HolderList() {
         onNext={onNext}
         onEdit={(data) => onEdit(data)}
         onSearch={(data) => onSearch(data)}
-        
+        topFilter={topFilter}
 
       />
-     
+
       {open.type === CommonModalType.DELETE && <ConfirmModal
         isLoading={deleting}
         title={t('staff.revokeConfirmModalTitle')}
         description={t('staff.revokeConfirmModalTitle2')}
-             onOKAction={(args: { data: any }) => onDelete(args.data)}
-      />}      
+        onOKAction={(args: { data: any }) => onDelete(args.data)}
+      />}
     </Container>
   );
 }

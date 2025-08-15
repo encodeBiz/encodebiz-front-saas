@@ -9,8 +9,9 @@ import { CommonModalType } from "@/contexts/commonModalContext";
 import { useRouter } from "nextjs-toploader/app";
 import { IStaff } from "@/domain/features/passinbiz/IStaff";
 import { deleteStaff, search } from "@/services/passinbiz/staff.service";
-import { Event } from "@mui/icons-material";
+import { Event, Search } from "@mui/icons-material";
 import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
+import { Box, Select, MenuItem, TextField, IconButton, Tooltip } from "@mui/material";
 
 
 
@@ -33,6 +34,8 @@ export default function useStaffListController() {
   const [total, setTotal] = useState(0);
   const { closeModal } = useCommonModal()
   const { push } = useRouter()
+  const [filter, setFilter] = useState<any>({ allowedTypes: 'all', email: '' });
+
   const rowAction: Array<IRowAction> = [
     { icon: <Event />, label: t('core.label.staff'), allowItem: (item: IStaff) => item.allowedTypes.includes('event'), onPress: (item: IStaff) => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff/${item.id}/events`) },
   ]
@@ -75,12 +78,12 @@ export default function useStaffListController() {
       label: t("core.label.email"),
       minWidth: 170,
     },
-    
+
     {
       id: 'allowedTypes',
       label: t("core.label.typeStaff"),
       minWidth: 170,
-      format: (value) =>  value.join(', ')
+      format: (value) => value.join(', ')
     },
   ];
 
@@ -151,6 +154,53 @@ export default function useStaffListController() {
     }
   }
 
+  const holderType = [
+    { value: 'all', label: t('core.label.all') },
+    { value: 'event', label: t('core.label.event') },
+    { value: 'credential', label: t('core.label.credential') },
+  ]
+
+  const onFilter = () => {
+    const filterData: Array<{ field: string, operator: string, value: any }> = []
+    Object.keys(filter).forEach((key) => {
+      if (key === 'allowedTypes')
+        filterData.push({ field: key, operator: 'array-contains-any', value: filter[key] })
+      else
+        filterData.push({ field: key, operator: '==', value: filter[key] })
+    })
+    const paramsData = { ...params, startAfter: null, limit: rowsPerPage, filters: filterData }
+    setParams({ ...paramsData })
+  }
+
+
+  const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
+    <Select sx={{ minWidth: 120, height: 55 }}
+      value={filter.allowedTypes}
+      defaultValue={'all'}
+      onChange={(e: any) => setFilter({ ...filter, type: e.target.value })}  >
+      {holderType.map((option) => (
+        <MenuItem key={option.value} value={option.value}>
+          {option.label}
+        </MenuItem>
+      ))}
+    </Select>
+
+
+    <TextField
+      variant="outlined"
+      placeholder={t('holders.filter.email')}
+      value={filter.email}
+      onChange={(e) => {
+
+        setFilter({ ...filter, email: e.target.value });
+      }}
+    />
+    <Tooltip title="Filter">
+      <IconButton onClick={() => { if (typeof onFilter === 'function') onFilter() }}>
+        <Search />
+      </IconButton>
+    </Tooltip>
+  </Box>
 
 
   return {
@@ -159,9 +209,8 @@ export default function useStaffListController() {
     atStart,
     onSearch, onNext, onBack,
     pagination, currentPage,
-    columns, rowAction, onDelete,
+    columns, rowAction, onDelete, topFilter,
     loading, rowsPerPage, setRowsPerPage, deleting
   }
-
 
 }
