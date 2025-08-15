@@ -17,16 +17,16 @@ export interface PresentationCardProps {
   action2?: () => void
   action1Text?: string
   action2Text?: string
-
+disabledBtn?:boolean
   children?: ReactNode
 }
 
-export default function PresentationCard({ children, title, description, image, action1, action2, action1Text, action2Text }: PresentationCardProps) {
+export default function PresentationCard({ children, title, disabledBtn=false, description, image, action1, action2, action1Text, action2Text }: PresentationCardProps) {
   const styles = useStyles()
   return (
     <Box  >
       <Paper elevation={2} sx={styles.base}>
-        <Box sx={image?styles.root:styles.rootSimple}>
+        <Box sx={image ? styles.root : styles.rootSimple}>
           <Box sx={styles.container}>
             <Typography variant="h4" component="h1" align="center" gutterBottom>
               {title}
@@ -35,8 +35,8 @@ export default function PresentationCard({ children, title, description, image, 
               {description}
             </Typography>
             <Stack direction="row" spacing={2} sx={styles.stack}>
-              {typeof action1 === 'function' && <PrimaryButton onClick={action1}>{action1Text}</PrimaryButton>}
-              {typeof action2 === 'function' && <BaseButton variant="outlined" onClick={action2}>{action2Text}</BaseButton>}
+              {typeof action1 === 'function' && <PrimaryButton disabled={disabledBtn} onClick={action1}>{action1Text}</PrimaryButton>}
+              {typeof action2 === 'function' && <BaseButton disabled={disabledBtn} variant="outlined" onClick={action2}>{action2Text}</BaseButton>}
             </Stack>
           </Box>
           {image && <Box sx={styles.imageContainer}>

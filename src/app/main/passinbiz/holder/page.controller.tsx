@@ -186,10 +186,9 @@ export default function useHolderListController() {
     if (params.filters.find((e: any) => e.field === 'email' && e.value === ''))
       params.filters = params.filters.filter((e: any) => e.field !== 'email')
 
-
-
+    
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
-
+       
       if (res.length < rowsPerPage || res.length === 0)
         setAtEnd(true)
       else

@@ -33,7 +33,7 @@ export const useRegisterController = () => {
         try {
             await recoveryPassword(values.email)
             openModal(CommonModalType.RECOVERY)
-        } catch (error: any) {             
+        } catch (error: any) {
             showToast(error.message, 'error')
         }
     };

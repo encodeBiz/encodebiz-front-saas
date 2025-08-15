@@ -199,7 +199,8 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
           <Box sx={classes.content}>
             {userMediaList.filter(e => (type === 'custom' ? true : (e.type === type))).length === 0 ? (
               <Typography variant="body2" color="textSecondary" align="center">
-                No files uplaoded
+               
+                {t('core.table.nofile')}
               </Typography>
             ) : (
               <Grid container spacing={2}>

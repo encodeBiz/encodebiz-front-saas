@@ -21,6 +21,7 @@ import {
   Edit as EditIcon
 } from '@mui/icons-material';
 import firebase from "firebase/compat/app";
+import { useTranslations } from 'next-intl';
 
 export interface Column<T> {
   id: keyof T;
@@ -109,7 +110,7 @@ export function GenericTable<T extends Record<string, any>>({
   const [order, setOrder] = useState<'asc' | 'desc'>(sort?.order ?? 'asc');
   const [orderBy, setOrderBy] = useState<keyof T>(sort?.field ?? keyField);
   const [selected, setSelected] = useState<(string | number)[]>([]);
-
+  const t = useTranslations()
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [totalItems, setTotalItems] = useState(0);
   const [searchText] = useState('');
@@ -192,7 +193,7 @@ export function GenericTable<T extends Record<string, any>>({
     setSelected(newSelected);
   };
 
-  const handleChangePage = (event: any, newPage: number) => { 
+  const handleChangePage = (event: any, newPage: number) => {
     if (newPage > (page as number)) onNext()
     else onBack()
 
@@ -235,7 +236,7 @@ export function GenericTable<T extends Record<string, any>>({
       {selected.length > 0 && (
         <Box sx={{ p: 1, bgcolor: 'action.selected', display: 'flex', gap: 1 }}>
           <Typography sx={{ flex: 1, alignSelf: 'center' }}>
-            {selected.length} selected
+            {selected.length} {t('core.table.selected')}
           </Typography>
           {rowAction.map((e, i) => {
             if (e.allowItem(e as any))
@@ -300,7 +301,7 @@ export function GenericTable<T extends Record<string, any>>({
               ))}
 
               {(onEdit || onDelete || rowAction.length > 0) && (
-                <TableCell align="right">Actions</TableCell>
+                <TableCell align="right">{t('core.table.actions')}</TableCell>
               )}
             </TableRow>
           </TableHead>
@@ -309,13 +310,14 @@ export function GenericTable<T extends Record<string, any>>({
             {loading ? (
               <TableRow>
                 <TableCell colSpan={columns.length + 2} align="center">
-                  Loading...
+                  {t('core.table.loader')}
                 </TableCell>
               </TableRow>
             ) : sortedData.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={columns.length + 2} align="center">
-                  No data available
+
+                  {t('core.table.nodata')}
                 </TableCell>
               </TableRow>
             ) : (
@@ -403,6 +405,7 @@ export function GenericTable<T extends Record<string, any>>({
       </TableContainer>
 
       <TablePagination
+
         rowsPerPageOptions={[2, 5, 10, 25, 100]}
         component="div"
         count={totalItems}
@@ -410,6 +413,29 @@ export function GenericTable<T extends Record<string, any>>({
         page={page as number}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+
+        labelRowsPerPage={t('core.table.rowsPerPage')}
+        labelDisplayedRows={({ from, to, count }) =>
+          `${from}-${to} ${t('core.table.of')} ${count}`
+        }
+        slotProps={{
+          select: {
+            inputProps: { 'aria-label': t('core.table.rowsPerPage') },
+            native: true,
+          },
+          actions: {
+            previousButton: {
+              'aria-label':  t('core.table.previous') ,
+            },
+            nextButton: {
+              'aria-label':  t('core.table.next') ,
+            }
+          }
+
+        }}
+
+ 
+
       />
     </Paper>
   );

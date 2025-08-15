@@ -18,6 +18,7 @@ const BillingPreferencesPage = () => {
                 title={t('billing.title')}
                 description={t('billing.subtitle')}
                 image={image}
+                disabledBtn={!currentEntity?.entity.legal?.legalName && !currentEntity?.entity.legal?.taxId}
                 action1={configBillingAction}
                 action1Text={t('entity.tabs.tab3.btn') +' '+ `${Array.isArray(currentEntity?.entity?.billingConfig?.payment_method) && currentEntity?.entity?.billingConfig?.payment_method.length > 0 ? '('+currentEntity?.entity?.billingConfig?.payment_method?.length + ' Método(s) configurado(s))' : ''}`}
 

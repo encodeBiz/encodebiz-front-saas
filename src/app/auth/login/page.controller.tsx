@@ -43,6 +43,7 @@ export const useRegisterController = () => {
             changeLoaderState({ show: false })
             push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
         } catch (error: any) {
+            changeLoaderState({ show: false })
             showToast(error.message, 'error')
         }
     };
@@ -55,6 +56,7 @@ export const useRegisterController = () => {
             changeLoaderState({ show: false })
             push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
         } catch (error: any) {
+            changeLoaderState({ show: false })
             showToast(error.message, 'error')
         }
     };

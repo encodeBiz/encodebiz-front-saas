@@ -56,6 +56,17 @@
     }
   },
   "core": {
+    "table": {
+      "selected": "Seleccionado",
+      "nofile": "No existen archivos disponibles",
+      "actions": "Acciones",
+      "loader": "Cargando...",
+      "nodata": "No existen datos disponibles",
+      "rowsPerPage": "Filas por página:",
+      "of": "de",
+      "previous": "Atrás",
+      "next": "Adelante"
+    },
     "title": {
       "loader": "Cargando sesión de usuario",
       "loaderChangeEntity": "Cambiando entidad",
@@ -71,6 +82,7 @@
     "label": {
       "filename": "Nombre de Archivo",
       "default": "Por defecto",
+      "state": "Estado",
       "vip": "VIP",
       "template": "Plantilla",
       "expo": "Expositivo",
@@ -93,7 +105,7 @@
       "revoke": "Revocar",
       "firstName": "Nombre",
       "status": "Estado",
-      "customFields":"Campos personalizados",
+      "customFields": "Campos personalizados",
       "staff": "Personal de apoyo",
       "draft": "Borrador",
       "published": "Publicado",
@@ -114,7 +126,7 @@
       "colorAccent": "Color de resaltado",
       "description": "Descripción",
       "message": "Mensaje",
-      "state": "Estado",
+      "all": "Todos",
       "uploadResourse": "Subir recurso",
       "lastName": "Apellido",
       "fullName": "Nombre completo",
@@ -157,11 +169,11 @@
       "label": "Etiqueta",
       "value": "Valor",
       "failed": "Fallo",
-      "root":"Administrador",
-      "role":"Role",
-      "typeStaff":"Tipo de pase",
-      "validator_event":"Verificador de eventos",
-      "validator_credential":"Verificador de credenciales"
+      "root": "Administrador",
+      "role": "Role",
+      "typeStaff": "Tipo de pase",
+      "validator_event": "Verificador de eventos",
+      "validator_credential": "Verificador de credenciales"
     },
     "button": {
       "revoke": "Revocar",
@@ -201,7 +213,7 @@
       "facebook": "Unete con Facebook",
       "existAccount": "¿Ya tienes una cuenta?",
       "signIn": "Inicia sesión",
-      "recovery":"¿Has olvidado la contraseña?",
+      "recovery": "¿Has olvidado la contraseña?",
       "complete_profile": "Completar perfil",
       "complete_profile_desc": "Antes de comenzar debes completar tus datos en la plataforma y crear tu primera entidad, estos datos luego los puedes modificar desde las preferencias"
     },
