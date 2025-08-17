@@ -88,6 +88,7 @@ export default function useStaffListController() {
   ];
 
   const fetchingData = useCallback(() => {
+    console.log({ ...params, limit: rowsPerPage });
 
     setLoading(true)
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
@@ -163,10 +164,11 @@ export default function useStaffListController() {
   const onFilter = () => {
     const filterData: Array<{ field: string, operator: string, value: any }> = []
     Object.keys(filter).forEach((key) => {
-      if (key === 'allowedTypes')
-        filterData.push({ field: key, operator: 'array-contains-any', value: filter[key] })
+      if (key === 'allowedTypes' && filter[key] != 'all')
+        filterData.push({ field: key, operator: 'array-contains-any', value: [filter[key]] })
       else
-        filterData.push({ field: key, operator: '==', value: filter[key] })
+        if (key !== 'allowedTypes' && filter[key] != '')
+          filterData.push({ field: key, operator: '==', value: filter[key] })
     })
     const paramsData = { ...params, startAfter: null, limit: rowsPerPage, filters: filterData }
     setParams({ ...paramsData })
@@ -177,7 +179,7 @@ export default function useStaffListController() {
     <Select sx={{ minWidth: 120, height: 55 }}
       value={filter.allowedTypes}
       defaultValue={'all'}
-      onChange={(e: any) => setFilter({ ...filter, type: e.target.value })}  >
+      onChange={(e: any) => setFilter({ ...filter, allowedTypes: e.target.value })}  >
       {holderType.map((option) => (
         <MenuItem key={option.value} value={option.value}>
           {option.label}
@@ -191,7 +193,6 @@ export default function useStaffListController() {
       placeholder={t('holders.filter.email')}
       value={filter.email}
       onChange={(e) => {
-
         setFilter({ ...filter, email: e.target.value });
       }}
     />
