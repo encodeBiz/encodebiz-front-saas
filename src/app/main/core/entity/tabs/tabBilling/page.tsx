@@ -10,8 +10,7 @@ const BillingPreferencesPage = () => {
     const t = useTranslations();
     const { configBillingAction } = useSettingEntityController();
     const { currentEntity } = useEntity()
-    console.log(currentEntity);
-
+ 
     return (
         <>
             <PresentationCard

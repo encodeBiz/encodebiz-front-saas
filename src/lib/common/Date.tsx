@@ -44,24 +44,24 @@ export function format_date(str: Timestamp | Date | string | any, format: string
     return date;
 }
 
-   export const formatDate = async (
-        timestamp: FirestoreTimestamp | Date,
-        locale:string='es'
-    ) => {
-        // Configurar el idioma
-       
-        moment.locale(locale);
+export const formatDate = async (
+    timestamp: FirestoreTimestamp | Date,
+    locale: string = 'es'
+) => {
+    // Configurar el idioma
 
-        let jsDate: Date;
-        if (timestamp instanceof Date) {
-            jsDate = timestamp;
-        } else {
-            jsDate = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1_000_000);
-        }
-        const format = locale === 'es' ? 'D [de] MMMM [de] YYYY' : 'MMMM D, YYYY';
-        return moment(jsDate).format(format)
-      
-    };
+    moment.locale(locale);
+
+    let jsDate: Date;
+    if (timestamp instanceof Date) {
+        jsDate = timestamp;
+    } else {
+        jsDate = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1_000_000);
+    }
+    const format = locale === 'es' ? 'D [de] MMMM [de] YYYY' : 'MMMM D, YYYY';
+    return moment(jsDate).format(format)
+
+};
 
 export function remainTime(nextDate: Timestamp | Date | string | any): string {
     let date: Date = new Date()
@@ -105,7 +105,7 @@ export function format_range(range: Array<Timestamp>): string {
 
 
     let date: string = "02 - 05 Octubre"
-   
+
     if (range?.length === 2) {
         const dateStart: Date = new Date(range[0]?.seconds * 1000);
         const dateEnd: Date = new Date(range[1]?.seconds * 1000);
@@ -165,7 +165,7 @@ export function updateCountdown(targetDate: Date) {
 export function addNDay(targetDate: Date, n: number) {
     targetDate.setDate(targetDate.getDate() + n)
     targetDate.setHours(23)
-    targetDate.setMinutes(59) 
+    targetDate.setMinutes(59)
 
 
     return targetDate
@@ -177,3 +177,14 @@ export function addNHour(targetDate: Date, n: number) {
     return targetDate
 }
 
+export function formatLocalDateTime(date: Date) {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Los meses van de 0 a 11
+    const year = date.getFullYear();
+
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
+}
+ 

@@ -160,42 +160,4 @@ const CSVUploadModal = ({ open, onClose, onConfirm }: ICSVUploadModal) => {
 };
 
 export default CSVUploadModal;
-
-
-/*
-
-import React, { useState } from 'react';
-import { Button } from '@mui/material';
-import CSVUploadModal from './CSVUploadModal';
-
-const App = () => {
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const handleUploadConfirm = (file, previewData) => {
-    console.log('File to upload:', file.name);
-    console.log('Preview data:', previewData);
-    // Here you would typically send the file to your server
-    // or process it further
-  };
-
-  return (
-    <div style={{ padding: '20px' }}>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => setModalOpen(true)}
-      >
-        Upload CSV
-      </Button>
-      
-      <CSVUploadModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onConfirm={handleUploadConfirm}
-      />
-    </div>
-  );
-};
-
-export default App;
-*/
+ 

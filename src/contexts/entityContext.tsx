@@ -40,8 +40,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     const fetchSuscriptionEntity = useCallback(async () => {
         const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
         setEntitySuscription(serviceSuscription)
-        console.log(serviceSuscription);
-        const serviceList: Array<IService> = await fetchServiceList()
+         const serviceList: Array<IService> = await fetchServiceList()
         setEntityServiceList(serviceList.map(e => ({ ...e, isBillingActive: !!serviceSuscription.find(service => service.serviceId === e.id) })))
     }, [currentEntity?.entity.id])
 
@@ -103,8 +102,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
     const changeCurrentEntity = async (id: string, userId: string, callback?: () => void) => {
         const entityList: Array<IUserEntity> = await fetchUserEntities(userId)
-        console.log(entityList);
-
+ 
         const current: IUserEntity = entityList.find(e => e.entity.id === id) as IUserEntity
         if (current) {
             const updatedList: Array<IUserEntity> = []

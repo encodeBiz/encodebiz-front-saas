@@ -53,8 +53,6 @@ export async function subscribeInSassProduct(data: ISubscription, token: string)
         }
 
     } catch (error: any) {
-        console.log(error);
-
         throw new Error(error.message)
     }
 }

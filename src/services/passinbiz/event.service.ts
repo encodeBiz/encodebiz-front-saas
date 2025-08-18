@@ -5,6 +5,7 @@ import { collection } from "@/config/collection";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import { deleteDocument } from "@/lib/firebase/firestore/deleteDocument";
+import { formatLocalDateTime } from "@/lib/common/Date";
 
 
 /**
@@ -69,6 +70,7 @@ export async function createEvent(data: Partial<IEvent>, token: string) {
         process.env.NEXT_PUBLIC_BACKEND_URI_PASSINBIZ_CREATE_EVENT as string,
         {
           ...data,
+          dateLabel: formatLocalDateTime(data.date)
         }
       );
       if (response.errCode && response.errCode !== 200) {
@@ -96,7 +98,8 @@ export async function updateEvent(data: Partial<IEvent>, token: string) {
       const response: any = await httpClientFetchInstance.post(
         process.env.NEXT_PUBLIC_BACKEND_URI_PASSINBIZ_UPDATE_EVENT as string,
         {
-          ...data,
+          ...data,          
+          dateLabel: formatLocalDateTime(data.date)
         }
       );
       if (response.errCode && response.errCode !== 200) {

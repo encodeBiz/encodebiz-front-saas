@@ -52,8 +52,7 @@ export const useQRScanner = () => {
     const validateData = async (data: any) => {
         try {
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-            console.log(tokenValidateStaff);
-            
+             
             const response = await validateHolder(data, tokenValidateStaff)
             setScanRessult({
                 ...data,

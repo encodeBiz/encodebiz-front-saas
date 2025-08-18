@@ -95,8 +95,7 @@ export default function useHolderController() {
   const [eventData, setEventData] = useState<{ loaded: boolean, eventList: Array<IEvent> }>({ loaded: false, eventList: [] })
 
   const inicializeField = async () => {
-    console.log(eventData);
-    setFields(fieldList)
+     setFields(fieldList)
     setLoadForm(true)
   }
   const inicializeEvent = async () => {

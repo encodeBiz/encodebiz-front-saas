@@ -88,8 +88,7 @@ export default function useStaffListController() {
   ];
 
   const fetchingData = useCallback(() => {
-    console.log({ ...params, limit: rowsPerPage });
-
+ 
     setLoading(true)
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
       if (res.length < rowsPerPage || res.length === 0)

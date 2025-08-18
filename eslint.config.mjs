@@ -20,7 +20,8 @@ const eslintConfig = [
       "@typescript-eslint/no-unsafe-function-type":  "warn",
       "prefer-const": "warn",
       "@typescript-eslint/no-unused-expressions":"warn",
-      "prefer-spread": "warn"
+      "prefer-spread": "warn",
+      "no-console": "warn",
     }
   }
 ];
