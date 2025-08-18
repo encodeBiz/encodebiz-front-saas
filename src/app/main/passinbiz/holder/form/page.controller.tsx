@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from 'react';
-import DynamicKeyValueInput, { DynamicFields } from "@/components/common/forms/fields/DynamicKeyValueInput";
+import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { emailRule, requiredRule } from '@/config/yupRules';
@@ -12,26 +12,12 @@ import { useEntity } from "@/hooks/useEntity";
 import { MAIN_ROUTE } from "@/config/routes";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { search } from "@/services/passinbiz/event.service";
-import { FormField } from "@/components/common/forms/GenericForm";
-import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { useLayout } from "@/hooks/useLayout";
 import { useParams } from "next/navigation";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
+import ImageUploadInput from "@/components/common/forms/fields/ImageUploadInput";
+import { IEvent } from "@/domain/features/passinbiz/IEvent";
 
-export interface HolderFormValues {
-  "fullName": string;
-  "email": string;
-  "phoneNumber": string;
-  "customFields"?: DynamicFields;
-  isLinkedToUser: boolean
-  type: "credential" | "event",
-  entityId: string
-  uid?: string
-  parentId?: string
-  passStatus?: string
-  metadata?: any
-  id?: string
-};
 
 export default function useHolderController() {
   const t = useTranslations();
@@ -39,17 +25,17 @@ export default function useHolderController() {
   const { push } = useRouter()
   const { token, user } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
-  const [type, setType] = useState()
-  const [eventList, setEventList] = useState<Array<IEvent>>([])
   const { changeLoaderState } = useLayout()
   const { id } = useParams<{ id: string }>()
 
-  const [fields, setFields] = useState<FormField[]>([
+
+  const fieldList = [
     {
       name: 'fullName',
       label: t('core.label.fullName'),
       type: 'text',
       required: true,
+      fullWidth: true,
       component: TextInput,
     },
     {
@@ -70,16 +56,24 @@ export default function useHolderController() {
       label: t('core.label.typePass'),
       type: 'text',
       required: true,
+      fullWidth: true,
       options: [
         { value: 'credential', label: t('core.label.credencial') },
         { value: 'event', label: t('core.label.event') }
       ],
       component: SelectInput,
-      onChange: (value: any) => {
-        setType(value)
+      extraProps: {
+        onHandleChange: (value: any) => {
+          onChangeType(value)
+        },
       }
     },
 
+
+    {
+      isDivider: true,
+      label: t('core.label.customFields'),
+    },
     {
       name: 'customFields',
       label: t('core.label.billingEmail'),
@@ -88,12 +82,41 @@ export default function useHolderController() {
       fullWidth: true,
       component: DynamicKeyValueInput,
     },
-  ])
-  const [initialValues, setInitialValues] = useState<HolderFormValues>({
+    {
+      name: 'thumbnail',
+      label: t('core.label.thumbnail'),
+      type: 'thumbnail',
+      fullWidth: true,
+      component: ImageUploadInput,
+    },
+  ]
+  const [loadForm, setLoadForm] = useState(false)
+  const [fields, setFields] = useState<any[]>([...fieldList])
+  const [eventData, setEventData] = useState<{ loaded: boolean, eventList: Array<IEvent> }>({ loaded: false, eventList: [] })
+
+  const inicializeField = async () => {
+    console.log(eventData);
+    setFields(fieldList)
+    setLoadForm(true)
+  }
+  const inicializeEvent = async () => {
+    const eventList = await search(currentEntity?.entity.id as string, { ...{} as any, limit: 100 })
+    setEventData({ loaded: true, eventList })
+  }
+
+  if (currentEntity?.entity.id && !eventData.loaded) inicializeEvent()
+  if (currentEntity?.entity.id && !loadForm && eventData.loaded) inicializeField()
+
+  if (currentEntity?.entity.id && !loadForm) inicializeField()
+
+
+
+  const [initialValues, setInitialValues] = useState<Partial<Holder>>({
     fullName: "",
     email: "",
     phoneNumber: "",
     type: 'credential',
+    thumbnail: '',
     customFields: [],
     isLinkedToUser: true,
     entityId: currentEntity?.entity.id as string
@@ -109,13 +132,14 @@ export default function useHolderController() {
       )
       .nullable(),
     fullName: requiredRule(t),
+    type: requiredRule(t),
     email: emailRule(t),
     phoneNumber: Yup.string().optional(),
   });
 
-  const submitForm = async (values: HolderFormValues) => {
+  const submitForm = async (values: Partial<Holder>) => {
     try {
-      const dataForm = {
+      const dataForm: Partial<Holder> = {
         "uid": user?.id as string,
         "fullName": values.fullName,
         "email": values.email,
@@ -123,6 +147,7 @@ export default function useHolderController() {
         "entityId": currentEntity?.entity?.id as string,
         "passStatus": "pending",
         "type": values.type,
+        "thumbnail": values.thumbnail,
         "parentId": values.parentId ?? "",
         "isLinkedToUser": false,
         "metadata": {
@@ -145,30 +170,38 @@ export default function useHolderController() {
   };
 
 
-  const fetchingEvent = useCallback(() => {
-    const params: any = []
-    return search(currentEntity?.entity.id as string, { ...params, limit: 100 }).then(e => setEventList(e as Array<IEvent>))
-
-  }, [currentEntity?.entity.id])
 
 
-  useEffect(() => {
-    if (type === 'event') {
-      setFields(prev => [
-        ...prev,
-        {
-          name: 'parentId',
-          label: t('core.label.event'),
-          type: 'text',
-          required: true,
-          options: [...eventList.map((e) => ({ value: e.id, label: e.name }))],
-          component: SelectInput,
-        },
+  const onChangeType = async (typeValue: any) => {
+
+    if (typeValue === 'event') {
+      setFields(prev => [...prev.filter(e => e.name !== 'thumbnail'),
+      {
+        name: 'parentId',
+        label: t('core.label.event'),
+        type: 'text',
+        required: true,
+        fullWidth: true,
+        options: [...eventData.eventList.map((e) => ({ value: e.id, label: e.name }))],
+        component: SelectInput,
+      }
       ])
+
     } else {
-      setFields(prev => [...prev.filter(e => e.name !== 'parentId')])
+      setFields(prev => [
+        ...prev.filter(e => e.name !== 'parentId'),
+        {
+          name: 'thumbnail',
+          label: t('core.label.thumbnail'),
+          type: 'thumbnail',
+          required: true,
+          fullWidth: true,
+          component: ImageUploadInput,
+        }
+      ])
+
     }
-  }, [eventList, t, type])
+  }
 
 
   const fetchData = useCallback(async () => {
@@ -182,6 +215,7 @@ export default function useHolderController() {
         type: holder.type,
         customFields: holder.metadata?.auxiliaryFields ?? [],
         isLinkedToUser: holder.isLinkedToUser,
+        thumbnail: holder.thumbnail,
         entityId: currentEntity?.entity.id as string
       })
       changeLoaderState({ show: false })
@@ -193,16 +227,18 @@ export default function useHolderController() {
 
   useEffect(() => {
     if (currentEntity?.entity.id && user?.id) {
-      fetchingEvent()
       watchServiceAccess('passinbiz')
     }
-  }, [currentEntity?.entity.id, fetchingEvent, user?.id, watchServiceAccess])
+  }, [currentEntity?.entity.id, user?.id, watchServiceAccess])
 
 
   useEffect(() => {
     if (currentEntity?.entity.id && user?.id && id)
       fetchData()
+
+
   }, [currentEntity?.entity.id, user?.id, id, fetchData])
+
 
   return { fields, initialValues, validationSchema, submitForm }
 }

@@ -32,6 +32,7 @@ import { handleLogout } from '@/services/common/account.service';
 import { useHeader } from './Header.controller';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { useAuth } from '@/hooks/useAuth';
+import { useEntity } from '@/hooks/useEntity';
 
 
 export default function Header() {
@@ -43,7 +44,7 @@ export default function Header() {
   const { anchorEl, contextMenu, handleMobileMenuClose, handleProfileMenuOpen, handleMobileMenuOpen,
     mobileMoreAnchorEl, handleMenuClose, showNotification, showMessages } = useHeader()
   const { openModal } = useCommonModal()
-
+  const { cleanEntityContext } = useEntity()
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -71,8 +72,8 @@ export default function Header() {
           src={user?.phoneNumber}
           alt={user?.fullName}
         />
-        <Box sx={{ display: 'flex',flexDirection:'column', alignItems: 'flex-start', width: '100%' }}>
-          <Typography variant="body2" noWrap component="div" sx={{fontWeight:'bold'}}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
+          <Typography variant="body2" noWrap component="div" sx={{ fontWeight: 'bold' }}>
             {user?.fullName}
           </Typography>
           <Typography variant="caption" noWrap component="div">
@@ -157,7 +158,11 @@ export default function Header() {
         <p>{t('layout.header.help')}</p>
       </MenuItem>
 
-      <MenuItem onClick={() => { handleMenuClose(); handleLogout() }}>
+      <MenuItem onClick={() => {
+        handleMenuClose(); handleLogout(() => {
+          cleanEntityContext()
+        })
+      }}>
         <IconButton
           size="large"
           aria-label="account of current user"

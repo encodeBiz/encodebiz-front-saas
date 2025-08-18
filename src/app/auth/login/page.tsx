@@ -11,7 +11,8 @@ import {
     Link
 } from '@mui/material';
 import {
-    Google as GoogleIcon} from '@mui/icons-material';
+    Google as GoogleIcon
+} from '@mui/icons-material';
 import { LoginFormValues, useRegisterController } from './page.controller';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { useTranslations } from 'next-intl';
@@ -42,15 +43,11 @@ const SignInPage = () => {
 
                 <Grid container spacing={2} sx={classes.fullWidth}>
                     <Grid size={{ xs: 12, sm: 12 }} sx={classes.fullWidth}>
-                        <BaseButton fullWidth variant="outlined" startIcon={<GoogleIcon color="primary" />} onClick={()=>signInWithGoogle()}>
+                        <BaseButton fullWidth variant="outlined" startIcon={<GoogleIcon color="primary" />} onClick={() => signInWithGoogle()}>
                             {t('core.signin.google')}
                         </BaseButton>
                     </Grid>
-                    {/*<Grid size={{ xs: 12, sm: 12 }} sx={classes.fullWidth}>
-                        <BaseButton fullWidth variant="outlined" startIcon={<FacebookIcon color="primary" />} onClick={signInWithFacebook}>
-                            {t('core.signin.facebook')}
-                        </BaseButton>
-                    </Grid>*/}
+
                 </Grid>
 
                 <Divider sx={{ my: 3 }}>
@@ -70,6 +67,9 @@ const SignInPage = () => {
                 />
 
                 <Box sx={{ textAlign: 'center' }}>
+                    <Typography variant="body2">
+                        <Link href="/auth/recovery">{t('core.signup.recovery')}</Link>
+                    </Typography>
                     <Typography variant="body2">
                         {t('core.signin.noAccount')} <Link href="/auth/register">{t('core.signup.signup')}</Link>
                     </Typography>

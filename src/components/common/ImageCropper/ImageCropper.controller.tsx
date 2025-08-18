@@ -115,8 +115,9 @@ export const useImageCropper = (onComplete: (file: File) => void, size: { w: num
       const croppedImage: any = await getCroppedImg(
         imgRef.current,
         completedCrop,
-        'cropped.jpg'
+        file?.name
       );
+       
       onComplete(croppedImage.file)
       setOpen(false);
     } catch (err) {

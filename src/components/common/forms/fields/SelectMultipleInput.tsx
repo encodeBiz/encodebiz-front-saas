@@ -1,16 +1,14 @@
-// SelectInput.tsx
+//SelectMultipleInput.tsx
 import React from 'react';
 import { TextFieldProps, MenuItem, Select, FormHelperText, FormControl, InputLabel } from '@mui/material';
 import { FieldProps, useField } from 'formik';
-import { createSlug } from '@/lib/common/String';
 
-type SelectInputProps = FieldProps & TextFieldProps & {
+type SelectMultipleInputProps = FieldProps & TextFieldProps & {
   options: Array<{ value: any; label: string }>;
   onHandleChange: (value: any) => void
-
 };
 
-const SelectInput: React.FC<SelectInputProps> = ({
+const SelectMultipleInput: React.FC<SelectMultipleInputProps> = ({
   options,
   onHandleChange,
   ...props
@@ -21,22 +19,25 @@ const SelectInput: React.FC<SelectInputProps> = ({
 
 
 
+
   return (<FormControl required sx={{ width: '100%' }}>
 
     <InputLabel id="demo-simple-select-required-label">{props.label}</InputLabel>
     <Select
       disabled={props.disabled}
+      multiple
       label={props.label}
       error={!!error}
-      value={field.value}
-      key={createSlug(field?.value ?? '')}
+      value={[...(field.value ?? [])]}
       onChange={(e: any) => {
-        if (typeof onHandleChange === 'function') onHandleChange(e.target.value)
-        helper.setValue(e.target.value)
+        const value = e.target.value
+        helper.setValue([...value])
+        if (typeof onHandleChange === 'function') onHandleChange(value)
+
       }}
     >
-      {options.map((option, index) => (
-        <MenuItem key={option.value + '-' + index} value={option.value}>
+      {options.map((option) => (
+        <MenuItem key={option.value} value={option.value}>
           {option.label}
         </MenuItem>
       ))}
@@ -46,4 +47,4 @@ const SelectInput: React.FC<SelectInputProps> = ({
   );
 };
 
-export default SelectInput;
+export default SelectMultipleInput;

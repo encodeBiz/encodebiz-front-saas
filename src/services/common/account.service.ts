@@ -56,7 +56,24 @@ export async function signInEmail(
     }
 }
 
+export async function recoveryPassword(email: string) {
+    try {
+        const httpClientFetchInstance: HttpClient = new HttpClient({
+            baseURL: process.env.NEXT_PUBLIC_BACKEND_URI_RECOVERY_PASS,
+            headers: {},
+        });
+        const response: any = await httpClientFetchInstance.post('', {
+            email
+        });
+        if (response.errCode && response.errCode !== 200) {
+            throw new Error(response.message)
+        }
+    } catch (error: any) {
+        throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
 
+    }
+
+}
 
 export async function signUpEmail(data: RegisterFormValues, sessionToken?: string, uid?: string) {
     try {
@@ -95,7 +112,7 @@ export async function fetchUserAccount(
 ): Promise<IUser> {
     try {
         return await getOne(collection.USER, uid);
-    } catch (error: any) {       
+    } catch (error: any) {
         throw new Error(codeError[error.code] ? codeError[error.code] : error?.message)
 
     }
@@ -103,9 +120,10 @@ export async function fetchUserAccount(
 
 
 
-export async function handleLogout(): Promise<void> {
+export async function handleLogout(callback: () => void): Promise<void> {
     try {
         await logout()
+        if (typeof callback === 'function') callback()
     } catch (error: any) {
         throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
 

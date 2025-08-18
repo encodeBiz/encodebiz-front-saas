@@ -4,7 +4,6 @@ import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
-import { HolderFormValues } from "@/app/main/passinbiz/holder/form/page.controller";
 import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
 
 
@@ -39,7 +38,7 @@ export const fetchHolder = async (entityId: string, id: string): Promise<Holder>
 }
 
 
-export async function createHolder(data: HolderFormValues, token: string) {
+export async function createHolder(data: Partial<Holder>, token: string) {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -67,7 +66,7 @@ export async function createHolder(data: HolderFormValues, token: string) {
   }
 }
 
-export async function updateHolder(data: HolderFormValues, token: string) {
+export async function updateHolder(data: Partial<Holder>, token: string) {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -178,7 +177,7 @@ export async function validateHolder(data: any, tokenValidateStaff: string) {
     const httpClientFetchInstance: HttpClient = new HttpClient({
       baseURL: "",
       headers: {
-        'A': `Bearer ${tokenValidateStaff}`,
+        'authorization': `Bearer ${tokenValidateStaff}`,
       },
     });
     const response: any = await httpClientFetchInstance.post(

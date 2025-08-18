@@ -139,8 +139,10 @@ export const useSettingEntityController = () => {
         {
             name: 'country',
             label: t('core.label.country'),
-            onChange: (event: any) => {
-                setCityList(country.find(e => e.name === event)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
+            extraProps: {
+                onHandleChange: (value: any) => {
+                    setCityList(country.find((e: any) => e.name === value)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
+                },
             },
             component: SelectInput,
             options: country.map(e => ({ label: e.name, value: e.name }))

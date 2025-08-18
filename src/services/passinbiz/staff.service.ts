@@ -4,8 +4,7 @@ import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { IStaff } from "@/domain/features/passinbiz/IStaff";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
-import { StaffFormValues } from "@/app/main/passinbiz/staff/form/page";
-
+ 
 
 /**
    * Search trainer
@@ -72,7 +71,7 @@ export const search = async (entityId: string, params: SearchParams): Promise<IS
 }
 
 
-export async function createStaff(data: StaffFormValues, token: string) {
+export async function createStaff(data: Partial<IStaff>, token: string) {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -100,7 +99,7 @@ export async function createStaff(data: StaffFormValues, token: string) {
   }
 }
 
-export async function updateStaff(data: StaffFormValues, token: string) {
+export async function updateStaff(data: Partial<IStaff>, token: string) {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");

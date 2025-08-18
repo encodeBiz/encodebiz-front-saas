@@ -5,23 +5,18 @@ import {
     Container,
     Box,
     Typography,
-    Divider,
     Paper,
-    Grid,
     Link
 } from '@mui/material';
-import {
-    Google as GoogleIcon} from '@mui/icons-material';
 import { RegisterFormValues, useRegisterController } from './page.controller';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { useTranslations } from 'next-intl';
 import { useStyles } from './page.styles';
-import { BaseButton } from '@/components/common/buttons/BaseButton';
 import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 
 
 const SignUpPage = () => {
-    const { signInWithGoogle, initialValues, validationSchema, fields, signInWithEmail } = useRegisterController()
+    const { initialValues, validationSchema, fields, signInWithEmail } = useRegisterController()
     const t = useTranslations()
     const classes = useStyles();
 
@@ -40,24 +35,8 @@ const SignUpPage = () => {
                     </Typography>
                 </Box>
 
-                <Grid container spacing={2} sx={classes.fullWidth}>
-                    <Grid size={{ xs: 12, sm: 12 }} sx={classes.fullWidth}>
-                        <BaseButton fullWidth variant="outlined" startIcon={<GoogleIcon color="primary" />} onClick={signInWithGoogle}>
-                            {t('core.signup.google')}
-                        </BaseButton>
-                    </Grid>
-                    {/** <Grid size={{ xs: 12, sm: 12 }} sx={classes.fullWidth}>
-                        <BaseButton fullWidth variant="outlined" startIcon={<FacebookIcon color="primary" />} onClick={signInWithFacebook}>
-                            {t('core.signup.facebook')}
-                        </BaseButton>
-                    </Grid>*/}
-                </Grid>
-
-                <Divider sx={{ my: 3 }}>
-                    <Typography variant="body2" color="text.secondary">
-                        {t('core.signup.or')}
-                    </Typography>
-                </Divider>
+                
+ 
 
 
                 <GenericForm<RegisterFormValues>

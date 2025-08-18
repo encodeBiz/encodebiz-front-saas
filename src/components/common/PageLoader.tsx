@@ -1,7 +1,7 @@
 // components/PageLoader.tsx
 'use client'
 import React from 'react';
-import { 
+import {
   Box,
   Typography,
   useTheme
@@ -10,19 +10,21 @@ import AnimatedLogo from '../layouts/LogoLoader/LogoLoader';
 
 type PageLoaderProps = {
   type?: 'circular' | 'linear';
-  backdrop?:boolean
+  backdrop?: boolean
   size?: number | string;
   thickness?: number;
   message?: string;
   fullScreen?: boolean;
   progress?: number; // For determinate mode
+  width?: number;
 };
 
-const PageLoader: React.FC<PageLoaderProps> = ({  
+const PageLoader: React.FC<PageLoaderProps> = ({
   message,
   fullScreen = true,
   backdrop = false,
-  
+  width = 0
+
 }) => {
   const theme = useTheme();
 
@@ -39,26 +41,28 @@ const PageLoader: React.FC<PageLoaderProps> = ({
       left: 0,
       width: '100vw',
       height: '100vh',
-      backgroundColor: backdrop?'rgba(0,0,0,0.7)':theme.palette.background.default,
+      backgroundColor: backdrop ? 'rgba(0,0,0,0.7)' : theme.palette.background.default,
       zIndex: theme.zIndex.modal + 1,
       color: theme.palette.text.secondary
     }),
     ...(!fullScreen && {
-     
-      width: '100%',
-      height: 'calc(50vh - 200px)',
-      backgroundColor: theme.palette.background.default,
-     // zIndex: theme.zIndex.modal + 1
+      width: `calc(100vw - ${width ? width : 200}px)`,
+      height: 'calc(100vh)',
+      position: 'absolute',
+      zIndex: theme.zIndex.modal - 1,
+    
+      backgroundColor: backdrop ? 'rgba(0,0,0,0.1)' : theme.palette.background.default,
+      // zIndex: theme.zIndex.modal + 1
     })
   };
 
-   
+
 
   return (
     <Box sx={loaderStyle}>
-      <AnimatedLogo/>
+      <AnimatedLogo />
       {message && (
-        <Typography style={{color:'#FFF'}} variant="body1" color="textSecondary">
+        <Typography style={{ color: '#FFF' }} variant="body1" color="textSecondary">
           {message}...
         </Typography>
       )}

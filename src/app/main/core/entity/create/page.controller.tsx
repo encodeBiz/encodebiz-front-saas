@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { requiredRule } from '@/config/yupRules';
 import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
+import { createSlug } from '@/lib/common/String';
 
 
 export interface EntityFormValues {
@@ -32,7 +33,7 @@ export const useRegisterController = () => {
     const t = useTranslations()
     const { showToast } = useToast()
     const { user, token } = useAuth()
-    const { refrestList } = useEntity()
+    const { changeCurrentEntity } = useEntity()
     const { push } = useRouter()
     const [cityList, setCityList] = useState<any>([])
     const [initialValues, setInitialValues] = useState<EntityFormValues>({
@@ -61,10 +62,37 @@ export const useRegisterController = () => {
     });
     const handleCreateEntity = async (values: EntityFormValues) => {
         try {
-            await createEntity(values, token)
-            refrestList(user?.id as string)
-            showToast(t('core.feedback.success'), 'success');
-            push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
+
+            const createData = {
+                "name": values.name,
+                "slug": createSlug(values.name),
+                "billingEmail": values.billingEmail,
+                "legal": {
+                    "legalName": values.legalName,
+                    "taxId": values.taxId,
+                    "address": {
+                        "street": values.street,
+                        "city": values.city,
+                        "postalCode": values.postalCode,
+                        "country": values.country,
+
+                    }
+                },
+                "active": true
+            }
+            const data: { entity: { id: string } } = await createEntity(createData, token)
+
+            if (data.entity.id) {
+                changeCurrentEntity(data.entity.id, user?.id as string, () => {
+                    showToast(t('core.feedback.success'), 'success');
+                    push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
+                })
+            } else {
+                showToast(t('core.feedback.success'), 'success');
+                //push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
+
+            }
+
         } catch (error: any) {
             showToast(error.message, 'error')
         }
@@ -119,8 +147,10 @@ export const useRegisterController = () => {
         {
             name: 'country',
             label: t('core.label.country'),
-            onChange: (event: any) => {
-                setCityList(country.find(e => e.name === event)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
+            extraProps: {
+                onHandleChange: (value: any) => {
+                    setCityList(country.find((e: any) => e.name === value)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
+                },
             },
             component: SelectInput,
             options: country.map(e => ({ label: e.name, value: e.name }))
@@ -131,7 +161,7 @@ export const useRegisterController = () => {
             component: SelectInput,
             options: cityList
         },
-         
+
         {
             name: 'postalCode',
             label: t('core.label.postalCode'),

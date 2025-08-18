@@ -6,7 +6,7 @@ import { BizType } from '@/domain/core/IService';
 import { IPlan } from '@/domain/core/IPlan';
  
 
-export default function SalesPlan({fromService,salesPlans,ref}:{ref?: any,fromService:BizType,salesPlans:Array<IPlan>, notGetPlan:boolean}) {
+export default function SalesPlan({fromService,salesPlans,ref}:{ref?: any,fromService:BizType,salesPlans:Array<IPlan>}) {
     const t = useTranslations()
     
  

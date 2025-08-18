@@ -55,15 +55,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 
 
+
     const watchSesionState = useCallback(async (userAuth: User) => {
         try {
+            const providerData = userAuth?.providerData;
+            const isGoogle = providerData?.some(
+                (profile: any) => profile.providerId === "google.com"
+            );
 
             if (userAuth) {
                 updateUserData()
                 setToken(await userAuth.getIdToken())
-
                 const extraData = await fetchUserAccount(userAuth.uid)
-
                 const userData: IUser = {
                     ...extraData,
                     completeProfile: extraData.email ? true : false
@@ -73,7 +76,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     ...userData,
                 })
 
-                if (!userData.completeProfile) {
+                if (!userData.completeProfile && isGoogle) {
                     push(`/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`)
                 }
                 setUserAuth(userAuth)
@@ -104,7 +107,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 
     useEffect(() => {
-        console.log('watchSesionState');
         setPendAuth(true)
         const unsubscribe = subscribeToAuthChanges(watchSesionState);
         return () => unsubscribe(); // Cleanup on unmount

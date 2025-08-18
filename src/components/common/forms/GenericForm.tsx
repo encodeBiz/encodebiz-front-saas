@@ -18,7 +18,7 @@ export type FormField = {
   name: string;
   typeUpload?: IUserMedia;
   label: string | React.ComponentType<any>;
-  type?: 'text' | 'email' | 'password' | 'number' | 'select' | 'checkbox' | 'date' | 'textarea';
+  type?: 'text' | 'email' | 'password' | 'number' | 'select' | 'checkbox' | 'date' | 'textarea' | string;
   required?: boolean;
   component: React.ComponentType<any>;
   options?: Array<{ value: any; label: string }>; // For select inputs
@@ -67,7 +67,7 @@ const GenericForm = <T extends Record<string, any>>({
     <Paper
       elevation={0}
       sx={{
-      
+
         width: '100%',
         ...formContainerProps?.sx,
       }}
@@ -86,14 +86,15 @@ const GenericForm = <T extends Record<string, any>>({
         enableReinitialize={enableReinitialize}
         validateOnBlur={true}
         validateOnChange={true}
-        
+
 
       >
         {(formikProps: FormikProps<T>) => (
           <Form noValidate>
-              {/*JSON.stringify(formikProps.errors)*/}
+            {/*JSON.stringify(formikProps.errors)*/}
             <Grid container spacing={3}>
               {fields.map((field, i) => {
+                 
                 const FieldComponent = field.component;
                 const isInvalid =
                   formikProps.touched[field.name] && Boolean(formikProps.errors[field.name]);
@@ -115,6 +116,7 @@ const GenericForm = <T extends Record<string, any>>({
                       xl: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4
                     }} key={field.name} sx={{ width: '100%' }}>
                       <FieldComponent
+                       
                         name={field.name}
                         label={field.label}
                         type={field.type}
@@ -124,16 +126,11 @@ const GenericForm = <T extends Record<string, any>>({
                         variant="outlined"
                         error={isInvalid}
                         helperText={isInvalid ? errorText : ''}
-                        value={formikProps.values[field.name]}
-                        onChange={(e: any) => {
-                          formikProps.handleChange(e)
-                          if (typeof field.onChange === 'function')
-                            field.onChange(e)
-                        }}
+                        value={formikProps.values[field.name]}                       
                         onBlur={formikProps.handleBlur}
                         options={field.options}
-                        {...field.extraProps}
-                        
+                       {...field.extraProps}
+
                       />
                     </Grid>
                   );

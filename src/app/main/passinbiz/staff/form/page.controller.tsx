@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { emailRule, requiredRule } from '@/config/yupRules';
@@ -8,19 +8,14 @@ import { useRouter } from "nextjs-toploader/app";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { MAIN_ROUTE } from "@/config/routes";
-import { FormField } from "@/components/common/forms/GenericForm";
 import { useLayout } from "@/hooks/useLayout";
 import { useParams } from "next/navigation";
 import { createStaff, fetchStaff, updateStaff } from "@/services/passinbiz/staff.service";
 import { IStaff } from "@/domain/features/passinbiz/IStaff";
+import SelectMultipleInput from "@/components/common/forms/fields/SelectMultipleInput";
+import { fetchEvent, search, searchEventsByStaff, updateEvent } from "@/services/passinbiz/event.service";
+import { IEvent } from "@/domain/features/passinbiz/IEvent";
 
-export interface StaffFormValues {
-  "fullName": string;
-  "email": string;
-  entityId?: string
-  allowedTypes?: Array<string>;
-  id?: string
-};
 
 export default function useStaffController() {
   const t = useTranslations();
@@ -31,8 +26,7 @@ export default function useStaffController() {
 
   const { changeLoaderState } = useLayout()
   const { id } = useParams<{ id: string }>()
-
-  const [fields] = useState<FormField[]>([
+  const fieldList = [
     {
       name: 'fullName',
       label: t('core.label.fullName'),
@@ -47,26 +41,115 @@ export default function useStaffController() {
       required: true,
       component: TextInput,
     },
-
-  ])
-  const [initialValues, setInitialValues] = useState<StaffFormValues>({
+    {
+      name: 'allowedTypes',
+      label: t('core.label.typeStaff'),
+      type: 'text',
+      required: true,
+      options: [
+        { value: 'event', label: t('core.label.event') },
+        { value: 'credential', label: t('core.label.credential') }
+      ],
+      component: SelectMultipleInput,
+      extraProps: {
+        onHandleChange: (value: any) => {
+          onChangeType(value)
+        },
+      }
+    },
+  ]
+  const [initialValues, setInitialValues] = useState<Partial<IStaff>>({
     fullName: "",
     email: "",
+    role: "validator_credential",
+    allowedTypes: []
 
   });
 
   const validationSchema = Yup.object().shape({
     fullName: requiredRule(t),
     email: emailRule(t),
+  
   });
 
-  const submitForm = async (values: StaffFormValues) => {
+  const [loadForm, setLoadForm] = useState(false)
+  const [fields, setFields] = useState<any[]>([...fieldList])
+  const [eventData, setEventData] = useState<{ loaded: boolean, eventList: Array<IEvent> }>({ loaded: false, eventList: [] })
+
+
+
+
+
+  const onChangeType = async (typeValue: Array<'credential' | 'event'>) => {
+    if (typeValue.includes('event') && id) {
+      setFields([...fieldList,
+      {
+        name: 'eventList',
+        label: t('core.label.event'),
+        type: 'text',
+        required: true,
+        options: [...eventData.eventList.map(e => ({ label: e.name, value: e.id }))],
+        component: SelectMultipleInput,
+      }
+      ])
+
+    } else {
+      setFields(prev => [...prev.filter(e => e.name !== 'eventList')])
+
+    }
+  }
+
+
+  const saveEventByStaff = async (eventIdList: Array<string>) => {
+    try {
+
+      await Promise.all(
+        eventIdList.map(async (eventId) => {
+          const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, eventId);
+          if (!event.assignedStaff) event.assignedStaff = []
+          if (!event.assignedStaff.includes(id)) {
+            event.assignedStaff = [...event.assignedStaff, id]
+            await updateEvent({
+              id: event.id,
+              entityId: event.entityId,
+              assignedStaff: event.assignedStaff
+            }, token);
+
+          }
+        })
+      );
+
+      if (Array.isArray(initialValues.eventList))
+        await Promise.all(
+          initialValues.eventList.map(async (eventId) => {
+            const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, eventId);
+            if (!eventIdList.includes(eventId)) {
+              event.assignedStaff = event.assignedStaff.filter(e => e !== id)
+              await updateEvent({
+                id: event.id,
+                entityId: event.entityId,
+                assignedStaff: event.assignedStaff
+              }, token);
+            }
+          })
+        );
+
+
+    } catch (error: any) {
+
+      showToast(error.message, 'error')
+    }
+  };
+
+
+  const submitForm = async (values: Partial<IStaff>) => {
     try {
       const dataForm = {
         "fullName": values.fullName,
         "email": values.email,
         "entityId": currentEntity?.entity?.id as string,
-        allowedTypes: ['event'],
+        allowedTypes: values.allowedTypes,
+
         id
       }
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
@@ -74,6 +157,10 @@ export default function useStaffController() {
         await createStaff(dataForm, token)
       else
         await updateStaff(dataForm, token)
+
+      if(id)
+      await saveEventByStaff(values.eventList as Array<string>)
+
       showToast(t('core.feedback.success'), 'success');
       changeLoaderState({ show: false })
 
@@ -88,22 +175,28 @@ export default function useStaffController() {
 
 
 
-  const fetchData = useCallback(async () => {
+  const fetchData = async () => {
     try {
-      changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const Staff: IStaff = await fetchStaff(currentEntity?.entity.id as string, id)
-      setInitialValues({
-        fullName: Staff.fullName ?? "",
-        email: Staff.email ?? "",
 
-        entityId: currentEntity?.entity.id as string
+      changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+      const staff: IStaff = await fetchStaff(currentEntity?.entity.id as string, id)
+      const eventStaffList: Array<IEvent> = await searchEventsByStaff(id)
+       
+      setInitialValues({
+        fullName: staff.fullName ?? "",
+        email: staff.email ?? "",
+        entityId: currentEntity?.entity.id as string,
+        eventList: eventStaffList.map(e => e.id),
+        ...staff
       })
+
+      onChangeType(staff.allowedTypes)
       changeLoaderState({ show: false })
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
     }
-  }, [changeLoaderState, currentEntity?.entity.id, id, showToast, t])
+  }
 
   useEffect(() => {
     if (currentEntity?.entity.id && user?.id) {
@@ -112,11 +205,22 @@ export default function useStaffController() {
   }, [currentEntity?.entity.id, watchServiceAccess, user?.id])
 
 
-  useEffect(() => {
+
+  const inicializeField = async () => {
+    setFields(fieldList)
+    setLoadForm(true)    
+
+
     if (currentEntity?.entity.id && user?.id && id)
       fetchData()
-  }, [currentEntity?.entity.id, user?.id, id, fetchData])
+  }
+  const inicializeEvent = async () => {
+    const eventList = await search(currentEntity?.entity.id as string, { ...{} as any, limit: 100 })
+    setEventData({ loaded: true, eventList })
+  }
 
+  if (currentEntity?.entity.id && user?.id && !eventData.loaded) inicializeEvent()
+  if (currentEntity?.entity.id && user?.id && !loadForm && eventData.loaded) inicializeField()
 
   return { fields, initialValues, validationSchema, submitForm }
 }

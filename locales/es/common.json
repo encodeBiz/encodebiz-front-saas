@@ -56,6 +56,17 @@
     }
   },
   "core": {
+    "table": {
+      "selected": "Seleccionado",
+      "nofile": "No existen archivos disponibles",
+      "actions": "Acciones",
+      "loader": "Cargando...",
+      "nodata": "No existen datos disponibles",
+      "rowsPerPage": "Filas por página:",
+      "of": "de",
+      "previous": "Atrás",
+      "next": "Adelante"
+    },
     "title": {
       "loader": "Cargando sesión de usuario",
       "loaderChangeEntity": "Cambiando entidad",
@@ -71,14 +82,19 @@
     "label": {
       "filename": "Nombre de Archivo",
       "default": "Por defecto",
+      "state": "Estado",
       "vip": "VIP",
       "template": "Plantilla",
       "expo": "Expositivo",
       "festival": "Festival",
+      "rol": "rol",
+      "active": "Activo",
+      "thumbnail": "Imagen en miniatura",
       "owner": "Propietario",
       "availableEvent": "Eventos disponibles",
       "selectedEvent": "Eventos seleccionados",
       "events": "Eventos",
+      "credential": "Credencial",
       "admin": "Administrador",
       "select": "Seleccionar",
       "typePass": "Tpo de pase",
@@ -89,6 +105,7 @@
       "revoke": "Revocar",
       "firstName": "Nombre",
       "status": "Estado",
+      "customFields": "Campos personalizados",
       "staff": "Personal de apoyo",
       "draft": "Borrador",
       "published": "Publicado",
@@ -109,7 +126,7 @@
       "colorAccent": "Color de resaltado",
       "description": "Descripción",
       "message": "Mensaje",
-      "state": "Estado",
+      "all": "Todos",
       "uploadResourse": "Subir recurso",
       "lastName": "Apellido",
       "fullName": "Nombre completo",
@@ -150,7 +167,13 @@
       "name": "Nombre",
       "currentPassword": "Contraseña actual",
       "label": "Etiqueta",
-      "value": "Valor"
+      "value": "Valor",
+      "failed": "Fallo",
+      "root": "Administrador",
+      "role": "Role",
+      "typeStaff": "Tipo de pase",
+      "validator_event": "Verificador de eventos",
+      "validator_credential": "Verificador de credenciales"
     },
     "button": {
       "revoke": "Revocar",
@@ -190,6 +213,7 @@
       "facebook": "Unete con Facebook",
       "existAccount": "¿Ya tienes una cuenta?",
       "signIn": "Inicia sesión",
+      "recovery": "¿Has olvidado la contraseña?",
       "complete_profile": "Completar perfil",
       "complete_profile_desc": "Antes de comenzar debes completar tus datos en la plataforma y crear tu primera entidad, estos datos luego los puedes modificar desde las preferencias"
     },
@@ -203,10 +227,25 @@
       "noAccount": "No tienes una cuenta?",
       "signIn": "Inicia sesión"
     },
+    "recovery": {
+      "title": "Recuperar contraseña",
+      "signup": "Recuperar contraseña",
+      "subtitle": "Entre el correo electronico para recuperar su clave de acceso  a EncodeBiz Saas",
+      "or": "O",
+      "google": "Unete con Google",
+      "facebook": "Unete con Facebook",
+      "noAccount": "No tienes una cuenta?",
+      "existAccount": "¿Ya tienes una cuenta?",
+      "recovery": "Recuperar contraseña",
+      "signin": "Inicia sesión",
+      "modalTitle": "Solicitud enviada",
+      "modalTitle2": "En breve le enviaremos a su correo electronico indicaciones para el restablecimiento de su contraseña",
+      "ok": "De acuerdo"
+    },
     "upload": {
       "title": "Subir archico CSV",
       "btn": "Seleccionar archico",
-      "descFile":"Descargue el archivo de referencia",
+      "descFile": "Descargue el archivo de referencia",
       "desc": "Por favor seleccione un archivo CSV para previsualizar el contenido y seleccionarlo",
       "file": "Archivo",
       "preview": "Preview (first 5 rows)",
@@ -332,18 +371,20 @@
     "title": "Política y Privacidad"
   },
   "holders": {
-    "title": "Titulares",
-    "holderList": "Titulares",
+    "title": "Pases Digitales",
+    "holderList": "Pases Digitales",
     "addHolder": "Adicionar",
     "editHolder": "Editar",
     "pending": "Pending",
+    "revoked": "Revocado",
     "failed": "Fallo",
+    "active": "Activo",
     "import": "Importar",
-    "description": "Rellene los campos para registrar el titular",
-    "revokeConfirmModalTitle": "Revocar pase de este titular",
-    "revokeConfirmModalTitle2": "Esta acción no se puede deshacer. Revocará  permanentemente el pase de este titular",
+    "description": "Rellene los campos para registrar el pase digital",
+    "revokeConfirmModalTitle": "Revocar pase de este pase digital",
+    "revokeConfirmModalTitle2": "Esta acción no se puede deshacer. Revocará  permanentemente el pase de este pase digital",
     "sendConfirmModalTitle": "Relanzar pase",
-    "sendConfirmModalTitle2": "Esta acción no se puede deshacer. Relanzará  el pase de este titular nuevamente",
+    "sendConfirmModalTitle2": "Esta acción no se puede deshacer. Relanzará  el pase de este pase digital nuevamente",
     "filter": {
       "email": "Filtro por correo electrónico",
       "state": "Filtro por estado"

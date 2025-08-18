@@ -23,10 +23,11 @@ interface ConfirmProps {
     description: string
     codeValidator?: boolean
     isLoading?: boolean
+    cancelBtn?: boolean
     onOKAction: (args: any) => void
 
 }
-const ConfirmModal = ({ word, title, label, textBtn, description, isLoading = false, codeValidator = false, onOKAction }: ConfirmProps): React.JSX.Element => {
+const ConfirmModal = ({ word, title, label, textBtn, description, isLoading = false, cancelBtn = true, codeValidator = false, onOKAction }: ConfirmProps): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const [confirmationText, setConfirmationText] = useState('');
     const [error, setError] = useState('');
@@ -87,12 +88,12 @@ const ConfirmModal = ({ word, title, label, textBtn, description, isLoading = fa
                 </Box>}
             </DialogContent>
             <DialogActions>
-                <Button
+                {cancelBtn && <Button
                     onClick={(e) => handleClose(e, 'manual')}
                     disabled={isLoading}
                 >
                     {t('core.button.cancel')}
-                </Button>
+                </Button>}
                 <Button
                     onClick={handleConfirm}
                     disabled={codeValidator && confirmationText !== requiredText}

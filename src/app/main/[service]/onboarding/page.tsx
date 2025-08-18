@@ -13,7 +13,7 @@ import { useParams } from "next/navigation";
 
 export default function Dashboard() {
   const t = useTranslations()
-  const { serviceData, pending, planList, notGetPlan } = useDashboardController()
+  const { serviceData, pending, planList } = useDashboardController()
   const sectionMoreInfofRef = useRef(null); // Create a ref for the section
   const sectionServicesRef = useRef(null); // Create a ref for the section
   const { service } = useParams<any>()
@@ -47,7 +47,7 @@ export default function Dashboard() {
         action2Text={t('features.dashboard.card.btn3')}
       />
 
-      {!pending && Array.isArray(planList) && <SalesPlan ref={sectionServicesRef} salesPlans={planList as Array<IPlan>} notGetPlan={notGetPlan} fromService={service} />}
+      {!pending && Array.isArray(planList) && <SalesPlan ref={sectionServicesRef} salesPlans={planList as Array<IPlan>}  fromService={service} />}
       <HelpTabs ref={sectionMoreInfofRef} tabs={[
         {
           id: '1',
