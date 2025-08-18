@@ -10,6 +10,9 @@ import { format_date } from '@/lib/common/Date';
 import ConfirmModal from '../modals/ConfirmModal';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
+import { PrimaryButton } from '../buttons/GenericButton';
+import { useRouter } from 'nextjs-toploader/app';
+import { MAIN_ROUTE } from '@/config/routes';
 
 const PlanCard = styled(Box)<{ featured?: string }>(({ theme, featured }) => ({
     maxWidth: 300,
@@ -42,7 +45,7 @@ export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
     const t = useTranslations();
     const { ubSubcribeAction, loadingGetPlan } = usePricingCardController(plan);
     const { openModal } = useCommonModal()
-
+    const { push } = useRouter()
 
     return (
         <PlanCard featured={String(false)}>
@@ -81,6 +84,20 @@ export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
                         </ListItem>
                     </List>
                 </span>
+                <PrimaryButton
+                    sx={{
+                        marginBottom: 2
+                    }}
+                    fullWidth
+                    variant="contained"
+                    onClick={() => {
+                        push(`/${MAIN_ROUTE}/${plan.serviceId}/onboarding`)
+                    }}
+                    disabled={loadingGetPlan}
+                    loading={loadingGetPlan}
+                >
+                    {t("salesPlan.upgrade")}
+                </PrimaryButton>
                 <DangerButton
                     fullWidth
                     variant="contained"

@@ -6,6 +6,7 @@ import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import { deleteDocument } from "@/lib/firebase/firestore/deleteDocument";
 import { formatLocalDateTime } from "@/lib/common/Date";
+import { IContact } from "@/domain/core/IContact";
 
 
 /**
@@ -54,6 +55,34 @@ export const search = async (entityId: string, params: SearchParams): Promise<IE
   return result;
 }
 
+
+export async function createContact(data: Partial<IContact>, token: string) {
+  try {
+    if (!token) {
+      throw new Error("Error to fetch user auth token");
+    } else {
+      const httpClientFetchInstance: HttpClient = new HttpClient({
+        baseURL: "",
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      const response: any = await httpClientFetchInstance.post(
+        process.env.NEXT_PUBLIC_BACKEND_URI_PASSINBIZ_CREATE_EVENT as string,
+        {
+          ...data
+        }
+      );
+      if (response.errCode && response.errCode !== 200) {
+        throw new Error(response.message);
+      }
+
+      return response;
+    }
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
 
 export async function createEvent(data: Partial<IEvent>, token: string) {
   try {

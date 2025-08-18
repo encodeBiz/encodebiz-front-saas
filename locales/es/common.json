@@ -90,6 +90,9 @@
       "rol": "rol",
       "active": "Activo",
       "thumbnail": "Imagen en miniatura",
+      "subject":"Asunto",
+   
+      "from":"Correo electronico",
       "owner": "Propietario",
       "availableEvent": "Eventos disponibles",
       "selectedEvent": "Eventos seleccionados",
@@ -177,6 +180,7 @@
     },
     "button": {
       "revoke": "Revocar",
+      "upgrade": "Upgradear",
       "resend": "Reenviar",
       "submitting": "Enviando...",
       "submit": "Enviar",
@@ -321,6 +325,7 @@
     "subTitle": "Seleccione el plan que se ajuste a las necesidades de su negocio",
     "free": "Gratis",
     "standard": "Estandar",
+    "upgrade":"Actualizar",
     "month": "mes",
     "bronze": "Bronce",
     "freemium": "Gratis",
@@ -399,7 +404,11 @@
     "description": "Rellene los campos para registrar el evento",
     "description2": "Asocie o retire el personal de apoyo al evento",
     "deleteConfirmModalTitle": "Eliminar Evento",
-    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el evento y todas sus configuraciones"
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el evento y todas sus configuraciones",
+    "fremiunContact": {
+      "title": "Crear evento",
+      "description": "Describa las caractericticas del evento que desea crear, y nos pondremos en contacto con usted"
+    }
   },
   "staff": {
     "title": "Personal de Apoyo",
