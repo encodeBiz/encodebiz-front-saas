@@ -9,9 +9,12 @@ import { CommonModalType } from "@/contexts/commonModalContext";
 import { useRouter } from "nextjs-toploader/app";
 import { IStaff } from "@/domain/features/passinbiz/IStaff";
 import { deleteStaff, search } from "@/services/passinbiz/staff.service";
+import { search as searchEvent } from "@/services/passinbiz/event.service";
+
 import { Event, Search } from "@mui/icons-material";
 import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { Box, Select, MenuItem, TextField, IconButton, Tooltip } from "@mui/material";
+import { IEvent } from "@/domain/features/passinbiz/IEvent";
 
 
 
@@ -87,8 +90,13 @@ export default function useStaffListController() {
     },
   ];
 
+  const [eventList, setEventList] = useState<Array<IEvent>>([])
+  const inicializeEvent = useCallback(async () => {
+    setEventList(await searchEvent(currentEntity?.entity.id as string, { ...{} as any, limit: 100 }))
+  }, [currentEntity?.entity.id])
+
   const fetchingData = useCallback(() => {
- 
+    inicializeEvent()
     setLoading(true)
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
       if (res.length < rowsPerPage || res.length === 0)
@@ -119,7 +127,7 @@ export default function useStaffListController() {
     }).finally(() => {
       setLoading(false)
     })
-  }, [params, rowsPerPage, currentEntity?.entity.id, showToast])
+  }, [params, rowsPerPage, currentEntity?.entity.id, showToast, inicializeEvent])
 
   useEffect(() => {
     if (params && currentEntity?.entity?.id) {
@@ -163,6 +171,11 @@ export default function useStaffListController() {
   const onFilter = () => {
     const filterData: Array<{ field: string, operator: string, value: any }> = []
     Object.keys(filter).forEach((key) => {
+
+      if (key === 'parentId' && filter[key] != '' && filter.allowedTypes.includes('event')) {
+        filterData.push({ field: key, operator: '==', value: [filter[key]] })
+
+      }
       if (key === 'allowedTypes' && filter[key] != 'all')
         filterData.push({ field: key, operator: 'array-contains-any', value: [filter[key]] })
       else
@@ -172,6 +185,8 @@ export default function useStaffListController() {
     const paramsData = { ...params, startAfter: null, limit: rowsPerPage, filters: filterData }
     setParams({ ...paramsData })
   }
+
+
 
 
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
@@ -185,6 +200,18 @@ export default function useStaffListController() {
         </MenuItem>
       ))}
     </Select>
+
+
+    {filter.allowedTypes.includes('event') && <Select sx={{ minWidth: 120, height: 55 }}
+      value={filter.parentId}
+      defaultValue={''}
+      onChange={(e: any) => setFilter({ ...filter, parentId: e.target.value })}  >
+      {eventList.map((option) => (
+        <MenuItem key={option.id} value={option.id}>
+          {option.name}
+        </MenuItem>
+      ))}
+    </Select>}
 
 
     <TextField
