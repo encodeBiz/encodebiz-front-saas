@@ -120,9 +120,7 @@ export const useImageCropper = (onComplete: (file: File) => void, size: { w: num
        
       onComplete(croppedImage.file)
       setOpen(false);
-    } catch (err) {
-      console.error('Error cropping image:', err);
-    } finally {
+    } catch (err) { throw err} finally {
       setIsLoading(false);
     }
   };

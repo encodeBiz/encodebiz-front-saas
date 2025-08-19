@@ -19,9 +19,8 @@ export const addDocument = async <T>(
     );
     await setDoc(docRef, { id: docRef.id }, { merge: true });
     return docRef as DocumentReference<T>;
-  } catch (error) {
-    console.error("Error adding document: ", error);
-    throw new Error("Error adding document");
+  } catch (error) { 
+    throw new Error("Error adding document" + error);
   }
 };
 
@@ -35,7 +34,6 @@ export const createDocumentWithId = async <T>(
     await setDoc(docRef, data);
     return docRef as DocumentReference<T>;
   } catch (error) {
-    console.error("Error creating document with ID: ", error);
-    throw new Error("Error creating document with ID");
+    throw new Error("Error creating document with ID"+error);
   }
 };

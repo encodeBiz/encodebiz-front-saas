@@ -89,8 +89,7 @@ export const getCollectionCount = async (collectionName: string): Promise<number
     const snapshot = await getDocs(collection(db, collectionName));
     return snapshot.size;
   } catch (error) {
-    console.error(`Error al obtener el total de documentos en ${collectionName}:`, error);
-    return 0;
+    return error ? 0 : 0
   }
 };
 

@@ -73,7 +73,7 @@ export const useQRScanner = () => {
     };
 
     const handleError = (err: any) => {
-        console.error('Scanner error:', err);
+  
         setError(err);
         setScanning(false);
     };

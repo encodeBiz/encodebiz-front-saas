@@ -28,8 +28,8 @@ export const uploadFile = async (
     const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
     return downloadURL;
   } catch (error) {
-    console.error("Error al subir el archivo:", error);
-    throw new Error("Error al subir el archivo");
+ 
+    throw new Error("Error al subir el archivo"+error);
   }
 };
 
@@ -41,8 +41,8 @@ export const getFileURL = async (path: string): Promise<string> => {
     const downloadURL = await getDownloadURL(fileRef);
     return downloadURL;
   } catch (error) {
-    console.error("Error al obtener la URL del archivo:", error);
-    throw new Error("Error al obtener la URL del archivo");
+ 
+    throw new Error("Error al obtener la URL del archivo"+error);
   }
 };
 
@@ -58,7 +58,7 @@ async function UploadImage(uploadTask: UploadTask, onProgress: (progress: any) =
         }
       },
       function (error: any) {
-        console.error("Error al subir el archivo:", error);
+       
         reject(error);
       },
       function () {
