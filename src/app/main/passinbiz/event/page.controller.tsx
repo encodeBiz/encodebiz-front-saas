@@ -12,6 +12,7 @@ import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { Person2 } from "@mui/icons-material";
 import { Chip } from "@mui/material";
+import { useSearchParams } from "next/navigation";
 
 
 
@@ -34,6 +35,7 @@ export default function useIEventListController() {
   const [currentPage, setCurrentPage] = useState(0);
   const [total, setTotal] = useState(0);
   const { closeModal } = useCommonModal()
+  const searchParams = useSearchParams()
 
   const onSearch = (term: string): void => {
     setParams({ ...params, startAfter: null, filters: buildSearch(term) })
@@ -68,7 +70,7 @@ export default function useIEventListController() {
       id: 'name',
       label: t("core.label.name"),
       minWidth: 170,
-    },   
+    },
     {
       id: 'date',
       label: t("core.label.date"),
@@ -167,6 +169,10 @@ export default function useIEventListController() {
   const rowAction: Array<IRowAction> = [
     { icon: <Person2 />, label: t('core.label.staff'), allowItem: () => true, onPress: (item: IEvent) => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event/${item.id}/staff`) },
   ]
+
+  useEffect(() => {
+    if (searchParams.get('refresh')) fetchingData()
+  }, [fetchingData, searchParams])
 
 
   return {

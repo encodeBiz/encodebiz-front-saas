@@ -164,7 +164,7 @@ export default function useStaffController() {
       showToast(t('core.feedback.success'), 'success');
       changeLoaderState({ show: false })
 
-      push(`/${MAIN_ROUTE}/passinbiz/staff`)
+      push(`/${MAIN_ROUTE}/passinbiz/staff?refresh=1`)
     } catch (error: any) {
       showToast(error.message, 'error')
       changeLoaderState({ show: false })
