@@ -99,15 +99,13 @@ export default function useHolderController() {
     setLoadForm(true)
   }
   const inicializeEvent = async () => {
-    const eventList = await search(currentEntity?.entity.id as string, { ...{} as any, limit: 100 })
+    const eventList = await search(currentEntity?.entity.id as string, { ...{} as any, limit: 100 })     
     setEventData({ loaded: true, eventList })
   }
 
   if (currentEntity?.entity.id && !eventData.loaded) inicializeEvent()
   if (currentEntity?.entity.id && !loadForm && eventData.loaded) inicializeField()
-
-  if (currentEntity?.entity.id && !loadForm) inicializeField()
-
+ 
 
 
   const [initialValues, setInitialValues] = useState<Partial<Holder>>({
@@ -145,7 +143,7 @@ export default function useHolderController() {
         "email": values.email,
         "phoneNumber": values.phoneNumber,
         "entityId": currentEntity?.entity?.id as string,
-        "passStatus": "pending",
+        "passStatus": "active",
         "type": values.type,
         "thumbnail": values.thumbnail,
         "parentId": values.parentId ?? "",
@@ -175,6 +173,8 @@ export default function useHolderController() {
   const onChangeType = async (typeValue: any) => {
 
     if (typeValue === 'event') {
+      console.log(eventData);
+      
       setFields(prev => [...prev.filter(e => e.name !== 'thumbnail'),
       {
         name: 'parentId',

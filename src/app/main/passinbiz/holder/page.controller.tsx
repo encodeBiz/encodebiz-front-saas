@@ -13,7 +13,7 @@ import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useRouter } from "nextjs-toploader/app";
 import { format_date } from "@/lib/common/Date";
- 
+
 
 
 
@@ -189,10 +189,7 @@ export default function useHolderListController() {
 
 
 
-
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
-
-
       if (res.length < rowsPerPage || res.length === 0)
         setAtEnd(true)
       else
@@ -232,7 +229,7 @@ export default function useHolderListController() {
 
   useEffect(() => {
     if (currentEntity?.entity?.id)
-      setTimeout(() => fetchingData(), 2000);
+      fetchingData()
   }, [params, currentEntity?.entity?.id, fetchingData])
 
   useEffect(() => {
