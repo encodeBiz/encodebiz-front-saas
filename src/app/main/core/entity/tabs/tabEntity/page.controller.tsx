@@ -18,6 +18,7 @@ import { CommonModalType } from '@/contexts/commonModalContext';
 import { requiredRule } from '@/config/yupRules';
 import { useLayout } from '@/hooks/useLayout';
 import IEntity from '@/domain/auth/IEntity';
+import { useRouter } from 'nextjs-toploader/app';
 
 
 
@@ -61,7 +62,7 @@ export const useSettingEntityController = () => {
     const { user, token } = useAuth();
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
-
+    const {push} = useRouter()
     const [cityList, setCityList] = useState<any>([])
     const [initialValues, setInitialValues] = useState<EntityUpdatedFormValues>({
         uid: currentEntity?.entity?.id as string | "",
@@ -264,6 +265,7 @@ export const useSettingEntityController = () => {
             showToast(t('core.feedback.success'), 'success');
             setPending(false)
             closeModal(CommonModalType.DELETE)
+            push('/main/core/dashboard')
         } catch (error: unknown) {
             if (error instanceof Error) {
                 showToast(error.message, 'error');
