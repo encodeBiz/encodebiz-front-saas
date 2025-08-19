@@ -40,7 +40,6 @@ export default async function RootLayout({
                 <LocaleProvider>
                     <Suspense fallback={<PageLoader backdrop />}>  {/* ✅ Suspense envuelve AuthProvider */}
                         <ToastProvider>
-
                             <AuthProvider>
                                 <EntityProvider>
                                     <LayoutProvider>
