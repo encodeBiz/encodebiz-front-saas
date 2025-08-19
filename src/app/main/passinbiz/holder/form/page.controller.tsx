@@ -173,8 +173,7 @@ export default function useHolderController() {
   const onChangeType = async (typeValue: any) => {
 
     if (typeValue === 'event') {
-      console.log(eventData);
-      
+     
       setFields(prev => [...prev.filter(e => e.name !== 'thumbnail'),
       {
         name: 'parentId',
