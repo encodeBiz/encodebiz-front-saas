@@ -10,7 +10,7 @@ import { useTranslations } from 'next-intl';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useCommonModal } from '@/hooks/useCommonModal';
 export default function usePricingCardController(id: string, name: string, fromService: "passinbiz" | "checkinbiz") {
-    const { currentEntity, fetchSuscriptionEntity, entitySuscription } = useEntity();
+    const { currentEntity, entitySuscription } = useEntity();
     const { token } = useAuth()
     const [loadingGetPlan, setLoadingGetPlan] = useState(false);
     const { showToast } = useToast()
@@ -29,7 +29,7 @@ export default function usePricingCardController(id: string, name: string, fromS
             changeLoaderState({ show: true, args: { text: t('core.title.loaderActionBilling') } })
 
             await subscribeInSassProduct(data, token)
-            fetchSuscriptionEntity()
+        
             showToast(`La suscripción al plan ${id} del servicio ${fromService} se ha completado con exito'`, 'success');
             setLoadingGetPlan(false);
             changeLoaderState({ show: false })
@@ -54,7 +54,7 @@ export default function usePricingCardController(id: string, name: string, fromS
             changeLoaderState({ show: true, args: { text: t('core.title.loaderActionBilling') } })
 
             await unSubscribeInSassProduct(data, token)
-            fetchSuscriptionEntity()
+           
             showToast(`La suscripción al servicio ${fromService} se ha eliminado con exito`, 'success');
             setLoadingGetPlan(false);
             changeLoaderState({ show: false })

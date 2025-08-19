@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { IPlan } from "@/domain/core/IPlan";
 import { IService } from "@/domain/core/IService";
 import { useAuth } from "@/hooks/useAuth";
@@ -48,7 +49,6 @@ export default function useDashboardController() {
         })
       });
       setPlanList(planList)
-
       setPending(false)
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -79,7 +79,7 @@ export default function useDashboardController() {
   useEffect(() => {
     if (service && user?.id && currentEntity?.entity.id)
       fetchServiceData()
-  }, [user?.id, service, currentEntity?.entity.id, fetchServiceData])
+  }, [user?.id, service, currentEntity?.entity.id])
 
 
 

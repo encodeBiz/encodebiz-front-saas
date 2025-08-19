@@ -3,7 +3,7 @@ import IEntity from "@/domain/auth/IEntity";
 import IUserEntity from "@/domain/auth/IUserEntity";
 import { SearchParams } from "@/domain/firebase/firestore";
 import { getOne, getAll, getAllWithLimit } from "@/lib/firebase/firestore/readDocument";
-import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
+import { onSnapshotFirestore, searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
 import { codeError, HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
@@ -12,6 +12,7 @@ import { EntityUpdatedFormValues, BrandFormValues } from "@/app/main/core/entity
 import { IAssing } from "@/app/main/core/entity/tabs/tabCollaborators/page.controller";
 import { fetchUser } from "./users.service";
 import { deleteDocument } from "@/lib/firebase/firestore/deleteDocument";
+import { Unsubscribe } from "firebase/firestore";
 
 export async function fetchEntity(id: string): Promise<IEntity> {
   try {
@@ -71,7 +72,7 @@ export async function saveStateCurrentEntity(
 
 
 
-export async function createEntity(data: EntityFormValues  | any, token: string) {
+export async function createEntity(data: EntityFormValues | any, token: string) {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -283,3 +284,12 @@ export async function deleteOwnerOfEntity(id: string): Promise<void> {
     throw new Error(error.message);
   }
 }
+
+export function watchEntityChange(entityId: string, callback: (data: IEntity) => void): Unsubscribe {
+  return onSnapshotFirestore(`${collection.ENTITIES}/${entityId}`, callback)
+}
+
+
+
+
+

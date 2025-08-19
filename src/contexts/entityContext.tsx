@@ -1,19 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-"use client";
+'use client';
 
 import { createContext, useEffect, useState, useCallback } from "react";
 import { subscribeToAuthChanges } from "@/lib/firebase/authentication/stateChange";
 import { User } from "firebase/auth";
 import IUserEntity from "@/domain/auth/IUserEntity";
 import { useRouter } from "nextjs-toploader/app";
-import { fetchUserEntities, saveStateCurrentEntity } from "@/services/common/entity.service";
+import { fetchUserEntities, saveStateCurrentEntity, watchEntityChange } from "@/services/common/entity.service";
 import IUser from "@/domain/auth/IUser";
 import { fetchUserAccount } from "@/services/common/account.service";
 import { MAIN_ROUTE, GENERAL_ROUTE } from "@/config/routes";
 import { BizType, IService } from "@/domain/core/IService";
-import { fetchServiceList, fetchSuscriptionByEntity } from "@/services/common/subscription.service";
+import { fetchServiceList, fetchSuscriptionByEntity, watchSubscrptionEntityChange } from "@/services/common/subscription.service";
 import { IEntitySuscription } from "@/domain/auth/ISubscription";
 import { useToast } from "@/hooks/useToast";
+import { Unsubscribe } from "firebase/firestore";
+import IEntity from "@/domain/auth/IEntity";
 
 interface EntityContextType {
     currentEntity: IUserEntity | undefined;
@@ -23,7 +25,6 @@ interface EntityContextType {
     refrestList: (userId: string) => void;
     entityServiceList: Array<IService>
     entitySuscription: Array<IEntitySuscription>
-    fetchSuscriptionEntity: () => void
     watchServiceAccess: (serviceId: BizType) => void
     cleanEntityContext: () => void
 
@@ -38,13 +39,6 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     const { showToast } = useToast()
 
 
-    const fetchSuscriptionEntity = async () => {
-        const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
-        setEntitySuscription(serviceSuscription)
-        const serviceList: Array<IService> = await fetchServiceList()
-        setEntityServiceList(serviceList.map(e => ({ ...e, isBillingActive: !!serviceSuscription.find(service => service.serviceId === e.id) })))
-    }
-
     const watchServiceAccess = useCallback(async (serviceId: BizType) => {
         const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
         const check = serviceSuscription.find(e => e.serviceId === serviceId && currentEntity?.entity.id === e.entityId)
@@ -52,7 +46,9 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
             showToast('No tiene permiso para acceder a este recurso', 'info')
             push(`/${MAIN_ROUTE}/${serviceId}/onboarding`)
         }
-    }, [currentEntity?.entity.id, push, showToast])
+    }, [currentEntity?.entity.id])
+
+
 
     const watchSesionState = useCallback(async (userAuth: User) => {
         if (userAuth) {
@@ -81,12 +77,10 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
             }
         }
-    }, [push, showToast]);
+    }, []);
 
     const refrestList = useCallback(async (userId: string) => {
         const entityList: Array<IUserEntity> = await fetchUserEntities(userId)
-
-
         if (entityList.length > 0) {
             if (entityList.length > 0 && entityList.filter(e => e.isActive).length === 0) {
                 const item = entityList[0]
@@ -98,12 +92,11 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
         } else {
             push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
         }
-    }, [push])
+    }, [])
 
 
     const changeCurrentEntity = async (id: string, userId: string, callback?: () => void) => {
         const entityList: Array<IUserEntity> = await fetchUserEntities(userId)
-
         const current: IUserEntity = entityList.find(e => e.entity.id === id) as IUserEntity
         if (current) {
             const updatedList: Array<IUserEntity> = []
@@ -117,7 +110,6 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
             setEntityList(updatedList)
             setCurrentEntity(current)
             await saveStateCurrentEntity(updatedList)
-
             setTimeout(() => {
                 if (typeof callback === 'function') callback()
             }, 1000);
@@ -131,20 +123,52 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
         setEntitySuscription([])
     }
 
+    const watchSubcriptionState = () => {
+        watchSubscrptionEntityChange(currentEntity?.entity.id as string, async () => {
+            const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
+            setEntitySuscription(serviceSuscription)
+            const serviceList: Array<IService> = await fetchServiceList()
+            setEntityServiceList(serviceList.map(e => ({ ...e, isBillingActive: !!serviceSuscription.find(service => service.serviceId === e.id) })))
+        })
+    }
+
+    const watchEntityState = async (entity: IEntity) => {
+        const item = entityList.find(e => e.entity.id = entity.id)
+        const itemIndex = entityList.findIndex(e => e.entity.id = entity.id)
+        if (item) {
+            item.entity = entity
+            entityList.splice(itemIndex, 1, item)
+            setEntityList(entityList)
+        }
+      
+        setCurrentEntity(prev => ({ ...(prev as IUserEntity), entity }))
+    }
+
+
+
     useEffect(() => {
         const unsubscribe = subscribeToAuthChanges(watchSesionState);
         return () => unsubscribe();
-    }, [watchSesionState]);
+    }, []);
 
 
     useEffect(() => {
-        if (currentEntity?.entity.id)
-            fetchSuscriptionEntity()
-    }, [currentEntity?.entity.id, fetchSuscriptionEntity])
+        let unsubscribe: Unsubscribe
+        let unsubscribeEntity: Unsubscribe
+        if (currentEntity?.entity.id) {
+            unsubscribe = watchSubscrptionEntityChange(currentEntity?.entity.id, watchSubcriptionState);
+            unsubscribeEntity = watchEntityChange(currentEntity?.entity.id, watchEntityState)
+        }
+        return () => {
+            if (typeof unsubscribe === 'function') unsubscribe()
+            if (typeof unsubscribeEntity === 'function') unsubscribeEntity()
+
+        };
+    }, [currentEntity?.entity.id])
 
 
     return (
-        <EntityContext.Provider value={{ entityList, cleanEntityContext, watchServiceAccess, fetchSuscriptionEntity, entitySuscription, entityServiceList, currentEntity, refrestList, setCurrentEntity, changeCurrentEntity }}>
+        <EntityContext.Provider value={{ entityList, cleanEntityContext, watchServiceAccess, entitySuscription, entityServiceList, currentEntity, refrestList, setCurrentEntity, changeCurrentEntity }}>
             {children}
         </EntityContext.Provider>
     );

@@ -1,4 +1,4 @@
- import {
+import {
   collection,
   query,
   where,
@@ -29,7 +29,7 @@ export const searchFirestore = async <T>(
     orderDirection = "asc",
     limit: queryLimit,
     startAfter: startAfterDoc,
-    includeCount=true,
+    includeCount = true,
   } = params;
 
   let firestoreQuery:
@@ -66,7 +66,7 @@ export const searchFirestore = async <T>(
 
 
   let count: number | undefined;
-  if (includeCount) {    
+  if (includeCount) {
     const firestoreQuery1 = query(
       firestoreQuery,
       limit(10000000)
@@ -158,7 +158,7 @@ export const searchFirestoreCount = async (
     ) as CollectionReference<DocumentData, DocumentData>;
   }
 
- 
+
   const countSnapshot = await getCountFromServer(firestoreQuery);
   const count = countSnapshot.data().count;
   return count;
@@ -166,10 +166,23 @@ export const searchFirestoreCount = async (
 
 export const onSnapshotFirestore = (
   collectionName: string,
-  onEnd: (data: any)=>void
+  onEnd: (data: any) => void
 ) => {
   const docRef = doc(db, `${collectionName}`);
   return onSnapshot(docRef, { includeMetadataChanges: true }, (doc) => {
+
     onEnd(doc.data());
+  });
+};
+
+
+export const onSnapshotCollection = (
+  collectionName: string,
+  handleSnapshot: (type: 'added' | 'removed' | 'modified', doc: any) => void
+) => {
+  return onSnapshot(collection(db, `${collectionName}`), (snapshot) => {
+    snapshot.docChanges().forEach(state => {
+      handleSnapshot(state.type, doc)
+    });
   });
 };

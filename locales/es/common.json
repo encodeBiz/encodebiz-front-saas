@@ -90,9 +90,8 @@
       "rol": "rol",
       "active": "Activo",
       "thumbnail": "Imagen en miniatura",
-      "subject":"Asunto",
-   
-      "from":"Correo electronico",
+      "subject": "Asunto",
+      "from": "Correo electronico",
       "owner": "Propietario",
       "availableEvent": "Eventos disponibles",
       "selectedEvent": "Eventos seleccionados",
@@ -324,8 +323,11 @@
     "title": "Elige un plan para adquirir este servicio",
     "subTitle": "Seleccione el plan que se ajuste a las necesidades de su negocio",
     "free": "Gratis",
+    "configureLegal": "Configuracion de datos legales de la entidad",
+    "configureBranding": "Configuracion de diseño de entidad",
+    "configureBilling": "Configuracion de mecanismo de pago",
     "standard": "Estandar",
-    "upgrade":"Actualizar",
+    "upgrade": "Actualizar",
     "month": "mes",
     "bronze": "Bronce",
     "freemium": "Gratis",
@@ -366,7 +368,7 @@
     "renew": "Cambiar plan",
     "del": "Eliminar suscripción",
     "imageConfirmModalTitle": "Entidad no configurada",
-    "imageConfirmModalTitle2": "Para poder realizar una suscripción debe previamente configurar los datos legales de al entidad y el billing",
+    "imageConfirmModalTitle2": "Para poder realizar una suscripción debe previamente configurar los siguientes datos en la entidad:",
     "notAllowedPlan": "Debes actualizar los datos legales de la entidad seleccionada antes de obtener un plan."
   },
   "terms": {

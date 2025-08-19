@@ -117,7 +117,6 @@ export class HttpClient {
       }
       return response.json() as Promise<T>;
     } catch (error) {
-      console.error("Fetch error:", error);
       throw error;
     }
   }
@@ -219,7 +218,6 @@ export class HttpClient {
       }
       return response.json() as Promise<T>;
     } catch (error) {
-      console.error("Fetch error:", error);
       throw error;
     }
   }

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
 import * as Yup from 'yup';
@@ -62,7 +63,7 @@ export const useSettingEntityController = () => {
     const { user, token } = useAuth();
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
-    const {push} = useRouter()
+    const { push } = useRouter()
     const [cityList, setCityList] = useState<any>([])
     const [initialValues, setInitialValues] = useState<EntityUpdatedFormValues>({
         uid: currentEntity?.entity?.id as string | "",
@@ -201,7 +202,7 @@ export const useSettingEntityController = () => {
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             await updateEntity(updateData, token)
             changeLoaderState({ show: false })
-            refrestList(user?.id as string)
+
             showToast(t('core.feedback.success'), 'success');
             setPending(false)
 
@@ -243,7 +244,7 @@ export const useSettingEntityController = () => {
             }
 
         }
-    }, [currentEntity?.entity.id, showToast, user?.email])
+    }, [currentEntity?.entity.id, user?.email])
 
     useEffect(() => {
         if (currentEntity?.entity.id)

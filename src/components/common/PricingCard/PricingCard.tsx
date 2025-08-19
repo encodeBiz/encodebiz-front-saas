@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { CardContent, Typography, Box, List, ListItem, ListItemIcon } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
@@ -60,7 +60,18 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
     const { ubSubcribeAction, handleSubscripe } = usePricingCardController(id as string, name as string, fromService);
     const { push } = useRouter()
     const { open, closeModal } = useCommonModal()
-    const { entitySuscription } = useEntity()
+    const { entitySuscription, currentEntity } = useEntity()
+    const [items, setItems] = useState<Array<string>>([])
+    useEffect(() => {
+        const data: Array<string> = []
+        if (id !== 'fremium' && currentEntity?.entity.id) {
+            if (!currentEntity.entity.legal?.legalName) data.push(t('salesPlan.configureLegal'))
+            if (!currentEntity.entity.branding?.textColor) data.push(t('salesPlan.configureBranding'))
+            if (currentEntity?.entity?.billingConfig?.payment_method?.length === 0) data.push(t('salesPlan.configureBilling'))
+        }
+        setItems(data)
+    }, [currentEntity?.entity?.billingConfig?.payment_method?.length, currentEntity?.entity?.branding?.textColor, currentEntity?.entity.id, currentEntity?.entity?.legal?.legalName, id, t])
+
 
     return (<>
         <PlanCard featured={String(featured)}>
@@ -127,6 +138,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
         {open.type === CommonModalType.BILLING && <SheetModalModal
             title={t('salesPlan.imageConfirmModalTitle')}
             description={t('salesPlan.imageConfirmModalTitle2')}
+            textPoint={items}
             textBtn={t('core.button.configurenow')}
             type={CommonModalType.BILLING}
             onOKAction={() => {
