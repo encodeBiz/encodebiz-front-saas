@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { createContext, useEffect, useState, useCallback } from "react";
@@ -37,12 +38,12 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     const { showToast } = useToast()
 
 
-    const fetchSuscriptionEntity = useCallback(async () => {
+    const fetchSuscriptionEntity = async () => {
         const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
         setEntitySuscription(serviceSuscription)
-         const serviceList: Array<IService> = await fetchServiceList()
+        const serviceList: Array<IService> = await fetchServiceList()
         setEntityServiceList(serviceList.map(e => ({ ...e, isBillingActive: !!serviceSuscription.find(service => service.serviceId === e.id) })))
-    }, [currentEntity?.entity.id])
+    }
 
     const watchServiceAccess = useCallback(async (serviceId: BizType) => {
         const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
@@ -102,7 +103,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
     const changeCurrentEntity = async (id: string, userId: string, callback?: () => void) => {
         const entityList: Array<IUserEntity> = await fetchUserEntities(userId)
- 
+
         const current: IUserEntity = entityList.find(e => e.entity.id === id) as IUserEntity
         if (current) {
             const updatedList: Array<IUserEntity> = []

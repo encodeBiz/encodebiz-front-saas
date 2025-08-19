@@ -19,7 +19,7 @@ export default function usePricingCardController(plan: IEntitySuscription) {
                     serviceId: plan.serviceId as any
                 }
                 await unSubscribeInSassProduct(data, token)
-                fetchSuscriptionEntity()
+                await fetchSuscriptionEntity()
                 showToast(`La suscripción al servicio ${plan.serviceId as any} se ha eliminado con exito`, 'success');
                 setLoadingGetPlan(false);
             } catch (error: unknown) {

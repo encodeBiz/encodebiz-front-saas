@@ -17,7 +17,7 @@ export default function HolderList() {
   const {
     items, rowAction, onDelete, deleting,
     onNext, onBack, onEdit,
-    currentPage,
+    currentPage,topFilter,
     columns, onSearch,
     loading, rowsPerPage, setRowsPerPage } = useHolderListController();
   const { openModal } = useCommonModal()
@@ -57,6 +57,7 @@ export default function HolderList() {
           onEdit={(data) => onEdit(data)}
           onDelete={(data) => openModal(CommonModalType.DELETE, { data })}
           onSearch={(data) => onSearch(data)}
+          topFilter={topFilter}
         /> :
         <FormContact />
       }

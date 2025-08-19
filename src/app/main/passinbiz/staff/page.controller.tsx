@@ -15,8 +15,7 @@ import { Event, Search } from "@mui/icons-material";
 import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { Box, Select, MenuItem, TextField, IconButton, Tooltip } from "@mui/material";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
-import { useSearchParams } from "next/navigation";
-
+ 
 
 
 
@@ -39,8 +38,7 @@ export default function useStaffListController() {
   const { closeModal } = useCommonModal()
   const { push } = useRouter()
   const [filter, setFilter] = useState<any>({ allowedTypes: 'all', email: '' });
-  const searchParams = useSearchParams()
-
+ 
   const rowAction: Array<IRowAction> = [
     { icon: <Event />, label: t('core.label.staff'), allowItem: (item: IStaff) => item.allowedTypes.includes('event'), onPress: (item: IStaff) => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff/${item.id}/events`) },
   ]
@@ -175,7 +173,7 @@ export default function useStaffListController() {
     Object.keys(filter).forEach((key) => {
 
       if (key === 'parentId' && filter[key] != '' && filter.allowedTypes.includes('event')) {
-        filterData.push({ field: key, operator: '==', value: [filter[key]] })
+        filterData.push({ field: key, operator: '==', value: filter[key] })
 
       }
       if (key === 'allowedTypes' && filter[key] != 'all')
@@ -188,9 +186,7 @@ export default function useStaffListController() {
     setParams({ ...paramsData })
   }
 
-  useEffect(() => {
-    if (searchParams.get('refresh')) fetchingData()
-  }, [fetchingData, searchParams])
+ 
 
 
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>

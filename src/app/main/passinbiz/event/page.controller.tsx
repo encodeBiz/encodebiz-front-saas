@@ -10,9 +10,8 @@ import { useRouter } from "nextjs-toploader/app";
 import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
-import { Person2 } from "@mui/icons-material";
-import { Chip } from "@mui/material";
-import { useSearchParams } from "next/navigation";
+import { Person2, Search } from "@mui/icons-material";
+import { Box, Chip, IconButton, MenuItem, Select, TextField, Tooltip } from "@mui/material";
 
 
 
@@ -24,7 +23,7 @@ export default function useIEventListController() {
   const { showToast } = useToast()
   const { push } = useRouter()
   const [rowsPerPage, setRowsPerPage] = useState<number>(5); // Límite inicial
-  const [params, setParams] = useState<any>({});
+  const [params, setParams] = useState<any>({ filters: [{ field: 'status', operator: '==', value: 'published' }] });
   const [loading, setLoading] = useState<boolean>(true);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false)
@@ -35,7 +34,7 @@ export default function useIEventListController() {
   const [currentPage, setCurrentPage] = useState(0);
   const [total, setTotal] = useState(0);
   const { closeModal } = useCommonModal()
-  const searchParams = useSearchParams()
+  const [filter, setFilter] = useState<any>({ status: 'published' });
 
   const onSearch = (term: string): void => {
     setParams({ ...params, startAfter: null, filters: buildSearch(term) })
@@ -63,7 +62,50 @@ export default function useIEventListController() {
   }, [itemsHistory.length, rowsPerPage])
 
 
+  const onFilter = () => {
+    const filterData: Array<{ field: string, operator: string, value: any }> = []
+    Object.keys(filter).forEach((key) => {
+      filterData.push({ field: key, operator: '==', value: filter[key] })
 
+    })
+    const paramsData = { ...params, startAfter: null, limit: rowsPerPage, filters: filterData }
+    setParams({ ...paramsData })
+  }
+
+  const options = [
+    { value: 'draft', label: t('core.label.draft') },
+    { value: 'published', label: t('core.label.published') },
+    { value: 'archived', label: t('core.label.archived') },
+  ]
+
+
+  const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
+    <Select sx={{ minWidth: 120, height: 55 }}
+      value={filter.allowedTypes}
+      defaultValue={'published'}
+      onChange={(e: any) => setFilter({ ...filter, allowedTypes: e.target.value })}  >
+      {options.map((option) => (
+        <MenuItem key={option.value} value={option.value}>
+          {option.label}
+        </MenuItem>
+      ))}
+    </Select>
+
+
+    <TextField
+      variant="outlined"
+      placeholder={t('core.label.name')}
+      value={filter.name}
+      onChange={(e) => {
+        setFilter({ ...filter, name: e.target.value });
+      }}
+    />
+    <Tooltip title="Filter">
+      <IconButton onClick={() => { if (typeof onFilter === 'function') onFilter() }}>
+        <Search />
+      </IconButton>
+    </Tooltip>
+  </Box>
 
   const columns: Column<IEvent>[] = [
     {
@@ -170,13 +212,10 @@ export default function useIEventListController() {
     { icon: <Person2 />, label: t('core.label.staff'), allowItem: () => true, onPress: (item: IEvent) => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event/${item.id}/staff`) },
   ]
 
-  useEffect(() => {
-    if (searchParams.get('refresh')) fetchingData()
-  }, [fetchingData, searchParams])
 
 
   return {
-    onDelete, items, total,
+    onDelete, items, total, topFilter,
     atEnd, onEdit, onSearch,
     atStart, onBack, onNext,
     pagination, currentPage,

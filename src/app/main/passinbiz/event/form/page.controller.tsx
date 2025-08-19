@@ -85,7 +85,7 @@ export default function useHolderController() {
       else await createEvent(data, token)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
-      push(`/${MAIN_ROUTE}/passinbiz/event?refresh=1`)
+      push(`/${MAIN_ROUTE}/passinbiz/event`)
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
@@ -187,7 +187,7 @@ export default function useHolderController() {
       component: SelectInput,
 
     },*/ {
-      name: 'status',
+      name: 'status', 
       label: t('core.label.status'),
       type: 'text',
       required: false,

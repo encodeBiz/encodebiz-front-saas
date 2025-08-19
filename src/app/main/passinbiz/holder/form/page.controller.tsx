@@ -131,6 +131,7 @@ export default function useHolderController() {
       )
       .nullable(),
     fullName: requiredRule(t),
+     
     type: requiredRule(t),
     email: emailRule(t),
     phoneNumber: Yup.string().optional(),
@@ -160,7 +161,7 @@ export default function useHolderController() {
       else
         await updateHolder(dataForm, token)
       showToast(t('core.feedback.success'), 'success');
-      push(`/${MAIN_ROUTE}/passinbiz/holder?refresh=1`)
+      push(`/${MAIN_ROUTE}/passinbiz/holder`)
       changeLoaderState({ show: false })
     } catch (error: any) {
       showToast(error.message, 'error')

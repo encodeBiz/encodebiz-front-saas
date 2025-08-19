@@ -33,8 +33,9 @@ export const codeError: any = {
   "auth/missing-password":
     "Se requiere contraseña. Por favor, introduzca su contraseña.",
   "unavailable": "Servicio no disponible. Inténtalo de nuevo más tarde",
-  "staff/email_already_exists":"Ya existe un personal de apoyo con ese correo electronico ",
-  "media/invalid_dimesions":"Dimenciones no validas"
+  "staff/email_already_exists": "Ya existe un personal de apoyo con ese correo electronico ",
+  "media/invalid_dimesions": "Dimenciones no validas",
+  "auth/invalid_plan": "Freemium plan can not create events"
 };
 
 /**
@@ -99,8 +100,13 @@ export class HttpClient {
 
       if (!response.ok) {
         if (response.status === 400) {
-          const responseError: { code: string; message: string; error: string, errors: Array<string> } =
-            await response.json();
+          let responseError: { code: string; message: string; error: string, errors: Array<string> }
+          const responseErrorData = await response.json()
+          if (typeof responseErrorData === 'string')
+            try { responseError = JSON.parse(responseErrorData) }
+            catch (error: any) {responseError = { code: 'error', message: '', error: error, errors: [] } }
+          else
+            responseError = responseErrorData
 
           if (Array.isArray(responseError.errors) && responseError.errors.length > 0) {
             throw new Error(responseError.errors[0])

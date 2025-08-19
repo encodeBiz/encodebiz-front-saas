@@ -13,8 +13,7 @@ import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useRouter } from "nextjs-toploader/app";
 import { format_date } from "@/lib/common/Date";
-import { useSearchParams } from "next/navigation";
-
+ 
 
 
 
@@ -39,7 +38,6 @@ export default function useHolderListController() {
   const { openModal, closeModal } = useCommonModal()
   const [revoking, setRevoking] = useState(false)
   const { push } = useRouter()
-  const searchParams = useSearchParams()
   const [sort, setSort] = useState<{ field: string, order: 'desc' | 'asc' }>({ field: 'createdAt', order: 'desc' })
   const [filter, setFilter] = useState<any>({ passStatus: 'active', type: 'all', email: '' });
 
@@ -189,8 +187,12 @@ export default function useHolderListController() {
     if (params.filters.find((e: any) => e.field === 'email' && e.value === ''))
       params.filters = params.filters.filter((e: any) => e.field !== 'email')
 
+
+
+
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
-       
+
+
       if (res.length < rowsPerPage || res.length === 0)
         setAtEnd(true)
       else
@@ -230,7 +232,7 @@ export default function useHolderListController() {
 
   useEffect(() => {
     if (currentEntity?.entity?.id)
-      fetchingData()
+      setTimeout(() => fetchingData(), 2000);
   }, [params, currentEntity?.entity?.id, fetchingData])
 
   useEffect(() => {
@@ -325,9 +327,7 @@ export default function useHolderListController() {
     }
   };
 
-  useEffect(() => {
-    if (searchParams.get('refresh')) fetchingData()
-  }, [fetchingData, searchParams])
+
 
 
   return {

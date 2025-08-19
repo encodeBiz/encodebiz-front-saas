@@ -99,7 +99,7 @@ export async function createEvent(data: Partial<IEvent>, token: string) {
         process.env.NEXT_PUBLIC_BACKEND_URI_PASSINBIZ_CREATE_EVENT as string,
         {
           ...data,
-          dateLabel: formatLocalDateTime(data.date)
+          dateLabel: formatLocalDateTime(new Date(data.date))
         }
       );
       if (response.errCode && response.errCode !== 200) {
@@ -128,7 +128,7 @@ export async function updateEvent(data: Partial<IEvent>, token: string) {
         process.env.NEXT_PUBLIC_BACKEND_URI_PASSINBIZ_UPDATE_EVENT as string,
         {
           ...data,          
-          dateLabel: formatLocalDateTime(data.date)
+          dateLabel: formatLocalDateTime(new Date(data.date))
         }
       );
       if (response.errCode && response.errCode !== 200) {
