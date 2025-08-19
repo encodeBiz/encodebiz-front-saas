@@ -11,7 +11,6 @@ interface IQRResult {
     "entityId": string
     "productId": string
     entityType: string
-
     message?: string
     fullName?: string
 }
@@ -26,7 +25,7 @@ export const useQRScanner = () => {
     const searchParams = useSearchParams()
     const tokenBase64 = searchParams.get('token') || null;
     const [tokenValidateStaff, setTokenValidateStaff] = useState('')
-    const [staffValidating, setStaffValidating] = useState(false)
+    const [staffValidating, setStaffValidating] = useState(true)
     const [staffValid, setStaffValid] = useState(false)
 
 

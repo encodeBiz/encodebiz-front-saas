@@ -31,16 +31,7 @@ const QRScanner = () => {
         navigator.clipboard.writeText(scanRessult?.fullName as string);
     };
 
-    const shareResult = async () => {
-        try {
-            await navigator.share({
-                title: 'QR Code Result',
-                text: scanRessult?.fullName as string
-            });
-        } catch (err) {
-            console.error('Error sharing:', err);
-        }
-    };
+    const shareResult = async () => {};
 
 
 
@@ -109,14 +100,7 @@ const QRScanner = () => {
                                     <IconButton onClick={copyToClipboard}>
                                         <CopyAll />
                                     </IconButton>
-                                </Tooltip>
-                                {!!navigator.share && (
-                                    <Tooltip title="Share result">
-                                        <IconButton onClick={shareResult}>
-                                            <Share />
-                                        </IconButton>
-                                    </Tooltip>
-                                )}
+                                </Tooltip>                                 
                             </Box>
 
 
