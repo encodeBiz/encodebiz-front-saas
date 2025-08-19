@@ -160,7 +160,7 @@ export default function useHolderController() {
       else
         await updateHolder(dataForm, token)
       showToast(t('core.feedback.success'), 'success');
-      push(`/${MAIN_ROUTE}/passinbiz/holder`)
+      push(`/${MAIN_ROUTE}/passinbiz/holder?refresh=1`)
       changeLoaderState({ show: false })
     } catch (error: any) {
       showToast(error.message, 'error')
