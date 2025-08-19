@@ -267,7 +267,8 @@ export default function useHolderListController() {
         ...{} as any,
         id: item.id,
         entityId: currentEntity?.entity?.id,
-        passStatus: 'revoked'
+        passStatus: 'revoked',
+        
       }, token)
       setItemsHistory(itemsHistory.filter(e => e.id !== id))
       setItems(itemsHistory.filter(e => e.id !== id))
@@ -287,7 +288,8 @@ export default function useHolderListController() {
         ...{} as any,
         id: item.id,
         entityId: currentEntity?.entity?.id,
-        passStatus: 'pending'
+        passStatus: 'active',
+        status: 'pending'
       }, token)
       setItemsHistory(itemsHistory.filter(e => e.id !== id))
       setItems(itemsHistory.filter(e => e.id !== id))
