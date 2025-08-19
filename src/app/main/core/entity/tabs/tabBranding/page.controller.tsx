@@ -123,10 +123,10 @@ export const useSettingEntityController = () => {
 
         {
             name: 'icon2Url',
-            label: t('core.label.icon2x'),
+            label: t('core.label.iconx2'),
             component: ImageUploadInput,
             required: true,
-            type: 'icon2x'
+            type: 'iconx2'
         },
     ];
 
