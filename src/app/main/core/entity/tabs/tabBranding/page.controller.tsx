@@ -38,6 +38,7 @@ export interface BrandFormValues {
     stripImageUrl: File | string,
     iconUrl: File | string,
     icon2Url: File | string,
+    
 };
 
 export type TabItem = {
@@ -73,7 +74,8 @@ export const useSettingEntityController = () => {
         textColor: requiredRule(t),
         logoUrl: requiredRule(t),
         stripImageUrl: requiredRule(t),
-        iconUrl: requiredRule(t)
+        iconUrl: requiredRule(t),
+        icon2Url: requiredRule(t)
     });
 
     const fields2 = [
@@ -124,7 +126,7 @@ export const useSettingEntityController = () => {
             label: t('core.label.icon2x'),
             component: ImageUploadInput,
             required: true,
-            type: 'icon'
+            type: 'icon2x'
         },
     ];
 

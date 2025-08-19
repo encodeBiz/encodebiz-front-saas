@@ -15,7 +15,7 @@ import { Event, Search } from "@mui/icons-material";
 import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { Box, Select, MenuItem, TextField, IconButton, Tooltip } from "@mui/material";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
- 
+
 
 
 
@@ -38,7 +38,7 @@ export default function useStaffListController() {
   const { closeModal } = useCommonModal()
   const { push } = useRouter()
   const [filter, setFilter] = useState<any>({ allowedTypes: 'all', email: '' });
- 
+
   const rowAction: Array<IRowAction> = [
     { icon: <Event />, label: t('core.label.staff'), allowItem: (item: IStaff) => item.allowedTypes.includes('event'), onPress: (item: IStaff) => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff/${item.id}/events`) },
   ]
@@ -138,7 +138,7 @@ export default function useStaffListController() {
 
   useEffect(() => {
     setCurrentPage(0)
-    setParams({ limit: rowsPerPage })
+    setParams((prev: any) => ({ ...prev, limit: rowsPerPage }))
     setAtStart(true)
   }, [rowsPerPage])
 
@@ -186,7 +186,7 @@ export default function useStaffListController() {
     setParams({ ...paramsData })
   }
 
- 
+
 
 
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>

@@ -81,17 +81,15 @@ export default function useIEventListController() {
 
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
     <Select sx={{ minWidth: 120, height: 55 }}
-      value={filter.allowedTypes}
+      value={filter.status}
       defaultValue={'published'}
-      onChange={(e: any) => setFilter({ ...filter, allowedTypes: e.target.value })}  >
+      onChange={(e: any) => setFilter({ ...filter, status: e.target.value })}  >
       {options.map((option) => (
         <MenuItem key={option.value} value={option.value}>
           {option.label}
         </MenuItem>
       ))}
     </Select>
-
-
     <TextField
       variant="outlined"
       placeholder={t('core.label.name')}
@@ -143,8 +141,9 @@ export default function useIEventListController() {
 
   const fetchingData = useCallback(() => {
     setLoading(true)
+    console.log({ ...params, limit: rowsPerPage });
+    
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
-
       if (res.length < rowsPerPage || res.length === 0)
         setAtEnd(true)
       else
@@ -183,7 +182,7 @@ export default function useIEventListController() {
 
   useEffect(() => {
     setCurrentPage(0)
-    setParams({ limit: rowsPerPage })
+    setParams((prev: any) => ({ ...prev, limit: rowsPerPage }))
     setAtStart(true)
   }, [rowsPerPage])
 
