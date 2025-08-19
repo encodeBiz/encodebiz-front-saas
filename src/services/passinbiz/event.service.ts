@@ -5,7 +5,6 @@ import { collection } from "@/config/collection";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import { deleteDocument } from "@/lib/firebase/firestore/deleteDocument";
-import { formatLocalDateTime } from "@/lib/common/Date";
 import { IContact } from "@/domain/core/IContact";
 
 

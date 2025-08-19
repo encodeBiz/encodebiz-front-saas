@@ -14,7 +14,6 @@ import { Scanner } from '@yudiel/react-qr-scanner';
 import {
     CheckCircle,
     Error,
-    Share,
     CopyAll
 } from '@mui/icons-material';
 import { PreviewContainer, ScannerContainer, StyledCard } from './QRScanner.style';
@@ -31,8 +30,7 @@ const QRScanner = () => {
         navigator.clipboard.writeText(scanRessult?.fullName as string);
     };
 
-    const shareResult = async () => {};
-
+ 
 
 
 
