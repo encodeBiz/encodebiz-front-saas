@@ -56,7 +56,7 @@ const EntitySwitcher: React.FC = () => {
         >
           {entityList.map((entity: IUserEntity, i: number) => (
             <MenuItem key={i} value={entity.entity.id} style={{ textAlign: 'left' }}>
-              <Typography>  {entity.entity.name}</Typography>
+              <Typography>  {entity.entity.name} </Typography>
             </MenuItem>
           ))}
 

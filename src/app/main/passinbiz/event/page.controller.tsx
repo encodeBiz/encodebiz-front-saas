@@ -19,7 +19,7 @@ import { Box, Chip, IconButton, MenuItem, Select, TextField, Tooltip } from "@mu
 export default function useIEventListController() {
   const t = useTranslations();
   const { token } = useAuth()
-  const { currentEntity } = useEntity()
+  const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
   const { push } = useRouter()
   const [rowsPerPage, setRowsPerPage] = useState<number>(5); // Límite inicial
@@ -142,7 +142,7 @@ export default function useIEventListController() {
   const fetchingData = useCallback(() => {
     setLoading(true)
     console.log({ ...params, limit: rowsPerPage });
-    
+
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
       if (res.length < rowsPerPage || res.length === 0)
         setAtEnd(true)
@@ -211,7 +211,11 @@ export default function useIEventListController() {
     { icon: <Person2 />, label: t('core.label.staff'), allowItem: () => true, onPress: (item: IEvent) => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event/${item.id}/staff`) },
   ]
 
-
+  useEffect(() => {
+    if (currentEntity?.entity?.id) {
+      watchServiceAccess('passinbiz')
+    }
+  }, [currentEntity?.entity?.id, watchServiceAccess])
 
   return {
     onDelete, items, total, topFilter,

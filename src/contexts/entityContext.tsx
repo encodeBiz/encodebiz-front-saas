@@ -48,11 +48,18 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }, [currentEntity?.entity.id])
 
+    const fetchEntitySuscription = async () => {
+        const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
+        setEntitySuscription(serviceSuscription.filter(e=>e.status!=="cancelled"))
+        const serviceList: Array<IService> = await fetchServiceList()
+        setEntityServiceList(serviceList.map(e => ({ ...e, isBillingActive: !!serviceSuscription.find(service => service.serviceId === e.id && service.status!=="cancelled") })))
+    }
 
 
     const watchSesionState = useCallback(async (userAuth: User) => {
         if (userAuth) {
             const entityList: Array<IUserEntity> = await fetchUserEntities(userAuth.uid)
+
             if (entityList.length > 0) {
                 if (entityList.length > 0 && entityList.filter(e => e.isActive).length === 0) {
                     const item = entityList[0]
@@ -110,6 +117,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
             setEntityList(updatedList)
             setCurrentEntity(current)
             await saveStateCurrentEntity(updatedList)
+            
             setTimeout(() => {
                 if (typeof callback === 'function') callback()
             }, 1000);
@@ -125,22 +133,18 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
     const watchSubcriptionState = () => {
         watchSubscrptionEntityChange(currentEntity?.entity.id as string, async () => {
-            const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
-            setEntitySuscription(serviceSuscription)
-            const serviceList: Array<IService> = await fetchServiceList()
-            setEntityServiceList(serviceList.map(e => ({ ...e, isBillingActive: !!serviceSuscription.find(service => service.serviceId === e.id) })))
+            await fetchEntitySuscription()
         })
     }
 
     const watchEntityState = async (entity: IEntity) => {
-        const item = entityList.find(e => e.entity.id = entity.id)
-        const itemIndex = entityList.findIndex(e => e.entity.id = entity.id)
+        const item = entityList.find(e => e.entity.id == entity.id && e.entity.active)
+        const itemIndex = entityList.findIndex(e => e.entity.id == entity.id && e.entity.active)
         if (item) {
             item.entity = entity
             entityList.splice(itemIndex, 1, item)
             setEntityList(entityList)
         }
-      
         setCurrentEntity(prev => ({ ...(prev as IUserEntity), entity }))
     }
 
@@ -158,11 +162,11 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
         if (currentEntity?.entity.id) {
             unsubscribe = watchSubscrptionEntityChange(currentEntity?.entity.id, watchSubcriptionState);
             unsubscribeEntity = watchEntityChange(currentEntity?.entity.id, watchEntityState)
+            fetchEntitySuscription()
         }
         return () => {
             if (typeof unsubscribe === 'function') unsubscribe()
             if (typeof unsubscribeEntity === 'function') unsubscribeEntity()
-
         };
     }, [currentEntity?.entity.id])
 
