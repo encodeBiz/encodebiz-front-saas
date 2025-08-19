@@ -115,6 +115,11 @@ export default function useIEventListController() {
       id: 'date',
       label: t("core.label.date"),
       minWidth: 170,
+      format: (value, row) => <Chip
+        size="small"
+        label={t(`core.label.${row.status}`)}
+        variant="outlined"
+      />,
     },
     {
       id: 'location',
@@ -141,8 +146,6 @@ export default function useIEventListController() {
 
   const fetchingData = useCallback(() => {
     setLoading(true)
-    console.log({ ...params, limit: rowsPerPage });
-
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
       if (res.length < rowsPerPage || res.length === 0)
         setAtEnd(true)

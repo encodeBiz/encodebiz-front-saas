@@ -98,8 +98,7 @@ export async function createEvent(data: Partial<IEvent>, token: string) {
       const response: any = await httpClientFetchInstance.post(
         process.env.NEXT_PUBLIC_BACKEND_URI_PASSINBIZ_CREATE_EVENT as string,
         {
-          ...data,
-          dateLabel: formatLocalDateTime(new Date(data.date))
+          ...data         
         }
       );
       if (response.errCode && response.errCode !== 200) {
@@ -127,8 +126,7 @@ export async function updateEvent(data: Partial<IEvent>, token: string) {
       const response: any = await httpClientFetchInstance.post(
         process.env.NEXT_PUBLIC_BACKEND_URI_PASSINBIZ_UPDATE_EVENT as string,
         {
-          ...data,          
-          dateLabel: formatLocalDateTime(new Date(data.date))
+          ...data 
         }
       );
       if (response.errCode && response.errCode !== 200) {

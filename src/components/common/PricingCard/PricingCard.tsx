@@ -67,10 +67,10 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
         if (id !== 'fremium' && currentEntity?.entity.id) {
             if (!currentEntity.entity.legal?.legalName) data.push(t('salesPlan.configureLegal'))
             if (!currentEntity.entity.branding?.textColor) data.push(t('salesPlan.configureBranding'))
-            if (currentEntity?.entity?.billingConfig?.payment_method?.length === 0) data.push(t('salesPlan.configureBilling'))
+            if (!currentEntity?.entity?.billingConfig || currentEntity?.entity?.billingConfig?.payment_method?.length === 0) data.push(t('salesPlan.configureBilling'))
         }
         setItems(data)
-    }, [currentEntity?.entity?.billingConfig?.payment_method?.length, currentEntity?.entity?.branding?.textColor, currentEntity?.entity.id, currentEntity?.entity?.legal?.legalName, id, t])
+    }, [currentEntity?.entity?.billingConfig, currentEntity?.entity?.billingConfig?.payment_method?.length, currentEntity?.entity.branding?.textColor, currentEntity?.entity.id, currentEntity?.entity.legal?.legalName, id, t])
 
 
     return (<>
@@ -111,6 +111,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
                     </List>
                 </span>
                 <BaseButton
+                    sx={{ mt: 1 }}
                     fullWidth
                     variant="contained"
                     onClick={handleSubscripe}
@@ -122,6 +123,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
 
                 {entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length > 0 && <DangerButton
                     fullWidth
+                    sx={{ mt: 1 }}
                     variant="contained"
                     onClick={() => {
                         if (entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length > 0) {

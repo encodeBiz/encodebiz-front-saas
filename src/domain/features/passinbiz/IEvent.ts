@@ -19,4 +19,7 @@ export interface IEvent {
     assignedStaff: string[]
     "isPublished": boolean
     "metadata": any
+
+    "city"?: string
+    "country"?: string
 }

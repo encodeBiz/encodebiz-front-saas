@@ -177,8 +177,8 @@ export function addNHour(targetDate: Date, n: number) {
     return targetDate
 }
 
-export function formatLocalDateTime(date: Date) {
-    return date.toLocaleString('en-GB', {
+export function formatLocalDateTime(codeLocale: string, date: Date) {
+    return date.toLocaleString(codeLocale, {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric',
