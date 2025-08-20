@@ -13,6 +13,7 @@ interface IQRResult {
     entityType: string
     message?: string
     fullName?: string
+    lastValidatedAt?: string
 }
 
 export const useQRScanner = () => {

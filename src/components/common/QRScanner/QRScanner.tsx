@@ -19,6 +19,7 @@ import {
 import { PreviewContainer, ScannerContainer, StyledCard } from './QRScanner.style';
 import { useTranslations } from 'next-intl';
 import { useQRScanner } from './QRScanner.controller';
+import { formatDateInSpanish } from '@/lib/common/Date';
 
 const QRScanner = () => {
     const { handleScan, handleError, resetScanner, scanRessult, staffValidating, staffValid, error } = useQRScanner()
@@ -93,6 +94,13 @@ const QRScanner = () => {
                             </Typography>
                             <Typography variant="body1">{scanRessult?.fullName}</Typography>
                             <Typography variant="body1">{scanRessult?.companyName}</Typography>
+                             <Typography variant="body1">
+                                 {t('scan.lastValidatedAt')}<br/>
+                                {formatDateInSpanish(scanRessult?.lastValidatedAt,{
+                                    dateStyle:'short',
+                                    timeStyle:'short'
+                                })}</Typography>
+                            
                             <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
                                 <Tooltip title="Copy to clipboard">
                                     <IconButton onClick={copyToClipboard}>

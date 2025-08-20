@@ -466,6 +466,7 @@
     "camaraFocus": "Apunta tu cámara a un código QR",
     "resultTitle": "Pase confirmado",
     "scanOther": "Escanear otro código",
+    "lastValidatedAt":"Última validación",
     "failed": "Ha fallado la lectura del código",
     "failedStaff": "Usted no tiene permisos para validar el pase",
     "tryagain": "Intentar de nuevo",

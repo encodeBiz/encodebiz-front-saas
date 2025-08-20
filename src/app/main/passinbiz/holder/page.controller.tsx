@@ -46,7 +46,7 @@ export default function useHolderListController() {
 
   const rowAction: Array<IRowAction> = [
     { icon: <RemoveDone />, label: t('core.button.revoke'), allowItem: (item: Holder) => (item.passStatus === 'pending' || item.passStatus === 'active'), onPress: (item: Holder) => openModal(CommonModalType.DELETE, { data: item }) },
-    { icon: <Send />, label: t('core.button.resend'), allowItem: (item: Holder) => (item.passStatus === 'revoked' || item.passStatus === 'not_generated'), onPress: (item: Holder) => openModal(CommonModalType.SEND, { data: item }) }
+    { icon: <Send />, label: t('core.button.resend'), allowItem: (item: Holder) => (item.passStatus === 'revoked' || item.passStatus === 'not_generated' || item.passStatus === 'failed'), onPress: (item: Holder) => openModal(CommonModalType.SEND, { data: item }) }
   ]
 
   const holderState = [
