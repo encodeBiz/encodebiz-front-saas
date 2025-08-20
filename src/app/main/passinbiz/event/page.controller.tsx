@@ -11,7 +11,8 @@ import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { Person2, Search } from "@mui/icons-material";
-import { Box, Chip, IconButton, MenuItem, Select, TextField, Tooltip } from "@mui/material";
+import { Box, Chip, IconButton, MenuItem, Select, TextField, Tooltip, Typography } from "@mui/material";
+import { formatDateInSpanish } from "@/lib/common/Date";
 
 
 
@@ -115,11 +116,7 @@ export default function useIEventListController() {
       id: 'date',
       label: t("core.label.date"),
       minWidth: 170,
-      format: (value, row) => <Chip
-        size="small"
-        label={t(`core.label.${row.status}`)}
-        variant="outlined"
-      />,
+      format: (value, row) => <Typography sx={{textTransform:'capitalize'}}>{formatDateInSpanish(new Date(row.date))}</Typography>,
     },
     {
       id: 'location',

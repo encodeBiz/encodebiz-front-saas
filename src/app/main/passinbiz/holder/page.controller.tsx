@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { buildSearch, Column, IRowAction } from "@/components/common/table/GenericTable";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
@@ -13,6 +14,8 @@ import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useRouter } from "nextjs-toploader/app";
 import { format_date } from "@/lib/common/Date";
+import { IEvent } from "@/domain/features/passinbiz/IEvent";
+import { search as searchEvent } from "@/services/passinbiz/event.service";
 
 
 
@@ -39,7 +42,7 @@ export default function useHolderListController() {
   const [revoking, setRevoking] = useState(false)
   const { push } = useRouter()
   const [sort, setSort] = useState<{ field: string, order: 'desc' | 'asc' }>({ field: 'createdAt', order: 'desc' })
-  const [filter, setFilter] = useState<any>({ passStatus: 'active', type: 'all', email: '' });
+  const [filter, setFilter] = useState<any>({ passStatus: 'active', type: 'all', email: '', parentId: '' });
 
   const rowAction: Array<IRowAction> = [
     { icon: <RemoveDone />, label: t('core.button.revoke'), allowItem: (item: Holder) => (item.passStatus === 'pending' || item.passStatus === 'active'), onPress: (item: Holder) => openModal(CommonModalType.DELETE, { data: item }) },
@@ -61,6 +64,11 @@ export default function useHolderListController() {
 
   ]
 
+  const [eventList, setEventList] = useState<Array<IEvent>>([])
+  const inicializeEvent = useCallback(async () => {
+    setEventList(await searchEvent(currentEntity?.entity.id as string, { ...{} as any, limit: 100 }))
+  }, [currentEntity?.entity.id])
+
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
 
     <Select sx={{ minWidth: 120, height: 55 }}
@@ -73,6 +81,17 @@ export default function useHolderListController() {
         </MenuItem>
       ))}
     </Select>
+
+    {filter.type == 'event' && <Select sx={{ minWidth: 120, height: 55 }}
+      value={filter.parentId}
+      defaultValue={''}
+      onChange={(e: any) => setFilter({ ...filter, parentId: e.target.value })}  >
+      {eventList.map((option) => (
+        <MenuItem key={option.id} value={option.id}>
+          {option.name}
+        </MenuItem>
+      ))}
+    </Select>}
 
     <Select sx={{ minWidth: 120, height: 55 }}
       value={filter.passStatus}
@@ -89,7 +108,6 @@ export default function useHolderListController() {
       placeholder={t('holders.filter.email')}
       value={filter.email}
       onChange={(e) => {
-
         setFilter({ ...filter, email: e.target.value });
       }}
     />
@@ -180,12 +198,23 @@ export default function useHolderListController() {
 
   const fetchingData = useCallback(() => {
     setLoading(true)
+
     if (params.filters.find((e: any) => e.field === 'passStatus' && e.value === 'all'))
       params.filters = params.filters.filter((e: any) => e.field !== 'passStatus')
+    if (params.filters.find((e: any) => e.field === 'type' && (e.value === 'all' || e.value === 'credencial'))) {
+      params.filters = params.filters.filter((e: any) => e.field !== "parentId")
+    }
     if (params.filters.find((e: any) => e.field === 'type' && e.value === 'all'))
       params.filters = params.filters.filter((e: any) => e.field !== 'type')
     if (params.filters.find((e: any) => e.field === 'email' && e.value === ''))
       params.filters = params.filters.filter((e: any) => e.field !== 'email')
+    if (params.filters.find((e: any) => e.field === 'parentId' && e.value === ''))
+      params.filters = params.filters.filter((e: any) => e.field !== 'parentId')
+
+
+
+
+    inicializeEvent()
 
 
 
@@ -219,7 +248,7 @@ export default function useHolderListController() {
       setLoading(false)
     })
 
-  }, [params, rowsPerPage, currentEntity?.entity.id, showToast]);
+  }, [params, rowsPerPage, currentEntity?.entity.id]);
 
   useEffect(() => {
     if (currentEntity?.entity?.id) {
@@ -247,7 +276,11 @@ export default function useHolderListController() {
   const onFilter = () => {
     const filterData: Array<{ field: string, operator: string, value: any }> = []
     Object.keys(filter).forEach((key) => {
-      filterData.push({ field: key, operator: '==', value: filter[key] })
+      if (key === 'parentId' && filter[key] != '' && filter.type == 'event') {
+        filterData.push({ field: key, operator: '==', value: filter[key] })
+      } else {
+        filterData.push({ field: key, operator: '==', value: filter[key] })
+      }
     })
     const paramsData = { ...params, startAfter: null, limit: rowsPerPage, filters: filterData }
     setParams({ ...paramsData })
@@ -268,7 +301,7 @@ export default function useHolderListController() {
         id: item.id,
         entityId: currentEntity?.entity?.id,
         passStatus: 'revoked',
-        
+
       }, token)
       setItemsHistory(itemsHistory.filter(e => e.id !== id))
       setItems(itemsHistory.filter(e => e.id !== id))

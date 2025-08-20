@@ -39,7 +39,7 @@ export const deleteStaff = async (entityId: string, id: string, token: string): 
           authorization: `Bearer ${token}`
         },
       });
-      const response: any = await httpClientFetchInstance.delete(process.env.NEXT_PUBLIC_BACKEND_URI_DELETE_MEDIA as string, {
+      const response: any = await httpClientFetchInstance.delete(process.env.NEXT_PUBLIC_BACKEND_URI_PASSINBIZ_DELETE_STAFF as string, {
         entityId,
         staffId:id
       });

@@ -125,16 +125,26 @@ export function format_range(range: Array<Timestamp>): string {
 
 
 
-export function formatDateInSpanish(date: Date, extra?: DateTimeFormatOptions) {
-    const options: DateTimeFormatOptions = {
+export function formatDateInSpanish(date: any, extra?: DateTimeFormatOptions) {
 
-        year: 'numeric', // Full year (e.g., "2023")
-        month: 'long',   // Full name of the month (e.g., "octubre")
+    let jsDate: Date;
+    if (date instanceof Date) {
+        jsDate = date;
+    } else {
+        jsDate = new Date(date.seconds * 1000 + date.nanoseconds / 1_000_000);
+    }
+    const options: DateTimeFormatOptions = {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
 
     };
 
     // Format the date in Spanish
-    return date.toLocaleDateString('es-ES', extra ? extra : options);
+    return jsDate.toLocaleDateString('es-ES', extra ? extra : options);
 }
 
 
