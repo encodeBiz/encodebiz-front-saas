@@ -51,7 +51,6 @@ export default function useHolderListController() {
 
   const holderState = [
     { value: 'all', label: t('core.label.select') },
-    { value: 'pending', label: t('holders.pending') },
     { value: 'failed', label: t('holders.failed') },
     { value: 'active', label: t('holders.active') },
     { value: 'revoked', label: t('holders.revoked') }

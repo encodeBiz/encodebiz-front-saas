@@ -202,7 +202,7 @@
     },
     "formValidatorMessages": {
       "required": "Este campo es requerido",
-      "email": "Este campo es requerido",
+      "email": "Este campo es debe ser un correo electrónico válido",
       "password": "La contraseña es demasiado corta: debe tener un mínimo de 8 caracteres.",
       "passwordMatch": "La contraseñas no coinciden",
       "acceptTerm": "Debe aceptar los términos y condiciones",
