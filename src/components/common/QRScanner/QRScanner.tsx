@@ -1,4 +1,4 @@
-import React, {  } from 'react';
+import React, { } from 'react';
 import {
     Box,
     Button,
@@ -7,14 +7,13 @@ import {
     IconButton,
     LinearProgress,
     Alert,
-    Tooltip
+
 } from '@mui/material';
 import { Scanner } from '@yudiel/react-qr-scanner';
 
 import {
     CheckCircle,
-    Error,
-    CopyAll
+    Error
 } from '@mui/icons-material';
 import { PreviewContainer, ScannerContainer, StyledCard } from './QRScanner.style';
 import { useTranslations } from 'next-intl';
@@ -27,11 +26,7 @@ const QRScanner = () => {
 
 
 
-    const copyToClipboard = () => {
-        navigator.clipboard.writeText(scanRessult?.fullName as string);
-    };
 
- 
 
 
 
@@ -94,20 +89,11 @@ const QRScanner = () => {
                             </Typography>
                             <Typography variant="body1">{scanRessult?.fullName}</Typography>
                             <Typography variant="body1">{scanRessult?.companyName}</Typography>
-                             <Typography variant="body1">
-                                 {t('scan.lastValidatedAt')}<br/>
-                                {formatDateInSpanish(scanRessult?.lastValidatedAt,{
-                                    dateStyle:'short',
-                                    timeStyle:'short'
-                                })}</Typography>
-                            
-                            <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
-                                <Tooltip title="Copy to clipboard">
-                                    <IconButton onClick={copyToClipboard}>
-                                        <CopyAll />
-                                    </IconButton>
-                                </Tooltip>                                 
-                            </Box>
+                            {scanRessult?.lastValidatedAt && <Typography variant="body1">
+                                {t('scan.lastValidatedAt')}:
+                                {formatDateInSpanish(new Date(scanRessult?.lastValidatedAt as string))}</Typography>
+                            }
+
 
 
                             <Button
@@ -132,7 +118,7 @@ const QRScanner = () => {
                                 {t('scan.failed')}
                             </Typography>
                             <Alert severity="error" sx={{ width: '100%', textAlign: 'center' }}>
-                                {'Pase no encontrado'}
+                                {error}
                             </Alert>
                             <Button
                                 variant="contained"
@@ -156,7 +142,7 @@ const QRScanner = () => {
                             <Typography variant="h5" gutterBottom sx={{ textAlign: 'center' }}>
                                 {t('scan.failedStaff')}
                             </Typography>
-                            
+
                             <Button
                                 variant="contained"
                                 color="primary"

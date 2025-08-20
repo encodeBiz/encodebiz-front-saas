@@ -50,8 +50,7 @@ export const formatDate = async (
 ) => {
     // Configurar el idioma
 
-    moment.locale(locale);
-
+ 
     let jsDate: Date;
     if (timestamp instanceof Date) {
         jsDate = timestamp;
@@ -133,6 +132,8 @@ export function formatDateInSpanish(date: any, extra?: DateTimeFormatOptions) {
     } else {
         jsDate = new Date(date.seconds * 1000 + date.nanoseconds / 1_000_000);
     }
+
+     
     const options: DateTimeFormatOptions = {
         day: '2-digit',
         month: 'long',

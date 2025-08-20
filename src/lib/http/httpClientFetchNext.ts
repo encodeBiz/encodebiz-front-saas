@@ -37,6 +37,8 @@ export const codeError: any = {
   "media/invalid_dimesions": "Dimenciones no validas",
   "auth/invalid_plan": "El plan Freemium no puede crear eventos",
   "auth/unauthorized": "Acceso a recurso no autorizado",
+  "staff/unauthorized": "Acceso de personal de apoyo deshabilitado o vencido",
+ 
 };
 
 /**
@@ -100,7 +102,7 @@ export class HttpClient {
       const response = await fetch(fullURL, { ...config, cache: forceCache });
 
       if (!response.ok) {
-        if (response.status === 400) {
+        if (response.status === 400 || response.status === 401) {
           let responseError: { code: string; message: string; error: string, errors: Array<string> }
           const responseErrorData = await response.json()
           if (typeof responseErrorData === 'string')
