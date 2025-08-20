@@ -69,7 +69,7 @@ export default function useStaffController() {
   const validationSchema = Yup.object().shape({
     fullName: requiredRule(t),
     email: emailRule(t),
-  
+
   });
 
   const [loadForm, setLoadForm] = useState(false)
@@ -81,7 +81,8 @@ export default function useStaffController() {
 
 
   const onChangeType = async (typeValue: Array<'credential' | 'event'>) => {
-    if (typeValue.includes('event') && id) {
+
+    if (typeValue.includes('event')) {
       setFields([...fieldList,
       {
         name: 'eventList',
@@ -100,7 +101,7 @@ export default function useStaffController() {
   }
 
 
-  const saveEventByStaff = async (eventIdList: Array<string>) => {
+  const saveEventByStaff = async (eventIdList: Array<string>, staffId: string) => {
     try {
 
       await Promise.all(
@@ -108,7 +109,7 @@ export default function useStaffController() {
           const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, eventId);
           if (!event.assignedStaff) event.assignedStaff = []
           if (!event.assignedStaff.includes(id)) {
-            event.assignedStaff = [...event.assignedStaff, id]
+            event.assignedStaff = [...event.assignedStaff, staffId]
             await updateEvent({
               id: event.id,
               entityId: event.entityId,
@@ -124,7 +125,7 @@ export default function useStaffController() {
           initialValues.eventList.map(async (eventId) => {
             const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, eventId);
             if (!eventIdList.includes(eventId)) {
-              event.assignedStaff = event.assignedStaff.filter(e => e !== id)
+              event.assignedStaff = event.assignedStaff.filter(e => e !== staffId)
               await updateEvent({
                 id: event.id,
                 entityId: event.entityId,
@@ -153,13 +154,14 @@ export default function useStaffController() {
         id
       }
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+      let data
       if (!id)
-        await createStaff(dataForm, token)
+        data = await createStaff(dataForm, token)
       else
         await updateStaff(dataForm, token)
 
-      if(id)
-      await saveEventByStaff(values.eventList as Array<string>)
+      if (id)
+        await saveEventByStaff(values.eventList as Array<string>, id ? id : data?.id)
 
       showToast(t('core.feedback.success'), 'success');
       changeLoaderState({ show: false })
@@ -208,7 +210,7 @@ export default function useStaffController() {
 
   const inicializeField = async () => {
     setFields(fieldList)
-    setLoadForm(true)    
+    setLoadForm(true)
 
 
     if (currentEntity?.entity.id && user?.id && id)
