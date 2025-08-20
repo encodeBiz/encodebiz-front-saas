@@ -35,7 +35,8 @@ export const codeError: any = {
   "unavailable": "Servicio no disponible. Inténtalo de nuevo más tarde",
   "staff/email_already_exists": "Ya existe un personal de apoyo con ese correo electronico ",
   "media/invalid_dimesions": "Dimenciones no validas",
-  "auth/invalid_plan": "Freemium plan can not create events"
+  "auth/invalid_plan": "El plan Freemium no puede crear eventos",
+  "auth/unauthorized": "Acceso a recurso no autorizado",
 };
 
 /**
