@@ -5,13 +5,16 @@ import useHolderController from './page.controller';
 import PresentationCard from '@/components/features/dashboard/PresentationCard/PresentationCard';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { IContact } from '@/domain/core/IContact';
+import { useAuth } from '@/hooks/useAuth';
+import { useEntity } from '@/hooks/useEntity';
 
 
 
 export default function FormContact() {
-  const { fields, initialValues, validationSchema, setDinamicDataAction } = useHolderController();
+  const { fields, validationSchema, setDinamicDataAction } = useHolderController();
   const t = useTranslations();
-  
+  const {user} = useAuth()
+  const {currentEntity} = useEntity() 
   return (
     <Container maxWidth="xl">
       <PresentationCard
@@ -22,7 +25,13 @@ export default function FormContact() {
 
         <GenericForm<Partial<IContact>>
           column={2}
-          initialValues={initialValues}
+          initialValues={{
+            "subject": 'Solicito realizar una prueba de evento',
+            "message": '',
+            "from": user?.email as string,
+            "phone": user?.phoneNumber as string,
+            "displayName": currentEntity?.entity.name as string,
+          }}
           validationSchema={validationSchema}
           onSubmit={setDinamicDataAction}
           fields={fields as FormField[]}

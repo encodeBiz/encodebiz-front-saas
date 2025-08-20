@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
 import { importHolder, search, updateHolder } from "@/services/passinbiz/holder.service";
-import { RemoveDone, Search, Send } from "@mui/icons-material";
+import { CleaningServicesSharp, RemoveDone, Search, Send } from "@mui/icons-material";
 import { useLayout } from "@/hooks/useLayout";
 import { Box, Chip, IconButton, MenuItem, Select, TextField, Tooltip } from "@mui/material";
 import { useCommonModal } from "@/hooks/useCommonModal";
@@ -46,12 +46,11 @@ export default function useHolderListController() {
 
   const rowAction: Array<IRowAction> = [
     { icon: <RemoveDone />, label: t('core.button.revoke'), allowItem: (item: Holder) => (item.passStatus === 'pending' || item.passStatus === 'active'), onPress: (item: Holder) => openModal(CommonModalType.DELETE, { data: item }) },
-    { icon: <Send />, label: t('core.button.resend'), allowItem: (item: Holder) => (item.passStatus === 'revoked' || item.passStatus === 'not_generated'), onPress: (item: Holder) => openModal(CommonModalType.SEND, { data: item }) }
+    { icon: <Send />, label: t('core.button.resend'), allowItem: (item: Holder) => (item.passStatus === 'revoked' || item.passStatus === 'not_generated' || item.passStatus === 'failed'), onPress: (item: Holder) => openModal(CommonModalType.SEND, { data: item }) }
   ]
 
   const holderState = [
     { value: 'all', label: t('core.label.select') },
-    { value: 'pending', label: t('holders.pending') },
     { value: 'failed', label: t('holders.failed') },
     { value: 'active', label: t('holders.active') },
     { value: 'revoked', label: t('holders.revoked') }
@@ -114,6 +113,12 @@ export default function useHolderListController() {
     <Tooltip title="Filter">
       <IconButton onClick={() => { if (typeof onFilter === 'function') onFilter() }}>
         <Search />
+      </IconButton>
+    </Tooltip>
+
+    <Tooltip title="Limpiar filtros">
+      <IconButton onClick={() => { setFilter({ passStatus: 'active', type: 'all', email: '', parentId: '' }) }}>
+        <CleaningServicesSharp />
       </IconButton>
     </Tooltip>
   </Box>

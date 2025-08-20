@@ -17,7 +17,7 @@ export default function HolderList() {
   const {
     items, rowAction, onDelete, deleting,
     onNext, onBack, onEdit,
-    currentPage,topFilter,
+    currentPage, topFilter,
     columns, onSearch,
     loading, rowsPerPage, setRowsPerPage } = useHolderListController();
   const { openModal } = useCommonModal()
@@ -61,7 +61,6 @@ export default function HolderList() {
         /> :
         <FormContact />
       }
-
 
       <ConfirmModal
         isLoading={deleting}

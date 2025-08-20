@@ -191,13 +191,13 @@ export default function useHolderController() {
     },
     {
       name: 'colorPrimary',
-      label: t('core.label.colorPrimary'),
+      label: t('core.label.colorText'),
       type: 'text',
       required: true,
       component: ColorPickerInput,
     }, {
       name: 'colorAccent',
-      label: t('core.label.colorAccent'),
+      label: t('core.label.colorBg'),
       type: 'text',
       required: true,
 

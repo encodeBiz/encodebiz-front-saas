@@ -74,6 +74,7 @@ export default function useHolderController() {
       isDivider: true,
       label: t('core.label.customFields'),
     },
+
     {
       name: 'customFields',
       label: t('core.label.billingEmail'),
@@ -82,37 +83,31 @@ export default function useHolderController() {
       fullWidth: true,
       component: DynamicKeyValueInput,
     },
-    {
-      name: 'thumbnail',
-      label: t('core.label.thumbnail'),
-      type: 'thumbnail',
-      fullWidth: true,
-      component: ImageUploadInput,
-    },
+
   ]
   const [loadForm, setLoadForm] = useState(false)
   const [fields, setFields] = useState<any[]>([...fieldList])
   const [eventData, setEventData] = useState<{ loaded: boolean, eventList: Array<IEvent> }>({ loaded: false, eventList: [] })
 
   const inicializeField = async () => {
-     setFields(fieldList)
+    setFields(fieldList)
     setLoadForm(true)
   }
   const inicializeEvent = async () => {
-    const eventList = await search(currentEntity?.entity.id as string, { ...{} as any, limit: 100 })     
+    const eventList = await search(currentEntity?.entity.id as string, { ...{} as any, limit: 100 })
     setEventData({ loaded: true, eventList })
   }
 
   if (currentEntity?.entity.id && !eventData.loaded) inicializeEvent()
   if (currentEntity?.entity.id && !loadForm && eventData.loaded) inicializeField()
- 
+
 
 
   const [initialValues, setInitialValues] = useState<Partial<Holder>>({
     fullName: "",
     email: "",
     phoneNumber: "",
-    type: 'credential',
+    type: '',
     thumbnail: '',
     customFields: [],
     isLinkedToUser: true,
@@ -129,7 +124,7 @@ export default function useHolderController() {
       )
       .nullable(),
     fullName: requiredRule(t),
-     
+
     type: requiredRule(t),
     email: emailRule(t),
     phoneNumber: Yup.string().optional(),
@@ -167,15 +162,10 @@ export default function useHolderController() {
     }
   };
 
-
-
-
   const onChangeType = async (typeValue: any) => {
-
     if (typeValue === 'event') {
-     
-      setFields(prev => [...prev.filter(e => e.name !== 'thumbnail'),
-      {
+      const fieldList = fields.filter(e => e.name !== 'thumbnail')
+      fieldList.splice(4, 0, {
         name: 'parentId',
         label: t('core.label.event'),
         type: 'text',
@@ -183,22 +173,22 @@ export default function useHolderController() {
         fullWidth: true,
         options: [...eventData.eventList.map((e) => ({ value: e.id, label: e.name }))],
         component: SelectInput,
-      }
-      ])
+      })
+      setFields(fieldList.filter(e => e.name !== 'thumbnail'))
 
-    } else {
-      setFields(prev => [
-        ...prev.filter(e => e.name !== 'parentId'),
-        {
-          name: 'thumbnail',
-          label: t('core.label.thumbnail'),
-          type: 'thumbnail',
-          required: true,
-          fullWidth: true,
-          component: ImageUploadInput,
-        }
-      ])
+    }
 
+    if (typeValue === 'credential') {
+      const fieldList = fields.filter(e => e.name !== 'parentId')
+      fieldList.splice(4, 0, {
+        name: 'thumbnail',
+        label: t('core.label.thumbnail'),
+        type: 'thumbnail',
+        required: true,
+        fullWidth: true,
+        component: ImageUploadInput,
+      })
+      setFields(fieldList.filter(e => e.name !== 'parentId'))
     }
   }
 

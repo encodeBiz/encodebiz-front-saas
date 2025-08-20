@@ -13,6 +13,7 @@ interface IQRResult {
     entityType: string
     message?: string
     fullName?: string
+    lastValidatedAt?: string
 }
 
 export const useQRScanner = () => {
@@ -52,7 +53,7 @@ export const useQRScanner = () => {
         try {
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
              
-            const response = await validateHolder(data, tokenValidateStaff)
+            const response = await validateHolder(data, tokenValidateStaff+'4')
             setScanRessult({
                 ...data,
                 ...response
@@ -62,7 +63,7 @@ export const useQRScanner = () => {
         } catch (error: any) {
             changeLoaderState({ show: false })
             setError(error.message);
-            showToast(error.message, 'error')
+            
         }
     }
 

@@ -104,7 +104,7 @@ export default function useStaffController() {
   const saveEventByStaff = async (eventIdList: Array<string>, staffId: string) => {
     try {
  
-      await Promise.all(
+      Promise.all(
         eventIdList.map(async (eventId) => {
           const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, eventId);
  
@@ -122,7 +122,7 @@ export default function useStaffController() {
       );
 
       if (Array.isArray(initialValues.eventList))
-        await Promise.all(
+        Promise.all(
           initialValues.eventList.map(async (eventId) => {
             const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, eventId);
             if (!eventIdList.includes(eventId)) {
@@ -161,7 +161,7 @@ export default function useStaffController() {
       else
         await updateStaff(dataForm, token)
 
-      await saveEventByStaff(values.eventList as Array<string>, id ? id : data?.id)
+      saveEventByStaff(values.eventList as Array<string>, id ? id : data?.id)
 
       showToast(t('core.feedback.success'), 'success');
       changeLoaderState({ show: false })
