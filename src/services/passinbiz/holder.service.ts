@@ -66,6 +66,7 @@ export async function createHolder(data: Partial<Holder>, token: string) {
   }
 }
 
+/*
 export async function updateHolder(data: Partial<Holder>, token: string) {
   try {
     if (!token) {
@@ -84,14 +85,14 @@ export async function updateHolder(data: Partial<Holder>, token: string) {
     throw new Error(error.message);
   }
 }
+*/
 
-/*
-export async function updateHolder(data: HolderFormValues, token: string) {
+export async function updateHolder(data: Partial<Holder>, token: string) {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
     } else {
-      let httpClientFetchInstance: HttpClient = new HttpClient({
+      const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
           authorization: `Bearer ${token}`,
@@ -113,7 +114,7 @@ export async function updateHolder(data: HolderFormValues, token: string) {
     throw new Error(error.message);
   }
 }
-*/
+
 export async function importHolder(data: FormData, token: string) {
   try {
     if (!token) {
@@ -208,7 +209,7 @@ export async function validateStaff(base64: string) {
     const response: any = await httpClientFetchInstance.post(
       process.env.NEXT_PUBLIC_BACKEND_URI_PASSINBIZ_VALIDATE_STAFF as string,
       {
-        token:base64,
+        token: base64,
       }
     );
     if (response.errCode && response.errCode !== 200) {
