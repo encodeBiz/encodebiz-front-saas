@@ -12,8 +12,9 @@ import { deleteStaff, search } from "@/services/passinbiz/staff.service";
 
 import { Event, Search } from "@mui/icons-material";
 import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
-import { Box, Select, MenuItem, TextField, IconButton, Tooltip } from "@mui/material";
- 
+import { Box, Select, MenuItem, TextField, IconButton, Tooltip, Typography } from "@mui/material";
+import { formatDateInSpanish } from "@/lib/common/Date";
+
 
 
 
@@ -23,7 +24,10 @@ export default function useStaffListController() {
   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
   const [rowsPerPage, setRowsPerPage] = useState<number>(5); // Límite inicial
-  const [params, setParams] = useState<any>({});
+  const [params, setParams] = useState<any>({
+    orderBy: 'createdAt',
+    orderDirection: "desc"
+  });
   const [loading, setLoading] = useState<boolean>(true);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false)
@@ -86,14 +90,23 @@ export default function useStaffListController() {
       minWidth: 170,
       format: (value) => value.join(', ')
     },
+    {
+      id: 'createdAt',
+      label: t("core.label.date"),
+      minWidth: 170,
+      sortable:true,
+      format: (value, row) => <Typography sx={{ textTransform: 'capitalize' }}>{formatDateInSpanish(row.createdAt)}</Typography>,
+    },
   ];
 
- 
+
 
   const fetchingData = useCallback(() => {
-    
+
+
     setLoading(true)
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
+       
       if (res.length < rowsPerPage || res.length === 0)
         setAtEnd(true)
       else
@@ -167,7 +180,7 @@ export default function useStaffListController() {
     const filterData: Array<{ field: string, operator: string, value: any }> = []
     Object.keys(filter).forEach((key) => {
 
-     
+
       if (key === 'allowedTypes' && filter[key] != 'all')
         filterData.push({ field: key, operator: 'array-contains-any', value: [filter[key]] })
       else
@@ -194,7 +207,7 @@ export default function useStaffListController() {
     </Select>
 
 
-    
+
 
 
     <TextField
@@ -213,8 +226,8 @@ export default function useStaffListController() {
   </Box>
 
 
-  
-  
+
+
 
 
   return {

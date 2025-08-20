@@ -103,13 +103,11 @@ export default function useStaffController() {
 
   const saveEventByStaff = async (eventIdList: Array<string>, staffId: string) => {
     try {
-      console.log(eventIdList);
-
+ 
       await Promise.all(
         eventIdList.map(async (eventId) => {
           const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, eventId);
-          console.log(event);
-
+ 
           if (!event.assignedStaff) event.assignedStaff = []
           if (!event.assignedStaff.includes(staffId)) {
             event.assignedStaff = [...event.assignedStaff, staffId]
