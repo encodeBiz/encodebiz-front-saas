@@ -17,7 +17,7 @@ export default function HolderList() {
   const {
     items, rowAction, onDelete, deleting,
     onNext, onBack, onEdit,
-    currentPage,topFilter,
+    currentPage, topFilter,
     columns, onSearch,
     loading, rowsPerPage, setRowsPerPage } = useHolderListController();
   const { openModal } = useCommonModal()
@@ -62,7 +62,6 @@ export default function HolderList() {
         <FormContact />
       }
 
- <FormContact />
       <ConfirmModal
         isLoading={deleting}
         title={t('event.deleteConfirmModalTitle')}
