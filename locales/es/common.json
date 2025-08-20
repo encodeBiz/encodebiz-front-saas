@@ -117,6 +117,8 @@
       "sponsor": "Patrosinador",
       "ticketCapacity": "Capacidad",
       "date": "Fecha",
+      "colorText":"Color de texto",
+      "colorBg":"Color de fondo",
       "endDate": "Fecha de finalización",
       "startDate": "Fecha de inicio",
       "time": "Hora",

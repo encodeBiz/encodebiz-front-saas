@@ -62,7 +62,7 @@ export default function HolderList() {
         <FormContact />
       }
 
-
+ <FormContact />
       <ConfirmModal
         isLoading={deleting}
         title={t('event.deleteConfirmModalTitle')}

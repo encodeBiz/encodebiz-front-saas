@@ -22,14 +22,7 @@ export default function useFormContactController() {
   const { id } = useParams<{ id: string }>()
   const { currentEntity, watchServiceAccess } = useEntity()
   const { changeLoaderState } = useLayout()
-  const [initialValues] = useState<Partial<IContact>>({
-    "subject": 'QUIERO CREAR MI PRIMER EVENTO DE PRUEBA',
-    "message": '',
-    "from": user?.email as string,
-    "phone": user?.phoneNumber as string,
-    "displayName": user?.displayName as string,
-  });
-
+ 
   const validationSchema = Yup.object().shape({
     message: requiredRule(t),
 
@@ -111,5 +104,5 @@ export default function useFormContactController() {
   }, [currentEntity?.entity.id, user?.id, id, watchServiceAccess])
 
 
-  return { fields, initialValues, validationSchema, setDinamicDataAction }
+  return { fields, validationSchema, setDinamicDataAction }
 }
