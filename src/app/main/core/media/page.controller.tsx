@@ -168,7 +168,6 @@ export const useMediaList = () => {
             showToast(e?.message, 'error')
             setDeleting(false)
         }
-
     }
 
 

@@ -14,11 +14,11 @@ export default function HolderList() {
   const t = useTranslations();
   const {
     items, rowAction,
-    onNext, onBack, onEdit, onDelete, deleting,
-    currentPage,topFilter,
+    onNext, onBack, onDelete, deleting,
+    currentPage, topFilter,
     columns, onSearch,
     loading, rowsPerPage, setRowsPerPage } = useHolderListController();
-  const { open } = useCommonModal()
+  const { open, openModal } = useCommonModal()
 
   return (
     <Container maxWidth="lg">
@@ -42,16 +42,17 @@ export default function HolderList() {
         onRowsPerPageChange={setRowsPerPage}
         onBack={onBack}
         onNext={onNext}
-        onEdit={(data) => onEdit(data)}
+      
         onSearch={(data) => onSearch(data)}
+        onDelete={(data) => openModal(CommonModalType.DELETE, { data })}
         topFilter={topFilter}
 
       />
 
       {open.type === CommonModalType.DELETE && <ConfirmModal
         isLoading={deleting}
-        title={t('staff.revokeConfirmModalTitle')}
-        description={t('staff.revokeConfirmModalTitle2')}
+        title={t('staff.deleteConfirmModalTitle')}
+        description={t('staff.deleteConfirmModalTitle2')}
         onOKAction={(args: { data: any }) => onDelete(args.data)}
       />}
     </Container>

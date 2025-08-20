@@ -94,7 +94,7 @@ export default function useStaffListController() {
       id: 'createdAt',
       label: t("core.label.date"),
       minWidth: 170,
-      sortable:true,
+      sortable: true,
       format: (value, row) => <Typography sx={{ textTransform: 'capitalize' }}>{formatDateInSpanish(row.createdAt)}</Typography>,
     },
   ];
@@ -106,7 +106,7 @@ export default function useStaffListController() {
 
     setLoading(true)
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
-       
+
       if (res.length < rowsPerPage || res.length === 0)
         setAtEnd(true)
       else
@@ -227,8 +227,7 @@ export default function useStaffListController() {
 
 
 
-
-
+ 
 
   return {
     items,
