@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
 import { importHolder, search, updateHolder } from "@/services/passinbiz/holder.service";
-import { RemoveDone, Search, Send } from "@mui/icons-material";
+import { CleaningServicesSharp, RemoveDone, Search, Send } from "@mui/icons-material";
 import { useLayout } from "@/hooks/useLayout";
 import { Box, Chip, IconButton, MenuItem, Select, TextField, Tooltip } from "@mui/material";
 import { useCommonModal } from "@/hooks/useCommonModal";
@@ -113,6 +113,12 @@ export default function useHolderListController() {
     <Tooltip title="Filter">
       <IconButton onClick={() => { if (typeof onFilter === 'function') onFilter() }}>
         <Search />
+      </IconButton>
+    </Tooltip>
+
+    <Tooltip title="Limpiar filtros">
+      <IconButton onClick={() => { setFilter({ passStatus: 'active', type: 'all', email: '', parentId: '' }) }}>
+        <CleaningServicesSharp />
       </IconButton>
     </Tooltip>
   </Box>

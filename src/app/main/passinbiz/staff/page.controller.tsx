@@ -10,7 +10,7 @@ import { useRouter } from "nextjs-toploader/app";
 import { IStaff } from "@/domain/features/passinbiz/IStaff";
 import { deleteStaff, search } from "@/services/passinbiz/staff.service";
 
-import { Event, Search } from "@mui/icons-material";
+import { CleaningServicesSharp, Event, Search } from "@mui/icons-material";
 import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { Box, Select, MenuItem, TextField, IconButton, Tooltip, Typography } from "@mui/material";
 import { formatDateInSpanish } from "@/lib/common/Date";
@@ -223,11 +223,17 @@ export default function useStaffListController() {
         <Search />
       </IconButton>
     </Tooltip>
+
+    <Tooltip title="Limpiar filtros">
+      <IconButton onClick={() => { setFilter({ allowedTypes: 'all', email: '' }) }}>
+        <CleaningServicesSharp />
+      </IconButton>
+    </Tooltip>
   </Box>
 
 
 
- 
+
 
   return {
     items,
