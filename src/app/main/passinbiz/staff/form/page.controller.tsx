@@ -103,12 +103,15 @@ export default function useStaffController() {
 
   const saveEventByStaff = async (eventIdList: Array<string>, staffId: string) => {
     try {
+      console.log(eventIdList);
 
       await Promise.all(
         eventIdList.map(async (eventId) => {
           const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, eventId);
+          console.log(event);
+
           if (!event.assignedStaff) event.assignedStaff = []
-          if (!event.assignedStaff.includes(id)) {
+          if (!event.assignedStaff.includes(staffId)) {
             event.assignedStaff = [...event.assignedStaff, staffId]
             await updateEvent({
               id: event.id,
@@ -160,8 +163,7 @@ export default function useStaffController() {
       else
         await updateStaff(dataForm, token)
 
-      if (id)
-        await saveEventByStaff(values.eventList as Array<string>, id ? id : data?.id)
+      await saveEventByStaff(values.eventList as Array<string>, id ? id : data?.id)
 
       showToast(t('core.feedback.success'), 'success');
       changeLoaderState({ show: false })
@@ -183,7 +185,7 @@ export default function useStaffController() {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const staff: IStaff = await fetchStaff(currentEntity?.entity.id as string, id)
       const eventStaffList: Array<IEvent> = await searchEventsByStaff(id)
-       
+
       setInitialValues({
         fullName: staff.fullName ?? "",
         email: staff.email ?? "",
