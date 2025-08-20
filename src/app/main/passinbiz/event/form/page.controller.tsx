@@ -18,6 +18,8 @@ import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { ArrayToObject, objectToArray } from "@/lib/common/String";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
+import { country } from "@/config/country";
+import { formatLocalDateTime } from "@/lib/common/Date";
 
 
 export default function useHolderController() {
@@ -27,6 +29,10 @@ export default function useHolderController() {
   const { token, user } = useAuth()
   const { id } = useParams<{ id: string }>()
   const { currentEntity, watchServiceAccess } = useEntity()
+
+  const [cityList, setCityList] = useState<any>(country.find(e => e.name === 'España')?.states.map(e => ({ label: e.name, value: e.name })))
+  const [citySelected, setCitySelected] = useState<string>('Madrid')
+  const [countrySelected, setCountrySelected] = useState<any>('España')
   const { changeLoaderState } = useLayout()
   const [initialValues, setInitialValues] = useState<Partial<IEvent>>({
     "name": '',
@@ -34,6 +40,8 @@ export default function useHolderController() {
     "date": new Date(),
     "endDate": new Date(),
     "location": '',
+    "country": 'España',
+    "city": 'Madrid',
     "template": 'default',
     "logoUrl": '',
     "imageUrl": '',
@@ -44,13 +52,16 @@ export default function useHolderController() {
     metadata: []
   });
 
+   
+
   const validationSchema = Yup.object().shape({
 
     name: requiredRule(t),
     //description: requiredRule(t),
     date: requiredRule(t),
     endDate: requiredRule(t),
-    location: requiredRule(t),
+    city: requiredRule(t),
+    country: requiredRule(t),
     address: requiredRule(t),
     imageUrl: requiredRule(t),
     logoUrl: requiredRule(t),
@@ -62,19 +73,21 @@ export default function useHolderController() {
   const setDinamicDataAction = async (values: Partial<IEvent>) => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+      const codeLocale = country.find(e => e.name === countrySelected)?.code2
       const data: Partial<IEvent> = {
         "uid": user?.id as string,
         "createdBy": user?.id as string,
         "name": values.name,
         "description": values.description,
-        "location": values.location,
-        "address": values.address as string,
+        "location": `${values.city},${values.country}`,
+        "address": `${values.address as string}, ${values.city}, ${values.country}`,
         "entityId": currentEntity?.entity?.id as string,
         "colorPrimary": values.colorPrimary,
         "colorAccent": values.colorAccent,
         "imageUrl": values.imageUrl,
         "logoUrl": values.logoUrl,
         "date": new Date(values.date).toISOString(),
+        "dateLabel": formatLocalDateTime(codeLocale ?? 'ES', new Date(values.date)),
         "status": values.status as "draft" | "published" | "archived",
         "endDate": new Date(values.endDate).toISOString(),
         template: values.template as "default" | "vip" | "expo" | "festival",
@@ -102,12 +115,22 @@ export default function useHolderController() {
       component: TextInput,
     },
     {
-      name: 'location',
-      label: t('core.label.location'),
-      required: true,
+      name: 'description',
+      label: t('core.label.description'),
       type: 'textarea',
+      required: false,
+      fullWidth: false,
       component: TextInput,
     },
+
+    /*  {
+        name: 'location',
+        label: t('core.label.location'),
+        required: true,
+        type: 'textarea',
+        component: TextInput,
+      },
+      */
 
     {
       name: 'date',
@@ -123,22 +146,43 @@ export default function useHolderController() {
       required: true,
       component: DateInput,
     },
+
+    {
+      name: 'country',
+      label: t('core.label.country'),
+      extraProps: {
+        onHandleChange: (value: any) => {
+          setCityList(country.find((e: any) => e.name === value)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
+          setCountrySelected(value)
+          setCitySelected('')
+        },
+      },
+      component: SelectInput,
+      options: country.map(e => ({ label: e.name, value: e.name }))
+    },
+    {
+      name: 'city',
+      label: t('core.label.city'),
+      component: SelectInput,
+      options: cityList,
+      extraProps: {
+        onHandleChange: (value: any) => {
+          setCitySelected(value)
+        },
+      },
+    },
     {
       name: 'address',
       label: t('core.label.address'),
-      type: 'textarea',
+      type: 'text',
       required: true,
       fullWidth: true,
       component: TextInput,
+      extraProps: {
+        afterTextField: `${citySelected ? ', ' + citySelected + ', ' : ''} ${countrySelected}`
+      },
     },
-    {
-      name: 'description',
-      label: t('core.label.description'),
-      type: 'textarea',
-      required: false,
-      fullWidth: true,
-      component: TextInput,
-    },
+
 
     {
 
@@ -191,7 +235,7 @@ export default function useHolderController() {
       label: t('core.label.status'),
       type: 'text',
       required: false,
-       fullWidth: true,
+      fullWidth: true,
       options: [
         { value: 'draft', label: t('core.label.draft') },
         { value: 'published', label: t('core.label.published') },

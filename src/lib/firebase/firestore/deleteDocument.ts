@@ -10,9 +10,7 @@ export const deleteDocument = async (params: DeleteDocumentParams): Promise<void
   try {
     const docRef = doc(db, `${collectionName}`, id);
     await deleteDoc(docRef);
-    console.log(`Document with ID ${id} deleted successfully`);
   } catch (error) {
-    console.error("Error deleting document: ", error);
-    throw new Error("Error deleting document");
+    throw new Error("Error deleting document"+error);
   }
 };

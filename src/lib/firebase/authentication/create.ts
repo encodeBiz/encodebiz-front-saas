@@ -8,12 +8,8 @@ import { auth } from "../initializeApp";
 
 export async function createAnonymously() {
   signInAnonymously(auth)
-    .then(() => {
-      console.log("Usuario anónimo creado exitosamente");
-    })
-    .catch((error) => {
-      console.error("Error al crear usuario anónimo:", error);
-    });
+    .then(() => { })
+    .catch(() => {});
 }
 
 export async function createUser(email: string, password: string) {

@@ -6,6 +6,7 @@ export interface IEvent {
     "date": any
     "endDate": any
     "location": string
+    dateLabel: string
     address: string
     "template": "default" | "vip" | "expo" | "festival"
     status?: "draft" | "published" | "archived";
@@ -18,4 +19,7 @@ export interface IEvent {
     assignedStaff: string[]
     "isPublished": boolean
     "metadata": any
+
+    "city"?: string
+    "country"?: string
 }

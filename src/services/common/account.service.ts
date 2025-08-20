@@ -19,8 +19,7 @@ export async function validateToken(
         );
         return items;
     } catch (error) {
-        console.error("Error fetching items:", error);
-        return []
+        return error ? [] : []
     }
 }
 

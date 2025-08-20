@@ -7,7 +7,10 @@ import {
     DialogContentText,
     DialogTitle,
     CircularProgress,
-    Slide
+    Slide,
+    List,
+    ListItem,
+    ListItemText
 } from '@mui/material';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
@@ -20,6 +23,7 @@ interface SheetModalProps {
     label?: string
     textBtn?: string
     description: string
+    textPoint?: Array<string>
     codeValidator?: boolean
     isLoading?: boolean
     onOKAction: (args: any) => void
@@ -36,7 +40,7 @@ const Transition = React.forwardRef(function Transition(
 });
 
 
-const SheetModalModal = ({ title, textBtn, description, type = CommonModalType.DELETE, isLoading = false, onOKAction }: SheetModalProps): React.JSX.Element => {
+const SheetModalModal = ({ title, textBtn, description, textPoint = [], type = CommonModalType.DELETE, isLoading = false, onOKAction }: SheetModalProps): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
 
     const t = useTranslations()
@@ -73,6 +77,13 @@ const SheetModalModal = ({ title, textBtn, description, type = CommonModalType.D
                 <DialogContentText id="alert-dialog-description" sx={{ mb: 3 }}>
                     {description}
                 </DialogContentText>
+                {textPoint.length > 0 && <List dense={true}>
+                    {textPoint.map((e, i) => <ListItem key={i}>
+                        <ListItemText
+                            primary={e}
+                        />
+                    </ListItem>)}
+                </List>}
             </DialogContent>
             <DialogActions>
 

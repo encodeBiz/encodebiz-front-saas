@@ -24,8 +24,7 @@ const auth = getAuth(firebaseApp);
  const db = getFirestore(firebaseApp);
  if(process.env.NEXT_PUBLIC_ENV == 'local'){
   connectFirestoreEmulator(db, '127.0.0.1', 8080);
-  console.log('CONECTADO A LOCAL FIRESTORE')
- }
+  }
  const storage = getStorage(firebaseApp);
  let analytics:Analytics | undefined;
  

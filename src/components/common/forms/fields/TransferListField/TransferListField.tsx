@@ -54,8 +54,7 @@ const TransferList = ({ name, leftTitle, rightTitle, options }: ITransferListPro
 
   React.useEffect(() => {
     if (!loaded && field.value && options.length > 0) {
-      console.log(field.value);
-      console.log(options);
+     
 
       const rigthtItems = field.value.map((e: any) => ({ value: e, label: options.find(o => o.value === e)?.label || ' - ' }))
       setRight(rigthtItems);

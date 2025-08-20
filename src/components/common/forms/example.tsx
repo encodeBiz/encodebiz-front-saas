@@ -35,8 +35,7 @@ const UserForm = () => {
   ];
 
   const handleSubmit = (values: UserFormValues, actions: any) => {
-    console.log('Form submitted:', values);
-    setTimeout(() => {
+     setTimeout(() => {
       actions.setSubmitting(false);
       alert('Form submitted successfully!');
     }, 1000);

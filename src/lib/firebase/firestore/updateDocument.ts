@@ -13,8 +13,7 @@ export const updateDocument = async <T>(params: UpdateDocumentParams<T>): Promis
     await updateDoc(docRef, data);
     return docRef as DocumentReference<T>;
   } catch (error) {
-    console.error("Error updating document: ", error);
-    throw new Error("Error updating document");
+    throw new Error("Error updating document"+error);
   }
 };
 
@@ -26,7 +25,6 @@ export const setDocument = async <T>(params: SetDocumentParams): Promise<Documen
     await setDoc(docRef, data, { merge });
     return docRef as DocumentReference<T>;
   } catch (error) {
-    console.error("Error setting document: ", error);
-    throw new Error("Error setting document");  
+    throw new Error("Error setting document"+error);  
   }
 };

@@ -38,7 +38,6 @@ export default function useHolderListController() {
   const { openModal, closeModal } = useCommonModal()
   const [revoking, setRevoking] = useState(false)
   const { push } = useRouter()
-
   const [sort, setSort] = useState<{ field: string, order: 'desc' | 'asc' }>({ field: 'createdAt', order: 'desc' })
   const [filter, setFilter] = useState<any>({ passStatus: 'active', type: 'all', email: '' });
 
@@ -129,6 +128,8 @@ export default function useHolderListController() {
 
 
 
+
+
   const columns: Column<Holder>[] = [
     {
       id: 'fullName',
@@ -185,7 +186,9 @@ export default function useHolderListController() {
       params.filters = params.filters.filter((e: any) => e.field !== 'type')
     if (params.filters.find((e: any) => e.field === 'email' && e.value === ''))
       params.filters = params.filters.filter((e: any) => e.field !== 'email')
-    
+
+
+
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
       if (res.length < rowsPerPage || res.length === 0)
         setAtEnd(true)
@@ -264,7 +267,8 @@ export default function useHolderListController() {
         ...{} as any,
         id: item.id,
         entityId: currentEntity?.entity?.id,
-        passStatus: 'revoked'
+        passStatus: 'revoked',
+        
       }, token)
       setItemsHistory(itemsHistory.filter(e => e.id !== id))
       setItems(itemsHistory.filter(e => e.id !== id))
@@ -284,7 +288,8 @@ export default function useHolderListController() {
         ...{} as any,
         id: item.id,
         entityId: currentEntity?.entity?.id,
-        passStatus: 'pending'
+        passStatus: 'active',
+        status: 'pending'
       }, token)
       setItemsHistory(itemsHistory.filter(e => e.id !== id))
       setItems(itemsHistory.filter(e => e.id !== id))
@@ -320,6 +325,8 @@ export default function useHolderListController() {
 
     }
   };
+
+
 
 
   return {

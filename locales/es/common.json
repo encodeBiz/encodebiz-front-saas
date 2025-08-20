@@ -90,6 +90,8 @@
       "rol": "rol",
       "active": "Activo",
       "thumbnail": "Imagen en miniatura",
+      "subject": "Asunto",
+      "from": "Correo electronico",
       "owner": "Propietario",
       "availableEvent": "Eventos disponibles",
       "selectedEvent": "Eventos seleccionados",
@@ -149,7 +151,7 @@
       "custom": "Personalizado",
       "stripImage": "Imagen de tira",
       "icon": "Icono",
-      "icon2x": "Icono Grande",
+      "iconx2": "Icono Grande",
       "color": "Color",
       "taxId": "NIF / CIF / NIE / VAT",
       "street": "Calle",
@@ -177,6 +179,7 @@
     },
     "button": {
       "revoke": "Revocar",
+      "upgrade": "Upgradear",
       "resend": "Reenviar",
       "submitting": "Enviando...",
       "submit": "Enviar",
@@ -320,7 +323,11 @@
     "title": "Elige un plan para adquirir este servicio",
     "subTitle": "Seleccione el plan que se ajuste a las necesidades de su negocio",
     "free": "Gratis",
+    "configureLegal": "Configuracion de datos legales de la entidad",
+    "configureBranding": "Configuracion de diseño de entidad",
+    "configureBilling": "Configuracion de mecanismo de pago",
     "standard": "Estandar",
+    "upgrade": "Actualizar",
     "month": "mes",
     "bronze": "Bronce",
     "freemium": "Gratis",
@@ -361,7 +368,7 @@
     "renew": "Cambiar plan",
     "del": "Eliminar suscripción",
     "imageConfirmModalTitle": "Entidad no configurada",
-    "imageConfirmModalTitle2": "Para poder realizar una suscripción debe previamente configurar los datos legales de al entidad y el billing",
+    "imageConfirmModalTitle2": "Para poder realizar una suscripción debe previamente configurar los siguientes datos en la entidad:",
     "notAllowedPlan": "Debes actualizar los datos legales de la entidad seleccionada antes de obtener un plan."
   },
   "terms": {
@@ -399,7 +406,11 @@
     "description": "Rellene los campos para registrar el evento",
     "description2": "Asocie o retire el personal de apoyo al evento",
     "deleteConfirmModalTitle": "Eliminar Evento",
-    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el evento y todas sus configuraciones"
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el evento y todas sus configuraciones",
+    "fremiunContact": {
+      "title": "Crear evento",
+      "description": "Describa las caractericticas del evento que desea crear, y nos pondremos en contacto con usted"
+    }
   },
   "staff": {
     "title": "Personal de Apoyo",

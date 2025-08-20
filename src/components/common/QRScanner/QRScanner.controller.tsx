@@ -11,7 +11,6 @@ interface IQRResult {
     "entityId": string
     "productId": string
     entityType: string
-
     message?: string
     fullName?: string
 }
@@ -26,7 +25,7 @@ export const useQRScanner = () => {
     const searchParams = useSearchParams()
     const tokenBase64 = searchParams.get('token') || null;
     const [tokenValidateStaff, setTokenValidateStaff] = useState('')
-    const [staffValidating, setStaffValidating] = useState(false)
+    const [staffValidating, setStaffValidating] = useState(true)
     const [staffValid, setStaffValid] = useState(false)
 
 
@@ -52,8 +51,7 @@ export const useQRScanner = () => {
     const validateData = async (data: any) => {
         try {
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-            console.log(tokenValidateStaff);
-            
+             
             const response = await validateHolder(data, tokenValidateStaff)
             setScanRessult({
                 ...data,
@@ -75,7 +73,7 @@ export const useQRScanner = () => {
     };
 
     const handleError = (err: any) => {
-        console.error('Scanner error:', err);
+  
         setError(err);
         setScanning(false);
     };

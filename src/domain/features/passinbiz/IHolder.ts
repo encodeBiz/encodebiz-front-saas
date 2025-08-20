@@ -11,6 +11,7 @@ export interface Holder {
     applePassUrl?: string;        // URL al .pkpass en Firebase Storage
     googlePassUrl?: string;       // URL firmada para Google Wallet
     passStatus: 'not_generated' | 'pending' | 'active' | 'revoked'  | 'failed';
+    status?:string
     type: 'credential' | 'event' | any
     generatedAt?: string;
     generatedBy?: string;         // userId del admin que lo generó

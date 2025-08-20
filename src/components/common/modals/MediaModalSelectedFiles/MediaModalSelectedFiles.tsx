@@ -96,8 +96,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
       form.append('file', renameF);
       const mediaId = (await uploadMedia(form, token) as { mediaId: string })?.mediaId
 
-      console.log(mediaId);
-
+ 
       setSelectedFile(mediaId)
       fetchUserMedia()
       setIsUploading(false);

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
 import * as Yup from 'yup';
@@ -18,6 +19,7 @@ import { CommonModalType } from '@/contexts/commonModalContext';
 import { requiredRule } from '@/config/yupRules';
 import { useLayout } from '@/hooks/useLayout';
 import IEntity from '@/domain/auth/IEntity';
+import { useRouter } from 'nextjs-toploader/app';
 
 
 
@@ -61,7 +63,7 @@ export const useSettingEntityController = () => {
     const { user, token } = useAuth();
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
-
+    const { push } = useRouter()
     const [cityList, setCityList] = useState<any>([])
     const [initialValues, setInitialValues] = useState<EntityUpdatedFormValues>({
         uid: currentEntity?.entity?.id as string | "",
@@ -200,7 +202,7 @@ export const useSettingEntityController = () => {
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             await updateEntity(updateData, token)
             changeLoaderState({ show: false })
-            refrestList(user?.id as string)
+
             showToast(t('core.feedback.success'), 'success');
             setPending(false)
 
@@ -242,7 +244,7 @@ export const useSettingEntityController = () => {
             }
 
         }
-    }, [currentEntity?.entity.id, showToast, user?.email])
+    }, [currentEntity?.entity.id, user?.email])
 
     useEffect(() => {
         if (currentEntity?.entity.id)
@@ -264,6 +266,7 @@ export const useSettingEntityController = () => {
             showToast(t('core.feedback.success'), 'success');
             setPending(false)
             closeModal(CommonModalType.DELETE)
+            push('/main/core/dashboard')
         } catch (error: unknown) {
             if (error instanceof Error) {
                 showToast(error.message, 'error');

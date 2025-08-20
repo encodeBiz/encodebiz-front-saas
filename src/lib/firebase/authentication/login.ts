@@ -32,7 +32,7 @@ export const loginWithGoogle = async () => {
     const result = await signInWithPopup(auth, new GoogleAuthProvider());
     return result;
   } catch (error) {
-    console.error("Google sign-in error:", error);
+ 
     throw error;
   }
 };
