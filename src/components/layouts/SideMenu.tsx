@@ -25,10 +25,9 @@ import { useLayout } from '@/hooks/useLayout';
 import { menuItemsServices, menuItemsGeneral, menuItemsHome } from '@/config/routes';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import EntitySwitcher from '../common/EntitySwitcher';
 import { useRouter } from 'nextjs-toploader/app';
 import { useEntity } from '@/hooks/useEntity';
-import logo from '../../../public/assets/images/encodebiz_logo.jpeg'
+import logo from '../../../public/assets/images/logo.png'
 const drawerWidth = 240;
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -70,7 +69,7 @@ export default function SideMenu() {
       <Drawer
         sx={{
           width: drawerWidth,
-          marginTop: 10,
+  
           flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: drawerWidth,
@@ -84,13 +83,11 @@ export default function SideMenu() {
         <DrawerHeader>
           <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', p: 2 }}>
             <Avatar
-              sx={{ width: 40, height: 40, mr: 1 }}
+              sx={{ width: 120, height: 40, mr: 1 }}
               src={logo.src}
               alt="Company Logo"
             />
-            <Typography variant="h6" noWrap component="div">
-              Company Name
-            </Typography>
+            
           </Box>
           <IconButton onClick={() => changeLayoutState({ ...layoutState, openDraw: false })}>
             {theme.direction === 'ltr' ? <ChevronLeft /> : <ChevronRight />}
@@ -100,9 +97,7 @@ export default function SideMenu() {
         <Divider />
 
         {/* User Profile Section */}
-        <Box sx={{ p: 2, textAlign: 'center', mt: 4 }}>
-          <EntitySwitcher />
-        </Box>
+       
 
         <Divider />
 

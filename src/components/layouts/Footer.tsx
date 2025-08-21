@@ -10,7 +10,8 @@ const Footer: React.FC = () => {
       sx={{
         width: '100%',
         bgcolor: (theme) => theme.palette.background.paper,
-
+        position:'absolute',
+        zIndex:(theme)=>theme.zIndex.drawer + 1,
         py: 3,
       }}
     >

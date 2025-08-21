@@ -4,15 +4,16 @@ import React, { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import {
   FormControl,
-  InputLabel,
   Select,
   MenuItem,
   SelectChangeEvent,
-  Box
+  Box,
+  Typography
 } from '@mui/material';
 
 // Import your defined locales from i18n.ts
 import { useAppLocale } from '@/hooks/useAppLocale';
+import { Language } from '@mui/icons-material';
 export const locales = ['en', 'es']; // Define your supported locales
 
 const LocaleSwitcher: React.FC = () => {
@@ -32,25 +33,31 @@ const LocaleSwitcher: React.FC = () => {
   };
 
   return (
-    <Box sx={{ minWidth: 120 }}>
+    <Box sx={{ minWidth: 120, mt:1 }}>
       <FormControl fullWidth>
-        <InputLabel id="locale-switcher-label">
-          {t('layout.header.language')}
-        </InputLabel>
         <Select
           labelId="locale-switcher-label"
           id="locale-switcher-select"
           value={selectedLocale}
-          label={t('layout.header.language')}
           onChange={handleChange}
+          size='small'
         >
           {locales.map((locale) => (
-            <MenuItem key={locale} value={locale}>
-              {/* You can map locale codes to user-friendly names */}
-              {locale === 'en' && t('layout.header.english')}
-              {locale === 'es' && t('layout.header.spanish')}
-              {locale === 'fr' && t('layout.header.french')}
-              {locale === 'de' && t('layout.header.germany')}
+            <MenuItem key={locale} value={locale} >
+              <Box sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
+                gap:1
+              }}>
+                <Language />
+                {locale === 'en' && <Typography>{t('layout.header.english')}</Typography>}
+                {locale === 'es' && <Typography>{t('layout.header.spanish')}</Typography>}
+                {locale === 'fr' && <Typography>{t('layout.header.french')}</Typography>}
+                {locale === 'de' && <Typography>{t('layout.header.germany')}</Typography>}
+         
+              </Box>
             </MenuItem>
           ))}
         </Select>

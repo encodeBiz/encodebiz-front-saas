@@ -32,7 +32,7 @@ export const lightTheme: PaletteOptions = {
     contrastText: '#ffffff',
   },
   background: {
-    default: '#f5f5f5',
+    default: '#F0EFFD',
     paper: '#ffffff',
   },
   text: {

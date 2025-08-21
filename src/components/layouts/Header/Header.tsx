@@ -12,7 +12,8 @@ import {
   MenuItem,
   ListItemIcon,
   Tooltip,
-  useTheme
+  useTheme,
+  Divider
 } from '@mui/material';
 import {
   Mail as MailIcon,
@@ -21,7 +22,10 @@ import {
   Brightness7 as LightModeIcon,
   ChevronLeft,
   ChevronRight,
-  MenuOutlined
+  MenuOutlined,
+  Brightness1,
+  Bedtime,
+  BrightnessHigh
 } from '@mui/icons-material';
 import HelpIcon from '@mui/icons-material/Help';
 import { useLayout } from '@/hooks/useLayout';
@@ -33,9 +37,10 @@ import { useHeader } from './Header.controller';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
+import EntitySwitcher from '@/components/common/EntitySwitcher';
 
 
-export default function Header() {
+export default function Header({ drawerWidth }: { drawerWidth: number }) {
   const { changeLayoutState, layoutState } = useLayout()
   const { user } = useAuth()
   const { changeColorMode } = useAppTheme()
@@ -178,66 +183,64 @@ export default function Header() {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, width: '100%' }}>
+    <Box sx={{ flexGrow: 1, mb: 3 }}>
+      <AppBar position="fixed" elevation={0} sx={{
+        pl: { sm: `${layoutState.openDraw ? drawerWidth : 0}px` }, // For persistent drawe
+        zIndex: (theme) => theme.zIndex.drawer - 1,
+        bgcolor: (theme) => theme.palette.background.default,
+
+
+      }}>
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={() => changeLayoutState({ ...layoutState, openDraw: !layoutState.openDraw })}>
-            {layoutState.openDraw ? <ChevronLeft /> : <ChevronRight />}
-          </IconButton>
+          
+          <Box sx={{ p: 2, textAlign: 'center'}}>
+            <EntitySwitcher />
+          </Box>
 
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
 
-            <h4>{t('layout.header.title')}</h4>
-          </Typography>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ display: { xs: 'none', md: 'flex' }}}>
             <LocaleSwitcher />
             <IconButton
               onClick={() => changeColorMode()}
-              color="inherit"
-              sx={{ mr: 1 }}
+              sx={{
+                mr: 1,
+                ml:1,
+                mt:1 ,
+                borderWidth: 2,
+                borderStyle: 'solid',
+                borderColor: (theme) => theme.palette.divider,
+                borderRadius: 2,
+                height: 40,
+                width: 40
+              }}
             >
-              {theme.palette.mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+              {theme.palette.mode === 'dark' ? <BrightnessHigh /> : <Bedtime />}
             </IconButton>
 
-            {showMessages > 0 && <Tooltip title={t('layout.header.messages')}>
-              <IconButton size="large" color="inherit">
-                <Badge badgeContent={showMessages} color="error">
-                  <MailIcon />
-                </Badge>
-              </IconButton>
-            </Tooltip>}
 
-            {showNotification > 0 && <Tooltip title={t('layout.header.notification')}>
-              <IconButton
-                size="large"
 
-                color="inherit"
-              >
-                <Badge badgeContent={showNotification} color="error">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
-            </Tooltip>}
 
             <Tooltip title={t('layout.header.help')}>
               <IconButton
                 size="large"
-                color="inherit" onClick={() => openModal()}
+                sx={{
+                  mr: 1,
+                  mt:1 ,
+                  borderWidth: 2,
+                  borderStyle: 'solid',
+                  borderColor: (theme) => theme.palette.divider,
+                  borderRadius: 2,
+                  height: 40,
+                  width: 40
+                }}
+                onClick={() => openModal()}
               >
                 <HelpIcon />
               </IconButton>
             </Tooltip>
+
+            <Divider  orientation="vertical" flexItem   />
 
             <Tooltip title={t('layout.header.profile')}>
               <IconButton
@@ -270,7 +273,15 @@ export default function Header() {
               <MenuOutlined />
             </IconButton>
           </Box>
+
         </Toolbar>
+        <Box sx={{
+          height: 1.2,
+          background: (theme) => theme.palette.divider,
+          width: '95%',
+          margin: 'auto',
+          marginBottom:1
+        }}></Box>
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
