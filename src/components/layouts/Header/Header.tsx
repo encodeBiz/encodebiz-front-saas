@@ -7,8 +7,8 @@ import {
   Typography,
   Badge,
   Box,
-  Avatar,
   Menu,
+  Avatar,
   MenuItem,
   ListItemIcon,
   Tooltip,
@@ -20,12 +20,10 @@ import {
   Notifications as NotificationsIcon,
   Brightness4 as DarkModeIcon,
   Brightness7 as LightModeIcon,
-  ChevronLeft,
-  ChevronRight,
   MenuOutlined,
-  Brightness1,
   Bedtime,
-  BrightnessHigh
+  BrightnessHigh,
+  MenuOpen, Menu as MenuIcon,
 } from '@mui/icons-material';
 import HelpIcon from '@mui/icons-material/Help';
 import { useLayout } from '@/hooks/useLayout';
@@ -192,21 +190,23 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
 
       }}>
         <Toolbar>
-          
-          <Box sx={{ p: 2, textAlign: 'center'}}>
+          {!layoutState.openDraw && <IconButton onClick={() => changeLayoutState({ ...layoutState, openDraw: true })}>
+            <MenuIcon />
+          </IconButton>}
+          <Box sx={{ p: 2, textAlign: 'center' }}>
             <EntitySwitcher />
           </Box>
 
 
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' }}}>
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <LocaleSwitcher />
             <IconButton
               onClick={() => changeColorMode()}
               sx={{
                 mr: 1,
-                ml:1,
-                mt:1 ,
+                ml: 1,
+                mt: 1,
                 borderWidth: 2,
                 borderStyle: 'solid',
                 borderColor: (theme) => theme.palette.divider,
@@ -226,7 +226,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
                 size="large"
                 sx={{
                   mr: 1,
-                  mt:1 ,
+                  mt: 1,
                   borderWidth: 2,
                   borderStyle: 'solid',
                   borderColor: (theme) => theme.palette.divider,
@@ -240,7 +240,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
               </IconButton>
             </Tooltip>
 
-            <Divider  orientation="vertical" flexItem   />
+            <Divider orientation="vertical" flexItem />
 
             <Tooltip title={t('layout.header.profile')}>
               <IconButton
@@ -275,13 +275,16 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
           </Box>
 
         </Toolbar>
-        <Box sx={{
-          height: 1.2,
-          background: (theme) => theme.palette.divider,
-          width: '95%',
-          margin: 'auto',
-          marginBottom:1
-        }}></Box>
+
+        <Divider
+          sx={{
+            width: '95%',
+            margin: 'auto',
+            marginBottom: 1
+          }}
+          orientation="horizontal" flexItem
+        />
+
       </AppBar>
       {renderMobileMenu}
       {renderMenu}

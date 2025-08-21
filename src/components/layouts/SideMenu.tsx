@@ -18,7 +18,9 @@ import {
   ChevronLeft,
   ChevronRight,
   ExpandLess,
-  ExpandMore
+  ExpandMore,
+  Menu,
+  MenuOpen
 } from '@mui/icons-material';
 import { styled, useTheme } from '@mui/material/styles';
 import { useLayout } from '@/hooks/useLayout';
@@ -69,7 +71,7 @@ export default function SideMenu() {
       <Drawer
         sx={{
           width: drawerWidth,
-  
+
           flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: drawerWidth,
@@ -80,26 +82,31 @@ export default function SideMenu() {
         anchor="left"
         open={layoutState.openDraw}
       >
-        <DrawerHeader>
-          <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', p: 2 }}>
+        <DrawerHeader >
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%', p: 2 }}>
             <Avatar
-              sx={{ width: 120, height: 40, mr: 1 }}
+              sx={{ width: 190, height: 60, mr: 1 }}
               src={logo.src}
               alt="Company Logo"
             />
-            
+
+            <Divider
+              sx={{
+                width: '95%',
+                margin: 'auto',
+                marginBottom: 1
+              }}
+              orientation="horizontal" flexItem
+            />
           </Box>
-          <IconButton onClick={() => changeLayoutState({ ...layoutState, openDraw: false })}>
-            {theme.direction === 'ltr' ? <ChevronLeft /> : <ChevronRight />}
-          </IconButton>
+
+
         </DrawerHeader>
-
-        <Divider />
-
-        {/* User Profile Section */}
-       
-
-        <Divider />
+        <Box display={'flex'} width={'100%'} alignItems={'flex-end'} justifyContent={'flex-end'}>
+          <IconButton onClick={() => changeLayoutState({ ...layoutState, openDraw: false })}>
+            {theme.direction === 'ltr' ? <MenuOpen /> : <Menu />}
+          </IconButton>
+        </Box>
 
         {/* Main Menu */}
         <List>
