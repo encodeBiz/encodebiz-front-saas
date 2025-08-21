@@ -262,11 +262,9 @@
       "overview": "Descripción general",
       "stats": "Estadísticas",
       "card": {
-        "btn1": "Mas informacion",
-        "btn2": "Servicios",
-        "btn3": "Planes",
-        "title": "Bienvenido a EncodeBiz Saas",
-        "subtitle": "En esta plataforma podras hacer varias cosas interesantes"
+     
+        "title": "Bienvenido a encodeBiz SaaS",
+        "subtitle": "Registra, controla y gestiona accesos en un solo lugar, CheckBiz y PassBiz listos para ti."
       }
     },
     "entity": {
