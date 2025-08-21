@@ -35,7 +35,7 @@ export default function AdminLayout({
         }}
       >
         <Header drawerWidth={drawerWidth} />
-        <Grid container sx={{ display: 'flex', minHeight: 'calc(100vh - 200px)', justifyContent: 'flex-start', alignItems: 'flex-start', paddingTop: pendAuth ? 0 : "24px", paddingBottom: "24px" }}>
+        <Grid container sx={{ display: 'flex', minHeight: 'calc(100vh - 200px)', justifyContent: 'flex-start', alignItems: 'flex-start', paddingTop: pendAuth ? 0 : "80px", paddingBottom: "24px" }}>
           {pendAuth && <PageLoader backdrop message={t('core.title.loader')} type={'circular'} fullScreen />}
           {children}
           <Onboarding />
