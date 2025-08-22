@@ -117,8 +117,8 @@
       "sponsor": "Patrosinador",
       "ticketCapacity": "Capacidad",
       "date": "Fecha",
-      "colorText":"Color de texto",
-      "colorBg":"Color de fondo",
+      "colorText": "Color de texto",
+      "colorBg": "Color de fondo",
       "endDate": "Fecha de finalización",
       "startDate": "Fecha de inicio",
       "time": "Hora",
@@ -181,6 +181,7 @@
     },
     "button": {
       "revoke": "Revocar",
+      "contactUs":"Contactar con encodeBiz",
       "upgrade": "Upgradear",
       "resend": "Reenviar",
       "submitting": "Enviando...",
@@ -262,9 +263,13 @@
       "overview": "Descripción general",
       "stats": "Estadísticas",
       "card": {
-     
         "title": "Bienvenido a encodeBiz SaaS",
         "subtitle": "Registra, controla y gestiona accesos en un solo lugar, CheckBiz y PassBiz listos para ti."
+      },
+      "cardDesc": {
+        "title": "Más que un software, tu socio en desarrollo digital",
+        "subtitle1": "En Encodebiz creamos soluciones a medida para necesidades únicas.",
+        "subtitle2": "Si tu empresa requiere un desarrollo especializado, estamos listos para hacerlo realidad."
       }
     },
     "entity": {
@@ -464,7 +469,7 @@
     "camaraFocus": "Apunta tu cámara a un código QR",
     "resultTitle": "Pase confirmado",
     "scanOther": "Escanear otro código",
-    "lastValidatedAt":"Última validación",
+    "lastValidatedAt": "Última validación",
     "failed": "Ha fallado la lectura del código",
     "failedStaff": "Usted no tiene permisos para validar el pase",
     "tryagain": "Intentar de nuevo",

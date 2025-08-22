@@ -2,6 +2,17 @@
 import { BaseButtonProps, GenericButton } from './BaseButton';
 import { CircularProgress } from '@mui/material';
 
+
+export const SassButton = (props: BaseButtonProps) => (
+    <GenericButton
+        {...props}
+        sx={{
+            borderRadius: 100,
+            ...props.sx
+        }}
+    />
+);
+
 export const PrimaryButton = (props: BaseButtonProps) => (
     <GenericButton variant="contained" color="primary" {...props} />
 );

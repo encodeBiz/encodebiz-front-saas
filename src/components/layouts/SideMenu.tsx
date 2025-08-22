@@ -112,7 +112,7 @@ export default function SideMenu() {
         anchor="left"
         open={layoutState.openDraw}
       >
-        <DrawerHeader >
+        <DrawerHeader sx={{ pt:2,pb:2}} >
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%', p: 2 }}>
             <Avatar
               sx={{ width: 190, height: 60, mr: 1 }}

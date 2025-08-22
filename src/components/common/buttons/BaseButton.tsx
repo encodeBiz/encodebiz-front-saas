@@ -8,11 +8,11 @@ export type BaseButtonProps = ButtonProps & {
 };
 
 export const BaseButton = styled(Button)<ButtonProps>(({ theme, variant, color = 'primary' }) => ({
-    borderRadius: '8px',
+    
     fontWeight: 600,
     /*textTransform: 'none',*/
     padding: theme.spacing(1.5, 3),
-    gap:2,
+    gap: 2,
     boxShadow: 'none',
     '&:hover': {
         boxShadow: 'none',
@@ -26,6 +26,7 @@ export const BaseButton = styled(Button)<ButtonProps>(({ theme, variant, color =
             color: theme.palette.action.disabled,
         }),
     },
+
 }));
 
 export const GenericButton = ({
