@@ -2,23 +2,35 @@ import React, { ReactNode } from 'react';
 import {
   Box,
   Typography,
-  Paper} from '@mui/material';
+  Paper
+} from '@mui/material';
 import Image from 'next/image';
 import { useStyles } from './OnboardingCard.styles';
 import { useAuth } from '@/hooks/useAuth';
+import { SassButton } from '@/components/common/buttons/GenericButton';
+import { useTranslations } from 'next-intl';
 export interface OnboardingCardProps {
   title?: string
   description?: string
   image?: any
+  onPress?: () => void
   children?: ReactNode
+  right?: number
+  top?: number
+  width?: number
+  height?: number
+  heightCard?: number
 }
 
-export default function OnboardingCard({ children, title, description, image, }: OnboardingCardProps) {
-  const {user} = useAuth()
+export default function OnboardingCard({ children, title, description, image, onPress,heightCard=250, right = -10, top = -60, width = 705, height = 422 }: OnboardingCardProps) {
+  const { user } = useAuth()
   const styles = useStyles(!!user?.id)
+  const t = useTranslations()
+
+
   return (
     <Box  >
-      <Paper elevation={2} sx={styles.base}>
+      <Paper elevation={2} sx={{...styles.base,minHeight:heightCard}}>
         <Box sx={image ? styles.root : styles.rootSimple}>
           <Box sx={styles.container}>
             <Typography sx={styles.title} variant="h4" component="h1" align="center" gutterBottom>
@@ -27,9 +39,12 @@ export default function OnboardingCard({ children, title, description, image, }:
             <Typography sx={styles.subtitle} variant="subtitle1" align="center" >
               {description}
             </Typography>
+
+            {typeof onPress === 'function' && <SassButton variant="contained" color="primary" sx={{ mt: 2 }}>{t('core.button.start')}</SassButton>
+            }
           </Box>
-          {image && <Box sx={styles.imageContainer}>
-            <Image width={705} height={422} alt='EncodeBiz' src={image} />
+          {image && <Box sx={{ ...styles.imageContainer, right, top }}>
+            <Image width={width} height={height} alt='EncodeBiz' src={image} />
           </Box>}
         </Box>
         <Box sx={styles.content}>

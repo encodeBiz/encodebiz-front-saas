@@ -36,20 +36,22 @@ const HelpTabs = ({ tabs, ref }: HelpTabsProps) => {
       {...props}
       iconPosition="start"
 
+
       label={
         <Box sx={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
           textTransform: 'none',
-          textAlign: 'left'
+          textAlign: 'left',
+
         }}>
-          <Typography variant="body1" sx={{ fontWeight: 600 }}>
+          <Typography variant="h4" sx={{ fontWeight: 400, fontSize: 22 }}>
             {props.maintext}
           </Typography>
-          <Typography variant="caption" color="text.secondary">
+          {props.subtext && <Typography variant="caption" color="text.secondary">
             {props.subtext}
-          </Typography>
+          </Typography>}
         </Box>
       }
       sx={{
@@ -63,51 +65,42 @@ const HelpTabs = ({ tabs, ref }: HelpTabsProps) => {
     />
   );
 
+
   return (
-    <Box sx={{ mt: 4 }} ref={ref}>
-      <Typography variant="h4" component="h2" align="left" gutterBottom>
-        Más información
-      </Typography>
-      <Paper elevation={0} sx={{
-        border: `1px solid ${theme.palette.divider}`,
-        borderRadius: 1,
-        display: 'flex', flexDirection: {
-          xs: 'column',
-          sm: 'column',
-          md: 'column',
-          lg: 'row',
-          xl: 'row',
 
-        }
-      }}>
-        <Tabs
-          orientation='vertical'
-          value={value}
-          onChange={handleChange}
-          aria-label="icon position tabs"
-          sx={{
-            '& .MuiTabs-indicator': {
-              height: 3,
-            }
-          }}
-        >
-          {tabs.map((e, i) => <CustomTab key={i}
-            icon={e.icon}
-            maintext={e.title}
-            subtext={e.description}
-          />)}
-        </Tabs>
+    <Paper elevation={0} sx={{
+      border: `1px solid ${theme.palette.divider}`,
+      borderRadius: 1,
+      marginTop: 10
+    }}>
+      <Tabs
+        orientation='horizontal'
+        value={value}
+        variant='fullWidth'
+        onChange={handleChange}
+        aria-label="icon position tabs"
+        sx={{
+          '& .MuiTabs-indicator': {
+            height: 3,
+          }
+        }}
+      >
+        {tabs.map((e, i) => <CustomTab key={i}
+          icon={e.icon}
+          maintext={e.title}
+        />)}
+      </Tabs>
 
-        {/* Tab content */}
-        <Box sx={{ p: 3, border: `1px solid ${theme.palette.divider}`, borderTop: 0, width: '100%' }}>
-          {tabs.map((e, i) => <span key={i}>
-            {value === i && (<> {e.tabContent} </>)}
-          </span>)}
-        </Box>
-      </Paper>
+      {/* Tab content */}
+      <Box sx={{ p: 3, border: `1px solid ${theme.palette.divider}`, borderTop: 0, width: '100%' }}>
+        {tabs.map((e, i) => <span key={i}>
+          {value === i && (<>
+            {e.tabContent}
+          </>)}
+        </span>)}
+      </Box>
+    </Paper>
 
-
-    </Box>
   );
 };
 

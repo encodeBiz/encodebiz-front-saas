@@ -50,9 +50,9 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
     const fetchEntitySuscription = async () => {
         const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
-        setEntitySuscription(serviceSuscription.filter(e=>e.status!=="cancelled"))
+        setEntitySuscription(serviceSuscription.filter(e => e.status !== "cancelled" && e.status !== "pending-pay"))
         const serviceList: Array<IService> = await fetchServiceList()
-        setEntityServiceList(serviceList.map(e => ({ ...e, isBillingActive: !!serviceSuscription.find(service => service.serviceId === e.id && service.status!=="cancelled") })))
+        setEntityServiceList(serviceList.map(e => ({ ...e, isBillingActive: !!serviceSuscription.find(service => service.serviceId === e.id && service.status !== "cancelled" && service.status !== "pending-pay") })))
     }
 
 
@@ -117,7 +117,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
             setEntityList(updatedList)
             setCurrentEntity(current)
             await saveStateCurrentEntity(updatedList)
-            
+
             setTimeout(() => {
                 if (typeof callback === 'function') callback()
             }, 1000);

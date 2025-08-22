@@ -9,7 +9,6 @@ export const useStyles = (show:boolean): Record<string, SxProps<Theme>> => ({
     boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.45)',
     borderRadius: 2,
     color: '#FFF',
-    minHeight: 250,
     overflow: 'hidden',
     position: 'relative',
     p: 4
@@ -64,8 +63,7 @@ export const useStyles = (show:boolean): Record<string, SxProps<Theme>> => ({
 
   },
   imageContainer: {
-    right: -10,
-    top: -60,
+ 
     borderRadius: 1,
     position: 'absolute',
     zIndex: 10,

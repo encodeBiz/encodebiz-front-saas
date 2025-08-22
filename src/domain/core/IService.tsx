@@ -3,6 +3,7 @@ export interface IService {
     id: BizType; // o string si lo generalizas
     name: string;
     description: string;
+    about: string;
     availablePlans: Array<PlanType>;
     activatedAt: Date
     active: boolean
