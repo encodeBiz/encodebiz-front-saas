@@ -12,9 +12,9 @@ import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
  
-const EntityPreferencesTab = () => {
+const EntityPreferencesTab = ({formRef}:{formRef:any}) => {
     const t = useTranslations();
-    const { initialValues, validationSchema, setEntityDataAction, fields, pending, handleDeleteEntity } = useSettingEntityController();
+    const { initialValues, validationSchema, setEntityDataAction, fields, pending } = useSettingEntityController();
     const { user } = useAuth()
     const { currentEntity } = useEntity()
      return (
@@ -35,7 +35,8 @@ const EntityPreferencesTab = () => {
                 fields={fields as FormField[]}
                 submitButtonText={t('core.button.save')}
                 enableReinitialize
-
+                formRef={formRef}
+                hideBtn={true}
             />
             
         </>

@@ -21,7 +21,7 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
     const queueRef = useRef<ToastMessage[]>([]);
 
  
-    const showToast = useCallback((message: string, severity: AlertColor = 'info') => {
+    const showToast = (message: string, severity: AlertColor = 'info') => {
         const key = new Date().getTime();
         const newToast = { message, severity, key };
         if (open) {
@@ -30,7 +30,7 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
             setMessageInfo(newToast);
             setOpen(true);
         }
-    }, []);
+    }
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {

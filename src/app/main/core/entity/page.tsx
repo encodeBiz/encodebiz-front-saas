@@ -1,6 +1,6 @@
 
 'use client'
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
     Badge,
     Box,
@@ -30,18 +30,20 @@ const EntityPreferencesPage = () => {
     const { currentEntity } = useEntity()
     const { openModal } = useCommonModal()
     const { handleDeleteEntity, pending } = useSettingEntityController()
+    const formRef = useRef(null)
+
     const tabsRender: TabItem[] = [
         {
             label: <Badge color="warning" variant="dot" badgeContent={currentEntity?.entity.legal?.legalName ? 0 : 1}>
                 {`${t("entity.tabs.tab1.title")}`}
             </Badge>,
-            content: <EntityPreferencesTab />,
+            content: <EntityPreferencesTab formRef={formRef} />,
         },
         {
-            label: <Badge color="warning" variant="dot" badgeContent={currentEntity?.entity.branding?.textColor ? 0 : 1}>`${t("entity.tabs.tab2.title")}`</Badge>,
-            content: <BrandPreferencesPage />,
+            label: <Badge color="warning" variant="dot" badgeContent={currentEntity?.entity.branding?.textColor ? 0 : 1}>{t("entity.tabs.tab2.title")}</Badge>,
+            content: <BrandPreferencesPage formRef={formRef} />,
         }, {
-            label: <Badge color="warning" variant="dot" badgeContent={currentEntity?.entity.billingConfig.payment_method.length === 0 ? 0 : 1}>`${t("entity.tabs.tab3.title")}`</Badge>,
+            label: <Badge color="warning" variant="dot" badgeContent={currentEntity?.entity.billingConfig.payment_method.length === 0 ? 0 : 1}>{t("entity.tabs.tab3.title")}</Badge>,
             content: <BillingPreferencesPage />,
         },
         {
@@ -59,9 +61,20 @@ const EntityPreferencesPage = () => {
 
     ];
 
+    const handleExternalSubmit = () => {
+        if (formRef.current) {
+            (formRef.current as any).submitForm()
+        }
+    }
+
+   
+    
+
     return (
-        <Container maxWidth="xl">
+        <Container maxWidth="xl">            
             <PresentationCard
+                disabledBtn={!(formRef?.current as any)?.isValid}
+                titleBtn={handleExternalSubmit}
                 title={t('entity.title')}
             >{currentEntity?.role === 'owner' &&
                 <GenericTabs
@@ -71,7 +84,7 @@ const EntityPreferencesPage = () => {
                 }
             </PresentationCard>
 
-            <Box display={'flex'} justifyContent={'flex-start'} alignItems='flex-start' sx={{ width: '100%', mt:10 }}>
+            <Box display={'flex'} justifyContent={'flex-start'} alignItems='flex-start' sx={{ width: '100%', mt: 6 }}>
                 <SassButton disabled={!user?.id || !currentEntity} onClick={() => openModal(CommonModalType.DELETE, { entityId: currentEntity?.entity.id })} variant='contained' color='warning' >{t('entity.tabs.tab2.btn')}</SassButton>
             </Box>
 

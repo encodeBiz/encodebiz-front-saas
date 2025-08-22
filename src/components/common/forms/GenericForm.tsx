@@ -44,6 +44,8 @@ type GenericFormProps<T> = {
   column?: 1 | 2 | 3;
   enableReinitialize?: boolean;
   disabled?: boolean;
+  hideBtn?: boolean;
+  formRef?: any
 };
 
 const GenericForm = <T extends Record<string, any>>({
@@ -59,7 +61,9 @@ const GenericForm = <T extends Record<string, any>>({
   formContainerProps,
   enableReinitialize,
   btnFullWidth = false,
-  disabled = false
+  disabled = false,
+  hideBtn = false,
+  formRef
 }: GenericFormProps<T>) => {
   const t = useTranslations()
 
@@ -86,7 +90,8 @@ const GenericForm = <T extends Record<string, any>>({
         enableReinitialize={enableReinitialize}
         validateOnBlur={true}
         validateOnChange={true}
-
+        
+        innerRef={formRef}
 
       >
         {(formikProps: FormikProps<T>) => (
@@ -94,7 +99,7 @@ const GenericForm = <T extends Record<string, any>>({
             {/*JSON.stringify(formikProps.errors)*/}
             <Grid container spacing={3}>
               {fields.map((field, i) => {
-                 
+
                 const FieldComponent = field.component;
                 const isInvalid =
                   formikProps.touched[field.name] && Boolean(formikProps.errors[field.name]);
@@ -103,7 +108,7 @@ const GenericForm = <T extends Record<string, any>>({
                   xs: 12,
                   sm: 12
                 }} key={i} sx={{ width: '100%' }}>
-                 
+
                   <Typography variant='subtitle1'>{field.label as string}</Typography>
                 </Grid>
                 else
@@ -116,7 +121,7 @@ const GenericForm = <T extends Record<string, any>>({
                       xl: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4
                     }} key={field.name} sx={{ width: '100%' }}>
                       <FieldComponent
-                       
+
                         name={field.name}
                         label={field.label}
                         type={field.type}
@@ -126,10 +131,10 @@ const GenericForm = <T extends Record<string, any>>({
                         variant="outlined"
                         error={isInvalid}
                         helperText={isInvalid ? errorText : ''}
-                        value={formikProps.values[field.name]}                       
+                        value={formikProps.values[field.name]}
                         onBlur={formikProps.handleBlur}
                         options={field.options}
-                       {...field.extraProps}
+                        {...field.extraProps}
 
                       />
                     </Grid>
@@ -144,9 +149,9 @@ const GenericForm = <T extends Record<string, any>>({
                     </BaseButton>
                   )}
 
-                  <BaseButton sx={{ mt: 3, mb: 2, py: 1.5 }} disabled={formikProps.isSubmitting || disabled || !formikProps.isValid} type="submit" fullWidth={btnFullWidth} variant="contained" color="primary" >
+                  {!hideBtn && <BaseButton sx={{ mt: 3, mb: 2, py: 1.5 }} disabled={formikProps.isSubmitting || disabled || !formikProps.isValid} type="submit" fullWidth={btnFullWidth} variant="contained" color="primary" >
                     {formikProps.isSubmitting ? t('core.button.submitting') : submitButtonText}
-                  </BaseButton>
+                  </BaseButton>}
                 </Box>
               </Grid>
             </Grid>

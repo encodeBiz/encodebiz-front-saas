@@ -7,7 +7,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 
-const BrandPreferencesPage = () => {
+const BrandPreferencesPage = ({formRef}:{formRef: any}) => {
     const t = useTranslations();
     const { changeBrandAction,pending, fields2,initialBrandValues,brandValidationSchema } = useSettingEntityController();
  const { user } = useAuth()
@@ -24,6 +24,8 @@ const BrandPreferencesPage = () => {
                     fields={fields2 as FormField[]}
                     submitButtonText={t('core.button.save')}
                     enableReinitialize
+                    formRef={formRef}
+                     hideBtn={true}
                 />
             </>
     );

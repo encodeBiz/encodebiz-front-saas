@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Tabs as MuiTabs, Tab } from '@mui/material';
+import { Box, Tabs as MuiTabs, Tab, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { GenericTabsProps, TabsOrientation } from './BaseTabs';
 
@@ -85,11 +85,12 @@ const GenericTabs: React.FC<GenericTabsProps> = ({
                     {tabs.map((tab, index) => (
                         <Tab
                             key={`tab-${index}`}
-                            label={tab.label}
+                            label={<Typography variant='body1' fontWeight={600}>{tab.label}</Typography>}
                             icon={React.isValidElement(tab.icon) || typeof tab.icon === 'string' ? tab.icon : undefined}
                             iconPosition="start"
+
                             disabled={tab.disabled}
-                            sx={tab.sx}
+                            sx={{...tab.sx,pt:4}}
                         />
                     ))}
                 </StyledTabs>
