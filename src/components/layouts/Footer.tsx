@@ -10,18 +10,25 @@ const Footer: React.FC = () => {
       sx={{
         width: '100%',
         bgcolor: (theme) => theme.palette.background.paper,
-        position:'relative',
-        zIndex:(theme)=>theme.zIndex.drawer + 1,
+        position: 'relative',
+        zIndex: (theme) => theme.zIndex.drawer + 1,
         py: 3,
-        bottom:0
+        bottom: 0
       }}
     >
-      <Container maxWidth="lg">
-        <Typography variant="body2" color="inherit" align="center">
-          {'© '}
-          {new Date().getFullYear()}{' '}
-          {t('layout.footer.copyright')}
-        </Typography>
+      <Container maxWidth="lg" >
+        <Box display={'flex'} flexDirection={'row'} gap={10} justifyContent={'center'}>
+          <Typography variant="body2" color="inherit" align="center">
+            {'© '}
+            {new Date().getFullYear()}{' '}
+            {t('layout.footer.copyright')}
+          </Typography>
+
+          <Typography variant="body2" color="inherit" align="center">
+
+            {t('layout.footer.policy')}
+          </Typography>
+        </Box>
       </Container>
     </Box>
   );

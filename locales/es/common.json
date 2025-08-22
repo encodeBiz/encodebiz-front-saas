@@ -47,8 +47,9 @@
       }
     },
     "footer": {
-      "copyright": "EncodeBiz. Todos los derechos reservados.",
+      "copyright": "EncodeBiz Sass.",
       "web": "Nuestra Web",
+      
       "contactUs": "Contáctenos",
       "whatsApp": "WhatsApp",
       "policy": "Política y Privacidad",
