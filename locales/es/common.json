@@ -136,7 +136,8 @@
       "lastName": "Apellido",
       "fullName": "Nombre completo",
       "password": "Contraseña",
-      "legalEntityName": "Nombre Legal de la Empresa",
+      "legalEntityName": "Razón Social",
+      "companyName":"Nombre de la Empresa",
       "passwordConfirm": "Confirmar contraseña",
       "email": "Correo electrónico",
       "acceptTerms": "Aceptar términos y condiciones",
@@ -150,6 +151,7 @@
       "sessionLastTime": "Último inicio de sesión",
       "createAt": "Fecha de creación",
       "logo": "Logo",
+      "comercial":"IDENTIDAD COMERCIAL",
       "background": "Fondo",
       "custom": "Personalizado",
       "stripImage": "Imagen de tira",
@@ -168,7 +170,8 @@
       "stripImageUrl": "Imagen de tira",
       "iconUrl": "Icono",
       "address": "Dirección",
-      "legal": "Legal",
+      "addressData":"DATOS DE UBICACIÓN",
+      "legal": "DATOS LEGALES",
       "name": "Nombre",
       "currentPassword": "Contraseña actual",
       "label": "Etiqueta",
@@ -299,17 +302,17 @@
     "title": "Entidad",
     "tabs": {
       "tab1": {
-        "title": "Modificar Entidad",
+        "title": "Datos de la Empresa",
         "deleteConfirmModalTitle": "Eliminar Entidad",
         "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente la entidad y todas sus configuraciones y compras asociadas",
         "deleteConfirmModalTitle3": "Por favor entre la siguiente palabra para continuar con la accion"
       },
       "tab2": {
-        "title": "Modificar Marca",
+        "title": "Identidad Visual",
         "btn": "Eliminar Entidad"
       },
       "tab3": {
-        "title": "Configurar Billing",
+        "title": "Configurar Facturación",
         "btn": "Configurar Billing"
       },
       "tab4": {
@@ -317,7 +320,7 @@
         "btn": "Configurar Billing"
       },
       "tab5": {
-        "title": "Facturación",
+        "title": "Facturas",
         "btn": "Configurar Billing"
       },
       "tab6": {

@@ -96,7 +96,7 @@ const GenericTabs: React.FC<GenericTabsProps> = ({
 
                 <Box flexGrow={1}>
                     {tabs.map((tab, index) => (
-                        <TabPanel key={`tabpanel-${index}`} value={currentTab} index={index}>
+                        <TabPanel key={`tabpanel-${index}`} value={currentTab} index={index} sx={{pl:8,pr:8}}>
                             {tab.content}
                         </TabPanel>
                     ))}

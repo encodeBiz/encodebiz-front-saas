@@ -26,10 +26,10 @@ export const lightTheme: PaletteOptions = {
     contrastText: '#ffffff',
   },
   secondary: {
-    main: '#9c27b0',
-    light: '#ba68c8',
-    dark: '#7b1fa2',
-    contrastText: '#ffffff',
+    main: '#E9E8F5',
+    light: '#E9E8F5',
+    dark: '#E9E8F5',
+    contrastText: '#000',
   },
   background: {
     default: '#F0EFFD',

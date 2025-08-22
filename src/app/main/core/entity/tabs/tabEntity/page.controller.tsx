@@ -94,9 +94,13 @@ export const useSettingEntityController = () => {
 
 
     const fields = [
+         {
+            isDivider: true,
+            label: t('core.label.comercial'),
+        },
         {
             name: 'name',
-            label: t('core.label.name'),
+            label: t('core.label.companyName'),
             type: 'text',
             required: true,
             fullWidth: true,
@@ -115,12 +119,7 @@ export const useSettingEntityController = () => {
             fullWidth: true,
             component: TextInput,
         },
-        {
-            name: 'billingEmail',
-            label: t('core.label.billingEmail'),
-            type: 'email',
-            component: TextInput,
-        },
+        
         {
             name: 'taxId',
             label: t('core.label.taxId'),
@@ -128,8 +127,14 @@ export const useSettingEntityController = () => {
             component: TextInput,
         },
         {
+            name: 'billingEmail',
+            label: t('core.label.billingEmail'),
+            type: 'email',
+            component: TextInput,
+        },
+        {
             isDivider: true,
-            label: t('core.label.address'),
+            label: t('core.label.addressData'),
         },
         {
             name: 'street',

@@ -25,15 +25,15 @@ export default function PresentationCard({ children, title, disabledBtn=false, d
   const styles = useStyles()
   return (
     <Box  >
-      <Paper elevation={2} sx={styles.base}>
+      <Paper elevation={0} sx={styles.base}>
         <Box sx={image ? styles.root : styles.rootSimple}>
           <Box sx={styles.container}>
-            <Typography variant="h4" component="h1" align="center" gutterBottom>
+            <Typography variant="h4" component="h1" align="center" gutterBottom  sx={{ mb: 4, textAlign: 'left' }}>
               {title}
             </Typography>
-            <Typography variant="subtitle1" align="center" color="text.secondary" sx={{ mb: 4, textAlign: 'left' }}>
+            {description && <Typography variant="subtitle1" align="center" color="text.secondary" sx={{ mb: 4, textAlign: 'left' }}>
               {description}
-            </Typography>
+            </Typography>}
             <Stack direction="row" spacing={2} sx={styles.stack}>
               {typeof action1 === 'function' && <PrimaryButton disabled={disabledBtn} onClick={action1}>{action1Text}</PrimaryButton>}
               {typeof action2 === 'function' && <BaseButton disabled={disabledBtn} variant="outlined" onClick={action2}>{action2Text}</BaseButton>}

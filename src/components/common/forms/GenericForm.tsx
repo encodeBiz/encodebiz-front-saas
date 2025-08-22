@@ -103,7 +103,7 @@ const GenericForm = <T extends Record<string, any>>({
                   xs: 12,
                   sm: 12
                 }} key={i} sx={{ width: '100%' }}>
-                  <Divider />
+                 
                   <Typography variant='subtitle1'>{field.label as string}</Typography>
                 </Grid>
                 else

@@ -3,13 +3,15 @@ import { SxProps, Theme } from "@mui/material";
 export const useStyles = (): Record<string, SxProps<Theme>> => ({
   base: {
     width: '100%',
-    borderRadius: 2, display: 'flex', flexDirection: 'column', justifyContent: 'space-around',pt:4,pb:4
+    background: (theme) => theme.palette.secondary.main,
+    borderRadius: 2, display: 'flex', flexDirection: 'column', justifyContent: 'space-around', pt: 4, pb: 0
   },
   content: {
-     pl: 8, pr: 8
+    pl: 0, pr: 0,
+    background: (theme) => theme.palette.background.paper,
   },
   root: {
-     pl: 4, pr: 4, borderRadius: 2, display: 'flex', flexDirection: {
+    pl: 4, pr: 4, borderRadius: 2, display: 'flex', flexDirection: {
       xs: 'column-reverse',
       sm: 'column-reverse',
       md: 'column-reverse',
@@ -18,8 +20,8 @@ export const useStyles = (): Record<string, SxProps<Theme>> => ({
 
     }, alignItems: 'center', justifyContent: 'space-between'
   },
-   rootSimple: {
-     pl: 4, pr: 4, borderRadius: 2, display: 'flex', flexDirection: {
+  rootSimple: {
+    pl: 4, pr: 4, borderRadius: 2, display: 'flex', flexDirection: {
       xs: 'column-reverse',
       sm: 'column-reverse',
       md: 'column-reverse',
