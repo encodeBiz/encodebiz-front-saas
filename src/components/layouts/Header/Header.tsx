@@ -24,6 +24,7 @@ import {
   Bedtime,
   BrightnessHigh,
   MenuOpen, Menu as MenuIcon,
+  QuestionMarkOutlined,
 } from '@mui/icons-material';
 import HelpIcon from '@mui/icons-material/Help';
 import { useLayout } from '@/hooks/useLayout';
@@ -236,7 +237,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
                 }}
                 onClick={() => openModal()}
               >
-                <HelpIcon />
+                <QuestionMarkOutlined />
               </IconButton>
             </Tooltip>
 
