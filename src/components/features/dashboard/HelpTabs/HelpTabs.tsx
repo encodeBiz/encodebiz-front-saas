@@ -22,7 +22,7 @@ export interface HelpTabsProps {
 }
 
 
-const HelpTabs = ({ tabs, ref }: HelpTabsProps) => {
+const HelpTabs = ({ tabs }: HelpTabsProps) => {
   const [value, setValue] = React.useState(0);
   const theme = useTheme();
 

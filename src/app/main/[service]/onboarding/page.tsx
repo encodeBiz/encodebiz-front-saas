@@ -2,19 +2,16 @@
 import HelpTabs from "@/components/features/dashboard/HelpTabs/HelpTabs";
 import image from '@/../public/assets/images/qr_code.svg'
 import { Container } from '@mui/material';
-import { useTranslations } from "next-intl";
-import { Cloud, Settings } from "@mui/icons-material";
+import { Settings } from "@mui/icons-material";
 import useDashboardController from "./page.controller";
 import { useRef } from "react";
 import SalesPlan from "@/components/features/profile/SalesPlan/SalesPlan";
 import { IPlan } from "@/domain/core/IPlan";
 import { useParams } from "next/navigation";
 import OnboardingCard from "@/components/features/dashboard/OnboardingCard/OnboardingCard";
-import Tab1 from "./passBiz/tabContent";
 import TabContent from "./passBiz/tabContent";
 
 export default function Dashboard() {
-  const t = useTranslations()
   const { serviceData, pending, planList, dataTab1, dataTab2 } = useDashboardController()
   const sectionMoreInfofRef = useRef(null); // Create a ref for the section
   const sectionServicesRef = useRef(null); // Create a ref for the section

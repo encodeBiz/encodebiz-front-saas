@@ -1,5 +1,5 @@
 'use client';
-import { Box, Card, CardContent, Container, Divider, Grid, Typography } from '@mui/material';
+import { Box, Card, CardContent, Container, Divider, Typography } from '@mui/material';
 
 export default function TabContent({ title, subtitle, data }: { title: string, subtitle?: string, data: Array<{ title: string, description: string }> }) {
 

@@ -1,7 +1,8 @@
 export interface IPlan {
     id: string;
     name?: string;
-    price?: string;
+    priceMonth?: string;
+    priceYear?: string;
     period?: string;
     features?: string[];
     featured?: boolean;

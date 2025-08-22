@@ -327,8 +327,8 @@
     }
   },
   "salesPlan": {
-    "title": "Elige un plan para adquirir este servicio",
-    "subTitle": "Seleccione el plan que se ajuste a las necesidades de su negocio",
+    "title": "PLANES DISPONIBLES",
+    "subTitle": "Elige entre la versión Free, Básica o Avanzada según las funcionalidades que necesites. Actualiza o cambia tu plan en cualquier momento para potenciar tu experiencia con PassBiz.",
     "free": "Gratis",
     "configureLegal": "Configuracion de datos legales de la entidad",
     "configureBranding": "Configuracion de diseño de entidad",
