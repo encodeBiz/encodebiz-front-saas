@@ -29,7 +29,7 @@ const EntityPreferencesPage = () => {
     const t = useTranslations();
     const { user } = useAuth()
     const { currentEntity } = useEntity()
-    const { openModal } = useCommonModal()
+    const { openModal, open } = useCommonModal()
     const { handleDeleteEntity, pending } = useSettingEntityController()
     const formRef = useRef(null)
     const { formStatus } = useFormStatus()
@@ -44,7 +44,7 @@ const EntityPreferencesPage = () => {
             label: <Badge color="warning" variant="dot" badgeContent={currentEntity?.entity.branding?.textColor ? 0 : 1}>{t("entity.tabs.tab2.title")}</Badge>,
             content: <BrandPreferencesPage formRef={formRef} />,
         }, {
-            label: <Badge color="warning" variant="dot" badgeContent={currentEntity?.entity.billingConfig.payment_method.length === 0 ? 0 : 1}>{t("entity.tabs.tab3.title")}</Badge>,
+            label: <Badge color="warning" variant="dot" badgeContent={currentEntity?.entity.billingConfig.payment_method.length === 0 ? 1 : 0}>{t("entity.tabs.tab3.title")}</Badge>,
             content: <BillingPreferencesPage />,
         },
         {
@@ -89,7 +89,7 @@ const EntityPreferencesPage = () => {
                 <SassButton disabled={!user?.id || !currentEntity} onClick={() => openModal(CommonModalType.DELETE, { entityId: currentEntity?.entity.id })} variant='contained' color='warning' >{t('entity.tabs.tab2.btn')}</SassButton>
             </Box>
 
-            <ConfirmModal
+            {CommonModalType.DELETE == open.type && open.open && <ConfirmModal
                 codeValidator
                 isLoading={pending}
                 word={createSlug(currentEntity?.entity.name as string ?? '')}
@@ -97,7 +97,7 @@ const EntityPreferencesPage = () => {
                 description={t('entity.tabs.tab1.deleteConfirmModalTitle2')}
                 label={t('entity.tabs.tab1.deleteConfirmModalTitle2')}
                 onOKAction={(args: { entityId: string }) => handleDeleteEntity(args.entityId)}
-            />
+            />}
         </Container>
     );
 };

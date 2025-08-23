@@ -21,10 +21,10 @@ const EntityPreferencesTab = ({formRef}:{formRef:any}) => {
         <>
            
             <Typography variant="h4" component="h1" align="left" sx={{ textAlign: 'left' }} gutterBottom>
-                Acerca de tu empresa
+                {t('entity.tabs.tab1.titleAbout')}
             </Typography>
-            <Typography variant="subtitle1" align="left" color="text.secondary" sx={{ mb: 4, textAlign: 'left' }}>
-                Completa los datos generales de tu empresa.
+            <Typography variant="subtitle1" align="left" color="text.secondary" sx={{ mb: 4, textAlign: 'left' }}>                
+                  {t('entity.tabs.tab1.titleAbout')}
             </Typography>
             <GenericForm<EntityUpdatedFormValues>
                 column={2}

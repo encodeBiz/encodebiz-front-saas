@@ -8,6 +8,8 @@ import {
   FormHelperText,
   InputLabel,
   FormControl,
+  Paper,
+  Typography,
 } from '@mui/material';
 import { CloudUpload, Delete } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
@@ -16,6 +18,7 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { IUserMedia, IUserMediaType } from '@/domain/core/IUserMedia';
 import ImagePreview from '../../ImagePreview';
+import { fileTypes } from '@/config/constants';
 
 interface ImageFieldProps {
   accept: string
@@ -27,6 +30,10 @@ const ImageUploadInput = ({ name, label, ...props }: any & FieldProps & TextFiel
   const { touched, error } = meta
   const typeUpload = props.type
 
+  const aspectRatio = (fileTypes(t).find(e => e.value === typeUpload)?.size?.w ?? 0) / (fileTypes(t).find(e => e.value === typeUpload)?.size?.h ?? 0)
+  const width = 300
+  const height = width / aspectRatio;
+  const isDragging = false
   const helperText = touched && error;
   const { open, openModal } = useCommonModal()
   const {
@@ -67,7 +74,11 @@ const ImageUploadInput = ({ name, label, ...props }: any & FieldProps & TextFiel
               alt=""
               width={'200px'}
               height={'200px'}
-              style={{ border: '1px solid #ddd' }}
+              style={{
+                width: '100%',
+                height: height,
+                border: '1px solid #ddd'
+              }}
               zoomIconPosition="center"
             />
             <IconButton disabled={props.disabled}
@@ -86,21 +97,55 @@ const ImageUploadInput = ({ name, label, ...props }: any & FieldProps & TextFiel
             </IconButton>
           </Box>
         ) : (
-          <Button
-            component="label"
-            variant="outlined"
-            color="primary"
-            startIcon={<CloudUpload />}
-            disabled={props.disabled}
-            onClick={() => openModal(CommonModalType.FILES, { name })}
-          >{t('core.label.uploadResourse')}</Button>
-        )}
+          <Box sx={{ width: '100%', maxWidth: width }}>
+            <Paper onClick={() => openModal(CommonModalType.FILES, { name })}
+              variant="outlined"
+              sx={{
+                position: 'relative',
+                width: '100%',
+                height: height,
+                border: isDragging ? '2px dashed #1976d2' : '2px dashed #ccc',
+                borderRadius: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: isDragging ? 'rgba(25, 118, 210, 0.04)' : 'transparent',
+                cursor: props.disabled ? 'not-allowed' : 'pointer',
+                opacity: props.disabled ? 0.6 : 1,
+                overflow: 'hidden',
+                transition: 'all 0.2s ease-in-out',
+                '&:hover': {
+                  borderColor: props.disabled ? '#ccc' : '#1976d2',
+                  backgroundColor: props.disabled ? 'transparent' : 'rgba(25, 118, 210, 0.04)'
+                }
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: 1,
+                  p: 2
+                }}
+              >
+                <CloudUpload sx={{ fontSize: 40, color: 'text.secondary' }} />
+                <Typography variant="body2" color="text.secondary" textAlign="center">
+                  {t('core.label.addImage')}
+                </Typography>
 
-        <FormHelperText error={!!helperText}>{helperText as string}</FormHelperText>
+              </Box>
+            </Paper>
+
+          </Box>
+
+        )}
       </Box>
-      {CommonModalType.FILES && open.open && open.args.name === name && <MediaModalSelectedFiles type={typeUpload} key={name} onSelected={handleOnSelected} />}
-      
-    </FormControl>
+      <FormHelperText error={!!helperText}>{helperText as string}</FormHelperText>
+      {CommonModalType.FILES == open.type && open.open && open.args.name === name && <MediaModalSelectedFiles type={typeUpload} key={name} onSelected={handleOnSelected} />}
+
+    </FormControl >
 
   );
 };

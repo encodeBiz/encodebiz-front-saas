@@ -49,7 +49,6 @@
     "footer": {
       "copyright": "EncodeBiz Sass.",
       "web": "Nuestra Web",
-      
       "contactUs": "Contáctenos",
       "whatsApp": "WhatsApp",
       "policy": "Política y Privacidad",
@@ -119,7 +118,10 @@
       "ticketCapacity": "Capacidad",
       "date": "Fecha",
       "colorText": "Color de texto",
+      "colorBrand": "COLORES DE MARCA",
+      "resourcesGraph": "RECURSOS GRÁFICOS",
       "colorBg": "Color de fondo",
+      "addImage": "Añadir recurso",
       "endDate": "Fecha de finalización",
       "startDate": "Fecha de inicio",
       "time": "Hora",
@@ -137,7 +139,7 @@
       "fullName": "Nombre completo",
       "password": "Contraseña",
       "legalEntityName": "Razón Social",
-      "companyName":"Nombre de la Empresa",
+      "companyName": "Nombre de la Empresa",
       "passwordConfirm": "Confirmar contraseña",
       "email": "Correo electrónico",
       "acceptTerms": "Aceptar términos y condiciones",
@@ -151,7 +153,7 @@
       "sessionLastTime": "Último inicio de sesión",
       "createAt": "Fecha de creación",
       "logo": "Logo",
-      "comercial":"IDENTIDAD COMERCIAL",
+      "comercial": "IDENTIDAD COMERCIAL",
       "background": "Fondo",
       "custom": "Personalizado",
       "stripImage": "Imagen de tira",
@@ -170,7 +172,7 @@
       "stripImageUrl": "Imagen de tira",
       "iconUrl": "Icono",
       "address": "Dirección",
-      "addressData":"DATOS DE UBICACIÓN",
+      "addressData": "DATOS DE UBICACIÓN",
       "legal": "DATOS LEGALES",
       "name": "Nombre",
       "currentPassword": "Contraseña actual",
@@ -185,7 +187,7 @@
     },
     "button": {
       "revoke": "Revocar",
-      "contactUs":"Contactar con encodeBiz",
+      "contactUs": "Contactar con encodeBiz",
       "upgrade": "Upgradear",
       "resend": "Reenviar",
       "submitting": "Enviando...",
@@ -201,8 +203,8 @@
       "download": "Descargar",
       "delete": "Eliminar",
       "save": "Guardar",
-      "start":"Comenzar",
-      "saveChanges":"Guardar Cambios",
+      "start": "Comenzar",
+      "saveChanges": "Guardar Cambios",
       "ok": "Entiendo",
       "configurenow": "Configurar ahora",
       "update": "Actualizar"
@@ -303,6 +305,8 @@
     "title": "Entidad",
     "tabs": {
       "tab1": {
+        "titleAbout": "Acerca de tu empresa",
+        "descriptionAbout": "Completa los datos generales de tu empresa.",
         "title": "Datos de la Empresa",
         "deleteConfirmModalTitle": "Eliminar Entidad",
         "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente la entidad y todas sus configuraciones y compras asociadas",
@@ -310,7 +314,9 @@
       },
       "tab2": {
         "title": "Identidad Visual",
-        "btn": "Eliminar Entidad"
+        "btn": "Eliminar Entidad",
+        "titleAbout": "Acerca de tu empresa",
+        "descriptionAbout": "Completa la información de la marca"
       },
       "tab3": {
         "title": "Configurar Facturación",
