@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // GenericForm.tsx
-import React from 'react';
-import { Formik, Form, FormikProps, FormikHelpers } from 'formik';
+import React, { useEffect } from 'react';
+import { Formik, Form, FormikProps, FormikHelpers, useFormikContext } from 'formik';
 import * as Yup from 'yup';
 import {
   Box,
@@ -12,6 +13,31 @@ import {
 import { BaseButton } from '../buttons/BaseButton';
 import { useTranslations } from 'next-intl';
 import { IUserMedia } from '@/domain/core/IUserMedia';
+import { useFormStatus } from '@/hooks/useFormStatus';
+
+
+// A component that watches the form state
+const FormStatusWatcher = () => {
+  // Access the entire Formik state
+  const { dirty, isSubmitting, isValid, status, values } = useFormikContext();
+  const { updateFromStatus } = useFormStatus()
+
+  useEffect(() => {
+
+    updateFromStatus({
+      isValid,
+      isSubmitting,
+      dirty,
+      status,
+      values
+    })
+    console.log(values);
+    
+
+  }, [dirty, isSubmitting, isValid, status, values]); // Add dependencies to watch
+
+  return null; // This component doesn't render anything
+};
 
 // Define types for our form component
 export type FormField = {
@@ -67,6 +93,7 @@ const GenericForm = <T extends Record<string, any>>({
 }: GenericFormProps<T>) => {
   const t = useTranslations()
 
+
   return (
     <Paper
       elevation={0}
@@ -90,13 +117,12 @@ const GenericForm = <T extends Record<string, any>>({
         enableReinitialize={enableReinitialize}
         validateOnBlur={true}
         validateOnChange={true}
-        
         innerRef={formRef}
 
       >
         {(formikProps: FormikProps<T>) => (
           <Form noValidate>
-            {/*JSON.stringify(formikProps.errors)*/}
+            <FormStatusWatcher />
             <Grid container spacing={3}>
               {fields.map((field, i) => {
 

@@ -23,6 +23,7 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { createSlug } from '@/lib/common/String';
+import { useFormStatus } from '@/hooks/useFormStatus';
 
 const EntityPreferencesPage = () => {
     const t = useTranslations();
@@ -31,7 +32,7 @@ const EntityPreferencesPage = () => {
     const { openModal } = useCommonModal()
     const { handleDeleteEntity, pending } = useSettingEntityController()
     const formRef = useRef(null)
-
+    const { formStatus } = useFormStatus()
     const tabsRender: TabItem[] = [
         {
             label: <Badge color="warning" variant="dot" badgeContent={currentEntity?.entity.legal?.legalName ? 0 : 1}>
@@ -67,13 +68,13 @@ const EntityPreferencesPage = () => {
         }
     }
 
-   
-    
+
+
 
     return (
-        <Container maxWidth="xl">            
+        <Container maxWidth="xl">
             <PresentationCard
-                disabledBtn={!(formRef?.current as any)?.isValid}
+                disabledBtn={!formStatus?.isValid || formStatus?.isSubmitting}
                 titleBtn={handleExternalSubmit}
                 title={t('entity.title')}
             >{currentEntity?.role === 'owner' &&
