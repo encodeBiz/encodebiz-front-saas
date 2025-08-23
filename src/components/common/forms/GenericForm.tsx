@@ -31,8 +31,7 @@ const FormStatusWatcher = () => {
       status,
       values
     })
-    console.log(values);
-    
+   
 
   }, [dirty, isSubmitting, isValid, status, values]); // Add dependencies to watch
 

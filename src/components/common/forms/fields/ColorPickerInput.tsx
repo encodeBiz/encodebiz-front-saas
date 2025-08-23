@@ -47,9 +47,10 @@ const ColorPickerInput: React.FC<FieldProps & TextFieldProps> = ({
                 slotProps={{
                     input: {
                         startAdornment: (
-                            <InputAdornment position="start">
+                            <InputAdornment position="start" sx={{ textAlign:'center',height: 40, width: 40, background: field && field.value ? field.value : '#ffffff' }}>
                                 <PaletteRounded sx={{
-                                    color: field && field.value ? field.value : '#ffffff'
+                                    color: '#ffffff',
+                                    m:'auto'
                                 }} />
                             </InputAdornment>
                         ),
