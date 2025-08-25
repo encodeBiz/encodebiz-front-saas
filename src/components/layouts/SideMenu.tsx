@@ -30,15 +30,23 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'nextjs-toploader/app';
 import { useEntity } from '@/hooks/useEntity';
 import logo from '../../../public/assets/images/logo.png'
+import Image from 'next/image';
 const drawerWidth = 240;
 
-const CustomListItemButton = ({ item, subItem = false }: { item: any, subItem?: boolean }) => {
+
+
+
+
+const CustomListItemButton = ({ children, item, subItem = false, handleSubMenuToggle }: { handleSubMenuToggle?: (menu: any) => void, item: any, subItem?: boolean, children?: any }) => {
   const pathname = usePathname()
   const t = useTranslations();
+  const theme = useTheme();
   const { currentEntity } = useEntity()
   const { push } = useRouter()
   return <ListItemButton
     sx={{
+      mx: 2,
+      height: 56,
       '&.Mui-selected': {
         backgroundColor: (theme) => theme.palette.primary.main,
         borderRadius: 10,
@@ -46,6 +54,11 @@ const CustomListItemButton = ({ item, subItem = false }: { item: any, subItem?: 
         '&:hover': {
           backgroundColor: 'primary.dark',
         },
+      },
+       '&.Mui-disabled': {
+        opacity:1,
+        color: (theme) => theme.palette.text.disabled,
+         
       },
       // Styles for the hover state (when not selected)
       '&:hover': {
@@ -55,11 +68,20 @@ const CustomListItemButton = ({ item, subItem = false }: { item: any, subItem?: 
       justifyItems: 'flex-start',
       pl: subItem ? 4 : 2
     }}
-    disabled={!currentEntity || item.header} onClick={() => push(item.link)} selected={pathname === item.link}>
-    {!item.header && <ListItemIcon sx={{ minWidth: 30, color: pathname === item.link ? '#FFF' : 'inherit' }}>
+    disabled={!currentEntity || item.header}
+    onClick={() => {
+      if (typeof handleSubMenuToggle === 'function' && item.id)
+        handleSubMenuToggle(item.id)
+      else {
+        push(item.link)
+      }
+    }}
+    selected={pathname === item.link}>
+    {!item.header && item.icon && <ListItemIcon sx={{ minWidth: 30, color: pathname === item.link ? '#FFF' : theme.palette.text.primary }}>
       {item.icon}
     </ListItemIcon>}
-    <ListItemText primary={t(`layout.side.menu.${item.name}`)} />
+    <ListItemText color={theme.palette.text.primary} primary={t(`layout.side.menu.${item.name}`)} />
+    {children}
   </ListItemButton>
 }
 
@@ -91,7 +113,6 @@ export default function SideMenu() {
     }, {})
   });
 
-
   const handleSubMenuToggle = (menu: string) => {
     setOpenSubMenu({ ...openSubMenu, [menu]: !openSubMenu[menu] });
   };
@@ -101,7 +122,6 @@ export default function SideMenu() {
       <Drawer
         sx={{
           width: drawerWidth,
-
           flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: drawerWidth,
@@ -112,11 +132,12 @@ export default function SideMenu() {
         anchor="left"
         open={layoutState.openDraw}
       >
-        <DrawerHeader sx={{ pt:2,pb:2}} >
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%', p: 2 }}>
-            <Avatar
-              sx={{ width: 190, height: 60, mr: 1 }}
-              src={logo.src}
+        <DrawerHeader sx={{ pt: 2, pb: 2, width: '100%' }} >
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%'}}>
+            <Image              
+              width={220}
+              height={73}
+              src={logo}
               alt="Company Logo"
             />
 
@@ -162,13 +183,9 @@ export default function SideMenu() {
                 if (entityServiceList.map(e => e.id).includes(item.id)) {
                   return <div key={i} >
                     <ListItem disablePadding>
-                      <ListItemButton disabled={!currentEntity} onClick={() => handleSubMenuToggle(item.id)}>
-                        <ListItemIcon sx={{ minWidth: 30 }}>
-                          {item.icon}
-                        </ListItemIcon>
-                        <ListItemText primary={t(`layout.side.menu.${item.name}`)} />
+                      <CustomListItemButton item={item} handleSubMenuToggle={handleSubMenuToggle} >
                         {openSubMenu.products ? <ExpandLess /> : <ExpandMore />}
-                      </ListItemButton>
+                      </CustomListItemButton>
                     </ListItem>
                     <Collapse in={openSubMenu[item.id]} timeout="auto" unmountOnExit>
                       <List component="div" disablePadding>

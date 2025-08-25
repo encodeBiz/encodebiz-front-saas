@@ -33,7 +33,26 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
                 },
                 typography: {
                     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+                    
+                    
                 },
+                components: {
+                    MuiPaper: {
+                        styleOverrides: {
+                            root: {
+                                ...(mode === 'light'
+                                    ? {
+                                        backgroundColor: '#FFFBFF',
+                                        color: '#000',
+                                    }
+                                    : {
+                                        backgroundColor: '#121212',
+                                        color: '#ffffff',
+                                    })
+                            }
+                        }
+                    }
+                }
             }),
         [mode]
     );

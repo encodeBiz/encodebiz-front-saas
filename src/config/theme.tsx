@@ -19,8 +19,9 @@ export const fileTypeIcons = {
 export const lightTheme: PaletteOptions = {
   mode: 'light',
   // Light mode palette
+  
   primary: {
-    main: '#0054CA',
+    main: '#476BE7',
     light: '#42a5f5',
     dark: '#1565c0',
     contrastText: '#ffffff',
@@ -36,9 +37,9 @@ export const lightTheme: PaletteOptions = {
     paper: '#ffffff',
   },
   text: {
-    primary: 'rgba(0, 0, 0, 0.87)',
+    primary: '#1C1D1B',
     secondary: 'rgba(0, 0, 0, 0.6)',
-    disabled: 'rgba(0, 0, 0, 0.38)',
+    disabled: '#48494C',
   },
 }
 
