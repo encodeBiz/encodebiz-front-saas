@@ -11,6 +11,7 @@ export const useStyles = (show: boolean): Record<string, SxProps<Theme>> => ({
     p: 4,
     height: 277,
     borderColor:(theme) => theme.palette.divider,
+    background:() => 'transparent',
     borderStyle:'solid',
     borderWidth:2,
     boxShadow: "0px 1px 4px 0.5px rgba(219, 217, 222, 0.45)",

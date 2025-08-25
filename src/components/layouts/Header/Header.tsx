@@ -25,6 +25,7 @@ import {
   BrightnessHigh,
   MenuOpen, Menu as MenuIcon,
   QuestionMarkOutlined,
+  BedtimeOutlined,
 } from '@mui/icons-material';
 import HelpIcon from '@mui/icons-material/Help';
 import { useLayout } from '@/hooks/useLayout';
@@ -216,7 +217,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
                 width: 40
               }}
             >
-              {theme.palette.mode === 'dark' ? <BrightnessHigh /> : <Bedtime />}
+              {theme.palette.mode === 'dark' ? <BrightnessHigh /> : <BedtimeOutlined />}
             </IconButton>
 
 

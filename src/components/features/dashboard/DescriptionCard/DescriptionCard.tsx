@@ -20,7 +20,7 @@ export default function DescriptionCard({ title, description1, description2 }: D
   const t = useTranslations()
   return (
     <Box marginTop={10}>
-      <Paper elevation={2} sx={styles.base}>
+      <Paper elevation={0} sx={styles.base}>
         <Box sx={styles.rootSimple}>
           <Box sx={styles.container}>
             <Typography sx={styles.title} variant="h4" component="h1" align="center" gutterBottom>

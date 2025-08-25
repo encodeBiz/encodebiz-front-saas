@@ -20,6 +20,7 @@ const TextInput: React.FC<FieldProps & TextFieldProps & { afterTextField: string
       rows={2}
       disabled={props.disabled}
       helperText={helperText as string}
+      
 
     />
     {props?.afterTextField && <Box sx={{ml:2, minWidth:'150px'}}>{props?.afterTextField }</Box>}

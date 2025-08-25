@@ -23,10 +23,11 @@ export const useStyles = (): Record<string, SxProps<Theme>> => ({
     textAlign: 'center',
     cursor: 'pointer'
   },
+  
   iconContainer: {
     width: 112,
     height: 112,
-    background: 'radial-gradient(circle at center, #001551 0, #002FB7 , #002FB7 100%)',
+    background: 'radial-gradient(circle at center, #001551 0, #002FB7 50%, #002FB7 100%)',
     borderRadius: '50%',
     display: 'flex',
     justifyItems: 'center',
