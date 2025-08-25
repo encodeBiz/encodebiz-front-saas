@@ -120,6 +120,8 @@ export const fetchInvoicesByEntity = async (entityId: string, params: SearchPara
         collection: `${collection.ENTITIES}/${entityId}/${collection.INVOICES}`,
     });
 
+    console.log(result);
+    
     return result;
 }
 

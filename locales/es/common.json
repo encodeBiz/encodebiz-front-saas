@@ -88,6 +88,7 @@
       "expo": "Expositivo",
       "festival": "Festival",
       "rol": "rol",
+      "price":"Precio",
       "active": "Activo",
       "thumbnail": "Imagen en miniatura",
       "subject": "Asunto",
@@ -117,7 +118,7 @@
       "sponsor": "Patrosinador",
       "ticketCapacity": "Capacidad",
       "date": "Fecha",
-      "medida":"Medida recomendada",
+      "medida": "Medida recomendada",
       "colorText": "Color de texto",
       "colorBrand": "COLORES DE MARCA",
       "resourcesGraph": "RECURSOS GRÁFICOS",
@@ -185,7 +186,8 @@
       "cropImage": "Recortar Imagen",
       "typeStaff": "Tipo de pase",
       "validator_event": "Verificador de eventos",
-      "validator_credential": "Verificador de credenciales"
+      "validator_credential": "Verificador de credenciales",
+      "service": "Servicio"
     },
     "button": {
       "revoke": "Revocar",
@@ -287,7 +289,7 @@
       "create": {
         "card": {
           "title": "Crear entidad legal",
-           "createEntity": "Crear entidad",
+          "createEntity": "Crear entidad",
           "subtitle": "En la plataforma puedes asociar varias entidades a la cuenta, pero es necesario al menos una para comenzar a utilixar nuestros productos"
         }
       }
@@ -462,11 +464,16 @@
     "deleteConfirmModalTitle2": "¡Tenga cuidaddo!. Esta acción no se puede deshacer. Si elimina un archivo que este asociado a algún servicio o entidad, podría atentar con el correcto funcionamiento de estos elementos en la plataforma."
   },
   "renew": {
-    "title": "Facturas",
-    "text1": "Datos",
+    "title": "Tus suscripciones",
+    "text": "Puedes actualizar tus suscripciones en cualquier momento.",
     "deleteConfirmModalTitle": "Eliminar plan",
+    "btn": "Actualizar plan",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente todas las acciones realizadas sobre el servicio solicitado"
   },
+  "invoice": {
+    "title": "Facturas",
+    "text": "Puedes descargar tus facturas en cualquier momento."
+   },
   "colaborators": {
     "title": "Colaboradores",
     "titles": "Colaborador",
@@ -479,8 +486,8 @@
     "title": "Facturación",
     "title2": "Métodos de Pago",
     "subtitle": "Configura la forma de pago que usarás para tu facturación.",
-    "btn":"Añadir método de pago",
-    "btn2":"Cambiar método de pago"
+    "btn": "Añadir método de pago",
+    "btn2": "Cambiar método de pago"
   },
   "scan": {
     "title": "Validar pase",

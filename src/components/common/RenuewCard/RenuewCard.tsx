@@ -1,5 +1,5 @@
 import React from 'react';
-import { CardContent, Typography, Box, List, ListItem, ListItemIcon } from '@mui/material';
+import { CardContent, Typography, Box, List, ListItem, ListItemIcon, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
 import { useTranslations } from 'next-intl';
@@ -10,30 +10,24 @@ import { format_date } from '@/lib/common/Date';
 import ConfirmModal from '../modals/ConfirmModal';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
-import { PrimaryButton } from '../buttons/GenericButton';
+import { SassButton } from '../buttons/GenericButton';
 import { useRouter } from 'nextjs-toploader/app';
 import { MAIN_ROUTE } from '@/config/routes';
 
-const PlanCard = styled(Box)<{ featured?: string }>(({ theme, featured }) => ({
-    maxWidth: 300,
-    minWidth: 250,
-    textTransform: 'capitalize',
+const PlanCard = styled(Box)<{ featured?: boolean }>(({ theme, featured }) => ({
+    maxWidth: 305,
+    minWidth: 305,
+    minHeight: 400,
     margin: theme.spacing(2),
-    border: featured === "true" ? `1px solid ${theme.palette.primary.contrastText}` : 'none',
-    transform: featured === "true" ? 'scale(1.05)' : 'scale(1)',
+    border: `1px solid ${theme.palette.primary.main}`,
+    transform: featured ? 'scale(1.05)' : 'scale(1)',
     transition: 'transform 0.3s ease',
-    color: featured === "true" ? `${theme.palette.primary.contrastText}` : `${theme.palette.text.primary}`,
-    borderRadius: 6,
-    backgroundColor: featured === "true" ? theme.palette.primary.light : theme.palette.background.default,
-    paddingTop: 20,
-}));
+    color: featured ? `${theme.palette.primary.contrastText}` : `${theme.palette.text.primary}`,
+    borderRadius: 8,
+    background: featured ? 'linear-gradient(23.64deg, #001551 31.23%, #002FB7 99.28%)' : theme.palette.background.paper,
+    padding: 20,
+    boxShadow: featured ? '0px 6px 12px rgba(0, 65, 158, 0.25)' : 'none'
 
-
-const DangerButton = styled(GenericButton)(({ theme }) => ({
-    marginBottom: 0,
-    width: '100%',
-    color: theme.palette.text.primary,
-    backgroundColor: theme.palette.error.light,
 }));
 
 
@@ -43,79 +37,74 @@ export type PricingCardProps = {
 
 export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
     const t = useTranslations();
-    const { ubSubcribeAction, loadingGetPlan } = usePricingCardController(plan);
+    const { unSubcribeAction, loadingGetPlan } = usePricingCardController(plan);
     const { openModal } = useCommonModal()
     const { push } = useRouter()
 
     return (
-        <PlanCard featured={String(false)}>
-
-            <CardContent sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
-                <span>
-                    <Typography
-                        variant="h6"
-                        gutterBottom
-                        sx={{ display: "flex", justifyContent: "center" }}
-                    >
-                        {plan.serviceId}
+        <PlanCard featured={true}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2 }}>
+                <Typography textTransform={'capitalize'} variant="h4">
+                    {plan.serviceId}
+                </Typography>
+            </Box>
+            <Box>
+                <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'} pb={2}>
+                    <Typography variant="h6">
+                        {t(`salesPlan.${plan.plan}`) || plan.plan}
                     </Typography>
+                    <Typography variant="body1">
+                        Ideal para microempresas o equipos pequeños.
+                    </Typography>
+                </Box>
 
-                    {plan.plan && <Typography
-                        variant="h5"
-                        color="primary"
-                        sx={{ textAlign: "center", marginTop: "20px" }}
-                    >
-                        {plan.plan}
+                <Divider sx={{ background: "#FFF" }} />
 
-                    </Typography>}
+                <Box py={2}>
 
-                    <List sx={{ marginTop: "10px" }}>
-                        <ListItem disableGutters>
-                            <ListItemIcon sx={{ minWidth: 30 }}>
-                                <CheckCircleOutline color="primary" fontSize="small" />
-                            </ListItemIcon>
-                            <Typography variant="body2">Estado: {plan.status}</Typography>
-                        </ListItem>
-                        <ListItem disableGutters>
-                            <ListItemIcon sx={{ minWidth: 30 }}>
-                                <CheckCircleOutline color="primary" fontSize="small" />
-                            </ListItemIcon>
-                            <Typography variant="body2">{format_date(plan.startDate)}</Typography>
-                        </ListItem>
-                    </List>
-                </span>
-                <PrimaryButton
-                    sx={{
-                        marginBottom: 2
-                    }}
+                    <Typography variant="h4" >
+                        €15/Mes
+                    </Typography>
+                    <Typography variant="body2" component="span">
+                        108€ año.
+                    </Typography>
+                </Box>
+
+                <Divider sx={{ background: "#FFF" }} />
+
+                <SassButton
+                    sx={{ mb: 1, mt: 2 }}
                     fullWidth
                     variant="contained"
-                    onClick={() => {
-                        push(`/${MAIN_ROUTE}/${plan.serviceId}/onboarding`)
-                    }}
-                    disabled={loadingGetPlan}
-                    loading={loadingGetPlan}
+                    onClick={() => push(`/${MAIN_ROUTE}/${plan.serviceId}/onboarding`)}
+                    disabled={false}
+
                 >
-                    {t("salesPlan.upgrade")}
-                </PrimaryButton>
-                <DangerButton
+                    {t("renew.btn")}
+                </SassButton>
+
+                <SassButton
+                    sx={{ mb: 1 }}
                     fullWidth
                     variant="contained"
+                    color='error'
                     onClick={() => {
                         openModal(CommonModalType.DELETE)
-                    }}
-                    disabled={loadingGetPlan}
-                    loading={loadingGetPlan}
+                    }} disabled={false}
+
                 >
                     {t("salesPlan.del")}
-                </DangerButton>
-            </CardContent>
+                </SassButton>
+
+
+
+            </Box>
 
             <ConfirmModal
                 isLoading={loadingGetPlan}
                 title={t('renew.deleteConfirmModalTitle')}
                 description={t('renew.deleteConfirmModalTitle2')}
-                onOKAction={() => ubSubcribeAction()}
+                onOKAction={() => unSubcribeAction()}
             />
         </PlanCard>
     );
