@@ -1,6 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
-import React, { createContext, useState, useRef, useCallback } from 'react';
+import React, { createContext, useState, useRef } from 'react';
 import { Snackbar, Alert, AlertColor } from '@mui/material';
 
 type ToastMessage = {

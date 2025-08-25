@@ -21,9 +21,9 @@ import {
   Brightness4 as DarkModeIcon,
   Brightness7 as LightModeIcon,
   MenuOutlined,
-  Bedtime,
+
   BrightnessHigh,
-  MenuOpen, Menu as MenuIcon,
+  Menu as MenuIcon,
   QuestionMarkOutlined,
   BedtimeOutlined,
 } from '@mui/icons-material';
@@ -188,7 +188,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
         pl: { sm: `${layoutState.openDraw ? drawerWidth : 0}px` }, // For persistent drawe
         zIndex: (theme) => theme.zIndex.drawer - 1,
         bgcolor: (theme) => theme.palette.background.default,
-        pt:2,pb:2
+        pt: 2, pb: 2
 
       }}>
         <Toolbar>
@@ -253,7 +253,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
                 aria-haspopup="true"
                 onClick={handleProfileMenuOpen}
                 color="inherit"
-                 
+
               >
                 <Avatar
                   sx={{ width: 32, height: 32 }}

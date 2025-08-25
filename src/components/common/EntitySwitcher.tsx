@@ -4,7 +4,7 @@ import React, { } from 'react';
 import { useTranslations } from 'next-intl';
 import {
   FormControl,
-  InputLabel,
+ 
   Select,
   MenuItem,
   SelectChangeEvent,

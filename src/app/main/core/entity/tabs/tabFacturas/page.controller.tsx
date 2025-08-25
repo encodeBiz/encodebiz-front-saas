@@ -7,14 +7,10 @@ import { useTranslations } from 'next-intl';
 import { fetchInvoicesByEntity } from '@/services/common/subscription.service';
 import { buildSearch, Column } from '@/components/common/table/GenericTable';
 import { useToast } from '@/hooks/useToast';
-import { Box } from '@mui/material';
-import { useStyles } from './page.styles';
-import { PictureAsPdf } from '@mui/icons-material';
 import { StripeInvoice } from '@/domain/auth/ISubscription';
 
 export const useFacturaController = () => {
     const t = useTranslations();
-    const classes = useStyles()
     const { currentEntity } = useEntity()
     const { showToast } = useToast()
     const [rowsPerPage, setRowsPerPage] = useState<number>(5); // Límite inicial

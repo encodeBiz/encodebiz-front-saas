@@ -1,12 +1,9 @@
 import React from 'react';
-import { CardContent, Typography, Box, List, ListItem, ListItemIcon, Divider } from '@mui/material';
+import { Typography, Box, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
 import { useTranslations } from 'next-intl';
-import { GenericButton } from '../buttons/BaseButton';
 import usePricingCardController from './RenuewCard.controller';
 import { IEntitySuscription } from '@/domain/auth/ISubscription';
-import { format_date } from '@/lib/common/Date';
 import ConfirmModal from '../modals/ConfirmModal';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';

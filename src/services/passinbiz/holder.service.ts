@@ -4,8 +4,7 @@ import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
-import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
-
+ 
 
 /**
    * Search trainer

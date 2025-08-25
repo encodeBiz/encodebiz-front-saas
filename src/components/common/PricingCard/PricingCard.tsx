@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { CardContent, Typography, Box, List, ListItem, ListItemIcon, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
-import { useTranslations } from 'next-intl';
+ import { useTranslations } from 'next-intl';
 import { IPlan } from '@/domain/core/IPlan';
-import { BaseButton, GenericButton } from '../buttons/BaseButton';
 import usePricingCardController from './PricingCard.controller';
 import { BizType } from '@/domain/core/IService';
 import { useEntity } from '@/hooks/useEntity';
