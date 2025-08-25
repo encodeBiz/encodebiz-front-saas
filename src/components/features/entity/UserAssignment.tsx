@@ -22,7 +22,8 @@ import {
     ListItemText,
     IconButton,
     Divider,
-    CircularProgress
+    CircularProgress,
+    Card
 } from '@mui/material';
 import { PersonAdd, PersonRemove } from '@mui/icons-material';
 import IUser, { ICollaborator } from '@/domain/auth/IUser';
@@ -33,6 +34,8 @@ import { CommonModalType } from '@/contexts/commonModalContext';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
+import { SassButton } from '@/components/common/buttons/GenericButton';
+import { BorderBox } from '@/components/common/tabs/BorderBox';
 
 const roleOptions = [
     { value: 'admin', label: 'Adminstrador' },
@@ -120,73 +123,53 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser, procc
     };
 
     return (
-        <Box sx={{ mt: 3 }}>
-            <Typography variant="h6" gutterBottom>
-                {t('colaborators.title')}
-                {proccesing && <CircularProgress
-                    variant={'indeterminate'}
-                />}
-            </Typography>
+        <Box>
+            <Paper elevation={0}>
+                <Box display="flex" justifyContent="flex-end" alignItems="center" mb={2}>
 
-            <Paper elevation={1} sx={{ p: 2, mb: 2 }}>
-                <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                    <Typography variant="subtitle1">
-                        {project.collaborators.length} {project.collaborators.length === 1 ? t('colaborators.titles') : t('colaborators.title')}
-                    </Typography>
-                    <Button
+                    <SassButton
                         variant="contained"
                         startIcon={<PersonAdd />}
                         onClick={handleOpen}
+                        size='small'
+                        sx={{ height: 40 }}
                     >
                         {t('colaborators.add')}
-                    </Button>
+                    </SassButton>
                 </Box>
-
-                <List>
-                    {project.collaborators.map((collaborator) => (
-                        <React.Fragment key={collaborator.user.id}>
-                            <ListItem
-                                secondaryAction={
-                                    currentEntity?.role === 'owner' && collaborator.user.id !== user?.id && (
-                                        <IconButton
-                                            edge="end"
-                                            aria-label="remove"
-                                            onClick={() => openModal(CommonModalType.DELETE, { data: collaborator.user.uid })}
-                                            disabled={collaborator.user.uid === currentUser.id}
-                                        >
-                                            <PersonRemove />
-                                        </IconButton>
-                                    )
-                                }
-                            >
-                                <ListItemAvatar>
-                                    <Avatar src={collaborator.user.photoURL as string} alt={collaborator.user.fullName} />
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary={collaborator.user.fullName}
-                                    secondary={
-                                        <>
-                                            {collaborator.user.id !== project.owner.user.id && <Chip
-                                                label={t('core.label.'+collaborator.role)}
-                                                size="small"
-                                                color={
-                                                    collaborator.role === 'admin' ? 'secondary' :
-                                                        collaborator.role === 'owner' ? 'primary' :
-                                                            'default'
-                                                }
-                                                sx={{ mr: 1 }}
-                                            />}
-                                            {collaborator.user.id === project.owner.user.id && (
-                                                <Chip label={t('core.label.owner')} size="small" color="primary" />
-                                            )}
-                                        </>
+                <BorderBox sx={{ p: 2 }}>
+                    <List>
+                        {project.collaborators.map((collaborator) => (
+                            <Card elevation={1} key={collaborator.user.id}>
+                                <ListItem
+                                    secondaryAction={
+                                        currentEntity?.role === 'owner' && collaborator.user.id !== user?.id && (
+                                            <IconButton
+                                                edge="end"
+                                                aria-label="remove"
+                                                onClick={() => openModal(CommonModalType.DELETE, { data: collaborator.user.uid })}
+                                                disabled={collaborator.user.uid === currentUser.id}
+                                            >
+                                                <PersonRemove />
+                                            </IconButton>
+                                        )
                                     }
-                                />
-                            </ListItem>
-                            <Divider variant="inset" component="li" />
-                        </React.Fragment>
-                    ))}
-                </List>
+                                >
+                                    <ListItemAvatar>
+                                        <Avatar src={collaborator.user.photoURL as string} alt={collaborator.user.fullName} />
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary={collaborator.user.fullName}
+                                        secondary={
+                                            t('core.label.' + collaborator.role)
+                                        }
+                                    />
+                                </ListItem>
+                                <Divider variant="inset" component="li" />
+                            </Card>
+                        ))}
+                    </List>
+                </BorderBox>
             </Paper>
 
             <Dialog open={openModalAdd} onClose={handleClose} fullWidth maxWidth="sm">

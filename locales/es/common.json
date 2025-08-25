@@ -476,6 +476,7 @@
    },
   "colaborators": {
     "title": "Colaboradores",
+    "text":"Puedes añadir o eliminar tus colaboradores en cualquier momento.",
     "titles": "Colaborador",
     "add": "Adicionar colaborador",
     "search": "Buscar usuario",
