@@ -182,6 +182,7 @@
       "failed": "Fallo",
       "root": "Administrador",
       "role": "Role",
+      "cropImage": "Recortar Imagen",
       "typeStaff": "Tipo de pase",
       "validator_event": "Verificador de eventos",
       "validator_credential": "Verificador de credenciales"
