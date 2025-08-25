@@ -49,7 +49,7 @@ const HelpTabs = ({ tabs }: HelpTabsProps) => {
           <Typography variant="h4" sx={{ fontWeight: 400, fontSize: 22 }}>
             {props.maintext}
           </Typography>
-          {props.subtext && <Typography variant="caption" color="text.secondary">
+          {props.subtext && <Typography variant="body1" color="text.secondary">
             {props.subtext}
           </Typography>}
         </Box>
@@ -59,12 +59,15 @@ const HelpTabs = ({ tabs }: HelpTabsProps) => {
         padding: theme.spacing(1.5, 2),
         justifyContent: 'flex-start',
         '&.Mui-selected': {
-          backgroundColor: theme.palette.action.selected,
-        }
+          backgroundColor: theme.palette.background.paper,
+        },
+         borderBottom: `1px solid ${theme.palette.divider}`,
       }}
     />
   );
 
+
+ 
 
   return (
 
@@ -92,7 +95,8 @@ const HelpTabs = ({ tabs }: HelpTabsProps) => {
       </Tabs>
 
       {/* Tab content */}
-      <Box sx={{ p: 3, border: `1px solid ${theme.palette.divider}`, borderTop: 0, width: '100%' }}>
+      <Box sx={{ border: `1px solid ${theme.palette.divider}`, borderTop: 0, width: '100%' }}>
+ 
         {tabs.map((e, i) => <span key={i}>
           {value === i && (<>
             {e.tabContent}

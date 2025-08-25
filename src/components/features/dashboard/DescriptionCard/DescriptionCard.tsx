@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import { useStyles } from './DescriptionCard.styles';
 import { useAuth } from '@/hooks/useAuth';
-import { PrimaryButton, SassButton } from '@/components/common/buttons/GenericButton';
+import { SassButton } from '@/components/common/buttons/GenericButton';
 import { useTranslations } from 'next-intl';
 export interface DescriptionCardProps {
   title?: string

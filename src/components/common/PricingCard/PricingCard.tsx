@@ -28,7 +28,7 @@ const PlanCard = styled(Box)<{ featured?: boolean }>(({ theme, featured }) => ({
     borderRadius: 8,
     background: featured ? 'linear-gradient(23.64deg, #001551 31.23%, #002FB7 99.28%)' : theme.palette.background.paper,
     padding: 20,
-    boxShadow: '0px 6px 12px rgba(0, 65, 158, 0.25)'
+    boxShadow: featured ?'0px 6px 12px rgba(0, 65, 158, 0.25)':'none'
 
 }));
 
@@ -36,12 +36,7 @@ const PlanCard = styled(Box)<{ featured?: boolean }>(({ theme, featured }) => ({
 
 
 
-const DangerButton = styled(GenericButton)(({ theme }) => ({
-    marginBottom: 0,
-    width: '100%',
-    color: theme.palette.text.primary,
-    backgroundColor: theme.palette.error.light,
-}));
+ 
 
 
 export type PricingCardProps = IPlan & {
@@ -49,7 +44,7 @@ export type PricingCardProps = IPlan & {
 
 };
 
-export const PricingCard: React.FC<PricingCardProps> = ({ id, name, priceMonth, priceYear, period, features, featured = false, fromService }) => {
+export const PricingCard: React.FC<PricingCardProps> = ({ id, name, priceMonth, priceYear,  features, featured = false, fromService }) => {
     const t = useTranslations();
     const { ubSubcribeAction, handleSubscripe } = usePricingCardController(id as string, name as string, fromService);
     const { push } = useRouter()
@@ -69,7 +64,6 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, priceMonth, 
 
     return (<>
         <PlanCard featured={featured}>
-
             <CardContent sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
                 <Box>
                     <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'} pb={2}>
@@ -106,7 +100,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, priceMonth, 
 
 
                     <List sx={{ marginTop: "10px" }}>
-                        {(features as Array<string>).map((feature, i) => (
+                        {(features as Array<string>)?.map((feature, i) => (
                             <ListItem key={i} disableGutters>
                                 <ListItemIcon sx={{ minWidth: 30 }}>
                                     <CheckOutlined fontSize="small" sx={{ color: (theme) => featured ? "#FFF" : theme.palette.primary.main }}  />
@@ -118,17 +112,18 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, priceMonth, 
                 </Box>
 
 
-                {entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length > 0 && <DangerButton
+                {entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length > 0 && <SassButton
                     fullWidth
                     sx={{ mt: 1 }}
                     variant="contained"
+                    color='error'
                     onClick={() => {
                         if (entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length > 0) {
                             ubSubcribeAction()
                         }
                     }}>
                     {t("salesPlan.del")}
-                </DangerButton>}
+                </SassButton>}
             </CardContent>
         </PlanCard>
         {open.type === CommonModalType.BILLING && <SheetModalModal

@@ -1,19 +1,8 @@
 import React, { useState } from 'react';
-import { Box, Tabs as MuiTabs, Tab, Typography } from '@mui/material';
+import { Box, Tabs, Tab, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { GenericTabsProps, TabsOrientation } from './BaseTabs';
 
-const StyledTabs = styled(MuiTabs)(({ theme }) => ({
-    '& .MuiTab-root': {
-        textTransform: 'none',
-        fontWeight: 600,
-        fontSize: '1rem',
-        minHeight: 48,
-        [theme.breakpoints.up('sm')]: {
-            minWidth: 160,
-        },
-    },
-}));
 
 interface StyledTabPanelProps {
     index: number;
@@ -41,9 +30,7 @@ const GenericTabs: React.FC<GenericTabsProps> = ({
     tabs,
     orientation = 'horizontal',
     alignment = 'left',
-    color = 'primary',
-    fullWidth = false,
-    scrollable = false,
+    color = 'primary',  
     defaultTab = 0,
     onChange,
     sx = [],
@@ -58,11 +45,11 @@ const GenericTabs: React.FC<GenericTabsProps> = ({
     return (
         <Box sx={sx}>
             <OrientationContainer orientation={orientation}>
-                <StyledTabs
+                <Tabs
                     value={currentTab}
                     onChange={handleChange}
                     orientation={orientation}
-                    variant={scrollable ? 'scrollable' : fullWidth ? 'fullWidth' : 'standard'}
+                    variant={'scrollable'}
                     scrollButtons="auto"
                     sx={{
                         '& .MuiTab-root': {
@@ -85,19 +72,19 @@ const GenericTabs: React.FC<GenericTabsProps> = ({
                     {tabs.map((tab, index) => (
                         <Tab
                             key={`tab-${index}`}
-                            label={<Typography variant='body1' fontWeight={600}>{tab.label}</Typography>}
+                            label={tab.label}
                             icon={React.isValidElement(tab.icon) || typeof tab.icon === 'string' ? tab.icon : undefined}
                             iconPosition="start"
-
                             disabled={tab.disabled}
-                            sx={{...tab.sx,pt:4}}
+                            wrapped={false}
+                            sx={{ ...tab.sx, pt: 4, minWidth: 200, borderBottomWidth:2, borderBottomStyle:'solid', borderBottomColor: 'secondary.main'}}
                         />
                     ))}
-                </StyledTabs>
+                </Tabs>
 
                 <Box flexGrow={1}>
                     {tabs.map((tab, index) => (
-                        <TabPanel key={`tabpanel-${index}`} value={currentTab} index={index} sx={{pl:8,pr:8}}>
+                        <TabPanel key={`tabpanel-${index}`} value={currentTab} index={index} sx={{ pl: 8, pr: 8 }}>
                             {tab.content}
                         </TabPanel>
                     ))}

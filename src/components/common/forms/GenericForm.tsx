@@ -15,6 +15,7 @@ import { BaseButton } from '../buttons/BaseButton';
 import { useTranslations } from 'next-intl';
 import { IUserMedia } from '@/domain/core/IUserMedia';
 import { useFormStatus } from '@/hooks/useFormStatus';
+import { BorderBox } from '../tabs/BorderBox';
 
 
 // A component that watches the form state
@@ -173,15 +174,15 @@ const GenericForm = <T extends Record<string, any>>({
                 if (!field.isGroup)
                   return <FieldItem key={i} field={field} i={i} disabled={disabled} column={column} formikProps={formikProps} />
                 else {
-                  return <Card key={i} sx={{ width: '100%', p: 4 }}>
-                    <Grid container spacing={3} sx={{pl:10,pr:10}}>
+                  return <BorderBox key={i} sx={{ width: '100%', p: 4 }}>
+                    <Grid container spacing={3}>
                       {
                         field.fieldList?.map((fieldInner, index) => {
                           return <FieldItem key={index + '-' + i} field={fieldInner} i={index} disabled={disabled} column={field.column ? field.column : column} formikProps={formikProps} />
                         })
                       }
                     </Grid>
-                  </Card>
+                  </BorderBox>
                 }
               })}
 

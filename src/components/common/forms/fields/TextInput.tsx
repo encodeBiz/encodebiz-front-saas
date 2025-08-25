@@ -1,7 +1,8 @@
 // TextInput.tsx
 import React from 'react';
-import { Box, TextField, TextFieldProps } from '@mui/material';
+import { Box, InputAdornment, TextField, TextFieldProps } from '@mui/material';
 import { FieldProps, useField } from 'formik';
+import { Error } from '@mui/icons-material';
 
 const TextInput: React.FC<FieldProps & TextFieldProps & { afterTextField: string }> = ({
   ...props
@@ -9,7 +10,7 @@ const TextInput: React.FC<FieldProps & TextFieldProps & { afterTextField: string
   const [field, meta] = useField(props.name);
   const { touched, error } = meta
   const helperText = touched && error;
-   
+
   return (<Box display={'flex'} justifyItems={'center'} alignItems={'center'} >
     <TextField
       {...field}
@@ -21,9 +22,14 @@ const TextInput: React.FC<FieldProps & TextFieldProps & { afterTextField: string
       disabled={props.disabled}
       helperText={helperText as string}
       
+      slotProps={{
+        input: helperText ? {
+          endAdornment: <InputAdornment position="end"><Error color='error' /></InputAdornment>,
+        } : {},
+      }}
 
     />
-    {props?.afterTextField && <Box sx={{ml:2, minWidth:'150px'}}>{props?.afterTextField }</Box>}
+    {props?.afterTextField && <Box sx={{ ml: 2, minWidth: '150px' }}>{props?.afterTextField}</Box>}
   </Box>
   );
 };

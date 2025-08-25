@@ -20,7 +20,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     const theme = useMemo(
         () =>
-            createTheme({
+            createTheme({ 
                 palette: {
                     mode,
                     ...(mode === 'light'

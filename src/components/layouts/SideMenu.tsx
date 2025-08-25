@@ -52,17 +52,20 @@ const CustomListItemButton = ({ children, item, subItem = false, handleSubMenuTo
         borderRadius: 10,
         color: 'white',
         '&:hover': {
-          backgroundColor: 'primary.dark',
+          backgroundColor: 'primary.main',
+          borderRadius: 10,
         },
       },
-       '&.Mui-disabled': {
-        opacity:1,
+
+      '&.Mui-disabled': {
+        opacity: 1,
         color: (theme) => theme.palette.text.disabled,
-         
+
       },
       // Styles for the hover state (when not selected)
       '&:hover': {
         backgroundColor: 'action.hover',
+         borderRadius: 10,
       },
       display: 'flex',
       justifyItems: 'flex-start',
@@ -132,8 +135,8 @@ export default function SideMenu() {
         open={layoutState.openDraw}
       >
         <DrawerHeader sx={{ pt: 2, pb: 2, width: '100%' }} >
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%'}}>
-            <Image              
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
+            <Image
               width={220}
               height={73}
               src={logo}
@@ -162,7 +165,7 @@ export default function SideMenu() {
         <List>
           {/* Dashboard */}
           {menuItemsHome.map((item: any, i: number) => {
-            if (item.divider) return <Divider key={i} />
+            if (item.divider) return null
             else
               return <ListItem key={i} disablePadding>
                 <CustomListItemButton item={item} />
@@ -171,7 +174,7 @@ export default function SideMenu() {
 
 
           {menuItemsServices.map((item: any, i: number) => {
-            if (item.divider) return <Divider key={i} />
+            if (item.divider) return null
             else
               if ((item.subMenu.length == 0 || !entityServiceList.find(e => e.id === item.id)?.isBillingActive || item.header))
                 return <ListItem key={i} disablePadding>
@@ -198,7 +201,7 @@ export default function SideMenu() {
           })}
           {currentEntity?.role === 'owner' && <>
             {menuItemsGeneral.map((item: any, i: number) => {
-              if (item.divider) return <Divider key={i} />
+              if (item.divider) return null
               else
                 return <ListItem key={i} disablePadding>
                   <CustomListItemButton item={item} />

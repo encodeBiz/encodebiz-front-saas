@@ -19,29 +19,30 @@ export default function usePricingCardController(id: string, name: string, fromS
     const { openModal } = useCommonModal()
 
     const subcribeAction = async () => {
-        try {
-            setLoadingGetPlan(true);
-            const data: ISubscription = {
-                entityId: currentEntity?.entity?.id ? currentEntity.entity.id : "",
-                serviceId: fromService,
-                planId: id
-            }
-            changeLoaderState({ show: true, args: { text: t('core.title.loaderActionBilling') } })
+        if (entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length === 0)
+            try {
+                setLoadingGetPlan(true);
+                const data: ISubscription = {
+                    entityId: currentEntity?.entity?.id ? currentEntity.entity.id : "",
+                    serviceId: fromService,
+                    planId: id
+                }
+                changeLoaderState({ show: true, args: { text: t('core.title.loaderActionBilling') } })
 
-            await subscribeInSassProduct(data, token)
-        
-            showToast(`La suscripción al plan ${id} del servicio ${fromService} se ha completado con exito'`, 'success');
-            setLoadingGetPlan(false);
-            changeLoaderState({ show: false })
-        } catch (error: unknown) {
-            setLoadingGetPlan(false);
-            if (error instanceof Error) {
-                showToast(error.message, 'error');
-            } else {
-                showToast(String(error), 'error');
+                await subscribeInSassProduct(data, token)
+
+                showToast(`La suscripción al plan ${id} del servicio ${fromService} se ha completado con exito'`, 'success');
+                setLoadingGetPlan(false);
+                changeLoaderState({ show: false })
+            } catch (error: unknown) {
+                setLoadingGetPlan(false);
+                if (error instanceof Error) {
+                    showToast(error.message, 'error');
+                } else {
+                    showToast(String(error), 'error');
+                }
+                changeLoaderState({ show: false })
             }
-            changeLoaderState({ show: false })
-        }
     }
 
     const ubSubcribeAction = async () => {
@@ -54,7 +55,7 @@ export default function usePricingCardController(id: string, name: string, fromS
             changeLoaderState({ show: true, args: { text: t('core.title.loaderActionBilling') } })
 
             await unSubscribeInSassProduct(data, token)
-           
+
             showToast(`La suscripción al servicio ${fromService} se ha eliminado con exito`, 'success');
             setLoadingGetPlan(false);
             changeLoaderState({ show: false })

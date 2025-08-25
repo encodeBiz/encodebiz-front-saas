@@ -49,13 +49,14 @@ const LocaleSwitcher: React.FC = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 flexDirection: 'row',
+                
                 gap:1
               }}>
                 <Language />
-                {locale === 'en' && <Typography>{t('layout.header.english')}</Typography>}
-                {locale === 'es' && <Typography>{t('layout.header.spanish')}</Typography>}
-                {locale === 'fr' && <Typography>{t('layout.header.french')}</Typography>}
-                {locale === 'de' && <Typography>{t('layout.header.germany')}</Typography>}
+                {locale === 'en' && <Typography textTransform={'uppercase'}>{t('layout.header.english')}</Typography>}
+                {locale === 'es' && <Typography textTransform={'uppercase'}>{t('layout.header.spanish')}</Typography>}
+                {locale === 'fr' && <Typography textTransform={'uppercase'}>{t('layout.header.french')}</Typography>}
+                {locale === 'de' && <Typography textTransform={'uppercase'}>{t('layout.header.germany')}</Typography>}
          
               </Box>
             </MenuItem>

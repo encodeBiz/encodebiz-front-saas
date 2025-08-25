@@ -2,7 +2,7 @@
 import HelpTabs from "@/components/features/dashboard/HelpTabs/HelpTabs";
 import image from '@/../public/assets/images/qr_code.svg'
 import { Container } from '@mui/material';
-import { Settings } from "@mui/icons-material";
+import { SettingsOutlined } from "@mui/icons-material";
 import useDashboardController from "./page.controller";
 import { useRef } from "react";
 import SalesPlan from "@/components/features/profile/SalesPlan/SalesPlan";
@@ -21,14 +21,13 @@ export default function Dashboard() {
 
 
   const scrollToPlan = () => {
-    if (sectionMoreInfofRef.current) {
-      (sectionMoreInfofRef.current as any).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (sectionServicesRef.current) {
+      (sectionServicesRef.current as any).scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
   return (
     <Container maxWidth="xl">
-
 
       <OnboardingCard
         title={serviceData?.name}
@@ -48,13 +47,13 @@ export default function Dashboard() {
         {
           id: '1',
           title: "¿Como empiezo?",
-           icon: <Settings fontSize="small" />,
+           icon: <SettingsOutlined fontSize="small" />,
           tabContent: <TabContent title={dataTab1.title} subtitle={dataTab1.subtitle} data={dataTab1.data} />
         },
         {
           id: '2',
           title: "¿Que resolvemos?",
-           icon: <Settings fontSize="small" />,
+           icon: <SettingsOutlined fontSize="small" />,
           tabContent: <TabContent title={dataTab2.title}   data={dataTab2.data} />
         },
          

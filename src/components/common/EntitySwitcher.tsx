@@ -41,10 +41,14 @@ const EntitySwitcher: React.FC = () => {
   };
 
   return (
-    <Box sx={{ minWidth: 120}}>
+    <Box sx={{ minWidth: 120 }}>
       {currentEntity && <FormControl fullWidth >
         <Select
-          sx={{ boxShadow: 'none', '.MuiOutlinedInput-notchedOutline': { border: 0 } }}
+          sx={{
+            boxShadow: 'none',
+            '.MuiOutlinedInput-notchedOutline': { border: 0 },
+
+          }}
           value={currentEntity?.entity.id}
           onChange={handleChange} style={{ textAlign: 'left' }}
           size='small'
@@ -57,7 +61,7 @@ const EntitySwitcher: React.FC = () => {
           ))}
 
           <MenuItem style={{ textAlign: 'left', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: 4 }} onClick={() => push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)} value={undefined}>
-            <Add /><Typography>Crear entidad</Typography>
+            <Add /><Typography textTransform={'uppercase'}>{t('features.entity.create.card.createEntity')}</Typography>
           </MenuItem>
         </Select>
       </FormControl>}

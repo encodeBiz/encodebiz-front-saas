@@ -2,18 +2,14 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { FieldProps, useField, useFormikContext } from 'formik';
 import {
   Box,
-  Button,
-  IconButton,
   TextFieldProps,
   FormHelperText,
-  InputLabel,
   FormControl,
   Paper,
   Typography,
-  Card,
   CardContent,
 } from '@mui/material';
-import { CloudUpload, CloudUploadOutlined, Delete, DeleteOutline, Upload } from '@mui/icons-material';
+import { CloudUploadOutlined, DeleteOutline, Upload } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
 import MediaModalSelectedFiles from '../../modals/MediaModalSelectedFiles/MediaModalSelectedFiles';
 import { useCommonModal } from '@/hooks/useCommonModal';
@@ -22,6 +18,7 @@ import { IUserMedia, IUserMediaType } from '@/domain/core/IUserMedia';
 import ImagePreview from '../../ImagePreview';
 import { fileTypes } from '@/config/constants';
 import { SassButton } from '../../buttons/GenericButton';
+import { BorderBox } from '../../tabs/BorderBox';
 
 interface ImageFieldProps {
   accept: string
@@ -69,7 +66,7 @@ const ImageUploadInput = ({ name, ...props }: any & FieldProps & TextFieldProps 
 
       <Box sx={{ paddingTop: 5 }}>
         {preview ? (<Box display={'flex'} flexDirection={'column'} alignItems={'center'} gap={1}>
-          <Card elevation={1} >
+          <BorderBox>
             <CardContent>
               <Box display={'flex'} flexDirection={'column'} alignItems={'center'} gap={1}>
                 <Typography textTransform={'uppercase'}>{t('core.label.' + typeUpload)}</Typography>
@@ -86,7 +83,7 @@ const ImageUploadInput = ({ name, ...props }: any & FieldProps & TextFieldProps 
               </Box>
               <Typography variant='caption'>{t('core.label.medida')}: {fileTypes(t).find(e => e.value === typeUpload)?.size.w} x {fileTypes(t).find(e => e.value === typeUpload)?.size.h} px. PNG.</Typography>
               </CardContent>
-          </Card>
+          </BorderBox>
           <Box display={'flex'} gap={1} sx={{ pt: 1 }}>
             <SassButton sx={{ height: 35, textTransform: 'capitalize' }} onClick={() => openModal(CommonModalType.FILES, { name })} size='small' variant='contained' color='primary' startIcon={<Upload />}>
               {t('core.button.replaceImage')}

@@ -287,6 +287,7 @@
       "create": {
         "card": {
           "title": "Crear entidad legal",
+           "createEntity": "Crear entidad",
           "subtitle": "En la plataforma puedes asociar varias entidades a la cuenta, pero es necesario al menos una para comenzar a utilixar nuestros productos"
         }
       }

@@ -44,7 +44,7 @@ const EntityPreferencesPage = () => {
             label: <Badge color="warning" variant="dot" badgeContent={currentEntity?.entity.branding?.textColor ? 0 : 1}>{t("entity.tabs.tab2.title")}</Badge>,
             content: <BrandPreferencesPage formRef={formRef} />,
         }, {
-            label: <Badge color="warning" variant="dot" badgeContent={currentEntity?.entity.billingConfig.payment_method.length === 0 ? 1 : 0}>{t("entity.tabs.tab3.title")}</Badge>,
+            label: <Badge color="warning" variant="dot" badgeContent={!currentEntity?.entity.billingConfig?.payment_method || currentEntity?.entity.billingConfig?.payment_method?.length === 0 ? 1 : 0}>{t("entity.tabs.tab3.title")}</Badge>,
             content: <BillingPreferencesPage />,
         },
         {
@@ -86,7 +86,7 @@ const EntityPreferencesPage = () => {
             </PresentationCard>
 
             <Box display={'flex'} justifyContent={'flex-start'} alignItems='flex-start' sx={{ width: '100%', mt: 6 }}>
-                <SassButton disabled={!user?.id || !currentEntity} onClick={() => openModal(CommonModalType.DELETE, { entityId: currentEntity?.entity.id })} variant='contained' color='warning' >{t('entity.tabs.tab2.btn')}</SassButton>
+                <SassButton disabled={!user?.id || !currentEntity} onClick={() => openModal(CommonModalType.DELETE, { entityId: currentEntity?.entity.id })} variant='contained' color='error' >{t('entity.tabs.tab2.btn')}</SassButton>
             </Box>
 
             {CommonModalType.DELETE == open.type && open.open && <ConfirmModal
