@@ -41,7 +41,11 @@ interface IEntity {
     };
   };
   billingConfig: {
-    payment_method: Array<string>
+    payment_method: Array<{
+      brand: "visa" | 'card' | 'mastercard' | 'amex' | 'discover' | 'diners' | 'jcb' | 'unionpay' | 'unknown',
+      id: string
+      last4: "4242"
+    }>
   }
   updatedAt: Date;
 }

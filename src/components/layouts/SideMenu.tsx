@@ -10,13 +10,9 @@ import {
   Collapse,
   Divider,
   Box,
-  Typography,
-  Avatar,
   IconButton
 } from '@mui/material';
 import {
-  ChevronLeft,
-  ChevronRight,
   ExpandLess,
   ExpandMore,
   Menu,

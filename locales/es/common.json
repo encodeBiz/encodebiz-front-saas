@@ -476,8 +476,11 @@
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará los permisos del usuario sobre la entidad"
   },
   "billing": {
-    "title": "Configurar Billing",
-    "subtitle": "Configura los métodos de pago para poder realizar las compras en la plataforma"
+    "title": "Facturación",
+    "title2": "Métodos de Pago",
+    "subtitle": "Configura la forma de pago que usarás para tu facturación.",
+    "btn":"Añadir método de pago",
+    "btn2":"Cambiar método de pago"
   },
   "scan": {
     "title": "Validar pase",
