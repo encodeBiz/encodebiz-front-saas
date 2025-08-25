@@ -8,6 +8,7 @@ interface ThemeType {
     changeColorMode: () => void;
 }
 
+ 
 export const ThemeContext = createContext<ThemeType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
@@ -33,10 +34,23 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
                 },
                 typography: {
                     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-                    
-                    
+
+
                 },
                 components: {
+                    MuiCard: {
+                        styleOverrides: {
+                            root: {
+                                borderRadius: 8,
+                                ...(mode === 'light') ? {
+                                    background: '#FFFBFF',
+                                    boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)'
+                                } : {
+                                     boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)'
+                                }
+                            }
+                        }
+                    },
                     MuiPaper: {
                         styleOverrides: {
                             root: {

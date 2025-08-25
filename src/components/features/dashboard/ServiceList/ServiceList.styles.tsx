@@ -6,14 +6,22 @@ export const useStyles = (): Record<string, SxProps<Theme>> => ({
   card: {
     width: '100%',
     height: '100%',
+    maxWidth: {
+      sx: '100%',
+      sm: '100%',
+      md: '100%',
+      lg: 483,
+      xl: 483,
+    },
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 2,
-    p: 2,
-    px:4,
-    textAlign: 'center'
+    p: 1,
+    px: 4,
+    textAlign: 'center',
+    cursor: 'pointer'
   },
   iconContainer: {
     width: 112,
@@ -27,6 +35,6 @@ export const useStyles = (): Record<string, SxProps<Theme>> => ({
   },
   icon: {
     color: '#FFF',
-    fontSize:40
+    fontSize: 40
   }
 })

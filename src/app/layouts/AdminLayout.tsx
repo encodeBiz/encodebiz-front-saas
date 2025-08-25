@@ -9,7 +9,7 @@ import { useLayout } from '@/hooks/useLayout';
 import { Box, CssBaseline, Grid } from '@mui/material';
 import { useTranslations } from 'next-intl';
 
-const drawerWidth = 240; // Define the width of your drawer
+const drawerWidth = 265;
 
 export default function AdminLayout({
   children,
@@ -35,7 +35,7 @@ export default function AdminLayout({
         }}
       >
         <Header drawerWidth={drawerWidth} />
-        <Grid container sx={{ display: 'flex', minHeight: 'calc(100vh - 100px)', justifyContent: 'flex-start', alignItems: 'flex-start', paddingTop: "100px", paddingBottom: "24px" }}>
+        <Grid container sx={{ display: 'flex', minHeight: 'calc(100vh - 100px)', justifyContent: 'flex-start', alignItems: 'flex-start', paddingTop: "100px", paddingBottom: "24px", px:4 }}>
           {pendAuth && <PageLoader backdrop message={t('core.title.loader')} type={'circular'} fullScreen />}
           {children}
           <Onboarding />

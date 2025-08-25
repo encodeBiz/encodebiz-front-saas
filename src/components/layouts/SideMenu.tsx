@@ -31,7 +31,7 @@ import { useRouter } from 'nextjs-toploader/app';
 import { useEntity } from '@/hooks/useEntity';
 import logo from '../../../public/assets/images/logo.png'
 import Image from 'next/image';
-const drawerWidth = 240;
+const drawerWidth = 265;
 
 
 
@@ -96,7 +96,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function SideMenu() {
   const theme = useTheme();
-  const t = useTranslations();
   const { currentEntity, entityServiceList } = useEntity();
 
 

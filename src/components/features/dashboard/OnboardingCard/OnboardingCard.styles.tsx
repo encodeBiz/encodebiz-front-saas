@@ -4,6 +4,7 @@ import { SxProps, Theme } from "@mui/material";
 export const useStyles = (show:boolean): Record<string, SxProps<Theme>> => ({
   base: {
     width: '100%',
+    minHeight:237,
     display: 'flex', flexDirection: 'column', justifyContent: 'space-around',
     background: 'linear-gradient(77.62deg, #001551 41.78%, #002FB7 98.81%)',
     boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.45)',
