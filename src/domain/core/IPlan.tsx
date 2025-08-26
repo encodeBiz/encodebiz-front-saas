@@ -5,9 +5,15 @@ export interface IPlan {
     priceYear?: string;
     period?: string;
     features?: string[];
-    featured?: boolean;
-    price?:string
+    price?: string
     order: number
+    highlighted: boolean
+    featuredList: boolean[]
+    description: string
+    payPerUse:boolean
+    monthlyPrice: string
+    pricePerUse:string
+    maxHolders: number
 }
 
 export interface IPlanData {
@@ -15,9 +21,12 @@ export interface IPlanData {
     allowCustomTemplate: boolean
     id: string
     maxHolders: number
-    monthlyPrice: number
+    monthlyPrice: string
     payPerUse: boolean
-    service: string,
+    service: string
     order: number
-
+    highlighted: boolean
+    featuredList: boolean[]
+    description: string
+    pricePerUse:string
 }
