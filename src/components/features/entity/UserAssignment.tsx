@@ -180,7 +180,7 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser, procc
                 </BorderBox>
             </Paper>
 
-            <Dialog open={openModalAdd} onClose={handleClose} fullWidth maxWidth="md" slotProps={{ paper: { sx: { p: 2, borderRadius: 4 } } }} >
+            <Dialog open={openModalAdd} onClose={handleClose} fullWidth maxWidth="md" slotProps={{ paper: { sx: { p: 2, borderRadius: 2 } } }} >
                 <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
                         <Typography variant='h5'>{t('colaborators.add')}</Typography>

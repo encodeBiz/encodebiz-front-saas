@@ -4,8 +4,7 @@ import {
   Paper,
   Typography,
   Grid,
-  Divider,
-  Button,
+  Divider, 
   Avatar,
   Chip,
   useTheme,
@@ -21,6 +20,7 @@ import {
 } from '@mui/material';
 import {
   CheckCircle as CheckCircleIcon,
+  CheckOutlined,
   CloudUpload
 } from '@mui/icons-material';
 import { useStyles } from './MediaModalSelectedFiles.styles';
@@ -36,6 +36,9 @@ import { IUserMedia, IUserMediaType } from '@/domain/core/IUserMedia';
 import { fileTypes } from '@/config/constants';
 import { formatFileSize, getFileIcon } from '@/lib/common/String';
 import { ImageCropper } from '../../ImageCropper/ImageCropper';
+import { SassButton } from '../../buttons/GenericButton';
+import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
+import { CustomTypography } from '../../Text/CustomTypography';
 
 export interface IMedia {
   preview: string
@@ -96,7 +99,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
       form.append('file', renameF);
       const mediaId = (await uploadMedia(form, token) as { mediaId: string })?.mediaId
 
- 
+
       setSelectedFile(mediaId)
       fetchUserMedia()
       setIsUploading(false);
@@ -123,25 +126,31 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
       fullWidth
-      maxWidth="md"
+      maxWidth="lg"
+      slotProps={{ paper: { sx: { p: 2, borderRadius: 2 } } }}
     >
-      <DialogTitle id="alert-dialog-title">
-        {t('core.title.mediaModaltitle')}
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
+          <CustomTypography>{t('core.title.mediaModaltitle')}</CustomTypography>
+        </Box>
+        <CustomIconBtn
+          onClick={() => handleClose()}
+          color={theme.palette.primary.main}
+        />
       </DialogTitle>
+
       <DialogContent>
         <Paper sx={classes.root} elevation={0}>
           <Box sx={classes.header}>
-
-
             <Box sx={{ ...classes.header, gap: 4 }} >
               {crop ? <ImageCropper size={type !== 'custom' ? fileTypes(t).find(e => e.value === type)?.size : { locked: false, w: 0, h: 0 }} isUploading={isUploading} onComplete={handleFile} /> :
-                <Button
+                <SassButton
                   component="label"
                   variant="outlined"
                   color="primary"
                   startIcon={<CloudUpload />}
                   disabled={!selectedType}
-                  style={{ width: 340, height: 55 }}
+                  sx={{ width: 340, height: 55 }}
                 >
 
                   {isUploading ? (
@@ -171,7 +180,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
                     //
                     disabled={!selectedType}
                   />
-                </Button>}
+                </SassButton>}
               {type === 'custom' && <FormControl required sx={{ width: '100%' }}>
                 <InputLabel id="demo-simple-select-required-label">{t('media.labelType')}</InputLabel>
                 <Select
@@ -198,7 +207,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
           <Box sx={classes.content}>
             {userMediaList.filter(e => (type === 'custom' ? true : (e.type === type))).length === 0 ? (
               <Typography variant="body2" color="textSecondary" align="center">
-               
+
                 {t('core.table.nofile')}
               </Typography>
             ) : (
@@ -262,18 +271,18 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
             <Typography variant="body2" color="textSecondary">
               {userMediaList.filter(e => (type === 'custom' ? true : (e.type === type))).length} media{userMediaList.filter(e => (type === 'custom' ? true : (e.type === type))).length > 1 ? 's' : ''} disponibles
             </Typography>
-            <Button
+            <SassButton
               variant="contained"
               color="primary"
               onClick={() => handleSelectedChange()}
-              disabled={selectedFile.length === 0}
+              startIcon={<CheckOutlined />}
             >
               {t('core.button.selected')}
-            </Button>
+            </SassButton>
           </Box>
         </Paper>
       </DialogContent>
-    </Dialog>
+    </Dialog >
   );
 };
 export default MediaModalSelectedFiles;

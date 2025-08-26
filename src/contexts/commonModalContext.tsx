@@ -9,7 +9,9 @@ export enum CommonModalType {
     FILES = 'FILES',
     SEND = 'SEND',
     BILLING = 'BILLING',
-    RECOVERY = 'RECOVERY'
+    RECOVERY = 'RECOVERY',
+    CONFIG_CSV = 'CONFIG_CSV',
+    UPLOAD_CSV = 'UPLOAD_CSV'
 }
 interface CommonModalContextType {
     open: { type: CommonModalType, open: boolean, args?: any }

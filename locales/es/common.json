@@ -88,7 +88,7 @@
       "expo": "Expositivo",
       "festival": "Festival",
       "rol": "rol",
-      "price":"Precio",
+      "price": "Precio",
       "active": "Activo",
       "thumbnail": "Imagen en miniatura",
       "subject": "Asunto",
@@ -100,7 +100,7 @@
       "credential": "Credencial",
       "admin": "Administrador",
       "select": "Seleccionar",
-      "typePass": "Tpo de pase",
+      "typePass": "Tipo de pase",
       "credencial": "Credenciales",
       "event": "Evento",
       "passStatus": "Estado del pase",
@@ -202,10 +202,12 @@
       "edit": "Editar",
       "selected": "Seleccionar",
       "confirm": "Confirmar",
+      "confirmSCV":"Importar SCV",
       "cancel": "Cancelar",
       "crop": "Recortar Imagen",
       "file": "Imagen original",
       "download": "Descargar",
+      "importCSV": "Importar CSV",
       "delete": "Eliminar",
       "save": "Guardar",
       "start": "Comenzar",
@@ -267,7 +269,7 @@
       "descFile": "Descargue el archivo de referencia",
       "desc": "Por favor seleccione un archivo CSV para previsualizar el contenido y seleccionarlo",
       "file": "Archivo",
-      "preview": "Preview (first 5 rows)",
+      "preview": "Previsualización (primeras 5 filas)",
       "signIn": "Inicia sesión"
     }
   },
@@ -418,7 +420,20 @@
     "filter": {
       "email": "Filtro por correo electrónico",
       "state": "Filtro por estado"
-    }
+    },
+    "selectType": "Seleccionar tipo de pase",
+    "importSCVTitle": "Importar CSV",
+    "importSCVText": "Debes seleccionar el tipo de pase digital al que vincularas los datos importados en el archivo.",
+    "desc1": "Asegúrate de que tu archivo siga esta estructura: ",
+    "desc2": "Incluya las 3 columnas obligatorias",
+    "desc3": "y que las columnas opcionales sigan el formato",
+    "desc4": "nombre del campo opcional",
+    "desc5": "Solo así podremos importar tus datos correctamente.",
+    "desc6": "Arrastra y suelta o sube un archivo CSV",
+    "desc7": "Tamaño máximo 10 MB.",
+    "desc8": "Usa esta plantilla como referencia",
+    "desc9": "Vista previa del CSV esperado",
+    "btn": "Descargar Plantilla"
   },
   "event": {
     "title": "Eventos",
@@ -473,15 +488,15 @@
   "invoice": {
     "title": "Facturas",
     "text": "Puedes descargar tus facturas en cualquier momento."
-   },
+  },
   "colaborators": {
     "title": "Colaboradores",
-    "text":"Puedes añadir o eliminar tus colaboradores en cualquier momento.",
+    "text": "Puedes añadir o eliminar tus colaboradores en cualquier momento.",
     "titles": "Colaborador",
     "add": "Añadir nuevo colaborador",
     "addText": "Introduce el correo electrónico del nuevo colaborador y asigna un rol",
     "search": "Buscar usuario",
-    "invite":"Invitar por correo electrónico",
+    "invite": "Invitar por correo electrónico",
     "deleteConfirmModalTitle": "Eliminar colaborador",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará los permisos del usuario sobre la entidad"
   },

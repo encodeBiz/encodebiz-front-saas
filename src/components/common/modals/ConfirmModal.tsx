@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-    Button,
     Dialog,
     DialogActions,
     DialogContent,
@@ -9,11 +8,18 @@ import {
     TextField,
     Box,
     Typography,
-    CircularProgress
+    CircularProgress,
+    useTheme
 } from '@mui/material';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useTranslations } from 'next-intl';
+import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
+import { SassButton } from '../buttons/GenericButton';
+import { TrashIcon } from '../icons/TrashIcon';
+import { CancelOutlined } from '@mui/icons-material';
+import { CustomTypography } from '../Text/CustomTypography';
+import { BorderBox } from '../tabs/BorderBox';
 
 interface ConfirmProps {
     word?: string
@@ -29,6 +35,7 @@ interface ConfirmProps {
 }
 const ConfirmModal = ({ word, title, label, textBtn, description, isLoading = false, cancelBtn = true, codeValidator = false, onOKAction }: ConfirmProps): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
+    const theme = useTheme()
     const [confirmationText, setConfirmationText] = useState('');
     const [error, setError] = useState('');
     const requiredText = word; // The word user must type to confirm
@@ -60,16 +67,24 @@ const ConfirmModal = ({ word, title, label, textBtn, description, isLoading = fa
             aria-describedby="alert-dialog-description"
             fullWidth
             maxWidth="sm"
+            slotProps={{ paper: { sx: { p: 2, borderRadius: 2 } } }}
         >
-            <DialogTitle id="alert-dialog-title">
-                {title}
+            <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
+                    <CustomTypography >{title}</CustomTypography>
+                </Box>
+
+                <CustomIconBtn
+                    onClick={() => handleClose(null, 'manual')}
+                    color={theme.palette.primary.main}
+                />
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description" sx={{ mb: 3 }}>
-                    {description}
+                    <Typography variant='body1'>{description}</Typography>
                 </DialogContentText>
 
-                {codeValidator && <Box>
+                {codeValidator && <BorderBox sx={{ p: 2 }}>
                     <Typography variant="body2" sx={{ mb: 1 }}>
                         {label} <strong>{requiredText}</strong>:
                     </Typography>
@@ -85,24 +100,30 @@ const ConfirmModal = ({ word, title, label, textBtn, description, isLoading = fa
                         error={!!error}
                         helperText={error}
                     />
-                </Box>}
+                </BorderBox>}
             </DialogContent>
             <DialogActions>
-                {cancelBtn && <Button
+                {cancelBtn && <SassButton
+                    color="primary"
+                    variant="outlined"
                     onClick={(e) => handleClose(e, 'manual')}
                     disabled={isLoading}
+                    size='small'
+                    startIcon={<CancelOutlined />}
+
                 >
                     {t('core.button.cancel')}
-                </Button>}
-                <Button
+                </SassButton>}
+                <SassButton
                     onClick={handleConfirm}
                     disabled={codeValidator && confirmationText !== requiredText}
                     color="error"
+                    size='small'
                     variant="contained"
-                    startIcon={isLoading ? <CircularProgress size={20} /> : null}
+                    startIcon={isLoading ? <CircularProgress size={20} /> : <TrashIcon />}
                 >
                     {textBtn ? textBtn : codeValidator ? t('core.button.submit') : t('core.button.delete')}
-                </Button>
+                </SassButton>
             </DialogActions>
         </Dialog>
     );

@@ -10,16 +10,19 @@ import { CommonModalType } from '@/contexts/commonModalContext';
 import CSVUploadModal from '@/components/common/modals/CSVUploadModal';
 import { Add, UploadFile } from '@mui/icons-material';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
+import CSVConfigModal from '@/components/common/modals/CSVConfigModal';
 
 export default function HolderList() {
   const t = useTranslations();
-  const { handleUploadConfirm,
+  const { handleUploadConfirm, handleConfigConfirm,
     items, rowAction,
-    onNext, onBack, setSort,sort, onRevoke, revoking, onSend,
-    currentPage,topFilter,
-    columns, modalOpen, setModalOpen, onSearch,
+    onNext, onBack, setSort, sort, onRevoke, revoking, onSend,
+    currentPage, topFilter,
+    columns,  onSearch,
     loading, rowsPerPage, setRowsPerPage } = useHolderListController();
-  const {  open } = useCommonModal()
+  const { open, closeModal, openModal } = useCommonModal()
+
+
 
   return (
     <Container maxWidth="lg">
@@ -32,7 +35,7 @@ export default function HolderList() {
 
         <BaseButton
           role='link'
-          onClick={() => setModalOpen(true)}
+          onClick={() => openModal(CommonModalType.UPLOAD_CSV)}
           variant='contained'
         ><UploadFile /> {t('holders.import')}</BaseButton>
       </Box>
@@ -54,16 +57,24 @@ export default function HolderList() {
         topFilter={topFilter}
         //onEdit={(data) => onEdit(data)}
         onSearch={(data) => onSearch(data)}
-         
+
 
       />
-      <CSVUploadModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
+
+      {open.type === CommonModalType.CONFIG_CSV && <CSVConfigModal
+        open={open.open}
+        onClose={() => closeModal(CommonModalType.CONFIG_CSV)}
+        onConfirm={handleConfigConfirm}
+      />}
+
+      {open.type === CommonModalType.UPLOAD_CSV && <CSVUploadModal
+        open={open.open}
+        onClose={() => closeModal(CommonModalType.UPLOAD_CSV)}
         onConfirm={handleUploadConfirm}
-      />
+      />}
 
-      {open.type===CommonModalType.DELETE && <ConfirmModal
+
+      {open.type === CommonModalType.DELETE && <ConfirmModal
         isLoading={revoking}
         title={t('holders.revokeConfirmModalTitle')}
         description={t('holders.revokeConfirmModalTitle2')}
@@ -71,7 +82,7 @@ export default function HolderList() {
         onOKAction={(args: { data: any }) => onRevoke(args.data)}
       />}
 
-      {open.type===CommonModalType.SEND && <ConfirmModal
+      {open.type === CommonModalType.SEND && <ConfirmModal
         isLoading={revoking}
         title={t('holders.sendConfirmModalTitle')}
         description={t('holders.sendConfirmModalTitle2')}

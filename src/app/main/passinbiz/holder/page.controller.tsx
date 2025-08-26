@@ -340,8 +340,16 @@ export default function useHolderListController() {
 
 
   const [isUploading, setIsUploading] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
 
+  const [type, setType] = useState<string>()
+  const [eventId, setEventId] = useState<string>()
+  const handleConfigConfirm = async ({ type, eventId = '' }: { type: 'event' | 'credential', eventId?: string }) => {
+    setType(type)
+    setEventId(eventId)
+    console.log(type);
+    
+    openModal(CommonModalType.UPLOAD_CSV)
+  }
   const handleUploadConfirm = async (file: File | null) => {
     try {
       setIsUploading(true)
@@ -351,6 +359,9 @@ export default function useHolderListController() {
       form.append('csv', file as File);
       form.append('entityId', currentEntity?.entity.id as string);
       form.append('passStatus', 'pending');
+      form.append('type', type as string);
+      if (type === 'event')
+        form.append('event', eventId as string);
       await importHolder(form, token)
       fetchingData()
       setIsUploading(false)
@@ -369,9 +380,9 @@ export default function useHolderListController() {
   return {
     items, topFilter,
     atEnd, onEdit,
-    atStart, handleUploadConfirm, isUploading,
+    atStart, handleUploadConfirm, isUploading, handleConfigConfirm,
     onSearch, onNext, onBack,
-    pagination, currentPage, modalOpen, setModalOpen,
+    pagination, currentPage,
     columns, rowAction, setSort, sort, total,
     loading, rowsPerPage, setRowsPerPage, onRevoke, revoking, onSend
   }
