@@ -23,9 +23,10 @@ import {
     IconButton,
     Divider,
     CircularProgress,
-    Card
+    Card,
+    useTheme
 } from '@mui/material';
-import { PersonAdd, PersonRemove } from '@mui/icons-material';
+import { DeleteOutline, PersonAdd, PersonRemove } from '@mui/icons-material';
 import IUser, { ICollaborator } from '@/domain/auth/IUser';
 import { useTranslations } from 'next-intl';
 import IUserEntity from '@/domain/auth/IUserEntity';
@@ -36,6 +37,9 @@ import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
+import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
+import { TrashIcon } from '@/components/common/icons/TrashIcon';
+import { CustomTypography } from '@/components/common/Text/CustomTypography';
 
 const roleOptions = [
     { value: 'admin', label: 'Adminstrador' },
@@ -76,8 +80,10 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser, procc
     const [selectedRole, setSelectedRole] = useState('write');
     const [filteredUsers, setFilteredUsers] = useState<Array<ICollaborator>>([]);
     const t = useTranslations()
-    const { openModal, open } = useCommonModal()
+    const { openModal, closeModal, open } = useCommonModal()
     const { user } = useAuth()
+    const theme = useTheme()
+
     const { currentEntity } = useEntity()
     useEffect(() => {
         // Filter out users already assigned to the project
@@ -102,6 +108,7 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser, procc
         setOpenModalAdd(false);
         setSearchInput('');
         setSelectedUser(null);
+        closeModal()
     };
 
     const handleAssign = () => {
@@ -143,18 +150,19 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser, procc
                             <Card elevation={1} key={collaborator.user.id}>
                                 <ListItem
                                     secondaryAction={
-                                        currentEntity?.role === 'owner' && collaborator.user.id !== user?.id && (
-                                            <IconButton
-                                                edge="end"
-                                                aria-label="remove"
+                                        currentEntity?.role !== 'owner' && collaborator.user.id !== user?.id && (
+                                            <CustomIconBtn
                                                 onClick={() => openModal(CommonModalType.DELETE, { data: collaborator.user.uid })}
                                                 disabled={collaborator.user.uid === currentUser.id}
-                                            >
-                                                <PersonRemove />
-                                            </IconButton>
+                                                icon={<TrashIcon />}
+                                                color={theme.palette.primary.main}
+                                            />
                                         )
                                     }
                                 >
+
+
+
                                     <ListItemAvatar>
                                         <Avatar src={collaborator.user.photoURL as string} alt={collaborator.user.fullName} />
                                     </ListItemAvatar>
@@ -172,17 +180,28 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser, procc
                 </BorderBox>
             </Paper>
 
-            <Dialog open={openModalAdd} onClose={handleClose} fullWidth maxWidth="sm">
-                <DialogTitle>{t('colaborators.add')}</DialogTitle>
+            <Dialog open={openModalAdd} onClose={handleClose} fullWidth maxWidth="md" slotProps={{ paper: { sx: { p: 2, borderRadius: 4 } } }} >
+                <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
+                        <Typography variant='h5'>{t('colaborators.add')}</Typography>
+                        <Typography variant='body1'>{t('colaborators.addText')}</Typography>
+                    </Box>
+
+                    <CustomIconBtn
+                        onClick={handleClose}
+                        color={theme.palette.primary.main}
+                    />
+                </DialogTitle>
                 <DialogContent>
-                    <Box sx={{ mt: 2 }}>
+                    <BorderBox sx={{ mt: 2, p: 4 }}>
+                        <CustomTypography sx={{mb:2}}>{t('colaborators.invite')}</CustomTypography>
                         <Autocomplete
                             options={filteredUsers}
                             getOptionLabel={(option) => `${option.user.fullName} (${option.user.email})`}
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
-                                    label={t('colaborators.search')}
+                                    label={t('core.label.email')}
                                     fullWidth
                                     value={searchInput}
                                     onChange={(e) => setSearchInput(e.target.value)}
@@ -214,17 +233,18 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser, procc
                                 ))}
                             </Select>
                         </FormControl>
-                    </Box>
+                    </BorderBox>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>{t('core.button.cancel')}</Button>
-                    <Button
+
+                    <SassButton
                         onClick={handleAssign}
                         variant="contained"
+                        size='small'
                         disabled={!selectedUser}
                     >
                         {t('core.button.add')}
-                    </Button>
+                    </SassButton>
                 </DialogActions>
             </Dialog>
 
