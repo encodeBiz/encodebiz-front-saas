@@ -20,7 +20,7 @@ export default function Dashboard() {
 
 
 
-  const scrollToPlan = () => {
+  const scrollToPlan = () => {     
     if (sectionServicesRef.current) {
       (sectionServicesRef.current as any).scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
