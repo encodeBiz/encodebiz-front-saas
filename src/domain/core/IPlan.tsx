@@ -6,6 +6,7 @@ export interface IPlan {
     period?: string;
     features?: string[];
     featured?: boolean;
+    price?:string
 }
 
 export interface IPlanData {

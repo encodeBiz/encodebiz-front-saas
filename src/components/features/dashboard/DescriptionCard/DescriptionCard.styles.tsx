@@ -14,7 +14,6 @@ export const useStyles = (show: boolean): Record<string, SxProps<Theme>> => ({
     background:() => 'transparent',
     borderStyle:'solid',
     borderWidth:2,
-    boxShadow: "0px 1px 4px 0.5px rgba(219, 217, 222, 0.45)",
     borderRadius: 2
 
 
