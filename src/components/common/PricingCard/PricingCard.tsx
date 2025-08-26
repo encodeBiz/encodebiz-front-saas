@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { CardContent, Typography, Box, List, ListItem, ListItemIcon } from '@mui/material';
+import { CardContent, Typography, Box, List, ListItem, ListItemIcon, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
-import { useTranslations } from 'next-intl';
+ import { useTranslations } from 'next-intl';
 import { IPlan } from '@/domain/core/IPlan';
-import { BaseButton, GenericButton } from '../buttons/BaseButton';
 import usePricingCardController from './PricingCard.controller';
 import { BizType } from '@/domain/core/IService';
 import { useEntity } from '@/hooks/useEntity';
@@ -13,41 +11,30 @@ import { CommonModalType } from '@/contexts/commonModalContext';
 import { useRouter } from 'nextjs-toploader/app';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import SheetModalModal from '../modals/SheetModal';
+import { SassButton } from '../buttons/GenericButton';
+import { CheckOutlined } from '@mui/icons-material';
 
-const PlanCard = styled(Box)<{ featured?: string }>(({ theme, featured }) => ({
-    maxWidth: 300,
-    minWidth: 250,
+const PlanCard = styled(Box)<{ featured?: boolean }>(({ theme, featured }) => ({
+    maxWidth: 305,
+    minWidth: 305,
+    minHeight: 580,
     margin: theme.spacing(2),
-    border: featured === "true" ? `1px solid ${theme.palette.primary.main}` : 'none',
-    transform: featured === "true" ? 'scale(1.05)' : 'scale(1)',
-    transition: 'transform 0.3s ease',
-    color: featured === "true" ? `${theme.palette.primary.contrastText}` : `${theme.palette.text.primary}`,
-    borderRadius: 6,
-    backgroundColor: featured === "true" ? theme.palette.primary.light : theme.palette.background.paper,
-    paddingTop: 20,
-}));
-
-const FeaturedBadge = styled(Box)(({ theme }) => ({
-    backgroundColor: 'white',
-    color: "black",
-    padding: theme.spacing(0.5, 2),
-    borderRadius: 20,
-    position: 'absolute',
     border: `1px solid ${theme.palette.primary.main}`,
-    top: -10,
-    right: 94,
-    fontSize: '0.75rem',
-    fontWeight: 'bold',
+    transform: featured ? 'scale(1.05)' : 'scale(1)',
+    transition: 'transform 0.3s ease',
+    color: featured ? `${theme.palette.primary.contrastText}` : `${theme.palette.text.primary}`,
+    borderRadius: 8,
+    background: featured ? 'linear-gradient(23.64deg, #001551 31.23%, #002FB7 99.28%)' : theme.palette.background.paper,
+    padding: 20,
+    boxShadow: featured ?'0px 6px 12px rgba(0, 65, 158, 0.25)':'none'
+
 }));
 
 
 
-const DangerButton = styled(GenericButton)(({ theme }) => ({
-    marginBottom: 0,
-    width: '100%',
-    color: theme.palette.text.primary,
-    backgroundColor: theme.palette.error.light,
-}));
+
+
+ 
 
 
 export type PricingCardProps = IPlan & {
@@ -55,7 +42,7 @@ export type PricingCardProps = IPlan & {
 
 };
 
-export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, period, features, featured = false, fromService }) => {
+export const PricingCard: React.FC<PricingCardProps> = ({ id, name, priceMonth, priceYear,  features, featured = false, fromService }) => {
     const t = useTranslations();
     const { ubSubcribeAction, handleSubscripe } = usePricingCardController(id as string, name as string, fromService);
     const { push } = useRouter()
@@ -74,67 +61,67 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, price, perio
 
 
     return (<>
-        <PlanCard featured={String(featured)}>
-            {featured && (
-                <FeaturedBadge>{t("salesPlan.popular")}</FeaturedBadge>
-            )}
+        <PlanCard featured={featured}>
             <CardContent sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
-                <span>
-                    <Typography
-                        variant="h6"
-                        gutterBottom
-                        sx={{ display: "flex", justifyContent: "center" }}
-                    >
-                        {t(`salesPlan.${name}`) || name}
-                    </Typography>
-
-                    {price && <Typography
-                        variant="h4"
-                        color="primary"
-                        sx={{ textAlign: "center", marginTop: "20px" }}
-                    >
-                        {price}
-                        <Typography variant="body2" component="span">
-                            {period}
+                <Box>
+                    <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'} pb={2}>
+                        <Typography variant="h6">
+                            {t(`salesPlan.${name}`) || name}
                         </Typography>
-                    </Typography>}
+                        <Typography variant="body1">
+                            Ideal para microempresas o equipos pequeños.
+                        </Typography>
+                    </Box>
+
+                    <Divider sx={{ background: (theme) => featured ? "#FFF" : theme.palette.divider }} />
+
+                    <Box py={2}>
+                        <SassButton
+                            sx={{ mb: 1 }}
+                            fullWidth
+                            variant="contained"
+                            onClick={handleSubscripe}
+                            disabled={false}
+
+                        >
+                            {entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length > 0 ? t("salesPlan.contract") : t("salesPlan.pay")}
+                        </SassButton>
+                        {priceMonth && <Typography
+                            variant="h4"                   >
+                            {priceMonth}
+                        </Typography>}
+                        {priceYear && <Typography variant="body2" component="span">
+                            {priceYear}
+                        </Typography>}
+                    </Box>
+                    <Divider sx={{ background: (theme) => featured ? "#FFF" : theme.palette.divider }} />
+
 
                     <List sx={{ marginTop: "10px" }}>
-                        {(features as Array<string>).map((feature, i) => (
+                        {(features as Array<string>)?.map((feature, i) => (
                             <ListItem key={i} disableGutters>
                                 <ListItemIcon sx={{ minWidth: 30 }}>
-                                    <CheckCircleOutline color="primary" fontSize="small" />
+                                    <CheckOutlined fontSize="small" sx={{ color: (theme) => featured ? "#FFF" : theme.palette.primary.main }}  />
                                 </ListItemIcon>
                                 <Typography variant="body2">{feature}</Typography>
                             </ListItem>
                         ))}
                     </List>
-                </span>
-                <BaseButton
-                    sx={{ mt: 1 }}
-                    fullWidth
-                    variant="contained"
-                    onClick={handleSubscripe}
-                    disabled={false}
+                </Box>
 
-                >
-                    {entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length > 0 ? t("salesPlan.contract") : t("salesPlan.pay")}
-                </BaseButton>
 
-                {entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length > 0 && <DangerButton
+                {entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length > 0 && <SassButton
                     fullWidth
                     sx={{ mt: 1 }}
                     variant="contained"
+                    color='error'
                     onClick={() => {
                         if (entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length > 0) {
                             ubSubcribeAction()
                         }
-                    }}
-
-
-                >
+                    }}>
                     {t("salesPlan.del")}
-                </DangerButton>}
+                </SassButton>}
             </CardContent>
         </PlanCard>
         {open.type === CommonModalType.BILLING && <SheetModalModal

@@ -123,14 +123,7 @@ export default function useHolderController() {
       component: TextInput,
     },
 
-    /*  {
-        name: 'location',
-        label: t('core.label.location'),
-        required: true,
-        type: 'textarea',
-        component: TextInput,
-      },
-      */
+    
 
     {
       name: 'date',
@@ -267,10 +260,22 @@ export default function useHolderController() {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, id)
+    
+      const location = event.location.split(',')
+      let country='España'
+      let city='Madrid'
+      if(location.length===2){
+        country=location[1]
+        city=location[0]
+      }
       setInitialValues({
         ...event,
+        country,city,
         metadata: objectToArray(event.metadata)
       })
+
+        setCitySelected(city)
+        setCountrySelected(country)
       changeLoaderState({ show: false })
     } catch (error: any) {
       changeLoaderState({ show: false })

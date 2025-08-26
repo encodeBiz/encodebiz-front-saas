@@ -1,8 +1,9 @@
 // SelectInput.tsx
 import React from 'react';
-import { TextFieldProps, MenuItem, Select, FormHelperText, FormControl, InputLabel } from '@mui/material';
+import { TextFieldProps, MenuItem, Select, FormHelperText, FormControl, InputLabel, OutlinedInput,  InputAdornment } from '@mui/material';
 import { FieldProps, useField } from 'formik';
 import { createSlug } from '@/lib/common/String';
+import { Error } from '@mui/icons-material';
 
 type SelectInputProps = FieldProps & TextFieldProps & {
   options: Array<{ value: any; label: string }>;
@@ -21,7 +22,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
 
 
 
-  return (<FormControl required sx={{ width: '100%' }}>
+  return (<FormControl required sx={{ width: '100%', textAlign: 'left' }} >
 
     <InputLabel id="demo-simple-select-required-label">{props.label}</InputLabel>
     <Select
@@ -34,6 +35,15 @@ const SelectInput: React.FC<SelectInputProps> = ({
         if (typeof onHandleChange === 'function') onHandleChange(e.target.value)
         helper.setValue(e.target.value)
       }}
+
+      input={
+        <OutlinedInput   label={props.label}       
+          endAdornment={helperText ?
+            <InputAdornment sx={{ mr: 2 }} position="end"><Error color='error' /></InputAdornment>
+            : undefined}
+        />
+      }
+
     >
       {options.map((option, index) => (
         <MenuItem key={option.value + '-' + index} value={option.value}>

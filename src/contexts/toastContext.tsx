@@ -1,6 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
-import React, { createContext, useState, useRef, useCallback } from 'react';
+import React, { createContext, useState, useRef } from 'react';
 import { Snackbar, Alert, AlertColor } from '@mui/material';
 
 type ToastMessage = {
@@ -21,7 +20,7 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
     const queueRef = useRef<ToastMessage[]>([]);
 
  
-    const showToast = useCallback((message: string, severity: AlertColor = 'info') => {
+    const showToast = (message: string, severity: AlertColor = 'info') => {
         const key = new Date().getTime();
         const newToast = { message, severity, key };
         if (open) {
@@ -30,7 +29,7 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
             setMessageInfo(newToast);
             setOpen(true);
         }
-    }, []);
+    }
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {

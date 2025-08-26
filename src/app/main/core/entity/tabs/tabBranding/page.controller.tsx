@@ -38,7 +38,7 @@ export interface BrandFormValues {
     stripImageUrl: File | string,
     iconUrl: File | string,
     icon2Url: File | string,
-    
+
 };
 
 export type TabItem = {
@@ -80,54 +80,80 @@ export const useSettingEntityController = () => {
 
     const fields2 = [
 
-
         {
-            name: 'backgroundColor',
-            label: t('core.label.backgroundColor'),
-            component: ColorPickerInput,
-            required: true,
-        },
-        {
-            name: 'labelColor',
-            label: t('core.label.labelColor'),
-            component: ColorPickerInput,
-            required: true,
-        },
-        {
-            name: 'textColor',
-            label: t('core.label.textColor'),
-            component: ColorPickerInput,
-            required: true,
-        },
-        {
-            name: 'logoUrl',
-            label: t('core.label.logo'),
-            component: ImageUploadInput,
-            required: true,
-            type: 'logo'
-        },
-        {
-            name: 'stripImageUrl',
-            label: t('core.label.stripImageUrl'),
-            component: ImageUploadInput,
-            required: true,
-            type: 'stripImage'
-        },
-        {
-            name: 'iconUrl',
-            label: t('core.label.iconUrl'),
-            component: ImageUploadInput,
-            required: true,
-            type: 'icon'
+            isDivider: true,
+            label: t('core.label.colorBrand'),
         },
 
         {
-            name: 'icon2Url',
-            label: t('core.label.iconx2'),
-            component: ImageUploadInput,
-            required: true,
-            type: 'iconx2'
+            isGroup: true,
+            column: 3,
+            label: t('core.label.colorBrand'),
+            fieldList: [
+                {
+                    name: 'backgroundColor',
+                    label: t('core.label.backgroundColor'),
+                    component: ColorPickerInput,
+                    required: true,
+                },
+                {
+                    name: 'labelColor',
+                    label: t('core.label.labelColor'),
+                    component: ColorPickerInput,
+                    required: true,
+                },
+                {
+                    name: 'textColor',
+                    label: t('core.label.textColor'),
+                    component: ColorPickerInput,
+                    required: true,
+                },
+            ]
         },
+
+        {
+            isDivider: true,
+            label: t('core.label.resourcesGraph'),
+        },
+        {
+            isGroup: true,
+            column: 2,
+            fieldList: [
+                {
+                    name: 'logoUrl',
+                    label: t('core.label.logo'),
+                    component: ImageUploadInput,
+                    required: true,
+                    type: 'logo'
+                },
+                {
+                    name: 'stripImageUrl',
+                    label: t('core.label.stripImageUrl'),
+                    component: ImageUploadInput,
+                    required: true,
+                    type: 'stripImage'
+                },
+                {
+                    name: 'iconUrl',
+                    label: t('core.label.iconUrl'),
+                    component: ImageUploadInput,
+                    required: true,
+                    type: 'icon'
+                },
+
+                {
+                    name: 'icon2Url',
+                    label: t('core.label.iconx2'),
+                    component: ImageUploadInput,
+                    required: true,
+                    type: 'iconx2'
+                },
+            ]
+
+        },
+
+
+
     ];
 
     const changeBrandAction = async (values: BrandFormValues) => {

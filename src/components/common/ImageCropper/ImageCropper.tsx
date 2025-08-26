@@ -17,9 +17,10 @@ import 'react-image-crop/dist/ReactCrop.css';
 import { useImageCropper } from './ImageCropper.controller';
 import { useTranslations } from 'next-intl';
 import { NumberInput } from '../forms/fields/NumberField';
+import { SassButton } from '../buttons/GenericButton';
 
 export const ImageCropper = ({ onComplete, disabled = false, isUploading, size = { w: 80, h: 80, locked: true } }: { disabled?: boolean, onComplete: (file: File) => void, isUploading: boolean, size?: { locked: boolean, w: number, h: number } }) => {
-    const { scale, setScale,onImageLoad, aspect, image, crop, setCrop, open, handleClose, setCompletedCrop, handleCrop, completedCrop, isLoading, imgRef, handleFileChange } = useImageCropper(onComplete, size)
+    const { scale, setScale, onImageLoad, aspect, image, crop, setCrop, open, handleClose, setCompletedCrop, handleCrop, completedCrop, isLoading, imgRef, handleFileChange } = useImageCropper(onComplete, size)
     const fileInputRef: any = useRef(null);
     const t = useTranslations()
 
@@ -50,9 +51,9 @@ export const ImageCropper = ({ onComplete, disabled = false, isUploading, size =
                 <DialogTitle>
                     <Box display="flex" alignItems="center">
                         <Crop sx={{ mr: 1 }} />
-                        <Typography variant="h6">Crop Image {crop && <>({Math.floor(crop?.width)}x{Math.floor(crop?.height)}){crop?.unit}</>}</Typography>
+                        <Typography variant="body2">{t('core.label.cropImage')} {crop && <>({Math.floor(crop?.width)}x{Math.floor(crop?.height)}){crop?.unit}</>}</Typography>
                         <Box flexGrow={1} />
-                        <IconButton onClick={handleClose}>
+                        <IconButton    onClick={handleClose}>
                             <Close />
                         </IconButton>
                     </Box>
@@ -62,34 +63,34 @@ export const ImageCropper = ({ onComplete, disabled = false, isUploading, size =
                     {image && (
                         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
 
-                            
-                                <ReactCrop
-                                    crop={crop}
-                                    onChange={(cropPixel) => setCrop(cropPixel)}
-                                    onComplete={(cropPixel) => setCompletedCrop(cropPixel)}
-                                    aspect={aspect}
-                                    locked={size.locked}
-                                    minHeight={100}
 
-                                >
-                                    <img
-                                        ref={imgRef}
-                                        alt="Crop me"                                        
-                                        src={image}
-                                        style={{ transform: `scale(${scale})` }}
-                                        onLoad={onImageLoad}                                        
-                                    />
+                            <ReactCrop
+                                crop={crop}
+                                onChange={(cropPixel) => setCrop(cropPixel)}
+                                onComplete={(cropPixel) => setCompletedCrop(cropPixel)}
+                                aspect={aspect}
+                                locked={size.locked}
+                                minHeight={100}
 
-                                </ReactCrop>
-                            </Box>
-                      
+                            >
+                                <img
+                                    ref={imgRef}
+                                    alt="Crop me"
+                                    src={image}
+                                    style={{ transform: `scale(${scale})` }}
+                                    onLoad={onImageLoad}
+                                />
+
+                            </ReactCrop>
+                        </Box>
+
                     )}
                 </DialogContent>
 
                 <DialogActions>
                     <Box display="flex" alignItems="center" sx={{ mr: 2 }} gap={2}>
 
-                      
+
 
                         <NumberInput
                             label={'Escala'}
@@ -101,7 +102,7 @@ export const ImageCropper = ({ onComplete, disabled = false, isUploading, size =
                                 setScale(value);
                             }}
                         />
-                        <NumberInput
+                        {!size.locked && <NumberInput
                             label={'Ancho'}
                             disabled={size.locked}
                             min={0}
@@ -111,9 +112,9 @@ export const ImageCropper = ({ onComplete, disabled = false, isUploading, size =
                             onChange={(value: number) => {
                                 setCrop({ ...(crop as any), width: Math.floor(value) });
                             }}
-                        />
+                        />}
 
-                        <NumberInput
+                        {!size.locked && <NumberInput
                             label={'Largo'}
                             disabled={size.locked}
                             min={0}
@@ -123,12 +124,12 @@ export const ImageCropper = ({ onComplete, disabled = false, isUploading, size =
                             onChange={(value: number) => {
                                 setCrop({ ...(crop as any), height: Math.floor(value) });
                             }}
-                        />
+                        />}
                     </Box>
 
 
 
-                    <Button
+                    <SassButton
                         onClick={handleCrop}
                         color="primary"
                         variant="contained"
@@ -136,7 +137,7 @@ export const ImageCropper = ({ onComplete, disabled = false, isUploading, size =
                         startIcon={isLoading ? <CircularProgress size={20} /> : null}
                     >
                         {t('core.button.crop')}
-                    </Button>
+                    </SassButton>
                 </DialogActions>
             </Dialog>
         </Box>

@@ -12,6 +12,7 @@ import { CommonModalProvider } from "@/contexts/commonModalContext";
 import { MediaProvider } from "@/contexts/mediaContext";
 import { Suspense } from "react";   // ✅ Importar Suspense
 import PageLoader from "@/components/common/PageLoader";
+import { FormStatusProvider } from "@/contexts/formStatusContext";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -39,15 +40,16 @@ export default async function RootLayout({
                 <LocaleProvider>
                     <Suspense fallback={<PageLoader backdrop />}>  {/* ✅ Suspense envuelve AuthProvider */}
                         <ToastProvider>
-
                             <AuthProvider>
                                 <EntityProvider>
                                     <LayoutProvider>
                                         <ThemeProvider>
                                             <CommonModalProvider>
                                                 <MediaProvider>
-                                                    <NextTopLoader showSpinner={false} color="#456456" />
-                                                    {children}
+                                                    <FormStatusProvider>
+                                                        <NextTopLoader showSpinner={false} color="#456456" />
+                                                        {children}
+                                                    </FormStatusProvider>
                                                 </MediaProvider>
                                             </CommonModalProvider>
                                         </ThemeProvider>

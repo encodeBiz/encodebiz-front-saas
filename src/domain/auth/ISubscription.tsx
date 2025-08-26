@@ -195,6 +195,12 @@ export interface StripeInvoice {
         destination: string;
     } | null;
     webhooks_delivered_at?: number | null;
+
+    service?: any
+     date?: any
+    price?: any
+
+
 }
 
 interface StripeInvoiceLineItem {

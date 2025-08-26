@@ -2,7 +2,7 @@ import React from 'react';
 import { ColorResult, SketchPicker } from 'react-color';
 import { InputAdornment, Popover, TextField, TextFieldProps } from '@mui/material';
 import { FieldProps, useField } from 'formik';
-import { PaletteRounded } from '@mui/icons-material';
+import { Error, PaletteRounded } from '@mui/icons-material';
 
 
 
@@ -47,12 +47,15 @@ const ColorPickerInput: React.FC<FieldProps & TextFieldProps> = ({
                 slotProps={{
                     input: {
                         startAdornment: (
-                            <InputAdornment position="start">
+                            <InputAdornment position="start" sx={{ textAlign:'center',height: 40, width: 40, background: field && field.value ? field.value : '#ffffff' }}>
                                 <PaletteRounded sx={{
-                                    color: field && field.value ? field.value : '#ffffff'
+                                    color: '#ffffff',
+                                    m:'auto'
                                 }} />
                             </InputAdornment>
                         ),
+                        endAdornment: helperText?<InputAdornment position="end"><Error color='error' /></InputAdornment>:null,
+
                     },
                 }}
 

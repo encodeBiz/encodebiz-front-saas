@@ -1,19 +1,15 @@
 import {
-    Dashboard as DashboardIcon,
- 
-    ImageSearchOutlined,
-    EventAvailable,
-    Security,
-    Today,
-
+    
     Home,
     Person2TwoTone,
     
 
 } from '@mui/icons-material';
-import Badge from '@mui/icons-material/Badge';
 import BusinessIcon from '@mui/icons-material/Business';
-import BookOnline from '@mui/icons-material/BookOnline';
+import { DashBoardIcon } from '@/components/common/icons/DashBoardIcon';
+import { PassBizIcon } from '@/components/common/icons/PassBizIcon';
+import { CheckBizIcon } from '@/components/common/icons/CheckBizIcon';
+import { MediaIcon } from '@/components/common/icons/MediaIcon';
 
 export const MAIN_ROUTE = 'main'
 export const GENERAL_ROUTE = 'core'
@@ -24,17 +20,17 @@ export const CHECKINBIZ_MODULE_ROUTE = 'checkinbiz'
 
 const PASSINBIZ = [ {
     name: 'Holders',
-    icon: <BookOnline />,
+  
     link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/holder`,
     subMenu: []
 }, {
     name: 'Events',
-    icon: <Today />,
+ 
     link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event`,
     subMenu: []
 }, {
     name: 'Staff',
-    icon: <Security />,
+    
     link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff`,
     subMenu: []
 }]
@@ -55,7 +51,7 @@ const CHECKINBIZ: any = [{
 export const menuItemsHome = [{
     id: 'dashboard',
     name: 'Dashboard',
-    icon: <DashboardIcon />,
+    icon: <DashBoardIcon />,
     link: `/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`,
     subMenu: []
 },
@@ -72,14 +68,14 @@ export const menuItemsServices = [{
 }, {
     id: 'checkinbiz',
     name: 'CheckinBiz',
-    icon: <EventAvailable />,
+    icon: <PassBizIcon />,
     link: `/${MAIN_ROUTE}/checkinbiz/onboarding`,
     subMenu: CHECKINBIZ
 },
 {
     id: 'passinbiz',
     name: 'PassinBiz',
-    icon: <Badge />,
+    icon: <CheckBizIcon />,
     link: `/${MAIN_ROUTE}/passinbiz/onboarding`,
     subMenu: PASSINBIZ
 },
@@ -108,7 +104,7 @@ export const menuItemsGeneral = [
     },
     {
         name: 'Media',
-        icon: <ImageSearchOutlined />,
+        icon: <MediaIcon />,
         link: `/${MAIN_ROUTE}/${GENERAL_ROUTE}/media`,
         subMenu: []
     }

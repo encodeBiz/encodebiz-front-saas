@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // GenericForm.tsx
-import React from 'react';
-import { Formik, Form, FormikProps, FormikHelpers } from 'formik';
+import React, { useEffect } from 'react';
+import { Formik, Form, FormikProps, FormikHelpers, useFormikContext } from 'formik';
 import * as Yup from 'yup';
 import {
   Box,
-  Divider,
+ 
   Grid,
   Paper,
   Typography,
@@ -12,6 +13,31 @@ import {
 import { BaseButton } from '../buttons/BaseButton';
 import { useTranslations } from 'next-intl';
 import { IUserMedia } from '@/domain/core/IUserMedia';
+import { useFormStatus } from '@/hooks/useFormStatus';
+import { BorderBox } from '../tabs/BorderBox';
+
+
+// A component that watches the form state
+const FormStatusWatcher = () => {
+  // Access the entire Formik state
+  const { dirty, isSubmitting, isValid, status, values } = useFormikContext();
+  const { updateFromStatus } = useFormStatus()
+
+  useEffect(() => {
+
+    updateFromStatus({
+      isValid,
+      isSubmitting,
+      dirty,
+      status,
+      values
+    })
+
+
+  }, [dirty, isSubmitting, isValid, status, values]); // Add dependencies to watch
+
+  return null; // This component doesn't render anything
+};
 
 // Define types for our form component
 export type FormField = {
@@ -27,6 +53,9 @@ export type FormField = {
   isDivider?: boolean;
   fullWidth?: boolean;
   onChange?: (e: any) => void
+  column?: 1 | 2 | 3;
+  isGroup?: boolean;
+  fieldList?: Array<FormField>
 
 };
 
@@ -44,7 +73,51 @@ type GenericFormProps<T> = {
   column?: 1 | 2 | 3;
   enableReinitialize?: boolean;
   disabled?: boolean;
+  hideBtn?: boolean;
+  formRef?: any
 };
+
+const FieldItem = ({ field, i, formikProps, column, disabled }: { field: FormField, disabled: boolean, i: number, formikProps: any, column: 1 | 2 | 3 }) => {
+
+  const FieldComponent = field.component;
+  const isInvalid =
+    formikProps.touched[field.name] && Boolean(formikProps.errors[field.name]);
+  const errorText = formikProps.errors[field.name];
+  if (field.isDivider) return <Grid size={{
+    xs: 12,
+    sm: 12
+  }} key={i} sx={{ width: '100%' }}>
+    <Typography variant='subtitle1'>{field.label as string}</Typography>
+  </Grid>
+  else
+    return (
+      <Grid size={{
+        xs: 12,
+        sm: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4,
+        md: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4,
+        lg: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4,
+        xl: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4
+      }} key={field.name} sx={{ width: '100%',  textAlign:'center',}}>
+        <FieldComponent
+
+          name={field.name}
+          label={field.label}
+          type={field.type}
+          required={field.required}
+          disabled={field.disabled || disabled}
+          fullWidth
+          variant="outlined"
+          error={isInvalid}
+          helperText={isInvalid ? errorText : ''}
+          value={formikProps.values[field.name]}
+          onBlur={formikProps.handleBlur}
+          options={field.options}
+          {...field.extraProps}
+
+        />
+      </Grid>
+    );
+}
 
 const GenericForm = <T extends Record<string, any>>({
   initialValues,
@@ -59,9 +132,12 @@ const GenericForm = <T extends Record<string, any>>({
   formContainerProps,
   enableReinitialize,
   btnFullWidth = false,
-  disabled = false
+  disabled = false,
+  hideBtn = false,
+  formRef
 }: GenericFormProps<T>) => {
   const t = useTranslations()
+
 
   return (
     <Paper
@@ -86,54 +162,27 @@ const GenericForm = <T extends Record<string, any>>({
         enableReinitialize={enableReinitialize}
         validateOnBlur={true}
         validateOnChange={true}
-
+        innerRef={formRef}
 
       >
         {(formikProps: FormikProps<T>) => (
           <Form noValidate>
-            {/*JSON.stringify(formikProps.errors)*/}
+            <FormStatusWatcher />
             <Grid container spacing={3}>
               {fields.map((field, i) => {
-                 
-                const FieldComponent = field.component;
-                const isInvalid =
-                  formikProps.touched[field.name] && Boolean(formikProps.errors[field.name]);
-                const errorText = formikProps.errors[field.name];
-                if (field.isDivider) return <Grid size={{
-                  xs: 12,
-                  sm: 12
-                }} key={i} sx={{ width: '100%' }}>
-                  <Divider />
-                  <Typography variant='subtitle1'>{field.label as string}</Typography>
-                </Grid>
-                else
-                  return (
-                    <Grid size={{
-                      xs: 12,
-                      sm: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4,
-                      md: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4,
-                      lg: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4,
-                      xl: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4
-                    }} key={field.name} sx={{ width: '100%' }}>
-                      <FieldComponent
-                       
-                        name={field.name}
-                        label={field.label}
-                        type={field.type}
-                        required={field.required}
-                        disabled={field.disabled || disabled}
-                        fullWidth
-                        variant="outlined"
-                        error={isInvalid}
-                        helperText={isInvalid ? errorText : ''}
-                        value={formikProps.values[field.name]}                       
-                        onBlur={formikProps.handleBlur}
-                        options={field.options}
-                       {...field.extraProps}
-
-                      />
+                if (!field.isGroup)
+                  return <FieldItem key={i} field={field} i={i} disabled={disabled} column={column} formikProps={formikProps} />
+                else {
+                  return <BorderBox key={i} sx={{ width: '100%', p: 4 }}>
+                    <Grid container spacing={3}>
+                      {
+                        field.fieldList?.map((fieldInner, index) => {
+                          return <FieldItem key={index + '-' + i} field={fieldInner} i={index} disabled={disabled} column={field.column ? field.column : column} formikProps={formikProps} />
+                        })
+                      }
                     </Grid>
-                  );
+                  </BorderBox>
+                }
               })}
 
               <Grid sx={{ width: '100%' }}>
@@ -144,9 +193,9 @@ const GenericForm = <T extends Record<string, any>>({
                     </BaseButton>
                   )}
 
-                  <BaseButton sx={{ mt: 3, mb: 2, py: 1.5 }} disabled={formikProps.isSubmitting || disabled || !formikProps.isValid} type="submit" fullWidth={btnFullWidth} variant="contained" color="primary" >
+                  {!hideBtn && <BaseButton sx={{ mt: 3, mb: 2, py: 1.5 }} disabled={formikProps.isSubmitting || disabled || !formikProps.isValid} type="submit" fullWidth={btnFullWidth} variant="contained" color="primary" >
                     {formikProps.isSubmitting ? t('core.button.submitting') : submitButtonText}
-                  </BaseButton>
+                  </BaseButton>}
                 </Box>
               </Grid>
             </Grid>

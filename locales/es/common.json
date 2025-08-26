@@ -47,7 +47,7 @@
       }
     },
     "footer": {
-      "copyright": "EncodeBiz. Todos los derechos reservados.",
+      "copyright": "EncodeBiz Sass.",
       "web": "Nuestra Web",
       "contactUs": "Contáctenos",
       "whatsApp": "WhatsApp",
@@ -88,6 +88,7 @@
       "expo": "Expositivo",
       "festival": "Festival",
       "rol": "rol",
+      "price":"Precio",
       "active": "Activo",
       "thumbnail": "Imagen en miniatura",
       "subject": "Asunto",
@@ -117,8 +118,12 @@
       "sponsor": "Patrosinador",
       "ticketCapacity": "Capacidad",
       "date": "Fecha",
-      "colorText":"Color de texto",
-      "colorBg":"Color de fondo",
+      "medida": "Medida recomendada",
+      "colorText": "Color de texto",
+      "colorBrand": "COLORES DE MARCA",
+      "resourcesGraph": "RECURSOS GRÁFICOS",
+      "colorBg": "Color de fondo",
+      "addImage": "Añadir recurso",
       "endDate": "Fecha de finalización",
       "startDate": "Fecha de inicio",
       "time": "Hora",
@@ -135,7 +140,8 @@
       "lastName": "Apellido",
       "fullName": "Nombre completo",
       "password": "Contraseña",
-      "legalEntityName": "Nombre Legal de la Empresa",
+      "legalEntityName": "Razón Social",
+      "companyName": "Nombre de la Empresa",
       "passwordConfirm": "Confirmar contraseña",
       "email": "Correo electrónico",
       "acceptTerms": "Aceptar términos y condiciones",
@@ -149,6 +155,7 @@
       "sessionLastTime": "Último inicio de sesión",
       "createAt": "Fecha de creación",
       "logo": "Logo",
+      "comercial": "IDENTIDAD COMERCIAL",
       "background": "Fondo",
       "custom": "Personalizado",
       "stripImage": "Imagen de tira",
@@ -167,7 +174,8 @@
       "stripImageUrl": "Imagen de tira",
       "iconUrl": "Icono",
       "address": "Dirección",
-      "legal": "Legal",
+      "addressData": "DATOS DE UBICACIÓN",
+      "legal": "DATOS LEGALES",
       "name": "Nombre",
       "currentPassword": "Contraseña actual",
       "label": "Etiqueta",
@@ -175,17 +183,21 @@
       "failed": "Fallo",
       "root": "Administrador",
       "role": "Role",
+      "cropImage": "Recortar Imagen",
       "typeStaff": "Tipo de pase",
       "validator_event": "Verificador de eventos",
-      "validator_credential": "Verificador de credenciales"
+      "validator_credential": "Verificador de credenciales",
+      "service": "Servicio"
     },
     "button": {
       "revoke": "Revocar",
+      "contactUs": "Contactar con encodeBiz",
       "upgrade": "Upgradear",
       "resend": "Reenviar",
       "submitting": "Enviando...",
       "submit": "Enviar",
       "send": "Relanzar",
+      "replaceImage": "Reemplazar Imagen",
       "add": "Adicionar",
       "edit": "Editar",
       "selected": "Seleccionar",
@@ -196,6 +208,8 @@
       "download": "Descargar",
       "delete": "Eliminar",
       "save": "Guardar",
+      "start": "Comenzar",
+      "saveChanges": "Guardar Cambios",
       "ok": "Entiendo",
       "configurenow": "Configurar ahora",
       "update": "Actualizar"
@@ -262,17 +276,20 @@
       "overview": "Descripción general",
       "stats": "Estadísticas",
       "card": {
-        "btn1": "Mas informacion",
-        "btn2": "Servicios",
-        "btn3": "Planes",
-        "title": "Bienvenido a EncodeBiz Saas",
-        "subtitle": "En esta plataforma podras hacer varias cosas interesantes"
+        "title": "Bienvenido a encodeBiz SaaS",
+        "subtitle": "Registra, controla y gestiona accesos en un solo lugar, CheckBiz y PassBiz listos para ti."
+      },
+      "cardDesc": {
+        "title": "Más que un software, tu socio en desarrollo digital",
+        "subtitle1": "En Encodebiz creamos soluciones a medida para necesidades únicas.",
+        "subtitle2": "Si tu empresa requiere un desarrollo especializado, estamos listos para hacerlo realidad."
       }
     },
     "entity": {
       "create": {
         "card": {
           "title": "Crear entidad legal",
+          "createEntity": "Crear entidad",
           "subtitle": "En la plataforma puedes asociar varias entidades a la cuenta, pero es necesario al menos una para comenzar a utilixar nuestros productos"
         }
       }
@@ -294,17 +311,21 @@
     "title": "Entidad",
     "tabs": {
       "tab1": {
-        "title": "Modificar Entidad",
+        "titleAbout": "Acerca de tu empresa",
+        "descriptionAbout": "Completa los datos generales de tu empresa.",
+        "title": "Datos de la Empresa",
         "deleteConfirmModalTitle": "Eliminar Entidad",
         "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente la entidad y todas sus configuraciones y compras asociadas",
         "deleteConfirmModalTitle3": "Por favor entre la siguiente palabra para continuar con la accion"
       },
       "tab2": {
-        "title": "Modificar Marca",
-        "btn": "Eliminar Entidad"
+        "title": "Identidad Visual",
+        "btn": "Eliminar Entidad",
+        "titleAbout": "Acerca de tu empresa",
+        "descriptionAbout": "Completa la información de la marca"
       },
       "tab3": {
-        "title": "Configurar Billing",
+        "title": "Configurar Facturación",
         "btn": "Configurar Billing"
       },
       "tab4": {
@@ -312,7 +333,7 @@
         "btn": "Configurar Billing"
       },
       "tab5": {
-        "title": "Facturación",
+        "title": "Facturas",
         "btn": "Configurar Billing"
       },
       "tab6": {
@@ -322,8 +343,8 @@
     }
   },
   "salesPlan": {
-    "title": "Elige un plan para adquirir este servicio",
-    "subTitle": "Seleccione el plan que se ajuste a las necesidades de su negocio",
+    "title": "PLANES DISPONIBLES",
+    "subTitle": "Elige entre la versión Free, Básica o Avanzada según las funcionalidades que necesites. Actualiza o cambia tu plan en cualquier momento para potenciar tu experiencia con PassBiz.",
     "free": "Gratis",
     "configureLegal": "Configuracion de datos legales de la entidad",
     "configureBranding": "Configuracion de diseño de entidad",
@@ -443,11 +464,16 @@
     "deleteConfirmModalTitle2": "¡Tenga cuidaddo!. Esta acción no se puede deshacer. Si elimina un archivo que este asociado a algún servicio o entidad, podría atentar con el correcto funcionamiento de estos elementos en la plataforma."
   },
   "renew": {
-    "title": "Facturas",
-    "text1": "Datos",
+    "title": "Tus suscripciones",
+    "text": "Puedes actualizar tus suscripciones en cualquier momento.",
     "deleteConfirmModalTitle": "Eliminar plan",
+    "btn": "Actualizar plan",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente todas las acciones realizadas sobre el servicio solicitado"
   },
+  "invoice": {
+    "title": "Facturas",
+    "text": "Puedes descargar tus facturas en cualquier momento."
+   },
   "colaborators": {
     "title": "Colaboradores",
     "titles": "Colaborador",
@@ -457,8 +483,11 @@
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará los permisos del usuario sobre la entidad"
   },
   "billing": {
-    "title": "Configurar Billing",
-    "subtitle": "Configura los métodos de pago para poder realizar las compras en la plataforma"
+    "title": "Facturación",
+    "title2": "Métodos de Pago",
+    "subtitle": "Configura la forma de pago que usarás para tu facturación.",
+    "btn": "Añadir método de pago",
+    "btn2": "Cambiar método de pago"
   },
   "scan": {
     "title": "Validar pase",
@@ -466,7 +495,7 @@
     "camaraFocus": "Apunta tu cámara a un código QR",
     "resultTitle": "Pase confirmado",
     "scanOther": "Escanear otro código",
-    "lastValidatedAt":"Última validación",
+    "lastValidatedAt": "Última validación",
     "failed": "Ha fallado la lectura del código",
     "failedStaff": "Usted no tiene permisos para validar el pase",
     "tryagain": "Intentar de nuevo",

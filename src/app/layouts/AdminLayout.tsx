@@ -8,8 +8,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { useLayout } from '@/hooks/useLayout';
 import { Box, CssBaseline, Grid } from '@mui/material';
 import { useTranslations } from 'next-intl';
- 
-const drawerWidth = 240; // Define the width of your drawer
+
+const drawerWidth = 265;
 
 export default function AdminLayout({
   children,
@@ -21,40 +21,39 @@ export default function AdminLayout({
   const t = useTranslations()
 
   return (
-
-    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <Box>
       <CssBaseline />
-
-      <Header />
-      {/* Main content area, including drawer and content grid */}
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
-      >
-        <SideMenu />
-      </Box>
-
+      <SideMenu />
       <Box
         component="main"
+        justifyContent='center'
+        display={'flex'}
+        flexDirection={'column'}
+        alignItems={'center'}
         sx={{
-          flexGrow: 1, // Allows main content to take up available space
-          //p: 3, // Padding around the main content           
-          // Margin top to clear the fixed AppBar
-          //mt: (theme) => `${theme.mixins.toolbar.minHeight}px`,
-          // Adjust padding for drawer if it were permanent/persistent
           ml: { sm: `${layoutState.openDraw ? drawerWidth : 0}px` }, // For persistent drawer
           transition: (theme) => theme.transitions.create('margin', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
-          })
+          }),
         }}
       >
-        <Grid container sx={{ display: 'flex', minHeight: 'calc(100vh - 200px)', justifyContent: 'flex-start', alignItems: 'flex-start', paddingTop: pendAuth ? 0 : "24px", paddingBottom: "24px" }}>
-          {pendAuth && <PageLoader  backdrop message={t('core.title.loader')} type={'circular'} fullScreen />}
-          {children}
-          <Onboarding />
-        </Grid>
+        <Header drawerWidth={drawerWidth} />
+        <div style={{maxWidth: 1175}}>
+          <Grid container sx={{
+            display: 'flex',
+            minHeight: 'calc(100vh - 100px)',
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+            paddingTop: "100px",
+            paddingBottom: "24px", px: 4
+          }}>
+            {pendAuth && <PageLoader backdrop message={t('core.title.loader')} type={'circular'} fullScreen />}
+            {children}
+            <Onboarding />
+          </Grid>
+        </div>
+
         {/** <CustomFooter /> */}
       </Box>
       <Footer />

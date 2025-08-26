@@ -118,8 +118,7 @@ export const fetchInvoicesByEntity = async (entityId: string, params: SearchPara
     const result: StripeInvoice[] = await searchFirestore({
         ...params,
         collection: `${collection.ENTITIES}/${entityId}/${collection.INVOICES}`,
-    });
-
+    });     
     return result;
 }
 

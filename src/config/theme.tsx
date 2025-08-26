@@ -19,26 +19,27 @@ export const fileTypeIcons = {
 export const lightTheme: PaletteOptions = {
   mode: 'light',
   // Light mode palette
+  
   primary: {
-    main: '#1976d2',
+    main: '#476BE7',
     light: '#42a5f5',
     dark: '#1565c0',
     contrastText: '#ffffff',
   },
   secondary: {
-    main: '#9c27b0',
-    light: '#ba68c8',
-    dark: '#7b1fa2',
-    contrastText: '#ffffff',
+    main: '#E9E8F5',
+    light: '#E9E8F5',
+    dark: '#E9E8F5',
+    contrastText: '#000',
   },
   background: {
-    default: '#f5f5f5',
+    default: '#F0EFFD',
     paper: '#ffffff',
   },
   text: {
-    primary: 'rgba(0, 0, 0, 0.87)',
+    primary: '#1C1D1B',
     secondary: 'rgba(0, 0, 0, 0.6)',
-    disabled: 'rgba(0, 0, 0, 0.38)',
+    disabled: '#48494C',
   },
 }
 
@@ -47,7 +48,7 @@ export const lightTheme: PaletteOptions = {
 export const darkTheme: PaletteOptions = {
   mode: 'dark',
   primary: {
-    main: '#90caf9',
+    main: '#0054CA',
     light: '#e3f2fd',
     dark: '#42a5f5',
     contrastText: 'rgba(0, 0, 0, 0.87)',

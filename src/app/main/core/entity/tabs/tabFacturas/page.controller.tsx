@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
 import { useCallback, useEffect, useState } from 'react';
@@ -6,14 +7,10 @@ import { useTranslations } from 'next-intl';
 import { fetchInvoicesByEntity } from '@/services/common/subscription.service';
 import { buildSearch, Column } from '@/components/common/table/GenericTable';
 import { useToast } from '@/hooks/useToast';
-import { Box } from '@mui/material';
-import { useStyles } from './page.styles';
-import { PictureAsPdf } from '@mui/icons-material';
 import { StripeInvoice } from '@/domain/auth/ISubscription';
 
 export const useFacturaController = () => {
     const t = useTranslations();
-    const classes = useStyles()
     const { currentEntity } = useEntity()
     const { showToast } = useToast()
     const [rowsPerPage, setRowsPerPage] = useState<number>(5); // Límite inicial
@@ -59,11 +56,24 @@ export const useFacturaController = () => {
 
     const columns: Column<StripeInvoice>[] = [
         {
-            id: 'hosted_invoice_url', label: t("renew.text1"), minWidth: 170, format: (value, row) => <Box onClick={() => window.open(row.hosted_invoice_url as string, '_blank')} display="flex" alignItems="center">
-                <Box sx={classes.fileThumbnail}>
-                    <PictureAsPdf sx={{ fontSize: 100 }} />
-                </Box>
-            </Box>
+            id: 'service',
+            label: t("core.label.service"),
+            minWidth: 170
+        },
+        {
+            id: 'date',
+            label: t("core.label.date"),
+            minWidth: 170
+        },
+        {
+            id: 'price',
+            label: t("core.label.price"),
+            minWidth: 170
+        },
+        {
+            id: 'status',
+            label: t("core.label.status"),
+            minWidth: 170
         },
     ];
 
@@ -104,7 +114,7 @@ export const useFacturaController = () => {
     useEffect(() => {
         if (params && currentEntity?.entity?.id)
             fetchingData()
-    }, [params, currentEntity?.entity?.id, fetchingData])
+    }, [params, currentEntity?.entity?.id])
 
     useEffect(() => {
         setCurrentPage(0)

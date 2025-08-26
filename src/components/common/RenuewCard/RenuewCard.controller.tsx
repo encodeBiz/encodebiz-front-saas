@@ -11,7 +11,7 @@ export default function usePricingCardController(plan: IEntitySuscription) {
     const [loadingGetPlan, setLoadingGetPlan] = useState(false);
     const { showToast } = useToast()
 
-     const ubSubcribeAction = async () => {
+     const unSubcribeAction = async () => {
             try {
                 setLoadingGetPlan(true);
                 const data: IUnSubscription = {
@@ -30,5 +30,5 @@ export default function usePricingCardController(plan: IEntitySuscription) {
                 }
             }
         }
-    return { ubSubcribeAction, loadingGetPlan, setLoadingGetPlan }
+    return { unSubcribeAction, loadingGetPlan, setLoadingGetPlan }
 }

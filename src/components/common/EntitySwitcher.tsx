@@ -4,7 +4,7 @@ import React, { } from 'react';
 import { useTranslations } from 'next-intl';
 import {
   FormControl,
-  InputLabel,
+ 
   Select,
   MenuItem,
   SelectChangeEvent,
@@ -41,18 +41,18 @@ const EntitySwitcher: React.FC = () => {
   };
 
   return (
-    <Box sx={{ minWidth: 120, mt: 2 }}>
-
+    <Box sx={{ minWidth: 120 }}>
       {currentEntity && <FormControl fullWidth >
-        <InputLabel id="locale-switcher-label">
-          {t('layout.header.entity')}
-        </InputLabel>
         <Select
-          labelId="locale-switcher-label"
-          id="locale-switcher-select"
+          sx={{
+            boxShadow: 'none',
+            '.MuiOutlinedInput-notchedOutline': { border: 0 },
+
+          }}
           value={currentEntity?.entity.id}
-          label={t('layout.header.entity')}
           onChange={handleChange} style={{ textAlign: 'left' }}
+          size='small'
+          variant='outlined'
         >
           {entityList.map((entity: IUserEntity, i: number) => (
             <MenuItem key={i} value={entity.entity.id} style={{ textAlign: 'left' }}>
@@ -61,7 +61,7 @@ const EntitySwitcher: React.FC = () => {
           ))}
 
           <MenuItem style={{ textAlign: 'left', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: 4 }} onClick={() => push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)} value={undefined}>
-            <Add /><Typography>Crear entidad</Typography>
+            <Add /><Typography textTransform={'uppercase'}>{t('features.entity.create.card.createEntity')}</Typography>
           </MenuItem>
         </Select>
       </FormControl>}

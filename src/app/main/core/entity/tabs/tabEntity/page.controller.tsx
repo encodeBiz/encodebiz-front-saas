@@ -13,13 +13,10 @@ import SelectInput from '@/components/common/forms/fields/SelectInput';
 import { country } from '@/config/country';
 import { formatDate } from '@/lib/common/Date';
 import { createSlug } from '@/lib/common/String';
-import { deleteEntity, fetchEntity, updateEntity } from '@/services/common/entity.service';
-import { useCommonModal } from '@/hooks/useCommonModal';
-import { CommonModalType } from '@/contexts/commonModalContext';
+import { fetchEntity, updateEntity } from '@/services/common/entity.service';
 import { requiredRule } from '@/config/yupRules';
 import { useLayout } from '@/hooks/useLayout';
 import IEntity from '@/domain/auth/IEntity';
-import { useRouter } from 'nextjs-toploader/app';
 
 
 
@@ -56,14 +53,12 @@ export type TabItem = {
 
 export const useSettingEntityController = () => {
     const t = useTranslations();
-    const { currentEntity, refrestList } = useEntity();
-    const { closeModal } = useCommonModal()
-
+    const { currentEntity } = useEntity();
+ 
     const { changeLoaderState } = useLayout()
     const { user, token } = useAuth();
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
-    const { push } = useRouter()
     const [cityList, setCityList] = useState<any>([])
     const [initialValues, setInitialValues] = useState<EntityUpdatedFormValues>({
         uid: currentEntity?.entity?.id as string | "",
@@ -94,9 +89,13 @@ export const useSettingEntityController = () => {
 
 
     const fields = [
+         {
+            isDivider: true,
+            label: t('core.label.comercial'),
+        },
         {
             name: 'name',
-            label: t('core.label.name'),
+            label: t('core.label.companyName'),
             type: 'text',
             required: true,
             fullWidth: true,
@@ -115,12 +114,7 @@ export const useSettingEntityController = () => {
             fullWidth: true,
             component: TextInput,
         },
-        {
-            name: 'billingEmail',
-            label: t('core.label.billingEmail'),
-            type: 'email',
-            component: TextInput,
-        },
+        
         {
             name: 'taxId',
             label: t('core.label.taxId'),
@@ -128,8 +122,14 @@ export const useSettingEntityController = () => {
             component: TextInput,
         },
         {
+            name: 'billingEmail',
+            label: t('core.label.billingEmail'),
+            type: 'email',
+            component: TextInput,
+        },
+        {
             isDivider: true,
-            label: t('core.label.address'),
+            label: t('core.label.addressData'),
         },
         {
             name: 'street',
@@ -253,30 +253,7 @@ export const useSettingEntityController = () => {
 
 
 
-    const handleDeleteEntity = async (entityId: string) => {
-        setPending(true)
-        try {
-            changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-            await deleteEntity({
-                uid: user?.id as string,
-                entityId: entityId
-            }, token)
-            changeLoaderState({ show: false })
-            refrestList(user?.id as string)
-            showToast(t('core.feedback.success'), 'success');
-            setPending(false)
-            closeModal(CommonModalType.DELETE)
-            push('/main/core/dashboard')
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                showToast(error.message, 'error');
-            } else {
-                showToast(String(error), 'error');
-            }
-            setPending(false)
-            changeLoaderState({ show: false })
-        }
-    }
+    
 
 
 
@@ -289,6 +266,6 @@ export const useSettingEntityController = () => {
 
 
 
-    return { validationSchema, initialValues, setEntityDataAction, fields, pending, handleDeleteEntity }
+    return { validationSchema, initialValues, setEntityDataAction, fields, pending }
 }
 
