@@ -139,14 +139,7 @@ export default function SideMenu() {
               alt="Company Logo"
             />
 
-            <Divider
-              sx={{
-                width: '95%',
-                margin: 'auto',
-                marginBottom: 1
-              }}
-              orientation="horizontal" flexItem
-            />
+            
           </Box>
 
 

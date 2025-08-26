@@ -42,7 +42,7 @@ export default function useHolderListController() {
   const [revoking, setRevoking] = useState(false)
   const { push } = useRouter()
   const [sort, setSort] = useState<{ field: string, order: 'desc' | 'asc' }>({ field: 'createdAt', order: 'desc' })
-  const [filter, setFilter] = useState<any>({ passStatus: 'active', type: 'all', email: '', parentId: '' });
+  const [filter, setFilter] = useState<any>({ passStatus: 'active', type: 'all', email: '', parentId: 'none' });
 
   const rowAction: Array<IRowAction> = [
     { icon: <RemoveDone />, label: t('core.button.revoke'), allowItem: (item: Holder) => (item.passStatus === 'pending' || item.passStatus === 'active'), onPress: (item: Holder) => openModal(CommonModalType.DELETE, { data: item }) },
@@ -82,9 +82,12 @@ export default function useHolderListController() {
     </Select>
 
     {filter.type == 'event' && <Select sx={{ minWidth: 120, height: 55 }}
-      value={filter.parentId}
-      defaultValue={''}
+      value={filter.parentId ?? 'none'}
+      defaultValue={'none'}
       onChange={(e: any) => setFilter({ ...filter, parentId: e.target.value })}  >
+      <MenuItem key={'none'} value={'none'}>
+        {t('core.label.select')}
+      </MenuItem>
       {eventList.map((option) => (
         <MenuItem key={option.id} value={option.id}>
           {option.name}
@@ -117,7 +120,7 @@ export default function useHolderListController() {
     </Tooltip>
 
     <Tooltip title="Limpiar filtros">
-      <IconButton onClick={() => { setFilter({ passStatus: 'active', type: 'all', email: '', parentId: '' }) }}>
+      <IconButton onClick={() => { setFilter({ passStatus: 'active', type: 'all', email: '', parentId: 'none' }) }}>
         <CleaningServicesSharp />
       </IconButton>
     </Tooltip>
@@ -165,11 +168,7 @@ export default function useHolderListController() {
       label: t("core.label.email"),
       minWidth: 170,
     },
-    {
-      id: 'phoneNumber',
-      label: t("core.label.phone"),
-      minWidth: 170,
-    },
+
     {
       id: 'passStatus',
       label: t("core.label.state"),
@@ -194,9 +193,9 @@ export default function useHolderListController() {
     {
       id: 'createdAt',
       sortable: true,
-      label: t("core.label.createAt"),
+      label: t("core.label.date"),
       minWidth: 170,
-      format: (value, row) => format_date(row.createdAt, 'DD/MM/yyyy HH:mm:ss')
+      format: (value, row) => format_date(row.createdAt, 'DD/MM/yyyy')
     },
   ];
 
@@ -213,7 +212,7 @@ export default function useHolderListController() {
       params.filters = params.filters.filter((e: any) => e.field !== 'type')
     if (params.filters.find((e: any) => e.field === 'email' && e.value === ''))
       params.filters = params.filters.filter((e: any) => e.field !== 'email')
-    if (params.filters.find((e: any) => e.field === 'parentId' && e.value === ''))
+    if (params.filters.find((e: any) => e.field === 'parentId' && e.value === '' && e.value === 'none'))
       params.filters = params.filters.filter((e: any) => e.field !== 'parentId')
 
 
