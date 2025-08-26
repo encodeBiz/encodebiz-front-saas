@@ -36,12 +36,17 @@ export default function useDashboardController() {
         planList.push({
           id: element.id as string,
           name: element.id,
-          priceMonth: '€15/Mes',
-          priceYear: '108€ año',
-          period: `/${t("salesPlan.month")}`,
+          monthlyPrice: element.monthlyPrice,
+          pricePerUse: element.pricePerUse,
+          priceYear: '-',
+          period: element.payPerUse ? '/Pase o Credencial' : `/${t("salesPlan.month")}`,
           features: featuredList,
-          featured: element.id === "freemium",
-          order: element.order
+          featuredList: element.featuredList,
+          highlighted: element.highlighted,
+          order: element.order,
+          description:element.description,
+          payPerUse: element.payPerUse,
+          maxHolders: element.maxHolders
         })
       });
       setPlanList(planList)
@@ -79,7 +84,6 @@ export default function useDashboardController() {
       fetchServiceData()
   }, [user?.id, service, currentEntity?.entity.id])
 
-   console.log('fetchServiceData', serviceData)
   const dataTab1 = {
     title: 'Guía de configuración ',
     subtitle: 'Sigue los pasos de esta guía para configurar el servicio de PassBiz.',
