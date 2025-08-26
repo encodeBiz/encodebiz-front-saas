@@ -14,6 +14,7 @@ export interface IPlan {
     monthlyPrice: string
     pricePerUse:string
     maxHolders: number
+    customPrice?: boolean
 }
 
 export interface IPlanData {
@@ -29,4 +30,5 @@ export interface IPlanData {
     featuredList: boolean[]
     description: string
     pricePerUse:string
+    customPrice?: boolean
 }
