@@ -7,6 +7,7 @@ export interface IPlan {
     features?: string[];
     featured?: boolean;
     price?:string
+    order: number
 }
 
 export interface IPlanData {
@@ -16,5 +17,7 @@ export interface IPlanData {
     maxHolders: number
     monthlyPrice: number
     payPerUse: boolean
-    service: string
+    service: string,
+    order: number
+
 }

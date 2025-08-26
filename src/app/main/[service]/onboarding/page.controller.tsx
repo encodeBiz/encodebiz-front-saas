@@ -25,21 +25,14 @@ export default function useDashboardController() {
 
   const [pending, setPending] = useState(false)
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (featuredList:Array<string>) => {
     try {
       setPending(true)
       const planData = await fetchAvailablePlans(service)
       const planList: Array<IPlan> = []
        
-      planData.forEach(element => {
-        const featuredList = [
-          'Hasta 4 empleados',
-          '1 proyecto activo',
-          'Fichaje por geolocalización',
-          'Reporte básico mensual (horas trabajadas)',
-          'Acceso web y móvil',
-        ]
-        if (element.allowCustomTemplate && element.allowBranding) featuredList.push(t("salesPlan.brandingCustom"))
+      planData.sort((a, b) => a.order - b.order ).forEach(element => {
+        //if (element.allowCustomTemplate && element.allowBranding) featuredList.push(t("salesPlan.brandingCustom"))
         planList.push({
           id: element.id as string,
           name: element.id,
@@ -47,14 +40,11 @@ export default function useDashboardController() {
           priceYear: '108€ año',
           period: `/${t("salesPlan.month")}`,
           features: featuredList,
-          featured: element.id === "freemium"
+          featured: element.id === "freemium",
+          order: element.order
         })
       });
-      const dataListOrderded : Array<IPlan> = []
-      dataListOrderded.push(planList.find(e=>e.id==='bronze') as IPlan)
-      dataListOrderded.push(planList.find(e=>e.id==='freemium') as IPlan)
-      dataListOrderded.push(planList.find(e=>e.id==="enterprise") as IPlan)
-      setPlanList(dataListOrderded)
+      setPlanList(planList)
       setPending(false)
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -69,8 +59,10 @@ export default function useDashboardController() {
   const fetchServiceData = useCallback(async () => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      setServiceData(await fetchService(service as string))
-      await fetchData()
+      const sData = await fetchService(service as string)
+      setServiceData(sData)
+     
+      await fetchData(sData.featuredList)
       changeLoaderState({ show: false })
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -87,33 +79,33 @@ export default function useDashboardController() {
       fetchServiceData()
   }, [user?.id, service, currentEntity?.entity.id])
 
-
+   console.log('fetchServiceData', serviceData)
   const dataTab1 = {
     title: 'Guía de configuración ',
     subtitle: 'Sigue los pasos de esta guía para configurar el servicio de PassBiz.',
     data: [
       {
-        title: 'Asi empiezas',
-        description: 'Colección coinciden con los parámetros de consulta. Tus consultas pueden incluir varios filtros en cadena y combinar los filtros con criterios de orden.'
+        title: 'Configura tu entidad',
+        description: 'Antes de continuar, te recomendamos configurar tu marca (logo, colores) y tu facturación. Esto asegura que tus pases y credenciales salgan con tu identidad y que puedas operar sin fricciones.'
       },
       {
-        title: 'Asi empiezas',
-        description: 'Colección coinciden con los parámetros de consulta. Tus consultas pueden incluir varios filtros en cadena y combinar los filtros con criterios de orden.'
+        title: 'Elige tu plan',
+        description: 'Selecciona el plan que mejor se ajuste a tus necesidades operativas y de volumen.'
       },
       {
-        title: 'Asi empiezas',
-        description: 'Colección coinciden con los parámetros de consulta. Tus consultas pueden incluir varios filtros en cadena y combinar los filtros con criterios de orden.'
+        title: '¿Plan gratis? Comienza a emitir pases sin personalización',
+        description: 'Si eliges el plan Gratis y necesitas pases personalizados para un evento, puedes solicitar una prueba gratuita desde el apartado Eventos.'
       },
       {
-        title: 'Asi empiezas',
-        description: 'Colección coinciden con los parámetros de consulta. Tus consultas pueden incluir varios filtros en cadena y combinar los filtros con criterios de orden.'
+        title: '¿Plan de pago? Crea pases y credenciales sin límite',
+        description: 'Con la configuración completada y un plan de pago activo, ya puedes crear pases y credenciales totalmente personalizados (evento, staff, acreditación, empleado, alumno).'
       }, {
-        title: 'Asi empiezas',
-        description: 'Colección coinciden con los parámetros de consulta. Tus consultas pueden incluir varios filtros en cadena y combinar los filtros con criterios de orden.'
+        title: 'Crea tu evento (opcional)',
+        description: 'Genera eventos con sus propias tarjetas y reglas: fechas, ubicaciones, roles (asistente/VIP/prensa/staff) y plantillas con tu marca.'
       },
       {
-        title: 'Asi empiezas',
-        description: 'Colección coinciden con los parámetros de consulta. Tus consultas pueden incluir varios filtros en cadena y combinar los filtros con criterios de orden.'
+        title: 'Carga asistentes por CSV (emisión masiva)',
+        description: 'Sube un CSV para cargar pases de forma masiva. Asegúrate de seguir las especificaciones de formato para evitar errores.'
       },
     ]
   }
@@ -136,16 +128,12 @@ export default function useDashboardController() {
         description: 'Olvídate de escáneres o sistemas caros: validas con cualquier dispositivo conectado a internet y que disponga de una cámara.'
       },
       {
-        title: 'Asi Personaliza tus pases digitales',
+        title: 'Personaliza tus pases digitales',
         description: 'Sube tu logotipo, define colores y añade la información clave.'
       },
       {
         title: 'Envía automáticamente',
         description: 'Cada persona recibe su pase digital por email, listo para Apple Wallet o Google Wallet.'
-      },
-      {
-        title: 'Valida accesos en tiempo real',
-        description: 'Con cualquier dispositivo conectado a internet, sin instalaciones ni hardware adicional.'
       },
       {
         title: 'Limitaciones técnicas de otros sistemas',
