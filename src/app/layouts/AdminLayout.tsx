@@ -26,6 +26,9 @@ export default function AdminLayout({
       <SideMenu />
       <Box
         component="main"
+        display={'flex'}
+        flexDirection={'column'}
+        alignItems={'center'}
         sx={{
           ml: { sm: `${layoutState.openDraw ? drawerWidth : 0}px` }, // For persistent drawer
           transition: (theme) => theme.transitions.create('margin', {
@@ -35,11 +38,21 @@ export default function AdminLayout({
         }}
       >
         <Header drawerWidth={drawerWidth} />
-        <Grid container sx={{ display: 'flex', minHeight: 'calc(100vh - 100px)', justifyContent: 'flex-start', alignItems: 'flex-start', paddingTop: "100px", paddingBottom: "24px", px:4 }}>
-          {pendAuth && <PageLoader backdrop message={t('core.title.loader')} type={'circular'} fullScreen />}
-          {children}
-          <Onboarding />
-        </Grid>
+        <div style={{maxWidth: 1175, width: '100%'}}>
+          <Grid container sx={{
+            display: 'flex',
+            minHeight: 'calc(100vh - 100px)',
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+            paddingTop: "100px",
+            paddingBottom: "24px", px: 4
+          }}>
+            {pendAuth && <PageLoader backdrop message={t('core.title.loader')} type={'circular'} fullScreen />}
+            {children}
+            <Onboarding />
+          </Grid>
+        </div>
+
         {/** <CustomFooter /> */}
       </Box>
       <Footer />

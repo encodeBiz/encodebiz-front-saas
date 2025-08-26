@@ -10,12 +10,12 @@ import { useTranslations } from 'next-intl';
 import PresentationCard from '@/components/features/dashboard/PresentationCard/PresentationCard';
 import GenericTabs from '@/components/common/tabs/GenericTabs';
 import { TabItem, useSettingEntityController } from './page.controller';
-import EntityPreferencesTab from './tabs/tabEntity/page';
-import BrandPreferencesPage from './tabs/tabBranding/page';
-import BillingPreferencesPage from './tabs/tabBilling/page';
-import RenuewPreferencesPage from './tabs/tabRenuew/page';
-import FacturasPreferencesPage from './tabs/tabFacturas/page';
-import CollaboratorsPreferencesPage from './tabs/tabCollaborators/page';
+import EntityPreferencesTab from './tabs/tabEntity/tabEntity';
+import BrandPreferencesPage from './tabs/tabBranding/tabBranding';
+import BillingPreferencesPage from './tabs/tabBilling/tabBilling';
+import RenuewPreferencesPage from './tabs/tabRenuew/tabRenuew';
+import FacturasPreferencesPage from './tabs/tabFacturas/tabFacturas';
+import CollaboratorsPreferencesPage from './tabs/tabCollaborators/tabCollaborators';
 import { useEntity } from '@/hooks/useEntity';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { useAuth } from '@/hooks/useAuth';
@@ -67,9 +67,6 @@ const EntityPreferencesPage = () => {
             (formRef.current as any).submitForm()
         }
     }
-
-
-
 
     return (
         <Container maxWidth="xl">

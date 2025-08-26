@@ -16,14 +16,14 @@ const PlanCard = styled(Box)<{ featured?: boolean }>(({ theme, featured }) => ({
     minWidth: 305,
     minHeight: 400,
     margin: theme.spacing(2),
-    border: `1px solid ${theme.palette.primary.main}`,
+    //border: `1px solid ${theme.palette.primary.main}`,
     transform: featured ? 'scale(1.05)' : 'scale(1)',
     transition: 'transform 0.3s ease',
     color: featured ? `${theme.palette.primary.contrastText}` : `${theme.palette.text.primary}`,
     borderRadius: 8,
     background: featured ? 'linear-gradient(23.64deg, #001551 31.23%, #002FB7 99.28%)' : theme.palette.background.paper,
     padding: 20,
-    boxShadow: featured ? '0px 6px 12px rgba(0, 65, 158, 0.25)' : 'none'
+    //boxShadow: featured ? '0px 6px 12px rgba(0, 65, 158, 0.25)' : 'none'
 
 }));
 
@@ -70,7 +70,7 @@ export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
                 <Divider sx={{ background: "#FFF" }} />
 
                 <SassButton
-                    sx={{ mb: 1, mt: 2 }}
+                    sx={{ mb: 1, mt: 2, height: 40 }}
                     fullWidth
                     variant="contained"
                     onClick={() => push(`/${MAIN_ROUTE}/${plan.serviceId}/onboarding`)}
@@ -80,8 +80,8 @@ export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
                     {t("renew.btn")}
                 </SassButton>
 
-                <SassButton
-                    sx={{ mb: 1 }}
+                {/* <SassButton
+                    sx={{ mb: 1 , height: 40}}
                     fullWidth
                     variant="contained"
                     color='error'
@@ -91,7 +91,7 @@ export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
 
                 >
                     {t("salesPlan.del")}
-                </SassButton>
+                </SassButton> */}
 
 
 

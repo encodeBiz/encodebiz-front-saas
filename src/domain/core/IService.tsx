@@ -8,7 +8,7 @@ export interface IService {
     activatedAt: Date
     active: boolean
     metadata: Record<string, any>
-
+    featuredList: Array<string>
     image?: string
 
     isBillingActive: boolean
