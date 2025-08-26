@@ -14,7 +14,7 @@ export default function Dashboard() {
 
 
   return (
-    <Container>
+    <Container maxWidth="xl">
       <OnboardingCard
         title={t('features.dashboard.card.title')}
         description={t('features.dashboard.card.subtitle')}
