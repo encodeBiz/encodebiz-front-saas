@@ -26,7 +26,6 @@ export default function AdminLayout({
       <SideMenu />
       <Box
         component="main"
-        justifyContent='center'
         display={'flex'}
         flexDirection={'column'}
         alignItems={'center'}
@@ -39,7 +38,7 @@ export default function AdminLayout({
         }}
       >
         <Header drawerWidth={drawerWidth} />
-        <div style={{maxWidth: 1175}}>
+        <div style={{maxWidth: 1175, width: '100%'}}>
           <Grid container sx={{
             display: 'flex',
             minHeight: 'calc(100vh - 100px)',
