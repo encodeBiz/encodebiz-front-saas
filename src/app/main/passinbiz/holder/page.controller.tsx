@@ -346,8 +346,7 @@ export default function useHolderListController() {
   const handleConfigConfirm = async ({ type, eventId = '' }: { type: 'event' | 'credential', eventId?: string }) => {
     setType(type)
     setEventId(eventId)
-    console.log(type);
-    
+     
     openModal(CommonModalType.UPLOAD_CSV)
   }
   const handleUploadConfirm = async (file: File | null) => {

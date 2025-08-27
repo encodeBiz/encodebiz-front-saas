@@ -52,6 +52,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
     const [suscribed] = useState(entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length > 0)
     const [price] = useState(payPerUse ? pricePerUse : monthlyPrice)
 
+     
 
     useEffect(() => {
         const data: Array<string> = []

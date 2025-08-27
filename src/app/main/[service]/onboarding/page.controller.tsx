@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { collection } from "@/config/collection";
 import { IPlan } from "@/domain/core/IPlan";
 import { IService } from "@/domain/core/IService";
 import { useAppLocale } from "@/hooks/useAppLocale";
@@ -7,8 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useLayout } from "@/hooks/useLayout";
 import { useToast } from "@/hooks/useToast";
-import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
-import { fetchAvailablePlans, fetchService, fetchServiceList } from "@/services/common/subscription.service";
+import { fetchAvailablePlans, fetchService } from "@/services/common/subscription.service";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react"
@@ -23,7 +21,7 @@ export default function useDashboardController() {
 
   const { currentEntity } = useEntity();
   const [planList, setPlanList] = useState<Array<IPlan>>()
-  const {currentLocale} = useAppLocale()
+  const { currentLocale } = useAppLocale()
 
 
   const [pending, setPending] = useState(false)
@@ -52,6 +50,7 @@ export default function useDashboardController() {
           maxHolders: element.maxHolders
         })
       });
+
       setPlanList(planList)
       setPending(false)
     } catch (error: unknown) {
@@ -150,10 +149,36 @@ export default function useDashboardController() {
     ]
   }
 
- /*
+  /*
   useEffect(() => {
     const f = async () => {
       const s = await fetchServiceList()
+      const list = [
+        "Emisión Apple/Google Wallet.",
+        "Validación QR en tiempo real.",
+        "Credenciales digitales.",
+        "Módulo de eventos",
+        "Branding personalizado.",
+        "Multi-entidad.",
+        "Emisión de eventos webhook.",
+        "Soporte de desarrollo, bajo convenio.",
+        "Limite de emisiones:",
+        "Soporte sin desarrollo."
+      ]
+
+      const listEn = [
+        "Apple/Google Wallet issuance.",
+        "Real-time QR code validation.",
+        "Digital credentials.",
+        "Event module.",
+        "Custom branding.",
+        "Multi-entity.",
+        "Webhook event issuance.",
+        "Development support, under agreement.",
+        "Issuance limit:",
+        "Support without development."
+      ]
+
 
       s.forEach(async element => {
         await updateDocument<any>({
@@ -169,18 +194,20 @@ export default function useDashboardController() {
               en: 'Issuance and validation of digital passes, compatible with Apple Wallet and Google Wallet.'
             },
             featuredList: {
-              es: element.featuredList,
-              en: element.featuredList,
+              es: list,
+              en: listEn,
             }
           },
           id: element?.id as string,
         });
       });
+
     }
     f()
 
   }, [])
-*/
+  */
+
 
 
   return { serviceData, pending, planList, dataTab1, dataTab2 }
