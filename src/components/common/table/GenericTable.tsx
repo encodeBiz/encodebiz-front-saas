@@ -14,7 +14,8 @@ import {
   IconButton,
   Tooltip,
   Box,
-  Typography
+  Typography,
+  useTheme
 } from '@mui/material';
 import {
   Delete as DeleteIcon,
@@ -22,6 +23,7 @@ import {
 } from '@mui/icons-material';
 import firebase from "firebase/compat/app";
 import { useTranslations } from 'next-intl';
+import { SassButton } from '../buttons/GenericButton';
 
 export interface Column<T> {
   id: keyof T;
@@ -34,6 +36,8 @@ export interface Column<T> {
 
 export interface IRowAction {
   icon: any
+  color?: "inherit" | "error" | "primary" | "secondary" | "info" | "success" | "warning"
+  actionBtn?: React.ReactNode,
   label?: string
   onPress: (row: any) => void,
   allowItem: (row: any) => boolean,
@@ -114,6 +118,7 @@ export function GenericTable<T extends Record<string, any>>({
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [totalItems, setTotalItems] = useState(0);
   const [searchText] = useState('');
+  const theme = useTheme()
 
   // Filter data based on search text
   const filteredData = useMemo(() => {
@@ -266,7 +271,7 @@ export function GenericTable<T extends Record<string, any>>({
 
       <TableContainer sx={{ maxHeight: 600 }}>
         <Table stickyHeader aria-label="sticky table" size="medium">
-          <TableHead>
+          <TableHead >
             <TableRow>
               {selectable && (
                 <TableCell padding="checkbox">
@@ -281,6 +286,13 @@ export function GenericTable<T extends Record<string, any>>({
 
               {columns.map((column) => (
                 <TableCell
+                  sx={{
+                    '&.MuiTableCell-head': {
+                      backgroundColor: theme.palette.common.white,
+                      fontWeight: 'bold',
+                    },
+                  }}
+                  variant='head'
                   key={column.id as string}
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
@@ -301,7 +313,15 @@ export function GenericTable<T extends Record<string, any>>({
               ))}
 
               {(onEdit || onDelete || rowAction.length > 0) && (
-                <TableCell align="right">{t('core.table.actions')}</TableCell>
+                <TableCell
+                  sx={{
+                    '&.MuiTableCell-head': {
+                      backgroundColor: theme.palette.common.white,
+                      fontWeight: 'bold',
+                    },
+                  }}
+                  variant='head'
+                  align="right">{t('core.table.actions')}</TableCell>
               )}
             </TableRow>
           </TableHead>
@@ -357,13 +377,16 @@ export function GenericTable<T extends Record<string, any>>({
 
 
                         {rowAction.map((e, i) => {
-                          if (e.allowItem(row as any))
-                            return (<Tooltip key={i} title={e.label}>
-                              <IconButton onClick={() => e.onPress(row)}>
-                                {e.icon}
-                              </IconButton>
-                            </Tooltip>)
-                          else return null
+                          if (e.allowItem(row as any)) {
+                            if (e.actionBtn)
+                              return <SassButton key={i} size='small' onClick={() => e.onPress(row)} variant="outlined" color={e.color ?? 'inherit'} startIcon={e.icon}>{e.label}</SassButton>
+                            else
+                              return (<Tooltip key={i} title={e.label}>
+                                <IconButton onClick={() => e.onPress(row)}>
+                                  {e.icon}
+                                </IconButton>
+                              </Tooltip>)
+                          } else return null
                         })}
 
                         {onEdit && (
@@ -425,18 +448,19 @@ export function GenericTable<T extends Record<string, any>>({
           },
           actions: {
             previousButton: {
-              'aria-label':  t('core.table.previous') ,
+              'aria-label': t('core.table.previous'),
             },
             nextButton: {
-              'aria-label':  t('core.table.next') ,
+              'aria-label': t('core.table.next'),
             }
           }
 
         }}
 
- 
+
 
       />
-    </Paper>
+    </Paper >
   );
 }
+

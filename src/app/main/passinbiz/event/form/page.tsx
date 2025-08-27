@@ -2,7 +2,7 @@
 import { Container } from '@mui/material';
 import { useTranslations } from "next-intl";
 import useHolderController from './page.controller';
-import PresentationCard from '@/components/features/dashboard/PresentationCard/PresentationCard';
+import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
 import { useRouter } from 'nextjs-toploader/app';
@@ -19,7 +19,7 @@ export default function EventForm() {
 
   return (
     <Container maxWidth="xl">
-      <PresentationCard
+      <HeaderPage
         title={id ? t('event.edit') : t('event.add')}
         description={t('event.description')}
 
@@ -35,7 +35,7 @@ export default function EventForm() {
           enableReinitialize
           onCancel={() => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event`)}
         />
-      </PresentationCard>
+      </HeaderPage>
     </Container>
   );
 }

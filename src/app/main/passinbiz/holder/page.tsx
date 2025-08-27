@@ -11,6 +11,8 @@ import CSVUploadModal from '@/components/common/modals/CSVUploadModal';
 import { Add, UploadFile } from '@mui/icons-material';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import CSVConfigModal from '@/components/common/modals/CSVConfigModal';
+import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
+import { SassButton } from '@/components/common/buttons/GenericButton';
 
 export default function HolderList() {
   const t = useTranslations();
@@ -26,40 +28,47 @@ export default function HolderList() {
 
   return (
     <Container maxWidth="lg">
-      <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
-        <BaseButton
-          role='link'
-          href='/main/passinbiz/holder/add'
-          variant='contained'
-        ><Add /> {t('holders.addHolder')}</BaseButton>
-
-        <BaseButton
-          role='link'
-          onClick={() => openModal(CommonModalType.CONFIG_CSV)}
-          variant='contained'
-        ><UploadFile /> {t('holders.import')}</BaseButton>
-      </Box>
-      <br />
-      <GenericTable
-        data={items}
-        rowAction={rowAction}
-        columns={columns}
+      <HeaderPage
         title={t("holders.holderList")}
-        keyField="id"
-        loading={loading}
-        page={currentPage}
-        rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={setRowsPerPage}
-        onSorteable={setSort}
-        sort={sort}
-        onBack={onBack}
-        onNext={onNext}
-        topFilter={topFilter}
-        //onEdit={(data) => onEdit(data)}
-        onSearch={(data) => onSearch(data)}
+        actions={
+          <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
+            <SassButton
+              onClick={() => openModal(CommonModalType.CONFIG_CSV)}
+              variant='contained'
+              startIcon={<UploadFile />}
+            >{t('core.button.confirmSCV')}</SassButton>
+
+            <SassButton
+              role='link'
+              href='/main/passinbiz/holder/add'
+              variant='contained'
+              startIcon={<Add />}
+            >{t('holders.addHolder')}</SassButton>
+          </Box>
+        }
+      >
+
+        <GenericTable
+          data={items}
+          rowAction={rowAction}
+          columns={columns}
+          title={''}
+          keyField="id"
+          loading={loading}
+          page={currentPage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={setRowsPerPage}
+          onSorteable={setSort}
+          sort={sort}
+          onBack={onBack}
+          onNext={onNext}
+          topFilter={topFilter}
+          //onEdit={(data) => onEdit(data)}
+          onSearch={(data) => onSearch(data)}
 
 
-      />
+        />
+      </HeaderPage>
 
       {open.type === CommonModalType.CONFIG_CSV && <CSVConfigModal
         open={open.open}
@@ -80,6 +89,14 @@ export default function HolderList() {
         description={t('holders.revokeConfirmModalTitle2')}
         textBtn={t('core.button.revoke')}
         onOKAction={(args: { data: any }) => onRevoke(args.data)}
+      />}
+
+      {open.type === CommonModalType.REACTIVE && <ConfirmModal
+        isLoading={revoking}
+        title={t('holders.reactiveConfirmModalTitle')}
+        description={t('holders.reactiveConfirmModalTitle2')}
+        textBtn={t('core.button.revoke')}
+        onOKAction={(args: { data: any }) => onSend(args.data)}
       />}
 
       {open.type === CommonModalType.SEND && <ConfirmModal

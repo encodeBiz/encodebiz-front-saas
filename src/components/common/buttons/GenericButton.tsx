@@ -8,7 +8,7 @@ export const SassButton = (props: BaseButtonProps) => (
         {...props}
         sx={{
             borderRadius: 100,
-            height: props.size === 'small' ? 40 : 56,
+            height: props.size === 'small' ? 40 : 46,
             textTransform: 'capitalize',
             ...props.sx
         }}

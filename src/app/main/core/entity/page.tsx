@@ -7,7 +7,7 @@ import {
     Container,
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import PresentationCard from '@/components/features/dashboard/PresentationCard/PresentationCard';
+import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import GenericTabs from '@/components/common/tabs/GenericTabs';
 import { TabItem, useSettingEntityController } from './page.controller';
 import EntityPreferencesTab from './tabs/tabEntity/tabEntity';
@@ -71,7 +71,7 @@ const EntityPreferencesPage = () => {
 
     return (
         <Container maxWidth="xl">
-            <PresentationCard
+            <HeaderPage
                 disabledBtn={!formStatus?.isValid || formStatus?.isSubmitting}
                 titleBtn={handleExternalSubmit}
                 title={t('entity.title')}
@@ -81,7 +81,7 @@ const EntityPreferencesPage = () => {
                     tabs={tabsRender}
                 />
                 }
-            </PresentationCard>
+            </HeaderPage>
 
             <Box display={'flex'} justifyContent={'flex-start'} alignItems='flex-start' sx={{ width: '100%', mt: 6 }}>
                 <SassButton disabled={!user?.id || !currentEntity} onClick={() => openModal(CommonModalType.DELETE, { entityId: currentEntity?.entity.id })} variant='contained' color='error' >{t('entity.tabs.tab2.btn')}</SassButton>

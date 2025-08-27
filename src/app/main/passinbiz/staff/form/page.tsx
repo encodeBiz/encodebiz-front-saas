@@ -2,7 +2,7 @@
 import { Container } from '@mui/material';
 import { useTranslations } from "next-intl";
 import useStaffController from './page.controller';
-import PresentationCard from '@/components/features/dashboard/PresentationCard/PresentationCard';
+import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
 import { useRouter } from 'nextjs-toploader/app';
@@ -17,7 +17,7 @@ export default function StaffForm() {
 
   return (
     <Container maxWidth="xl">
-      <PresentationCard
+      <HeaderPage
         title={id?t('staff.edit'):t('staff.add')}
         description={t('staff.description')}
       >
@@ -32,7 +32,7 @@ export default function StaffForm() {
           onCancel={() => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff`)}
 
         />
-      </PresentationCard>
+      </HeaderPage>
     </Container>
   );
 }

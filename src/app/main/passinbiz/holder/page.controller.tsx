@@ -7,15 +7,16 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
 import { importHolder, search, updateHolder } from "@/services/passinbiz/holder.service";
-import { CleaningServicesSharp, RemoveDone, Search, Send } from "@mui/icons-material";
+import { CleaningServicesSharp, NotInterested, PanoramaFishEyeOutlined, RemoveDone, ReplyAllOutlined, Search, Send } from "@mui/icons-material";
 import { useLayout } from "@/hooks/useLayout";
-import { Box, Chip, IconButton, MenuItem, Select, TextField, Tooltip } from "@mui/material";
+import { Box, IconButton, MenuItem, Select, TextField, Tooltip } from "@mui/material";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useRouter } from "nextjs-toploader/app";
 import { format_date } from "@/lib/common/Date";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { search as searchEvent } from "@/services/passinbiz/event.service";
+import { CustomChip } from "@/components/common/table/CustomChip";
 
 
 
@@ -45,9 +46,34 @@ export default function useHolderListController() {
   const [filter, setFilter] = useState<any>({ passStatus: 'active', type: 'all', email: '', parentId: 'none' });
 
   const rowAction: Array<IRowAction> = [
-    { icon: <RemoveDone />, label: t('core.button.revoke'), allowItem: (item: Holder) => (item.passStatus === 'pending' || item.passStatus === 'active'), onPress: (item: Holder) => openModal(CommonModalType.DELETE, { data: item }) },
-    { icon: <Send />, label: t('core.button.resend'), allowItem: (item: Holder) => (item.passStatus === 'revoked' || item.passStatus === 'not_generated' || item.passStatus === 'failed'), onPress: (item: Holder) => openModal(CommonModalType.SEND, { data: item }) }
-  ]
+    {
+      actionBtn: true,
+      color: 'error',
+      icon: <NotInterested />,
+      label: t('core.button.revoke'),
+      allowItem: (item: Holder) => (item.passStatus === 'pending' || item.passStatus === 'active'),
+      onPress: (item: Holder) => openModal(CommonModalType.DELETE, { data: item })
+    },
+
+    {
+      actionBtn: true,
+      color: 'success',
+      icon: <ReplyAllOutlined />,
+      label: t('core.button.resend'),
+      allowItem: (item: Holder) => (item.passStatus === 'failed'),
+      onPress: (item: Holder) => openModal(CommonModalType.SEND, { data: item })
+    },
+
+    {
+      actionBtn: true,
+      color: 'success',
+      icon: <PanoramaFishEyeOutlined />,
+      label: t('core.button.reactive'),
+      allowItem: (item: Holder) => (item.passStatus === 'revoked'),
+      onPress: (item: Holder) => openModal(CommonModalType.REACTIVE, { data: item })
+    },
+
+   ]
 
   const holderState = [
     { value: 'all', label: t('core.label.select') },
@@ -154,8 +180,6 @@ export default function useHolderListController() {
 
 
 
-
-
   const columns: Column<Holder>[] = [
     {
       id: 'fullName',
@@ -173,20 +197,20 @@ export default function useHolderListController() {
       id: 'passStatus',
       label: t("core.label.state"),
       minWidth: 170,
-      format: (value, row) => <><Chip
+      format: (value, row) => <><CustomChip
+        background={row.passStatus}
         size="small"
         label={t("core.label." + row.passStatus)}
-        variant="outlined"
+
       /> {row.passStatus === 'failed' ? row.failedFeedback : ''}</>,
     },
     {
       id: 'type',
       label: t("core.label.typePass"),
       minWidth: 170,
-      format: (value, row) => <Chip
+      format: (value, row) => <CustomChip
         size="small"
         label={t("core.label." + row.type)}
-        variant="outlined"
       />,
     },
 
@@ -346,7 +370,7 @@ export default function useHolderListController() {
   const handleConfigConfirm = async ({ type, eventId = '' }: { type: 'event' | 'credential', eventId?: string }) => {
     setType(type)
     setEventId(eventId)
-     
+
     openModal(CommonModalType.UPLOAD_CSV)
   }
   const handleUploadConfirm = async (file: File | null) => {
