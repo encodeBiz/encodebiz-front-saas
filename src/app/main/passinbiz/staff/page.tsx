@@ -9,6 +9,8 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { Add } from '@mui/icons-material';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
+import { SassButton } from '@/components/common/buttons/GenericButton';
+import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 
 export default function HolderList() {
   const t = useTranslations();
@@ -22,33 +24,40 @@ export default function HolderList() {
 
   return (
     <Container maxWidth="lg">
-      <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
-        <BaseButton
-          role='link'
-          href='/main/passinbiz/staff/add'
-          variant='contained'
-        ><Add /> {t('staff.add')}</BaseButton>
-      </Box>
-      <br />
-      <GenericTable
-        data={items}
-        rowAction={rowAction}
-        columns={columns}
+      <HeaderPage
         title={t("staff.list")}
-        keyField="id"
-        loading={loading}
-        page={currentPage}
-        rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={setRowsPerPage}
-        onBack={onBack}
-        onNext={onNext}
-      
-        onSearch={(data) => onSearch(data)}
-        onDelete={(data) => openModal(CommonModalType.DELETE, { data })}
-        topFilter={topFilter}
+        actions={
+          <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
+            <SassButton
+              role='link'
+              href='/main/passinbiz/staff/add'
+              variant='contained'
+              startIcon={<Add />}
+            >{t('staff.add')}</SassButton>
+          </Box>
+        }
+      >
 
-      />
 
+        <GenericTable
+          data={items}
+          rowAction={rowAction}
+          columns={columns}
+          title={''}
+          keyField="id"
+          loading={loading}
+          page={currentPage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={setRowsPerPage}
+          onBack={onBack}
+          onNext={onNext}
+
+          onSearch={(data) => onSearch(data)}
+          onDelete={(data) => openModal(CommonModalType.DELETE, { data })}
+          topFilter={topFilter}
+
+        />
+      </HeaderPage>
       {open.type === CommonModalType.DELETE && <ConfirmModal
         isLoading={deleting}
         title={t('staff.deleteConfirmModalTitle')}

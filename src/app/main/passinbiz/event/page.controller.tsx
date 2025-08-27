@@ -10,8 +10,8 @@ import { useRouter } from "nextjs-toploader/app";
 import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
-import { CleaningServicesSharp, Person2, Search } from "@mui/icons-material";
-import { Box, Chip, IconButton, MenuItem, Select, TextField, Tooltip, Typography } from "@mui/material";
+import { Person2 } from "@mui/icons-material";
+import { Box, Chip, Typography } from "@mui/material";
 import { formatDateInSpanish } from "@/lib/common/Date";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
 import { TextFilter } from "@/components/common/table/filters/TextFilter";
@@ -85,7 +85,6 @@ export default function useIEventListController() {
 
 
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
-
     <SelectFilter
       defaultValue={'published'}
       value={filter.status}
@@ -105,9 +104,6 @@ export default function useIEventListController() {
         }, 1500);
       }}
     />
-
-
-
   </Box>
 
   const columns: Column<IEvent>[] = [

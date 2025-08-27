@@ -10,12 +10,15 @@ import { useRouter } from "nextjs-toploader/app";
 import { IStaff } from "@/domain/features/passinbiz/IStaff";
 import { deleteStaff, search } from "@/services/passinbiz/staff.service";
 
-import { CleaningServicesSharp, Event, Search } from "@mui/icons-material";
+import { Event } from "@mui/icons-material";
 import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
-import { Box, Select, MenuItem, TextField, IconButton, Tooltip, Typography } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import { formatDateInSpanish } from "@/lib/common/Date";
+import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
+import { TextFilter } from "@/components/common/table/filters/TextFilter";
 
 
+let resource: any = null;
 
 
 export default function useStaffListController() {
@@ -102,8 +105,6 @@ export default function useStaffListController() {
 
 
   const fetchingData = useCallback(() => {
-
-
     setLoading(true)
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
 
@@ -176,12 +177,11 @@ export default function useStaffListController() {
     { value: 'credential', label: t('core.label.credential') },
   ]
 
-  const onFilter = () => {
+  const onFilter = (filter: any) => {
+    setFilter({ ...filter })
     const filterData: Array<{ field: string, operator: string, value: any }> = []
     Object.keys(filter).forEach((key) => {
-
-
-      if (key === 'allowedTypes' && filter[key] != 'all')
+      if (key === 'allowedTypes' && (filter[key] != 'all' || filter[key] != 'none'))
         filterData.push({ field: key, operator: 'array-contains-any', value: [filter[key]] })
       else
         if (key !== 'allowedTypes' && filter[key] != '')
@@ -191,44 +191,26 @@ export default function useStaffListController() {
     setParams({ ...paramsData })
   }
 
-
-
-
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
-    <Select sx={{ minWidth: 120, height: 55 }}
-      value={filter.allowedTypes}
+    <SelectFilter
       defaultValue={'all'}
-      onChange={(e: any) => setFilter({ ...filter, allowedTypes: e.target.value })}  >
-      {holderType.map((option) => (
-        <MenuItem key={option.value} value={option.value}>
-          {option.label}
-        </MenuItem>
-      ))}
-    </Select>
+      value={filter.allowedTypes}
+      onChange={(value: any) => onFilter({ ...filter, allowedTypes: value })}
+      items={holderType}
+    />
 
 
-
-
-
-    <TextField
-      variant="outlined"
-      placeholder={t('holders.filter.email')}
+    <TextFilter
+      label={t('core.label.email')}
       value={filter.email}
-      onChange={(e) => {
-        setFilter({ ...filter, email: e.target.value });
+      onChange={(value) => {
+        setFilter({ ...filter, email: value });
+        if (resource) clearTimeout(resource);
+        resource = setTimeout(() => {
+          onFilter({ ...filter, email: value });
+        }, 1500);
       }}
     />
-    <Tooltip title="Filter">
-      <IconButton onClick={() => { if (typeof onFilter === 'function') onFilter() }}>
-        <Search />
-      </IconButton>
-    </Tooltip>
-
-    <Tooltip title="Limpiar filtros">
-      <IconButton onClick={() => { setFilter({ allowedTypes: 'all', email: '' }) }}>
-        <CleaningServicesSharp />
-      </IconButton>
-    </Tooltip>
   </Box>
 
 
