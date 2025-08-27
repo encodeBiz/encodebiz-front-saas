@@ -84,7 +84,7 @@ export default function useDashboardController() {
   useEffect(() => {
     if (service && user?.id && currentEntity?.entity.id)
       fetchServiceData()
-  }, [user?.id, service, currentEntity?.entity.id])
+  }, [user?.id, service, currentEntity?.entity.id, currentLocale])
 
   const dataTab1 = {
     title: 'Guía de configuración ',
