@@ -4,8 +4,6 @@ import {
     Typography,
     TextField,
     Autocomplete,
-    Chip,
-    Button,
     Dialog,
     DialogTitle,
     DialogContent,
@@ -20,13 +18,11 @@ import {
     ListItem,
     ListItemAvatar,
     ListItemText,
-    IconButton,
     Divider,
-    CircularProgress,
     Card,
     useTheme
 } from '@mui/material';
-import { DeleteOutline, PersonAdd, PersonRemove } from '@mui/icons-material';
+import { PersonAdd } from '@mui/icons-material';
 import IUser, { ICollaborator } from '@/domain/auth/IUser';
 import { useTranslations } from 'next-intl';
 import IUserEntity from '@/domain/auth/IUserEntity';

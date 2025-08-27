@@ -42,7 +42,7 @@ export type PricingCardProps = IPlan & {
 
 };
 
-export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthlyPrice, pricePerUse,description,name, maxHolders, features, highlighted = false, fromService, featuredList }) => {
+export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthlyPrice, pricePerUse, description, name, maxHolders, features, highlighted = false, fromService, featuredList }) => {
     const t = useTranslations();
     const { ubSubcribeAction, handleSubscripe } = usePricingCardController(id as string, name as string, fromService);
     const { push } = useRouter()
@@ -95,16 +95,16 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
                             variant="h6"                   >
                             {price}
                         </Typography>}
-                        
+
                     </Box>
                     <Divider sx={{ background: (theme) => highlighted ? "#FFF" : theme.palette.divider }} />
 
 
                     <List sx={{ marginTop: "10px" }}>
-                        {(features as Array<string>)?.map((feature, i) => (
+                        {(features as Array<string> ?? [])?.map((feature, i) => (
                             <ListItem key={i} disableGutters>
                                 <ListItemIcon sx={{ minWidth: 30 }}>
-                                    {featuredList[i] ? <CheckOutlined fontSize="small" sx={{ color: (theme) => highlighted ? "#FFF" : theme.palette.primary.main }} />: <Cancel fontSize="small" sx={{ color: (theme) => highlighted ? "#FFF" : theme.palette.primary.main }} />}
+                                    {featuredList[i] ? <CheckOutlined fontSize="small" sx={{ color: (theme) => highlighted ? "#FFF" : theme.palette.primary.main }} /> : <Cancel fontSize="small" sx={{ color: (theme) => highlighted ? "#FFF" : theme.palette.primary.main }} />}
                                 </ListItemIcon>
                                 <Typography variant="body2">{feature}{feature == 'Limite de emisiones:' && (maxHolders ?? 'Sin límite')}</Typography>
                             </ListItem>

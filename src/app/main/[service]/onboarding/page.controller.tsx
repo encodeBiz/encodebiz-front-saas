@@ -1,11 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { collection } from "@/config/collection";
 import { IPlan } from "@/domain/core/IPlan";
 import { IService } from "@/domain/core/IService";
+import { useAppLocale } from "@/hooks/useAppLocale";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useLayout } from "@/hooks/useLayout";
 import { useToast } from "@/hooks/useToast";
-import { fetchAvailablePlans, fetchService } from "@/services/common/subscription.service";
+import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
+import { fetchAvailablePlans, fetchService, fetchServiceList } from "@/services/common/subscription.service";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react"
@@ -20,18 +23,18 @@ export default function useDashboardController() {
 
   const { currentEntity } = useEntity();
   const [planList, setPlanList] = useState<Array<IPlan>>()
-
+  const {currentLocale} = useAppLocale()
 
 
   const [pending, setPending] = useState(false)
 
-  const fetchData = useCallback(async (featuredList:Array<string>) => {
+  const fetchData = useCallback(async (featuredList: Array<string>) => {
     try {
       setPending(true)
       const planData = await fetchAvailablePlans(service)
       const planList: Array<IPlan> = []
-       
-      planData.sort((a, b) => a.order - b.order ).forEach(element => {
+
+      planData.sort((a, b) => a.order - b.order).forEach(element => {
         //if (element.allowCustomTemplate && element.allowBranding) featuredList.push(t("salesPlan.brandingCustom"))
         planList.push({
           id: element.id as string,
@@ -44,7 +47,7 @@ export default function useDashboardController() {
           featuredList: element.featuredList,
           highlighted: element.highlighted,
           order: element.order,
-          description:element.description,
+          description: element.description,
           payPerUse: element.payPerUse,
           maxHolders: element.maxHolders
         })
@@ -66,8 +69,8 @@ export default function useDashboardController() {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const sData = await fetchService(service as string)
       setServiceData(sData)
-     
-      await fetchData(sData.featuredList)
+      const features: any = sData.featuredList
+      await fetchData(features[currentLocale])
       changeLoaderState({ show: false })
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -147,6 +150,37 @@ export default function useDashboardController() {
     ]
   }
 
+ /*
+  useEffect(() => {
+    const f = async () => {
+      const s = await fetchServiceList()
+
+      s.forEach(async element => {
+        await updateDocument<any>({
+          collection: 'service',
+          data: {
+            ...element,
+            about: {
+              es: 'Plataforma para crear, enviar y validar pases digitales de eventos y credenciales, compatibles con Apple Wallet y Google Wallet, que agiliza la entrega, evita falsificaciones y simplifica la validación sin equipos adicionales.',
+              en: 'Platform for creating, sending, and validating digital event passes and credentials, compatible with Apple Wallet and Google Wallet, that speeds up delivery, prevents counterfeiting, and simplifies validation without additional equipment.'
+            },
+            description: {
+              es: 'Emisión y validación de pases digitales, compatibles con Apple Wallet y Google Wallet.',
+              en: 'Issuance and validation of digital passes, compatible with Apple Wallet and Google Wallet.'
+            },
+            featuredList: {
+              es: element.featuredList,
+              en: element.featuredList,
+            }
+          },
+          id: element?.id as string,
+        });
+      });
+    }
+    f()
+
+  }, [])
+*/
 
 
   return { serviceData, pending, planList, dataTab1, dataTab2 }

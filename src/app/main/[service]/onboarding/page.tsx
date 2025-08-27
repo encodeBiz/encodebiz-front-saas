@@ -10,14 +10,14 @@ import { IPlan } from "@/domain/core/IPlan";
 import { useParams } from "next/navigation";
 import OnboardingCard from "@/components/features/dashboard/OnboardingCard/OnboardingCard";
 import TabContent from "./passBiz/tabContent";
-
+import { useAppLocale } from "@/hooks/useAppLocale";
+ 
 export default function Dashboard() {
   const { serviceData, pending, planList, dataTab1, dataTab2 } = useDashboardController()
   const sectionMoreInfofRef = useRef(null); // Create a ref for the section
   const sectionServicesRef = useRef(null); // Create a ref for the section
   const { service } = useParams<any>()
-
-
+  const {currentLocale} = useAppLocale()
 
 
   const scrollToPlan = () => {     
@@ -31,7 +31,7 @@ export default function Dashboard() {
 
       <OnboardingCard
         title={serviceData?.name}
-        description={serviceData?.about}
+        description={serviceData?.about?(serviceData?.about as any)[currentLocale]:''}
         image={image}
         onPress={scrollToPlan}
         right={-5}

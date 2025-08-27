@@ -18,7 +18,7 @@ export default function HolderList() {
     items, rowAction,
     onNext, onBack, setSort, sort, onRevoke, revoking, onSend,
     currentPage, topFilter,
-    columns,  onSearch,
+    columns, onSearch,
     loading, rowsPerPage, setRowsPerPage } = useHolderListController();
   const { open, closeModal, openModal } = useCommonModal()
 
@@ -35,7 +35,7 @@ export default function HolderList() {
 
         <BaseButton
           role='link'
-          onClick={() => openModal(CommonModalType.UPLOAD_CSV)}
+          onClick={() => openModal(CommonModalType.CONFIG_CSV)}
           variant='contained'
         ><UploadFile /> {t('holders.import')}</BaseButton>
       </Box>

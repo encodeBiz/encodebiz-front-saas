@@ -2,13 +2,22 @@ export interface IService {
 
     id: BizType; // o string si lo generalizas
     name: string;
-    description: string;
-    about: string;
+    description: {
+        es: string
+        en: string
+    };
+    about: {
+        es: string
+        en: string
+    };
     availablePlans: Array<PlanType>;
     activatedAt: Date
     active: boolean
     metadata: Record<string, any>
-    featuredList: Array<string>
+    featuredList: {
+        es: Array<string>,
+        en: Array<string>,
+    }
     image?: string
 
     isBillingActive: boolean
