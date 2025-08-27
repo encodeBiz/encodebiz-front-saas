@@ -28,7 +28,7 @@ import { useFormStatus } from '@/hooks/useFormStatus';
 const EntityPreferencesPage = () => {
     const t = useTranslations();
     const { user } = useAuth()
-    const { currentEntity } = useEntity()
+    const { currentEntity,  } = useEntity()
     const { openModal, open } = useCommonModal()
     const { handleDeleteEntity, pending } = useSettingEntityController()
     const formRef = useRef(null)
@@ -43,6 +43,7 @@ const EntityPreferencesPage = () => {
         {
             label: <Badge color="warning" variant="dot" badgeContent={currentEntity?.entity.branding?.textColor ? 0 : 1}>{t("entity.tabs.tab2.title")}</Badge>,
             content: <BrandPreferencesPage formRef={formRef} />,
+            
         }, {
             label: <Badge color="warning" variant="dot" badgeContent={!currentEntity?.entity.billingConfig?.payment_method || currentEntity?.entity.billingConfig?.payment_method?.length === 0 ? 1 : 0}>{t("entity.tabs.tab3.title")}</Badge>,
             content: <BillingPreferencesPage />,
