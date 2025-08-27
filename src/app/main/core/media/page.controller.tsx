@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useEntity } from '@/hooks/useEntity';
 import { useTranslations } from 'next-intl';
 import { useToast } from '@/hooks/useToast';
-import { buildSearch, Column } from '@/components/common/table/GenericTable';
+import { buildSearch, Column, IRowAction } from '@/components/common/table/GenericTable';
 import { IUserMedia } from '@/domain/core/IUserMedia';
 import { deleteMedia, search, uploadMedia } from '@/services/common/media.service';
 import { useAuth } from '@/hooks/useAuth';
@@ -12,6 +12,10 @@ import { Box, Avatar, Typography, Chip, useTheme } from '@mui/material';
 import { useStyles } from './page.styles';
 import { getFileIcon, formatFileSize } from '@/lib/common/String';
 import ImagePreview from '@/components/common/ImagePreview';
+import { DeleteOutline } from '@mui/icons-material';
+import { IMedia } from '@/components/common/modals/MediaModalSelectedFiles/MediaModalSelectedFiles';
+import { CommonModalType } from '@/contexts/commonModalContext';
+import { useCommonModal } from '@/hooks/useCommonModal';
 
 export const useMediaList = () => {
     const t = useTranslations();
@@ -31,8 +35,22 @@ export const useMediaList = () => {
     const [itemsHistory, setItemsHistory] = useState<IUserMedia[]>([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [total, setTotal] = useState(0);
+    const { openModal } = useCommonModal()
 
-  
+
+
+
+    const rowAction: Array<IRowAction> = [
+        {
+            actionBtn: true,
+            color: 'error',
+            icon: <DeleteOutline />,
+            label: t('core.button.delete'),
+            allowItem: () => true,
+            onPress: (item: IMedia) => openModal(CommonModalType.DELETE, { item })
+        },
+    ]
+
 
     const onSearch = (term: string): void => {
         setParams({ ...params, startAfter: null, filters: buildSearch(term) })
@@ -107,7 +125,7 @@ export const useMediaList = () => {
         },
     ];
 
-    const fetchingData =useCallback(() => {
+    const fetchingData = useCallback(() => {
         setLoading(true)
         search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
             if (res.length < rowsPerPage || res.length === 0)
@@ -139,7 +157,7 @@ export const useMediaList = () => {
             setLoading(false)
         })
 
-    },[currentEntity?.entity.id, params, rowsPerPage, showToast])
+    }, [currentEntity?.entity.id, params, rowsPerPage, showToast])
 
     useEffect(() => {
         if (params && currentEntity?.entity?.id)
@@ -202,9 +220,9 @@ export const useMediaList = () => {
 
     return {
         onDelete, selectedType, handleFileChange, isUploading, setSelectedType,
-        items,total,
+        items, total,
         atEnd,
-        atStart,
+        atStart, rowAction,
         onSearch, onNext, onBack,
         pagination, currentPage,
         columns, deleting,

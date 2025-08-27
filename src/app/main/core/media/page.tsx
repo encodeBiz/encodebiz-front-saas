@@ -14,8 +14,7 @@ import { useTranslations } from 'next-intl';
 import { useMediaList } from './page.controller';
 import { GenericTable } from '@/components/common/table/GenericTable';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
-import { useCommonModal } from '@/hooks/useCommonModal';
-import { CommonModalType } from '@/contexts/commonModalContext';
+
 import { fileTypes } from '@/config/constants';
 import { ImageCropper } from '@/components/common/ImageCropper/ImageCropper';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
@@ -23,12 +22,11 @@ import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 const EntityPreferencesPage = () => {
   const t = useTranslations();
   const { items,
-    onDelete,
+    onDelete, rowAction,
     onNext, onBack,
     currentPage, selectedType, handleFileChange, isUploading, setSelectedType,
     columns, deleting,
     loading, rowsPerPage, setRowsPerPage } = useMediaList();
-  const { openModal } = useCommonModal()
 
 
 
@@ -73,7 +71,8 @@ const EntityPreferencesPage = () => {
           onRowsPerPageChange={setRowsPerPage}
           onBack={onBack}
           onNext={onNext}
-          onDelete={(data) => openModal(CommonModalType.DELETE, { data })}
+          rowAction={rowAction}
+
         />
       </HeaderPage>
 

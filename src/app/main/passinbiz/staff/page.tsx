@@ -20,7 +20,7 @@ export default function HolderList() {
     currentPage, topFilter,
     columns, onSearch,
     loading, rowsPerPage, setRowsPerPage } = useHolderListController();
-  const { open, openModal } = useCommonModal()
+  const { open } = useCommonModal()
 
   return (
     <Container maxWidth="lg">
@@ -51,9 +51,7 @@ export default function HolderList() {
           onRowsPerPageChange={setRowsPerPage}
           onBack={onBack}
           onNext={onNext}
-
           onSearch={(data) => onSearch(data)}
-          onDelete={(data) => openModal(CommonModalType.DELETE, { data })}
           topFilter={topFilter}
 
         />

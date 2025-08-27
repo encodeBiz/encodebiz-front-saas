@@ -8,14 +8,14 @@ import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useRouter } from "nextjs-toploader/app";
 import { IStaff } from "@/domain/features/passinbiz/IStaff";
-import { deleteStaff, search } from "@/services/passinbiz/staff.service";
+import { createStaff, deleteStaff, search } from "@/services/passinbiz/staff.service";
 
-import { Event } from "@mui/icons-material";
+import { DeleteOutline, Event, ReplyAllOutlined } from "@mui/icons-material";
 import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
-import { Box, TextField, Typography } from "@mui/material";
-import { formatDateInSpanish } from "@/lib/common/Date";
+import { Box } from "@mui/material";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
 import { TextFilter } from "@/components/common/table/filters/TextFilter";
+import { useLayout } from "@/hooks/useLayout";
 
 
 let resource: any = null;
@@ -40,12 +40,51 @@ export default function useStaffListController() {
   const [itemsHistory, setItemsHistory] = useState<IStaff[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [total, setTotal] = useState(0);
-  const { closeModal } = useCommonModal()
+  const { closeModal, openModal } = useCommonModal()
   const { push } = useRouter()
   const [filter, setFilter] = useState<any>({ allowedTypes: 'all', email: '' });
+  const { changeLoaderState } = useLayout()
+
+  const handleResend = async (item: IStaff) => {
+    const dataForm = {
+      "fullName": item.fullName,
+      "email": item.email,
+      "entityId": currentEntity?.entity?.id as string,
+      allowedTypes: item.allowedTypes,
+      id: item.id
+    }
+    changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+    await createStaff(dataForm, token)
+    showToast(t('core.feedback.success'), 'success');
+    changeLoaderState({ show: false })
+
+  }
 
   const rowAction: Array<IRowAction> = [
-    { icon: <Event />, label: t('core.label.staff'), allowItem: (item: IStaff) => item.allowedTypes.includes('event'), onPress: (item: IStaff) => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff/${item.id}/events`) },
+    {
+      actionBtn: true,
+      color: 'error',
+      icon: <DeleteOutline />,
+      label: t('core.button.delete'),
+      allowItem: () => true,
+      onPress: (item: IStaff) => openModal(CommonModalType.DELETE, { item })
+    },
+    {
+      actionBtn: true,
+      color: 'primary',
+      icon: <Event />,
+      label: t('core.label.staff1'),
+      allowItem: (item: IStaff) => item.allowedTypes.includes('event'),
+      onPress: (item: IStaff) => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff/${item.id}/events`)
+    },
+    {
+      actionBtn: true,
+      color: 'primary',
+      icon: <ReplyAllOutlined />,
+      label: t('core.label.resend'),
+      allowItem: () => true,
+      onPress: (item: IStaff) => handleResend(item)
+    },
   ]
   const onSearch = (term: string): void => {
     setParams({ ...params, startAfter: null, filters: buildSearch(term) })
@@ -93,13 +132,7 @@ export default function useStaffListController() {
       minWidth: 170,
       format: (value) => value.join(', ')
     },
-    {
-      id: 'createdAt',
-      label: t("core.label.date"),
-      minWidth: 170,
-      sortable: true,
-      format: (value, row) => <Typography sx={{ textTransform: 'capitalize' }}>{formatDateInSpanish(row.createdAt)}</Typography>,
-    },
+    
   ];
 
 

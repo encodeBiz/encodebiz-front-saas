@@ -373,8 +373,7 @@ export function GenericTable<T extends Record<string, any>>({
                     })}
 
                     {(onEdit || onDelete || rowAction.length > 0) && (
-                      <TableCell align="right" sx={{ whiteSpace: 'nowrap' }}>
-
+                      <TableCell align="right" sx={{ whiteSpace: 'nowrap', gap:2, display:'flex', flexDirection:'row' }}>
 
                         {rowAction.map((e, i) => {
                           if (e.allowItem(row as any)) {

@@ -110,6 +110,8 @@
       "status": "Estado",
       "customFields": "Campos personalizados",
       "staff": "Personal de apoyo",
+      "staff1": "Personal",
+      "resend":"Reenviar",
       "draft": "Borrador",
       "published": "Publicado",
       "archived": "Archivado",

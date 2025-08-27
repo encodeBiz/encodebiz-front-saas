@@ -3,10 +3,7 @@ import { Container, Box } from '@mui/material';
 import { useTranslations } from "next-intl";
 import useHolderListController from './page.controller';
 import { GenericTable } from "@/components/common/table/GenericTable";
-import { BaseButton } from '@/components/common/buttons/BaseButton';
-import { useCommonModal } from '@/hooks/useCommonModal';
-import { CommonModalType } from '@/contexts/commonModalContext';
-import { Add, ArrowUpward, UploadFile } from '@mui/icons-material';
+import { Add, ArrowUpward } from '@mui/icons-material';
 import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { useEntity } from '@/hooks/useEntity';
@@ -18,12 +15,11 @@ export default function HolderList() {
   const t = useTranslations();
   const {
     items, rowAction, onDelete, deleting,
-    onNext, onBack, onEdit,
+    onNext, onBack, 
     currentPage, topFilter,
     columns, onSearch,
     loading, rowsPerPage, setRowsPerPage } = useHolderListController();
-  const { openModal } = useCommonModal()
-  const { entitySuscription } = useEntity()
+   const { entitySuscription } = useEntity()
 
   return (
     <Container maxWidth="lg">
@@ -61,8 +57,7 @@ export default function HolderList() {
             onRowsPerPageChange={setRowsPerPage}
             onBack={onBack}
             onNext={onNext}
-            onEdit={(data) => onEdit(data)}
-            onDelete={(data) => openModal(CommonModalType.DELETE, { data })}
+          
             onSearch={(data) => onSearch(data)}
             topFilter={topFilter}
           /> :

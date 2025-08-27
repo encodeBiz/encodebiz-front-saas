@@ -10,7 +10,7 @@ import { useRouter } from "nextjs-toploader/app";
 import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
-import { Person2 } from "@mui/icons-material";
+import { DeleteOutline, Edit, Person2 } from "@mui/icons-material";
 import { Box, Chip, Typography } from "@mui/material";
 import { formatDateInSpanish } from "@/lib/common/Date";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
@@ -39,7 +39,7 @@ export default function useIEventListController() {
   const [total, setTotal] = useState(0);
   const { closeModal } = useCommonModal()
   const [filter, setFilter] = useState<any>({ status: 'published' });
-
+  const { openModal } = useCommonModal()
   const onSearch = (term: string): void => {
     setParams({ ...params, startAfter: null, filters: buildSearch(term) })
   }
@@ -213,7 +213,35 @@ export default function useIEventListController() {
   }
 
   const rowAction: Array<IRowAction> = [
-    { icon: <Person2 />, label: t('core.label.staff'), allowItem: () => true, onPress: (item: IEvent) => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event/${item.id}/staff`) },
+
+
+    {
+      actionBtn: true,
+      color: 'primary',
+      icon: <Person2 />,
+      label: t('core.label.staff'),
+      allowItem: () => true,
+      onPress: (item: IEvent) => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event/${item.id}/staff`)
+    },
+
+    {
+      actionBtn: true,
+      color: 'primary',
+      icon: <Edit />,
+      label: t('core.buttom.edit'),
+      allowItem: () => true,
+      onPress: (item: IEvent) => onEdit(item)
+    },
+
+    {
+      actionBtn: true,
+      color: 'error',
+      icon: <DeleteOutline />,
+      label: t('core.button.delete'),
+      allowItem: () => true,
+      onPress: (item: IEvent) => openModal(CommonModalType.DELETE, { item })
+    },
+
   ]
 
   useEffect(() => {
