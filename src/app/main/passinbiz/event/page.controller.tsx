@@ -228,7 +228,7 @@ export default function useIEventListController() {
       actionBtn: true,
       color: 'primary',
       icon: <Edit />,
-      label: t('core.buttom.edit'),
+      label: t('core.button.edit'),
       allowItem: () => true,
       onPress: (item: IEvent) => onEdit(item)
     },
