@@ -4,7 +4,6 @@ import { useTranslations } from "next-intl";
 import useHolderListController from './page.controller';
 
 import { GenericTable } from "@/components/common/table/GenericTable";
-import { BaseButton } from '@/components/common/buttons/BaseButton';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { Add } from '@mui/icons-material';

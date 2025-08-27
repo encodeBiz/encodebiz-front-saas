@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Typography, Box, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useTranslations } from 'next-intl';

@@ -2,7 +2,6 @@
 import React, { useRef } from 'react';
 import {
     Box,
-    Button,
     Dialog,
     DialogTitle,
     DialogContent,
