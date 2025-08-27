@@ -1,7 +1,7 @@
 import { collection } from "@/config/collection";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { IEntitySuscription, ISubscription, IUnSubscription, StripeInvoice } from "@/domain/auth/ISubscription";
-import { IPlanData } from "@/domain/core/IPlan";
+import { IPlan, IPlanData } from "@/domain/core/IPlan";
 import { getAll, getOne } from "@/lib/firebase/firestore/readDocument";
 import { IService } from "@/domain/core/IService";
 import { SearchParams } from "@/domain/firebase/firestore";
@@ -10,7 +10,7 @@ import { Unsubscribe } from "firebase/firestore";
 
 
 
-export async function fetchAvailablePlans(productId: string): Promise<IPlanData[]> {
+export async function fetchAvailablePlans(productId: string): Promise<IPlan[]> {
     try {
         const planDataList = await getAll<IPlanData>(`service/${productId}/plan`);
         return planDataList;

@@ -364,6 +364,8 @@
   },
   "salesPlan": {
     "title": "PLANES DISPONIBLES",
+    "emissionLimit":"Limite de emisiones:",
+     "sinLimit":"Sin límites",
     "subTitle": "Elige entre la versión Free, Básica o Avanzada según las funcionalidades que necesites. Actualiza o cambia tu plan en cualquier momento para potenciar tu experiencia con PassBiz.",
     "free": "Gratis",
     "configureLegal": "Configuracion de datos legales de la entidad",

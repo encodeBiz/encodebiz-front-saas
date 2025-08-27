@@ -9,7 +9,10 @@ export interface IPlan {
     order: number
     highlighted: boolean
     featuredList: boolean[]
-    description: string
+    description: {
+        es: string,
+        en: string
+    }
     payPerUse:boolean
     monthlyPrice: string
     pricePerUse:string
@@ -28,7 +31,10 @@ export interface IPlanData {
     order: number
     highlighted: boolean
     featuredList: boolean[]
-    description: string
+   description: {
+        es: string,
+        en: string
+    }
     pricePerUse:string
     customPrice?: boolean
 }

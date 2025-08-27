@@ -1,24 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Typography, Box, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useTranslations } from 'next-intl';
 import usePricingCardController from './RenuewCard.controller';
 import { IEntitySuscription } from '@/domain/auth/ISubscription';
 import ConfirmModal from '../modals/ConfirmModal';
-import { useCommonModal } from '@/hooks/useCommonModal';
-import { CommonModalType } from '@/contexts/commonModalContext';
 import { SassButton } from '../buttons/GenericButton';
 import { useRouter } from 'nextjs-toploader/app';
 import { MAIN_ROUTE } from '@/config/routes';
+import { useAppLocale } from '@/hooks/useAppLocale';
 
 const PlanCard = styled(Box)<{ featured?: boolean }>(({ theme, featured }) => ({
     maxWidth: 305,
     minWidth: 305,
-    minHeight: 400,
+    minHeight: 380,
     margin: theme.spacing(2),
-    //border: `1px solid ${theme.palette.primary.main}`,
-    transform: featured ? 'scale(1.05)' : 'scale(1)',
-    transition: 'transform 0.3s ease',
+
     color: featured ? `${theme.palette.primary.contrastText}` : `${theme.palette.text.primary}`,
     borderRadius: 8,
     background: featured ? 'linear-gradient(23.64deg, #001551 31.23%, #002FB7 99.28%)' : theme.palette.background.paper,
@@ -34,9 +31,10 @@ export type PricingCardProps = {
 
 export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
     const t = useTranslations();
-    const { unSubcribeAction, loadingGetPlan } = usePricingCardController(plan);
-    const { openModal } = useCommonModal()
+    const { unSubcribeAction, loadingGetPlan, planInfo } = usePricingCardController(plan);
     const { push } = useRouter()
+    const { currentLocale } = useAppLocale()
+
 
     return (
         <PlanCard featured={true}>
@@ -51,26 +49,24 @@ export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
                         {t(`salesPlan.${plan.plan}`) || plan.plan}
                     </Typography>
                     <Typography variant="body1">
-                        Ideal para microempresas o equipos pequeños.
+                        {planInfo?.description ? (planInfo?.description as any)[currentLocale] : ''}
                     </Typography>
                 </Box>
 
                 <Divider sx={{ background: "#FFF" }} />
-
                 <Box py={2}>
-
-                    <Typography variant="h4" >
-                        €15/Mes
-                    </Typography>
-                    <Typography variant="body2" component="span">
-                        108€ año.
+                    <Typography
+                        align='center'
+                        variant="h5" >
+                        {planInfo?.payPerUse ? planInfo?.pricePerUse : planInfo?.monthlyPrice}
                     </Typography>
                 </Box>
+
 
                 <Divider sx={{ background: "#FFF" }} />
 
                 <SassButton
-                    sx={{ mb: 1, mt: 2, height: 40 }}
+                    sx={{ mb: 1, mt: 4, height: 40 }}
                     fullWidth
                     variant="contained"
                     onClick={() => push(`/${MAIN_ROUTE}/${plan.serviceId}/onboarding`)}

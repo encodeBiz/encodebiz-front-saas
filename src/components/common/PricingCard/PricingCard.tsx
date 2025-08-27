@@ -13,6 +13,7 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import SheetModalModal from '../modals/SheetModal';
 import { SassButton } from '../buttons/GenericButton';
 import { Cancel, CheckOutlined } from '@mui/icons-material';
+import { useAppLocale } from '@/hooks/useAppLocale';
 
 const PlanCard = styled(Box)<{ highlighted?: boolean }>(({ theme, highlighted }) => ({
     maxWidth: 305,
@@ -46,13 +47,14 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
     const t = useTranslations();
     const { ubSubcribeAction, handleSubscripe } = usePricingCardController(id as string, name as string, fromService);
     const { push } = useRouter()
+    const { currentLocale } = useAppLocale()
     const { open, closeModal } = useCommonModal()
     const { entitySuscription, currentEntity } = useEntity()
     const [items, setItems] = useState<Array<string>>([])
     const [suscribed] = useState(entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length > 0)
     const [price] = useState(payPerUse ? pricePerUse : monthlyPrice)
 
-     
+
 
     useEffect(() => {
         const data: Array<string> = []
@@ -74,7 +76,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
                             {t(`salesPlan.${name}`) || name}
                         </Typography>
                         <Typography variant="body1">
-                            {description}
+                            {description ? (description as any)[currentLocale] : description['es']}
                         </Typography>
                     </Box>
 
@@ -107,7 +109,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
                                 <ListItemIcon sx={{ minWidth: 30 }}>
                                     {featuredList[i] ? <CheckOutlined fontSize="small" sx={{ color: (theme) => highlighted ? "#FFF" : theme.palette.primary.main }} /> : <Cancel fontSize="small" sx={{ color: (theme) => highlighted ? "#FFF" : theme.palette.primary.main }} />}
                                 </ListItemIcon>
-                                <Typography variant="body2">{feature}{feature == 'Limite de emisiones:' && (maxHolders ?? 'Sin límite')}</Typography>
+                                <Typography variant="body2">{feature}{feature == t('salesPlan.emissionLimit') && (maxHolders ?? t('salesPlan.sinLimit'))}</Typography>
                             </ListItem>
                         ))}
                     </List>
