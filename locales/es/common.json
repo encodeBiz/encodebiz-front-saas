@@ -426,7 +426,7 @@
   "holders": {
     "title": "Pases Digitales",
     "holderList": "Pases Digitales",
-    "addHolder": "Adicionar",
+    "addHolder": "Crear pase",
     "editHolder": "Editar",
     "pending": "Pending",
     "revoked": "Revocado",
@@ -461,7 +461,7 @@
   "event": {
     "title": "Eventos",
     "list": "Eventos",
-    "add": "Adicionar",
+    "add": "Crear evento",
     "edit": "Editar",
     "import": "Importar",
     "description": "Rellene los campos para registrar el evento",
@@ -476,7 +476,7 @@
   "staff": {
     "title": "Personal de Apoyo",
     "list": "Personal de Apoyo",
-    "add": "Adicionar",
+    "add": "Registrar personal",
     "edit": "Editar",
     "import": "Importar",
     "description2": "Asocie o retire eventos al personal de apoyo",

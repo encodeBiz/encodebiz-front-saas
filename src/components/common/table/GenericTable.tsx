@@ -228,7 +228,7 @@ export function GenericTable<T extends Record<string, any>>({
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-end',
           alignItems: 'center',
           p: 2
         }}

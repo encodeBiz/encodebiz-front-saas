@@ -13,9 +13,12 @@ import { CommonModalType } from "@/contexts/commonModalContext";
 import { CleaningServicesSharp, Person2, Search } from "@mui/icons-material";
 import { Box, Chip, IconButton, MenuItem, Select, TextField, Tooltip, Typography } from "@mui/material";
 import { formatDateInSpanish } from "@/lib/common/Date";
+import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
+import { TextFilter } from "@/components/common/table/filters/TextFilter";
 
 
 
+let resource: any = null;
 
 export default function useIEventListController() {
   const t = useTranslations();
@@ -63,7 +66,8 @@ export default function useIEventListController() {
   }, [itemsHistory.length, rowsPerPage])
 
 
-  const onFilter = () => {
+  const onFilter = (filter: any) => {
+    setFilter({ ...filter })
     const filterData: Array<{ field: string, operator: string, value: any }> = []
     Object.keys(filter).forEach((key) => {
       filterData.push({ field: key, operator: '==', value: filter[key] })
@@ -81,35 +85,29 @@ export default function useIEventListController() {
 
 
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
-    <Select sx={{ minWidth: 120, height: 55 }}
-      value={filter.status}
+
+    <SelectFilter
       defaultValue={'published'}
-      onChange={(e: any) => setFilter({ ...filter, status: e.target.value })}  >
-      {options.map((option) => (
-        <MenuItem key={option.value} value={option.value}>
-          {option.label}
-        </MenuItem>
-      ))}
-    </Select>
-    <TextField
-      variant="outlined"
-      placeholder={t('core.label.name')}
+      value={filter.status}
+      onChange={(value: any) => onFilter({ ...filter, status: value })}
+      items={options}
+    />
+
+
+    <TextFilter
+      label={t('core.label.name')}
       value={filter.name}
-      onChange={(e) => {
-        setFilter({ ...filter, name: e.target.value });
+      onChange={(value) => {
+        setFilter({ ...filter, name: value });
+        if (resource) clearTimeout(resource);
+        resource = setTimeout(() => {
+          onFilter({ ...filter, name: value });
+        }, 1500);
       }}
     />
-    <Tooltip title="Filter">
-      <IconButton onClick={() => { if (typeof onFilter === 'function') onFilter() }}>
-        <Search />
-      </IconButton>
-    </Tooltip>
 
-    <Tooltip title="Limpiar filtros">
-      <IconButton onClick={() => { setFilter({ status: 'published' }) }}>
-        <CleaningServicesSharp />
-      </IconButton>
-    </Tooltip>
+
+
   </Box>
 
   const columns: Column<IEvent>[] = [
@@ -149,6 +147,11 @@ export default function useIEventListController() {
 
   const fetchingData = useCallback(() => {
     setLoading(true)
+
+    if (params.filters.find((e: any) => e.field === 'status' && e.value === 'none'))
+      params.filters = params.filters.filter((e: any) => e.field !== "status")
+
+
     search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
       if (res.length < rowsPerPage || res.length === 0)
         setAtEnd(true)
