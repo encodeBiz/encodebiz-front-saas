@@ -11,16 +11,18 @@ import { useParams } from "next/navigation";
 import OnboardingCard from "@/components/features/dashboard/OnboardingCard/OnboardingCard";
 import TabContent from "./passBiz/tabContent";
 import { useAppLocale } from "@/hooks/useAppLocale";
- 
+import { useTranslations } from "next-intl";
+
 export default function Dashboard() {
   const { serviceData, pending, planList, dataTab1, dataTab2 } = useDashboardController()
   const sectionMoreInfofRef = useRef(null); // Create a ref for the section
   const sectionServicesRef = useRef(null); // Create a ref for the section
   const { service } = useParams<any>()
-  const {currentLocale} = useAppLocale()
+  const { currentLocale } = useAppLocale()
+  const t = useTranslations()
 
 
-  const scrollToPlan = () => {     
+  const scrollToPlan = () => {
     if (sectionServicesRef.current) {
       (sectionServicesRef.current as any).scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -31,7 +33,7 @@ export default function Dashboard() {
 
       <OnboardingCard
         title={serviceData?.name}
-        description={serviceData?.about?(serviceData?.about as any)[currentLocale]:''}
+        description={serviceData?.about ? (serviceData?.about as any)[currentLocale] : ''}
         image={image}
         onPress={scrollToPlan}
         right={-5}
@@ -46,17 +48,17 @@ export default function Dashboard() {
       <HelpTabs ref={sectionMoreInfofRef} tabs={[
         {
           id: '1',
-          title: "¿Como empiezo?",
-           icon: <SettingsOutlined fontSize="small" />,
+          title: t(`onboarding.${service}.tab1Title`),
+          icon: <SettingsOutlined fontSize="small" />,
           tabContent: <TabContent title={dataTab1.title} subtitle={dataTab1.subtitle} data={dataTab1.data} />
         },
         {
           id: '2',
-          title: "¿Que resolvemos?",
-           icon: <SettingsOutlined fontSize="small" />,
-          tabContent: <TabContent title={dataTab2.title}   data={dataTab2.data} />
+          title: t(`onboarding.${service}.tab2Title`),
+          icon: <SettingsOutlined fontSize="small" />,
+          tabContent: <TabContent title={dataTab2.title} data={dataTab2.data} />
         },
-         
+
       ]} />
 
       {!pending && Array.isArray(planList) && <SalesPlan ref={sectionServicesRef} salesPlans={planList as Array<IPlan>} fromService={service} />}

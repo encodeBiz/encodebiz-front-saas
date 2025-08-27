@@ -10,6 +10,14 @@ export interface IService {
         es: string
         en: string
     };
+     steps: {
+        es: Array<{title: string, description: string}>
+        en: Array<{title: string, description: string}>
+    };
+    target: {
+        es: Array<{title: string, description: string}>
+        en: Array<{title: string, description: string}>
+    };
     availablePlans: Array<PlanType>;
     activatedAt: Date
     active: boolean

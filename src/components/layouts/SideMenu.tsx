@@ -7,8 +7,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Collapse,
-  Divider,
+  Collapse, 
   Box,
   IconButton
 } from '@mui/material';

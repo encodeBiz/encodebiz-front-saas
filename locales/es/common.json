@@ -202,7 +202,7 @@
       "edit": "Editar",
       "selected": "Seleccionar",
       "confirm": "Confirmar",
-      "confirmSCV":"Importar SCV",
+      "confirmSCV": "Importar SCV",
       "cancel": "Cancelar",
       "crop": "Recortar Imagen",
       "file": "Imagen original",
@@ -342,6 +342,24 @@
         "title": "Colaboradores",
         "btn": "Configurar Billing"
       }
+    }
+  },
+  "onboarding": {
+    "passinbiz": {
+      "tab1Title": "¿Como empiezo?",
+      "tab2Title": "¿Que resolvemos?",
+      "stepsTitle": "Guía de configuración",
+      "stepsDesc": "Sigue los pasos de esta guía para configurar el servicio de PassBiz.",
+      "targetTitle": "Resuelve con PassBiz lo que antes era un problema:",
+      "targetDesc": "Sigue los pasos de esta guía para configurar el servicio de PassBiz."
+    },
+    "checkinbiz": {
+      "tab1Title": "¿Como empiezo?",
+      "tab2Title": "¿Que resolvemos?",
+      "stepsTitle": "Guía de configuración",
+      "stepsDesc": "Sigue los pasos de esta guía para configurar el servicio de PassBiz.",
+      "targetTitle": "Resuelve con PassBiz lo que antes era un problema:",
+      "targetDesc": "Sigue los pasos de esta guía para configurar el servicio de PassBiz."
     }
   },
   "salesPlan": {
