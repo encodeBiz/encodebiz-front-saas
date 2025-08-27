@@ -219,7 +219,7 @@ export default function useIEventListController() {
       actionBtn: true,
       color: 'primary',
       icon: <Person2 />,
-      label: t('core.label.staff'),
+      label: t('core.label.staff1'),
       allowItem: () => true,
       onPress: (item: IEvent) => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event/${item.id}/staff`)
     },

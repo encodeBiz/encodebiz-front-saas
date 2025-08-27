@@ -193,6 +193,7 @@
     },
     "button": {
       "revoke": "Revocar",
+      "edit":"Editar",
       "contactUs": "Contactar con encodeBiz",
       "upgrade": "Upgradear",
       "resend": "Reenviar",
