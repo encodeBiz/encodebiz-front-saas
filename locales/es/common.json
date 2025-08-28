@@ -373,9 +373,9 @@
     "sinLimit": "Sin límites",
     "subTitle": "Elige entre la versión Free, Básica o Avanzada según las funcionalidades que necesites. Actualiza o cambia tu plan en cualquier momento para potenciar tu experiencia con PassBiz.",
     "free": "Gratis",
-    "configureLegal": "Configuracion de datos legales de la entidad",
-    "configureBranding": "Configuracion de diseño de entidad",
-    "configureBilling": "Configuracion de mecanismo de pago",
+    "configureLegal": "Datos de la Empresa",
+    "configureBranding": "Identidad Visual",
+    "configureBilling": "Métodos de pago",
     "standard": "Estandar",
     "upgrade": "Actualizar",
     "month": "mes",
@@ -417,8 +417,8 @@
     "contract": "Plan Actual",
     "renew": "Cambiar plan",
     "del": "Eliminar suscripción",
-    "imageConfirmModalTitle": "Entidad no configurada",
-    "imageConfirmModalTitle2": "Para poder realizar una suscripción debe previamente configurar los siguientes datos en la entidad:",
+    "imageConfirmModalTitle": "Configura tu Entidad para continuar",
+    "imageConfirmModalTitle2": "Antes de contratar un plan, completa la información pendiente en la sección Entidad de tu cuenta:",
     "notAllowedPlan": "Debes actualizar los datos legales de la entidad seleccionada antes de obtener un plan."
   },
   "terms": {

@@ -50,18 +50,18 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
     const { currentLocale } = useAppLocale()
     const { open, closeModal } = useCommonModal()
     const { entitySuscription, currentEntity } = useEntity()
-    const [items, setItems] = useState<Array<string>>([])
+    const [items, setItems] = useState<Array<{ text: string, link: string }>>([])
     const [suscribed] = useState(entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length > 0)
     const [price] = useState(payPerUse ? pricePerUse : monthlyPrice)
 
 
 
     useEffect(() => {
-        const data: Array<string> = []
+        const data: Array<{ text: string, link: string }> = []
         if (id !== 'fremium' && currentEntity?.entity.id) {
-            if (!currentEntity.entity.legal?.legalName) data.push(t('salesPlan.configureLegal'))
-            if (!currentEntity.entity.branding?.textColor) data.push(t('salesPlan.configureBranding'))
-            if (!currentEntity?.entity?.billingConfig || currentEntity?.entity?.billingConfig?.payment_method?.length === 0) data.push(t('salesPlan.configureBilling'))
+            if (!currentEntity.entity.legal?.legalName) data.push({ text: t('salesPlan.configureLegal'), link: '/main/core/entity?tab=company' })
+            if (!currentEntity.entity.branding?.textColor) data.push({ text: t('salesPlan.configureBranding'), link: '/main/core/entity?tab=branding' })
+            if (!currentEntity?.entity?.billingConfig || currentEntity?.entity?.billingConfig?.payment_method?.length === 0) data.push({ text: t('salesPlan.configureBilling'), link: '/main/core/entity?tab=billing' })
         }
         setItems(data)
     }, [currentEntity?.entity?.billingConfig, currentEntity?.entity?.billingConfig?.payment_method?.length, currentEntity?.entity.branding?.textColor, currentEntity?.entity.id, currentEntity?.entity.legal?.legalName, id, t])
@@ -138,7 +138,10 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
             type={CommonModalType.BILLING}
             onOKAction={() => {
                 closeModal(CommonModalType.BILLING)
-                push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity`)
+                if (items.length > 0)
+                    push(items[0].link)
+                else
+                    push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity`)
             }}
         />}
     </>
