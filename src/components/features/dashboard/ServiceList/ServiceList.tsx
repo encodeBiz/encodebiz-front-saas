@@ -12,16 +12,19 @@ import { useAppLocale } from '@/hooks/useAppLocale';
 import passnbiz from '../../../../../public/assets/images/icono passbiz.svg'
 import checkbiz from '../../../../../public/assets/images/checkbiz.svg'
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
+import { useTheme } from '@mui/material';
 
 const icons = {
     'checkinbiz': checkbiz,
     'passinbiz': passnbiz,
 }
 const ServiceList = () => {
-
+    const theme = useTheme()
     const { push } = useRouter()
     const { entityServiceList } = useEntity()
     const styles = useStyles()
+    const t = useTranslations()
     const { currentLocale } = useAppLocale()
     const handleActionClick = (id: any) => {
         push(`/${MAIN_ROUTE}/${id}/onboarding`)
@@ -41,12 +44,14 @@ const ServiceList = () => {
                             <Box sx={styles.iconContainer} >
                                 <Image src={icons[card.id]} width={76} height={76} alt='' />
                             </Box>
-                            <Typography textTransform={'uppercase'} gutterBottom variant="h5" component="div">
-                                {card.name}
-                            </Typography>
-                            <Typography variant="body2" color="text.primary" fontSize={16}>
-                                {card?.description ? (card?.description as any)[currentLocale] : ''}
-                            </Typography>
+                            <Box sx={styles.textContainer} >
+                                <Typography textTransform={'uppercase'} gutterBottom variant="h5" component="div">
+                                    {card.name} {card.id==='checkinbiz' && <span style={{color:theme.palette.primary.main}}>{t('core.label.comminsoom')}</span>}
+                                </Typography>
+                                <Typography variant="body2" color="text.primary" fontSize={16}>
+                                    {card?.description ? (card?.description as any)[currentLocale] : ''}
+                                </Typography>
+                            </Box>
 
                         </CardContent>
                     </Card>

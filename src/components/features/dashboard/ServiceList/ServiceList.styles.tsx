@@ -37,5 +37,13 @@ export const useStyles = (): Record<string, SxProps<Theme>> => ({
   icon: {
     color: '#FFF',
     fontSize: 40
+  },
+  textContainer:{
+    display:'flex',
+    flexDirection:'column',
+    gap:1,
+    justifyContent:'flex-start',
+    alignItems:'flex-start',
+    textAlign:'left'
   }
 })

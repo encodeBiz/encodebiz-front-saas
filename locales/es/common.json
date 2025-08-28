@@ -92,6 +92,7 @@
       "active": "Activo",
       "thumbnail": "Imagen en miniatura",
       "subject": "Asunto",
+      "comminsoom":"- Muy pronto",
       "from": "Correo electronico",
       "owner": "Propietario",
       "availableEvent": "Eventos disponibles",
@@ -283,7 +284,7 @@
       "stats": "Estadísticas",
       "card": {
         "title": "Bienvenido a encodeBiz SaaS",
-        "subtitle": "Registra, controla y gestiona accesos en un solo lugar, CheckBiz y PassBiz listos para ti."
+        "subtitle": "Registra, controla y gestiona accesos en un solo lugar, PassBiz listo para ti y muy pronto CheckBiz."
       },
       "cardDesc": {
         "title": "Más que un software, tu socio en desarrollo digital",
