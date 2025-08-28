@@ -37,9 +37,9 @@ export default function Dashboard() {
         image={image}
         onPress={scrollToPlan}
         right={-5}
-        top={40}
+        top={0}
         width={350}
-        height={350}
+        height={390}
         heightCard={376}
       />
 

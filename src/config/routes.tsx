@@ -10,6 +10,7 @@ import { DashBoardIcon } from '@/components/common/icons/DashBoardIcon';
 import { PassBizIcon } from '@/components/common/icons/PassBizIcon';
 import { CheckBizIcon } from '@/components/common/icons/CheckBizIcon';
 import { MediaIcon } from '@/components/common/icons/MediaIcon';
+import { PassInBizIcon } from '@/components/common/icons/PassInBizIcon';
 
 export const MAIN_ROUTE = 'main'
 export const GENERAL_ROUTE = 'core'
@@ -68,14 +69,14 @@ export const menuItemsServices = [{
 }, {
     id: 'checkinbiz',
     name: 'CheckinBiz',
-    icon: <PassBizIcon />,
+    icon: <CheckBizIcon />,
     link: `/${MAIN_ROUTE}/checkinbiz/onboarding`,
     subMenu: CHECKINBIZ
 },
 {
     id: 'passinbiz',
     name: 'PassinBiz',
-    icon: <CheckBizIcon />,
+    icon: <PassInBizIcon />,
     link: `/${MAIN_ROUTE}/passinbiz/onboarding`,
     subMenu: PASSINBIZ
 },

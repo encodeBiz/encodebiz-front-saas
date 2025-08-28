@@ -34,7 +34,7 @@ export const lightTheme: PaletteOptions = {
   },
   background: {
     default: '#F0EFFD',
-    paper: '#ffffff',
+    paper: '#fffBff',
   },
   text: {
     primary: '#1C1D1B',
