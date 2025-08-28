@@ -1,9 +1,10 @@
-import React, {  } from 'react';
+import React, { } from 'react';
 import { Box, Button, TextField } from '@mui/material';
 import { FieldProps, useField } from 'formik';
 import { useTranslations } from 'next-intl';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Add } from '@mui/icons-material';
+import { SassButton } from '../../buttons/GenericButton';
 
 interface DynamicField {
     label: string;
@@ -17,7 +18,7 @@ const emptyItem = { label: '', value: '' };
 const DynamicKeyValueInput: React.FC<FieldProps> = ({ ...props }) => {
 
     const [field, , helper] = useField(props);
-     
+
 
     const t = useTranslations();
 
@@ -43,10 +44,10 @@ const DynamicKeyValueInput: React.FC<FieldProps> = ({ ...props }) => {
 
 
     return (
-        <Box >
-            
+        <Box sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'flex-start' }}>
+
             {(field.value as Array<{ label: string, value: string }>)?.map((item, index) => (
-                <Box key={index} sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'center' }}>
+                <Box key={index} sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'center', width: '100%' }}>
                     <TextField
                         label={t("core.label.label")}
                         value={item.label}
@@ -62,10 +63,10 @@ const DynamicKeyValueInput: React.FC<FieldProps> = ({ ...props }) => {
                         variant="outlined"
                     />
                     <Button
-                        color={'error'}
+                        color="primary"
                         onClick={() => handleRemove(index)}
                         variant="contained"
-                        size='large'
+                        
                     >
                         {<DeleteForeverIcon />}
                     </Button>
@@ -73,19 +74,20 @@ const DynamicKeyValueInput: React.FC<FieldProps> = ({ ...props }) => {
                         color="primary"
                         onClick={() => handleAdd()}
                         variant="contained"
-                        size="large">
+                       
+                        >
                         {<Add />}
                     </Button>}
                 </Box>
             ))}
             {field.value?.length === 0 &&
-                <Button
+                <SassButton
                     color="primary"
                     onClick={() => handleAdd()}
                     variant="contained"
                     size="large">
-                    {<Add />} Crear campo personalizado
-                </Button>}
+                    {<Add />} {t('core.label.addNew')}
+                </SassButton>}
         </Box>
     );
 };
