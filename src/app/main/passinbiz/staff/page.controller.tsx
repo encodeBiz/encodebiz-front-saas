@@ -73,7 +73,7 @@ export default function useStaffListController() {
       actionBtn: true,
       color: 'primary',
       icon: <Event />,
-      label: t('core.label.staff1'),
+      label: t('core.label.event'),
       allowItem: (item: IStaff) => item.allowedTypes.includes('event'),
       onPress: (item: IStaff) => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff/${item.id}/events`)
     },
