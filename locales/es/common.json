@@ -446,8 +446,8 @@
     "sendConfirmModalTitle": "Relanzar pase",
     "sendConfirmModalTitle2": "Esta acción no se puede deshacer. Relanzará este pase digital nuevamente",
     "filter": {
-      "email": "Filtro por correo electrónico",
-      "state": "Filtro por estado"
+      "email": "Correo electrónico",
+      "state": "Estado"
     },
     "selectType": "Seleccionar tipo de pase",
     "importSCVTitle": "Importar CSV",
