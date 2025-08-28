@@ -428,6 +428,7 @@
   },
   "holders": {
     "title": "Pases Digitales",
+    "formDesc": "Completa los campos a continuación para crear el pase digital.",
     "holderList": "Pases Digitales",
     "addHolder": "Crear pase",
     "editHolder": "Editar",
@@ -463,6 +464,8 @@
   },
   "event": {
     "title": "Eventos",
+    "formDesc": "Completa los campos a continuación para crear el event.",
+    "formDesc2": "Asocia personal de apoyo al evento seleccionado.",    
     "list": "Eventos",
     "add": "Crear evento",
     "edit": "Editar",
@@ -478,6 +481,9 @@
   },
   "staff": {
     "title": "Personal de Apoyo",
+    "formDesc": "Completa los campos a continuación para crear el personal de apoyo.",
+    "formDesc2": "Asocia eventos al personal de apoyo seleccionado.",
+    
     "list": "Personal de Apoyo",
     "add": "Registrar personal",
     "edit": "Editar",
@@ -543,6 +549,9 @@
     "failed": "Ha fallado la lectura del código",
     "failedStaff": "Usted no tiene permisos para validar el pase",
     "tryagain": "Intentar de nuevo",
-    "validatingStaff": "Validando personal de apoyo"
+    "validatingStaff": "Validando personal de apoyo",
+
+    "titleEvent": "Seleccione el evento",
+    "selected":"Seleccionar evento"
   }
 }

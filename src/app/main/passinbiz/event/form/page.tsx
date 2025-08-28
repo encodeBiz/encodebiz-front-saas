@@ -33,6 +33,8 @@ export default function EventForm() {
     <Container maxWidth="xl">
       <HeaderPage
         title={id ? t('event.edit') : t('event.add')}
+        description={t('event.formDesc')}
+        isForm
         actions={
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
             <SassButton

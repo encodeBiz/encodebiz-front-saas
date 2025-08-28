@@ -12,7 +12,8 @@ export enum CommonModalType {
     RECOVERY = 'RECOVERY',
     CONFIG_CSV = 'CONFIG_CSV',
     UPLOAD_CSV = 'UPLOAD_CSV',
-    REACTIVE = 'REACTIVE'
+    REACTIVE = 'REACTIVE',
+    EVENT_SELECTED = 'EVENT_SELECTED'
 }
 interface CommonModalContextType {
     open: { type: CommonModalType, open: boolean, args?: any }

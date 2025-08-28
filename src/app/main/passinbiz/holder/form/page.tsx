@@ -31,6 +31,8 @@ export default function HolderForm() {
     <Container maxWidth="xl">
       <HeaderPage
         title={id ? t('holders.editHolder') : t('holders.addHolder')}
+        description={t('holders.formDesc')}
+        isForm
         actions={
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
             <SassButton

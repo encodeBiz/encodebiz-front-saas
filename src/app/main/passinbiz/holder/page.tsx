@@ -28,7 +28,9 @@ export default function HolderList() {
   return (
     <Container maxWidth="lg">
       <HeaderPage
+        
         title={t("holders.holderList")}
+    
         actions={
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
             <SassButton

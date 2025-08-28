@@ -19,7 +19,7 @@ import { useLayout } from "@/hooks/useLayout";
 import { ArrayToObject, objectToArray } from "@/lib/common/String";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { country } from "@/config/country";
-import { formatLocalDateTime } from "@/lib/common/Date";
+import { format_date, formatLocalDateTime } from "@/lib/common/Date";
 
 
 export default function useHolderController() {
@@ -86,10 +86,10 @@ export default function useHolderController() {
         "colorAccent": values.colorAccent,
         "imageUrl": values.imageUrl,
         "logoUrl": values.logoUrl,
-        "date": new Date(values.date).toISOString(),
+        "date": format_date(new Date(values.date),'YYYY-MM-DD'),
         "dateLabel": formatLocalDateTime(codeLocale ?? 'ES', new Date(values.date)),
         "status": values.status as "draft" | "published" | "archived",
-        "endDate": new Date(values.endDate).toISOString(),
+        "endDate": format_date(new Date(values.endDate),'YYYY-MM-DD'),
         template: values.template as "default" | "vip" | "expo" | "festival",
         "metadata": ArrayToObject(values.metadata),
         "id": id,

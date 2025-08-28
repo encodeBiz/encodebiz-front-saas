@@ -30,6 +30,8 @@ export default function StaffForm() {
     <Container maxWidth="xl">
       <HeaderPage
         title={id ? t('staff.edit') : t('staff.add')}
+         description={t('staff.formDesc')}
+        isForm
         actions={
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
             <SassButton

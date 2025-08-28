@@ -10,20 +10,21 @@ export interface HeaderPageProps {
   description?: string
   actions?: ReactNode
   children?: ReactNode
+  isForm?: boolean
 }
 
-export default function HeaderPage({ children, title, description, actions }: HeaderPageProps) {
+export default function HeaderPage({ children, title, description, isForm = false, actions }: HeaderPageProps) {
   const styles = useStyles()
   return (
     <Box  >
-      <Paper elevation={0} sx={styles.base}>
+      <Paper elevation={0} sx={{ ...styles.base, background: (theme) => isForm ? theme.palette.background.paper : theme.palette.secondary.main }} >
         <Box sx={styles.rootSimple}>
-          <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} alignItems={'flex-start'} width={'100%'} >
+          <Box pb={4} display={'flex'} flexDirection={'row'} justifyContent={'space-between'} alignItems={'flex-start'} width={'100%'} >
             <Box display={'flex'} flexDirection={'column'} justifyContent={'space-between'} alignItems={'flex-start'} width={'100%'} >
-              <Typography variant="h4" component="h1" align="center" gutterBottom sx={{ mb: 4, textAlign: 'left' }}>
+              <Typography variant="h4" component="h1" align="center" gutterBottom sx={{ mb: 0, textAlign: 'left' }}>
                 {title}
               </Typography>
-              {description && <Typography variant="body1" align="center" gutterBottom sx={{ mb: 4, textAlign: 'left' }}>
+              {description && <Typography variant="body1" align="center" gutterBottom sx={{  textAlign: 'left' }}>
                 {description}
               </Typography>}
             </Box>
