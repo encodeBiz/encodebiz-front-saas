@@ -13,7 +13,8 @@ export enum CommonModalType {
     CONFIG_CSV = 'CONFIG_CSV',
     UPLOAD_CSV = 'UPLOAD_CSV',
     REACTIVE = 'REACTIVE',
-    EVENT_SELECTED = 'EVENT_SELECTED'
+    EVENT_SELECTED = 'EVENT_SELECTED',
+    CONTACT = 'CONTACT'
 }
 interface CommonModalContextType {
     open: { type: CommonModalType, open: boolean, args?: any }

@@ -20,13 +20,12 @@ export default function FormContact() {
       <HeaderPage
         title={t('event.fremiunContact.title')}
         description={t('event.fremiunContact.description')}
-
       >
 
         <GenericForm<Partial<IContact>>
           column={2}
           initialValues={{
-            "subject": 'Solicito realizar una prueba de evento',
+            "subject": t('contact.test1'),
             "message": '',
             "from": user?.email as string,
             "phone": user?.phoneNumber as string,

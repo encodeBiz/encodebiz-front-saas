@@ -14,6 +14,7 @@ import SheetModalModal from '../modals/SheetModal';
 import { SassButton } from '../buttons/GenericButton';
 import { Cancel, CheckOutlined } from '@mui/icons-material';
 import { useAppLocale } from '@/hooks/useAppLocale';
+import ContactModalModal from '../modals/ContactModal/ContactModal';
 
 const PlanCard = styled(Box)<{ highlighted?: boolean }>(({ theme, highlighted }) => ({
     maxWidth: 305,
@@ -87,7 +88,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
                             sx={{ mb: 1 }}
                             fullWidth
                             variant="contained"
-                            onClick={handleSubscripe}
+                            onClick={() => handleSubscripe(payPerUse)}
                             disabled={false}
 
                         >
@@ -144,6 +145,8 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
                     push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity`)
             }}
         />}
+
+        {open.type === CommonModalType.CONTACT && <ContactModalModal/>}
     </>
     );
 };
