@@ -177,7 +177,13 @@ const GenericForm = <T extends Record<string, any>>({
                   return <FieldItem key={i} field={field} i={i} disabled={disabled} column={column} formikProps={formikProps} />
                 else {
                   return <BorderBox key={i} sx={{ width: '100%', p: 4 }}>
-                    <Grid container spacing={3}>
+                    <Grid display={'flex'} flexDirection={{
+                      sx: 'column',
+                      sm: 'column',
+                      md: 'column',
+                      lg: 'row',
+                      xl: 'row',
+                    }} container spacing={3}>
                       {
                         field.fieldList?.map((fieldInner, index) => {
                           return <FieldItem key={index + '-' + i} field={fieldInner} i={index} disabled={disabled} column={field.column ? field.column : column} formikProps={formikProps} />
