@@ -33,7 +33,7 @@ export default function StaffForm() {
         actions={
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
             <SassButton
-              disabled={!formStatus?.isValid || formStatus?.isSubmitting}
+              disabled={formStatus?.isSubmitting}
               onClick={() => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff`)}
               variant='outlined'
               startIcon={<ArrowLeftOutlined />}
