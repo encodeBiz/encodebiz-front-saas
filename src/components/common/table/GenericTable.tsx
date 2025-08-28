@@ -318,6 +318,7 @@ export function GenericTable<T extends Record<string, any>>({
                     '&.MuiTableCell-head': {
                       backgroundColor: theme.palette.common.white,
                       fontWeight: 'bold',
+                      textAlign: 'left'
                     },
                   }}
                   variant='head'

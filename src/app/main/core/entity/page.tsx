@@ -24,11 +24,12 @@ import { CommonModalType } from '@/contexts/commonModalContext';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { createSlug } from '@/lib/common/String';
 import { useFormStatus } from '@/hooks/useFormStatus';
+import { Save } from '@mui/icons-material';
 
 const EntityPreferencesPage = () => {
     const t = useTranslations();
     const { user } = useAuth()
-    const { currentEntity,  } = useEntity()
+    const { currentEntity, } = useEntity()
     const { openModal, open } = useCommonModal()
     const { handleDeleteEntity, pending } = useSettingEntityController()
     const formRef = useRef(null)
@@ -43,7 +44,7 @@ const EntityPreferencesPage = () => {
         {
             label: <Badge color="warning" variant="dot" badgeContent={currentEntity?.entity.branding?.textColor ? 0 : 1}>{t("entity.tabs.tab2.title")}</Badge>,
             content: <BrandPreferencesPage formRef={formRef} />,
-            
+
         }, {
             label: <Badge color="warning" variant="dot" badgeContent={!currentEntity?.entity.billingConfig?.payment_method || currentEntity?.entity.billingConfig?.payment_method?.length === 0 ? 1 : 0}>{t("entity.tabs.tab3.title")}</Badge>,
             content: <BillingPreferencesPage />,
@@ -72,8 +73,16 @@ const EntityPreferencesPage = () => {
     return (
         <Container maxWidth="xl">
             <HeaderPage
-                disabledBtn={!formStatus?.isValid || formStatus?.isSubmitting}
-                titleBtn={handleExternalSubmit}
+                actions={
+                    <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
+                        <SassButton
+                            disabled={!formStatus?.isValid || formStatus?.isSubmitting}
+                            onClick={handleExternalSubmit}
+                            variant='contained'
+                            startIcon={<Save />}
+                        > {t('core.button.saveChanges')}</SassButton>
+                    </Box>
+                }
                 title={t('entity.title')}
             >{currentEntity?.role === 'owner' &&
                 <GenericTabs

@@ -16,7 +16,7 @@ export const TextFilter = ({ label, value, onChange }: TextFilterProps) => {
         sx={{ minWidth: 349, height: 56 }}
         slotProps={{
             input: {
-                startAdornment: <SearchOutlined />,
+                startAdornment: <SearchOutlined sx={{mr:1}} />,
                 endAdornment: value ? <CancelOutlined onClick={() => onChange('')} /> : <></>,
             },
         }}
