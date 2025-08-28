@@ -1,4 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
+import { CommonModalType } from "@/contexts/commonModalContext"
+import { IEvent } from "@/domain/features/passinbiz/IEvent"
+import { useCommonModal } from "@/hooks/useCommonModal"
 import { useLayout } from "@/hooks/useLayout"
 import { useToast } from "@/hooks/useToast"
 import { validateHolder, validateStaff } from "@/services/passinbiz/holder.service"
@@ -16,6 +20,17 @@ interface IQRResult {
     lastValidatedAt?: string
 }
 
+interface StaffResponse {
+    "message": string
+    "staff": {
+        "id": string
+        "entityId": string
+    },
+    "sessionToken": string
+    "expiresAt": any
+    "events": Array<IEvent>
+}
+
 export const useQRScanner = () => {
     const t = useTranslations()
     const { changeLoaderState } = useLayout()
@@ -28,14 +43,21 @@ export const useQRScanner = () => {
     const [tokenValidateStaff, setTokenValidateStaff] = useState('')
     const [staffValidating, setStaffValidating] = useState(true)
     const [staffValid, setStaffValid] = useState(false)
+    const { openModal } = useCommonModal()
 
+    const [eventList, setEventList] = useState<Array<IEvent>>([])
+    const [eventSelected, setEventSelected] = useState<IEvent>()
 
     const handleValidateStaff = useCallback(async () => {
         try {
             setStaffValidating(true)
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-            const response: any = await validateStaff(tokenBase64 as string)
-             setTokenValidateStaff(response.sessionToken)
+            const response: StaffResponse = await validateStaff(tokenBase64 as string)
+            setEventList(response.events)
+            if (response.events.length > 0) {
+                openModal(CommonModalType.EVENT_SELECTED)
+            }
+            setTokenValidateStaff(response.sessionToken)
             setError(null);
             changeLoaderState({ show: false })
             setStaffValidating(false)
@@ -48,12 +70,13 @@ export const useQRScanner = () => {
         }
     }, [changeLoaderState, showToast, t, tokenBase64])
 
-
     const validateData = async (data: any) => {
         try {
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-             
-            const response = await validateHolder(data, tokenValidateStaff+'4')
+            const response = await validateHolder({
+                ...data,
+                eventId: eventSelected?.id as string
+            }, tokenValidateStaff)
             setScanRessult({
                 ...data,
                 ...response
@@ -63,7 +86,7 @@ export const useQRScanner = () => {
         } catch (error: any) {
             changeLoaderState({ show: false })
             setError(error.message);
-            
+
         }
     }
 
@@ -74,7 +97,7 @@ export const useQRScanner = () => {
     };
 
     const handleError = (err: any) => {
-  
+
         setError(err);
         setScanning(false);
     };
@@ -91,6 +114,6 @@ export const useQRScanner = () => {
 
 
 
-    return { handleScan, handleError, resetScanner, scanRessult, scanning, error, staffValidating, staffValid }
+    return { handleScan, handleError, resetScanner, scanRessult, scanning, error, staffValidating, staffValid, eventList, setEventSelected }
 }
 

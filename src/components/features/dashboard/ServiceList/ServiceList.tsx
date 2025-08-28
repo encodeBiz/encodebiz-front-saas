@@ -9,6 +9,7 @@ import { MAIN_ROUTE } from '@/config/routes';
 import { useEntity } from '@/hooks/useEntity';
 import { AssignmentTurnedInOutlined } from '@mui/icons-material';
 import { useStyles } from './ServiceList.styles';
+import { useAppLocale } from '@/hooks/useAppLocale';
 
 
 const ServiceList = () => {
@@ -16,7 +17,7 @@ const ServiceList = () => {
     const { push } = useRouter()
     const { entityServiceList } = useEntity()
     const styles = useStyles()
-
+    const {currentLocale} = useAppLocale()
     const handleActionClick = (id: any) => {
         push(`/${MAIN_ROUTE}/${id}/onboarding`)
     };
@@ -39,7 +40,7 @@ const ServiceList = () => {
                                 {card.name}
                             </Typography>
                             <Typography variant="body2" color="text.primary" fontSize={16}>
-                                {card.description}
+                                {card?.description?(card?.description as any)[currentLocale]:''}
                             </Typography>
 
                         </CardContent>

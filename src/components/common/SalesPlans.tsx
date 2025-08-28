@@ -9,6 +9,7 @@ interface SalesPlansProps {
   
 }
 export default function SalesPlans({ pricingPlans, fromService }: SalesPlansProps) {
+    
     return (
         <Grid container spacing={1} justifyContent="center">
             {pricingPlans.map((plan, index) => (

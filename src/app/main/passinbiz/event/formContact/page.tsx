@@ -2,7 +2,7 @@
 import { Container } from '@mui/material';
 import { useTranslations } from "next-intl";
 import useHolderController from './page.controller';
-import PresentationCard from '@/components/features/dashboard/PresentationCard/PresentationCard';
+import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { IContact } from '@/domain/core/IContact';
 import { useAuth } from '@/hooks/useAuth';
@@ -17,7 +17,7 @@ export default function FormContact() {
   const {currentEntity} = useEntity() 
   return (
     <Container maxWidth="xl">
-      <PresentationCard
+      <HeaderPage
         title={t('event.fremiunContact.title')}
         description={t('event.fremiunContact.description')}
 
@@ -38,7 +38,7 @@ export default function FormContact() {
           submitButtonText={t('core.button.save')}
           enableReinitialize
         />
-      </PresentationCard>
+      </HeaderPage>
     </Container>
   );
 }

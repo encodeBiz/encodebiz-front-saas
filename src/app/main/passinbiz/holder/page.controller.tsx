@@ -7,20 +7,23 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
 import { importHolder, search, updateHolder } from "@/services/passinbiz/holder.service";
-import { CleaningServicesSharp, RemoveDone, Search, Send } from "@mui/icons-material";
+import { NotInterested, PanoramaFishEyeOutlined, ReplyAllOutlined } from "@mui/icons-material";
 import { useLayout } from "@/hooks/useLayout";
-import { Box, Chip, IconButton, MenuItem, Select, TextField, Tooltip } from "@mui/material";
+import { Box } from "@mui/material";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useRouter } from "nextjs-toploader/app";
 import { format_date } from "@/lib/common/Date";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { search as searchEvent } from "@/services/passinbiz/event.service";
+import { CustomChip } from "@/components/common/table/CustomChip";
+import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
+import { TextFilter } from "@/components/common/table/filters/TextFilter";
 
 
 
 
-
+let resource: any = null;
 export default function useHolderListController() {
   const t = useTranslations();
   const { token, user } = useAuth()
@@ -42,22 +45,45 @@ export default function useHolderListController() {
   const [revoking, setRevoking] = useState(false)
   const { push } = useRouter()
   const [sort, setSort] = useState<{ field: string, order: 'desc' | 'asc' }>({ field: 'createdAt', order: 'desc' })
-  const [filter, setFilter] = useState<any>({ passStatus: 'active', type: 'all', email: '', parentId: '' });
+  const [filter, setFilter] = useState<any>({ passStatus: 'active', type: 'none', email: '', parentId: 'none' });
 
   const rowAction: Array<IRowAction> = [
-    { icon: <RemoveDone />, label: t('core.button.revoke'), allowItem: (item: Holder) => (item.passStatus === 'pending' || item.passStatus === 'active'), onPress: (item: Holder) => openModal(CommonModalType.DELETE, { data: item }) },
-    { icon: <Send />, label: t('core.button.resend'), allowItem: (item: Holder) => (item.passStatus === 'revoked' || item.passStatus === 'not_generated' || item.passStatus === 'failed'), onPress: (item: Holder) => openModal(CommonModalType.SEND, { data: item }) }
+    {
+      actionBtn: true,
+      color: 'error',
+      icon: <NotInterested />,
+      label: t('core.button.revoke'),
+      allowItem: (item: Holder) => (item.passStatus === 'pending' || item.passStatus === 'active'),
+      onPress: (item: Holder) => openModal(CommonModalType.DELETE, { data: item })
+    },
+
+    {
+      actionBtn: true,
+      color: 'success',
+      icon: <ReplyAllOutlined />,
+      label: t('core.button.resend'),
+      allowItem: (item: Holder) => (item.passStatus === 'failed'),
+      onPress: (item: Holder) => openModal(CommonModalType.SEND, { data: item })
+    },
+
+    {
+      actionBtn: true,
+      color: 'success',
+      icon: <PanoramaFishEyeOutlined />,
+      label: t('core.button.reactive'),
+      allowItem: (item: Holder) => (item.passStatus === 'revoked'),
+      onPress: (item: Holder) => openModal(CommonModalType.REACTIVE, { data: item })
+    },
+
   ]
 
   const holderState = [
-    { value: 'all', label: t('core.label.select') },
     { value: 'failed', label: t('holders.failed') },
     { value: 'active', label: t('holders.active') },
     { value: 'revoked', label: t('holders.revoked') }
   ]
 
   const holderType = [
-    { value: 'all', label: t('core.label.select') },
     { value: 'event', label: t('core.label.event') },
     { value: 'credential', label: t('core.label.credential') },
 
@@ -70,58 +96,42 @@ export default function useHolderListController() {
 
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
 
-    <Select sx={{ minWidth: 120, height: 55 }}
+    <SelectFilter
+      defaultValue={'none'}
       value={filter.type}
-      defaultValue={'all'}
-      onChange={(e: any) => setFilter({ ...filter, type: e.target.value })}  >
-      {holderType.map((option) => (
-        <MenuItem key={option.value} value={option.value}>
-          {option.label}
-        </MenuItem>
-      ))}
-    </Select>
+      onChange={(value: any) => onFilter({ ...filter, type: value })}
+      items={holderType}
+    />
 
-    {filter.type == 'event' && <Select sx={{ minWidth: 120, height: 55 }}
+
+    {filter.type == 'event' && <SelectFilter
       value={filter.parentId}
-      defaultValue={''}
-      onChange={(e: any) => setFilter({ ...filter, parentId: e.target.value })}  >
-      {eventList.map((option) => (
-        <MenuItem key={option.id} value={option.id}>
-          {option.name}
-        </MenuItem>
-      ))}
-    </Select>}
+      onChange={(value: any) => onFilter({ ...filter, parentId: value })}
+      items={eventList.map(e => ({ label: e.name, value: e.id }))}
+    />}
 
-    <Select sx={{ minWidth: 120, height: 55 }}
+    <SelectFilter
+      defaultValue={'active'}
       value={filter.passStatus}
-      defaultValue={'pending'}
-      onChange={(e: any) => setFilter({ ...filter, passStatus: e.target.value })}  >
-      {holderState.map((option) => (
-        <MenuItem key={option.value} value={option.value}>
-          {option.label}
-        </MenuItem>
-      ))}
-    </Select>
-    <TextField
-      variant="outlined"
-      placeholder={t('holders.filter.email')}
+      onChange={(value: any) => onFilter({ ...filter, passStatus: value })}
+      items={holderState}
+    />
+
+    <TextFilter
+      label={t('holders.filter.email')}
       value={filter.email}
-      onChange={(e) => {
-        setFilter({ ...filter, email: e.target.value });
+      onChange={(value) => {
+        setFilter({ ...filter, email: value });
+        if (resource) clearTimeout(resource);
+        resource = setTimeout(() => {
+          onFilter({ ...filter, email: value });
+        }, 1500);
       }}
     />
-    <Tooltip title="Filter">
-      <IconButton onClick={() => { if (typeof onFilter === 'function') onFilter() }}>
-        <Search />
-      </IconButton>
-    </Tooltip>
 
-    <Tooltip title="Limpiar filtros">
-      <IconButton onClick={() => { setFilter({ passStatus: 'active', type: 'all', email: '', parentId: '' }) }}>
-        <CleaningServicesSharp />
-      </IconButton>
-    </Tooltip>
-  </Box>
+
+
+  </Box >
 
   const onSearch = (term: string): void => {
     setParams({ ...params, startAfter: null, filters: buildSearch(term) })
@@ -151,8 +161,6 @@ export default function useHolderListController() {
 
 
 
-
-
   const columns: Column<Holder>[] = [
     {
       id: 'fullName',
@@ -165,38 +173,34 @@ export default function useHolderListController() {
       label: t("core.label.email"),
       minWidth: 170,
     },
-    {
-      id: 'phoneNumber',
-      label: t("core.label.phone"),
-      minWidth: 170,
-    },
+
     {
       id: 'passStatus',
       label: t("core.label.state"),
       minWidth: 170,
-      format: (value, row) => <><Chip
+      format: (value, row) => <><CustomChip
+        background={row.passStatus}
         size="small"
         label={t("core.label." + row.passStatus)}
-        variant="outlined"
+
       /> {row.passStatus === 'failed' ? row.failedFeedback : ''}</>,
     },
     {
       id: 'type',
       label: t("core.label.typePass"),
       minWidth: 170,
-      format: (value, row) => <Chip
+      format: (value, row) => <CustomChip
         size="small"
         label={t("core.label." + row.type)}
-        variant="outlined"
       />,
     },
 
     {
       id: 'createdAt',
       sortable: true,
-      label: t("core.label.createAt"),
+      label: t("core.label.date"),
       minWidth: 170,
-      format: (value, row) => format_date(row.createdAt, 'DD/MM/yyyy HH:mm:ss')
+      format: (value, row) => format_date(row.createdAt, 'DD/MM/yyyy')
     },
   ];
 
@@ -204,19 +208,17 @@ export default function useHolderListController() {
   const fetchingData = useCallback(() => {
     setLoading(true)
 
-    if (params.filters.find((e: any) => e.field === 'passStatus' && e.value === 'all'))
+    if (params.filters.find((e: any) => e.field === 'passStatus' && e.value === 'none'))
       params.filters = params.filters.filter((e: any) => e.field !== 'passStatus')
-    if (params.filters.find((e: any) => e.field === 'type' && (e.value === 'all' || e.value === 'credencial'))) {
+    if (params.filters.find((e: any) => e.field === 'type' && (e.value === 'none' || e.value === 'credencial'))) {
       params.filters = params.filters.filter((e: any) => e.field !== "parentId")
     }
-    if (params.filters.find((e: any) => e.field === 'type' && e.value === 'all'))
+    if (params.filters.find((e: any) => e.field === 'type' && e.value === 'none'))
       params.filters = params.filters.filter((e: any) => e.field !== 'type')
     if (params.filters.find((e: any) => e.field === 'email' && e.value === ''))
       params.filters = params.filters.filter((e: any) => e.field !== 'email')
-    if (params.filters.find((e: any) => e.field === 'parentId' && e.value === ''))
+    if (params.filters.find((e: any) => e.field === 'parentId' && (e.value === '' || e.value === 'none')))
       params.filters = params.filters.filter((e: any) => e.field !== 'parentId')
-
-
 
 
     inicializeEvent()
@@ -278,7 +280,8 @@ export default function useHolderListController() {
     setAtStart(true)
   }, [rowsPerPage, sort])
 
-  const onFilter = () => {
+  const onFilter = (filter: any) => {
+    setFilter({ ...filter })
     const filterData: Array<{ field: string, operator: string, value: any }> = []
     Object.keys(filter).forEach((key) => {
       if (key === 'parentId' && filter[key] != '' && filter.type == 'event') {
@@ -341,8 +344,15 @@ export default function useHolderListController() {
 
 
   const [isUploading, setIsUploading] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
 
+  const [type, setType] = useState<string>()
+  const [eventId, setEventId] = useState<string>()
+  const handleConfigConfirm = async ({ type, eventId = '' }: { type: 'event' | 'credential', eventId?: string }) => {
+    setType(type)
+    setEventId(eventId)
+
+    openModal(CommonModalType.UPLOAD_CSV)
+  }
   const handleUploadConfirm = async (file: File | null) => {
     try {
       setIsUploading(true)
@@ -352,6 +362,9 @@ export default function useHolderListController() {
       form.append('csv', file as File);
       form.append('entityId', currentEntity?.entity.id as string);
       form.append('passStatus', 'pending');
+      form.append('type', type as string);
+      if (type === 'event')
+        form.append('event', eventId as string);
       await importHolder(form, token)
       fetchingData()
       setIsUploading(false)
@@ -370,9 +383,9 @@ export default function useHolderListController() {
   return {
     items, topFilter,
     atEnd, onEdit,
-    atStart, handleUploadConfirm, isUploading,
+    atStart, handleUploadConfirm, isUploading, handleConfigConfirm,
     onSearch, onNext, onBack,
-    pagination, currentPage, modalOpen, setModalOpen,
+    pagination, currentPage,
     columns, rowAction, setSort, sort, total,
     loading, rowsPerPage, setRowsPerPage, onRevoke, revoking, onSend
   }

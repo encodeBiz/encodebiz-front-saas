@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-    Button,
     Dialog,
     DialogActions,
     DialogContent,
@@ -10,12 +9,19 @@ import {
     Slide,
     List,
     ListItem,
-    ListItemText
+    ListItemText,
+    Box,
+    useTheme,
+    Typography
 } from '@mui/material';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useTranslations } from 'next-intl';
 import { TransitionProps } from '@mui/material/transitions';
+import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
+import { CustomTypography } from '../Text/CustomTypography';
+import { SassButton } from '../buttons/GenericButton';
+import { CancelOutlined, CheckOutlined } from '@mui/icons-material';
 
 interface SheetModalProps {
     word?: string
@@ -42,7 +48,7 @@ const Transition = React.forwardRef(function Transition(
 
 const SheetModalModal = ({ title, textBtn, description, textPoint = [], type = CommonModalType.DELETE, isLoading = false, onOKAction }: SheetModalProps): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
-
+    const theme = useTheme()
     const t = useTranslations()
     const handleConfirm = async () => {
         if (typeof onOKAction === 'function')
@@ -68,14 +74,21 @@ const SheetModalModal = ({ title, textBtn, description, textPoint = [], type = C
             slots={{
                 transition: Transition,
             }}
-
+            slotProps={{ paper: { sx: { p: 2, borderRadius: 2 } } }}
         >
-            <DialogTitle id="alert-dialog-title">
-                {title}
+            <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
+                    <CustomTypography >{title}</CustomTypography>
+                </Box>
+
+                <CustomIconBtn
+                    onClick={() => handleClose(null, 'manual')}
+                    color={theme.palette.primary.main}
+                />
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description" sx={{ mb: 3 }}>
-                    {description}
+                    <Typography variant='body1'>{description}</Typography>
                 </DialogContentText>
                 {textPoint.length > 0 && <List dense={true}>
                     {textPoint.map((e, i) => <ListItem key={i}>
@@ -87,21 +100,25 @@ const SheetModalModal = ({ title, textBtn, description, textPoint = [], type = C
             </DialogContent>
             <DialogActions>
 
-                <Button
+                <SassButton
                     onClick={(e) => handleClose(e, 'manual')}
                     disabled={isLoading}
                     variant="outlined"
+                    size='small'
+                    startIcon={<CancelOutlined />}
+                    color='primary'
                 >
                     {t('core.button.cancel')}
-                </Button>
-                <Button
+                </SassButton>
+                <SassButton
                     onClick={handleConfirm}
                     disabled={isLoading}
                     variant="contained"
-                    startIcon={isLoading ? <CircularProgress size={20} /> : null}
+                    color='primary'
+                    startIcon={isLoading ? <CircularProgress size={20} /> : <CheckOutlined />}
                 >
                     {textBtn ? textBtn : t('core.button.ok')}
-                </Button>
+                </SassButton>
             </DialogActions>
         </Dialog>
     );

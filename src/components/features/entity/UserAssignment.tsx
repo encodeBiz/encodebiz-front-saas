@@ -4,8 +4,6 @@ import {
     Typography,
     TextField,
     Autocomplete,
-    Chip,
-    Button,
     Dialog,
     DialogTitle,
     DialogContent,
@@ -20,11 +18,11 @@ import {
     ListItem,
     ListItemAvatar,
     ListItemText,
-    IconButton,
     Divider,
-    CircularProgress
+    Card,
+    useTheme
 } from '@mui/material';
-import { PersonAdd, PersonRemove } from '@mui/icons-material';
+import { PersonAdd } from '@mui/icons-material';
 import IUser, { ICollaborator } from '@/domain/auth/IUser';
 import { useTranslations } from 'next-intl';
 import IUserEntity from '@/domain/auth/IUserEntity';
@@ -33,6 +31,11 @@ import { CommonModalType } from '@/contexts/commonModalContext';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
+import { SassButton } from '@/components/common/buttons/GenericButton';
+import { BorderBox } from '@/components/common/tabs/BorderBox';
+import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
+import { TrashIcon } from '@/components/common/icons/TrashIcon';
+import { CustomTypography } from '@/components/common/Text/CustomTypography';
 
 const roleOptions = [
     { value: 'admin', label: 'Adminstrador' },
@@ -73,8 +76,10 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser, procc
     const [selectedRole, setSelectedRole] = useState('write');
     const [filteredUsers, setFilteredUsers] = useState<Array<ICollaborator>>([]);
     const t = useTranslations()
-    const { openModal, open } = useCommonModal()
+    const { openModal, closeModal, open } = useCommonModal()
     const { user } = useAuth()
+    const theme = useTheme()
+
     const { currentEntity } = useEntity()
     useEffect(() => {
         // Filter out users already assigned to the project
@@ -99,6 +104,7 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser, procc
         setOpenModalAdd(false);
         setSearchInput('');
         setSelectedUser(null);
+        closeModal()
     };
 
     const handleAssign = () => {
@@ -120,86 +126,78 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser, procc
     };
 
     return (
-        <Box sx={{ mt: 3 }}>
-            <Typography variant="h6" gutterBottom>
-                {t('colaborators.title')}
-                {proccesing && <CircularProgress
-                    variant={'indeterminate'}
-                />}
-            </Typography>
+        <Box>
+            <Paper elevation={0}>
+                <Box display="flex" justifyContent="flex-end" alignItems="center" mb={2}>
 
-            <Paper elevation={1} sx={{ p: 2, mb: 2 }}>
-                <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                    <Typography variant="subtitle1">
-                        {project.collaborators.length} {project.collaborators.length === 1 ? t('colaborators.titles') : t('colaborators.title')}
-                    </Typography>
-                    <Button
+                    <SassButton
                         variant="contained"
                         startIcon={<PersonAdd />}
                         onClick={handleOpen}
+                        size='small'
+                        sx={{ height: 40 }}
                     >
                         {t('colaborators.add')}
-                    </Button>
+                    </SassButton>
                 </Box>
-
-                <List>
-                    {project.collaborators.map((collaborator) => (
-                        <React.Fragment key={collaborator.user.id}>
-                            <ListItem
-                                secondaryAction={
-                                    currentEntity?.role === 'owner' && collaborator.user.id !== user?.id && (
-                                        <IconButton
-                                            edge="end"
-                                            aria-label="remove"
-                                            onClick={() => openModal(CommonModalType.DELETE, { data: collaborator.user.uid })}
-                                            disabled={collaborator.user.uid === currentUser.id}
-                                        >
-                                            <PersonRemove />
-                                        </IconButton>
-                                    )
-                                }
-                            >
-                                <ListItemAvatar>
-                                    <Avatar src={collaborator.user.photoURL as string} alt={collaborator.user.fullName} />
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary={collaborator.user.fullName}
-                                    secondary={
-                                        <>
-                                            {collaborator.user.id !== project.owner.user.id && <Chip
-                                                label={t('core.label.'+collaborator.role)}
-                                                size="small"
-                                                color={
-                                                    collaborator.role === 'admin' ? 'secondary' :
-                                                        collaborator.role === 'owner' ? 'primary' :
-                                                            'default'
-                                                }
-                                                sx={{ mr: 1 }}
-                                            />}
-                                            {collaborator.user.id === project.owner.user.id && (
-                                                <Chip label={t('core.label.owner')} size="small" color="primary" />
-                                            )}
-                                        </>
+                <BorderBox sx={{ p: 2 }}>
+                    <List>
+                        {project.collaborators.map((collaborator) => (
+                            <Card elevation={1} key={collaborator.user.id}>
+                                <ListItem
+                                    secondaryAction={
+                                        currentEntity?.role !== 'owner' && collaborator.user.id !== user?.id && (
+                                            <CustomIconBtn
+                                                onClick={() => openModal(CommonModalType.DELETE, { data: collaborator.user.uid })}
+                                                disabled={collaborator.user.uid === currentUser.id}
+                                                icon={<TrashIcon />}
+                                                color={theme.palette.primary.main}
+                                            />
+                                        )
                                     }
-                                />
-                            </ListItem>
-                            <Divider variant="inset" component="li" />
-                        </React.Fragment>
-                    ))}
-                </List>
+                                >
+
+
+
+                                    <ListItemAvatar>
+                                        <Avatar src={collaborator.user.photoURL as string} alt={collaborator.user.fullName} />
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary={collaborator.user.fullName}
+                                        secondary={
+                                            t('core.label.' + collaborator.role)
+                                        }
+                                    />
+                                </ListItem>
+                                <Divider variant="inset" component="li" />
+                            </Card>
+                        ))}
+                    </List>
+                </BorderBox>
             </Paper>
 
-            <Dialog open={openModalAdd} onClose={handleClose} fullWidth maxWidth="sm">
-                <DialogTitle>{t('colaborators.add')}</DialogTitle>
+            <Dialog open={openModalAdd} onClose={handleClose} fullWidth maxWidth="md" slotProps={{ paper: { sx: { p: 2, borderRadius: 2 } } }} >
+                <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
+                        <Typography variant='h5'>{t('colaborators.add')}</Typography>
+                        <Typography variant='body1'>{t('colaborators.addText')}</Typography>
+                    </Box>
+
+                    <CustomIconBtn
+                        onClick={handleClose}
+                        color={theme.palette.primary.main}
+                    />
+                </DialogTitle>
                 <DialogContent>
-                    <Box sx={{ mt: 2 }}>
+                    <BorderBox sx={{ mt: 2, p: 4 }}>
+                        <CustomTypography sx={{mb:2}}>{t('colaborators.invite')}</CustomTypography>
                         <Autocomplete
                             options={filteredUsers}
                             getOptionLabel={(option) => `${option.user.fullName} (${option.user.email})`}
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
-                                    label={t('colaborators.search')}
+                                    label={t('core.label.email')}
                                     fullWidth
                                     value={searchInput}
                                     onChange={(e) => setSearchInput(e.target.value)}
@@ -231,17 +229,18 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser, procc
                                 ))}
                             </Select>
                         </FormControl>
-                    </Box>
+                    </BorderBox>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>{t('core.button.cancel')}</Button>
-                    <Button
+
+                    <SassButton
                         onClick={handleAssign}
                         variant="contained"
+                        size='small'
                         disabled={!selectedUser}
                     >
                         {t('core.button.add')}
-                    </Button>
+                    </SassButton>
                 </DialogActions>
             </Dialog>
 

@@ -37,6 +37,9 @@ export function format_date(str: Timestamp | Date | string | any, format: string
     if (typeof str === 'object' && str?.seconds) {
         date = moment.unix(str?.seconds).format(format)
     }
+    if (str instanceof Date) {
+        date = moment((str as Date)).format(format)
+    }
     if (str instanceof Timestamp) {
         date = moment((str as Timestamp).toDate()).format(format)
     }
@@ -50,7 +53,7 @@ export const formatDate = async (
 ) => {
     // Configurar el idioma
 
- 
+
     let jsDate: Date;
     if (timestamp instanceof Date) {
         jsDate = timestamp;
@@ -133,7 +136,7 @@ export function formatDateInSpanish(date: any, extra?: DateTimeFormatOptions) {
         jsDate = new Date(date.seconds * 1000 + date.nanoseconds / 1_000_000);
     }
 
-     
+
     const options: DateTimeFormatOptions = {
         day: '2-digit',
         month: 'long',

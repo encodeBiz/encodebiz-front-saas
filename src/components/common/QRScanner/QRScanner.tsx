@@ -18,10 +18,14 @@ import { PreviewContainer, ScannerContainer, StyledCard } from './QRScanner.styl
 import { useTranslations } from 'next-intl';
 import { useQRScanner } from './QRScanner.controller';
 import { formatDateInSpanish } from '@/lib/common/Date';
+import EventSelectorModal from '../modals/EventSelector';
+import { useCommonModal } from '@/hooks/useCommonModal';
+import { CommonModalType } from '@/contexts/commonModalContext';
 
 const QRScanner = () => {
-    const { handleScan, handleError, resetScanner, scanRessult, staffValidating, staffValid, error } = useQRScanner()
+    const { handleScan, handleError, resetScanner, scanRessult, staffValidating, staffValid, error, eventList, setEventSelected  } = useQRScanner()
     const t = useTranslations()
+    const { open } = useCommonModal()
 
 
 
@@ -49,7 +53,7 @@ const QRScanner = () => {
                 </Typography>
             </Box>}
 
-            {!scanRessult && !staffValidating && staffValid && !error && (
+            {!scanRessult && !staffValidating && staffValid && !error &&  (
                 <StyledCard>
                     <ScannerContainer elevation={1}>
                         <PreviewContainer>
@@ -155,6 +159,11 @@ const QRScanner = () => {
                 </StyledCard>
             )}
 
+
+            {open.type === CommonModalType.EVENT_SELECTED && <EventSelectorModal
+                eventList={eventList}
+                onOKAction={(event) => setEventSelected(event)}
+            />}
 
         </Box>
     );

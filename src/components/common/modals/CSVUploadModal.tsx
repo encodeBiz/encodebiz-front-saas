@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
-  Button,
+  Box,
+ 
   Dialog,
   DialogActions,
   DialogContent,
@@ -12,12 +13,17 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography
+  Typography,
+  useTheme
 } from '@mui/material';
-import { CloudUpload } from '@mui/icons-material';
+import { CheckOutlined, CloudUploadOutlined, DownloadOutlined } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
+import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
+import { CustomTypography } from '../Text/CustomTypography';
+import { SassButton } from '../buttons/GenericButton';
 // Use public URL for static assets in Next.js
+import image from '../../../../public/assets/images/scv.png'
+import Image from 'next/image';
 const HOLDER_USUARIOS_TYPE_CREDENTIAL_URL = '/holder_usuarios_type_credential.csv';
 interface ICSVUploadModal {
   open: boolean
@@ -29,6 +35,8 @@ const CSVUploadModal = ({ open, onClose, onConfirm }: ICSVUploadModal) => {
   const [previewData, setPreviewData] = useState<any>([]);
   const [headers, setHeaders] = useState([]);
   const t = useTranslations()
+  const theme = useTheme()
+  const uploadRef = useRef(null)
   const handleFileChange = (event: any) => {
     const selectedFile = event.target.files[0];
     if (!selectedFile) return;
@@ -62,8 +70,8 @@ const CSVUploadModal = ({ open, onClose, onConfirm }: ICSVUploadModal) => {
     }
 
     setHeaders(headers);
-    if(data)
-    setPreviewData(data);
+    if (data)
+      setPreviewData(data);
   };
 
   const handleConfirm = () => {
@@ -79,36 +87,117 @@ const CSVUploadModal = ({ open, onClose, onConfirm }: ICSVUploadModal) => {
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
-      <DialogTitle>{t('core.upload.title')}</DialogTitle>
+    <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth slotProps={{ paper: { sx: { p: 2, borderRadius: 2 } } }}>
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
+          <Typography variant='h5'>{t('holders.importSCVTitle')}</Typography>
+          <Typography variant='body1'>
+            {t('holders.desc1')} <br />
+            {t('holders.desc2')} <span style={{ color: theme.palette.primary.main }}>(fullName, email, phoneNumber)</span>
+            {t('holders.desc3')} <span style={{ color: theme.palette.primary.main }}>auxiliaryFields-[{t('holders.desc4')}].</span>
+          </Typography>
+          <Typography sx={{ mt: 1 }} variant='body1'> {t('holders.desc5')}</Typography>
+        </Box>
+        <CustomIconBtn
+          onClick={handleClose}
+          color={theme.palette.primary.main}
+        />
+      </DialogTitle>
       <DialogContent>
         {!file ? (
-          <div style={{ textAlign: 'center', padding: '20px' }}>
-            <input
-              accept=".csv"
-              style={{ display: 'none' }}
-              id="csv-upload"
-              type="file"
-              onChange={handleFileChange}
-            />
-            <label htmlFor="csv-upload">
-              <Button
-                variant="contained"
-                color="primary"
-                component="span"
-                startIcon={<CloudUpload />}
+          <Box display={'flex'} flexDirection={{
+            sx: 'column',
+            sm: 'column',
+            md: 'column',
+            lg: 'row',
+            xl: 'row',
+          }} alignItems={'center'} justifyContent={'center'} gap={4}>
+            <Box display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'} gap={4}>
+              <Paper onClick={() => { }}
+                variant="outlined"
+                sx={{
+                  position: 'relative',
+                  width: 573,
+                  height: 242,
+                  border: '2px dashed #476BE7',
+                  borderRadius: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: 'rgba(0, 84, 202, 0.08)',
+                  cursor: 'pointer',
+                  opacity: 1,
+                  overflow: 'hidden',
+                  transition: 'all 0.2s ease-in-out',
+                  '&:hover': {
+                    borderColor: '#476BE7',
+                    backgroundColor: 'rgba(0, 84, 202, 0.16)'
+                  }
+                }}
               >
-                {t('core.upload.btn')}
-              </Button>
-            </label>
-            <Typography variant="body2" style={{ marginTop: '10px' }}>
-              {t('core.upload.desc')}
-              <br/>
-              <Link href={HOLDER_USUARIOS_TYPE_CREDENTIAL_URL} download>
-                {t('core.upload.descFile')}
-              </Link>
-            </Typography>
-          </div>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: 1,
+                    p: 2
+                  }}
+                >
+                  <CustomTypography> {t('holders.desc6')}</CustomTypography>
+                  <Typography variant="body1" color="text.secondary" textAlign="center">
+                    {t('holders.desc7')}
+                  </Typography>
+                  <input
+                    ref={uploadRef}
+                    accept=".csv"
+                    style={{ display: 'none' }}
+                    id="csv-upload"
+                    type="file"
+                    onChange={handleFileChange}
+                  />
+
+                  <SassButton
+                    startIcon={<CloudUploadOutlined />}
+                    variant='contained'
+                    color='primary'
+                    onClick={() => {
+                      if (uploadRef.current) {
+                        (uploadRef.current as any).click()
+                      }
+                    }}
+                  >
+                    {t('holders.importSCVTitle')}
+                  </SassButton>
+
+                </Box>
+              </Paper>
+              <Box display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'} gap={1}>
+
+                <Typography variant="body1" textAlign="center">
+                  {t('holders.desc8')}
+                </Typography>
+                <SassButton
+                  startIcon={<DownloadOutlined />}
+                  variant='outlined'
+                  color='inherit'
+                  onClick={() => window.open(`${process.env.NEXT_PUBLIC_URI}${HOLDER_USUARIOS_TYPE_CREDENTIAL_URL}`, '_blank')}
+                >
+                  {t('holders.btn')}
+                </SassButton>
+              </Box>
+            </Box>
+            <Box display={'flex'} flexDirection={'column'} alignItems={'flex-start'} justifyContent={'flex-start'} gap={4}>
+              <CustomTypography> {t('holders.desc9')}</CustomTypography>
+              <Image
+                src={image}
+                width={459}
+                height={339}
+                alt='Image'
+              />
+            </Box>
+          </Box>
         ) : (
           <>
             <Typography variant="subtitle1" gutterBottom>
@@ -143,21 +232,20 @@ const CSVUploadModal = ({ open, onClose, onConfirm }: ICSVUploadModal) => {
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="secondary">
-          {t('core.button.cancel')}
-        </Button>
-        <Button
+
+        <SassButton
           onClick={handleConfirm}
           color="primary"
           disabled={!file}
+          size='small'
           variant="contained"
+          startIcon={<CheckOutlined/>}
         >
-          {t('core.button.confirm')}
-        </Button>
+          {t('core.button.confirmSCV')}
+        </SassButton>
       </DialogActions>
     </Dialog>
   );
 };
 
 export default CSVUploadModal;
- 

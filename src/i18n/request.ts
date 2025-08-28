@@ -6,10 +6,12 @@ export default getRequestConfig(async () => {
   // Provide a static locale, fetch a user setting,
   // read from `cookies()`, `headers()`, etc.
   const locale = (await cookies()).get('locale')?.value || 'es';
- 
-  
+
+
   return {
     locale,
+    timeZone: 'Europe/Madrid',
+    now: new Date(),
     messages: (await import(`../../locales/${locale}/common.json`)).default
   };
 });

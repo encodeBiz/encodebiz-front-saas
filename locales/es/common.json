@@ -88,7 +88,7 @@
       "expo": "Expositivo",
       "festival": "Festival",
       "rol": "rol",
-      "price":"Precio",
+      "price": "Precio",
       "active": "Activo",
       "thumbnail": "Imagen en miniatura",
       "subject": "Asunto",
@@ -100,7 +100,7 @@
       "credential": "Credencial",
       "admin": "Administrador",
       "select": "Seleccionar",
-      "typePass": "Tpo de pase",
+      "typePass": "Tipo de pase",
       "credencial": "Credenciales",
       "event": "Evento",
       "passStatus": "Estado del pase",
@@ -110,6 +110,8 @@
       "status": "Estado",
       "customFields": "Campos personalizados",
       "staff": "Personal de apoyo",
+      "staff1": "Personal",
+      "resend": "Reenviar",
       "draft": "Borrador",
       "published": "Publicado",
       "archived": "Archivado",
@@ -167,6 +169,7 @@
       "city": "Ciudad",
       "postalCode": "Código postal",
       "region": "Región",
+      "addNew": "Crear campo personalizado",
       "country": "País",
       "backgroundColor": "Color de fondo",
       "labelColor": "Color de etiqueta",
@@ -194,18 +197,21 @@
       "contactUs": "Contactar con encodeBiz",
       "upgrade": "Upgradear",
       "resend": "Reenviar",
+      "reactive": "Reactivar",
       "submitting": "Enviando...",
       "submit": "Enviar",
       "send": "Relanzar",
       "replaceImage": "Reemplazar Imagen",
-      "add": "Adicionar",
+      "add": "Añadir",
       "edit": "Editar",
       "selected": "Seleccionar",
       "confirm": "Confirmar",
+      "confirmSCV": "Importar CSV",
       "cancel": "Cancelar",
       "crop": "Recortar Imagen",
       "file": "Imagen original",
       "download": "Descargar",
+      "importCSV": "Importar CSV",
       "delete": "Eliminar",
       "save": "Guardar",
       "start": "Comenzar",
@@ -267,7 +273,7 @@
       "descFile": "Descargue el archivo de referencia",
       "desc": "Por favor seleccione un archivo CSV para previsualizar el contenido y seleccionarlo",
       "file": "Archivo",
-      "preview": "Preview (first 5 rows)",
+      "preview": "Previsualización (primeras 5 filas)",
       "signIn": "Inicia sesión"
     }
   },
@@ -342,8 +348,28 @@
       }
     }
   },
+  "onboarding": {
+    "passinbiz": {
+      "tab1Title": "¿Como empiezo?",
+      "tab2Title": "¿Que resolvemos?",
+      "stepsTitle": "Guía de configuración",
+      "stepsDesc": "Sigue los pasos de esta guía para configurar el servicio de PassBiz.",
+      "targetTitle": "Resuelve con PassBiz lo que antes era un problema:",
+      "targetDesc": "Sigue los pasos de esta guía para configurar el servicio de PassBiz."
+    },
+    "checkinbiz": {
+      "tab1Title": "¿Como empiezo?",
+      "tab2Title": "¿Que resolvemos?",
+      "stepsTitle": "Guía de configuración",
+      "stepsDesc": "Sigue los pasos de esta guía para configurar el servicio de PassBiz.",
+      "targetTitle": "Resuelve con PassBiz lo que antes era un problema:",
+      "targetDesc": "Sigue los pasos de esta guía para configurar el servicio de PassBiz."
+    }
+  },
   "salesPlan": {
     "title": "PLANES DISPONIBLES",
+    "emissionLimit": "Limite de emisiones:",
+    "sinLimit": "Sin límites",
     "subTitle": "Elige entre la versión Free, Básica o Avanzada según las funcionalidades que necesites. Actualiza o cambia tu plan en cualquier momento para potenciar tu experiencia con PassBiz.",
     "free": "Gratis",
     "configureLegal": "Configuracion de datos legales de la entidad",
@@ -402,8 +428,9 @@
   },
   "holders": {
     "title": "Pases Digitales",
+    "formDesc": "Completa los campos a continuación para crear el pase digital.",
     "holderList": "Pases Digitales",
-    "addHolder": "Adicionar",
+    "addHolder": "Crear pase",
     "editHolder": "Editar",
     "pending": "Pending",
     "revoked": "Revocado",
@@ -411,19 +438,36 @@
     "active": "Activo",
     "import": "Importar",
     "description": "Rellene los campos para registrar el pase digital",
-    "revokeConfirmModalTitle": "Revocar pase de este pase digital",
-    "revokeConfirmModalTitle2": "Esta acción no se puede deshacer. Revocará  permanentemente el pase de este pase digital",
+    "revokeConfirmModalTitle": "Revocar este pase digital",
+    "revokeConfirmModalTitle2": "Esta acción no se puede deshacer. Revocará  permanentemente  este pase digital",
+    "reactiveConfirmModalTitle": "Reactivar este pase digital",
+    "reactiveConfirmModalTitle2": "Esta acción no se puede deshacer. Reactivará permanentemente  este pase digital",
     "sendConfirmModalTitle": "Relanzar pase",
-    "sendConfirmModalTitle2": "Esta acción no se puede deshacer. Relanzará  el pase de este pase digital nuevamente",
+    "sendConfirmModalTitle2": "Esta acción no se puede deshacer. Relanzará este pase digital nuevamente",
     "filter": {
       "email": "Filtro por correo electrónico",
       "state": "Filtro por estado"
-    }
+    },
+    "selectType": "Seleccionar tipo de pase",
+    "importSCVTitle": "Importar CSV",
+    "importSCVText": "Debes seleccionar el tipo de pase digital al que vincularas los datos importados en el archivo.",
+    "desc1": "Asegúrate de que tu archivo siga esta estructura: ",
+    "desc2": "Incluya las 3 columnas obligatorias",
+    "desc3": "y que las columnas opcionales sigan el formato",
+    "desc4": "nombre del campo opcional",
+    "desc5": "Solo así podremos importar tus datos correctamente.",
+    "desc6": "Arrastra y suelta o sube un archivo CSV",
+    "desc7": "Tamaño máximo 10 MB.",
+    "desc8": "Usa esta plantilla como referencia",
+    "desc9": "Vista previa del CSV esperado",
+    "btn": "Descargar Plantilla"
   },
   "event": {
     "title": "Eventos",
+    "formDesc": "Completa los campos a continuación para crear el event.",
+    "formDesc2": "Asocia personal de apoyo al evento seleccionado.",    
     "list": "Eventos",
-    "add": "Adicionar",
+    "add": "Crear evento",
     "edit": "Editar",
     "import": "Importar",
     "description": "Rellene los campos para registrar el evento",
@@ -437,8 +481,11 @@
   },
   "staff": {
     "title": "Personal de Apoyo",
+    "formDesc": "Completa los campos a continuación para crear el personal de apoyo.",
+    "formDesc2": "Asocia eventos al personal de apoyo seleccionado.",
+    
     "list": "Personal de Apoyo",
-    "add": "Adicionar",
+    "add": "Registrar personal",
     "edit": "Editar",
     "import": "Importar",
     "description2": "Asocie o retire eventos al personal de apoyo",
@@ -473,12 +520,15 @@
   "invoice": {
     "title": "Facturas",
     "text": "Puedes descargar tus facturas en cualquier momento."
-   },
+  },
   "colaborators": {
     "title": "Colaboradores",
+    "text": "Puedes añadir o eliminar tus colaboradores en cualquier momento.",
     "titles": "Colaborador",
-    "add": "Adicionar colaborador",
+    "add": "Añadir nuevo colaborador",
+    "addText": "Introduce el correo electrónico del nuevo colaborador y asigna un rol",
     "search": "Buscar usuario",
+    "invite": "Invitar por correo electrónico",
     "deleteConfirmModalTitle": "Eliminar colaborador",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará los permisos del usuario sobre la entidad"
   },
@@ -499,6 +549,9 @@
     "failed": "Ha fallado la lectura del código",
     "failedStaff": "Usted no tiene permisos para validar el pase",
     "tryagain": "Intentar de nuevo",
-    "validatingStaff": "Validando personal de apoyo"
+    "validatingStaff": "Validando personal de apoyo",
+
+    "titleEvent": "Seleccione el evento",
+    "selected":"Seleccionar evento"
   }
 }

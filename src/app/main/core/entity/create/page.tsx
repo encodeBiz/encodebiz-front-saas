@@ -6,7 +6,7 @@ import {
 import { EntityFormValues, useRegisterController } from './page.controller';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { useTranslations } from 'next-intl';
-import PresentationCard from '@/components/features/dashboard/PresentationCard/PresentationCard';
+import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
  
 
 const FormEntityPage = () => {
@@ -15,7 +15,7 @@ const FormEntityPage = () => {
  
     return (
         <Container maxWidth="xl">
-            <PresentationCard
+            <HeaderPage
                 title={t('features.entity.create.card.title')}
                 description={t('features.entity.create.card.subtitle')}
             >
@@ -29,7 +29,7 @@ const FormEntityPage = () => {
                     submitButtonText={t('core.button.submit')}
 
                 />
-            </PresentationCard>
+            </HeaderPage>
 
 
         </Container>

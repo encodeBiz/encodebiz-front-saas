@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CardContent, Typography, Box, List, ListItem, ListItemIcon, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
- import { useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { IPlan } from '@/domain/core/IPlan';
 import usePricingCardController from './PricingCard.controller';
 import { BizType } from '@/domain/core/IService';
@@ -12,21 +12,22 @@ import { useRouter } from 'nextjs-toploader/app';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import SheetModalModal from '../modals/SheetModal';
 import { SassButton } from '../buttons/GenericButton';
-import { CheckOutlined } from '@mui/icons-material';
+import { Cancel, CheckOutlined } from '@mui/icons-material';
+import { useAppLocale } from '@/hooks/useAppLocale';
 
-const PlanCard = styled(Box)<{ featured?: boolean }>(({ theme, featured }) => ({
+const PlanCard = styled(Box)<{ highlighted?: boolean }>(({ theme, highlighted }) => ({
     maxWidth: 305,
     minWidth: 305,
     minHeight: 580,
     margin: theme.spacing(2),
     border: `1px solid ${theme.palette.primary.main}`,
-    transform: featured ? 'scale(1.05)' : 'scale(1)',
+    transform: highlighted ? 'scale(1.05)' : 'scale(1)',
     transition: 'transform 0.3s ease',
-    color: featured ? `${theme.palette.primary.contrastText}` : `${theme.palette.text.primary}`,
+    color: highlighted ? `${theme.palette.primary.contrastText}` : `${theme.palette.text.primary}`,
     borderRadius: 8,
-    background: featured ? 'linear-gradient(23.64deg, #001551 31.23%, #002FB7 99.28%)' : theme.palette.background.paper,
+    background: highlighted ? 'linear-gradient(23.64deg, #001551 31.23%, #002FB7 99.28%)' : theme.palette.background.paper,
     padding: 20,
-    boxShadow: featured ?'0px 6px 12px rgba(0, 65, 158, 0.25)':'none'
+    boxShadow: highlighted ? '0px 6px 12px rgba(0, 65, 158, 0.25)' : 'none'
 
 }));
 
@@ -34,7 +35,7 @@ const PlanCard = styled(Box)<{ featured?: boolean }>(({ theme, featured }) => ({
 
 
 
- 
+
 
 
 export type PricingCardProps = IPlan & {
@@ -42,13 +43,19 @@ export type PricingCardProps = IPlan & {
 
 };
 
-export const PricingCard: React.FC<PricingCardProps> = ({ id, name, priceMonth, priceYear,  features, featured = false, fromService }) => {
+export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthlyPrice, pricePerUse, description, name, maxHolders, features, highlighted = false, fromService, featuredList }) => {
     const t = useTranslations();
     const { ubSubcribeAction, handleSubscripe } = usePricingCardController(id as string, name as string, fromService);
     const { push } = useRouter()
+    const { currentLocale } = useAppLocale()
     const { open, closeModal } = useCommonModal()
     const { entitySuscription, currentEntity } = useEntity()
     const [items, setItems] = useState<Array<string>>([])
+    const [suscribed] = useState(entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length > 0)
+    const [price] = useState(payPerUse ? pricePerUse : monthlyPrice)
+
+
+
     useEffect(() => {
         const data: Array<string> = []
         if (id !== 'fremium' && currentEntity?.entity.id) {
@@ -61,7 +68,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, priceMonth, 
 
 
     return (<>
-        <PlanCard featured={featured}>
+        <PlanCard highlighted={highlighted}>
             <CardContent sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
                 <Box>
                     <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'} pb={2}>
@@ -69,11 +76,11 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, priceMonth, 
                             {t(`salesPlan.${name}`) || name}
                         </Typography>
                         <Typography variant="body1">
-                            Ideal para microempresas o equipos pequeños.
+                            {description ? (description as any)[currentLocale] : description['es']}
                         </Typography>
                     </Box>
 
-                    <Divider sx={{ background: (theme) => featured ? "#FFF" : theme.palette.divider }} />
+                    <Divider sx={{ background: (theme) => highlighted ? "#FFF" : theme.palette.divider }} />
 
                     <Box py={2}>
                         <SassButton
@@ -84,26 +91,25 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, name, priceMonth, 
                             disabled={false}
 
                         >
-                            {entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length > 0 ? t("salesPlan.contract") : t("salesPlan.pay")}
+                            {suscribed ? t("salesPlan.contract") : t("salesPlan.pay")}
                         </SassButton>
-                        {priceMonth && <Typography
-                            variant="h4"                   >
-                            {priceMonth}
+                        {price && <Typography
+                            align='center'
+                            variant="h6"                   >
+                            {price}
                         </Typography>}
-                        {priceYear && <Typography variant="body2" component="span">
-                            {priceYear}
-                        </Typography>}
+
                     </Box>
-                    <Divider sx={{ background: (theme) => featured ? "#FFF" : theme.palette.divider }} />
+                    <Divider sx={{ background: (theme) => highlighted ? "#FFF" : theme.palette.divider }} />
 
 
                     <List sx={{ marginTop: "10px" }}>
-                        {(features as Array<string>)?.map((feature, i) => (
+                        {(features as Array<string> ?? [])?.map((feature, i) => (
                             <ListItem key={i} disableGutters>
                                 <ListItemIcon sx={{ minWidth: 30 }}>
-                                    <CheckOutlined fontSize="small" sx={{ color: (theme) => featured ? "#FFF" : theme.palette.primary.main }}  />
+                                    {featuredList[i] ? <CheckOutlined fontSize="small" sx={{ color: (theme) => highlighted ? "#FFF" : theme.palette.primary.main }} /> : <Cancel fontSize="small" sx={{ color: (theme) => highlighted ? "#FFF" : theme.palette.primary.main }} />}
                                 </ListItemIcon>
-                                <Typography variant="body2">{feature}</Typography>
+                                <Typography variant="body2">{feature}{feature == t('salesPlan.emissionLimit') && (maxHolders ?? t('salesPlan.sinLimit'))}</Typography>
                             </ListItem>
                         ))}
                     </List>

@@ -5,7 +5,7 @@ import { Formik, Form, FormikProps, FormikHelpers, useFormikContext } from 'form
 import * as Yup from 'yup';
 import {
   Box,
- 
+
   Grid,
   Paper,
   Typography,
@@ -75,6 +75,8 @@ type GenericFormProps<T> = {
   disabled?: boolean;
   hideBtn?: boolean;
   formRef?: any
+  activateWatchStatus?: boolean;
+
 };
 
 const FieldItem = ({ field, i, formikProps, column, disabled }: { field: FormField, disabled: boolean, i: number, formikProps: any, column: 1 | 2 | 3 }) => {
@@ -97,7 +99,7 @@ const FieldItem = ({ field, i, formikProps, column, disabled }: { field: FormFie
         md: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4,
         lg: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4,
         xl: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4
-      }} key={field.name} sx={{ width: '100%',  textAlign:'center',}}>
+      }} key={field.name} sx={{ width: '100%', textAlign: 'center', }}>
         <FieldComponent
 
           name={field.name}
@@ -133,6 +135,7 @@ const GenericForm = <T extends Record<string, any>>({
   enableReinitialize,
   btnFullWidth = false,
   disabled = false,
+  activateWatchStatus = false,
   hideBtn = false,
   formRef
 }: GenericFormProps<T>) => {
@@ -167,7 +170,7 @@ const GenericForm = <T extends Record<string, any>>({
       >
         {(formikProps: FormikProps<T>) => (
           <Form noValidate>
-            <FormStatusWatcher />
+            {activateWatchStatus && <FormStatusWatcher />}
             <Grid container spacing={3}>
               {fields.map((field, i) => {
                 if (!field.isGroup)

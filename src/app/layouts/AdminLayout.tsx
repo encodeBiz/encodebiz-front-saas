@@ -7,9 +7,9 @@ import SideMenu from '@/components/layouts/SideMenu';
 import { useAuth } from '@/hooks/useAuth';
 import { useLayout } from '@/hooks/useLayout';
 import { Box, CssBaseline, Grid } from '@mui/material';
-import { useTranslations } from 'next-intl';
-
+ 
 const drawerWidth = 265;
+
 
 export default function AdminLayout({
   children,
@@ -18,7 +18,6 @@ export default function AdminLayout({
 }) {
   const { layoutState } = useLayout()
   const { pendAuth } = useAuth()
-  const t = useTranslations()
 
   return (
     <Box>
@@ -26,7 +25,6 @@ export default function AdminLayout({
       <SideMenu />
       <Box
         component="main"
-        justifyContent='center'
         display={'flex'}
         flexDirection={'column'}
         alignItems={'center'}
@@ -39,7 +37,7 @@ export default function AdminLayout({
         }}
       >
         <Header drawerWidth={drawerWidth} />
-        <div style={{maxWidth: 1175}}>
+        <div style={{maxWidth: 1175, width: '100%'}}>
           <Grid container sx={{
             display: 'flex',
             minHeight: 'calc(100vh - 100px)',
@@ -48,7 +46,7 @@ export default function AdminLayout({
             paddingTop: "100px",
             paddingBottom: "24px", px: 4
           }}>
-            {pendAuth && <PageLoader backdrop message={t('core.title.loader')} type={'circular'} fullScreen />}
+            {pendAuth && <PageLoader backdrop  type={'circular'} fullScreen />}
             {children}
             <Onboarding />
           </Grid>

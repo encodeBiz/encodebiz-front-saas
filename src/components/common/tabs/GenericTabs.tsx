@@ -30,7 +30,7 @@ const GenericTabs: React.FC<GenericTabsProps> = ({
     tabs,
     orientation = 'horizontal',
     alignment = 'left',
-    color = 'primary',  
+    color = 'primary',
     defaultTab = 0,
     onChange,
     sx = [],
@@ -65,6 +65,10 @@ const GenericTabs: React.FC<GenericTabsProps> = ({
                         '& .MuiTabs-indicator': {
                             backgroundColor: `${color}.main`,
                         },
+                        '& .MuiTabs-disabled': {
+                            backgroundColor: `${color}.secondary`,
+                            color: 'text.disabled',
+                        },
                         mb: orientation === 'horizontal' ? 3 : 0,
                         justifyContent: alignment,
                     }}
@@ -77,7 +81,17 @@ const GenericTabs: React.FC<GenericTabsProps> = ({
                             iconPosition="start"
                             disabled={tab.disabled}
                             wrapped={false}
-                            sx={{ ...tab.sx, pt: 4, minWidth: 200, borderBottomWidth:2, borderBottomStyle:'solid', borderBottomColor: 'secondary.main'}}
+                            sx={{
+                                ...tab.sx,
+                                pt: 4,
+                                minWidth: 200,
+                                borderBottomWidth: 2,
+                                borderBottomStyle: 'solid',
+                                borderBottomColor: 'secondary.main',
+                                '&.Mui-disabled': {
+                                    color: 'secondary.main',
+                                }
+                            }}
                         />
                     ))}
                 </Tabs>

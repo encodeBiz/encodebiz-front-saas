@@ -80,6 +80,7 @@ export const useFacturaController = () => {
     const fetchingData = useCallback(() => {
         setLoading(true)
         fetchInvoicesByEntity(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
+             
             if (res.length < rowsPerPage || res.length === 0)
                 setAtEnd(true)
             else

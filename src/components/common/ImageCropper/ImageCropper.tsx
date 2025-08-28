@@ -2,7 +2,6 @@
 import React, { useRef } from 'react';
 import {
     Box,
-    Button,
     Dialog,
     DialogTitle,
     DialogContent,
@@ -34,8 +33,8 @@ export const ImageCropper = ({ onComplete, disabled = false, isUploading, size =
                 style={{ display: 'none' }}
             />
 
-            <Button disabled={disabled}
-                variant="outlined"
+            <SassButton disabled={disabled}
+                variant="contained"
                 startIcon={<CloudUpload />}
                 onClick={() => fileInputRef.current.click()}
                 style={{ width: 180, height: 55 }}
@@ -45,7 +44,7 @@ export const ImageCropper = ({ onComplete, disabled = false, isUploading, size =
                 ) : (
                     t('core.label.uploadResourse')
                 )}
-            </Button>
+            </SassButton>
 
             <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
                 <DialogTitle>

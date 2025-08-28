@@ -37,6 +37,7 @@ const EntityPreferencesTab = ({formRef}:{formRef:any}) => {
                 enableReinitialize
                 formRef={formRef}
                 hideBtn={true}
+                activateWatchStatus
             />
             
         </>

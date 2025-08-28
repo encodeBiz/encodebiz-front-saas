@@ -5,7 +5,7 @@ import {
     Container,
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import PresentationCard from '@/components/features/dashboard/PresentationCard/PresentationCard';
+import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import GenericTabs from '@/components/common/tabs/GenericTabs';
 import { useUserAccountController } from './page.controller';
 
@@ -15,13 +15,13 @@ const AccountPreferencesPage = () => {
 
     return (
         <Container maxWidth="xl">
-            <PresentationCard
+            <HeaderPage
                 title={t('account.title')}
             >
                 <GenericTabs
                     tabs={tabsRender}
                 />
-            </PresentationCard>
+            </HeaderPage>
         </Container>
     );
 };

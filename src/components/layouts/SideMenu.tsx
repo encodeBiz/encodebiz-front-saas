@@ -7,8 +7,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Collapse,
-  Divider,
+  Collapse, 
   Box,
   IconButton
 } from '@mui/material';
@@ -139,14 +138,7 @@ export default function SideMenu() {
               alt="Company Logo"
             />
 
-            <Divider
-              sx={{
-                width: '95%',
-                margin: 'auto',
-                marginBottom: 1
-              }}
-              orientation="horizontal" flexItem
-            />
+            
           </Box>
 
 

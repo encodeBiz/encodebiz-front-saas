@@ -8,7 +8,7 @@ import { useTranslations } from 'next-intl';
 import { UserFormValues, useUserProfileController } from './page.controller';
 import { useAuth } from '@/hooks/useAuth';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
-import PresentationCard from '@/components/features/dashboard/PresentationCard/PresentationCard';
+import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 
 const CompleteProfilePage = () => {
     const t = useTranslations();
@@ -17,7 +17,7 @@ const CompleteProfilePage = () => {
 
     return (
         <Container maxWidth="xl">
-            <PresentationCard
+            <HeaderPage
                 title={t('core.signup.complete_profile')}
                 description={t('core.signup.complete_profile_desc')}
             >
@@ -31,7 +31,7 @@ const CompleteProfilePage = () => {
                     fields={fields as FormField[]}
                     submitButtonText={t('core.button.submit')}
                 />
-            </PresentationCard>
+            </HeaderPage>
         </Container>
     );
 };

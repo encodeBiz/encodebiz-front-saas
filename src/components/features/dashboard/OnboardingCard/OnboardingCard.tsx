@@ -40,7 +40,7 @@ export default function OnboardingCard({ children, title, description, image, on
               {description}
             </Typography>
 
-            {typeof onPress === 'function' && <SassButton variant="contained" color="primary" sx={{ mt: 2 }}>{t('core.button.start')}</SassButton>
+            {typeof onPress === 'function' && <SassButton onClick={onPress} variant="contained" color="primary" sx={{ mt: 2 }}>{t('core.button.start')}</SassButton>
             }
           </Box>
           {image && <Box sx={{ ...styles.imageContainer, right, top }}>

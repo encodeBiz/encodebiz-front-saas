@@ -7,6 +7,7 @@ import {
   useTheme
 } from '@mui/material';
 import AnimatedLogo from '../layouts/LogoLoader/LogoLoader';
+import { useTranslations } from 'next-intl';
 
 type PageLoaderProps = {
   type?: 'circular' | 'linear';
@@ -27,6 +28,7 @@ const PageLoader: React.FC<PageLoaderProps> = ({
 
 }) => {
   const theme = useTheme();
+  const t = useTranslations()
 
   const loaderStyle = {
     position: 'relative',
@@ -61,11 +63,11 @@ const PageLoader: React.FC<PageLoaderProps> = ({
   return (
     <Box sx={loaderStyle}>
       <AnimatedLogo />
-      {message && (
+      
         <Typography style={{ color: '#FFF' }} variant="body1" color="textSecondary">
-          {message}...
+          {message?message:t('core.title.loader')}
         </Typography>
-      )}
+      
     </Box>
   );
 };

@@ -22,7 +22,7 @@ export interface HelpTabsProps {
 }
 
 
-const HelpTabs = ({ tabs }: HelpTabsProps) => {
+const HelpTabs = ({ tabs, ref }: HelpTabsProps) => {
   const [value, setValue] = React.useState(0);
   const theme = useTheme();
 
@@ -61,17 +61,17 @@ const HelpTabs = ({ tabs }: HelpTabsProps) => {
         '&.Mui-selected': {
           backgroundColor: theme.palette.background.paper,
         },
-         borderBottom: `1px solid ${theme.palette.divider}`,
+        borderBottom: `1px solid ${theme.palette.divider}`,
       }}
     />
   );
 
 
- 
+
 
   return (
 
-    <Paper elevation={0} sx={{
+    <Paper ref={ref} elevation={0} sx={{
       border: `1px solid ${theme.palette.divider}`,
       borderRadius: 1,
       marginTop: 10
@@ -96,7 +96,7 @@ const HelpTabs = ({ tabs }: HelpTabsProps) => {
 
       {/* Tab content */}
       <Box sx={{ border: `1px solid ${theme.palette.divider}`, borderTop: 0, width: '100%' }}>
- 
+
         {tabs.map((e, i) => <span key={i}>
           {value === i && (<>
             {e.tabContent}

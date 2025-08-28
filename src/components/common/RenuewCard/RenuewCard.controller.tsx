@@ -1,34 +1,47 @@
-import { unSubscribeInSassProduct } from '@/services/common/subscription.service';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { fetchAvailablePlans, unSubscribeInSassProduct } from '@/services/common/subscription.service';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useToast } from '@/hooks/useToast';
 import { IEntitySuscription, IUnSubscription } from '@/domain/auth/ISubscription';
-export default function usePricingCardController(plan: IEntitySuscription) {
+import { IPlan } from '@/domain/core/IPlan';
+export default function usePricingCardController(planSubscription: IEntitySuscription) {
     const { currentEntity } = useEntity();
     const { token } = useAuth()
     const [loadingGetPlan, setLoadingGetPlan] = useState(false);
     const { showToast } = useToast()
+    const [planInfo, setPlanInfo] = useState<IPlan>()
+    const fetchPlanData = async () => {
+        const planData = await fetchAvailablePlans(planSubscription.serviceId)
+        setPlanInfo(planData.find(e => e.id === planSubscription.plan))
 
-     const unSubcribeAction = async () => {
-            try {
-                setLoadingGetPlan(true);
-                const data: IUnSubscription = {
-                    entityId: currentEntity?.entity?.id ? currentEntity.entity.id : "",
-                    serviceId: plan.serviceId as any
-                }
-                await unSubscribeInSassProduct(data, token)              
-                showToast(`La suscripción al servicio ${plan.serviceId as any} se ha eliminado con exito`, 'success');
-                setLoadingGetPlan(false);
-            } catch (error: unknown) {
-                setLoadingGetPlan(false);
-                if (error instanceof Error) {
-                    showToast(error.message, 'error');
-                } else {
-                    showToast(String(error), 'error');
-                }
+    }
+
+    useEffect(() => {
+        fetchPlanData()
+    }, [])
+
+
+    const unSubcribeAction = async () => {
+        try {
+            setLoadingGetPlan(true);
+            const data: IUnSubscription = {
+                entityId: currentEntity?.entity?.id ? currentEntity.entity.id : "",
+                serviceId: planSubscription.serviceId as any
+            }
+            await unSubscribeInSassProduct(data, token)
+            showToast(`La suscripción al servicio ${planSubscription.serviceId as any} se ha eliminado con exito`, 'success');
+            setLoadingGetPlan(false);
+        } catch (error: unknown) {
+            setLoadingGetPlan(false);
+            if (error instanceof Error) {
+                showToast(error.message, 'error');
+            } else {
+                showToast(String(error), 'error');
             }
         }
-    return { unSubcribeAction, loadingGetPlan, setLoadingGetPlan }
+    }
+    return { unSubcribeAction, loadingGetPlan, setLoadingGetPlan, planInfo }
 }

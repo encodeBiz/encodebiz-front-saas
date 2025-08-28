@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
     images: {
         domains: ['lh3.googleusercontent.com', 'flagcdn.com', 'example.com', 'placehold.co', 'storage.googleapis.com', 'firebasestorage.googleapis.com'], // Add your image domains here
     },
+    env: {
+        DEFAULT_TIMEZONE: 'UTC'
+    }
 };
 
 export default withNextIntl(nextConfig);;
