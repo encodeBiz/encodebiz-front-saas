@@ -19,6 +19,10 @@ export default function usePricingCardController(id: string, name: string, fromS
     const { openModal } = useCommonModal()
 
     const subcribeAction = async () => {
+
+
+        //            
+
         if (entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length === 0)
             try {
                 setLoadingGetPlan(true);
@@ -75,18 +79,21 @@ export default function usePricingCardController(id: string, name: string, fromS
 
 
 
-    const handleSubscripe = () => {
+    const handleSubscripe = (payPerUse: boolean) => {
+
+
         if (name === 'freemium') {
-            //if (!currentEntity || !currentEntity?.entity?.billingEmail || !currentEntity?.entity?.legal?.legalName || !currentEntity?.entity?.legal?.taxId || !currentEntity?.entity?.branding)
-            //    openModal(CommonModalType.BILLING)
-            //else
             subcribeAction()
         } else {
             if (!currentEntity || !currentEntity?.entity?.billingEmail || !currentEntity?.entity?.legal?.legalName || !currentEntity?.entity?.legal?.taxId || !currentEntity?.entity?.legal?.taxId || !currentEntity?.entity?.branding || !currentEntity?.entity?.billingConfig?.payment_method) {
                 openModal(CommonModalType.BILLING)
             } else {
                 if (entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length === 0) {
-                    subcribeAction()
+                    if (name === 'enterprise' && payPerUse) {
+                        openModal(CommonModalType.CONTACT);
+                    } else {
+                        subcribeAction()
+                    }
                 }
             }
         }

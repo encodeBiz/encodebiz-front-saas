@@ -12,7 +12,8 @@ import {
     ListItemText,
     Box,
     useTheme,
-    Typography
+    Typography,
+    ListItemIcon
 } from '@mui/material';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
@@ -21,7 +22,8 @@ import { TransitionProps } from '@mui/material/transitions';
 import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import { CustomTypography } from '../Text/CustomTypography';
 import { SassButton } from '../buttons/GenericButton';
-import { CancelOutlined, CheckOutlined } from '@mui/icons-material';
+import { CancelOutlined, CheckOutlined, Warning } from '@mui/icons-material';
+import { BorderBox } from '../tabs/BorderBox';
 
 interface SheetModalProps {
     word?: string
@@ -29,7 +31,7 @@ interface SheetModalProps {
     label?: string
     textBtn?: string
     description: string
-    textPoint?: Array<string>
+    textPoint?: Array<{ text: string, link: string }>
     codeValidator?: boolean
     isLoading?: boolean
     onOKAction: (args: any) => void
@@ -90,13 +92,16 @@ const SheetModalModal = ({ title, textBtn, description, textPoint = [], type = C
                 <DialogContentText id="alert-dialog-description" sx={{ mb: 3 }}>
                     <Typography variant='body1'>{description}</Typography>
                 </DialogContentText>
-                {textPoint.length > 0 && <List dense={true}>
-                    {textPoint.map((e, i) => <ListItem key={i}>
-                        <ListItemText
-                            primary={e}
-                        />
-                    </ListItem>)}
-                </List>}
+                <BorderBox sx={{ p: 1 }}>
+                    {textPoint.length > 0 && <List dense={true}>
+                        {textPoint.map((e, i) => <ListItem key={i}>
+                            <ListItemIcon><Warning color='warning' /></ListItemIcon>
+                            <ListItemText
+                                primary={<Typography variant='body1'>{e.text}</Typography>}
+                            />
+                        </ListItem>)}
+                    </List>}
+                </BorderBox>
             </DialogContent>
             <DialogActions>
 

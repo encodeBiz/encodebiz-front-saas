@@ -7,17 +7,25 @@ import Box from '@mui/material/Box';
 import { useRouter } from 'nextjs-toploader/app';
 import { MAIN_ROUTE } from '@/config/routes';
 import { useEntity } from '@/hooks/useEntity';
-import { AssignmentTurnedInOutlined } from '@mui/icons-material';
 import { useStyles } from './ServiceList.styles';
 import { useAppLocale } from '@/hooks/useAppLocale';
+import passnbiz from '../../../../../public/assets/images/icono passbiz.svg'
+import checkbiz from '../../../../../public/assets/images/checkbiz.svg'
+import Image from 'next/image';
+import { useTranslations } from 'next-intl';
+import { useTheme } from '@mui/material';
 
-
+const icons = {
+    'checkinbiz': checkbiz,
+    'passinbiz': passnbiz,
+}
 const ServiceList = () => {
-
+    const theme = useTheme()
     const { push } = useRouter()
     const { entityServiceList } = useEntity()
     const styles = useStyles()
-    const {currentLocale} = useAppLocale()
+    const t = useTranslations()
+    const { currentLocale } = useAppLocale()
     const handleActionClick = (id: any) => {
         push(`/${MAIN_ROUTE}/${id}/onboarding`)
     };
@@ -34,14 +42,16 @@ const ServiceList = () => {
                     <Card key={card.id} sx={styles.card} onClick={() => handleActionClick(card.id)} elevation={0} >
                         <CardContent sx={styles.card}>
                             <Box sx={styles.iconContainer} >
-                                <AssignmentTurnedInOutlined sx={styles.icon} />
+                                <Image src={icons[card.id]} width={76} height={76} alt='' />
                             </Box>
-                            <Typography textTransform={'uppercase'} gutterBottom variant="h5" component="div">
-                                {card.name}
-                            </Typography>
-                            <Typography variant="body2" color="text.primary" fontSize={16}>
-                                {card?.description?(card?.description as any)[currentLocale]:''}
-                            </Typography>
+                            <Box sx={styles.textContainer} >
+                                <Typography textTransform={'uppercase'} gutterBottom variant="h5" component="div">
+                                    {card.name} {card.id==='checkinbiz' && <span style={{color:theme.palette.primary.main}}>{t('core.label.comminsoom')}</span>}
+                                </Typography>
+                                <Typography variant="body2" color="text.primary" fontSize={16}>
+                                    {card?.description ? (card?.description as any)[currentLocale] : ''}
+                                </Typography>
+                            </Box>
 
                         </CardContent>
                     </Card>

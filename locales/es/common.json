@@ -92,6 +92,7 @@
       "active": "Activo",
       "thumbnail": "Imagen en miniatura",
       "subject": "Asunto",
+      "comminsoom":"- Muy pronto",
       "from": "Correo electronico",
       "owner": "Propietario",
       "availableEvent": "Eventos disponibles",
@@ -283,7 +284,7 @@
       "stats": "Estadísticas",
       "card": {
         "title": "Bienvenido a encodeBiz SaaS",
-        "subtitle": "Registra, controla y gestiona accesos en un solo lugar, CheckBiz y PassBiz listos para ti."
+        "subtitle": "Registra, controla y gestiona accesos en un solo lugar, PassBiz listo para ti y muy pronto CheckBiz."
       },
       "cardDesc": {
         "title": "Más que un software, tu socio en desarrollo digital",
@@ -325,7 +326,7 @@
         "deleteConfirmModalTitle3": "Por favor entre la siguiente palabra para continuar con la accion"
       },
       "tab2": {
-        "title": "Identidad Visual",
+        "title": "Marca",
         "btn": "Eliminar Entidad",
         "titleAbout": "Acerca de tu empresa",
         "descriptionAbout": "Completa la información de la marca"
@@ -368,13 +369,13 @@
   },
   "salesPlan": {
     "title": "PLANES DISPONIBLES",
-    "emissionLimit": "Limite de emisiones:",
-    "sinLimit": "Sin límites",
-    "subTitle": "Elige entre la versión Free, Básica o Avanzada según las funcionalidades que necesites. Actualiza o cambia tu plan en cualquier momento para potenciar tu experiencia con PassBiz.",
+    "emissionLimit":"Limite de emisiones:",
+     "sinLimit":"Sin límites",
+    "subTitle": "Elige entre la versión Gratis, Bronce o Empresarial según las funcionalidades que necesites. Actualiza o cambia tu plan en cualquier momento para potenciar tu experiencia con PassBiz.",
     "free": "Gratis",
-    "configureLegal": "Configuracion de datos legales de la entidad",
-    "configureBranding": "Configuracion de diseño de entidad",
-    "configureBilling": "Configuracion de mecanismo de pago",
+    "configureLegal": "Datos de la Empresa",
+    "configureBranding": "Identidad Visual",
+    "configureBilling": "Métodos de pago",
     "standard": "Estandar",
     "upgrade": "Actualizar",
     "month": "mes",
@@ -416,8 +417,8 @@
     "contract": "Plan Actual",
     "renew": "Cambiar plan",
     "del": "Eliminar suscripción",
-    "imageConfirmModalTitle": "Entidad no configurada",
-    "imageConfirmModalTitle2": "Para poder realizar una suscripción debe previamente configurar los siguientes datos en la entidad:",
+    "imageConfirmModalTitle": "Configura tu Entidad para continuar",
+    "imageConfirmModalTitle2": "Antes de contratar un plan, completa la información pendiente en la sección Entidad de tu cuenta:",
     "notAllowedPlan": "Debes actualizar los datos legales de la entidad seleccionada antes de obtener un plan."
   },
   "terms": {
@@ -445,8 +446,8 @@
     "sendConfirmModalTitle": "Relanzar pase",
     "sendConfirmModalTitle2": "Esta acción no se puede deshacer. Relanzará este pase digital nuevamente",
     "filter": {
-      "email": "Filtro por correo electrónico",
-      "state": "Filtro por estado"
+      "email": "Correo electrónico",
+      "state": "Estado"
     },
     "selectType": "Seleccionar tipo de pase",
     "importSCVTitle": "Importar CSV",
@@ -553,5 +554,11 @@
 
     "titleEvent": "Seleccione el evento",
     "selected":"Seleccionar evento"
+  },
+   "contact": {
+    "title": "Contáctenos",
+    "title2": "Métodos de Pago",
+    "test1":"Solicito realizar una prueba de evento",
+    "test2":"Solicito plan enterprise" 
   }
 }

@@ -13,10 +13,22 @@ export const TextFilter = ({ label, value, onChange }: TextFilterProps) => {
         onChange={(e) => {
             onChange(e.target.value);
         }}
-        sx={{ minWidth: 349, height: 56 }}
+        sx={{
+           
+            height: 46,
+            '& .MuiOutlinedInput-root': {
+                transition: 'width 0.3s ease',
+                width: '200px',
+                height:46,
+                '&.Mui-focused': {
+                    width: '300px',
+                },
+            },
+
+        }}
         slotProps={{
             input: {
-                startAdornment: <SearchOutlined sx={{mr:1}} />,
+                startAdornment: <SearchOutlined sx={{ mr: 1 }} />,
                 endAdornment: value ? <CancelOutlined onClick={() => onChange('')} /> : <></>,
             },
         }}

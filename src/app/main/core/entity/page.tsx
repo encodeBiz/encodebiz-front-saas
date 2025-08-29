@@ -25,6 +25,7 @@ import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { createSlug } from '@/lib/common/String';
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { Save } from '@mui/icons-material';
+import { useSearchParams } from 'next/navigation';
 
 const EntityPreferencesPage = () => {
     const t = useTranslations();
@@ -34,6 +35,14 @@ const EntityPreferencesPage = () => {
     const { handleDeleteEntity, pending } = useSettingEntityController()
     const formRef = useRef(null)
     const { formStatus } = useFormStatus()
+    const searchParams = useSearchParams()
+    let tab = 0
+    if (searchParams.get('tab')) {
+        if (searchParams.get('tab') === 'company') tab = 0
+        if (searchParams.get('tab') === 'branding') tab = 1
+        if (searchParams.get('tab') === 'billing') tab = 2
+    }
+
     const tabsRender: TabItem[] = [
         {
             label: <Badge color="warning" variant="dot" badgeContent={currentEntity?.entity.legal?.legalName ? 0 : 1}>
@@ -86,6 +95,7 @@ const EntityPreferencesPage = () => {
                 title={t('entity.title')}
             >{currentEntity?.role === 'owner' &&
                 <GenericTabs
+                    defaultTab={tab}
                     fullWidth
                     tabs={tabsRender}
                 />

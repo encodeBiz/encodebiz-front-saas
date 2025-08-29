@@ -8,7 +8,7 @@ export interface SelectFilterProps {
 }
 export const SelectFilter = ({ defaultValue, value, onChange, items }: SelectFilterProps) => {
     const t = useTranslations()
-    return <Select sx={{ minWidth: 187, height: 56 }}
+    return <Select sx={{   height: 46 }}
         value={value ?? 'none'}
         defaultValue={defaultValue ?? 'none'}
         onChange={(e: any) => onChange(e.target.value)}  >
