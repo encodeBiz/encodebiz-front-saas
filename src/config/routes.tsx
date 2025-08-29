@@ -75,7 +75,7 @@ export const menuItemsServices = [{
 },
 {
     id: 'passinbiz',
-    name: 'PassinBiz',
+    name: 'PassBiz',
     icon: <PassInBizIcon />,
     link: `/${MAIN_ROUTE}/passinbiz/onboarding`,
     subMenu: PASSINBIZ

@@ -55,19 +55,20 @@ export const useStyles = (show:boolean): Record<string, SxProps<Theme>> => ({
   title: {
     fontWeight: 400,
     fontSize: 45,
-    textAlign: 'left'
+    textAlign: 'left',
+    zIndex: 10
   },
   subtitle: {
     fontWeight: 400,
     fontSize: 24,
-    textAlign: 'left'
+    textAlign: 'left',
+     zIndex: 10
 
   },
   imageContainer: {
- 
     borderRadius: 1,
     position: 'absolute',
-    zIndex: 10,
+    zIndex: 0,
     transform: show ? 'translateX(0)' : 'translateX(60px)',
     transition: 'opacity 0.5s ease, transform 0.5s ease',
   }
