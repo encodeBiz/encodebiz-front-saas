@@ -179,7 +179,9 @@ export default function useHolderListController() {
       label: t("core.label.state"),
       minWidth: 170,
       format: (value, row) => <><CustomChip
+        id={row.id}
         background={row.passStatus}
+        text={row.passStatus === 'failed' ? row.failedFeedback : ''}
         size="small"
         label={t("core.label." + row.passStatus)}
 
