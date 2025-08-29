@@ -6,7 +6,7 @@ import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
 import { useRouter } from 'nextjs-toploader/app';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { Holder } from '@/domain/features/passinbiz/IHolder';
 import { useRef } from 'react';
 import { useFormStatus } from '@/hooks/useFormStatus';
@@ -21,7 +21,7 @@ export default function HolderForm() {
   const { id } = useParams<{ id: string }>()
   const formRef = useRef(null)
   const { formStatus } = useFormStatus()
-
+  const searchParams=useSearchParams()
   const handleExternalSubmit = () => {
     if (formRef.current) {
       (formRef.current as any).submitForm()
@@ -37,7 +37,7 @@ export default function HolderForm() {
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
             <SassButton
               disabled={formStatus?.isSubmitting}
-              onClick={() => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/holder`)}
+              onClick={() => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/holder?params=${searchParams.get('params')}`)}
               variant='outlined'
               startIcon={<ArrowLeftOutlined />}
             > {t('core.button.cancel')}</SassButton>
