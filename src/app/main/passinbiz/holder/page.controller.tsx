@@ -305,7 +305,7 @@ export default function useHolderListController() {
 
 
   const onEdit = async (item: any) => {
-    push(`/main/passinbiz/holder/${item.id}/edit?params=${encodeToBase64(filterParams)}`)
+    push(`/main/passinbiz/holder/${item.id}/edit?params=${buildListState()}`)
   }
 
 
@@ -357,10 +357,13 @@ export default function useHolderListController() {
   const [type, setType] = useState<string>()
   const [eventId, setEventId] = useState<string>()
   const handleConfigConfirm = async ({ type, eventId = '' }: { type: 'event' | 'credential', eventId?: string }) => {
+
     setType(type)
     setEventId(eventId)
-
-    openModal(CommonModalType.UPLOAD_CSV)
+    closeModal(CommonModalType.CONFIG_CSV)
+    setTimeout(() => {
+      openModal(CommonModalType.UPLOAD_CSV)
+    }, 400);
   }
   const handleUploadConfirm = async (file: File | null) => {
     try {
@@ -390,10 +393,33 @@ export default function useHolderListController() {
   useEffect(() => {
     if (searchParams.get('params')) {
       const params = decodeFromBase64(searchParams.get('params') as string)
-      setFilterParams(params)
+      setAtStart(params.atStart ?? true);
+      setAtEnd(params.atEnd ?? false)
+      setLast(params.last ?? null)
+      setPagination(params.pagination ?? ``);
+      setItems(params.items ?? []);
+      setItemsHistory(params.itemsHistory ?? []);
+      setCurrentPage(params.currentPage ?? 0);
+      setTotal(params.total ?? 0);
+      setFilterParams(params.filterParams)
     }
   }, [searchParams.get('params')])
 
+
+  const buildListState = () => {
+    
+    
+    return encodeToBase64({
+      filterParams: filterParams,
+      items,
+      //itemsHistory,
+      atStart,
+      atEnd,
+      currentPage,
+      pagination,
+      total
+    })
+  }
 
 
   return {
@@ -402,7 +428,7 @@ export default function useHolderListController() {
     atStart, handleUploadConfirm, isUploading, handleConfigConfirm,
     onSearch, onNext, onBack,
     pagination, currentPage,
-    columns, rowAction, setFilterParams, filterParams, total,
+    columns, rowAction, setFilterParams, filterParams, total, buildListState,
     loading, rowsPerPage, setRowsPerPage, onRevoke, revoking, onSend
   }
 

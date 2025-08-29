@@ -12,15 +12,14 @@ import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import CSVConfigModal from '@/components/common/modals/CSVConfigModal';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import { SassButton } from '@/components/common/buttons/GenericButton';
-import { encodeToBase64 } from '@/lib/common/base64';
-
+ 
 export default function HolderList() {
   const t = useTranslations();
   const { handleUploadConfirm, handleConfigConfirm,
     items, rowAction,
     onNext, onBack, setFilterParams, filterParams, onRevoke, revoking, onSend,
     currentPage, topFilter,
-    columns, onSearch,
+    columns, onSearch,buildListState,
     loading, rowsPerPage, setRowsPerPage } = useHolderListController();
   const { open, closeModal, openModal } = useCommonModal()
 
@@ -42,7 +41,7 @@ export default function HolderList() {
 
             <SassButton
               role='link'
-              href={`/main/passinbiz/holder/add?params=${encodeToBase64(filterParams)}`}
+              href={`/main/passinbiz/holder/add?params=${buildListState()}`}
               variant='contained'
               startIcon={<Add />}
             >{t('holders.addHolder')}</SassButton>

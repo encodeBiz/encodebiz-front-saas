@@ -65,11 +65,17 @@ const CSVConfigModal = ({ open, onClose, onConfirm }: ICSVConfigModal) => {
   }, [eventList, eventSelected, searchInput]);
 
   const handleSelected = () => {
-    if (eventSelected) {
+    
+    if (type == 'event' && eventSelected) {
       handleClose();
       onConfirm({
         type: type as 'event' | 'credential',
         eventId: eventSelected?.id
+      })
+    }else{
+      onConfirm({
+        type: type as 'event' | 'credential',
+        eventId: undefined
       })
     }
   };

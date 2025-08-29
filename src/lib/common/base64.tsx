@@ -1,3 +1,4 @@
+
 export const encodeToBase64 = (jsonData: any) => {
     try {
         const jsonString = JSON.stringify(jsonData);
