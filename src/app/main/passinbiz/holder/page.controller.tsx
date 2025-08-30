@@ -21,6 +21,7 @@ import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
 import { TextFilter } from "@/components/common/table/filters/TextFilter";
 import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
 import { useSearchParams } from "next/navigation";
+import { useTableStatus } from "@/hooks/useTableStatus";
 
 
 
@@ -46,6 +47,8 @@ export default function useHolderListController() {
   const { openModal, closeModal } = useCommonModal()
   const [revoking, setRevoking] = useState(false)
   const { push } = useRouter()
+
+  const { tableStatus, updateFromStatus } = useTableStatus()
 
   const [filterParams, setFilterParams] = useState<any>({
     filter: { passStatus: 'active', type: 'none', email: '', parentId: 'none' },
@@ -213,7 +216,6 @@ export default function useHolderListController() {
 
 
   const fetchingData = useCallback(() => {
-    console.log(filterParams);
 
     setLoading(true)
 
@@ -274,7 +276,7 @@ export default function useHolderListController() {
   useEffect(() => {
     if (currentEntity?.entity?.id)
       fetchingData()
-  }, [filterParams.params, currentEntity?.entity?.id, fetchingData])
+  }, [filterParams.params, currentEntity?.entity?.id, searchParams.get('params')])
 
   useEffect(() => {
     setCurrentPage(0)
@@ -305,7 +307,7 @@ export default function useHolderListController() {
 
 
   const onEdit = async (item: any) => {
-    push(`/main/passinbiz/holder/${item.id}/edit?params=${buildListState()}`)
+    push(`/main/passinbiz/holder/${item.id}/edit?params=${buildState()}`)
   }
 
 
@@ -390,9 +392,22 @@ export default function useHolderListController() {
   };
 
 
+
   useEffect(() => {
     if (searchParams.get('params')) {
-      const params = decodeFromBase64(searchParams.get('params') as string)
+      const data = decodeFromBase64(searchParams.get('params') as string)
+      loadState(data.id)
+
+    }
+  }, [searchParams.get('params')])
+
+
+
+  const loadState = (id: string) => {
+    console.log(tableStatus);
+    
+    if (tableStatus?.id === id) {
+      const params = tableStatus?.status
       setAtStart(params.atStart ?? true);
       setAtEnd(params.atEnd ?? false)
       setLast(params.last ?? null)
@@ -403,22 +418,26 @@ export default function useHolderListController() {
       setTotal(params.total ?? 0);
       setFilterParams(params.filterParams)
     }
-  }, [searchParams.get('params')])
+  }
 
-
-  const buildListState = () => {
-    
-    
-    return encodeToBase64({
+  const buildState = () => {
+    const dataStatus = {
       filterParams: filterParams,
       items,
-      //itemsHistory,
+      last,
+      itemsHistory,
       atStart,
       atEnd,
       currentPage,
       pagination,
       total
+    }
+    const id = `${new Date().getTime()}`
+    updateFromStatus({
+      status: dataStatus,
+      id
     })
+    return encodeToBase64({ id })
   }
 
 
@@ -428,7 +447,7 @@ export default function useHolderListController() {
     atStart, handleUploadConfirm, isUploading, handleConfigConfirm,
     onSearch, onNext, onBack,
     pagination, currentPage,
-    columns, rowAction, setFilterParams, filterParams, total, buildListState,
+    columns, rowAction, setFilterParams, filterParams, total, buildState,
     loading, rowsPerPage, setRowsPerPage, onRevoke, revoking, onSend
   }
 

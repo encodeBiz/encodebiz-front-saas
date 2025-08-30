@@ -27,6 +27,7 @@ import Image from 'next/image';
 import image from '../../../../public/assets/images/1.jpg'
 import { Card1 } from './Cards/Card1';
 import { Card2 } from './Cards/Card2';
+import { Card3 } from './Cards/Card3';
 
 // Define the steps/slides for the onboarding process
 const onboardingSteps = [
@@ -104,7 +105,7 @@ function Onboarding() {
             <DialogContent sx={classes.content}>                  
                 {activeStep === 0 && <Card1 handleNext={handleNext} />}
                 {activeStep === 1 && <Card2 handleNext={handleNext}/>}
-                {activeStep === 2 && <Card1 handleNext={handleNext} />}
+                {activeStep === 2 && <Card3 handleNext={handleNext} />}
             </DialogContent>
 
              

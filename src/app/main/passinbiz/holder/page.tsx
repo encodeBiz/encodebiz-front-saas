@@ -12,17 +12,18 @@ import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import CSVConfigModal from '@/components/common/modals/CSVConfigModal';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import { SassButton } from '@/components/common/buttons/GenericButton';
- 
+import { useRouter } from 'nextjs-toploader/app';
+
 export default function HolderList() {
   const t = useTranslations();
   const { handleUploadConfirm, handleConfigConfirm,
     items, rowAction,
     onNext, onBack, setFilterParams, filterParams, onRevoke, revoking, onSend,
     currentPage, topFilter,
-    columns, onSearch,buildListState,
+    columns, onSearch, buildState,
     loading, rowsPerPage, setRowsPerPage } = useHolderListController();
   const { open, closeModal, openModal } = useCommonModal()
-
+  const { push } = useRouter()
 
 
   return (
@@ -40,8 +41,7 @@ export default function HolderList() {
             >{t('core.button.confirmSCV')}</SassButton>
 
             <SassButton
-              role='link'
-              href={`/main/passinbiz/holder/add?params=${buildListState()}`}
+              onClick={() => push(`/main/passinbiz/holder/add?params=${buildState()}`)}
               variant='contained'
               startIcon={<Add />}
             >{t('holders.addHolder')}</SassButton>
