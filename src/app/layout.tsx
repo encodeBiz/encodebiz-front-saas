@@ -13,7 +13,7 @@ import { MediaProvider } from "@/contexts/mediaContext";
 import { Suspense } from "react";   // ✅ Importar Suspense
 import PageLoader from "@/components/common/PageLoader";
 import { FormStatusProvider } from "@/contexts/formStatusContext";
-
+ 
 const geistSans = Geist({
     variable: "--font-geist-sans",
     subsets: ["latin"],
@@ -47,8 +47,10 @@ export default async function RootLayout({
                                             <CommonModalProvider>
                                                 <MediaProvider>
                                                     <FormStatusProvider>
-                                                        <NextTopLoader showSpinner={false} color="#456456" />
-                                                        {children}
+                                                        
+                                                            <NextTopLoader showSpinner={false} color="#456456" />
+                                                            {children}
+                                                     
                                                     </FormStatusProvider>
                                                 </MediaProvider>
                                             </CommonModalProvider>

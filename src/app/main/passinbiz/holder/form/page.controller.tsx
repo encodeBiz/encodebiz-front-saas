@@ -13,7 +13,7 @@ import { MAIN_ROUTE } from "@/config/routes";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { search } from "@/services/passinbiz/event.service";
 import { useLayout } from "@/hooks/useLayout";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
 import ImageUploadInput from "@/components/common/forms/fields/ImageUploadInput";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
@@ -27,7 +27,7 @@ export default function useHolderController() {
   const { currentEntity, watchServiceAccess } = useEntity()
   const { changeLoaderState } = useLayout()
   const { id } = useParams<{ id: string }>()
-
+  const searchParams = useSearchParams()
 
   const fieldList = [
     {
@@ -154,7 +154,7 @@ export default function useHolderController() {
       else
         await updateHolder(dataForm, token)
       showToast(t('core.feedback.success'), 'success');
-      push(`/${MAIN_ROUTE}/passinbiz/holder`)
+      push(`/${MAIN_ROUTE}/passinbiz/holder?params=${searchParams.get('params')}`)
       changeLoaderState({ show: false })
     } catch (error: any) {
       showToast(error.message, 'error')

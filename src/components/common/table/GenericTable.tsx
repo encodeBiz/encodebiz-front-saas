@@ -96,6 +96,7 @@ export function GenericTable<T extends Record<string, any>>({
   keyField,
   title,
   page,
+  rowsPerPage,
   selectable = false,
   onRowClick,
   onDelete,
@@ -115,7 +116,7 @@ export function GenericTable<T extends Record<string, any>>({
   const [orderBy, setOrderBy] = useState<keyof T>(sort?.field ?? keyField);
   const [selected, setSelected] = useState<(string | number)[]>([]);
   const t = useTranslations()
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+
   const [totalItems, setTotalItems] = useState(0);
   const [searchText] = useState('');
   const theme = useTheme()
@@ -206,7 +207,8 @@ export function GenericTable<T extends Record<string, any>>({
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newLimit = parseInt(event.target.value, 10);
-    setRowsPerPage(newLimit);
+    if (typeof onRowsPerPageChange === 'function')
+      onRowsPerPageChange(newLimit);
   };
 
   const isSelected = (id: string | number) => selected.indexOf(id) !== -1;
@@ -218,10 +220,7 @@ export function GenericTable<T extends Record<string, any>>({
     if (data.length !== 0) setTotalItems(data[0].totalItems);
   }, [data]);
 
-  useEffect(() => {
-    if (typeof onRowsPerPageChange === 'function')
-      onRowsPerPageChange(rowsPerPage)
-  }, [onRowsPerPageChange, rowsPerPage]);
+
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -374,7 +373,7 @@ export function GenericTable<T extends Record<string, any>>({
                     })}
 
                     {(onEdit || onDelete || rowAction.length > 0) && (
-                      <TableCell align="right" sx={{ whiteSpace: 'nowrap', gap:2, display:'flex', flexDirection:'row' }}>
+                      <TableCell align="right" sx={{ whiteSpace: 'nowrap', gap: 2, display: 'flex', flexDirection: 'row' }}>
 
                         {rowAction.map((e, i) => {
                           if (e.allowItem(row as any)) {
@@ -426,13 +425,13 @@ export function GenericTable<T extends Record<string, any>>({
           </TableBody>
         </Table>
       </TableContainer>
-
+           
       <TablePagination
 
         rowsPerPageOptions={[2, 5, 10, 25, 100]}
         component="div"
         count={totalItems}
-        rowsPerPage={rowsPerPage}
+        rowsPerPage={rowsPerPage??5}
         page={page as number}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}

@@ -22,13 +22,13 @@ export const lightTheme: PaletteOptions = {
   
   primary: {
     main: '#476BE7',
-    light: '#42a5f5',
-    dark: '#1565c0',
+    light: '#DDE2F7',
+    dark: '#001551',
     contrastText: '#ffffff',
   },
   secondary: {
     main: '#E9E8F5',
-    light: '#E9E8F5',
+    light: '#DDE2F7',
     dark: '#E9E8F5',
     contrastText: '#000',
   },

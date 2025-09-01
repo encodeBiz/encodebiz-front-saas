@@ -12,25 +12,27 @@ import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import CSVConfigModal from '@/components/common/modals/CSVConfigModal';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import { SassButton } from '@/components/common/buttons/GenericButton';
+import { useRouter } from 'nextjs-toploader/app';
 
 export default function HolderList() {
   const t = useTranslations();
   const { handleUploadConfirm, handleConfigConfirm,
     items, rowAction,
-    onNext, onBack, setSort, sort, onRevoke, revoking, onSend,
-    currentPage, topFilter,
-    columns, onSearch,
-    loading, rowsPerPage, setRowsPerPage } = useHolderListController();
+    onNext, onBack, filterParams, setFilterParams, onRevoke, revoking, onSend,
+    topFilter,
+    columns, buildState,
+    loading,
+  } = useHolderListController();
   const { open, closeModal, openModal } = useCommonModal()
-
+  const { push } = useRouter()
 
 
   return (
     <Container maxWidth="lg">
       <HeaderPage
-        
+
         title={t("holders.holderList")}
-    
+
         actions={
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
             <SassButton
@@ -40,8 +42,7 @@ export default function HolderList() {
             >{t('core.button.confirmSCV')}</SassButton>
 
             <SassButton
-              role='link'
-              href='/main/passinbiz/holder/add'
+              onClick={() => push(`/main/passinbiz/holder/add?params=${buildState()}`)}
               variant='contained'
               startIcon={<Add />}
             >{t('holders.addHolder')}</SassButton>
@@ -56,16 +57,15 @@ export default function HolderList() {
           title={''}
           keyField="id"
           loading={loading}
-          page={currentPage}
-          rowsPerPage={rowsPerPage}
-          onRowsPerPageChange={setRowsPerPage}
-          onSorteable={setSort}
-          sort={sort}
+          page={filterParams.currentPage}
+          rowsPerPage={filterParams.rowsPerPage}
+          onRowsPerPageChange={(rowsPerPage) => setFilterParams({ ...filterParams, rowsPerPage })}
+          onSorteable={(sort) => setFilterParams({ ...filterParams, sort })}
+          sort={filterParams.sort}
           onBack={onBack}
           onNext={onNext}
           topFilter={topFilter}
-          //onEdit={(data) => onEdit(data)}
-          onSearch={(data) => onSearch(data)}
+            
 
 
         />

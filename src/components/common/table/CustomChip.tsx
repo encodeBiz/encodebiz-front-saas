@@ -1,4 +1,8 @@
+import { CommonModalType } from "@/contexts/commonModalContext";
+import { useCommonModal } from "@/hooks/useCommonModal";
 import { Chip } from "@mui/material";
+import InfoModal from "../modals/InfoModal";
+import { useTranslations } from "next-intl";
 
 
 
@@ -9,20 +13,34 @@ const colorRepository: any = {
     "default": 'rgba(0, 84, 202, 0.08)',
 }
 
-export const CustomChip = ({ label, background = "default", ...props }: { label: string; background?: string; } & any) => {
-    return (
+export const CustomChip = ({ label, background = "default", id = '', text = '', ...props }: { label: string; id?: string; text?: string; background?: string; } & any) => {
+    const { open, openModal } = useCommonModal()
+    const t = useTranslations()
+    return (<>
         <Chip
+            key={id}
             label={label}
             variant="outlined"
-
+            onClick={() => {
+                if (text) openModal(CommonModalType.INFO, { data: id })
+            }}
             sx={{
                 background: colorRepository[background],
                 borderColor: (theme) => background == "default" ? theme.palette.primary.main : colorRepository[background],
                 px: 1, py: 2,
                 width: 100,
+                cursor: text ? 'pointer' : 'default',
                 ...props.sx
             }}
             {...props}
         />
+
+        {text && open.args?.data === id && open.type === CommonModalType.INFO && <InfoModal
+
+            title={t('core.label.message')}
+            description={text}
+
+        />}
+    </>
     );
 }   
