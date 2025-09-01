@@ -11,6 +11,7 @@ import { useFormStatus } from '@/hooks/useFormStatus';
 import { useRef } from 'react';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { ArrowLeftOutlined, SaveOutlined } from '@mui/icons-material';
+import { useSearchParams } from 'next/navigation';
 
 
 
@@ -20,6 +21,7 @@ export default function EventForm() {
   const { push } = useRouter()
   const formRef = useRef(null)
   const { formStatus } = useFormStatus()
+  const searchParams = useSearchParams()
 
   const handleExternalSubmit = () => {
     if (formRef.current) {
@@ -36,7 +38,7 @@ export default function EventForm() {
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
             <SassButton
               disabled={formStatus?.isSubmitting}
-              onClick={() => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event`)}
+              onClick={() => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event?params=${searchParams.get('params')}`)}
               variant='outlined'
               startIcon={<ArrowLeftOutlined />}
             > {t('core.button.cancel')}</SassButton>

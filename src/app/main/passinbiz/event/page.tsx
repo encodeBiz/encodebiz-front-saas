@@ -10,17 +10,17 @@ import { useEntity } from '@/hooks/useEntity';
 import FormContact from './formContact/page';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
+import { useRouter } from 'nextjs-toploader/app';
 
 export default function HolderList() {
   const t = useTranslations();
   const {
     items, rowAction, onDelete, deleting,
-    onNext, onBack, 
-    currentPage, topFilter,
-    columns, onSearch,
-    loading, rowsPerPage, setRowsPerPage } = useHolderListController();
-   const { entitySuscription } = useEntity()
-
+    onNext, onBack, onSort, onRowsPerPageChange,
+    topFilter, buildState, filterParams,
+    columns, loading, } = useHolderListController();
+  const { entitySuscription } = useEntity()
+  const { push } = useRouter()
   return (
     <Container maxWidth="lg">
       <HeaderPage
@@ -29,7 +29,7 @@ export default function HolderList() {
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
             {!entitySuscription.find(e => e.serviceId === "passinbiz" && e.plan === "freemium") ? <SassButton
               role='link'
-              href={`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event/add`}
+              onClick={() => push(`/main/passinbiz/event/add?params=${buildState()}`)}
               variant='contained'
               startIcon={<Add />}
             > {t('event.add')}</SassButton> :
@@ -52,13 +52,13 @@ export default function HolderList() {
             title={''}
             keyField="id"
             loading={loading}
-            page={currentPage}
-            rowsPerPage={rowsPerPage}
-            onRowsPerPageChange={setRowsPerPage}
+            page={filterParams.currentPage}
+            rowsPerPage={filterParams.params.limit}
+            onRowsPerPageChange={onRowsPerPageChange}
+            onSorteable={onSort}
+            sort={{ orderBy: filterParams.params.orderBy, orderDirection: filterParams.params.orderDirection }}
             onBack={onBack}
             onNext={onNext}
-          
-            onSearch={(data) => onSearch(data)}
             topFilter={topFilter}
           /> :
           <FormContact />

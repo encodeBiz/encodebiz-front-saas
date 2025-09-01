@@ -8,7 +8,7 @@ import { useEntity } from "@/hooks/useEntity";
 import { MAIN_ROUTE } from "@/config/routes";
 import { fetchEvent, updateEvent } from "@/services/passinbiz/event.service";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import TransferList from "@/components/common/forms/fields/TransferListField/TransferListField";
 import { search } from "@/services/passinbiz/staff.service";
@@ -24,6 +24,8 @@ export default function useStaffController() {
   const { currentEntity, watchServiceAccess } = useEntity()
   const [staffList, setStaffList] = useState<Array<IStaff>>([])
   const { changeLoaderState } = useLayout()
+  const searchParams = useSearchParams()
+  
   const [initialValues, setInitialValues] = useState<Partial<IEvent>>({
     assignedStaff: [],
   });
@@ -45,7 +47,7 @@ export default function useStaffController() {
       if (id) await updateEvent(data, token)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
-      push(`/${MAIN_ROUTE}/passinbiz/event`)
+      push(`/${MAIN_ROUTE}/passinbiz/event?params=${searchParams.get('params')}`)
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')

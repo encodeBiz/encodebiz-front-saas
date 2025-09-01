@@ -198,7 +198,7 @@ export default function useStaffListController() {
 
   useEffect(() => {
     if (currentEntity?.entity?.id) {
-      if (searchParams.get('params') && localStorage.getItem('holderIndex'))
+      if (searchParams.get('params') && localStorage.getItem('staffIndex'))
         inicializeFilter(searchParams.get('params') as string)
       else
         fetchingData(filterParams)
@@ -212,7 +212,7 @@ export default function useStaffListController() {
 
   const inicializeFilter = (params: string) => {
     try {
-      const dataList = JSON.parse(localStorage.getItem('holderIndex') as string)
+      const dataList = JSON.parse(localStorage.getItem('staffIndex') as string)
       setItems(dataList.items ?? []);
       setItemsHistory(dataList.itemsHistory ?? []);
       const filters = decodeFromBase64(params as string)

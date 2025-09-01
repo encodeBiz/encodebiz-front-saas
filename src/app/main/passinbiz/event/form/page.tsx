@@ -6,7 +6,7 @@ import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
 import { useRouter } from 'nextjs-toploader/app';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { IEvent } from '@/domain/features/passinbiz/IEvent';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { ArrowLeftOutlined, SaveOutlined } from '@mui/icons-material';
@@ -22,6 +22,7 @@ export default function EventForm() {
   const { id } = useParams<{ id: string }>()
   const formRef = useRef(null)
   const { formStatus } = useFormStatus()
+  const searchParams = useSearchParams()
 
   const handleExternalSubmit = () => {
     if (formRef.current) {
@@ -39,7 +40,7 @@ export default function EventForm() {
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
             <SassButton
               disabled={formStatus?.isSubmitting}
-              onClick={() => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event`)}
+              onClick={() => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event?params=${searchParams.get('params')}`)}
               variant='outlined'
               startIcon={<ArrowLeftOutlined />}
             > {t('core.button.cancel')}</SassButton>
