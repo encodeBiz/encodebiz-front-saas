@@ -128,7 +128,11 @@
       "resourcesGraph": "RECURSOS GRÁFICOS",
       "colorBg": "Color de fondo",
       "addImage": "Añadir recurso",
-      "urlWebHook":"Url del Webhook",
+      "urlWebHook": "Url del Webhook",
+      "enable": "Habilitado",
+      "noenable": "No Habilitado",
+      "subscribedEvents": "Eventos",
+      "urlWebbhook":"URL de ejecución",
       "endDate": "Fecha de finalización",
       "startDate": "Fecha de inicio",
       "time": "Hora",
@@ -225,6 +229,7 @@
     },
     "formValidatorMessages": {
       "required": "Este campo es requerido",
+      "minArray":"Debe seleccionar al menos 1 elemento",
       "email": "Este campo es debe ser un correo electrónico válido",
       "password": "La contraseña es demasiado corta: debe tener un mínimo de 8 caracteres.",
       "passwordMatch": "La contraseñas no coinciden",
@@ -563,6 +568,8 @@
   },
   "integration": {
     "title": "Integraciones",
+    "deleteConfirmModalTitle": "Eliminar webhook",
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará los eventos asociados al webhook",
     "tabs": {
       "tab1": {
         "title": "WebHook"

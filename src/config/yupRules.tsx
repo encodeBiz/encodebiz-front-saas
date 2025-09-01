@@ -7,7 +7,7 @@ export const passwordRestrictionRule = (t: any, min: number = 8) => Yup.string()
     .min(min, t('core.formValidatorMessages.password'))
 
 export const emailRule = (t: any) => Yup.string().required(t('core.formValidatorMessages.required')).email(t('core.formValidatorMessages.email'))
-
+export const arrayLatestRule = (t: any, min:number=1) => Yup.array().min(min, t('core.formValidatorMessages.minArray')).required(t('core.formValidatorMessages.required'))
 export const fileImageRule = (t: any) => Yup.mixed()
     .required(t('core.formValidatorMessages.required'))
     .test('is-file-or-url', (value: any, { createError }) => {

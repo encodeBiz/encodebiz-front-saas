@@ -4,17 +4,21 @@
 import { useEffect, useState } from 'react';
 import { useEntity } from '@/hooks/useEntity';
 import { useTranslations } from 'next-intl';
-import { Column } from '@/components/common/table/GenericTable';
+import { Column, IRowAction } from '@/components/common/table/GenericTable';
 import { useToast } from '@/hooks/useToast';
 import { IWebHook } from '@/domain/integration/IWebHook';
-import { fetchWebHookByEntity } from '@/services/common/integration.service';
+import { deleteWebhook, fetchWebHookByEntity } from '@/services/common/integration.service';
+import { Chip } from '@mui/material';
+import { useAuth } from '@/hooks/useAuth';
+import { DeleteOutline } from '@mui/icons-material';
+import { useCommonModal } from '@/hooks/useCommonModal';
+import { CommonModalType } from '@/contexts/commonModalContext';
 
 
 interface IFilterParams {
 
     params: {
-        orderBy: string,
-        orderDirection: 'desc' | 'asc',
+     
         startAfter: any,
         limit: number,
         filters: Array<{
@@ -32,8 +36,8 @@ export const useWebHookTabController = () => {
     const t = useTranslations();
     const { currentEntity } = useEntity()
     const { showToast } = useToast()
-
-
+    const { token } = useAuth()
+    const { openModal } = useCommonModal()
     /** Filter and PAgination Control */
     const [loading, setLoading] = useState<boolean>(true);
     const [items, setItems] = useState<IWebHook[]>([]);
@@ -44,15 +48,23 @@ export const useWebHookTabController = () => {
         total: 0,
 
         params: {
-            filters: [{ field: 'status', operator: '==', value: 'published' }],
+            filters: [],
             startAfter: null,
-            limit: 5,
-            orderBy: 'createdAt',
-            orderDirection: 'desc',
+            limit: 5
         }
     })
     /** Filter and PAgination Control */
 
+    const rowAction: Array<IRowAction> = [
+        {
+            actionBtn: true,
+            color: 'error',
+            icon: <DeleteOutline color="error" />,
+            label: t('core.button.delete'),
+            allowItem: () => true,
+            onPress: (item: IWebHook) => openModal(CommonModalType.DELETE, { item })
+        },
+    ]
 
 
     /** Paginated Changed */
@@ -89,15 +101,17 @@ export const useWebHookTabController = () => {
     }
 
 
-  
+
 
 
 
     const columns: Column<IWebHook>[] = [
         {
-            id: 'event',
-            label: t("core.label.event"),
-            minWidth: 170
+            id: 'subscribedEvents',
+            label: t("core.label.subscribedEvents"),
+            minWidth: 170,
+            format: (value, row) => row.subscribedEvents.join(", "),
+
         },
         {
             id: 'url',
@@ -106,10 +120,16 @@ export const useWebHookTabController = () => {
         },
 
         {
-            id: 'status',
+            id: 'enabled',
             label: t("core.label.status"),
-            minWidth: 170
+            minWidth: 170,
+            format: (value, row) => <Chip
+                size="small"
+                label={t(`core.label.${row.enabled ? 'enable' : 'noenable'}`)}
+                variant="outlined"
+            />,
         },
+        
     ];
 
     const fetchingData = (filterParams: IFilterParams) => {
@@ -139,21 +159,40 @@ export const useWebHookTabController = () => {
         })
 
     }
- 
- 
 
-  useEffect(() => {
-    if (currentEntity?.entity?.id) {      
-        fetchingData(filterParams)
+
+
+    useEffect(() => {
+        if (currentEntity?.entity?.id) {
+            fetchingData(filterParams)
+        }
+    }, [currentEntity?.entity?.id])
+
+
+    const [deleting, setDeleting] = useState(false)
+    const onDelete = async (item: any) => {
+        try {
+            setDeleting(true)
+            const id = item[0]
+            await deleteWebhook({
+                "endpointId": id,
+                "entityId": currentEntity?.entity.id
+            }, token)
+            setItemsHistory(itemsHistory.filter(e => e.id !== id))
+            setItems(itemsHistory.filter(e => e.id !== id))
+            setDeleting(false)
+        } catch (e: any) {
+            showToast(e?.message, 'error')
+            setDeleting(false)
+        }
     }
-  }, [currentEntity?.entity?.id])
 
 
     return {
         items,
         onNext, onBack,
-     
-        columns,  
+        deleting, onDelete,
+        columns,rowAction,
         loading, filterParams, onSort, onRowsPerPageChange
     }
 }

@@ -8,16 +8,20 @@ import { Box, Grid } from '@mui/material';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import { Add } from '@mui/icons-material';
+import { useCommonModal } from '@/hooks/useCommonModal';
+import { CommonModalType } from '@/contexts/commonModalContext';
+import ConfirmModal from '@/components/common/modals/ConfirmModal';
+import AddWebHook from './AddWebHook/AddWebHook';
 
 const WebHookTab = () => {
     const t = useTranslations();
     const {
-        items,
-        onNext, onBack,
+        items, deleting, onDelete,
+        onNext, onBack, rowAction,
         filterParams, onSort, onRowsPerPageChange,
         columns,
         loading, } = useWebHookTabController();
-
+    const { openModal, open } = useCommonModal()
     return (
         <Grid container spacing={1} display={'flex'} flexDirection={'column'} justifyContent="flex-start" pb={10}>
 
@@ -28,7 +32,7 @@ const WebHookTab = () => {
                 actions={
                     <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
                         <SassButton
-                            onClick={() => { }}
+                            onClick={() => openModal(CommonModalType.WEBHOOK)}
                             variant='contained'
                             color='primary'
                             startIcon={<Add />}
@@ -46,14 +50,21 @@ const WebHookTab = () => {
                     rowsPerPage={filterParams.params.limit}
                     onRowsPerPageChange={onRowsPerPageChange}
                     onSorteable={onSort}
-                    sort={{ orderBy: filterParams.params.orderBy, orderDirection: filterParams.params.orderDirection }}
                     onBack={onBack}
                     onNext={onNext}
+                    rowAction={rowAction}
 
                 />
             </HeaderPage>
-             
 
+            {CommonModalType.DELETE == open.type && <ConfirmModal
+                isLoading={deleting}
+                title={t('integration.deleteConfirmModalTitle')}
+                description={t('integration.deleteConfirmModalTitle2')}
+                onOKAction={(args: { data: Array<string> }) => onDelete(args.data)}
+            />}
+
+            {CommonModalType.WEBHOOK == open.type && <AddWebHook />}
         </Grid>
     );
 };
