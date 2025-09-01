@@ -1,9 +1,10 @@
-import { buildSearch, Column, IRowAction } from "@/components/common/table/GenericTable";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Column, IRowAction } from "@/components/common/table/GenericTable";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useToast } from "@/hooks/useToast";
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useRouter } from "nextjs-toploader/app";
@@ -16,9 +17,30 @@ import { Box } from "@mui/material";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
 import { TextFilter } from "@/components/common/table/filters/TextFilter";
 import { useLayout } from "@/hooks/useLayout";
+import { useSearchParams } from "next/navigation";
+import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
 
 
 let resource: any = null;
+
+
+interface IFilterParams {
+  filter: { allowedTypes: string, email: string }
+  params: {
+    orderBy: string,
+    orderDirection: 'desc' | 'asc',
+    startAfter: any,
+    limit: number,
+    filters: Array<{
+      field: string;
+      operator: | '<' | '<=' | '==' | '!=' | '>=' | '>' | 'array-contains' | 'in' | 'array-contains-any' | 'not-in'
+      value: any;
+    }>
+  }
+  total: number
+  currentPage: number
+  startAfter: string | null,
+}
 
 
 export default function useStaffListController() {
@@ -26,24 +48,31 @@ export default function useStaffListController() {
   const { token } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
-  const [rowsPerPage, setRowsPerPage] = useState<number>(5); // Límite inicial
-  const [params, setParams] = useState<any>({
-    orderBy: 'createdAt',
-    orderDirection: "desc"
-  });
+
+  /** Filter and PAgination Control */
   const [loading, setLoading] = useState<boolean>(true);
-  const [atStart, setAtStart] = useState(true);
-  const [atEnd, setAtEnd] = useState(false)
-  const [last, setLast] = useState<any>()
-  const [pagination, setPagination] = useState(``);
   const [items, setItems] = useState<IStaff[]>([]);
   const [itemsHistory, setItemsHistory] = useState<IStaff[]>([]);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [total, setTotal] = useState(0);
+  const [filterParams, setFilterParams] = useState<IFilterParams>({
+    startAfter: null,
+    currentPage: 0,
+    total: 0,
+    filter: { allowedTypes: 'all', email: '' },
+    params: {
+      filters: [],
+      startAfter: null,
+      limit: 5,
+      orderBy: 'createdAt',
+      orderDirection: 'desc',
+    }
+  })
+  /** Filter and PAgination Control */
+
+
   const { closeModal, openModal } = useCommonModal()
   const { push } = useRouter()
-  const [filter, setFilter] = useState<any>({ allowedTypes: 'all', email: '' });
   const { changeLoaderState } = useLayout()
+  const searchParams = useSearchParams()
 
   const handleResend = async (item: IStaff) => {
     const dataForm = {
@@ -64,7 +93,7 @@ export default function useStaffListController() {
     {
       actionBtn: true,
       color: 'error',
-      icon: <DeleteOutline />,
+      icon: <DeleteOutline  color="error"/>,
       label: t('core.button.delete'),
       allowItem: () => true,
       onPress: (item: IStaff) => openModal(CommonModalType.DELETE, { item })
@@ -72,47 +101,72 @@ export default function useStaffListController() {
     {
       actionBtn: true,
       color: 'primary',
-      icon: <Event />,
+      icon: <Event color="primary" />,
       label: t('core.label.event'),
       allowItem: (item: IStaff) => item.allowedTypes.includes('event'),
-      onPress: (item: IStaff) => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff/${item.id}/events`)
+      onPress: (item: IStaff) => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff/${item.id}/events?params=${buildState()}`)
     },
     {
       actionBtn: true,
       color: 'primary',
-      icon: <ReplyAllOutlined />,
+      icon: <ReplyAllOutlined color="primary" />,
       label: t('core.label.resend'),
       allowItem: () => true,
       onPress: (item: IStaff) => handleResend(item)
     },
   ]
-  const onSearch = (term: string): void => {
-    setParams({ ...params, startAfter: null, filters: buildSearch(term) })
-  }
 
+
+  /** Paginated Changed */
   const onBack = (): void => {
     const backSize = items.length
     itemsHistory.splice(-backSize)
     setItemsHistory([...itemsHistory])
-    setItems([...itemsHistory.slice(-rowsPerPage)])
-    setAtEnd(false)
-    setCurrentPage(currentPage - 1)
-    setLast((itemsHistory[itemsHistory.length - 1] as any).last)
+    setItems([...itemsHistory.slice(-filterParams.params.limit)])
+    setFilterParams({ ...filterParams, currentPage: filterParams.currentPage - 1, params: { ...filterParams.params, startAfter: (itemsHistory[itemsHistory.length - 1] as any).last } })
+
   }
 
-
+  /** Paginated Changed */
   const onNext = async (): Promise<void> => {
     setLoading(true)
-    setParams({ ...params, startAfter: last })
-    setCurrentPage(currentPage + 1)
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: filterParams.currentPage + 1 }
+    fetchingData(filterParamsUpdated)
   }
 
-  useEffect(() => {
-    setAtStart(itemsHistory.length <= rowsPerPage)
-  }, [itemsHistory.length, rowsPerPage])
 
 
+  /** Sort Change */
+  const onSort = (sort: { orderBy: string, orderDirection: 'desc' | 'asc' }) => {
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, ...sort, startAfter: null, } }
+    setFilterParams(filterParamsUpdated)
+    fetchingData(filterParamsUpdated)
+  }
 
+
+  /** Limit Change */
+  const onRowsPerPageChange = (limit: number) => {
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null, limit } }
+    setFilterParams(filterParamsUpdated)
+    fetchingData(filterParamsUpdated)
+  }
+
+
+  /** Filter Changed */
+  const onFilter = (filterParamsData: any) => {
+    const filterData: Array<{ field: string, operator: any, value: any }> = []
+    const filter = filterParamsData.filter
+    Object.keys(filter).forEach((key) => {
+      if (key === 'allowedTypes' && (filter[key] != 'all' || filter[key] != 'none'))
+        filterData.push({ field: key, operator: 'array-contains-any', value: [filter[key]] })
+      else
+        if (key !== 'allowedTypes' && filter[key] != '')
+          filterData.push({ field: key, operator: '==', value: filter[key] })
+    })
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null, filters: filterData }, filter }
+    setFilterParams(filterParamsUpdated)
+    fetchingData(filterParamsUpdated)
+  }
 
   const columns: Column<IStaff>[] = [
     {
@@ -132,57 +186,94 @@ export default function useStaffListController() {
       minWidth: 170,
       format: (value) => value.join(', ')
     },
-    
+
   ];
 
 
+  useEffect(() => {
+    if (currentEntity?.entity?.id) {
+      watchServiceAccess('passinbiz')
+    }
+  }, [currentEntity?.entity?.id, watchServiceAccess])
 
-  const fetchingData = useCallback(() => {
-    setLoading(true)
-    search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
-
-      if (res.length < rowsPerPage || res.length === 0)
-        setAtEnd(true)
+  useEffect(() => {
+    if (currentEntity?.entity?.id) {
+      if (searchParams.get('params') && localStorage.getItem('holderIndex'))
+        inicializeFilter(searchParams.get('params') as string)
       else
-        setAtEnd(false)
+        fetchingData(filterParams)
+    }
+  }, [currentEntity?.entity?.id, searchParams.get('params')])
 
+
+
+
+
+
+  const inicializeFilter = (params: string) => {
+    try {
+      const dataList = JSON.parse(localStorage.getItem('holderIndex') as string)
+      setItems(dataList.items ?? []);
+      setItemsHistory(dataList.itemsHistory ?? []);
+      const filters = decodeFromBase64(params as string)
+      setFilterParams(filters)
+      setLoading(false)
+      //localStorage.removeItem('holderIndex')
+    } catch (error) {
+      showToast(String(error as any), 'error')
+    }
+
+  }
+
+  const buildState = () => {
+    const dataStatus = {
+      items,
+      itemsHistory,
+    }
+    localStorage.setItem('holderIndex', JSON.stringify(dataStatus))
+    return encodeToBase64({ ...filterParams })
+  }
+
+  const fetchingData = (filterParams: IFilterParams) => {
+    setLoading(true)
+
+
+    if (filterParams.params.filters.find((e: any) => e.field === "allowedTypes" && e.value.includes('all')))
+      filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== 'allowedTypes')
+    if (filterParams.params.filters.find((e: any) => e.field === 'email' && e.value === ''))
+      filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== 'email')
+
+
+    search(currentEntity?.entity.id as string, { ...(filterParams.params as any) }).then(async res => {
       if (res.length !== 0) {
+        setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
         setItems(res)
-        if (!params.startAfter)
+        if (!filterParams.params.startAfter) {
           setItemsHistory([...res])
-        else
+        } else {
           setItemsHistory(prev => [...prev, ...res])
-        setLoading(false)
+        }
       }
 
-      if (!params.startAfter && res.length === 0) {
+      if (!filterParams.params.startAfter && res.length === 0) {
         setItems([])
         setItemsHistory([])
       }
-
-      setLast(res.length > 0 ? (res[0] as any).last : null)
-      setPagination(`Total ${res.length > 0 ? (res[0] as any).totalItems : 0}`)
-      setTotal(res.length > 0 ? (res[0] as any).totalItems : 0)
+      setLoading(false)
 
     }).catch(e => {
       showToast(e?.message, 'error')
     }).finally(() => {
       setLoading(false)
     })
-  }, [params, rowsPerPage, currentEntity?.entity.id, showToast])
+  }
 
   useEffect(() => {
-    if (params && currentEntity?.entity?.id) {
-      fetchingData()
+    if (currentEntity?.entity?.id) {
       watchServiceAccess('passinbiz')
     }
-  }, [params, currentEntity?.entity?.id, fetchingData, watchServiceAccess])
+  }, [currentEntity?.entity?.id])
 
-  useEffect(() => {
-    setCurrentPage(0)
-    setParams((prev: any) => ({ ...prev, limit: rowsPerPage }))
-    setAtStart(true)
-  }, [rowsPerPage])
 
   const onEdit = async (item: any) => {
     push(`/main/passinbiz/staff/${item.id}/edit`)
@@ -210,37 +301,26 @@ export default function useStaffListController() {
     { value: 'credential', label: t('core.label.credential') },
   ]
 
-  const onFilter = (filter: any) => {
-    setFilter({ ...filter })
-    const filterData: Array<{ field: string, operator: string, value: any }> = []
-    Object.keys(filter).forEach((key) => {
-      if (key === 'allowedTypes' && (filter[key] != 'all' || filter[key] != 'none'))
-        filterData.push({ field: key, operator: 'array-contains-any', value: [filter[key]] })
-      else
-        if (key !== 'allowedTypes' && filter[key] != '')
-          filterData.push({ field: key, operator: '==', value: filter[key] })
-    })
-    const paramsData = { ...params, startAfter: null, limit: rowsPerPage, filters: filterData }
-    setParams({ ...paramsData })
-  }
+
 
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
     <SelectFilter
+      first={false}
       defaultValue={'all'}
-      value={filter.allowedTypes}
-      onChange={(value: any) => onFilter({ ...filter, allowedTypes: value })}
+      value={filterParams.filter.allowedTypes}
+      onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, allowedTypes: value } })}
       items={holderType}
     />
 
 
     <TextFilter
       label={t('core.label.email')}
-      value={filter.email}
+      value={filterParams.filter.email}
       onChange={(value) => {
-        setFilter({ ...filter, email: value });
+        setFilterParams({ ...filterParams, filter: { ...filterParams.filter, email: value } });
         if (resource) clearTimeout(resource);
         resource = setTimeout(() => {
-          onFilter({ ...filter, email: value });
+          onFilter({ ...filterParams, filter: { ...filterParams.filter, email: value } })
         }, 1500);
       }}
     />
@@ -251,13 +331,11 @@ export default function useStaffListController() {
 
 
   return {
-    items,
-    atEnd, onEdit, total,
-    atStart,
-    onSearch, onNext, onBack,
-    pagination, currentPage,
+    items, onSort, onRowsPerPageChange,
+    onEdit,
+    onNext, onBack, buildState,
     columns, rowAction, onDelete, topFilter,
-    loading, rowsPerPage, setRowsPerPage, deleting
+    loading, deleting, filterParams
   }
 
 }

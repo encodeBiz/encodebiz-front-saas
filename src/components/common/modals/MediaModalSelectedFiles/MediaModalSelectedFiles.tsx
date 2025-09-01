@@ -268,7 +268,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
           <Divider />
 
           <Box sx={classes.footer}>
-            {JSON.stringify(selectedFile)}
+       
             <Typography variant="body2" color="textSecondary">
               {userMediaList.filter(e => (type === 'custom' ? true : (e.type === type))).length} media{userMediaList.filter(e => (type === 'custom' ? true : (e.type === type))).length > 1 ? 's' : ''} disponibles
             </Typography>

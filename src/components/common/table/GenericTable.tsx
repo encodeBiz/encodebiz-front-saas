@@ -400,9 +400,9 @@ export function GenericTable<T extends Record<string, any>>({
                             onClick={closeRowMenu}
                             slotProps={{
                               paper: {
-                                sx:{
-                                  borderRadius:2,
-                                  px:1
+                                sx: {
+                                  borderRadius: 2,
+                                  px: 1
                                 }
                               }
                             }}

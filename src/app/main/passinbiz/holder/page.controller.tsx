@@ -19,7 +19,7 @@ import { search as searchEvent } from "@/services/passinbiz/event.service";
 import { CustomChip } from "@/components/common/table/CustomChip";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
 import { TextFilter } from "@/components/common/table/filters/TextFilter";
-import { encodeToBase64 } from "@/lib/common/base64";
+import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
 import { useSearchParams } from "next/navigation";
 
 interface IFilterParams {
@@ -53,7 +53,6 @@ export default function useHolderListController() {
   const { push } = useRouter()
 
   /** Filter and PAgination Control */
-
   const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<Holder[]>([]);
   const [itemsHistory, setItemsHistory] = useState<Holder[]>([]);
@@ -95,7 +94,7 @@ export default function useHolderListController() {
     {
       actionBtn: true,
       color: 'success',
-      icon: <PanoramaFishEyeOutlined color="success"  />,
+      icon: <PanoramaFishEyeOutlined color="success" />,
       label: t('core.button.reactive'),
       allowItem: (item: Holder) => (item.passStatus === 'revoked'),
       onPress: (item: Holder) => openModal(CommonModalType.REACTIVE, { data: item })
@@ -262,33 +261,44 @@ export default function useHolderListController() {
   }, [currentEntity?.entity?.id, watchServiceAccess])
 
   useEffect(() => {
-    if (currentEntity?.entity?.id)
-      fetchingData(filterParams)
-  }, [currentEntity?.entity?.id])
+    if (currentEntity?.entity?.id) {
+      if (searchParams.get('params') && localStorage.getItem('holderIndex'))
+        inicializeFilter(searchParams.get('params') as string)
+      else
+        fetchingData(filterParams)
+    }
+  }, [currentEntity?.entity?.id, searchParams.get('params')])
+
+
+ 
 
 
 
+  const inicializeFilter = (params: string) => {
+    try {
+      const dataList = JSON.parse(localStorage.getItem('holderIndex') as string)      
+      setItems(dataList.items ?? []);
+      setItemsHistory(dataList.itemsHistory ?? []);
+      const filters = decodeFromBase64(params as string)
+      setFilterParams(filters)
+      setLoading(false)
+      //localStorage.removeItem('holderIndex')
+    } catch (error) {
+      showToast(String(error as any), 'error')
+    }
 
-
-  const inicializeFilter = (params: any) => {
-    setItems(params.items ?? []);
-    setItemsHistory(params.itemsHistory ?? []);
-    setFilterParams(params.filterParams)
   }
 
   const buildState = () => {
     const dataStatus = {
-      filterParams: filterParams,
       items,
       itemsHistory,
-
     }
     localStorage.setItem('holderIndex', JSON.stringify(dataStatus))
-    return encodeToBase64({ id: 'holderIndex' })
+    return encodeToBase64({ ...filterParams })
   }
 
   const fetchingData = (filterParams: IFilterParams) => {
-    console.log(filterParams);
 
     setLoading(true)
     if (filterParams.params.filters.find((e: any) => e.field === 'passStatus' && e.value === 'none'))
@@ -304,7 +314,6 @@ export default function useHolderListController() {
 
 
     inicializeEvent()
-    console.log({ ...(filterParams.params as any) });
 
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any) }).then(async res => {
       if (res.length !== 0) {
@@ -420,7 +429,6 @@ export default function useHolderListController() {
     onEdit, onSort, onRowsPerPageChange,
     handleUploadConfirm, isUploading, handleConfigConfirm,
     onNext, onBack,
-
     columns, rowAction, setFilterParams, filterParams, buildState,
     loading, onRevoke, revoking, onSend,
 

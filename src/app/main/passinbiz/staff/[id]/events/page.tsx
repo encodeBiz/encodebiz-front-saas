@@ -10,12 +10,14 @@ import { SassButton } from '@/components/common/buttons/GenericButton';
 import { ArrowLeftOutlined, SaveOutlined } from '@mui/icons-material';
 import { useRef } from 'react';
 import { useFormStatus } from '@/hooks/useFormStatus';
+import { useSearchParams } from 'next/navigation';
 export default function EventForm() {
   const { fields, initialValues, validationSchema, setDinamicDataAction } = useStaffController();
   const t = useTranslations();
   const { push } = useRouter()
   const formRef = useRef(null)
   const { formStatus } = useFormStatus()
+  const searchParams = useSearchParams()
 
   const handleExternalSubmit = () => {
     if (formRef.current) {
@@ -32,7 +34,7 @@ export default function EventForm() {
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
             <SassButton
               disabled={formStatus?.isSubmitting}
-              onClick={() => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff`)}
+              onClick={() => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff?params=${searchParams.get('params')}`)}
               variant='outlined'
               startIcon={<ArrowLeftOutlined />}
             > {t('core.button.cancel')}</SassButton>

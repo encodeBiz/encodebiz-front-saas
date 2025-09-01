@@ -8,7 +8,7 @@ import { useEntity } from "@/hooks/useEntity";
 import { MAIN_ROUTE } from "@/config/routes";
 import { fetchEvent, search, searchEventsByStaff, updateEvent } from "@/services/passinbiz/event.service";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import TransferList from "@/components/common/forms/fields/TransferListField/TransferListField";
 
@@ -24,6 +24,7 @@ export default function useStaffController() {
   const [initialValues, setInitialValues] = useState<{ event: Array<string> }>({
     event: [],
   });
+  const searchParams = useSearchParams()
 
   const validationSchema = Yup.object().shape({
 
@@ -44,7 +45,7 @@ export default function useStaffController() {
               id: event.id,
               entityId: event.entityId,
               assignedStaff: event.assignedStaff
-            }, token);         
+            }, token);
 
           }
         })
@@ -60,19 +61,19 @@ export default function useStaffController() {
               entityId: event.entityId,
               assignedStaff: event.assignedStaff
             }, token);
-            
+
           }
         })
       );
 
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
-      push(`/${MAIN_ROUTE}/passinbiz/staff`)
+      push(`/${MAIN_ROUTE}/passinbiz/staff?params=${searchParams.get('params')}`)
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
     }
-  }; 
+  };
 
 
   const fields = [
