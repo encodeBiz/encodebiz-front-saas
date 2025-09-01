@@ -8,7 +8,6 @@ import {
 } from '@mui/icons-material';
 import BusinessIcon from '@mui/icons-material/Business';
 import { DashBoardIcon } from '@/components/common/icons/DashBoardIcon';
-import { PassBizIcon } from '@/components/common/icons/PassBizIcon';
 import { CheckBizIcon } from '@/components/common/icons/CheckBizIcon';
 import { MediaIcon } from '@/components/common/icons/MediaIcon';
 import { PassInBizIcon } from '@/components/common/icons/PassInBizIcon';

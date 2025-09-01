@@ -38,7 +38,7 @@ const ServiceList = () => {
                 lg: 'row',
                 xl: 'row',
             }} justifyContent="space-between" marginTop={10}>
-                {entityServiceList.map((card, i) => (
+                {entityServiceList.map((card) => (
                     <Card key={card.id} sx={styles.card} style={{cursor: card.id != 'checkinbiz' ? 'pointer' : 'default'}} onClick={() => card.id != 'checkinbiz' ? handleActionClick(card.id) : null} elevation={0} >
                         <CardContent sx={styles.card}>
                             <Box sx={styles.iconContainer} >

@@ -10,8 +10,7 @@ import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { useTranslations } from 'next-intl';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import { SassButton } from '@/components/common/buttons/GenericButton';
-import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
-import { ArrowLeftOutlined, SaveOutlined } from '@mui/icons-material';
+import { SaveOutlined } from '@mui/icons-material';
 import { useFormStatus } from '@/hooks/useFormStatus';
 
 
@@ -35,7 +34,6 @@ const FormEntityPage = () => {
                 isForm
                 actions={
                     <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
-
                         <SassButton
                             disabled={!formStatus?.isValid || formStatus?.isSubmitting}
                             onClick={handleExternalSubmit}

@@ -16,7 +16,6 @@ import {
   Box,
   Typography,
   useTheme,
-  Avatar,
   Menu,
   MenuItem,
   ListItemIcon

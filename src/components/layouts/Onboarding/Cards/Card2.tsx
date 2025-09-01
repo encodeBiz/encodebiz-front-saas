@@ -1,9 +1,9 @@
-import { Badge, Box, Typography, useTheme } from "@mui/material"
+import { Box, Typography, useTheme } from "@mui/material"
 import Image from "next/image"
 import logo from '../../../../../public/assets/images/logo.png'
 import { SassButton } from "@/components/common/buttons/GenericButton"
 import { BorderBox } from "@/components/common/tabs/BorderBox"
-import { HealthAndSafetyOutlined, PaletteOutlined, TextSnippet, TextSnippetOutlined } from "@mui/icons-material"
+import { HealthAndSafetyOutlined, PaletteOutlined,  TextSnippetOutlined } from "@mui/icons-material"
 import { useRouter } from "nextjs-toploader/app"
 import { GENERAL_ROUTE, MAIN_ROUTE } from "@/config/routes"
 

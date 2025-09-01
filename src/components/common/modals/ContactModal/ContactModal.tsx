@@ -13,7 +13,6 @@ import { CommonModalType } from '@/contexts/commonModalContext';
 import { useTranslations } from 'next-intl';
 import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import { SassButton } from '../../buttons/GenericButton';
-import { TrashIcon } from '../../icons/TrashIcon';
 import { CancelOutlined, SendOutlined } from '@mui/icons-material';
 import { CustomTypography } from '../../Text/CustomTypography';
 import { IContact } from '@/domain/core/IContact';
