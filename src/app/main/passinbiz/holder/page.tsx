@@ -18,10 +18,11 @@ export default function HolderList() {
   const t = useTranslations();
   const { handleUploadConfirm, handleConfigConfirm,
     items, rowAction,
-    onNext, onBack, setFilterParams, filterParams, onRevoke, revoking, onSend,
-    currentPage, topFilter,
-    columns, onSearch, buildState,
-    loading, rowsPerPage, setRowsPerPage } = useHolderListController();
+    onNext, onBack, filterParams, setFilterParams, onRevoke, revoking, onSend,
+    topFilter,
+    columns, buildState,
+    loading,
+  } = useHolderListController();
   const { open, closeModal, openModal } = useCommonModal()
   const { push } = useRouter()
 
@@ -56,16 +57,15 @@ export default function HolderList() {
           title={''}
           keyField="id"
           loading={loading}
-          page={currentPage}
-          rowsPerPage={rowsPerPage}
-          onRowsPerPageChange={setRowsPerPage}
+          page={filterParams.currentPage}
+          rowsPerPage={filterParams.rowsPerPage}
+          onRowsPerPageChange={(rowsPerPage) => setFilterParams({ ...filterParams, rowsPerPage })}
           onSorteable={(sort) => setFilterParams({ ...filterParams, sort })}
           sort={filterParams.sort}
           onBack={onBack}
           onNext={onNext}
           topFilter={topFilter}
-          //onEdit={(data) => onEdit(data)}
-          onSearch={(data) => onSearch(data)}
+            
 
 
         />

@@ -16,12 +16,15 @@ import {
 } from "firebase/firestore";
 import { db } from "../initializeApp";
 import { SearchParams } from "@/domain/firebase/firestore";
+import { getRefByPath } from "./readDocument";
 
 
 export const searchFirestore = async <T>(
   params: SearchParams,
   group: boolean = false
 ): Promise<T[]> => {
+
+
   const {
     collection: collectionName,
     filters = [],
@@ -31,6 +34,8 @@ export const searchFirestore = async <T>(
     startAfter: startAfterDoc,
     includeCount = true,
   } = params;
+
+
 
   let firestoreQuery:
     | CollectionReference<DocumentData, DocumentData>
@@ -79,7 +84,7 @@ export const searchFirestore = async <T>(
   if (startAfterDoc) {
     firestoreQuery = query(
       firestoreQuery,
-      startAfter(startAfterDoc)
+      startAfter(await getRefByPath(startAfterDoc))
     ) as CollectionReference<DocumentData, DocumentData>;
   }
 
@@ -90,10 +95,15 @@ export const searchFirestore = async <T>(
     id: doc.id,
     ...doc.data(),
     totalItems: count,
-    last: lastDocument,
+    last: lastDocument.ref.path,
   })) as T[];
+
+
+  console.log(results);
   return results;
 };
+
+
 
 export const countFirestore = async (params: SearchParams): Promise<number> => {
   const {

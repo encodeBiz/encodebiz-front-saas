@@ -70,6 +70,15 @@ export const getIndex = async <T>(
   return docSnap as T;
 };
 
+
+export const getRefByPath = async <T>(
+  path: string,
+): Promise<T> => {
+  const docRef = doc(db, `${path}`);
+  const docSnap = await getDoc(docRef);
+  return docSnap as T;
+};
+
 export const getAll = async <T>(collectionName: string): Promise<T[]> => {
   try {
     const querySnapshot = await getDocs(collection(db, collectionName));
@@ -116,7 +125,7 @@ export const getAllWithLimit = async <T>(
     const snapshot = await getDocs(firestoreQuery);
     const data = snapshot.docs.map(doc => ({
       id: doc.id,
-      total:total,
+      total: total,
       ...doc.data()
     })) as T[];
 
