@@ -1,8 +1,7 @@
 import React from 'react';
-import SvgIcon from '@mui/material/SvgIcon';
 import { usePathname } from 'next/navigation';
 
-export const PassInBizIcon = (props: any) => {
+export const PassInBizIcon = () => {
     const pathname = usePathname()
     const isActive = pathname.includes('passinbiz/onboarding')
 
