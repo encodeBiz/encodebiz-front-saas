@@ -15,11 +15,16 @@ import {
   Tooltip,
   Box,
   Typography,
-  useTheme
+  useTheme,
+  Avatar,
+  Menu,
+  MenuItem,
+  ListItemIcon
 } from '@mui/material';
 import {
   Delete as DeleteIcon,
-  Edit as EditIcon
+  Edit as EditIcon,
+  SettingsOutlined
 } from '@mui/icons-material';
 import firebase from "firebase/compat/app";
 import { useTranslations } from 'next-intl';
@@ -81,8 +86,8 @@ interface GenericTableProps<T> {
   page?: number;
   rowsPerPage?: number;
   onRowsPerPageChange?: (rows: number) => void;
-  onSorteable?: (sort: { field: string, order: 'desc' | 'asc' }) => void;
-  sort?: { field: string, order: 'desc' | 'asc' }
+  onSorteable?: (sort: { orderBy: string, orderDirection: 'desc' | 'asc' }) => void;
+  sort?: { orderBy: string, orderDirection: 'desc' | 'asc' }
   onBack: () => void
   onNext: () => void
   onSearch?: (text: string) => void
@@ -112,11 +117,18 @@ export function GenericTable<T extends Record<string, any>>({
   topFilter = <></>
 }: GenericTableProps<T>) {
   // State management
-  const [order, setOrder] = useState<'asc' | 'desc'>(sort?.order ?? 'asc');
-  const [orderBy, setOrderBy] = useState<keyof T>(sort?.field ?? keyField);
+  const [order, setOrder] = useState<'asc' | 'desc'>(sort?.orderDirection ?? 'asc');
+  const [orderBy, setOrderBy] = useState<keyof T>(sort?.orderBy ?? keyField);
   const [selected, setSelected] = useState<(string | number)[]>([]);
   const t = useTranslations()
-
+  const [anchorEl, setAnchorEl] = React.useState<{ target: null | HTMLElement, key: string }>({ target: null, key: '' });
+  const open = Boolean(anchorEl?.target);
+  const openRowMenu = (event: React.MouseEvent<HTMLElement>, id: string) => {
+    setAnchorEl({ target: event.currentTarget, key: id });
+  };
+  const closeRowMenu = () => {
+    setAnchorEl({ target: null, key: '' });
+  };
   const [totalItems, setTotalItems] = useState(0);
   const [searchText] = useState('');
   const theme = useTheme()
@@ -158,7 +170,7 @@ export function GenericTable<T extends Record<string, any>>({
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
     if (typeof onSorteable === 'function') {
-      onSorteable({ field: property as string, order: isAsc ? 'desc' : 'asc' });
+      onSorteable({ orderBy: property as string, orderDirection: isAsc ? 'desc' : 'asc' });
     }
 
   };
@@ -375,18 +387,38 @@ export function GenericTable<T extends Record<string, any>>({
                     {(onEdit || onDelete || rowAction.length > 0) && (
                       <TableCell align="right" sx={{ whiteSpace: 'nowrap', gap: 2, display: 'flex', flexDirection: 'row' }}>
 
-                        {rowAction.map((e, i) => {
-                          if (e.allowItem(row as any)) {
-                            if (e.actionBtn)
-                              return <SassButton key={i} size='small' onClick={() => e.onPress(row)} variant="outlined" color={e.color ?? 'inherit'} startIcon={e.icon}>{e.label}</SassButton>
-                            else
-                              return (<Tooltip key={i} title={e.label}>
-                                <IconButton onClick={() => e.onPress(row)}>
-                                  {e.icon}
-                                </IconButton>
-                              </Tooltip>)
-                          } else return null
-                        })}
+                        {rowAction.length > 0 && <>
+                          <SassButton startIcon={<SettingsOutlined />} color='primary' variant='outlined' onClick={(e) => openRowMenu(e, row.id)}>
+                            {t('core.table.actions')}
+                          </SassButton>
+
+                          {anchorEl.key === row.id && <Menu
+                            anchorEl={anchorEl.target}
+                            id="account-menu"
+                            open={open}
+                            onClose={closeRowMenu}
+                            onClick={closeRowMenu}
+                            slotProps={{
+                              paper: {
+                                sx:{
+                                  borderRadius:2,
+                                  px:1
+                                }
+                              }
+                            }}
+                            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                          >
+                            {rowAction.map((e, i) => <MenuItem sx={{ display: e.allowItem(row) ? 'flex' : 'none' }} key={i} onClick={() => {
+                              closeRowMenu()
+                              e.onPress(row)
+                            }}> <ListItemIcon color={e.color}>{e.icon}</ListItemIcon>
+                              <Typography color={e.color}>{e.label}</Typography>
+                            </MenuItem>)}
+
+                          </Menu>}</>}
+
+
 
                         {onEdit && (
                           <Tooltip title="Edit">
@@ -425,13 +457,13 @@ export function GenericTable<T extends Record<string, any>>({
           </TableBody>
         </Table>
       </TableContainer>
-           
+
       <TablePagination
 
         rowsPerPageOptions={[2, 5, 10, 25, 100]}
         component="div"
         count={totalItems}
-        rowsPerPage={rowsPerPage??5}
+        rowsPerPage={rowsPerPage ?? 5}
         page={page as number}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
