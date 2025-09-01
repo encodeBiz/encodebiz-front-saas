@@ -122,6 +122,9 @@ export const fetchInvoicesByEntity = async (entityId: string, params: SearchPara
     return result;
 }
 
+
+
+
 export function watchSubscrptionEntityChange(entityId:string,callback: (type: 'added' | 'removed' | 'modified', doc: any) => void): Unsubscribe {
   return onSnapshotCollection(`${collection.ENTITIES}/${entityId}/subscriptions`, callback)
 }

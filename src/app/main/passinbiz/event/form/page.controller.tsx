@@ -14,7 +14,7 @@ import DateInput from "@/components/common/forms/fields/Datenput";
 import ImageUploadInput from "@/components/common/forms/fields/ImageUploadInput";
 import ColorPickerInput from "@/components/common/forms/fields/ColorPickerInput";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { ArrayToObject, objectToArray } from "@/lib/common/String";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
@@ -29,6 +29,7 @@ export default function useHolderController() {
   const { token, user } = useAuth()
   const { id } = useParams<{ id: string }>()
   const { currentEntity, watchServiceAccess } = useEntity()
+  const searchParams = useSearchParams()
 
   const [cityList, setCityList] = useState<any>(country.find(e => e.name === 'España')?.states.map(e => ({ label: e.name, value: e.name })))
   const [citySelected, setCitySelected] = useState<string>('Madrid')
@@ -98,7 +99,7 @@ export default function useHolderController() {
       else await createEvent(data, token)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
-      push(`/${MAIN_ROUTE}/passinbiz/event`)
+      push(`/${MAIN_ROUTE}/passinbiz/event?params=${searchParams.get('params')}`)
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')

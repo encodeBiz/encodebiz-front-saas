@@ -81,7 +81,9 @@ export const searchFirestore = async <T>(
 
 
   // Agregar paginación a la consulta
+  
   if (startAfterDoc) {
+ 
     firestoreQuery = query(
       firestoreQuery,
       startAfter(await getRefByPath(startAfterDoc))
@@ -97,9 +99,7 @@ export const searchFirestore = async <T>(
     totalItems: count,
     last: lastDocument.ref.path,
   })) as T[];
-
-
-  console.log(results);
+ 
   return results;
 };
 

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { buildSearch, Column, IRowAction } from "@/components/common/table/GenericTable";
+import { Column, IRowAction } from "@/components/common/table/GenericTable";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useToast } from "@/hooks/useToast";
@@ -24,8 +24,9 @@ import { useSearchParams } from "next/navigation";
 
 interface IFilterParams {
   filter: { passStatus: string, type: string, email: string, parentId: string }
-  sort: { field: string, order: 'desc' | 'asc' },
   params: {
+    orderBy: string,
+    orderDirection: 'desc' | 'asc',
     startAfter: any,
     limit: number,
     filters: Array<{
@@ -36,10 +37,7 @@ interface IFilterParams {
   }
   total: number
   currentPage: number
-  rowsPerPage: number
-  atStart: boolean,
-  atEnd: boolean,
-  lastRef: string | null,
+  startAfter: string | null,
 }
 
 
@@ -55,21 +53,22 @@ export default function useHolderListController() {
   const { push } = useRouter()
 
   /** Filter and PAgination Control */
-
   const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<Holder[]>([]);
   const [itemsHistory, setItemsHistory] = useState<Holder[]>([]);
 
   const [filterParams, setFilterParams] = useState<IFilterParams>({
-    atStart: true,
-    atEnd: false,
-    lastRef: null,
+    startAfter: null,
     currentPage: 0,
-    rowsPerPage: 5,
     total: 0,
     filter: { passStatus: 'active', type: 'none', email: '', parentId: 'none' },
-    sort: { field: 'createdAt', order: 'desc' },
-    params: { filters: [{ field: 'passStatus', operator: '==', value: 'active' }], startAfter: null, limit: 5 }
+    params: {
+      filters: [{ field: 'passStatus', operator: '==', value: 'active' }],
+      startAfter: null,
+      limit: 5,
+      orderBy: 'createdAt',
+      orderDirection: 'desc',
+    }
   })
   /** Filter and PAgination Control */
   const searchParams = useSearchParams()
@@ -77,7 +76,7 @@ export default function useHolderListController() {
     {
       actionBtn: true,
       color: 'error',
-      icon: <NotInterested />,
+      icon: <NotInterested color="error" />,
       label: t('core.button.revoke'),
       allowItem: (item: Holder) => (item.passStatus === 'pending' || item.passStatus === 'active'),
       onPress: (item: Holder) => openModal(CommonModalType.DELETE, { data: item })
@@ -86,7 +85,7 @@ export default function useHolderListController() {
     {
       actionBtn: true,
       color: 'success',
-      icon: <ReplyAllOutlined />,
+      icon: <ReplyAllOutlined color="success" />,
       label: t('core.button.resend'),
       allowItem: (item: Holder) => (item.passStatus === 'failed'),
       onPress: (item: Holder) => openModal(CommonModalType.SEND, { data: item })
@@ -95,7 +94,7 @@ export default function useHolderListController() {
     {
       actionBtn: true,
       color: 'success',
-      icon: <PanoramaFishEyeOutlined />,
+      icon: <PanoramaFishEyeOutlined color="success" />,
       label: t('core.button.reactive'),
       allowItem: (item: Holder) => (item.passStatus === 'revoked'),
       onPress: (item: Holder) => openModal(CommonModalType.REACTIVE, { data: item })
@@ -155,18 +154,21 @@ export default function useHolderListController() {
   </Box >
 
 
+  /** Paginated Changed */
   const onBack = (): void => {
     const backSize = items.length
     itemsHistory.splice(-backSize)
     setItemsHistory([...itemsHistory])
-    setItems([...itemsHistory.slice(-filterParams.rowsPerPage)])
-    setFilterParams({ ...filterParams, currentPage: filterParams.currentPage - 1, lastRef: (itemsHistory[itemsHistory.length - 1] as any).last })
+    setItems([...itemsHistory.slice(-filterParams.params.limit)])
+    setFilterParams({ ...filterParams, currentPage: filterParams.currentPage - 1, params: { ...filterParams.params, startAfter: (itemsHistory[itemsHistory.length - 1] as any).last } })
 
   }
+
+  /** Paginated Changed */
   const onNext = async (): Promise<void> => {
     setLoading(true)
-    const filter: IFilterParams = { ...filterParams, currentPage: filterParams.currentPage + 1 }
-    fetchingData(filter)
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: filterParams.currentPage + 1 }
+    fetchingData(filterParamsUpdated)
   }
 
 
@@ -188,14 +190,14 @@ export default function useHolderListController() {
       id: 'passStatus',
       label: t("core.label.state"),
       minWidth: 170,
-      format: (value, row) => <><CustomChip
+      format: (value, row) => <CustomChip
         id={row.id}
         background={row.passStatus}
         text={row.passStatus === 'failed' ? row.failedFeedback : ''}
         size="small"
         label={t("core.label." + row.passStatus)}
 
-      /> {row.passStatus === 'failed' ? row.failedFeedback : ''}</>,
+      />,
     },
     {
       id: 'type',
@@ -217,8 +219,86 @@ export default function useHolderListController() {
   ];
 
 
+
+  /** Sort Change */
+  const onSort = (sort: { orderBy: string, orderDirection: 'desc' | 'asc' }) => {
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, ...sort, startAfter: null, } }
+    setFilterParams(filterParamsUpdated)
+    fetchingData(filterParamsUpdated)
+  }
+
+
+  /** Limit Change */
+  const onRowsPerPageChange = (limit: number) => {
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null, limit } }
+    setFilterParams(filterParamsUpdated)
+    fetchingData(filterParamsUpdated)
+  }
+
+
+  /** Filter Changed */
+  const onFilter = (filterParamsData: any) => {
+    const filterData: Array<{ field: string, operator: any, value: any }> = []
+    const filter = filterParamsData.filter
+    Object.keys(filter).forEach((key) => {
+      if (key === 'parentId' && filter[key] != '' && filter.type == 'event') {
+        filterData.push({ field: key, operator: '==', value: filter[key] })
+      } else {
+        filterData.push({ field: key, operator: '==', value: filter[key] })
+      }
+    })
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null, filters: filterData }, filter }
+    setFilterParams(filterParamsUpdated)
+    fetchingData(filterParamsUpdated)
+  }
+
+
+
+  useEffect(() => {
+    if (currentEntity?.entity?.id) {
+      watchServiceAccess('passinbiz')
+    }
+  }, [currentEntity?.entity?.id, watchServiceAccess])
+
+  useEffect(() => {
+    if (currentEntity?.entity?.id) {
+      if (searchParams.get('params') && localStorage.getItem('holderIndex'))
+        inicializeFilter(searchParams.get('params') as string)
+      else
+        fetchingData(filterParams)
+    }
+  }, [currentEntity?.entity?.id, searchParams.get('params')])
+
+
+ 
+
+
+
+  const inicializeFilter = (params: string) => {
+    try {
+      const dataList = JSON.parse(localStorage.getItem('holderIndex') as string)      
+      setItems(dataList.items ?? []);
+      setItemsHistory(dataList.itemsHistory ?? []);
+      const filters = decodeFromBase64(params as string)
+      setFilterParams(filters)
+      setLoading(false)
+      //localStorage.removeItem('holderIndex')
+    } catch (error) {
+      showToast(String(error as any), 'error')
+    }
+
+  }
+
+  const buildState = () => {
+    const dataStatus = {
+      items,
+      itemsHistory,
+    }
+    localStorage.setItem('holderIndex', JSON.stringify(dataStatus))
+    return encodeToBase64({ ...filterParams })
+  }
+
   const fetchingData = (filterParams: IFilterParams) => {
-    console.log(filterParams);
 
     setLoading(true)
     if (filterParams.params.filters.find((e: any) => e.field === 'passStatus' && e.value === 'none'))
@@ -235,24 +315,21 @@ export default function useHolderListController() {
 
     inicializeEvent()
 
-
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any) }).then(async res => {
-
       if (res.length !== 0) {
-        setFilterParams({ ...filterParams, lastRef: res.length > 0 ? (res[0] as any).last : null })
+        setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
         setItems(res)
-        if (!filterParams.params.startAfter)
+        if (!filterParams.params.startAfter) {
           setItemsHistory([...res])
-        else
+        } else {
           setItemsHistory(prev => [...prev, ...res])
-
+        }
       }
 
-      if (!filterParams.lastRef && res.length === 0) {
+      if (!filterParams.params.startAfter && res.length === 0) {
         setItems([])
         setItemsHistory([])
       }
-
       setLoading(false)
 
     }).catch(e => {
@@ -262,76 +339,6 @@ export default function useHolderListController() {
     })
 
   }
-
-  useEffect(() => {
-    if (currentEntity?.entity?.id) {
-      watchServiceAccess('passinbiz')
-    }
-  }, [currentEntity?.entity?.id, watchServiceAccess])
-
-  useEffect(() => {
-    if (currentEntity?.entity?.id)
-      fetchingData(filterParams)
-  }, [currentEntity?.entity?.id])
-
-
-
-  const onFilter = (filterParamsData: any) => {
-    const filterData: Array<{ field: string, operator: string, value: any }> = []
-    const filter = filterParamsData.filter
-    Object.keys(filter).forEach((key) => {
-      if (key === 'parentId' && filter[key] != '' && filter.type == 'event') {
-        filterData.push({ field: key, operator: '==', value: filter[key] })
-      } else {
-        filterData.push({ field: key, operator: '==', value: filter[key] })
-      }
-    })
-    const paramsData: any = { ...filterParams.params, startAfter: null, filters: filterData }
-    setFilterParams({ ...filterParams, filter, params: paramsData })
-  }
-
-
-
-  useEffect(() => {
-    if (searchParams.get('params') && localStorage.getItem('holderIndex')) {
-      const data = JSON.parse(localStorage.getItem('holderIndex') as string)
-      inicializeFilter(data)
-      localStorage.removeItem('holderIndex')
-    } else {
-      //setCurrentPage(0)
-      const paramsData = { startAfter: null }
-      if (filterParams.sort.field && filterParams.sort.order)
-        Object.assign(paramsData, {
-          orderBy: filterParams.sort.field,
-          orderDirection: filterParams.sort.order,
-        })
-
-      setFilterParams((prev: any) => ({ ...prev, params: { ...prev.params, ...paramsData } }))
-
-    }
-  }, [searchParams.get('params')])
-
-
-
-
-  const inicializeFilter = (params: any) => {
-    setItems(params.items ?? []);
-    setItemsHistory(params.itemsHistory ?? []);
-    setFilterParams(params.filterParams)
-  }
-
-  const buildState = () => {
-    const dataStatus = {
-      filterParams: filterParams,
-      items,
-      itemsHistory,
-
-    }
-    localStorage.setItem('holderIndex', JSON.stringify(dataStatus))
-    return encodeToBase64({ id: 'holderIndex' })
-  }
-
-
 
   /** */
   const onRevoke = async (item: any) => {
@@ -419,10 +426,9 @@ export default function useHolderListController() {
 
   return {
     items, topFilter,
-    onEdit,
+    onEdit, onSort, onRowsPerPageChange,
     handleUploadConfirm, isUploading, handleConfigConfirm,
     onNext, onBack,
-
     columns, rowAction, setFilterParams, filterParams, buildState,
     loading, onRevoke, revoking, onSend,
 

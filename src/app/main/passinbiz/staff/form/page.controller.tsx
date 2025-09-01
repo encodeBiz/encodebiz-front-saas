@@ -9,7 +9,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { MAIN_ROUTE } from "@/config/routes";
 import { useLayout } from "@/hooks/useLayout";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { createStaff, fetchStaff, updateStaff } from "@/services/passinbiz/staff.service";
 import { IStaff } from "@/domain/features/passinbiz/IStaff";
 import SelectMultipleInput from "@/components/common/forms/fields/SelectMultipleInput";
@@ -23,6 +23,7 @@ export default function useStaffController() {
   const { push } = useRouter()
   const { token, user } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
+  const searchParams = useSearchParams()
 
   const { changeLoaderState } = useLayout()
   const { id } = useParams<{ id: string }>()
@@ -103,11 +104,11 @@ export default function useStaffController() {
 
   const saveEventByStaff = async (eventIdList: Array<string>, staffId: string) => {
     try {
- 
+
       Promise.all(
         eventIdList.map(async (eventId) => {
           const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, eventId);
- 
+
           if (!event.assignedStaff) event.assignedStaff = []
           if (!event.assignedStaff.includes(staffId)) {
             event.assignedStaff = [...event.assignedStaff, staffId]
@@ -166,7 +167,7 @@ export default function useStaffController() {
       showToast(t('core.feedback.success'), 'success');
       changeLoaderState({ show: false })
 
-      push(`/${MAIN_ROUTE}/passinbiz/staff`)
+      push(`/${MAIN_ROUTE}/passinbiz/staff?params=${searchParams.get('params')}`)
     } catch (error: any) {
       showToast(error.message, 'error')
       changeLoaderState({ show: false })

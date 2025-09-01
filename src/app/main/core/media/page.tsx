@@ -23,10 +23,10 @@ const EntityPreferencesPage = () => {
   const t = useTranslations();
   const { items,
     onDelete, rowAction,
-    onNext, onBack,
-    currentPage, selectedType, handleFileChange, isUploading, setSelectedType,
+    onNext, onBack, onRowsPerPageChange,
+    filterParams, selectedType, handleFileChange, isUploading, setSelectedType,
     columns, deleting,
-    loading, rowsPerPage, setRowsPerPage } = useMediaList();
+    loading } = useMediaList();
 
 
 
@@ -62,16 +62,18 @@ const EntityPreferencesPage = () => {
       >
         <GenericTable
           data={items}
+          rowAction={rowAction}
           columns={columns}
-          title={""}
+          title={''}
           keyField="id"
           loading={loading}
-          page={currentPage}
-          rowsPerPage={rowsPerPage}
-          onRowsPerPageChange={setRowsPerPage}
+          page={filterParams.currentPage}
+          rowsPerPage={filterParams.params.limit}
+          onRowsPerPageChange={onRowsPerPageChange}
+
+          sort={{ orderBy: filterParams.params.orderBy, orderDirection: filterParams.params.orderDirection }}
           onBack={onBack}
           onNext={onNext}
-          rowAction={rowAction}
 
         />
       </HeaderPage>

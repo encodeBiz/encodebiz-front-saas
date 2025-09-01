@@ -10,17 +10,18 @@ import { Add } from '@mui/icons-material';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
+import { useRouter } from 'nextjs-toploader/app';
 
 export default function HolderList() {
   const t = useTranslations();
   const {
-    items, rowAction,
+    items, rowAction, onRowsPerPageChange, onSort,
     onNext, onBack, onDelete, deleting,
-    currentPage, topFilter,
-    columns, onSearch,
-    loading, rowsPerPage, setRowsPerPage } = useHolderListController();
+    filterParams, topFilter,
+    columns, buildState,
+    loading } = useHolderListController();
   const { open } = useCommonModal()
-
+  const { push } = useRouter()
   return (
     <Container maxWidth="lg">
       <HeaderPage
@@ -28,8 +29,7 @@ export default function HolderList() {
         actions={
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
             <SassButton
-              role='link'
-              href='/main/passinbiz/staff/add'
+              onClick={() => push(`/main/passinbiz/staff/add?params=${buildState()}`)}
               variant='contained'
               startIcon={<Add />}
             >{t('staff.add')}</SassButton>
@@ -45,12 +45,13 @@ export default function HolderList() {
           title={''}
           keyField="id"
           loading={loading}
-          page={currentPage}
-          rowsPerPage={rowsPerPage}
-          onRowsPerPageChange={setRowsPerPage}
+          page={filterParams.currentPage}
+          rowsPerPage={filterParams.params.limit}
+          onRowsPerPageChange={onRowsPerPageChange}
+          onSorteable={onSort}
+          sort={{ orderBy: filterParams.params.orderBy, orderDirection: filterParams.params.orderDirection }}
           onBack={onBack}
           onNext={onNext}
-          onSearch={(data) => onSearch(data)}
           topFilter={topFilter}
 
         />

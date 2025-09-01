@@ -2,19 +2,20 @@ import { Select, MenuItem } from "@mui/material";
 import { useTranslations } from "next-intl";
 export interface SelectFilterProps {
     value: any,
+    first?: boolean
     defaultValue?: any,
     onChange: (value: any) => void,
     items: Array<{ label: string, value: any }>
 }
-export const SelectFilter = ({ defaultValue, value, onChange, items }: SelectFilterProps) => {
+export const SelectFilter = ({ defaultValue, value, onChange, items, first = true }: SelectFilterProps) => {
     const t = useTranslations()
-    return <Select sx={{   height: 46 }}
+    return <Select sx={{ height: 46 }}
         value={value ?? 'none'}
         defaultValue={defaultValue ?? 'none'}
         onChange={(e: any) => onChange(e.target.value)}  >
-        <MenuItem key={'none'} value={'none'}>
+        {first && <MenuItem key={'none'} value={'none'}>
             {t('core.label.select')}
-        </MenuItem>
+        </MenuItem>}
         {items.map((option) => (
             <MenuItem key={option.value} value={option.value}>
                 {option.label}

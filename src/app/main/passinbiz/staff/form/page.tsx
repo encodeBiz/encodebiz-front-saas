@@ -6,7 +6,7 @@ import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
 import { useRouter } from 'nextjs-toploader/app';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { IStaff } from '@/domain/features/passinbiz/IStaff';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { ArrowLeftOutlined, SaveOutlined } from '@mui/icons-material';
@@ -20,6 +20,7 @@ export default function StaffForm() {
   const { id } = useParams<{ id: string }>()
   const formRef = useRef(null)
   const { formStatus } = useFormStatus()
+  const searchParams = useSearchParams()
 
   const handleExternalSubmit = () => {
     if (formRef.current) {
@@ -30,13 +31,13 @@ export default function StaffForm() {
     <Container maxWidth="xl">
       <HeaderPage
         title={id ? t('staff.edit') : t('staff.add')}
-         description={t('staff.formDesc')}
+        description={t('staff.formDesc')}
         isForm
         actions={
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
             <SassButton
               disabled={formStatus?.isSubmitting}
-              onClick={() => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff`)}
+              onClick={() => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff?params=${searchParams.get('params')}`)}
               variant='outlined'
               startIcon={<ArrowLeftOutlined />}
             > {t('core.button.cancel')}</SassButton>

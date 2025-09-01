@@ -8,5 +8,6 @@ export const collection = {
     EMAIL_SENT:'email-sent',
     USER_ENTITY_ROLES:'user_entity_roles',
     MEDIA:'media',
-    INVOICES:'invoices'
+    INVOICES:'invoices',
+    WEBHOOK:'webhook'
 }

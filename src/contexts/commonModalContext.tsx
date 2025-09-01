@@ -16,6 +16,7 @@ export enum CommonModalType {
     EVENT_SELECTED = 'EVENT_SELECTED',
     CONTACT = 'CONTACT',
     INFO = 'INFO',
+    WEBHOOK = 'WEBHOOK',
 }
 interface CommonModalContextType {
     open: { type: CommonModalType, open: boolean, args?: any }

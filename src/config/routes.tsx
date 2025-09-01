@@ -1,13 +1,13 @@
 import {
     
     Home,
+    MobiledataOffOutlined,
     Person2TwoTone,
     
 
 } from '@mui/icons-material';
 import BusinessIcon from '@mui/icons-material/Business';
 import { DashBoardIcon } from '@/components/common/icons/DashBoardIcon';
-import { PassBizIcon } from '@/components/common/icons/PassBizIcon';
 import { CheckBizIcon } from '@/components/common/icons/CheckBizIcon';
 import { MediaIcon } from '@/components/common/icons/MediaIcon';
 import { PassInBizIcon } from '@/components/common/icons/PassInBizIcon';
@@ -107,6 +107,12 @@ export const menuItemsGeneral = [
         name: 'Media',
         icon: <MediaIcon />,
         link: `/${MAIN_ROUTE}/${GENERAL_ROUTE}/media`,
+        subMenu: []
+    },
+    {
+        name: 'Integration',
+        icon: <MobiledataOffOutlined />,
+        link: `/${MAIN_ROUTE}/${GENERAL_ROUTE}/integration`,
         subMenu: []
     }
 ]

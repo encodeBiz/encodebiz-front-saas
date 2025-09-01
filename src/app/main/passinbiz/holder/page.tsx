@@ -17,8 +17,8 @@ import { useRouter } from 'nextjs-toploader/app';
 export default function HolderList() {
   const t = useTranslations();
   const { handleUploadConfirm, handleConfigConfirm,
-    items, rowAction,
-    onNext, onBack, filterParams, setFilterParams, onRevoke, revoking, onSend,
+    items, rowAction, onRowsPerPageChange, onSort,
+    onNext, onBack, filterParams, onRevoke, revoking, onSend,
     topFilter,
     columns, buildState,
     loading,
@@ -58,14 +58,14 @@ export default function HolderList() {
           keyField="id"
           loading={loading}
           page={filterParams.currentPage}
-          rowsPerPage={filterParams.rowsPerPage}
-          onRowsPerPageChange={(rowsPerPage) => setFilterParams({ ...filterParams, rowsPerPage })}
-          onSorteable={(sort) => setFilterParams({ ...filterParams, sort })}
-          sort={filterParams.sort}
+          rowsPerPage={filterParams.params.limit}
+          onRowsPerPageChange={onRowsPerPageChange}
+          onSorteable={onSort}
+          sort={{ orderBy: filterParams.params.orderBy, orderDirection: filterParams.params.orderDirection }}
           onBack={onBack}
           onNext={onNext}
           topFilter={topFilter}
-            
+
 
 
         />

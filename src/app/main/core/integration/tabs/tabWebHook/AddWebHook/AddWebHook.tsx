@@ -12,36 +12,35 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useTranslations } from 'next-intl';
 import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
-import { SassButton } from '../../buttons/GenericButton';
-import { CancelOutlined, SendOutlined } from '@mui/icons-material';
-import { CustomTypography } from '../../Text/CustomTypography';
-import { IContact } from '@/domain/core/IContact';
-import useFormContactController from './ContactModal.controller';
-import GenericForm, { FormField } from '../../forms/GenericForm';
-import { useAuth } from '@/hooks/useAuth';
+import { SassButton } from '@/components/common/buttons/GenericButton';
+import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
+import { BorderBox } from '@/components/common/tabs/BorderBox';
+import { CustomTypography } from '@/components/common/Text/CustomTypography';
 import { useEntity } from '@/hooks/useEntity';
+import { CancelOutlined, SendOutlined } from '@mui/icons-material';
 import { useFormStatus } from '@/hooks/useFormStatus';
-import { BorderBox } from '../../tabs/BorderBox';
+import useAddWebHookController from './AddWebHook.controller';
+import { IWebHook } from '@/domain/integration/IWebHook';
 
-const ContactModalModal = (): React.JSX.Element => {
+
+const AddWebHook = (): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const theme = useTheme()
     const [isLoading, setIsLoading] = useState(false)
-    const { fields, validationSchema, setDinamicDataAction } = useFormContactController();
+    const { fields, validationSchema, setDinamicDataAction } = useAddWebHookController();
     const t = useTranslations();
-    const { user } = useAuth()
     const { currentEntity } = useEntity()
     // Handler for closing the dialog
     const handleClose = (event: any, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
         if (reason !== 'backdropClick')
-            closeModal(CommonModalType.CONTACT);
+            closeModal(CommonModalType.WEBHOOK);
     };
 
-    const handleContactModal = (values: Partial<IContact>) => {
+    const handleContactModal = (values: Partial<IWebHook>) => {
         setIsLoading(true)
         setTimeout(() => {
             setDinamicDataAction(values)
-            closeModal(CommonModalType.CONTACT);
+            closeModal(CommonModalType.WEBHOOK);
             setIsLoading(true)
         }, 2000);
     }
@@ -77,14 +76,15 @@ const ContactModalModal = (): React.JSX.Element => {
             </DialogTitle>
             <DialogContent>
                 <BorderBox sx={{ p: 2 }}>
-                    <GenericForm<Partial<IContact>>
+                    <GenericForm<Partial<IWebHook>>
                         column={2}
                         initialValues={{
-                            "subject": t('contact.test2'),
-                            "message": '',
-                            "from": user?.email as string,
-                            "phone": user?.phoneNumber as string,
-                            "displayName": currentEntity?.entity.name as string,
+                            "url":'',
+                            "subscribedEvents": [],
+                            "enabled": true,
+                            "version": "2025-08-01",
+                            entityId: currentEntity?.entity?.id
+
                         }}
                         validationSchema={validationSchema}
                         onSubmit={handleContactModal}
@@ -124,4 +124,4 @@ const ContactModalModal = (): React.JSX.Element => {
     );
 };
 
-export default ContactModalModal
+export default AddWebHook
