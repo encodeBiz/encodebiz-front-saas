@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { buildSearch, Column, IRowAction } from "@/components/common/table/GenericTable";
+import { Column, IRowAction } from "@/components/common/table/GenericTable";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useToast } from "@/hooks/useToast";
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { deleteEvent, search } from "@/services/passinbiz/event.service";
 import { useRouter } from "nextjs-toploader/app";
@@ -85,8 +85,6 @@ export default function useIEventListController() {
     const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: filterParams.currentPage + 1 }
     fetchingData(filterParamsUpdated)
   }
-
-
 
 
   /** Sort Change */
@@ -188,6 +186,7 @@ export default function useIEventListController() {
     if (filterParams.params.filters.find((e: any) => e.field === 'name' && e.value === ''))
       filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== 'name')
 
+     
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any) }).then(async res => {
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })

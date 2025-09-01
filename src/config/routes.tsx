@@ -1,6 +1,7 @@
 import {
     
     Home,
+    MobiledataOffOutlined,
     Person2TwoTone,
     
 
@@ -107,6 +108,12 @@ export const menuItemsGeneral = [
         name: 'Media',
         icon: <MediaIcon />,
         link: `/${MAIN_ROUTE}/${GENERAL_ROUTE}/media`,
+        subMenu: []
+    },
+    {
+        name: 'Integration',
+        icon: <MobiledataOffOutlined />,
+        link: `/${MAIN_ROUTE}/${GENERAL_ROUTE}/integration`,
         subMenu: []
     }
 ]

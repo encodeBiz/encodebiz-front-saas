@@ -26,6 +26,7 @@
         "Events": "Eventos",
         "Media": "Media",
         "home": "Inicio",
+        "Integration": "Integraciones",
         "general": "General",
         "CheckinBiz": "CheckinBiz",
         "PassBiz": "PassBiz",
@@ -92,7 +93,7 @@
       "active": "Activo",
       "thumbnail": "Imagen en miniatura",
       "subject": "Asunto",
-      "comminsoom":"- Muy pronto",
+      "comminsoom": "- Muy pronto",
       "from": "Correo electronico",
       "owner": "Propietario",
       "availableEvent": "Eventos disponibles",
@@ -127,6 +128,7 @@
       "resourcesGraph": "RECURSOS GRÁFICOS",
       "colorBg": "Color de fondo",
       "addImage": "Añadir recurso",
+      "urlWebHook":"Url del Webhook",
       "endDate": "Fecha de finalización",
       "startDate": "Fecha de inicio",
       "time": "Hora",
@@ -369,8 +371,8 @@
   },
   "salesPlan": {
     "title": "PLANES DISPONIBLES",
-    "emissionLimit":"Limite de emisiones:",
-     "sinLimit":"Sin límites",
+    "emissionLimit": "Limite de emisiones:",
+    "sinLimit": "Sin límites",
     "subTitle": "Elige entre la versión Gratis, Bronce o Empresarial según las funcionalidades que necesites. Actualiza o cambia tu plan en cualquier momento para potenciar tu experiencia con PassBiz.",
     "free": "Gratis",
     "configureLegal": "Datos de la Empresa",
@@ -466,7 +468,7 @@
   "event": {
     "title": "Eventos",
     "formDesc": "Completa los campos a continuación para crear el event.",
-    "formDesc2": "Asocia personal de apoyo al evento seleccionado.",    
+    "formDesc2": "Asocia personal de apoyo al evento seleccionado.",
     "list": "Eventos",
     "add": "Crear evento",
     "edit": "Editar",
@@ -484,7 +486,6 @@
     "title": "Personal de Apoyo",
     "formDesc": "Completa los campos a continuación para crear el personal de apoyo.",
     "formDesc2": "Asocia eventos al personal de apoyo seleccionado.",
-    
     "list": "Personal de Apoyo",
     "add": "Registrar personal",
     "edit": "Editar",
@@ -551,14 +552,25 @@
     "failedStaff": "Usted no tiene permisos para validar el pase",
     "tryagain": "Intentar de nuevo",
     "validatingStaff": "Validando personal de apoyo",
-
     "titleEvent": "Seleccione el evento",
-    "selected":"Seleccionar evento"
+    "selected": "Seleccionar evento"
   },
-   "contact": {
+  "contact": {
     "title": "Contáctenos",
     "title2": "Métodos de Pago",
-    "test1":"Solicito realizar una prueba de evento",
-    "test2":"Solicito plan enterprise" 
+    "test1": "Solicito realizar una prueba de evento",
+    "test2": "Solicito plan enterprise"
+  },
+  "integration": {
+    "title": "Integraciones",
+    "tabs": {
+      "tab1": {
+        "title": "WebHook"
+      }
+    }
+  },
+  "webhook": {
+    "title": "Webhook",
+    "text": "Webhook asociados a los eventos disponibles en los servicios."
   }
 }
