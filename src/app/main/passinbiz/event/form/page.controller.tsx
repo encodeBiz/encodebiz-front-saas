@@ -20,6 +20,7 @@ import { ArrayToObject, objectToArray } from "@/lib/common/String";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { country } from "@/config/country";
 import { format_date, formatLocalDateTime } from "@/lib/common/Date";
+import AddressInput from "@/components/common/forms/fields/AddressInput";
 
 
 export default function useHolderController() {
@@ -171,10 +172,8 @@ export default function useHolderController() {
       type: 'text',
       required: true,
       fullWidth: true,
-      component: TextInput,
-      extraProps: {
-        afterTextField: `${citySelected ? ', ' + citySelected + ', ' : ''} ${countrySelected}`
-      },
+      component: AddressInput,
+       
     },
 
 

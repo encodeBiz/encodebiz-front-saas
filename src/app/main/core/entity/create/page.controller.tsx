@@ -137,13 +137,7 @@ export const useRegisterController = () => {
             isDivider: true,
             label: t('core.label.address'),
         },
-        {
-            name: 'street',
-            label: t('core.label.street'),
-            type: 'textarea',
-            fullWidth: true,
-            component: TextInput,
-        },
+        
         {
             name: 'country',
             label: t('core.label.country'),
@@ -160,6 +154,14 @@ export const useRegisterController = () => {
             label: t('core.label.city'),
             component: SelectInput,
             options: cityList
+        },
+
+        {
+            name: 'street',
+            label: t('core.label.street'),
+            type: 'textarea',
+            fullWidth: true,
+            component: TextInput,
         },
 
         {

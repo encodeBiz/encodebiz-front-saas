@@ -96,7 +96,7 @@ export default function HolderList() {
         isLoading={revoking}
         title={t('holders.reactiveConfirmModalTitle')}
         description={t('holders.reactiveConfirmModalTitle2')}
-        textBtn={t('core.button.revoke')}
+        textBtn={t('core.button.reactive')}
         onOKAction={(args: { data: any }) => onSend(args.data)}
       />}
 

@@ -36,7 +36,7 @@ const ColorPickerInput: React.FC<FieldProps & TextFieldProps> = ({
                 {...field}
                 {...props}
                 onClick={handleClick}
-                value={field.value ?? ``}
+                value={field.value}
                 error={!!error}
                 multiline={props.type === 'textarea'}
                 rows={2}
@@ -46,15 +46,15 @@ const ColorPickerInput: React.FC<FieldProps & TextFieldProps> = ({
 
                 slotProps={{
                     input: {
-                        startAdornment: (
-                            <InputAdornment position="start" sx={{ textAlign:'center',height: 40, width: 40, background: field && field.value ? field.value : '#ffffff' }}>
+                        startAdornment: field.value ? (
+                            <InputAdornment position="start" sx={{ textAlign: 'center', height: 40, width: 40, background: field && field.value ? field.value : '#ffffff' }}>
                                 <PaletteRounded sx={{
                                     color: '#ffffff',
-                                    m:'auto'
+                                    m: 'auto'
                                 }} />
                             </InputAdornment>
-                        ),
-                        endAdornment: helperText?<InputAdornment position="end"><Error color='error' /></InputAdornment>:null,
+                        ):null,
+            endAdornment: helperText?<InputAdornment position="end"><Error color='error' /></InputAdornment>:null,
 
                     },
                 }}

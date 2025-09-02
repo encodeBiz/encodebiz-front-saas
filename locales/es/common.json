@@ -108,10 +108,12 @@
       "passStatus": "Estado del pase",
       "pending": "Pendiente",
       "revoke": "Revocar",
+      "reactive": "Reactivar",
       "firstName": "Nombre",
       "status": "Estado",
       "customFields": "Campos personalizados",
       "staff": "Personal de apoyo",
+      "typingAddress":"Escribe una dirección",
       "staff1": "Personal",
       "resend": "Reenviar",
       "draft": "Borrador",
@@ -132,7 +134,7 @@
       "enable": "Habilitado",
       "noenable": "No Habilitado",
       "subscribedEvents": "Eventos",
-      "urlWebbhook":"URL de ejecución",
+      "urlWebbhook": "URL de ejecución",
       "endDate": "Fecha de finalización",
       "startDate": "Fecha de inicio",
       "time": "Hora",
@@ -229,7 +231,7 @@
     },
     "formValidatorMessages": {
       "required": "Este campo es requerido",
-      "minArray":"Debe seleccionar al menos 1 elemento",
+      "minArray": "Debe seleccionar al menos 1 elemento",
       "email": "Este campo es debe ser un correo electrónico válido",
       "password": "La contraseña es demasiado corta: debe tener un mínimo de 8 caracteres.",
       "passwordMatch": "La contraseñas no coinciden",
@@ -357,6 +359,13 @@
     }
   },
   "onboarding": {
+    "presentation": {
+      "card1":{
+
+      },
+      "title": "Webhook",
+      "text": "Webhook asociados a los eventos disponibles en los servicios."
+    },
     "passinbiz": {
       "tab1Title": "¿Como empiezo?",
       "tab2Title": "¿Que resolvemos?",

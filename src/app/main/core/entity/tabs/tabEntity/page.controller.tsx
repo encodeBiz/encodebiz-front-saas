@@ -17,6 +17,7 @@ import { fetchEntity, updateEntity } from '@/services/common/entity.service';
 import { requiredRule } from '@/config/yupRules';
 import { useLayout } from '@/hooks/useLayout';
 import IEntity from '@/domain/auth/IEntity';
+import AddressInput from '@/components/common/forms/fields/AddressInput';
 
 
 
@@ -54,7 +55,7 @@ export type TabItem = {
 export const useSettingEntityController = () => {
     const t = useTranslations();
     const { currentEntity } = useEntity();
- 
+
     const { changeLoaderState } = useLayout()
     const { user, token } = useAuth();
     const { showToast } = useToast()
@@ -88,8 +89,10 @@ export const useSettingEntityController = () => {
 
 
 
+
+
     const fields = [
-         {
+        {
             isDivider: true,
             label: t('core.label.comercial'),
         },
@@ -114,7 +117,7 @@ export const useSettingEntityController = () => {
             fullWidth: true,
             component: TextInput,
         },
-        
+
         {
             name: 'taxId',
             label: t('core.label.taxId'),
@@ -131,13 +134,7 @@ export const useSettingEntityController = () => {
             isDivider: true,
             label: t('core.label.addressData'),
         },
-        {
-            name: 'street',
-            label: t('core.label.street'),
-            type: 'textarea',
-            fullWidth: true,
-            component: TextInput,
-        },
+
         {
             name: 'country',
             label: t('core.label.country'),
@@ -155,14 +152,13 @@ export const useSettingEntityController = () => {
             component: SelectInput,
             options: cityList
         },
-        /*
         {
-            name: 'region',
-            label: t('core.label.region'),
-            component: TextInput,
-            options: cityList
+            name: 'street',
+            label: t('core.label.street'),
+            type: 'textarea',
+            fullWidth: true,
+            component: AddressInput,
         },
-        */
         {
             name: 'postalCode',
             label: t('core.label.postalCode'),
@@ -253,7 +249,7 @@ export const useSettingEntityController = () => {
 
 
 
-    
+
 
 
 
