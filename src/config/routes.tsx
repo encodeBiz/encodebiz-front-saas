@@ -1,9 +1,9 @@
 import {
-    
+
     Home,
     MobiledataOffOutlined,
     Person2TwoTone,
-    
+
 
 } from '@mui/icons-material';
 import BusinessIcon from '@mui/icons-material/Business';
@@ -19,19 +19,19 @@ export const USER_ROUTE = 'user'
 export const PASSSINBIZ_MODULE_ROUTE = 'passinbiz'
 export const CHECKINBIZ_MODULE_ROUTE = 'checkinbiz'
 
-const PASSINBIZ = [ {
+const PASSINBIZ = [{
     name: 'Holders',
-  
+
     link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/holder`,
     subMenu: []
 }, {
     name: 'Events',
- 
+
     link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event`,
     subMenu: []
 }, {
     name: 'Staff',
-    
+
     link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff`,
     subMenu: []
 }]
@@ -66,12 +66,6 @@ export const menuItemsServices = [{
     id: 'services',
     name: 'Services',
     header: true, subMenu: []
-}, {
-    id: 'checkinbiz',
-    name: 'CheckBiz',
-    icon: <CheckBizIcon />,
-    link: `/${MAIN_ROUTE}/checkinbiz/onboarding`,
-    subMenu: CHECKINBIZ
 },
 {
     id: 'passinbiz',
@@ -80,6 +74,14 @@ export const menuItemsServices = [{
     link: `/${MAIN_ROUTE}/passinbiz/onboarding`,
     subMenu: PASSINBIZ
 },
+{
+    id: 'checkinbiz',
+    name: 'CheckBiz',
+    icon: <CheckBizIcon />,
+    link: `/${MAIN_ROUTE}/checkinbiz/onboarding`,
+    subMenu: CHECKINBIZ
+},
+
 {
     divider: true,
     subMenu: []
