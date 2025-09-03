@@ -93,17 +93,19 @@ export default function useStaffListController() {
     {
       actionBtn: true,
       color: 'error',
-      icon: <DeleteOutline  color="error"/>,
+      icon: <DeleteOutline color="error" />,
       label: t('core.button.delete'),
       allowItem: () => true,
-      onPress: (item: IStaff) => openModal(CommonModalType.DELETE, { item })
+      onPress: (item: IStaff) => openModal(CommonModalType.DELETE, { item }),
+      bulk: true
     },
     {
       actionBtn: true,
+      bulk: false,
       color: 'primary',
       icon: <Event color="primary" />,
       label: t('core.label.event'),
-      allowItem: (item: IStaff) => item.allowedTypes.includes('event'),
+      allowItem: (item: IStaff) => item?.allowedTypes?.includes('event'),
       onPress: (item: IStaff) => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff/${item.id}/events?params=${buildState()}`)
     },
     {
@@ -112,6 +114,7 @@ export default function useStaffListController() {
       icon: <ReplyAllOutlined color="primary" />,
       label: t('core.label.resend'),
       allowItem: () => true,
+      bulk: true,
       onPress: (item: IStaff) => handleResend(item)
     },
   ]
@@ -329,13 +332,13 @@ export default function useStaffListController() {
 
 
 
-
   return {
     items, onSort, onRowsPerPageChange,
     onEdit,
     onNext, onBack, buildState,
     columns, rowAction, onDelete, topFilter,
-    loading, deleting, filterParams
+    loading, deleting, filterParams,
+
   }
 
 }

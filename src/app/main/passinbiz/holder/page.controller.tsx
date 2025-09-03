@@ -78,6 +78,7 @@ export default function useHolderListController() {
       color: 'error',
       icon: <NotInterested color="error" />,
       label: t('core.button.revoke'),
+      bulk: true,
       allowItem: (item: Holder) => (item.passStatus === 'pending' || item.passStatus === 'active'),
       onPress: (item: Holder) => openModal(CommonModalType.DELETE, { data: item })
     },
@@ -86,6 +87,7 @@ export default function useHolderListController() {
       actionBtn: true,
       color: 'success',
       icon: <ReplyAllOutlined color="success" />,
+      bulk: true,
       label: t('core.button.resend'),
       allowItem: (item: Holder) => (item.passStatus === 'failed'),
       onPress: (item: Holder) => openModal(CommonModalType.SEND, { data: item })
@@ -96,6 +98,7 @@ export default function useHolderListController() {
       color: 'success',
       icon: <PanoramaFishEyeOutlined color="success" />,
       label: t('core.button.reactive'),
+      bulk: true,
       allowItem: (item: Holder) => (item.passStatus === 'revoked'),
       onPress: (item: Holder) => openModal(CommonModalType.REACTIVE, { data: item })
     },
@@ -270,13 +273,13 @@ export default function useHolderListController() {
   }, [currentEntity?.entity?.id, searchParams.get('params')])
 
 
- 
+
 
 
 
   const inicializeFilter = (params: string) => {
     try {
-      const dataList = JSON.parse(localStorage.getItem('holderIndex') as string)      
+      const dataList = JSON.parse(localStorage.getItem('holderIndex') as string)
       setItems(dataList.items ?? []);
       setItemsHistory(dataList.itemsHistory ?? []);
       const filters = decodeFromBase64(params as string)

@@ -186,7 +186,7 @@ export default function useIEventListController() {
     if (filterParams.params.filters.find((e: any) => e.field === 'name' && e.value === ''))
       filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== 'name')
 
-     
+
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any) }).then(async res => {
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
@@ -266,6 +266,7 @@ export default function useIEventListController() {
       color: 'primary',
       icon: <Person2 color="primary" />,
       label: t('core.label.staff1'),
+      bulk: false,
       allowItem: () => true,
       onPress: (item: IEvent) => push(`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event/${item.id}/staff?params=${buildState()}`)
     },
@@ -275,12 +276,14 @@ export default function useIEventListController() {
       color: 'primary',
       icon: <Edit color="primary" />,
       label: t('core.button.edit'),
+      bulk: false,
       allowItem: () => true,
       onPress: (item: IEvent) => onEdit(item)
     },
 
     {
       actionBtn: true,
+      bulk: true,
       color: 'error',
       icon: <DeleteOutline color="error" />,
       label: t('core.button.delete'),

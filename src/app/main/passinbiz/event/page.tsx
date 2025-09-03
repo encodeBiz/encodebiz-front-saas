@@ -60,6 +60,7 @@ export default function HolderList() {
             onBack={onBack}
             onNext={onNext}
             topFilter={topFilter}
+            selectable
           /> :
           <FormContact />
         }
