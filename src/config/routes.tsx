@@ -68,7 +68,7 @@ export const menuItemsServices = [{
     header: true, subMenu: []
 }, {
     id: 'checkinbiz',
-    name: 'CheckinBiz',
+    name: 'CheckBiz',
     icon: <CheckBizIcon />,
     link: `/${MAIN_ROUTE}/checkinbiz/onboarding`,
     subMenu: CHECKINBIZ
