@@ -18,7 +18,7 @@ interface IUserEntity {
   createdAt: Date;
   updatedAt: Date;
   entity: IEntity
-  user:IUser
+  user: IUser
   isActive: boolean
 
 }

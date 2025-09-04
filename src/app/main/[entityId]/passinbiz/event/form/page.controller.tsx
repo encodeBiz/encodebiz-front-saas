@@ -220,8 +220,7 @@ export default function useHolderController() {
       options: [
         { value: 'ES', label: t('layout.header.spanish') },
         { value: 'EN', label: t('layout.header.english') },
-        { value: 'FR', label: t('layout.header.french') },
-        { value: 'DE', label: t('layout.header.germany') },
+        
       ],
     },
     /* {

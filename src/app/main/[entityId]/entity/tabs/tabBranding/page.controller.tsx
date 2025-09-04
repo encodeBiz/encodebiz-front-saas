@@ -13,7 +13,6 @@ import { updateEntityBranding } from '@/services/common/entity.service';
 import ImageUploadInput from '@/components/common/forms/fields/ImageUploadInput';
 import { requiredRule } from '@/config/yupRules';
 import { useLayout } from '@/hooks/useLayout';
-import SelectInput from '@/components/common/forms/fields/SelectInput';
 
 
 
@@ -39,7 +38,7 @@ export interface BrandFormValues {
     stripImageUrl: File | string,
     iconUrl: File | string,
     icon2Url: File | string,
-    language: string
+
 
 };
 
@@ -67,8 +66,7 @@ export const useSettingEntityController = () => {
         logoUrl: '',
         stripImageUrl: '',
         iconUrl: '',
-        icon2Url: '',
-        language: 'ES'
+        icon2Url: ''
     });
 
     const brandValidationSchema = Yup.object().shape({
@@ -154,32 +152,7 @@ export const useSettingEntityController = () => {
                 },
             ]
 
-        },
-        {
-            isDivider: true,
-            label: t('core.label.text'),
-        },
-        {
-            isGroup: true,
-            column: 2,
-            fieldList: [
-                {
-                    name: 'language',
-                    label: t('core.label.language'),
-                    component: SelectInput,
-                    required: true,
-                    fullWidth: true,
-                    options: [
-                        { value: 'ES', label: t('layout.header.spanish') },
-                        { value: 'EN', label: t('layout.header.english') },
-                        { value: 'FR', label: t('layout.header.french') },
-                        { value: 'DE', label: t('layout.header.germany') },
-                    ],
-                },
-
-            ]
-
-        },
+        }
 
 
 
@@ -202,7 +175,7 @@ export const useSettingEntityController = () => {
                 'backgroundColor': values.backgroundColor,
                 'labelColor': values.labelColor,
                 'textColor': values.textColor,
-                "language": values.language,
+
                 files: {
                     'logo': values.logoUrl,
                     'icon': values.iconUrl,
@@ -212,6 +185,7 @@ export const useSettingEntityController = () => {
             }
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             await updateEntityBranding(data, token)
+
             refrestList(user?.id as string)
             showToast(t('core.feedback.success'), 'success');
             setPending(false)
@@ -230,16 +204,15 @@ export const useSettingEntityController = () => {
     const fetchData = useCallback(async () => {
 
         setInitialBrandValues({
-            "backgroundColor": currentEntity?.entity?.branding?.backgroundColor as string | "",
-            "labelColor": currentEntity?.entity?.branding?.labelColor as string | "",
-            "textColor": currentEntity?.entity?.branding?.textColor as string | "",
-            logoUrl: currentEntity?.entity?.branding?.logo as string | "",
-            stripImageUrl: currentEntity?.entity?.branding?.stripImage as string | "",
-            iconUrl: currentEntity?.entity?.branding?.icon as string | "",
-            icon2Url: currentEntity?.entity?.branding?.iconx2 as string | "",
-            "language": currentEntity?.entity?.branding?.language as string | "ES",
+            "backgroundColor": currentEntity?.entity?.branding?.backgroundColor as string ?? "#417505",
+            "labelColor": currentEntity?.entity?.branding?.labelColor as string ?? "#b62929",
+            "textColor": currentEntity?.entity?.branding?.textColor as string ?? "#4a90e2",
+            logoUrl: currentEntity?.entity?.branding?.logo as string ?? "",
+            stripImageUrl: currentEntity?.entity?.branding?.stripImage as string ?? "",
+            iconUrl: currentEntity?.entity?.branding?.icon as string ?? "",
+            icon2Url: currentEntity?.entity?.branding?.iconx2 as string ?? ""
         })
-    }, [currentEntity?.entity?.branding?.backgroundColor, currentEntity?.entity?.branding?.icon, currentEntity?.entity?.branding?.iconx2, currentEntity?.entity?.branding?.labelColor, currentEntity?.entity?.branding?.language, currentEntity?.entity?.branding?.logo, currentEntity?.entity?.branding?.stripImage, currentEntity?.entity?.branding?.textColor])
+    }, [currentEntity?.entity?.branding?.backgroundColor, currentEntity?.entity?.branding?.icon, currentEntity?.entity?.branding?.iconx2, currentEntity?.entity?.branding?.labelColor, currentEntity?.entity?.branding?.logo, currentEntity?.entity?.branding?.stripImage, currentEntity?.entity?.branding?.textColor])
 
 
     useEffect(() => {

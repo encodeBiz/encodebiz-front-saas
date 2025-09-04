@@ -15,6 +15,7 @@ interface IEntity {
   slug: string;
   type?: "company" | "autonomous" | "organization" | "event";
   billingEmail?: string;
+  language?: 'EN' | 'ES'
   stripeCustomerId?: string;
   branding?: {
     backgroundColor: string
@@ -26,7 +27,7 @@ interface IEntity {
     stripImage: string
     textColor: string
     uid: string
-    language: string
+
   }
   active: boolean;
   createdAt?: Date;
