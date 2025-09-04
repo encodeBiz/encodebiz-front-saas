@@ -166,7 +166,7 @@ export const useRegisterController = () => {
             label: t('core.label.street'),
             type: 'textarea',
             fullWidth: true,
-             component: AddressInput,
+            component: AddressInput,
             extraProps: {
                 onHandleChange: (data: {lat:number, lng: number}) => {
                     setGeo(data)
