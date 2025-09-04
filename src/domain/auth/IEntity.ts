@@ -26,6 +26,7 @@ interface IEntity {
     stripImage: string
     textColor: string
     uid: string
+    language: string
   }
   active: boolean;
   createdAt?: Date;

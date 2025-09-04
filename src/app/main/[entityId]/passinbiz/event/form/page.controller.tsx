@@ -89,6 +89,7 @@ export default function useHolderController() {
         "colorAccent": values.colorAccent,
         "imageUrl": values.imageUrl,
         "logoUrl": values.logoUrl,
+        "language":values.language,
         "date": format_date(new Date(values.date), 'YYYY-MM-DD'),
         "dateLabel": formatLocalDateTime(codeLocale ?? 'ES', new Date(values.date)),
         "status": values.status as "draft" | "published" | "archived",
@@ -215,6 +216,18 @@ export default function useHolderController() {
       required: true,
       type: 'stripImage',
       component: ImageUploadInput,
+    },
+    {
+      name: 'language',
+      label: t('core.label.language'),
+      component: SelectInput,
+      required: true,
+      options: [
+        { value: 'ES', label: t('layout.header.spanish') },
+        { value: 'EN', label: t('layout.header.english') },
+        { value: 'FR', label: t('layout.header.french') },
+        { value: 'DE', label: t('layout.header.germany') },
+      ],
     },
     /* {
       name: 'template',

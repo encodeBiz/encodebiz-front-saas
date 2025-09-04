@@ -13,6 +13,7 @@ import { updateEntityBranding } from '@/services/common/entity.service';
 import ImageUploadInput from '@/components/common/forms/fields/ImageUploadInput';
 import { requiredRule } from '@/config/yupRules';
 import { useLayout } from '@/hooks/useLayout';
+import SelectInput from '@/components/common/forms/fields/SelectInput';
 
 
 
@@ -38,6 +39,7 @@ export interface BrandFormValues {
     stripImageUrl: File | string,
     iconUrl: File | string,
     icon2Url: File | string,
+    language: string
 
 };
 
@@ -66,6 +68,7 @@ export const useSettingEntityController = () => {
         stripImageUrl: '',
         iconUrl: '',
         icon2Url: '',
+        language: 'ES'
     });
 
     const brandValidationSchema = Yup.object().shape({
@@ -75,7 +78,8 @@ export const useSettingEntityController = () => {
         logoUrl: requiredRule(t),
         stripImageUrl: requiredRule(t),
         iconUrl: requiredRule(t),
-        icon2Url: requiredRule(t)
+        icon2Url: requiredRule(t),
+        language: requiredRule(t)
     });
 
     const fields2 = [
@@ -151,6 +155,31 @@ export const useSettingEntityController = () => {
             ]
 
         },
+        {
+            isDivider: true,
+            label: t('core.label.text'),
+        },
+        {
+            isGroup: true,
+            column: 2,
+            fieldList: [
+                {
+                    name: 'language',
+                    label: t('core.label.language'),
+                    component: SelectInput,
+                    required: true,
+                    fullWidth: true,
+                    options: [
+                        { value: 'ES', label: t('layout.header.spanish') },
+                        { value: 'EN', label: t('layout.header.english') },
+                        { value: 'FR', label: t('layout.header.french') },
+                        { value: 'DE', label: t('layout.header.germany') },
+                    ],
+                },
+
+            ]
+
+        },
 
 
 
@@ -173,6 +202,7 @@ export const useSettingEntityController = () => {
                 'backgroundColor': values.backgroundColor,
                 'labelColor': values.labelColor,
                 'textColor': values.textColor,
+                "language": values.language,
                 files: {
                     'logo': values.logoUrl,
                     'icon': values.iconUrl,
@@ -207,8 +237,9 @@ export const useSettingEntityController = () => {
             stripImageUrl: currentEntity?.entity?.branding?.stripImage as string | "",
             iconUrl: currentEntity?.entity?.branding?.icon as string | "",
             icon2Url: currentEntity?.entity?.branding?.iconx2 as string | "",
+            "language": currentEntity?.entity?.branding?.language as string | "ES",
         })
-    }, [currentEntity?.entity?.branding?.backgroundColor, currentEntity?.entity?.branding?.icon, currentEntity?.entity?.branding?.iconx2, currentEntity?.entity?.branding?.labelColor, currentEntity?.entity?.branding?.logo, currentEntity?.entity?.branding?.stripImage, currentEntity?.entity?.branding?.textColor])
+    }, [currentEntity?.entity?.branding?.backgroundColor, currentEntity?.entity?.branding?.icon, currentEntity?.entity?.branding?.iconx2, currentEntity?.entity?.branding?.labelColor, currentEntity?.entity?.branding?.language, currentEntity?.entity?.branding?.logo, currentEntity?.entity?.branding?.stripImage, currentEntity?.entity?.branding?.textColor])
 
 
     useEffect(() => {

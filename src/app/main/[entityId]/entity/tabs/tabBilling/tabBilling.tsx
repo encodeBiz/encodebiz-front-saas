@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useSettingEntityController } from './page.controller';
 import { useEntity } from '@/hooks/useEntity';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
-import { Box, Typography } from '@mui/material';
+import { Alert, Box, Typography } from '@mui/material';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import visa from '../../../../../../../public/assets/images/Visa.svg'
 import mastercard from '../../../../../../../public/assets/images/mastercard.svg'
@@ -49,6 +49,7 @@ const BillingPreferencesPage = () => {
                         }} variant='contained' color='primary' disabled={!currentEntity?.entity.legal?.legalName && !currentEntity?.entity.legal?.taxId} onClick={configBillingAction}>{
                                 currentEntity?.entity?.billingConfig?.payment_method && currentEntity?.entity?.billingConfig?.payment_method?.length > 0 ? t('billing.btn2') :
                                     t('billing.btn')}</SassButton>
+                                    <Alert severity="warning">{t('entity.tabs.tab3.advise')}</Alert>
                     </Box>
                 </Box>
             </BorderBox>

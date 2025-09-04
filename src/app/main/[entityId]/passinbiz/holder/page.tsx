@@ -6,7 +6,7 @@ import { GenericTable } from "@/components/common/table/GenericTable";
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import CSVUploadModal from '@/components/common/modals/CSVUploadModal';
-import { Add, UploadFile } from '@mui/icons-material';
+import { Add, PanoramaFishEyeOutlined, ReplyAllOutlined, UploadFile } from '@mui/icons-material';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import CSVConfigModal from '@/components/common/modals/CSVConfigModal';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
@@ -18,7 +18,7 @@ export default function HolderList() {
   const t = useTranslations();
   const { handleUploadConfirm, handleConfigConfirm,
     items, rowAction, onRowsPerPageChange, onSort,
-    onNext, onBack, filterParams, onRevoke, revoking, onSend,
+    onNext, onBack, filterParams, onAction, revoking,
     topFilter,
     columns, buildState,
     loading,
@@ -88,7 +88,7 @@ export default function HolderList() {
         title={t('holders.revokeConfirmModalTitle')}
         description={t('holders.revokeConfirmModalTitle2')}
         textBtn={t('core.button.revoke')}
-        onOKAction={(args: { data: any }) => onRevoke(args.data)}
+        onOKAction={(args: { data: any }) => onAction(args.data, 'revoked', 'revoked')}
       />}
 
       {open.type === CommonModalType.REACTIVE && <ConfirmModal
@@ -96,7 +96,8 @@ export default function HolderList() {
         title={t('holders.reactiveConfirmModalTitle')}
         description={t('holders.reactiveConfirmModalTitle2')}
         textBtn={t('core.button.reactive')}
-        onOKAction={(args: { data: any }) => onSend(args.data)}
+        icon={<ReplyAllOutlined />}
+        onOKAction={(args: { data: any }) => onAction(args.data, 'active', 'pending')}
       />}
 
       {open.type === CommonModalType.SEND && <ConfirmModal
@@ -104,7 +105,8 @@ export default function HolderList() {
         title={t('holders.sendConfirmModalTitle')}
         description={t('holders.sendConfirmModalTitle2')}
         textBtn={t('core.button.send')}
-        onOKAction={(args: { data: any }) => onSend(args.data)}
+        icon={<PanoramaFishEyeOutlined />}
+        onOKAction={(args: { data: any }) => onAction(args.data, 'active', 'pending')}
       />}
     </Container>
   );

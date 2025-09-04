@@ -22,4 +22,5 @@ export interface IEvent {
     geo: { lat: number, lng: number }
     "city"?: string
     "country"?: string
+    language?: string
 }

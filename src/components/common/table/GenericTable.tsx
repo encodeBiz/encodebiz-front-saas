@@ -256,7 +256,7 @@ export function GenericTable<T extends Record<string, any>>({
             {selected.length} {t('core.table.selected')}
           </Typography>
           {rowAction.map((e, i) => {
-            if (e.allowItem(e as any) && e.bulk)
+            if (e.bulk)
               return (<Tooltip key={i} title={e.label}>
                 <SassButton startIcon={e.icon} color={e.color} variant='outlined' onClick={() => e.onPress(selected as T[])}>
                   {e.label}

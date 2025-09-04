@@ -183,8 +183,7 @@ export const useSettingEntityController = () => {
         try {
            
             setPending(true)
-            const updateData = {
-               
+            const updateData = {               
                 "id": currentEntity?.entity?.id,
                 "name": values.name,
                 "slug": createSlug(values.name),
@@ -208,7 +207,6 @@ export const useSettingEntityController = () => {
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             await updateEntity(updateData, token)
             changeLoaderState({ show: false })
-
             showToast(t('core.feedback.success'), 'success');
             setPending(false)
 

@@ -344,28 +344,36 @@ export default function useHolderListController() {
   }
 
   /** */
-  const onRevoke = async (item: any) => {
+  const onAction = async (item: Holder | Array<Holder>, passStatus: string, status: string) => {
     try {
       setRevoking(true)
-      const id = item.id
-      await updateHolder({
-        ...{} as any,
-        id: item.id,
-        entityId: currentEntity?.entity?.id,
-        passStatus: 'revoked',
+      let ids = []
+      if (Array.isArray(item)) {
+        ids = (item as Array<Holder>).map(e => e.id)
+      } else {
+        ids.push(item.id)
+      }
 
-      }, token)
-      setItemsHistory(itemsHistory.filter(e => e.id !== id))
-      setItems(itemsHistory.filter(e => e.id !== id))
+      ids.forEach(async id => {
+        await updateHolder({
+          ...{} as any,
+          id: id,
+          entityId: currentEntity?.entity?.id,
+          passStatus, status,
+        }, token)
+      });
+
       setRevoking(false)
       closeModal(CommonModalType.DELETE)
+      fetchingData(filterParams)
     } catch (e: any) {
       showToast(e?.message, 'error')
       setRevoking(false)
     }
-  }
 
-  const onSend = async (item: any) => {
+  }
+  /*
+  const onSend = async (item: Holder | Array<Holder>) => {
     try {
       setRevoking(true)
       const id = item.id
@@ -385,7 +393,7 @@ export default function useHolderListController() {
       setRevoking(false)
     }
   }
-
+  */
   const onEdit = async (item: any) => {
     navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/holder/${item.id}/edit?params=${buildState()}`)
   }
@@ -433,7 +441,7 @@ export default function useHolderListController() {
     handleUploadConfirm, isUploading, handleConfigConfirm,
     onNext, onBack,
     columns, rowAction, setFilterParams, filterParams, buildState,
-    loading, onRevoke, revoking, onSend,
+    loading, onAction, revoking,
 
   }
 
