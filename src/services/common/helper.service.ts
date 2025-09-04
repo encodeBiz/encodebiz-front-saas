@@ -41,7 +41,7 @@ export async function fetchLocation(data: {
 
 
 
-export async function sendFormContact(data: ContactFromModel): Promise<void> {
+export async function sendFormContact(data: ContactFromModel | any): Promise<void> {
   try {
     if (!data.token) {
       throw new Error("Error to fetch user auth token");
@@ -52,6 +52,7 @@ export async function sendFormContact(data: ContactFromModel): Promise<void> {
           authorization: `Bearer ${data.token}`,
         },
       });
+      data.mesagge=data.message
       const response: any = await httpClientFetchInstance.post(
         process.env.NEXT_PUBLIC_BACKEND_ENDPOINT_CONTACT as string,
         {

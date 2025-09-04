@@ -67,7 +67,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
     }, [currentEntity?.entity?.billingConfig, currentEntity?.entity?.billingConfig?.payment_method?.length, currentEntity?.entity.branding?.textColor, currentEntity?.entity.id, currentEntity?.entity.legal?.legalName, id, t])
 
 
-    return (<>
+    return (<>{highlighted}
         <PlanCard highlighted={highlighted}>
             <CardContent sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
                 <Box>

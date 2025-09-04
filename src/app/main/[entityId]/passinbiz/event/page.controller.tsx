@@ -122,7 +122,7 @@ export default function useIEventListController() {
 
 
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
-    <SelectFilter
+    <SelectFilter first={false}
       defaultValue={'published'}
       value={filterParams.filter.status}
       onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, status: value } })}

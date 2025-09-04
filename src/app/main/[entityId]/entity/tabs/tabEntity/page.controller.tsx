@@ -2,7 +2,7 @@
 'use client'
 
 import * as Yup from 'yup';
-import { useState, ReactNode, useEffect, useCallback } from 'react';
+import { useState, ReactNode, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useTranslations } from 'next-intl';

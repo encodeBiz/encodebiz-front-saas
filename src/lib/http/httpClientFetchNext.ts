@@ -38,7 +38,7 @@ export const codeError: any = {
   "auth/invalid_plan": "El plan Freemium no puede crear eventos",
   "auth/unauthorized": "Acceso a recurso no autorizado",
   "staff/unauthorized": "Acceso de personal de apoyo deshabilitado o vencido",
- 
+
 };
 
 /**
@@ -107,7 +107,7 @@ export class HttpClient {
           const responseErrorData = await response.json()
           if (typeof responseErrorData === 'string')
             try { responseError = JSON.parse(responseErrorData) }
-            catch (error: any) {responseError = { code: 'error', message: '', error: error, errors: [] } }
+            catch (error: any) { responseError = { code: 'error', message: '', error: error, errors: [] } }
           else
             responseError = responseErrorData
 
@@ -118,7 +118,11 @@ export class HttpClient {
           throw new Error(message ? message : responseError.error ? responseError.error : `HTTP error! status: ${response.status}`);
         } else throw new Error(`HTTP error! status: ${response.status}`);
       }
-      return response.json() as Promise<T>;
+
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json'))
+        return response?.json() as Promise<T>;
+      else return {} as Promise<T>;
     } catch (error) {
       throw error;
     }
@@ -208,8 +212,6 @@ export class HttpClient {
 
       if (!response.ok) {
         if (response.status === 400) {
-
-
           const responseError: { code: string; message: string; error: string, errors: Array<string> } =
             await response.json();
           if (Array.isArray(responseError.errors) && responseError.errors.length > 0) {
@@ -219,7 +221,11 @@ export class HttpClient {
           throw new Error(message ? message : responseError.error ? responseError.error : responseError.message ? responseError.message : `HTTP error! status: ${response.status}`);
         } else throw new Error(`HTTP error! status: ${response.status}`);
       }
-      return response.json() as Promise<T>;
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json'))
+        return response?.json() as Promise<T>;
+      else return {} as Promise<T>;
+
     } catch (error) {
       throw error;
     }
