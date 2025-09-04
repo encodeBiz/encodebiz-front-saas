@@ -45,7 +45,7 @@ export default function useFormContactController() {
 
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
-      navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event`)
+      navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/onboarding`)
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
