@@ -69,7 +69,7 @@ export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
                     sx={{ mb: 1, mt: 4, height: 40 }}
                     fullWidth
                     variant="contained"
-                    onClick={() => push(`/${MAIN_ROUTE}/${plan.serviceId}/onboarding`)}
+                    onClick={() => navivateTo(`/${plan.serviceId}/onboarding`)}
                     disabled={false}
 
                 >

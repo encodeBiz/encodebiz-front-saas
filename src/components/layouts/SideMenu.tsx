@@ -7,7 +7,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Collapse, 
+  Collapse,
   Box,
   IconButton
 } from '@mui/material';
@@ -37,7 +37,8 @@ const CustomListItemButton = ({ children, item, subItem = false, handleSubMenuTo
   const t = useTranslations();
   const theme = useTheme();
   const { currentEntity } = useEntity()
-  const { push } = useRouter()
+  const { navivateTo } = useLayout()
+
   return <ListItemButton
     sx={{
       mx: 2,
@@ -60,7 +61,7 @@ const CustomListItemButton = ({ children, item, subItem = false, handleSubMenuTo
       // Styles for the hover state (when not selected)
       '&:hover': {
         backgroundColor: 'action.hover',
-         borderRadius: 10,
+        borderRadius: 10,
       },
       display: 'flex',
       justifyItems: 'flex-start',
@@ -71,7 +72,7 @@ const CustomListItemButton = ({ children, item, subItem = false, handleSubMenuTo
       if (typeof handleSubMenuToggle === 'function' && item.id)
         handleSubMenuToggle(item.id)
       else {
-        push(item.link)
+        navivateTo(item.link)
       }
     }}
     selected={pathname === item.link}>
@@ -96,10 +97,7 @@ export default function SideMenu() {
   const theme = useTheme();
   const { currentEntity, entityServiceList } = useEntity();
 
-
-
-  const { push } = useRouter();
-  const { layoutState, changeLayoutState } = useLayout()
+  const { layoutState, changeLayoutState, navivateTo } = useLayout()
   const [openSubMenu, setOpenSubMenu] = useState<any>({
     products: false,
     reports: false,
@@ -138,7 +136,7 @@ export default function SideMenu() {
               alt="Company Logo"
             />
 
-            
+
           </Box>
 
 
@@ -179,7 +177,7 @@ export default function SideMenu() {
                     </ListItem>
                     <Collapse in={openSubMenu[item.id]} timeout="auto" unmountOnExit>
                       <List component="div" disablePadding>
-                        {item.subMenu.map((e: any, index: number) => <ListItem onClick={() => push(e.link)} key={i + '-' + index} disablePadding>
+                        {item.subMenu.map((e: any, index: number) => <ListItem onClick={() => navivateTo(e.link)} key={i + '-' + index} disablePadding>
                           <CustomListItemButton subItem item={e} />
                         </ListItem>)}
                       </List>

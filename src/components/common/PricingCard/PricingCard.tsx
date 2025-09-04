@@ -142,7 +142,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
                 if (items.length > 0)
                     push(items[0].link)
                 else
-                    push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity`)
+                    navivateTo(`/${GENERAL_ROUTE}/entity`)
             }}
         />}
 

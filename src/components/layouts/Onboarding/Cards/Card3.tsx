@@ -71,7 +71,7 @@ export const Card3 = ({ handleNext }: any) => {
                     <Box p={4} display={'flex'} flexDirection={"column"} gap={2} justifyContent={'center'} alignItems={'center'}  >
                         <Box display={'flex'} flexDirection={"column"} justifyContent={'flex-end'} alignItems={'flex-end'} gap={4}>
                             <SassButton fullWidth sx={{ width: '420' }} size="small" onClick={() => {
-                                push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity`)
+                                navivateTo(`/${GENERAL_ROUTE}/entity`)
                             }} variant="contained" color="primary">Ir a Configurar Entidad</SassButton>
                             <SassButton fullWidth sx={{ width: '420' }} size="small" onClick={handleNext} variant="outlined" color="primary">Configurar mas tarde</SassButton>
                         </Box>

@@ -4,20 +4,19 @@ import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { requiredRule } from '@/config/yupRules';
 import { useToast } from "@/hooks/useToast";
-import { useRouter } from "nextjs-toploader/app";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
-import { MAIN_ROUTE } from "@/config/routes";
 import { createContact } from "@/services/passinbiz/event.service";
 import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { IContact } from "@/domain/core/IContact";
+import { PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
 
 
 export default function useFormContactController() {
   const t = useTranslations();
   const { showToast } = useToast()
-  const { push } = useRouter()
+  const { navivateTo } = useLayout()
   const { token, user } = useAuth()
   const { id } = useParams<{ id: string }>()
   const { currentEntity, watchServiceAccess } = useEntity()
@@ -25,12 +24,14 @@ export default function useFormContactController() {
  
   const validationSchema = Yup.object().shape({
     message: requiredRule(t),
+
   });
 
   const setDinamicDataAction = async (values: Partial<IContact>) => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const data: Partial<IContact> = {
+
         "subject": user?.id as string,
         "message": values.message,
         "from": values.from,
@@ -38,7 +39,7 @@ export default function useFormContactController() {
       await createContact(data, token)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
-      navivateTo(`/passinbiz/event`)
+      navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event`)
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')

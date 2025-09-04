@@ -148,7 +148,7 @@ export const useUserProfileController = () => {
     const checkProfile = useCallback(async () => {
         try {
             const userData: IUser = await fetchUserAccount(user?.uid as string)
-            if (userData.email) push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
+            if (userData.email) navivateTo(`/${GENERAL_ROUTE}/dashboard`)
         } catch (error) {
             if (error instanceof Error) {
                 showToast(error.message, 'error');

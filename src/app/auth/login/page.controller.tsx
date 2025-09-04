@@ -41,7 +41,7 @@ export const useRegisterController = () => {
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             await signInGoogle()
             changeLoaderState({ show: false })
-            push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
+            navivateTo(`/${GENERAL_ROUTE}/dashboard`)
         } catch (error: any) {
             changeLoaderState({ show: false })
             showToast(error.message, 'error')
@@ -54,7 +54,7 @@ export const useRegisterController = () => {
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             await signInEmail(values.email, values.password)
             changeLoaderState({ show: false })
-            push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
+            navivateTo(`/${GENERAL_ROUTE}/dashboard`)
         } catch (error: any) {
             changeLoaderState({ show: false })
             showToast(error.message, 'error')

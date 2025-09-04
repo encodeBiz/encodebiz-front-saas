@@ -22,17 +22,17 @@ export const CHECKINBIZ_MODULE_ROUTE = 'checkinbiz'
 const PASSINBIZ = [ {
     name: 'Holders',
   
-    link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/holder`,
+    link: `/${PASSSINBIZ_MODULE_ROUTE}/holder`,
     subMenu: []
 }, {
     name: 'Events',
  
-    link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event`,
+    link: `/${PASSSINBIZ_MODULE_ROUTE}/event`,
     subMenu: []
 }, {
     name: 'Staff',
     
-    link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff`,
+    link: `/${PASSSINBIZ_MODULE_ROUTE}/staff`,
     subMenu: []
 }]
 
@@ -40,12 +40,12 @@ const PASSINBIZ = [ {
 const CHECKINBIZ: any = [{
     name: 'home',
     icon: <Home />,
-    link: `/${MAIN_ROUTE}/${CHECKINBIZ_MODULE_ROUTE}/onboarding`,
+    link: `/${CHECKINBIZ_MODULE_ROUTE}/onboarding`,
     subMenu: []
 }, {
     name: 'Employee',
     icon: <Person2TwoTone />,
-    link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/employee`,
+    link: `/${PASSSINBIZ_MODULE_ROUTE}/employee`,
     subMenu: []
 }]
 
@@ -53,7 +53,7 @@ export const menuItemsHome = [{
     id: 'dashboard',
     name: 'Dashboard',
     icon: <DashBoardIcon />,
-    link: `/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`,
+    link: `/dashboard`,
     subMenu: []
 },
 {
@@ -70,14 +70,14 @@ export const menuItemsServices = [{
     id: 'checkinbiz',
     name: 'CheckinBiz',
     icon: <CheckBizIcon />,
-    link: `/${MAIN_ROUTE}/checkinbiz/onboarding`,
+    link: `/checkinbiz/onboarding`,
     subMenu: CHECKINBIZ
 },
 {
     id: 'passinbiz',
     name: 'PassBiz',
     icon: <PassInBizIcon />,
-    link: `/${MAIN_ROUTE}/passinbiz/onboarding`,
+    link: `/passinbiz/onboarding`,
     subMenu: PASSINBIZ
 },
 {
@@ -100,19 +100,19 @@ export const menuItemsGeneral = [
     {
         name: 'Entity',
         icon: <BusinessIcon />,
-        link: `/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity`,
+        link: `/entity`,
         subMenu: []
     },
     {
         name: 'Media',
         icon: <MediaIcon />,
-        link: `/${MAIN_ROUTE}/${GENERAL_ROUTE}/media`,
+        link: `/media`,
         subMenu: []
     },
     {
         name: 'Integration',
         icon: <MobiledataOffOutlined />,
-        link: `/${MAIN_ROUTE}/${GENERAL_ROUTE}/integration`,
+        link: `/integration`,
         subMenu: []
     }
 ]

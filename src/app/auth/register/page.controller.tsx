@@ -70,7 +70,7 @@ export const useRegisterController = () => {
             } else {
                 await signUpEmail(values, sessionToken, responseAuth.user.uid as string)
                 changeLoaderState({ show: false })
-                push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
+                navivateTo(`/${GENERAL_ROUTE}/dashboard`)
             }
         } catch (error: any) {
              changeLoaderState({ show: false })

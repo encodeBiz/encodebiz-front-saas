@@ -85,11 +85,11 @@ export const useRegisterController = () => {
             if (data.entity.id) {
                 changeCurrentEntity(data.entity.id, user?.id as string, () => {
                     showToast(t('core.feedback.success'), 'success');
-                    push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
+                    navivateTo(`/${GENERAL_ROUTE}/dashboard`)
                 })
             } else {
                 showToast(t('core.feedback.success'), 'success');
-                //push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
+                //navivateTo(`/${GENERAL_ROUTE}/dashboard`)
 
             }
 

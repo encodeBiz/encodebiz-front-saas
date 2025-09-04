@@ -14,7 +14,7 @@ type AutoCompletedInputProps = FieldProps & TextFieldProps & {
   onHandleChange: (value: any) => void
 
 };
-let resource
+let resource: any
 const AddressInput: React.FC<AutoCompletedInputProps> = ({
 
   onHandleChange,
@@ -33,20 +33,20 @@ const AddressInput: React.FC<AutoCompletedInputProps> = ({
 
   const handleChange = (event: any, newValue: any) => {
     helper.setValue(newValue)
-    onHandleChange(newValue)
+    if (typeof onHandleChange === 'function')
+      onHandleChange(newValue)
   };
 
-  const handleInputChange = (event: any, newInputValue: any) => {
-
+  const handleInputChange = (event: any) => {
+    const newInputValue = event.target.value
     let countryCode = 'ES'
     if (formStatus?.values?.country)
       countryCode = country.find(e => e.name === formStatus?.values?.country)?.code2 ?? 'ES'
-
-
+    console.log(newInputValue);
     setInputValue(newInputValue === 'undefined' ? '' : newInputValue);
     if (resource) clearTimeout(resource)
     setPending(true)
-    setTimeout(() => {
+    resource = setTimeout(() => {
       fetchLocation({ address: newInputValue.toLowerCase(), country: countryCode }, token).then(data => {
         setOptions(data.map(e => ({ id: `${e.lng}${e.lat}`, label: e.resolvedText, data: e })))
         setPending(false)
@@ -61,15 +61,13 @@ const AddressInput: React.FC<AutoCompletedInputProps> = ({
 
 
   return (<FormControl required sx={{ width: '100%', textAlign: 'left' }} >
-   
+
     <Autocomplete
       id="tech-autocomplete"
       options={options}
       value={field.value}
       loading={pending}
       onChange={handleChange}
-      inputValue={inputValue ?? ''}
-      onInputChange={handleInputChange}
       disableCloseOnSelect
       getOptionLabel={(option) => option.label}
       isOptionEqualToValue={(option, value) => option.id === value.id}
@@ -85,6 +83,8 @@ const AddressInput: React.FC<AutoCompletedInputProps> = ({
       renderInput={(params) => (
         <TextField
           {...params}
+          onChange={(event) => handleInputChange(event)}
+          value={inputValue}
           label={props.label}
           placeholder={t('core.label.typingAddress')}
         />

@@ -60,7 +60,7 @@ const EntitySwitcher: React.FC = () => {
             </MenuItem>
           ))}
 
-          <MenuItem style={{ textAlign: 'left', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: 4 }} onClick={() => push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)} value={undefined}>
+          <MenuItem style={{ textAlign: 'left', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: 4 }} onClick={() => navivateTo(`/${GENERAL_ROUTE}/entity/create`)} value={undefined}>
             <Add /><Typography textTransform={'uppercase'}>{t('features.entity.create.card.createEntity')}</Typography>
           </MenuItem>
         </Select>
