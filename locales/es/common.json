@@ -111,6 +111,7 @@
       "pending": "Pendiente",
       "revoke": "Revocar",
       "reactive": "Reactivar",
+      "archivedHolder":"Archivar",
       "firstName": "Nombre",
       "status": "Estado",
       "customFields": "Campos personalizados",
@@ -455,6 +456,7 @@
     "pending": "Pending",
     "revoked": "Revocado",
     "failed": "Fallo",
+    "archived": "Archivado",
     "active": "Activo",
     "import": "Importar",
     "description": "Rellene los campos para registrar el pase digital",
@@ -464,6 +466,8 @@
     "reactiveConfirmModalTitle2": "Esta acción no se puede deshacer. Reactivará permanentemente el/los pase(s) digital(es)",
     "sendConfirmModalTitle": "Relanzar pase(s) digital(es)",
     "sendConfirmModalTitle2": "Esta acción no se puede deshacer. Relanzará  el/los pase(s) digital(es) nuevamente",
+    "archivedConfirmModalTitle": "Archivar pase(s) digital(es)",
+    "archivedConfirmModalTitle2": "Esta acción no se puede deshacer. Archivará  el/los pase(s) digital(es) nuevamente",
     "filter": {
       "email": "Correo electrónico",
       "state": "Estado"

@@ -13,6 +13,7 @@ export enum CommonModalType {
     CONFIG_CSV = 'CONFIG_CSV',
     UPLOAD_CSV = 'UPLOAD_CSV',
     REACTIVE = 'REACTIVE',
+    ARCHIVED = 'ARCHIVED',
     EVENT_SELECTED = 'EVENT_SELECTED',
     CONTACT = 'CONTACT',
     INFO = 'INFO',

@@ -6,7 +6,7 @@ import { GenericTable } from "@/components/common/table/GenericTable";
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import CSVUploadModal from '@/components/common/modals/CSVUploadModal';
-import { Add, PanoramaFishEyeOutlined, ReplyAllOutlined, UploadFile } from '@mui/icons-material';
+import { Add, ArchiveOutlined, PanoramaFishEyeOutlined, ReplyAllOutlined, UploadFile } from '@mui/icons-material';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import CSVConfigModal from '@/components/common/modals/CSVConfigModal';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
@@ -107,6 +107,15 @@ export default function HolderList() {
         textBtn={t('core.button.send')}
         icon={<PanoramaFishEyeOutlined />}
         onOKAction={(args: { data: any }) => onAction(args.data, 'active', 'pending')}
+      />}
+
+      {open.type === CommonModalType.ARCHIVED && <ConfirmModal
+        isLoading={revoking}
+        title={t('holders.archivedConfirmModalTitle')}
+        description={t('holders.archivedConfirmModalTitle2')}
+        textBtn={t('core.label.archivedHolder')}
+        icon={<ArchiveOutlined />}
+        onOKAction={(args: { data: any }) => onAction(args.data, 'archived', 'archived')}
       />}
     </Container>
   );

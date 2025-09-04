@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
 import { importHolder, search, updateHolder } from "@/services/passinbiz/holder.service";
-import { NotInterested, PanoramaFishEyeOutlined, ReplyAllOutlined } from "@mui/icons-material";
+import { ArchiveOutlined, NotInterested, PanoramaFishEyeOutlined, ReplyAllOutlined } from "@mui/icons-material";
 import { useLayout } from "@/hooks/useLayout";
 import { Box } from "@mui/material";
 import { useCommonModal } from "@/hooks/useCommonModal";
@@ -103,12 +103,25 @@ export default function useHolderListController() {
       onPress: (item: Holder) => openModal(CommonModalType.REACTIVE, { data: item })
     },
 
+    {
+      actionBtn: true,
+      color: 'warning',
+      icon: <ArchiveOutlined color="warning" />,
+      label: t('core.label.archivedHolder'),
+      bulk: true,
+      allowItem: () =>true,
+      onPress: (item: Holder) => openModal(CommonModalType.ARCHIVED, { data: item })
+    },
+
+    
+
   ]
 
   const holderState = [
     { value: 'failed', label: t('holders.failed') },
     { value: 'active', label: t('holders.active') },
-    { value: 'revoked', label: t('holders.revoked') }
+    { value: 'revoked', label: t('holders.revoked') },
+    { value: 'archived', label: t('holders.archived') }
   ]
 
   const holderType = [
