@@ -6,7 +6,7 @@ import {
     Box,
     Typography,
     Divider,
-    Paper,
+ 
     Grid,
     Link
 } from '@mui/material';
@@ -17,7 +17,6 @@ import { LoginFormValues, useRegisterController } from './page.controller';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { useTranslations } from 'next-intl';
 import { useStyles } from './page.styles';
-import { BaseButton } from '@/components/common/buttons/BaseButton';
 import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { BorderBox } from '@/components/common/tabs/BorderBox';

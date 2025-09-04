@@ -5,7 +5,6 @@ import {
     Container,
     Box,
     Typography,
-    Paper,
     Link
 } from '@mui/material';
 import { RegisterFormValues, useRegisterController } from './page.controller';

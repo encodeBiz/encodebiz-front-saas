@@ -5,8 +5,7 @@ import {
     Container,
     Box,
     Typography,
-    Paper,
-    Link
+     Link
 } from '@mui/material';
 import { RecoveryFormValues, useRegisterController } from './page.controller';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
