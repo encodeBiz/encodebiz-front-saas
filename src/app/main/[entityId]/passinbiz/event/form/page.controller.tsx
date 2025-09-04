@@ -122,7 +122,7 @@ export default function useHolderController() {
       label: t('core.label.description'),
       type: 'textarea',
       required: false,
-      fullWidth: false,
+    
       component: TextInput,
     },
 
@@ -241,7 +241,7 @@ export default function useHolderController() {
       label: t('core.label.status'),
       type: 'text',
       required: false,
-      fullWidth: true,
+      
       options: [
         { value: 'draft', label: t('core.label.draft') },
         { value: 'published', label: t('core.label.published') },

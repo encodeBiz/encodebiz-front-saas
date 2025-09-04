@@ -46,6 +46,7 @@ export interface IRowAction {
   label?: string
   onPress: (row: any) => void,
   allowItem: (row: any) => boolean,
+  showBulk?: boolean
   bulk?: boolean
 }
 
@@ -254,7 +255,7 @@ export function GenericTable<T extends Record<string, any>>({
             {selected.length} {t('core.table.selected')}
           </Typography>
           {rowAction.map((e, i) => {
-            if (e.bulk)
+            if (e.bulk && e.showBulk)
               return (<Tooltip key={i} title={e.label}>
                 <SassButton startIcon={e.icon} color={e.color} variant='outlined' onClick={() => {
                   e.onPress(selected as T[])

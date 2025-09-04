@@ -273,6 +273,7 @@ export default function useIEventListController() {
       icon: <Person2 color="primary" />,
       label: t('core.label.staff1'),
       bulk: false,
+
       allowItem: () => true,
       onPress: (item: IEvent) => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event/${item.id}/staff?params=${buildState()}`)
     },
@@ -290,6 +291,7 @@ export default function useIEventListController() {
     {
       actionBtn: true,
       bulk: true,
+      showBulk: true,
       color: 'error',
       icon: <DeleteOutline color="error" />,
       label: t('core.button.delete'),

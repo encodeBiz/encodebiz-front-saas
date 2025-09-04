@@ -113,6 +113,7 @@ export default function useStaffListController() {
       icon: <DeleteOutline color="error" />,
       label: t('core.button.delete'),
       allowItem: () => true,
+      showBulk: true,
       onPress: (item: IStaff) => openModal(CommonModalType.DELETE, { data:item }),
       bulk: true
     },

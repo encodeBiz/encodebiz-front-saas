@@ -80,6 +80,7 @@ export default function useHolderListController() {
       label: t('core.button.revoke'),
       bulk: true,
       allowItem: (item: Holder) => (item.passStatus === 'pending' || item.passStatus === 'active'),
+      showBulk: filterParams.filter.passStatus === 'active',
       onPress: (item: Holder) => openModal(CommonModalType.DELETE, { data: item })
     },
 
@@ -89,7 +90,8 @@ export default function useHolderListController() {
       icon: <ReplyAllOutlined color="success" />,
       bulk: true,
       label: t('core.button.resend'),
-      allowItem: (item: Holder) => (item.passStatus === 'failed'),
+      showBulk: filterParams.filter.passStatus === 'active' || filterParams.filter.passStatus === 'failed',
+      allowItem: (item: Holder) => (item.passStatus === 'active' || item.passStatus === 'failed'),
       onPress: (item: Holder) => openModal(CommonModalType.SEND, { data: item })
     },
 
@@ -99,6 +101,7 @@ export default function useHolderListController() {
       icon: <PanoramaFishEyeOutlined color="success" />,
       label: t('core.button.reactive'),
       bulk: true,
+      showBulk: filterParams.filter.passStatus === 'revoked',
       allowItem: (item: Holder) => (item.passStatus === 'revoked'),
       onPress: (item: Holder) => openModal(CommonModalType.REACTIVE, { data: item })
     },
@@ -109,11 +112,12 @@ export default function useHolderListController() {
       icon: <ArchiveOutlined color="warning" />,
       label: t('core.label.archivedHolder'),
       bulk: true,
-      allowItem: () =>true,
+      showBulk: true,
+      allowItem: () => true,
       onPress: (item: Holder) => openModal(CommonModalType.ARCHIVED, { data: item })
     },
 
-    
+
 
   ]
 
@@ -149,7 +153,7 @@ export default function useHolderListController() {
       items={eventList.map(e => ({ label: e.name, value: e.id }))}
     />}
 
-    <SelectFilter  first={false}
+    <SelectFilter first={false}
       defaultValue={'active'}
       value={filterParams.filter.passStatus}
       onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, passStatus: value } })}
@@ -225,13 +229,7 @@ export default function useHolderListController() {
       />,
     },
 
-    {
-      id: 'createdAt',
-      sortable: true,
-      label: t("core.label.date"),
-      minWidth: 170,
-      format: (value, row) => format_date(row.createdAt, 'DD/MM/yyyy')
-    },
+     
   ];
 
 
@@ -368,11 +366,11 @@ export default function useHolderListController() {
       }
 
       ids.forEach(async id => {
-        const update:any = {}
-        if(passStatus){
+        const update: any = {}
+        if (passStatus) {
           update['passStatus'] = passStatus
         }
-        if(status){
+        if (status) {
           update['status'] = status
         }
         await updateHolder({
@@ -390,7 +388,7 @@ export default function useHolderListController() {
       setRevoking(false)
     }
 
-  } 
+  }
   const onEdit = async (item: any) => {
     navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/holder/${item.id}/edit?params=${buildState()}`)
   }
