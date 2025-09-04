@@ -249,7 +249,7 @@ export default function useStaffListController() {
       items,
       itemsHistory,
     }
-    localStorage.setItem('holderIndex', JSON.stringify(dataStatus))
+    localStorage.setItem('staffIndex', JSON.stringify(dataStatus))
     return encodeToBase64({ ...filterParams })
   }
 
@@ -300,7 +300,6 @@ export default function useStaffListController() {
 
   const [deleting, setDeleting] = useState(false)
   const onDelete = async (item: IStaff | Array<IStaff>) => {
-
     try {
       setDeleting(true)
       let ids = []
@@ -310,7 +309,12 @@ export default function useStaffListController() {
         ids.push(item.id)
       }
       ids.forEach(async id => {
-        await deleteStaff(currentEntity?.entity.id as string, id, token)
+        try {
+          await deleteStaff(currentEntity?.entity.id as string, id, token)
+        } catch (e: any) {
+          showToast(e?.message, 'error')
+          setDeleting(false)
+        }
       });
       fetchingData(filterParams)
       setDeleting(false)

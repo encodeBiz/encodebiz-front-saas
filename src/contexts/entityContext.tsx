@@ -8,7 +8,7 @@ import IUserEntity from "@/domain/auth/IUserEntity";
 import { fetchUserEntities, saveStateCurrentEntity, watchEntityChange } from "@/services/common/entity.service";
 import IUser from "@/domain/auth/IUser";
 import { fetchUserAccount } from "@/services/common/account.service";
-import { GENERAL_ROUTE, MAIN_ROUTE } from "@/config/routes";
+import { GENERAL_ROUTE, MAIN_ROUTE, USER_ROUTE } from "@/config/routes";
 import { BizType, IService } from "@/domain/core/IService";
 import { fetchServiceList, fetchSuscriptionByEntity, watchSubscrptionEntityChange } from "@/services/common/subscription.service";
 import { IEntitySuscription } from "@/domain/auth/ISubscription";
@@ -45,7 +45,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
     const watchServiceAccess = useCallback(async (serviceId: BizType) => {
         const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
-        const check = serviceSuscription.find(e => e.serviceId === serviceId && currentEntity?.entity.id === e.entityId  && e.status !== "cancelled" && e.status !== "pending-pay")
+        const check = serviceSuscription.find(e => e.serviceId === serviceId && currentEntity?.entity.id === e.entityId && e.status !== "cancelled" && e.status !== "pending-pay")
         if (!check) {
             showToast('No tiene permiso para acceder a este recurso', 'info')
             push(`/${MAIN_ROUTE}/${entityId}/${serviceId}/onboarding`)
@@ -61,7 +61,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
 
     const watchSesionState = useCallback(async (userAuth: User) => {
-         
+
         if (userAuth) {
             const entityList: Array<IUserEntity> = await fetchUserEntities(userAuth.uid)
 
@@ -96,6 +96,13 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
                     }
                 }
 
+            }
+
+
+             
+             const extraData = await fetchUserAccount(userAuth.uid)
+            if (extraData.fullName === "Guest" && pathname!==`/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`) {
+                push(`/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`)
             }
         }
     }, []);
@@ -152,7 +159,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
         })
     }
 
-    const watchEntityState = async (entity: IEntity) => {   
+    const watchEntityState = async (entity: IEntity) => {
         changeLocale(entity.language?.toLowerCase() ?? 'es')
         const item = entityList.find(e => e.entity.id == entity.id && e.entity.active)
         const itemIndex = entityList.findIndex(e => e.entity.id == entity.id && e.entity.active)

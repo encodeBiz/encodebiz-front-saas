@@ -81,7 +81,7 @@ const GenericTabs: React.FC<GenericTabsProps> = ({
                         <Tab
                             onClick={() => {
                                 const params = new URLSearchParams(searchParams.toString())
-                                params.set('tab', tab.id)
+                                params.set('tab', tab.id as string)
                                 router.push(pathname + '?' + params.toString())
                             }}
                             key={`tab-${index}`}

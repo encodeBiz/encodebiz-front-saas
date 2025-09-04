@@ -70,14 +70,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 const extraData = await fetchUserAccount(userAuth.uid)
                 const userData: IUser = {
                     ...extraData,
-                    completeProfile: extraData.email ? true : false
+                    completeProfile: (extraData.email || extraData.fullName==="Guest") ? true : false
                 }
                 setUser({
                     ...userAuth,
                     ...userData,
                 })
 
-                if ((!userData.completeProfile && isGoogle) || userData.fullName?.toLocaleLowerCase() === 'guest') {
+                
+                
+
+                if ((!userData.completeProfile && isGoogle) && pathName!==`/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`) {
                     push(`/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`)
                 }
                 setUserAuth(userAuth)
