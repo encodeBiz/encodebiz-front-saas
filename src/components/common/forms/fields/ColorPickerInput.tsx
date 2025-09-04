@@ -22,20 +22,16 @@ const ColorPickerInput: React.FC<FieldProps & TextFieldProps> = ({
         setAnchorEl(null);
     };
 
-
-
-
-
     const open = Boolean(anchorEl);
-
     const id = open ? 'simple-popover' : undefined;
 
     return (
-        <>
+        <>  
             <TextField
                 {...field}
                 {...props}
                 onClick={handleClick}
+                
                 value={field.value}
                 error={!!error}
                 multiline={props.type === 'textarea'}

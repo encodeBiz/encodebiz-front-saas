@@ -4,7 +4,7 @@ import {
   Paper,
   Typography,
   Grid,
-  Divider, 
+  Divider,
   Avatar,
   Chip,
   useTheme,
@@ -148,22 +148,14 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
                   component="label"
                   variant="outlined"
                   color="primary"
-                  startIcon={<CloudUpload />}
+                  startIcon={!isUploading ? <CloudUpload /> : <CircularProgress color='inherit' size={24} />}
                   disabled={!selectedType}
                   sx={{ width: 340, height: 55 }}
                 >
-
-                  {isUploading ? (
-                    <CircularProgress size={24} />
-                  ) : (
-                    t('core.label.uploadResourse')
-                  )}
-
+                  {t('core.label.uploadResourse')}
                   <TextField
                     onChange={handleFileChange}
-
                     type="file"
-
                     style={{
                       border: 1,
                       clip: 'rect(0 0 0 0)',
@@ -207,7 +199,6 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
           <Box sx={classes.content}>
             {userMediaList.filter(e => (type === 'custom' ? true : (e.type === type))).length === 0 ? (
               <Typography variant="body2" color="textSecondary" align="center">
-
                 {t('core.table.nofile')}
               </Typography>
             ) : (
@@ -268,13 +259,13 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
           <Divider />
 
           <Box sx={classes.footer}>
-       
+
             <Typography variant="body2" color="textSecondary">
               {userMediaList.filter(e => (type === 'custom' ? true : (e.type === type))).length} media{userMediaList.filter(e => (type === 'custom' ? true : (e.type === type))).length > 1 ? 's' : ''} disponibles
             </Typography>
             <SassButton
               variant="contained"
-              disabled={(Array.isArray(selectedFile) && selectedFile.length===0) || !selectedFile}
+              disabled={(Array.isArray(selectedFile) && selectedFile.length === 0) || !selectedFile}
               color="primary"
               onClick={() => handleSelectedChange()}
               startIcon={<CheckOutlined />}

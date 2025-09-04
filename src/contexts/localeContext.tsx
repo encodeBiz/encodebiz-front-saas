@@ -23,11 +23,11 @@ export const LocaleContext = createContext<LocaleType | undefined>(undefined);
 
 export function LocaleProvider({ children }: { children: React.ReactNode }) {
 
-    const currentLocale =  'es'
+    const currentLocale = localStorage.getItem('lang') ?? 'es'
     const [locale, setLocale] = useState<'es' | 'en' | 'de' | 'fr' | string>(currentLocale);
     const messages = useMemo(() => {
         return allMessages[locale as keyof typeof allMessages] || allMessages[currentLocale as string];
-    }, [locale]);
+    }, [currentLocale, locale]);
 
     const changeLocale = (locale: 'es' | 'en' | 'de' | 'fr' | string) => {
         setLocale(locale);

@@ -17,7 +17,8 @@ import { Unsubscribe } from "firebase/firestore";
 import IEntity from "@/domain/auth/IEntity";
 import { useParams, usePathname } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
- 
+import { useAppLocale } from "@/hooks/useAppLocale";
+
 interface EntityContextType {
     currentEntity: IUserEntity | undefined;
     entityList: Array<IUserEntity> | [];
@@ -39,9 +40,9 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     const { push } = useRouter()
     const { showToast } = useToast()
     const pathname = usePathname()
-
+    const { changeLocale } = useAppLocale()
     const { entityId } = useParams<any>()
- 
+
     const watchServiceAccess = useCallback(async (serviceId: BizType) => {
         const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
         const check = serviceSuscription.find(e => e.serviceId === serviceId && currentEntity?.entity.id === e.entityId)
@@ -146,12 +147,12 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
     const watchSubcriptionState = () => {
         watchSubscrptionEntityChange(currentEntity?.entity.id as string, async () => {
-            await fetchEntitySuscription()       
+            await fetchEntitySuscription()
         })
     }
 
     const watchEntityState = async (entity: IEntity) => {
-         
+        changeLocale(entity.language?.toLowerCase() ?? 'es')
         const item = entityList.find(e => e.entity.id == entity.id && e.entity.active)
         const itemIndex = entityList.findIndex(e => e.entity.id == entity.id && e.entity.active)
         if (item) {

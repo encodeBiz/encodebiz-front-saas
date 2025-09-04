@@ -35,15 +35,11 @@ export const ImageCropper = ({ onComplete, disabled = false, isUploading, size =
 
             <SassButton disabled={disabled}
                 variant="contained"
-                startIcon={<CloudUpload />}
+                startIcon={!isUploading ? <CloudUpload /> : <CircularProgress color='inherit' size={24} />}
                 onClick={() => fileInputRef.current.click()}
                 style={{ width: 180, height: 55 }}
             >
-                {isUploading ? (
-                    <CircularProgress size={24} />
-                ) : (
-                    t('core.label.uploadResourse')
-                )}
+                {t('core.label.uploadResourse')}
             </SassButton>
 
             <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
@@ -52,7 +48,7 @@ export const ImageCropper = ({ onComplete, disabled = false, isUploading, size =
                         <Crop sx={{ mr: 1 }} />
                         <Typography variant="body2">{t('core.label.cropImage')} {crop && <>({Math.floor(crop?.width)}x{Math.floor(crop?.height)}){crop?.unit}</>}</Typography>
                         <Box flexGrow={1} />
-                        <IconButton    onClick={handleClose}>
+                        <IconButton onClick={handleClose}>
                             <Close />
                         </IconButton>
                     </Box>
