@@ -71,16 +71,36 @@ export default function useStaffListController() {
   const { changeLoaderState } = useLayout()
   const searchParams = useSearchParams()
 
-  const handleResend = async (item: IStaff) => {
-    const dataForm = {
-      "fullName": item.fullName,
-      "email": item.email,
-      "entityId": currentEntity?.entity?.id as string,
-      allowedTypes: item.allowedTypes,
-      id: item.id
+  const handleResend = async (item: IStaff | Array<IStaff>) => {
+    const dataForm = []
+    if (Array.isArray(item)) {
+      item.forEach(element => {
+        dataForm.push(
+          {
+            "fullName": element.fullName,
+            "email": element.email,
+            "entityId": currentEntity?.entity?.id as string,
+            allowedTypes: element.allowedTypes,
+            id: element.id
+          }
+        )
+      });
+    } else {
+      dataForm.push(
+        {
+          "fullName": item.fullName,
+          "email": item.email,
+          "entityId": currentEntity?.entity?.id as string,
+          allowedTypes: item.allowedTypes,
+          id: item.id
+        }
+      )
     }
+
     changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-    await createStaff(dataForm, token)
+    dataForm.forEach(async element => {
+      await createStaff(element, token)
+    });
     showToast(t('core.feedback.success'), 'success');
     changeLoaderState({ show: false })
 
@@ -93,7 +113,7 @@ export default function useStaffListController() {
       icon: <DeleteOutline color="error" />,
       label: t('core.button.delete'),
       allowItem: () => true,
-      onPress: (item: IStaff) => openModal(CommonModalType.DELETE, { item }),
+      onPress: (item: IStaff) => openModal(CommonModalType.DELETE, { data:item }),
       bulk: true
     },
     {
@@ -280,13 +300,20 @@ export default function useStaffListController() {
   }
 
   const [deleting, setDeleting] = useState(false)
-  const onDelete = async (item: any) => {
+  const onDelete = async (item: IStaff | Array<IStaff>) => {
+     
     try {
       setDeleting(true)
-      const id = item[0]
-      await deleteStaff(currentEntity?.entity.id as string, id, token)
-      setItemsHistory(itemsHistory.filter(e => e.id !== id))
-      setItems(itemsHistory.filter(e => e.id !== id))
+      let ids = []
+      if (Array.isArray(item)) {
+        ids = (item as Array<IStaff>).map(e => e.id)
+      } else {
+        ids.push(item.id)
+      }
+      ids.forEach(async id => {
+        await deleteStaff(currentEntity?.entity.id as string, id, token)
+      });
+      fetchingData(filterParams)
       setDeleting(false)
       closeModal(CommonModalType.DELETE)
     } catch (e: any) {

@@ -151,8 +151,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     const watchEntityState = async (entity: IEntity) => {
-        console.log(entity);
-        
+         
         const item = entityList.find(e => e.entity.id == entity.id && e.entity.active)
         const itemIndex = entityList.findIndex(e => e.entity.id == entity.id && e.entity.active)
         if (item) {

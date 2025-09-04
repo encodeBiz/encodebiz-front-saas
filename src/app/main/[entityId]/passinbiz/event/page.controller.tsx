@@ -243,13 +243,19 @@ export default function useIEventListController() {
   }
 
 
-  const onDelete = async (item: any) => {
+  const onDelete = async (item: IEvent | Array<IEvent>) => {
     try {
       setDeleting(true)
-      const id = item[0]
-      await deleteEvent(currentEntity?.entity.id as string, id, token)
-      setItemsHistory(itemsHistory.filter(e => e.id !== id))
-      setItems(itemsHistory.filter(e => e.id !== id))
+      let ids = []
+      if (Array.isArray(item)) {
+        ids = (item as Array<IEvent>).map(e => e.id)
+      } else {
+        ids.push(item.id)
+      }
+      ids.forEach(async id => {
+        await deleteEvent(currentEntity?.entity.id as string, id, token)
+      });
+      fetchingData(filterParams)
       setDeleting(false)
       closeModal(CommonModalType.DELETE)
     } catch (e: any) {
@@ -288,7 +294,7 @@ export default function useIEventListController() {
       icon: <DeleteOutline color="error" />,
       label: t('core.button.delete'),
       allowItem: () => true,
-      onPress: (item: IEvent) => openModal(CommonModalType.DELETE, { item })
+      onPress: (item: IEvent) => openModal(CommonModalType.DELETE, { data: item })
     },
 
   ]

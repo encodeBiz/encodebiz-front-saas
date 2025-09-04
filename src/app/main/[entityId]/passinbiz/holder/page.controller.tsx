@@ -384,29 +384,7 @@ export default function useHolderListController() {
       setRevoking(false)
     }
 
-  }
-  /*
-  const onSend = async (item: Holder | Array<Holder>) => {
-    try {
-      setRevoking(true)
-      const id = item.id
-      await updateHolder({
-        ...{} as any,
-        id: item.id,
-        entityId: currentEntity?.entity?.id,
-        passStatus: 'active',
-        status: 'pending'
-      }, token)
-      setItemsHistory(itemsHistory.filter(e => e.id !== id))
-      setItems(itemsHistory.filter(e => e.id !== id))
-      setRevoking(false)
-      closeModal(CommonModalType.SEND)
-    } catch (e: any) {
-      showToast(e?.message, 'error')
-      setRevoking(false)
-    }
-  }
-  */
+  } 
   const onEdit = async (item: any) => {
     navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/holder/${item.id}/edit?params=${buildState()}`)
   }
