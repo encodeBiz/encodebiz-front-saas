@@ -10,7 +10,6 @@ import {
   Paper,
   Typography,
 } from '@mui/material';
-import { BaseButton } from '../buttons/BaseButton';
 import { useTranslations } from 'next-intl';
 import { IUserMedia } from '@/domain/core/IUserMedia';
 import { useFormStatus } from '@/hooks/useFormStatus';
