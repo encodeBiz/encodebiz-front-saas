@@ -45,7 +45,6 @@ const AddressInput: React.FC<AutoCompletedInputProps> = ({ onHandleChange, ...pr
   const debouncedSearch = useDebouncedCallback(
     async (q: string, code: string) => {
       const query = (q ?? "").trim();
-
       if (!query || query == inputValue) {
         setOptions([]);
         setPending(false);
@@ -95,6 +94,7 @@ const AddressInput: React.FC<AutoCompletedInputProps> = ({ onHandleChange, ...pr
   const handleChange = (_: any, newOption: Option | null) => {
     setSelected(newOption);
     setOptions([])
+     debouncedSearch?.cancel?.();
     helper.setValue(newOption?.label ?? "");
     if (typeof onHandleChange === "function" && newOption?.data) {
       onHandleChange({ lat: newOption.data.lat, lng: newOption.data.lng });
