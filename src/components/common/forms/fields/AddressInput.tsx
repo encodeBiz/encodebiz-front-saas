@@ -1,105 +1,149 @@
-// AutoCompletedInput.tsx
-import React, { useState } from 'react';
-import { TextFieldProps, FormHelperText, FormControl, Autocomplete, ListItem, ListItemIcon, TextField, ListItemText } from '@mui/material';
-import { FieldProps, useField } from 'formik';
-import { CheckCircleOutline } from '@mui/icons-material';
-import { useAuth } from '@/hooks/useAuth';
-import { fetchLocation } from '@/services/common/helper.service';
-import { useFormStatus } from '@/hooks/useFormStatus';
-import { country } from '@/config/country';
-import { useTranslations } from 'next-intl';
+// AddressInput.tsx
+"use client";
+import React, { useEffect, useMemo, useState } from "react";
+import {
+  TextFieldProps,
+  FormHelperText,
+  FormControl,
+  Autocomplete,
+  ListItem,
+  ListItemIcon,
+  TextField,
+  ListItemText,
+} from "@mui/material";
+import { FieldProps, useField } from "formik";
+import { CheckCircleOutline } from "@mui/icons-material";
+import { useAuth } from "@/hooks/useAuth";
+import { fetchLocation } from "@/services/common/helper.service";
+import { useFormStatus } from "@/hooks/useFormStatus";
+import { country } from "@/config/country";
+import { useTranslations } from "next-intl";
+import { useDebouncedCallback } from "../customHooks/useDebounce"; // debe exponer .cancel()
 
-type AutoCompletedInputProps = FieldProps & TextFieldProps & {
-  //options: Array<{ value: any; label: string }>;
-  onHandleChange: (value: any) => void
+type Option = { id: string; label: string; data: any };
 
-};
-let resource: any
-const AddressInput: React.FC<AutoCompletedInputProps> = ({
-  onHandleChange,
-  ...props
-}) => {
-  const { token } = useAuth()
-  const t = useTranslations()
+type AutoCompletedInputProps = FieldProps &
+  TextFieldProps & {
+    onHandleChange: (value: any) => void;
+  };
+
+const AddressInput: React.FC<AutoCompletedInputProps> = ({ onHandleChange, ...props }) => {
+  const { token } = useAuth();
+  const t = useTranslations();
   const [field, meta, helper] = useField(props.name);
-  const { touched, error } = meta
+  const { touched, error } = meta;
   const helperText = touched && error;
-  const { formStatus } = useFormStatus()
-  const [pending, setPending] = useState(false)
-  const [inputValue, setInputValue] = useState<string>('');
-  const [options, setOptions] = useState<Array<{ id: string, label: string, data: any }>>([])
+  const { formStatus } = useFormStatus();
 
-  const handleChange = (event: any, newValue: any) => { 
-    helper.setValue(newValue.label)
-    if (typeof onHandleChange === 'function') {        
-      onHandleChange({lat:newValue?.data?.lat, lng:newValue?.data?.lng})
+  const [pending, setPending] = useState(false);
+  const [inputValue, setInputValue] = useState<string>(field.value ?? "");
+  const [options, setOptions] = useState<Option[]>([]);
+  const [selected, setSelected] = useState<Option | null>(null);
+  const [countryCode, setCountryCode] = useState("ES");
+
+  // Debounced remote search
+  const debouncedSearch = useDebouncedCallback(
+    async (q: string, code: string) => {
+      const query = (q ?? "").trim();
+
+      if (!query || query == inputValue) {
+        setOptions([]);
+        setPending(false);
+        return;
+      }
+      try {
+        const data = await fetchLocation({ address: query.toLowerCase(), country: code }, token);
+        setOptions(
+          data.map((e: any) => ({
+            id: `${e.lng}${e.lat}`,
+            label: e.resolvedText,
+            data: e,
+          }))
+        );
+      } finally {
+        setPending(false);
+      }
+    },
+    600
+  );
+
+  useEffect(() => {
+    return () => {
+      // @ts-ignore
+      debouncedSearch?.cancel?.();
+    };
+  }, [debouncedSearch]);
+
+  useEffect(() => {
+    if(field.value != '')
+      setInputValue(field.value ?? "");
+  }, [field.value]);
+  
+  useEffect(() => {
+    const code2 =
+      country.find((e) => e.name === formStatus?.values?.country)?.code2 ?? "ES";
+    setCountryCode(code2);
+
+    const base = (field.value ?? "").trim();
+    if (base) {
+      setPending(true);
+      debouncedSearch(base, code2);
+    } else {
+      setOptions([]);
+    }
+  }, [formStatus?.values?.country]); 
+
+  const handleChange = (_: any, newOption: Option | null) => {
+    setSelected(newOption);
+    setOptions([])
+    helper.setValue(newOption?.label ?? "");
+    if (typeof onHandleChange === "function" && newOption?.data) {
+      onHandleChange({ lat: newOption.data.lat, lng: newOption.data.lng });
     }
   };
 
-  const handleInputChange = (event: any) => {
-    const newInputValue = event.target.value
-    let countryCode = 'ES'
-    if (formStatus?.values?.country)
-      countryCode = country.find(e => e.name === formStatus?.values?.country)?.code2 ?? 'ES'
-
-    setInputValue(newInputValue === 'undefined' ? '' : newInputValue);
-    if (resource) clearTimeout(resource)
-    setPending(true)
-    resource = setTimeout(() => {
-      fetchLocation({ address: newInputValue.toLowerCase(), country: countryCode }, token).then(data => {
-        setOptions(data.map(e => ({ id: `${e.lng}${e.lat}`, label: e.resolvedText, data: e })))
-        setPending(false)
-      })
-    }, 2000);
+  const handleInputChange = (_: any, newInput: string) => {
+    setInputValue(newInput ?? "");
+    setPending(true);
+    debouncedSearch(newInput, countryCode);
   };
-
-
-
-
-
-
-
-  return (<FormControl required sx={{ width: '100%', textAlign: 'left' }} >
-
-    <Autocomplete
-      id="tech-autocomplete"
-      options={options}
-      value={field.value}
-      loading={pending}
-      onChange={handleChange}
-      disableCloseOnSelect
-      
-      //getOptionLabel={(option) => option.label}
-      isOptionEqualToValue={(option, value: any) => option.label === value}
-      renderOption={(props, option, { selected }) => (
-        <ListItem {...props} key={option.id}>
-          {selected && <ListItemIcon><CheckCircleOutline /></ListItemIcon>}
-          <ListItemText
-            primary={option.label}
-
+  return (
+    <FormControl required sx={{ width: "100%", textAlign: "left" }}>
+      <Autocomplete<Option, false, false, false>
+        options={options}
+        value={selected}
+        inputValue={inputValue !== '' ? inputValue : field.value}
+        onInputChange={handleInputChange}
+        onChange={handleChange}
+        getOptionLabel={(opt) => (typeof opt === "string" ? opt : opt?.label ?? "")}
+        isOptionEqualToValue={(opt, val) => opt.id === val.id}
+        filterOptions={(x) => x} // no filtres en cliente si ya filtras en servidor
+        loading={pending}
+        open={options.length > 0}
+        renderOption={ (liProps, option, { selected }) => (
+          <ListItem {...liProps} key={option.id}>
+            {selected && (
+              <ListItemIcon>
+                <CheckCircleOutline />
+              </ListItemIcon>
+            )}
+            <ListItemText key={option.id} primary={option.label} />
+          </ListItem>
+        )}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label={props.label}
+            placeholder={t("core.label.typingAddress")}
           />
-        </ListItem>
-      )}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          onChange={(event) => handleInputChange(event)}
-          value={inputValue}
-          label={props.label}
-          placeholder={t('core.label.typingAddress')}
-        />
-      )}
+        )}
+        sx={{
+          "& .MuiAutocomplete-inputRoot": { padding: "8px" },
+        }}
+      />
 
-      sx={{
-        '& .MuiAutocomplete-inputRoot': {
-          padding: '8px',
-        }
-      }}
-    />
-
-
-    <FormHelperText>{helperText as string}</FormHelperText>
-  </FormControl>
+      <FormHelperText>{helperText as string}</FormHelperText>
+    </FormControl>
   );
 };
 
