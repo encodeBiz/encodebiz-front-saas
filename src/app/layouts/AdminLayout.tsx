@@ -37,7 +37,7 @@ export default function AdminLayout({
         }}
       >
         <Header drawerWidth={drawerWidth} />
-        <div style={{maxWidth: 1175, width: '100%'}}>
+        <div style={{maxWidth: 1275, width: '100%'}}>
           <Grid container sx={{
             display: 'flex',
             minHeight: 'calc(100vh - 100px)',
