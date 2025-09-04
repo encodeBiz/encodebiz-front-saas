@@ -67,7 +67,7 @@ export const useRegisterController = () => {
         try {
 
             const createData = {
-                geo,
+                
                 "name": values.name,
                 "slug": createSlug(values.name),
                 "billingEmail": values.billingEmail,
@@ -75,6 +75,7 @@ export const useRegisterController = () => {
                     "legalName": values.legalName,
                     "taxId": values.taxId,
                     "address": {
+                        geo,
                         "street": values.street,
                         "city": values.city,
                         "postalCode": values.postalCode,

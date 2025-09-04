@@ -10,7 +10,7 @@ import {
 
 export interface HelpTab {
   id: string,
-  icon: React.ReactNode,
+  icon: (props: any) => React.ReactNode,
   title: string,
   description?: string,
   tabContent: React.ReactNode,
@@ -34,9 +34,8 @@ const HelpTabs = ({ tabs, ref }: HelpTabsProps) => {
   const CustomTab = (props: any) => (
     <Tab
       {...props}
+      icon={props.icon(props)}
       iconPosition="start"
-
-
       label={
         <Box sx={{
           display: 'flex',
@@ -46,7 +45,7 @@ const HelpTabs = ({ tabs, ref }: HelpTabsProps) => {
           textAlign: 'left',
 
         }}>
-          <Typography variant="h4" sx={{ fontWeight: 400, fontSize: 22 }}>
+          <Typography variant="h4" sx={{ fontWeight: 400, fontSize: 22, marginLeft:1 }}>
             {props.maintext}
           </Typography>
           {props.subtext && <Typography variant="body1" color="text.secondary">

@@ -57,7 +57,7 @@ export const useSettingEntityController = () => {
     const { currentEntity } = useEntity();
     const [geo, setGeo] = useState<{lat:number, lng: number}>({lat: 0, lng: 0})
     const { changeLoaderState } = useLayout()
-    const { user } = useAuth();
+    const { user, token } = useAuth();
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
     const [cityList, setCityList] = useState<any>([])
@@ -184,7 +184,7 @@ export const useSettingEntityController = () => {
            
             setPending(true)
             const updateData = {
-                geo,
+               
                 "id": currentEntity?.entity?.id,
                 "name": values.name,
                 "slug": createSlug(values.name),
@@ -193,6 +193,7 @@ export const useSettingEntityController = () => {
                     "legalName": values.legalName,
                     "taxId": values.taxId,
                     "address": {
+                         geo,
                         "street": values.street,
                         "city": values.city,
                         "postalCode": values.postalCode,
@@ -202,10 +203,10 @@ export const useSettingEntityController = () => {
                 },
                 "active": true
             }
-            console.log(updateData);
+       
             
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-            //await updateEntity(updateData, token)
+            await updateEntity(updateData, token)
             changeLoaderState({ show: false })
 
             showToast(t('core.feedback.success'), 'success');

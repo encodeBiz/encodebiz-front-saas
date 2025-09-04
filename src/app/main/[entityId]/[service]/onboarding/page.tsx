@@ -1,6 +1,7 @@
 'use client';
 import HelpTabs from "@/components/features/dashboard/HelpTabs/HelpTabs";
-import image from '@/../public/assets/images/qr_code.svg'
+import passinbiz from '@/../public/assets/images/passinbiz.svg'
+import checkbiz from '@/../public/assets/images/checkbiz-onbooarding.svg'
 import { Container } from '@mui/material';
 import { SettingsOutlined } from "@mui/icons-material";
 import useDashboardController from "./page.controller";
@@ -12,7 +13,12 @@ import OnboardingCard from "@/components/features/dashboard/OnboardingCard/Onboa
 import TabContent from "./passBiz/tabContent";
 import { useAppLocale } from "@/hooks/useAppLocale";
 import { useTranslations } from "next-intl";
-
+import { StepIcon } from "@/components/common/icons/StepIcon";
+import { TargetIcon } from "@/components/common/icons/TargetIcon";
+const imageModule: any = {
+  passinbiz:passinbiz,
+  checkinbiz:checkbiz
+}
 export default function Dashboard() {
   const { serviceData, pending, planList, dataTab1, dataTab2 } = useDashboardController()
   const sectionMoreInfofRef = useRef(null); // Create a ref for the section
@@ -34,28 +40,27 @@ export default function Dashboard() {
       <OnboardingCard
         title={serviceData?.name}
         description={serviceData?.about ? (serviceData?.about as any)[currentLocale] : ''}
-        image={image}
+        image={imageModule[service]}
         onPress={scrollToPlan}
-        right={-5}
-        top={0}
+        right={5}
+        top={-10}
         width={350}
         height={390}
         heightCard={376}
       />
 
-
-
+ 
       <HelpTabs ref={sectionMoreInfofRef} tabs={[
         {
           id: '1',
           title: t(`onboarding.${service}.tab1Title`),
-          icon: <SettingsOutlined fontSize="small" />,
+          icon: (props: any)=> <StepIcon {...props} fontSize="small" />,
           tabContent: <TabContent title={dataTab1.title} subtitle={dataTab1.subtitle} data={dataTab1.data} />
         },
         {
           id: '2',
           title: t(`onboarding.${service}.tab2Title`),
-          icon: <SettingsOutlined fontSize="small" />,
+          icon:(props: any)=> <TargetIcon {...props} fontSize="small" />,
           tabContent: <TabContent title={dataTab2.title} data={dataTab2.data} />
         },
 
