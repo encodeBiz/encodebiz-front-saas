@@ -9,33 +9,41 @@ import { useEntity } from "@/hooks/useEntity";
 import { createContact } from "@/services/passinbiz/event.service";
 import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
-import { IContact } from "@/domain/core/IContact";
+import { ContactFromModel, IContact } from "@/domain/core/IContact";
+import { sendFormContact } from "@/services/common/helper.service";
+import { useCommonModal } from "@/hooks/useCommonModal";
+import { CommonModalType } from "@/contexts/commonModalContext";
 
 
 export default function useFormContactController() {
   const t = useTranslations();
   const { showToast } = useToast()
-   const { token, user } = useAuth()
+  const { token, user } = useAuth()
   const { id } = useParams<{ id: string }>()
   const { currentEntity, watchServiceAccess } = useEntity()
   const { changeLoaderState } = useLayout()
- 
+  const { closeModal } = useCommonModal()
+
   const validationSchema = Yup.object().shape({
     message: requiredRule(t),
   });
 
-  const setDinamicDataAction = async (values: Partial<IContact>) => {
+  const setDinamicDataAction = async (values: Partial<ContactFromModel>) => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const data: Partial<IContact> = {
-        "subject": user?.id as string,
-        "message": values.message,
-        "from": values.from,
+      const data: ContactFromModel = {
+        name: values.name as string,
+        phone: values.phone as string,
+        "subject": values.subject as string,
+        "message": values.message as string,
+        email: values.email as string,
+        token: token as string,
+
       }
-      await createContact(data, token)
+      await sendFormContact(data)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
-    
+      closeModal(CommonModalType.CONTACT)
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
@@ -53,7 +61,7 @@ export default function useFormContactController() {
       component: TextInput,
     },
     {
-      name: 'from',
+      name: 'email',
       label: t('core.label.email'),
       type: 'text',
       disabled: true,
@@ -69,7 +77,7 @@ export default function useFormContactController() {
       component: TextInput,
     },
     {
-      name: 'displayName',
+      name: 'name',
       label: t('core.label.name'),
       type: 'text',
       disabled: true,

@@ -15,7 +15,7 @@ import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import { SassButton } from '../../buttons/GenericButton';
 import { CancelOutlined, SendOutlined } from '@mui/icons-material';
 import { CustomTypography } from '../../Text/CustomTypography';
-import { IContact } from '@/domain/core/IContact';
+import { ContactFromModel, IContact } from '@/domain/core/IContact';
 import useFormContactController from './ContactModal.controller';
 import GenericForm, { FormField } from '../../forms/GenericForm';
 import { useAuth } from '@/hooks/useAuth';
@@ -77,14 +77,14 @@ const ContactModalModal = (): React.JSX.Element => {
             </DialogTitle>
             <DialogContent>
                 <BorderBox sx={{ p: 2 }}>
-                    <GenericForm<Partial<IContact>>
+                    <GenericForm<Partial<ContactFromModel>>
                         column={2}
                         initialValues={{
                             "subject": t('contact.test2'),
                             "message": '',
-                            "from": user?.email as string,
+                            "email": user?.email as string,
                             "phone": user?.phoneNumber as string,
-                            "displayName": currentEntity?.entity.name as string,
+                            "name": currentEntity?.entity.name as string,
                         }}
                         validationSchema={validationSchema}
                         onSubmit={handleContactModal}

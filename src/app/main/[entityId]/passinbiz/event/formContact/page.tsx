@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import useHolderController from './page.controller';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
-import { IContact } from '@/domain/core/IContact';
+import { ContactFromModel, IContact } from '@/domain/core/IContact';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useRef } from 'react';
@@ -47,14 +47,14 @@ export default function FormContact() {
       >
         <Box p={4}>
 
-          <GenericForm<Partial<IContact>>
+          <GenericForm<Partial<ContactFromModel>>
             column={2}
             initialValues={{
               "subject": t('contact.test1'),
               "message": '',
-              "from": user?.email as string,
+              "email": user?.email as string,
               "phone": user?.phoneNumber as string,
-              "displayName": currentEntity?.entity.name as string,
+              "name": currentEntity?.entity.name as string,
             }}
             validationSchema={validationSchema}
             onSubmit={setDinamicDataAction}

@@ -137,7 +137,7 @@ export default function useHolderListController() {
 
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
 
-    <SelectFilter
+    <SelectFilter first={false}
       defaultValue={'none'}
       value={filterParams.filter.type}
       onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, type: value } })}

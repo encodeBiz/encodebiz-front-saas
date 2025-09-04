@@ -76,8 +76,7 @@ export const useSettingEntityController = () => {
         logoUrl: requiredRule(t),
         stripImageUrl: requiredRule(t),
         iconUrl: requiredRule(t),
-        icon2Url: requiredRule(t),
-        language: requiredRule(t)
+        icon2Url: requiredRule(t)
     });
 
     const fields2 = [
