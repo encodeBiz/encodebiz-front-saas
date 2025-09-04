@@ -33,7 +33,6 @@ export default function useHolderController() {
   const [geo, setGeo] = useState<{ lat: number, lng: number }>({ lat: 0, lng: 0 })
 
   const [cityList, setCityList] = useState<any>(country.find(e => e.name === 'España')?.states.map(e => ({ label: e.name, value: e.name })))
-  const [citySelected, setCitySelected] = useState<string>('Madrid')
   const [countrySelected, setCountrySelected] = useState<any>('España')
   const { changeLoaderState } = useLayout()
   const [initialValues, setInitialValues] = useState<Partial<IEvent>>({
@@ -151,7 +150,7 @@ export default function useHolderController() {
         onHandleChange: (value: any) => {
           setCityList(country.find((e: any) => e.name === value)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
           setCountrySelected(value)
-          setCitySelected('')
+      
         },
       },
       component: SelectInput,
@@ -162,11 +161,7 @@ export default function useHolderController() {
       label: t('core.label.city'),
       component: SelectInput,
       options: cityList,
-      extraProps: {
-        onHandleChange: (value: any) => {
-          setCitySelected(value)
-        },
-      },
+      
     },
     {
       name: 'address',
@@ -293,7 +288,7 @@ export default function useHolderController() {
         metadata: objectToArray(event.metadata)
       })
 
-      setCitySelected(city)
+     
       setCountrySelected(country)
       changeLoaderState({ show: false })
     } catch (error: any) {

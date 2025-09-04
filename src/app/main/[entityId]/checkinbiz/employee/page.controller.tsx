@@ -4,12 +4,12 @@ import { useEntity } from "@/hooks/useEntity";
 import { useToast } from "@/hooks/useToast";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "nextjs-toploader/app";
-import { CHECKINBIZ_MODULE_ROUTE, MAIN_ROUTE } from "@/config/routes";
+import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import { deleteEmployee, search } from "@/services/checkinbiz/employee.service";
+import { useLayout } from "@/hooks/useLayout";
 
 export default function useEmployeeListController() {
   const t = useTranslations();
@@ -17,7 +17,7 @@ export default function useEmployeeListController() {
   const { token, user } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
-  const { push } = useRouter()
+  const { navivateTo } = useLayout()
   const [rowsPerPage, setRowsPerPage] = useState<number>(5); // Límite inicial
   const [params, setParams] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(true);

@@ -6,9 +6,8 @@ import usePricingCardController from './RenuewCard.controller';
 import { IEntitySuscription } from '@/domain/auth/ISubscription';
 import ConfirmModal from '../modals/ConfirmModal';
 import { SassButton } from '../buttons/GenericButton';
-import { useRouter } from 'nextjs-toploader/app';
-import { MAIN_ROUTE } from '@/config/routes';
 import { useAppLocale } from '@/hooks/useAppLocale';
+import { useLayout } from '@/hooks/useLayout';
 
 const PlanCard = styled(Box)<{ featured?: boolean }>(({ theme, featured }) => ({
     maxWidth: 305,
@@ -32,7 +31,7 @@ export type PricingCardProps = {
 export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
     const t = useTranslations();
     const { unSubcribeAction, loadingGetPlan, planInfo } = usePricingCardController(plan);
-    const { push } = useRouter()
+    const { navivateTo } = useLayout()
     const { currentLocale } = useAppLocale()
 
 

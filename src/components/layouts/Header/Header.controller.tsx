@@ -37,7 +37,7 @@ export const useHeader = () => {
 
 
   const contextMenu = [
-    { label: t('layout.header.profile'), icon: <AccountCircleIcon fontSize="small" />, action: () => { navivateTo(`/${USER_ROUTE}/account`); handleMenuClose(); } },
+    { label: t('layout.header.profile'), icon: <AccountCircleIcon fontSize="small" />, action: () => { push(`/${MAIN_ROUTE}/${USER_ROUTE}/account`); handleMenuClose(); } },
     { label: t('layout.header.logout'), icon: <LogoutIcon fontSize="small" />, action: () => { 
       handleMenuClose(); 
       handleLogout(()=>{

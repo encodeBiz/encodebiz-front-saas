@@ -1,13 +1,12 @@
 import { Box, Typography, useTheme } from "@mui/material"
 import Image from "next/image"
 import logo from '../../../../../public/assets/images/logo.png'
-import { useRouter } from "nextjs-toploader/app"
 import { SassButton } from "@/components/common/buttons/GenericButton"
-import { GENERAL_ROUTE, MAIN_ROUTE } from "@/config/routes"
+import { useLayout } from "@/hooks/useLayout"
 
 export const Card3 = ({ handleNext }: any) => {
     const theme = useTheme()
-    const { push } = useRouter()
+    const { navivateTo } = useLayout()
     return <Box display={'flex'} flexDirection={"column"} justifyContent={'space-between'} p={2} height={631}>
         <Box width={'100%'} display={'flex'} flexDirection={"column"} gap={2} justifyContent={'space-between'} alignItems={'flex-start'} >
             <Image
@@ -71,7 +70,7 @@ export const Card3 = ({ handleNext }: any) => {
                     <Box p={4} display={'flex'} flexDirection={"column"} gap={2} justifyContent={'center'} alignItems={'center'}  >
                         <Box display={'flex'} flexDirection={"column"} justifyContent={'flex-end'} alignItems={'flex-end'} gap={4}>
                             <SassButton fullWidth sx={{ width: '420' }} size="small" onClick={() => {
-                                navivateTo(`/${GENERAL_ROUTE}/entity`)
+                                navivateTo(`/entity`)
                             }} variant="contained" color="primary">Ir a Configurar Entidad</SassButton>
                             <SassButton fullWidth sx={{ width: '420' }} size="small" onClick={handleNext} variant="outlined" color="primary">Configurar mas tarde</SassButton>
                         </Box>

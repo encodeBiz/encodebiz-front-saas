@@ -4,7 +4,7 @@ import React, { } from 'react';
 import { useTranslations } from 'next-intl';
 import {
   FormControl,
- 
+
   Select,
   MenuItem,
   SelectChangeEvent,
@@ -17,7 +17,7 @@ import { useEntity } from '@/hooks/useEntity';
 import IUserEntity from '@/domain/auth/IUserEntity';
 import { useRouter } from 'nextjs-toploader/app';
 import { useLayout } from '@/hooks/useLayout';
-import { GENERAL_ROUTE, MAIN_ROUTE } from '@/config/routes';
+import { GENERAL_ROUTE } from '@/config/routes';
 import { Add } from '@mui/icons-material';
 import { useAuth } from '@/hooks/useAuth';
 export const locales = ['en', 'es']; // Define your supported locales
@@ -28,10 +28,7 @@ const EntitySwitcher: React.FC = () => {
   const { entityList, currentEntity, changeCurrentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
   const { user } = useAuth()
-
   const { push } = useRouter()
-
-
   const handleChange = (event: SelectChangeEvent) => {
     const newEntityId = event.target.value as string;
     if (newEntityId) {
@@ -60,7 +57,7 @@ const EntitySwitcher: React.FC = () => {
             </MenuItem>
           ))}
 
-          <MenuItem style={{ textAlign: 'left', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: 4 }} onClick={() => navivateTo(`/${GENERAL_ROUTE}/entity/create`)} value={undefined}>
+          <MenuItem style={{ textAlign: 'left', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: 4 }} onClick={() => push(`/${GENERAL_ROUTE}/entity/create`)} value={undefined}>
             <Add /><Typography textTransform={'uppercase'}>{t('features.entity.create.card.createEntity')}</Typography>
           </MenuItem>
         </Select>

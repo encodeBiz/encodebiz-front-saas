@@ -5,10 +5,8 @@ import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { requiredRule } from '@/config/yupRules';
 import { useToast } from "@/hooks/useToast";
-import { useRouter } from "nextjs-toploader/app";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
-import { MAIN_ROUTE } from "@/config/routes";
 import { fetchEvent } from "@/services/passinbiz/event.service";
 import DateInput from "@/components/common/forms/fields/Datenput";
 import ImageUploadInput from "@/components/common/forms/fields/ImageUploadInput";
@@ -18,6 +16,7 @@ import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { ArrayToObject, objectToArray } from "@/lib/common/String";
 import { createEmployee, updateEmployee } from "@/services/checkinbiz/employee.service";
+import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 
 export interface EmployeeFormValues {
   id?: string
@@ -40,7 +39,7 @@ export interface EmployeeFormValues {
 export default function useHolderController() {
   const t = useTranslations();
   const { showToast } = useToast()
-  const { push } = useRouter()
+  const { navivateTo } = useLayout()
   const { token, user } = useAuth()
   const { id } = useParams<{ id: string }>()
   const { currentEntity } = useEntity()
@@ -103,7 +102,7 @@ export default function useHolderController() {
         await createEmployee(data, token)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
-      navivateTo(`/passinbiz/event`)
+      navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')

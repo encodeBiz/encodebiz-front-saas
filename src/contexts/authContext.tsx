@@ -76,17 +76,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     ...userData,
                 })
 
-                if (!userData.completeProfile && isGoogle) {
-                    navivateTo(`/${USER_ROUTE}/complete-profile`)
+                if ((!userData.completeProfile && isGoogle) || userData.fullName?.toLocaleLowerCase() === 'guest') {
+                    push(`/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`)
                 }
                 setUserAuth(userAuth)
                 if (redirectUri) push(redirectUri)
                 else {
                     if (pathName === '/' || pathName === `/${MAIN_ROUTE}` || pathName === `/${MAIN_ROUTE}/${entityId}/${GENERAL_ROUTE}`)
-                        navivateTo(`/${GENERAL_ROUTE}/dashboard`)
+                        push(`/${MAIN_ROUTE}/${entityId}/dashboard`)
                     else {
                         if (pathName === '/' || pathName === `/${MAIN_ROUTE}` || pathName === `/${MAIN_ROUTE}/user`)
-                            navivateTo(`/${USER_ROUTE}/account`)
+                            push(`/${MAIN_ROUTE}/${USER_ROUTE}/account`)
                     }
                 }
                 setPendAuth(false)

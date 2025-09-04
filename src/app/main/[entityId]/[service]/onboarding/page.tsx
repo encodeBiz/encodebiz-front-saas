@@ -3,7 +3,6 @@ import HelpTabs from "@/components/features/dashboard/HelpTabs/HelpTabs";
 import passinbiz from '@/../public/assets/images/passinbiz.svg'
 import checkbiz from '@/../public/assets/images/checkbiz-onbooarding.svg'
 import { Container } from '@mui/material';
-import { SettingsOutlined } from "@mui/icons-material";
 import useDashboardController from "./page.controller";
 import { useRef } from "react";
 import SalesPlan from "@/components/features/profile/SalesPlan/SalesPlan";

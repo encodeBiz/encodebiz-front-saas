@@ -2,13 +2,11 @@
 
 import PasswordInput from '@/components/common/forms/fields/PasswordInput';
 import TextInput from '@/components/common/forms/fields/TextInput';
-import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
 import { emailRule, passwordRestrictionRule } from '@/config/yupRules';
 import { useLayout } from '@/hooks/useLayout';
 import { useToast } from '@/hooks/useToast';
 import { signInEmail, signInGoogle } from '@/services/common/account.service';
 import { useTranslations } from 'next-intl';
-import { useRouter } from 'nextjs-toploader/app';
 import { useState } from 'react';
 import * as Yup from 'yup';
 
@@ -21,7 +19,7 @@ export interface LoginFormValues {
 export const useRegisterController = () => {
     const t = useTranslations()
     const { showToast } = useToast()
-    const { push } = useRouter()
+    const { navivateTo } = useLayout()
     const { changeLoaderState } = useLayout()
 
     const [initialValues] = useState<LoginFormValues>({
@@ -41,7 +39,7 @@ export const useRegisterController = () => {
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             await signInGoogle()
             changeLoaderState({ show: false })
-            navivateTo(`/${GENERAL_ROUTE}/dashboard`)
+            navivateTo(`/dashboard`)
         } catch (error: any) {
             changeLoaderState({ show: false })
             showToast(error.message, 'error')
@@ -54,7 +52,7 @@ export const useRegisterController = () => {
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             await signInEmail(values.email, values.password)
             changeLoaderState({ show: false })
-            navivateTo(`/${GENERAL_ROUTE}/dashboard`)
+            navivateTo(`/dashboard`)
         } catch (error: any) {
             changeLoaderState({ show: false })
             showToast(error.message, 'error')

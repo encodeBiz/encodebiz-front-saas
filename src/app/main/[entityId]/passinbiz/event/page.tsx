@@ -11,6 +11,8 @@ import FormContact from './formContact/page';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import { useLayout } from '@/hooks/useLayout';
+import { CommonModalType } from '@/contexts/commonModalContext';
+import { useCommonModal } from '@/hooks/useCommonModal';
 
 export default function HolderList() {
   const t = useTranslations();
@@ -20,7 +22,8 @@ export default function HolderList() {
     topFilter, buildState, filterParams,
     columns, loading, } = useHolderListController();
   const { entitySuscription } = useEntity()
-    const { navivateTo } = useLayout()
+  const { navivateTo } = useLayout()
+  const { open } = useCommonModal()
 
   return (
     <Container maxWidth="lg">
@@ -69,12 +72,12 @@ export default function HolderList() {
 
 
 
-      <ConfirmModal
+      {open.type === CommonModalType.DELETE && <ConfirmModal
         isLoading={deleting}
         title={t('event.deleteConfirmModalTitle')}
         description={t('event.deleteConfirmModalTitle2')}
-        onOKAction={(args: { data: Array<string> }) => onDelete(args.data)}
-      />
+        onOKAction={(args: { data: Array<string> }) => onDelete(args.data as any)}
+      />}
     </Container>
   );
 }

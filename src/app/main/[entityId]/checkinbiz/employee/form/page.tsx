@@ -4,16 +4,16 @@ import { useTranslations } from "next-intl";
 import useHolderController, { EmployeeFormValues } from './page.controller';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
-import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
-import { useRouter } from 'nextjs-toploader/app';
+import { CHECKINBIZ_MODULE_ROUTE } from '@/config/routes';
 import { useParams } from 'next/navigation';
+import { useLayout } from '@/hooks/useLayout';
 
 
 
 export default function EmployeeForm() {
   const { fields, initialValues, validationSchema, handleSubmit } = useHolderController();
   const t = useTranslations();
-  const { push } = useRouter()
+  const { navivateTo } = useLayout()
     const { id } = useParams<{ id: string }>()
   
   return (
@@ -30,7 +30,7 @@ export default function EmployeeForm() {
           fields={fields as FormField[]}
           submitButtonText={t('core.button.save')}
           enableReinitialize
-          onCancel={() => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event`)}
+          onCancel={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)}
         />
       </HeaderPage>
     </Container>

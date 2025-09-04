@@ -22,7 +22,6 @@ import { useLayout } from '@/hooks/useLayout';
 import { menuItemsServices, menuItemsGeneral, menuItemsHome } from '@/config/routes';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { useRouter } from 'nextjs-toploader/app';
 import { useEntity } from '@/hooks/useEntity';
 import logo from '../../../public/assets/images/logo.png'
 import Image from 'next/image';
