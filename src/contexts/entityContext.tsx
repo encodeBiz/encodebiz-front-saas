@@ -5,19 +5,18 @@ import { createContext, useEffect, useState, useCallback } from "react";
 import { subscribeToAuthChanges } from "@/lib/firebase/authentication/stateChange";
 import { User } from "firebase/auth";
 import IUserEntity from "@/domain/auth/IUserEntity";
-import { useRouter } from "nextjs-toploader/app";
 import { fetchUserEntities, saveStateCurrentEntity, watchEntityChange } from "@/services/common/entity.service";
 import IUser from "@/domain/auth/IUser";
 import { fetchUserAccount } from "@/services/common/account.service";
-import { MAIN_ROUTE, GENERAL_ROUTE } from "@/config/routes";
+import {  GENERAL_ROUTE, MAIN_ROUTE } from "@/config/routes";
 import { BizType, IService } from "@/domain/core/IService";
 import { fetchServiceList, fetchSuscriptionByEntity, watchSubscrptionEntityChange } from "@/services/common/subscription.service";
 import { IEntitySuscription } from "@/domain/auth/ISubscription";
 import { useToast } from "@/hooks/useToast";
 import { Unsubscribe } from "firebase/firestore";
 import IEntity from "@/domain/auth/IEntity";
-import { useParams } from "next/navigation";
-import { useAuth } from "@/hooks/useAuth";
+import { useParams, usePathname } from "next/navigation"; 
+import { useRouter } from "nextjs-toploader/app";
 
 interface EntityContextType {
     currentEntity: IUserEntity | undefined;
@@ -39,7 +38,8 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     const [entitySuscription, setEntitySuscription] = useState<Array<IEntitySuscription>>([])
     const { push } = useRouter()
     const { showToast } = useToast()
-    const { user } = useAuth()
+     const pathname = usePathname()
+
     const { entityId } = useParams<any>()
 
     const watchServiceAccess = useCallback(async (serviceId: BizType) => {
@@ -47,7 +47,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
         const check = serviceSuscription.find(e => e.serviceId === serviceId && currentEntity?.entity.id === e.entityId)
         if (!check) {
             showToast('No tiene permiso para acceder a este recurso', 'info')
-            navivateTo(`/${entityId}/${serviceId}/onboarding`)
+            push(`/${MAIN_ROUTE}/${entityId}/${serviceId}/onboarding`)
         }
     }, [currentEntity?.entity.id])
 
@@ -70,20 +70,22 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
                     entityList.splice(0, 1, item)
                 }
                 setEntityList(entityList)
-                let _currentEntity: IUserEntity | null
+                let _currentEntity: IUserEntity | null             
+                
+                
                 if (entityId) {
-                    changeCurrentEntity(entityId, user?.id as string)
+                    changeCurrentEntity(entityId, userAuth?.uid)
                 } else {
                     _currentEntity = entityList.find(e => e.isActive) as IUserEntity
                     setCurrentEntity(_currentEntity)
-                    navivateTo(`/${_currentEntity.entity.id}/dashboard`)
+                    push(`/${MAIN_ROUTE}/${_currentEntity.entity.id}/dashboard`)
                 }
 
             } else {
                 try {
                     const userData: IUser = await fetchUserAccount(userAuth.uid)
                     if (userData.email)
-                        navivateTo(`/${GENERAL_ROUTE}/entity/create`)
+                        push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
                 } catch (error) {
                     if (error instanceof Error) {
                         showToast(error.message, 'error');
@@ -107,12 +109,12 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
             setEntityList(entityList)
             setCurrentEntity(entityList.find(e => e.isActive) as IUserEntity)
         } else {
-            navivateTo(`/${GENERAL_ROUTE}/entity/create`)
+            push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
         }
     }, [])
 
 
-    const changeCurrentEntity = async (id: string, userId: string, callback?: () => void) => {
+    const changeCurrentEntity = async (id: string, userId: string, callback?: () => void,) => {
         const entityList: Array<IUserEntity> = await fetchUserEntities(userId)
         const current: IUserEntity = entityList.find(e => e.entity.id === id) as IUserEntity
         if (current) {
@@ -125,8 +127,8 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
                 updatedList.push(element)
             })
             setEntityList(updatedList)
-            setCurrentEntity(current)
-            navivateTo(`/${current.entity.id}/dashboard`)
+            setCurrentEntity(current)          
+            push(`${pathname.replace(entityId, current.entity.id as string)}`)
             await saveStateCurrentEntity(updatedList)
 
             setTimeout(() => {
