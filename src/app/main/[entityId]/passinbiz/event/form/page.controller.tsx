@@ -25,11 +25,12 @@ import AddressInput from "@/components/common/forms/fields/AddressInput";
 export default function useHolderController() {
   const t = useTranslations();
   const { showToast } = useToast()
- const { navivateTo } = useLayout()
+  const { navivateTo } = useLayout()
   const { token, user } = useAuth()
   const { id } = useParams<{ id: string }>()
   const { currentEntity, watchServiceAccess } = useEntity()
   const searchParams = useSearchParams()
+  const [geo, setGeo] = useState<{ lat: number, lng: number }>({ lat: 0, lng: 0 })
 
   const [cityList, setCityList] = useState<any>(country.find(e => e.name === 'España')?.states.map(e => ({ label: e.name, value: e.name })))
   const [citySelected, setCitySelected] = useState<string>('Madrid')
@@ -53,7 +54,7 @@ export default function useHolderController() {
     metadata: []
   });
 
-   
+
 
   const validationSchema = Yup.object().shape({
 
@@ -77,6 +78,7 @@ export default function useHolderController() {
       const codeLocale = country.find(e => e.name === countrySelected)?.code2
       const data: Partial<IEvent> = {
         "uid": user?.id as string,
+        geo,
         "createdBy": user?.id as string,
         "name": values.name,
         "description": values.description,
@@ -87,10 +89,10 @@ export default function useHolderController() {
         "colorAccent": values.colorAccent,
         "imageUrl": values.imageUrl,
         "logoUrl": values.logoUrl,
-        "date": format_date(new Date(values.date),'YYYY-MM-DD'),
+        "date": format_date(new Date(values.date), 'YYYY-MM-DD'),
         "dateLabel": formatLocalDateTime(codeLocale ?? 'ES', new Date(values.date)),
         "status": values.status as "draft" | "published" | "archived",
-        "endDate": format_date(new Date(values.endDate),'YYYY-MM-DD'),
+        "endDate": format_date(new Date(values.endDate), 'YYYY-MM-DD'),
         template: values.template as "default" | "vip" | "expo" | "festival",
         "metadata": ArrayToObject(values.metadata),
         "id": id,
@@ -124,7 +126,7 @@ export default function useHolderController() {
       component: TextInput,
     },
 
-    
+
 
     {
       name: 'date',
@@ -172,7 +174,12 @@ export default function useHolderController() {
       required: true,
       fullWidth: true,
       component: AddressInput,
-       
+      extraProps: {
+        onHandleChange: (data: { lat: number, lng: number }) => {
+          setGeo(data)
+        },
+      },
+
     },
 
 
@@ -259,22 +266,22 @@ export default function useHolderController() {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, id)
-    
+
       const location = event.location.split(',')
-      let country='España'
-      let city='Madrid'
-      if(location.length===2){
-        country=location[1]
-        city=location[0]
+      let country = 'España'
+      let city = 'Madrid'
+      if (location.length === 2) {
+        country = location[1]
+        city = location[0]
       }
       setInitialValues({
         ...event,
-        country,city,
+        country, city,
         metadata: objectToArray(event.metadata)
       })
 
-        setCitySelected(city)
-        setCountrySelected(country)
+      setCitySelected(city)
+      setCountrySelected(country)
       changeLoaderState({ show: false })
     } catch (error: any) {
       changeLoaderState({ show: false })

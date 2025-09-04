@@ -22,17 +22,17 @@ export const CHECKINBIZ_MODULE_ROUTE = 'checkinbiz'
 const PASSINBIZ = [{
     name: 'Holders',
 
-    link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/holder`,
+    link: `/${PASSSINBIZ_MODULE_ROUTE}/holder`,
     subMenu: []
 }, {
     name: 'Events',
 
-    link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/event`,
+    link: `/${PASSSINBIZ_MODULE_ROUTE}/event`,
     subMenu: []
 }, {
     name: 'Staff',
 
-    link: `/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/staff`,
+    link: `/${PASSSINBIZ_MODULE_ROUTE}/staff`,
     subMenu: []
 }]
 
@@ -78,7 +78,7 @@ export const menuItemsServices = [{
     id: 'checkinbiz',
     name: 'CheckBiz',
     icon: <CheckBizIcon />,
-    link: `/${MAIN_ROUTE}/checkinbiz/onboarding`,
+    link: `/checkinbiz/onboarding`,
     subMenu: CHECKINBIZ
 },
 

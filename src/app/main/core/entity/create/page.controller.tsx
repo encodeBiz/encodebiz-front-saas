@@ -11,8 +11,9 @@ import { useRouter } from 'nextjs-toploader/app';
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { requiredRule } from '@/config/yupRules';
-import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
+import { MAIN_ROUTE } from '@/config/routes';
 import { createSlug } from '@/lib/common/String';
+import AddressInput from '@/components/common/forms/fields/AddressInput';
 
 
 export interface EntityFormValues {
@@ -36,6 +37,8 @@ export const useRegisterController = () => {
     const { changeCurrentEntity } = useEntity()
     const { push } = useRouter()
     const [cityList, setCityList] = useState<any>([])
+    const [geo, setGeo] = useState<{ lat: number, lng: number }>({ lat: 0, lng: 0 })
+
     const [initialValues, setInitialValues] = useState<EntityFormValues>({
         uid: user?.id as string,
         "name": "",
@@ -64,6 +67,7 @@ export const useRegisterController = () => {
         try {
 
             const createData = {
+                geo,
                 "name": values.name,
                 "slug": createSlug(values.name),
                 "billingEmail": values.billingEmail,
@@ -85,7 +89,7 @@ export const useRegisterController = () => {
             if (data.entity.id) {
                 changeCurrentEntity(data.entity.id, user?.id as string, () => {
                     showToast(t('core.feedback.success'), 'success');
-                    navivateTo(`/${GENERAL_ROUTE}/dashboard`)
+                    push(`/${MAIN_ROUTE}/${data.entity.id}/dashboard`)
                 })
             } else {
                 showToast(t('core.feedback.success'), 'success');
@@ -137,7 +141,7 @@ export const useRegisterController = () => {
             isDivider: true,
             label: t('core.label.address'),
         },
-        
+
         {
             name: 'country',
             label: t('core.label.country'),
@@ -161,7 +165,12 @@ export const useRegisterController = () => {
             label: t('core.label.street'),
             type: 'textarea',
             fullWidth: true,
-            component: TextInput,
+             component: AddressInput,
+            extraProps: {
+                onHandleChange: (data: {lat:number, lng: number}) => {
+                    setGeo(data)
+                },
+            },
         },
 
         {

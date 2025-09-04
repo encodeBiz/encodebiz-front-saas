@@ -16,13 +16,11 @@ type AutoCompletedInputProps = FieldProps & TextFieldProps & {
 };
 let resource: any
 const AddressInput: React.FC<AutoCompletedInputProps> = ({
-
   onHandleChange,
   ...props
 }) => {
   const { token } = useAuth()
   const t = useTranslations()
-
   const [field, meta, helper] = useField(props.name);
   const { touched, error } = meta
   const helperText = touched && error;
@@ -31,10 +29,11 @@ const AddressInput: React.FC<AutoCompletedInputProps> = ({
   const [inputValue, setInputValue] = useState<string>('');
   const [options, setOptions] = useState<Array<{ id: string, label: string, data: any }>>([])
 
-  const handleChange = (event: any, newValue: any) => {
-    helper.setValue(newValue)
-    if (typeof onHandleChange === 'function')
-      onHandleChange(newValue)
+  const handleChange = (event: any, newValue: any) => { 
+    helper.setValue(newValue.label)
+    if (typeof onHandleChange === 'function') {        
+      onHandleChange({lat:newValue?.data?.lat, lng:newValue?.data?.lng})
+    }
   };
 
   const handleInputChange = (event: any) => {
@@ -42,7 +41,7 @@ const AddressInput: React.FC<AutoCompletedInputProps> = ({
     let countryCode = 'ES'
     if (formStatus?.values?.country)
       countryCode = country.find(e => e.name === formStatus?.values?.country)?.code2 ?? 'ES'
-    console.log(newInputValue);
+
     setInputValue(newInputValue === 'undefined' ? '' : newInputValue);
     if (resource) clearTimeout(resource)
     setPending(true)
@@ -69,8 +68,9 @@ const AddressInput: React.FC<AutoCompletedInputProps> = ({
       loading={pending}
       onChange={handleChange}
       disableCloseOnSelect
-      getOptionLabel={(option) => option.label}
-      isOptionEqualToValue={(option, value) => option.id === value.id}
+      
+      //getOptionLabel={(option) => option.label}
+      isOptionEqualToValue={(option, value: any) => option.label === value}
       renderOption={(props, option, { selected }) => (
         <ListItem {...props} key={option.id}>
           {selected && <ListItemIcon><CheckCircleOutline /></ListItemIcon>}
