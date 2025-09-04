@@ -346,7 +346,7 @@
       "tab3": {
         "title": "Configurar Facturación",
         "btn": "Configurar Billing",
-        "advise":"Para configurar los metodos de pago es necesario abrir una ventana emergente, si al intentarlo, si navegador bloquea la acción, debe desbloquear e intentar de nuevo."
+        "advise":"Para configurar los metodos de pago es necesario abrir una ventana emergente, si al intentarlo el navegador bloquea la acción debes desbloquear e intentar de nuevo."
       },
       "tab4": {
         "title": "Suscripciones",

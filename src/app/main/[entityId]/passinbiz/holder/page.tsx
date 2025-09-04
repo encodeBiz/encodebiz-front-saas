@@ -88,7 +88,7 @@ export default function HolderList() {
         title={t('holders.revokeConfirmModalTitle')}
         description={t('holders.revokeConfirmModalTitle2')}
         textBtn={t('core.button.revoke')}
-        onOKAction={(args: { data: any }) => onAction(args.data, 'revoked', 'revoked')}
+        onOKAction={(args: { data: any }) => onAction(args.data, 'revoked')}
       />}
 
       {open.type === CommonModalType.REACTIVE && <ConfirmModal
@@ -115,7 +115,7 @@ export default function HolderList() {
         description={t('holders.archivedConfirmModalTitle2')}
         textBtn={t('core.label.archivedHolder')}
         icon={<ArchiveOutlined />}
-        onOKAction={(args: { data: any }) => onAction(args.data, 'archived', 'archived')}
+        onOKAction={(args: { data: any }) => onAction(args.data, 'archived')}
       />}
     </Container>
   );

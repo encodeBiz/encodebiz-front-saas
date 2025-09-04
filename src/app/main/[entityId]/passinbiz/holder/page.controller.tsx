@@ -357,7 +357,7 @@ export default function useHolderListController() {
   }
 
   /** */
-  const onAction = async (item: Holder | Array<Holder>, passStatus: string, status: string) => {
+  const onAction = async (item: Holder | Array<Holder>, passStatus?: string, status?: string) => {
     try {
       setRevoking(true)
       let ids = []
@@ -368,11 +368,17 @@ export default function useHolderListController() {
       }
 
       ids.forEach(async id => {
+        const update:any = {}
+        if(passStatus){
+          update['passStatus'] = passStatus
+        }
+        if(status){
+          update['status'] = status
+        }
         await updateHolder({
-          ...{} as any,
           id: id,
           entityId: currentEntity?.entity?.id,
-          passStatus, status,
+          ...update,
         }, token)
       });
 
