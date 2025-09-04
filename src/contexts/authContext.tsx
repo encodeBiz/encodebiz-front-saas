@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 import { createContext, useCallback, useEffect, useState } from "react";
 import { User } from "firebase/auth";
@@ -110,7 +111,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setPendAuth(true)
         const unsubscribe = subscribeToAuthChanges(watchSesionState);
         return () => unsubscribe(); // Cleanup on unmount
-    }, [watchSesionState]);
+    }, []);
 
     const authWithToken = async (authToken: string) => {
         await signInToken(authToken);

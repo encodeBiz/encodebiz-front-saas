@@ -226,7 +226,7 @@ export const useSettingEntityController = () => {
     };
 
 
-    const fetchData = useCallback(async () => {
+    const fetchData = async () => {
         try {
             const entity: IEntity = await fetchEntity(currentEntity?.entity.id as string)
             setInitialValues({
@@ -250,12 +250,12 @@ export const useSettingEntityController = () => {
             }
 
         }
-    }, [currentEntity?.entity.id, user?.email])
+    }
 
     useEffect(() => {
         if (currentEntity?.entity.id)
             fetchData()
-    }, [currentEntity?.entity.id, fetchData])
+    }, [currentEntity?.entity.id])
 
 
 

@@ -46,7 +46,7 @@ export default function AdminLayout({
             paddingTop: "100px",
             paddingBottom: "24px", px: 4
           }}>
-            {pendAuth && <PageLoader backdrop  type={'circular'} fullScreen />}
+            {pendAuth && <PageLoader backdrop   type={'circular'} fullScreen />}
             {children}
             <Onboarding />
           </Grid>

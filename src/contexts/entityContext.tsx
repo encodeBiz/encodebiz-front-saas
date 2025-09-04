@@ -61,6 +61,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
 
     const watchSesionState = useCallback(async (userAuth: User) => {
+         
         if (userAuth) {
             const entityList: Array<IUserEntity> = await fetchUserEntities(userAuth.uid)
 

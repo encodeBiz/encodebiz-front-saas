@@ -55,7 +55,7 @@ export async function sendFormContact(data: ContactFromModel): Promise<void> {
       const response: any = await httpClientFetchInstance.post(
         process.env.NEXT_PUBLIC_BACKEND_ENDPOINT_CONTACT as string,
         {
-          to: 'hola@encodebiz.com', //"receiver@sender.com"
+          to: process.env.NEXT_PUBLIC_EMAIL_CONTACT, //"receiver@sender.com"
           subject: data.subject,  //"Message title"
           type: 'CONTACT_ENCODEBIZ', //template typew
           replacements: data
