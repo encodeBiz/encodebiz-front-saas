@@ -10,11 +10,11 @@ import {
   Paper,
   Typography,
 } from '@mui/material';
-import { BaseButton } from '../buttons/BaseButton';
 import { useTranslations } from 'next-intl';
 import { IUserMedia } from '@/domain/core/IUserMedia';
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { BorderBox } from '../tabs/BorderBox';
+import { SassButton } from '../buttons/GenericButton';
 
 
 // A component that watches the form state
@@ -170,6 +170,7 @@ const GenericForm = <T extends Record<string, any>>({
       >
         {(formikProps: FormikProps<T>) => (
           <Form noValidate>
+           
             {activateWatchStatus && <FormStatusWatcher />}
             <Grid container spacing={3}>
               {fields.map((field, i) => {
@@ -197,14 +198,14 @@ const GenericForm = <T extends Record<string, any>>({
               <Grid sx={{ width: '100%' }}>
                 <Box display="flex" justifyContent="flex-end" gap={2}>
                   {onCancel && (
-                    <BaseButton sx={{ mt: 3, mb: 2, py: 1.5 }} onClick={onCancel} disabled={formikProps.isSubmitting || disabled} fullWidth={btnFullWidth} variant="outlined" color="primary" >
+                    <SassButton sx={{ mt: 3, mb: 2, py: 1.5 }} onClick={onCancel} disabled={formikProps.isSubmitting || disabled} fullWidth={btnFullWidth} variant="outlined" color="primary" >
                       {cancelButtonText}
-                    </BaseButton>
+                    </SassButton>
                   )}
 
-                  {!hideBtn && <BaseButton sx={{ mt: 3, mb: 2, py: 1.5 }} disabled={formikProps.isSubmitting || disabled || !formikProps.isValid} type="submit" fullWidth={btnFullWidth} variant="contained" color="primary" >
+                  {!hideBtn && <SassButton sx={{ mt: 3, mb: 2, py: 1.5 }} disabled={formikProps.isSubmitting || disabled || !formikProps.isValid} type="submit" fullWidth={btnFullWidth} variant="contained" color="primary" >
                     {formikProps.isSubmitting ? t('core.button.submitting') : submitButtonText}
-                  </BaseButton>}
+                  </SassButton>}
                 </Box>
               </Grid>
             </Grid>

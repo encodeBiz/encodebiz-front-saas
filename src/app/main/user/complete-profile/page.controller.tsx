@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 import * as Yup from 'yup';
-import { useState, ReactNode, useEffect, useCallback } from 'react';
+import { useState, ReactNode, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useTranslations } from 'next-intl';
 import { SxProps, Theme } from '@mui/material';
@@ -11,10 +12,8 @@ import { emailRule, requiredRule } from '@/config/yupRules';
 import { getUser } from '@/lib/firebase/authentication/login';
 import { User } from 'firebase/auth';
 import IUser from '@/domain/auth/IUser';
-import { useRouter } from 'nextjs-toploader/app';
 import { useEntity } from '@/hooks/useEntity';
 import { useLayout } from '@/hooks/useLayout';
-import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
 export interface UserFormValues {
     "uid": string
     "name": string
@@ -40,7 +39,7 @@ export const useUserProfileController = () => {
     const { changeLoaderState } = useLayout()
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
-    const { push } = useRouter()
+    const { navivateTo } = useLayout()
 
     const [initialValues, setInitialValues] = useState<UserFormValues>({
         uid: user?.uid as string | "",
@@ -145,10 +144,10 @@ export const useUserProfileController = () => {
     };
 
 
-    const checkProfile = useCallback(async () => {
+    const checkProfile = async () => {
         try {
             const userData: IUser = await fetchUserAccount(user?.uid as string)
-            if (userData.email) push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
+            if (userData.email) navivateTo(`/dashboard`)
         } catch (error) {
             if (error instanceof Error) {
                 showToast(error.message, 'error');
@@ -156,7 +155,7 @@ export const useUserProfileController = () => {
                 showToast(String(error), 'error');
             }
         }
-    }, [push, showToast, user?.uid])
+    }
 
     useEffect(() => {
         checkProfile()

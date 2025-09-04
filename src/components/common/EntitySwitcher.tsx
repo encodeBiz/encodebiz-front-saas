@@ -4,7 +4,7 @@ import React, { } from 'react';
 import { useTranslations } from 'next-intl';
 import {
   FormControl,
- 
+
   Select,
   MenuItem,
   SelectChangeEvent,
@@ -28,10 +28,7 @@ const EntitySwitcher: React.FC = () => {
   const { entityList, currentEntity, changeCurrentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
   const { user } = useAuth()
-
   const { push } = useRouter()
-
-
   const handleChange = (event: SelectChangeEvent) => {
     const newEntityId = event.target.value as string;
     if (newEntityId) {

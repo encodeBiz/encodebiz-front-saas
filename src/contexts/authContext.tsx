@@ -1,7 +1,7 @@
 'use client';
 import { createContext, useCallback, useEffect, useState } from "react";
 import { User } from "firebase/auth";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import IUser from "@/domain/auth/IUser";
 import { subscribeToAuthChanges } from "@/lib/firebase/authentication/stateChange";
@@ -25,11 +25,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [pendAuth, setPendAuth] = useState(true);
     const { push } = useRouter()
     const { showToast } = useToast()
-
     const searchParams = useSearchParams()
     const pathName = usePathname()
     const redirectUri = searchParams.get('redirect')
     const inPublicPage = pathName.startsWith('/auth')
+    const { entityId } = useParams<any>()
 
 
     /** Refresh User Data */
@@ -76,16 +76,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     ...userData,
                 })
 
-                if (!userData.completeProfile && isGoogle) {
+                if ((!userData.completeProfile && isGoogle) || userData.fullName?.toLocaleLowerCase() === 'guest') {
                     push(`/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`)
                 }
                 setUserAuth(userAuth)
                 if (redirectUri) push(redirectUri)
                 else {
-                    if (pathName === '/' || pathName === '/main' || pathName === '/main/core')
-                        push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/dashboard`)
+                    if (pathName === '/' || pathName === `/${MAIN_ROUTE}` || pathName === `/${MAIN_ROUTE}/${entityId}/${GENERAL_ROUTE}`)
+                        push(`/${MAIN_ROUTE}/${entityId}/dashboard`)
                     else {
-                        if (pathName === '/' || pathName === '/main' || pathName === '/main/user')
+                        if (pathName === '/' || pathName === `/${MAIN_ROUTE}` || pathName === `/${MAIN_ROUTE}/user`)
                             push(`/${MAIN_ROUTE}/${USER_ROUTE}/account`)
                     }
                 }
@@ -103,7 +103,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 showToast(String(error), 'error');
         }
 
-    }, [inPublicPage, pathName, push, redirectUri, showToast, updateUserData])
+    }, [inPublicPage, pathName, push, redirectUri, showToast, updateUserData, entityId])
 
 
     useEffect(() => {

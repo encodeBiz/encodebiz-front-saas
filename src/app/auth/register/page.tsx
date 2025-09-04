@@ -5,7 +5,6 @@ import {
     Container,
     Box,
     Typography,
-    Paper,
     Link
 } from '@mui/material';
 import { RegisterFormValues, useRegisterController } from './page.controller';
@@ -13,6 +12,7 @@ import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { useTranslations } from 'next-intl';
 import { useStyles } from './page.styles';
 import LocaleSwitcher from '@/components/common/LocaleSwitcher';
+import { BorderBox } from '@/components/common/tabs/BorderBox';
 
 
 const SignUpPage = () => {
@@ -25,7 +25,7 @@ const SignUpPage = () => {
             <Box sx={classes.locale}>
                 <LocaleSwitcher />
             </Box>
-            <Paper elevation={3} sx={classes.root}>
+            <BorderBox   sx={classes.root}>
                 <Box sx={classes.containerTop}>
                     <Typography variant="h4" component="h1" gutterBottom>
                         {t('core.signup.title')}
@@ -33,9 +33,7 @@ const SignUpPage = () => {
                     <Typography variant="body1" color="text.secondary">
                         {t('core.signup.subtitle')}
                     </Typography>
-                </Box>
-
-                
+                </Box>           
  
 
 
@@ -53,7 +51,7 @@ const SignUpPage = () => {
                         {t('core.signup.existAccount')} <Link href="/auth/login">{t('core.signup.signIn')}</Link>
                     </Typography>
                 </Box>
-            </Paper>
+            </BorderBox>
 
         </Container>
     );

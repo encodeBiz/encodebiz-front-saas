@@ -45,6 +45,7 @@ export interface IRowAction {
   label?: string
   onPress: (row: any) => void,
   allowItem: (row: any) => boolean,
+  bulk?: boolean
 }
 
 export const buildSearch = (term: string): Array<{
@@ -78,9 +79,9 @@ interface GenericTableProps<T> {
   title?: string;
   selectable?: boolean;
   onRowClick?: (row: T) => void;
-  onDelete?: (ids: (string | number)[]) => void;
+  onDelete?: (ids: T[]) => void;
   onEdit?: (row: T) => void;
-  onBulkAction?: (ids: (string | number)[]) => void;
+  onBulkAction?: (ids: T[]) => void;
   loading?: boolean;
   page?: number;
   rowsPerPage?: number;
@@ -118,7 +119,7 @@ export function GenericTable<T extends Record<string, any>>({
   // State management
   const [order, setOrder] = useState<'asc' | 'desc'>(sort?.orderDirection ?? 'asc');
   const [orderBy, setOrderBy] = useState<keyof T>(sort?.orderBy ?? keyField);
-  const [selected, setSelected] = useState<(string | number)[]>([]);
+  const [selected, setSelected] = useState<T[]>([]);
   const t = useTranslations()
   const [anchorEl, setAnchorEl] = React.useState<{ target: null | HTMLElement, key: string }>({ target: null, key: '' });
   const open = Boolean(anchorEl?.target);
@@ -176,7 +177,7 @@ export function GenericTable<T extends Record<string, any>>({
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = sortedData.map((row) => row[keyField]);
+      const newSelected = sortedData.map((row) => row);
       setSelected(newSelected);
       return;
     }
@@ -189,10 +190,10 @@ export function GenericTable<T extends Record<string, any>>({
     }
   };
 
-  const handleCheckboxClick = (event: React.MouseEvent, id: string | number) => {
+  const handleCheckboxClick = (event: React.MouseEvent, id: T) => {
     event.stopPropagation();
-    const selectedIndex = selected.indexOf(id);
-    let newSelected: (string | number)[] = [];
+    const selectedIndex = selected.findIndex(e => e[keyField] === id[keyField])
+    let newSelected: T[] = [];
 
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, id);
@@ -222,7 +223,7 @@ export function GenericTable<T extends Record<string, any>>({
       onRowsPerPageChange(newLimit);
   };
 
-  const isSelected = (id: string | number) => selected.indexOf(id) !== -1;
+  const isSelected = (id: T) => selected.findIndex(e => e[keyField] === id[keyField]) !== -1;
 
 
 
@@ -235,6 +236,7 @@ export function GenericTable<T extends Record<string, any>>({
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+
       <Box
         sx={{
           display: 'flex',
@@ -249,16 +251,16 @@ export function GenericTable<T extends Record<string, any>>({
       </Box>
 
       {selected.length > 0 && (
-        <Box sx={{ p: 1, bgcolor: 'action.selected', display: 'flex', gap: 1 }}>
+        <Box sx={{ p: 1,px:3, bgcolor: 'primary.light', display: 'flex', gap: 1 }}>
           <Typography sx={{ flex: 1, alignSelf: 'center' }}>
             {selected.length} {t('core.table.selected')}
           </Typography>
           {rowAction.map((e, i) => {
-            if (e.allowItem(e as any))
+            if (e.bulk)
               return (<Tooltip key={i} title={e.label}>
-                <IconButton onClick={() => e.onPress(selected as any)}>
-                  {e.icon}
-                </IconButton>
+                <SassButton startIcon={e.icon} color={e.color} variant='outlined' onClick={() => e.onPress(selected as T[])}>
+                  {e.label}
+                </SassButton>
               </Tooltip>)
             else return null
           })}
@@ -353,7 +355,7 @@ export function GenericTable<T extends Record<string, any>>({
               </TableRow>
             ) : (
               sortedData.map((row) => {
-                const isItemSelected = isSelected(row[keyField]);
+                const isItemSelected = isSelected(row);
                 return (
                   <TableRow
                     hover
@@ -369,7 +371,7 @@ export function GenericTable<T extends Record<string, any>>({
                         <Checkbox
                           color="primary"
                           checked={isItemSelected}
-                          onClick={(event) => handleCheckboxClick(event, row[keyField])}
+                          onClick={(event) => handleCheckboxClick(event, row)}
                         />
                       </TableCell>
                     )}

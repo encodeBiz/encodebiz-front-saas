@@ -6,15 +6,14 @@ import { IPlan } from '@/domain/core/IPlan';
 import usePricingCardController from './PricingCard.controller';
 import { BizType } from '@/domain/core/IService';
 import { useEntity } from '@/hooks/useEntity';
-import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
 import { CommonModalType } from '@/contexts/commonModalContext';
-import { useRouter } from 'nextjs-toploader/app';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import SheetModalModal from '../modals/SheetModal';
 import { SassButton } from '../buttons/GenericButton';
 import { Cancel, CheckOutlined } from '@mui/icons-material';
 import { useAppLocale } from '@/hooks/useAppLocale';
 import ContactModalModal from '../modals/ContactModal/ContactModal';
+import { useLayout } from '@/hooks/useLayout';
 
 const PlanCard = styled(Box)<{ highlighted?: boolean }>(({ theme, highlighted }) => ({
     maxWidth: 305,
@@ -47,7 +46,7 @@ export type PricingCardProps = IPlan & {
 export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthlyPrice, pricePerUse, description, name, maxHolders, features, highlighted = false, fromService, featuredList }) => {
     const t = useTranslations();
     const { ubSubcribeAction, handleSubscripe } = usePricingCardController(id as string, name as string, fromService);
-    const { push } = useRouter()
+    const { navivateTo } = useLayout()
     const { currentLocale } = useAppLocale()
     const { open, closeModal } = useCommonModal()
     const { entitySuscription, currentEntity } = useEntity()
@@ -60,9 +59,9 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
     useEffect(() => {
         const data: Array<{ text: string, link: string }> = []
         if (id !== 'fremium' && currentEntity?.entity.id) {
-            if (!currentEntity.entity.legal?.legalName) data.push({ text: t('salesPlan.configureLegal'), link: '/main/core/entity?tab=company' })
-            if (!currentEntity.entity.branding?.textColor) data.push({ text: t('salesPlan.configureBranding'), link: '/main/core/entity?tab=branding' })
-            if (!currentEntity?.entity?.billingConfig || currentEntity?.entity?.billingConfig?.payment_method?.length === 0) data.push({ text: t('salesPlan.configureBilling'), link: '/main/core/entity?tab=billing' })
+            if (!currentEntity.entity.legal?.legalName) data.push({ text: t('salesPlan.configureLegal'), link: '/entity?tab=company' })
+            if (!currentEntity.entity.branding?.textColor) data.push({ text: t('salesPlan.configureBranding'), link: '/entity?tab=branding' })
+            if (!currentEntity?.entity?.billingConfig || currentEntity?.entity?.billingConfig?.payment_method?.length === 0) data.push({ text: t('salesPlan.configureBilling'), link: '/entity?tab=billing' })
         }
         setItems(data)
     }, [currentEntity?.entity?.billingConfig, currentEntity?.entity?.billingConfig?.payment_method?.length, currentEntity?.entity.branding?.textColor, currentEntity?.entity.id, currentEntity?.entity.legal?.legalName, id, t])
@@ -140,9 +139,9 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
             onOKAction={() => {
                 closeModal(CommonModalType.BILLING)
                 if (items.length > 0)
-                    push(items[0].link)
+                    navivateTo(items[0].link)
                 else
-                    push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity`)
+                    navivateTo(`/dashboard`)
             }}
         />}
 

@@ -30,10 +30,11 @@ interface ConfirmProps {
     codeValidator?: boolean
     isLoading?: boolean
     cancelBtn?: boolean
+    icon?: React.ReactNode
     onOKAction: (args: any) => void
 
 }
-const ConfirmModal = ({ word, title, label, textBtn, description, isLoading = false, cancelBtn = true, codeValidator = false, onOKAction }: ConfirmProps): React.JSX.Element => {
+const ConfirmModal = ({ word, title, label, textBtn, icon = <TrashIcon />, description, isLoading = false, cancelBtn = true, codeValidator = false, onOKAction }: ConfirmProps): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const theme = useTheme()
     const [confirmationText, setConfirmationText] = useState('');
@@ -120,7 +121,7 @@ const ConfirmModal = ({ word, title, label, textBtn, description, isLoading = fa
                     color="error"
                     size='small'
                     variant="contained"
-                    startIcon={isLoading ? <CircularProgress size={20} /> : <TrashIcon />}
+                    startIcon={isLoading ? <CircularProgress size={20} /> : icon}
                 >
                     {textBtn ? textBtn : codeValidator ? t('core.button.submit') : t('core.button.delete')}
                 </SassButton>

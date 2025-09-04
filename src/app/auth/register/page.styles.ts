@@ -5,9 +5,9 @@ export const useStyles = (): Record<string, SxProps<Theme>> => ({
     p: 4,
     mt: 8,
     borderRadius: 2,
-    
+       bgcolor:(theme) => theme.palette.background.paper
   },
-  containerTop: { textAlign: 'center', mb: 4 },
+  containerTop: { textAlign: 'left', mb: 4 },
   fullWidth: { width: '100%' },
  locale:{
     position:{

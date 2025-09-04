@@ -4,12 +4,15 @@ import logo from '../../../../../public/assets/images/logo.png'
 import { SassButton } from "@/components/common/buttons/GenericButton"
 import { BorderBox } from "@/components/common/tabs/BorderBox"
 import { HealthAndSafetyOutlined, PaletteOutlined,  TextSnippetOutlined } from "@mui/icons-material"
-import { useRouter } from "nextjs-toploader/app"
-import { GENERAL_ROUTE, MAIN_ROUTE } from "@/config/routes"
+ 
+import { useLayout } from "@/hooks/useLayout"
+import { useCommonModal } from "@/hooks/useCommonModal"
+import { CommonModalType } from "@/contexts/commonModalContext"
 
 export const Card2 = ({ handleNext }: any) => {
     const theme = useTheme()
-    const { push } = useRouter()
+    const { navivateTo } = useLayout()
+    const { closeModal } = useCommonModal()
     return <Box display={'flex'} flexDirection={"column"} justifyContent={'space-between'} p={2} height={631}>
         <Box width={'100%'} display={'flex'} flexDirection={"column"} gap={2} justifyContent={'space-between'} alignItems={'flex-start'} >
             <Image
@@ -49,7 +52,8 @@ export const Card2 = ({ handleNext }: any) => {
         </Box>
         <Box  display={'flex'} flexDirection={"row"} justifyContent={'flex-end'} alignItems={'flex-end'} gap={4}>
             <SassButton sx={{ width: '420' }} size="small" onClick={() => {
-                push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity`)
+                navivateTo(`/entity`)
+                closeModal(CommonModalType.ONBOARDING)
             }} variant="contained" color="primary">Ir a Configurar Entidad</SassButton>
             <SassButton sx={{ width: '420' }} size="small" onClick={handleNext} variant="outlined" color="primary">Continuar</SassButton>
         </Box>

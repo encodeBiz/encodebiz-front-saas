@@ -4,8 +4,6 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import { useRouter } from 'nextjs-toploader/app';
-import { MAIN_ROUTE } from '@/config/routes';
 import { useEntity } from '@/hooks/useEntity';
 import { useStyles } from './ServiceList.styles';
 import { useAppLocale } from '@/hooks/useAppLocale';
@@ -14,6 +12,7 @@ import checkbiz from '../../../../../public/assets/images/checkbiz.svg'
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { useTheme } from '@mui/material';
+import { useLayout } from '@/hooks/useLayout';
 
 const icons = {
     'checkinbiz': checkbiz,
@@ -21,13 +20,13 @@ const icons = {
 }
 const ServiceList = () => {
     const theme = useTheme()
-    const { push } = useRouter()
+    const { navivateTo } = useLayout()
     const { entityServiceList } = useEntity()
     const styles = useStyles()
     const t = useTranslations()
     const { currentLocale } = useAppLocale()
     const handleActionClick = (id: any) => {
-        push(`/${MAIN_ROUTE}/${id}/onboarding`)
+        navivateTo(`/${id}/onboarding`)
     };
     if (entityServiceList.length > 0)
         return (

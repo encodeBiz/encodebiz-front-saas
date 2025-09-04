@@ -19,7 +19,8 @@ export interface IEvent {
     assignedStaff: string[]
     "isPublished": boolean
     "metadata": any
-
+    geo: { lat: number, lng: number }
     "city"?: string
     "country"?: string
+    language?: string
 }

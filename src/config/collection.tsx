@@ -9,5 +9,5 @@ export const collection = {
     USER_ENTITY_ROLES:'user_entity_roles',
     MEDIA:'media',
     INVOICES:'invoices',
-    WEBHOOK:'webhook'
+    WEBHOOK:'webhook_endpoints'
 }

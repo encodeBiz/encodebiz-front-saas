@@ -5,18 +5,19 @@ import { createContext, useEffect, useState, useCallback } from "react";
 import { subscribeToAuthChanges } from "@/lib/firebase/authentication/stateChange";
 import { User } from "firebase/auth";
 import IUserEntity from "@/domain/auth/IUserEntity";
-import { useRouter } from "nextjs-toploader/app";
 import { fetchUserEntities, saveStateCurrentEntity, watchEntityChange } from "@/services/common/entity.service";
 import IUser from "@/domain/auth/IUser";
 import { fetchUserAccount } from "@/services/common/account.service";
-import { MAIN_ROUTE, GENERAL_ROUTE } from "@/config/routes";
+import { GENERAL_ROUTE, MAIN_ROUTE } from "@/config/routes";
 import { BizType, IService } from "@/domain/core/IService";
 import { fetchServiceList, fetchSuscriptionByEntity, watchSubscrptionEntityChange } from "@/services/common/subscription.service";
 import { IEntitySuscription } from "@/domain/auth/ISubscription";
 import { useToast } from "@/hooks/useToast";
 import { Unsubscribe } from "firebase/firestore";
 import IEntity from "@/domain/auth/IEntity";
-
+import { useParams, usePathname } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
+ 
 interface EntityContextType {
     currentEntity: IUserEntity | undefined;
     entityList: Array<IUserEntity> | [];
@@ -37,14 +38,16 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     const [entitySuscription, setEntitySuscription] = useState<Array<IEntitySuscription>>([])
     const { push } = useRouter()
     const { showToast } = useToast()
+    const pathname = usePathname()
 
-
+    const { entityId } = useParams<any>()
+ 
     const watchServiceAccess = useCallback(async (serviceId: BizType) => {
         const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
         const check = serviceSuscription.find(e => e.serviceId === serviceId && currentEntity?.entity.id === e.entityId)
         if (!check) {
             showToast('No tiene permiso para acceder a este recurso', 'info')
-            push(`/${MAIN_ROUTE}/${serviceId}/onboarding`)
+            push(`/${MAIN_ROUTE}/${entityId}/${serviceId}/onboarding`)
         }
     }, [currentEntity?.entity.id])
 
@@ -67,7 +70,16 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
                     entityList.splice(0, 1, item)
                 }
                 setEntityList(entityList)
-                setCurrentEntity(entityList.find(e => e.isActive) as IUserEntity)
+                let _currentEntity: IUserEntity | null
+
+
+                if (entityId) {
+                    changeCurrentEntity(entityId, userAuth?.uid)
+                } else {
+                    _currentEntity = entityList.find(e => e.isActive) as IUserEntity
+                    setCurrentEntity(_currentEntity)
+                    push(`/${MAIN_ROUTE}/${_currentEntity.entity.id}/dashboard`)
+                }
 
             } else {
                 try {
@@ -102,7 +114,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     }, [])
 
 
-    const changeCurrentEntity = async (id: string, userId: string, callback?: () => void) => {
+    const changeCurrentEntity = async (id: string, userId: string, callback?: () => void,) => {
         const entityList: Array<IUserEntity> = await fetchUserEntities(userId)
         const current: IUserEntity = entityList.find(e => e.entity.id === id) as IUserEntity
         if (current) {
@@ -116,6 +128,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
             })
             setEntityList(updatedList)
             setCurrentEntity(current)
+            push(`${pathname.replace(entityId, current.entity.id as string)}`)
             await saveStateCurrentEntity(updatedList)
 
             setTimeout(() => {
@@ -133,11 +146,12 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
     const watchSubcriptionState = () => {
         watchSubscrptionEntityChange(currentEntity?.entity.id as string, async () => {
-            await fetchEntitySuscription()
+            await fetchEntitySuscription()       
         })
     }
 
     const watchEntityState = async (entity: IEntity) => {
+         
         const item = entityList.find(e => e.entity.id == entity.id && e.entity.active)
         const itemIndex = entityList.findIndex(e => e.entity.id == entity.id && e.entity.active)
         if (item) {

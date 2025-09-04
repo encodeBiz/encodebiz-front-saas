@@ -38,6 +38,7 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import EntitySwitcher from '@/components/common/EntitySwitcher';
+import { CommonModalType } from '@/contexts/commonModalContext';
 
 
 export default function Header({ drawerWidth }: { drawerWidth: number }) {
@@ -150,7 +151,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
 
 
 
-      <MenuItem onClick={() => openModal()}>
+      <MenuItem onClick={() => openModal(CommonModalType.ONBOARDING)}>
         <IconButton
           size="large"
           aria-label="account of current user"

@@ -45,7 +45,6 @@ const FormEntityPage = () => {
             >
                 <Box p={4}>
                     <GenericForm<EntityFormValues>
-
                         column={2}
                         initialValues={initialValues}
                         validationSchema={validationSchema}
@@ -53,7 +52,7 @@ const FormEntityPage = () => {
                         fields={fields as FormField[]}
                         activateWatchStatus
                         hideBtn
-                        formRef={formRef}
+                        formRef={formRef}                        
                     />
                 </Box>
             </HeaderPage>

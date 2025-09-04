@@ -28,7 +28,7 @@
         "home": "Inicio",
         "Integration": "Integraciones",
         "general": "General",
-        "CheckinBiz": "CheckinBiz",
+        "CheckBiz": "CheckBiz",
         "PassBiz": "PassBiz",
         "Customers": "Clientes",
         "Reports": "Reportes",
@@ -81,6 +81,8 @@
       "empthytext": "No existen elementos para mostrar en este momento"
     },
     "label": {
+      "text":"Textos",
+      "language":"Idioma",
       "filename": "Nombre de Archivo",
       "default": "Por defecto",
       "state": "Estado",
@@ -108,10 +110,13 @@
       "passStatus": "Estado del pase",
       "pending": "Pendiente",
       "revoke": "Revocar",
+      "reactive": "Reactivar",
+      "archivedHolder":"Archivar",
       "firstName": "Nombre",
       "status": "Estado",
       "customFields": "Campos personalizados",
       "staff": "Personal de apoyo",
+      "typingAddress":"Escribe una dirección",
       "staff1": "Personal",
       "resend": "Reenviar",
       "draft": "Borrador",
@@ -132,7 +137,7 @@
       "enable": "Habilitado",
       "noenable": "No Habilitado",
       "subscribedEvents": "Eventos",
-      "urlWebbhook":"URL de ejecución",
+      "urlWebbhook": "URL de ejecución",
       "endDate": "Fecha de finalización",
       "startDate": "Fecha de inicio",
       "time": "Hora",
@@ -229,7 +234,7 @@
     },
     "formValidatorMessages": {
       "required": "Este campo es requerido",
-      "minArray":"Debe seleccionar al menos 1 elemento",
+      "minArray": "Debe seleccionar al menos 1 elemento",
       "email": "Este campo es debe ser un correo electrónico válido",
       "password": "La contraseña es demasiado corta: debe tener un mínimo de 8 caracteres.",
       "passwordMatch": "La contraseñas no coinciden",
@@ -253,7 +258,7 @@
     "signin": {
       "title": "Iniciar sesión",
       "signup": "Iniciar sesión",
-      "subtitle": "Inicia sesióny unete a EncodeBiz Saas",
+      "subtitle": "Accede a tu panel de encodeBiz SaaS",
       "or": "O",
       "google": "Unete con Google",
       "facebook": "Unete con Facebook",
@@ -340,7 +345,8 @@
       },
       "tab3": {
         "title": "Configurar Facturación",
-        "btn": "Configurar Billing"
+        "btn": "Configurar Billing",
+        "advise":"Para configurar los metodos de pago es necesario abrir una ventana emergente, si al intentarlo el navegador bloquea la acción debes desbloquear e intentar de nuevo."
       },
       "tab4": {
         "title": "Suscripciones",
@@ -357,6 +363,13 @@
     }
   },
   "onboarding": {
+    "presentation": {
+      "card1":{
+
+      },
+      "title": "Webhook",
+      "text": "Webhook asociados a los eventos disponibles en los servicios."
+    },
     "passinbiz": {
       "tab1Title": "¿Como empiezo?",
       "tab2Title": "¿Que resolvemos?",
@@ -370,7 +383,7 @@
       "tab2Title": "¿Que resolvemos?",
       "stepsTitle": "Guía de configuración",
       "stepsDesc": "Sigue los pasos de esta guía para configurar el servicio de PassBiz.",
-      "targetTitle": "Resuelve con PassBiz lo que antes era un problema:",
+      "targetTitle": "Resuelve con CheckBiz lo que antes era un problema:",
       "targetDesc": "Sigue los pasos de esta guía para configurar el servicio de PassBiz."
     }
   },
@@ -443,15 +456,18 @@
     "pending": "Pending",
     "revoked": "Revocado",
     "failed": "Fallo",
+    "archived": "Archivado",
     "active": "Activo",
     "import": "Importar",
     "description": "Rellene los campos para registrar el pase digital",
-    "revokeConfirmModalTitle": "Revocar este pase digital",
-    "revokeConfirmModalTitle2": "Esta acción no se puede deshacer. Revocará  permanentemente  este pase digital",
-    "reactiveConfirmModalTitle": "Reactivar este pase digital",
-    "reactiveConfirmModalTitle2": "Esta acción no se puede deshacer. Reactivará permanentemente  este pase digital",
-    "sendConfirmModalTitle": "Relanzar pase",
-    "sendConfirmModalTitle2": "Esta acción no se puede deshacer. Relanzará este pase digital nuevamente",
+    "revokeConfirmModalTitle": "Revocar pase(s) digital(es)",
+    "revokeConfirmModalTitle2": "Esta acción no se puede deshacer. Revocará  permanentemente el/los pase(s) digital(es)",
+    "reactiveConfirmModalTitle": "Reactivar pase(s) digital(es)",
+    "reactiveConfirmModalTitle2": "Esta acción no se puede deshacer. Reactivará permanentemente el/los pase(s) digital(es)",
+    "sendConfirmModalTitle": "Relanzar pase(s) digital(es)",
+    "sendConfirmModalTitle2": "Esta acción no se puede deshacer. Relanzará  el/los pase(s) digital(es) nuevamente",
+    "archivedConfirmModalTitle": "Archivar pase(s) digital(es)",
+    "archivedConfirmModalTitle2": "Esta acción no se puede deshacer. Archivará  el/los pase(s) digital(es) nuevamente",
     "filter": {
       "email": "Correo electrónico",
       "state": "Estado"
