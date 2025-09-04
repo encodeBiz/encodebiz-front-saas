@@ -69,7 +69,6 @@ const AddressInput: React.FC<AutoCompletedInputProps> = ({ onHandleChange, ...pr
 
   useEffect(() => {
     return () => {
-      // @ts-ignore
       debouncedSearch?.cancel?.();
     };
   }, [debouncedSearch]);
