@@ -155,11 +155,7 @@ export default function useIEventListController() {
       minWidth: 170,
       format: (value, row) => <Typography sx={{ textTransform: 'capitalize' }}>{formatDateInSpanish(new Date(row.date))}</Typography>,
     },
-    {
-      id: 'location',
-      label: t("core.label.location"),
-      minWidth: 170,
-    },
+     
     {
       id: 'address',
       label: t("core.label.address"),
