@@ -45,7 +45,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
     const watchServiceAccess = useCallback(async (serviceId: BizType) => {
         const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
-        const check = serviceSuscription.find(e => e.serviceId === serviceId && currentEntity?.entity.id === e.entityId)
+        const check = serviceSuscription.find(e => e.serviceId === serviceId && currentEntity?.entity.id === e.entityId  && e.status !== "cancelled" && e.status !== "pending-pay")
         if (!check) {
             showToast('No tiene permiso para acceder a este recurso', 'info')
             push(`/${MAIN_ROUTE}/${entityId}/${serviceId}/onboarding`)

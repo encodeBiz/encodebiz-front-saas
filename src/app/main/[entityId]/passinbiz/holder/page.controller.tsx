@@ -274,7 +274,7 @@ export default function useHolderListController() {
     if (currentEntity?.entity?.id) {
       watchServiceAccess('passinbiz')
     }
-  }, [currentEntity?.entity?.id, watchServiceAccess])
+  }, [currentEntity?.entity?.id])
 
   useEffect(() => {
     if (currentEntity?.entity?.id) {

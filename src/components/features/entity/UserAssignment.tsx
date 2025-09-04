@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
     Box,
     Typography,
     TextField,
-    Autocomplete,
     Dialog,
     DialogTitle,
     DialogContent,
@@ -49,70 +48,51 @@ export interface EntityCollaboratorData {
 }
 export interface UserAssignmentProps {
     project: EntityCollaboratorData
-    users: Array<ICollaborator>
     onAssign: ({
-        userId,
+        email,
         role,
-        projectId
+        entityId
     }: {
-        userId: string,
+        email: string,
         role: string,
-        projectId: string
+        entityId: string
     }) => void
     onRemove: ({
         userId,
-        projectId
+        entityId
     }: {
         userId: string,
-        projectId: string
+        entityId: string
     }) => void
     currentUser: IUser
     proccesing?: boolean
 }
-const UserAssignment = ({ project, users, onAssign, onRemove, currentUser, proccesing = false }: UserAssignmentProps) => {
+const UserAssignment = ({ project, onAssign, onRemove, currentUser, proccesing = false }: UserAssignmentProps) => {
     const [openModalAdd, setOpenModalAdd] = useState(false);
-    const [searchInput, setSearchInput] = useState('');
-    const [selectedUser, setSelectedUser] = useState<ICollaborator | null>();
+     
+    const [email, setEmail] = useState<string>();
     const [selectedRole, setSelectedRole] = useState('write');
-    const [filteredUsers, setFilteredUsers] = useState<Array<ICollaborator>>([]);
     const t = useTranslations()
     const { openModal, closeModal, open } = useCommonModal()
     const { user } = useAuth()
     const theme = useTheme()
 
     const { currentEntity } = useEntity()
-    useEffect(() => {
-        // Filter out users already assigned to the project
-        const assignedUserIds = project.collaborators.map(c => c.user.id);
-        const availableUsers = users.filter(user =>
-            !assignedUserIds.includes(user.user.id) &&
-            user.user.id !== currentUser.id
-        );
-
-
-        // Further filter by search input
-        const filtered = availableUsers.filter(user =>
-            user.user.fullName.toLowerCase().includes(searchInput.toLowerCase()) ||
-            user.user.email.toLowerCase().includes(searchInput.toLowerCase())
-        );
-
-        setFilteredUsers(filtered);
-    }, [users, project.collaborators, searchInput, currentUser]);
+  
 
     const handleOpen = () => setOpenModalAdd(true);
     const handleClose = () => {
         setOpenModalAdd(false);
-        setSearchInput('');
-        setSelectedUser(null);
+    
         closeModal()
     };
 
     const handleAssign = () => {
-        if (selectedUser) {
+        if (email) {
             onAssign({
-                userId: selectedUser.user.id as string,
+                email: email as string,
                 role: selectedRole,
-                projectId: project.id
+                entityId: project.id
             });
             handleClose();
         }
@@ -121,7 +101,7 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser, procc
     const handleRemove = (userId: string) => {
         onRemove({
             userId,
-            projectId: project.id
+            entityId: project.id
         });
     };
 
@@ -165,7 +145,7 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser, procc
                                     <ListItemText
                                         primary={collaborator.user.fullName}
                                         secondary={
-                                            t('core.label.' + collaborator.role)
+                                            t('core.label.' + (collaborator.user.fullName==='Guest'?'guest':collaborator.role))
                                         }
                                     />
                                 </ListItem>
@@ -190,30 +170,15 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser, procc
                 </DialogTitle>
                 <DialogContent>
                     <BorderBox sx={{ mt: 2, p: 4 }}>
-                        <CustomTypography sx={{mb:2}}>{t('colaborators.invite')}</CustomTypography>
-                        <Autocomplete
-                            options={filteredUsers}
-                            getOptionLabel={(option) => `${option.user.fullName} (${option.user.email})`}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    label={t('core.label.email')}
-                                    fullWidth
-                                    value={searchInput}
-                                    onChange={(e) => setSearchInput(e.target.value)}
-                                />
-                            )}
-                            renderOption={(props, option) => (
-                                <Box component="li" {...props}>
-                                    <Avatar src={option.user.phoneNumber} sx={{ width: 24, height: 24, mr: 1 }} />
-                                    {option.user.fullName} ({option.user.email})
-                                </Box>
-                            )}
-                            onChange={(event, newValue) => setSelectedUser(newValue)}
-                            value={selectedUser}
-                            isOptionEqualToValue={(option, value) => option.user.id === value.user.id}
-                        />
+                        <CustomTypography sx={{ mb: 2 }}>{t('colaborators.invite')}</CustomTypography>
 
+                        <FormControl fullWidth sx={{ mt: 3 }}>
+                             <TextField
+                                label={t('core.label.email')}
+                                value={email ?? ``}
+                                onChange={(e) => setEmail(e.target.value)} />
+
+                        </FormControl>
                         <FormControl fullWidth sx={{ mt: 3 }}>
                             <InputLabel id="role-select-label">{t('core.label.role')}</InputLabel>
                             <Select
@@ -237,7 +202,7 @@ const UserAssignment = ({ project, users, onAssign, onRemove, currentUser, procc
                         onClick={handleAssign}
                         variant="contained"
                         size='small'
-                        disabled={!selectedUser}
+                        disabled={!email || !selectedRole}
                     >
                         {t('core.button.add')}
                     </SassButton>

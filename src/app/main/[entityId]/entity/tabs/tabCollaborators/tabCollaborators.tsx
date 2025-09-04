@@ -10,7 +10,7 @@ import { useTranslations } from 'next-intl';
 
 const CollaboratorsPreferencesPage = () => {
 
-    const { handleAssign, handleRemove, users, currentProject, loading } = useCollaboratorsController();
+    const { handleAssign, handleRemove, currentProject, loading } = useCollaboratorsController();
     const { user } = useAuth()
     const t = useTranslations();
 
@@ -22,7 +22,7 @@ const CollaboratorsPreferencesPage = () => {
             </Box>
             <UserAssignment
                 project={currentProject as EntityCollaboratorData}
-                users={users}
+               
                 onAssign={handleAssign}
                 onRemove={handleRemove}
                 proccesing={loading}

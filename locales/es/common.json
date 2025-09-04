@@ -103,6 +103,7 @@
       "events": "Eventos",
       "credential": "Credencial",
       "admin": "Administrador",
+      "guest":"Invitado",
       "select": "Seleccionar",
       "typePass": "Tipo de pase",
       "credencial": "Credenciales",
