@@ -3,10 +3,13 @@ import Image from "next/image"
 import logo from '../../../../../public/assets/images/logo.png'
 import { SassButton } from "@/components/common/buttons/GenericButton"
 import { useLayout } from "@/hooks/useLayout"
+import { useCommonModal } from "@/hooks/useCommonModal"
+import { CommonModalType } from "@/contexts/commonModalContext"
 
 export const Card3 = ({ handleNext }: any) => {
     const theme = useTheme()
     const { navivateTo } = useLayout()
+    const { closeModal } = useCommonModal()
     return <Box display={'flex'} flexDirection={"column"} justifyContent={'space-between'} p={2} height={631}>
         <Box width={'100%'} display={'flex'} flexDirection={"column"} gap={2} justifyContent={'space-between'} alignItems={'flex-start'} >
             <Image
@@ -71,6 +74,7 @@ export const Card3 = ({ handleNext }: any) => {
                         <Box display={'flex'} flexDirection={"column"} justifyContent={'flex-end'} alignItems={'flex-end'} gap={4}>
                             <SassButton fullWidth sx={{ width: '420' }} size="small" onClick={() => {
                                 navivateTo(`/entity`)
+                                closeModal(CommonModalType.ONBOARDING)
                             }} variant="contained" color="primary">Ir a Configurar Entidad</SassButton>
                             <SassButton fullWidth sx={{ width: '420' }} size="small" onClick={handleNext} variant="outlined" color="primary">Configurar mas tarde</SassButton>
                         </Box>

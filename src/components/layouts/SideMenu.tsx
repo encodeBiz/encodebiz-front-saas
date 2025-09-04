@@ -71,7 +71,7 @@ const CustomListItemButton = ({ children, item, subItem = false, handleSubMenuTo
       if (typeof handleSubMenuToggle === 'function' && item.id)
         handleSubMenuToggle(item.id)
       else {
-        navivateTo(item.link)
+        navivateTo(item.link, true)
       }
     }}
     selected={pathname === item.link}>
@@ -176,7 +176,7 @@ export default function SideMenu() {
                     </ListItem>
                     <Collapse in={openSubMenu[item.id]} timeout="auto" unmountOnExit>
                       <List component="div" disablePadding>
-                        {item.subMenu.map((e: any, index: number) => <ListItem onClick={() => navivateTo(e.link)} key={i + '-' + index} disablePadding>
+                        {item.subMenu.map((e: any, index: number) => <ListItem onClick={() => navivateTo(e.link, true)} key={i + '-' + index} disablePadding>
                           <CustomListItemButton subItem item={e} />
                         </ListItem>)}
                       </List>
