@@ -73,7 +73,7 @@ export const Card3 = ({ handleNext }: any) => {
                     <Box p={4} display={'flex'} flexDirection={"column"} gap={2} justifyContent={'center'} alignItems={'center'}  >
                         <Box display={'flex'} flexDirection={"column"} justifyContent={'flex-end'} alignItems={'flex-end'} gap={4}>
                             <SassButton fullWidth sx={{ width: '420' }} size="small" onClick={() => {
-                                navivateTo(`/entity`)
+                                navivateTo(`/entity?tab=company`)
                                 closeModal(CommonModalType.ONBOARDING)
                             }} variant="contained" color="primary">Ir a Configurar Entidad</SassButton>
                             <SassButton fullWidth sx={{ width: '420' }} size="small" onClick={handleNext} variant="outlined" color="primary">Configurar mas tarde</SassButton>

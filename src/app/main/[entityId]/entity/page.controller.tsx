@@ -21,6 +21,7 @@ export type TabItem = {
     content: ReactNode;
     disabled?: boolean;
     sx?: SxProps<Theme>;
+    id?:string
 };
 
 export const useSettingEntityController = () => {

@@ -101,6 +101,19 @@ export async function createEntity(data: EntityFormValues | any, token: string) 
   }
 }
 
+export async function updateExtraEntity(
+  data: Partial<IEntity> | any,
+
+) {
+  await updateDocument<IEntity>({
+    collection: collection.ENTITIES,
+    data: {
+      language: data.language,
+    },
+    id: data.id as string,
+  });
+}
+
 export async function updateEntity(
   data: EntityUpdatedFormValues | any,
   token: string

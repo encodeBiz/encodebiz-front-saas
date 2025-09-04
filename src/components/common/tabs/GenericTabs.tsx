@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Box, Tabs, Tab } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { GenericTabsProps, TabsOrientation } from './BaseTabs';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { useRouter } from 'nextjs-toploader/app';
 
 
 interface StyledTabPanelProps {
@@ -36,7 +38,9 @@ const GenericTabs: React.FC<GenericTabsProps> = ({
     sx = [],
 }) => {
     const [currentTab, setCurrentTab] = useState(defaultTab);
-
+    const pathname = usePathname()
+    const searchParams = useSearchParams()
+     const router = useRouter()
     const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
         setCurrentTab(newValue);
         if (onChange) onChange(newValue);
@@ -75,6 +79,11 @@ const GenericTabs: React.FC<GenericTabsProps> = ({
                 >
                     {tabs.map((tab, index) => (
                         <Tab
+                            onClick={() => {
+                                const params = new URLSearchParams(searchParams.toString())
+                                params.set('tab', tab.id)
+                                router.push(pathname + '?' + params.toString())
+                            }}
                             key={`tab-${index}`}
                             label={tab.label}
                             icon={React.isValidElement(tab.icon) || typeof tab.icon === 'string' ? tab.icon : undefined}
@@ -98,7 +107,7 @@ const GenericTabs: React.FC<GenericTabsProps> = ({
 
                 <Box flexGrow={1}>
                     {tabs.map((tab, index) => (
-                        <TabPanel key={`tabpanel-${index}`} value={currentTab} index={index} sx={{ pl: 8, pr: 8, background:(theme)=>theme.palette.background.paper }}>
+                        <TabPanel key={`tabpanel-${index}`} value={currentTab} index={index} sx={{ pl: 8, pr: 8, background: (theme) => theme.palette.background.paper }}>
                             {tab.content}
                         </TabPanel>
                     ))}
