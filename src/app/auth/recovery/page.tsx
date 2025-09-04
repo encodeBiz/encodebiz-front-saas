@@ -16,6 +16,7 @@ import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { useRouter } from 'nextjs-toploader/app';
+import { BorderBox } from '@/components/common/tabs/BorderBox';
 
 
 const RecoveryPage = () => {
@@ -30,7 +31,7 @@ const RecoveryPage = () => {
             <Box sx={classes.locale}>
                 <LocaleSwitcher />
             </Box>
-            <Paper elevation={3} sx={classes.root}>
+            <BorderBox   sx={classes.root}>
                 <Box sx={classes.containerTop}>
                     <Typography variant="h4" component="h1" gutterBottom>
                         {t('core.recovery.title')}
@@ -60,7 +61,7 @@ const RecoveryPage = () => {
                         {t('core.recovery.existAccount')} <Link href="/auth/login">{t('core.recovery.signin')}</Link>
                     </Typography>
                 </Box>
-            </Paper>
+            </BorderBox>
 
             {open.open && <ConfirmModal
                 title={t('core.recovery.modalTitle')}

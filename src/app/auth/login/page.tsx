@@ -19,6 +19,8 @@ import { useTranslations } from 'next-intl';
 import { useStyles } from './page.styles';
 import { BaseButton } from '@/components/common/buttons/BaseButton';
 import LocaleSwitcher from '@/components/common/LocaleSwitcher';
+import { SassButton } from '@/components/common/buttons/GenericButton';
+import { BorderBox } from '@/components/common/tabs/BorderBox';
 
 
 const SignInPage = () => {
@@ -27,11 +29,11 @@ const SignInPage = () => {
     const classes = useStyles();
 
     return (
-        <Container maxWidth="sm">
+        <Container sx={{display:'flex', justifyItems:'center', alignItems:'center',  bgcolor:(theme) => theme.palette.background.paper}} maxWidth="sm">
             <Box sx={classes.locale}>
                 <LocaleSwitcher />
             </Box>
-            <Paper elevation={3} sx={classes.root}>
+            <BorderBox sx={classes.root}>
                 <Box sx={classes.containerTop}>
                     <Typography variant="h4" component="h1" gutterBottom>
                         {t('core.signin.title')}
@@ -43,9 +45,9 @@ const SignInPage = () => {
 
                 <Grid container spacing={2} sx={classes.fullWidth}>
                     <Grid size={{ xs: 12, sm: 12 }} sx={classes.fullWidth}>
-                        <BaseButton fullWidth variant="outlined" startIcon={<GoogleIcon color="primary" />} onClick={() => signInWithGoogle()}>
+                        <SassButton fullWidth variant="contained" color='secondary' startIcon={<GoogleIcon color="primary" />} onClick={() => signInWithGoogle()}>
                             {t('core.signin.google')}
-                        </BaseButton>
+                        </SassButton>
                     </Grid>
 
                 </Grid>
@@ -74,7 +76,7 @@ const SignInPage = () => {
                         {t('core.signin.noAccount')} <Link href="/auth/register">{t('core.signup.signup')}</Link>
                     </Typography>
                 </Box>
-            </Paper>
+            </BorderBox>
 
         </Container>
     );

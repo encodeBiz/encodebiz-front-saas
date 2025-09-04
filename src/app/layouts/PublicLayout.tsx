@@ -10,12 +10,11 @@ export default function PublicLayout({
  
   return (
 
-    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column',justifyItems:'center',justifyContent:'center', alignItems:'center',   minHeight: '100vh',  bgcolor:(theme) => theme.palette.background.paper }}>
       <CssBaseline />
-       
-        <Grid container spacing={3}>
+        
           {children}
-        </Grid>
+       
      
     </Box>
 
