@@ -114,7 +114,7 @@ export default function useStaffListController() {
       label: t('core.button.delete'),
       allowItem: () => true,
       showBulk: true,
-      onPress: (item: IStaff) => openModal(CommonModalType.DELETE, { data:item }),
+      onPress: (item: IStaff) => openModal(CommonModalType.DELETE, { data: item }),
       bulk: true
     },
     {
@@ -233,13 +233,11 @@ export default function useStaffListController() {
 
   const inicializeFilter = (params: string) => {
     try {
-      const dataList = JSON.parse(localStorage.getItem('staffIndex') as string)
-      setItems(dataList.items ?? []);
-      setItemsHistory(dataList.itemsHistory ?? []);
-      const filters = decodeFromBase64(params as string)
+      const filters: IFilterParams = decodeFromBase64(params as string)
+      filters.params.startAfter = null
       setFilterParams(filters)
       setLoading(false)
-      //localStorage.removeItem('holderIndex')
+      fetchingData(filters)
     } catch (error) {
       showToast(String(error as any), 'error')
     }
@@ -302,7 +300,7 @@ export default function useStaffListController() {
 
   const [deleting, setDeleting] = useState(false)
   const onDelete = async (item: IStaff | Array<IStaff>) => {
-     
+
     try {
       setDeleting(true)
       let ids = []

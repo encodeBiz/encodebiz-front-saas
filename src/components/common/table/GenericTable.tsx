@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client"
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Table,
   TableBody,
@@ -381,8 +381,15 @@ export function GenericTable<T extends Record<string, any>>({
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (
-                        <TableCell key={column.id as string} align={column.align}>
-                          {column.format ? column.format(value, row) : value}
+                        <TableCell
+                          sx={!column.format?{
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            maxWidth: 200
+                          }:{}}
+                          key={column.id as string} align={column.align}>
+                          {column.format ? column.format(value, row) : <Tooltip title={value}>{value}</Tooltip>}
                         </TableCell>
                       );
                     })}

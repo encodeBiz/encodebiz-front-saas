@@ -182,7 +182,7 @@ export default function useIEventListController() {
     if (filterParams.params.filters.find((e: any) => e.field === 'name' && e.value === ''))
       filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== 'name')
 
-
+     
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any) }).then(async res => {
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
@@ -210,14 +210,12 @@ export default function useIEventListController() {
 
 
   const inicializeFilter = (params: string) => {
-    try {
-      const dataList = JSON.parse(localStorage.getItem('eventIndex') as string)
-      setItems(dataList.items ?? []);
-      setItemsHistory(dataList.itemsHistory ?? []);
-      const filters = decodeFromBase64(params as string)
+    try {     
+      const filters:IFilterParams = decodeFromBase64(params as string)
+      filters.params.startAfter=null
       setFilterParams(filters)
-      setLoading(false)
-      //localStorage.removeItem('holderIndex')
+      setLoading(false)  
+      fetchingData(filters)
     } catch (error) {
       showToast(String(error as any), 'error')
     }
@@ -301,7 +299,7 @@ export default function useIEventListController() {
     if (currentEntity?.entity?.id) {
       watchServiceAccess('passinbiz')
     }
-  }, [currentEntity?.entity?.id, watchServiceAccess])
+  }, [currentEntity?.entity?.id])
 
   useEffect(() => {
     if (currentEntity?.entity?.id) {

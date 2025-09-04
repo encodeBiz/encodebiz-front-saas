@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";

@@ -12,7 +12,6 @@ import { useLayout } from "@/hooks/useLayout";
 import { Box } from "@mui/material";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
-import { format_date } from "@/lib/common/Date";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { search as searchEvent } from "@/services/passinbiz/event.service";
 import { CustomChip } from "@/components/common/table/CustomChip";
@@ -112,8 +111,8 @@ export default function useHolderListController() {
       icon: <ArchiveOutlined color="warning" />,
       label: t('core.label.archivedHolder'),
       bulk: true,
-      showBulk: true,
-      allowItem: () => true,
+      showBulk: filterParams.filter.passStatus!=='archived',
+      allowItem: (item: Holder) => item.passStatus!=='archived',
       onPress: (item: Holder) => openModal(CommonModalType.ARCHIVED, { data: item })
     },
 
@@ -229,7 +228,7 @@ export default function useHolderListController() {
       />,
     },
 
-     
+
   ];
 
 
@@ -290,13 +289,11 @@ export default function useHolderListController() {
 
   const inicializeFilter = (params: string) => {
     try {
-      const dataList = JSON.parse(localStorage.getItem('holderIndex') as string)
-      setItems(dataList.items ?? []);
-      setItemsHistory(dataList.itemsHistory ?? []);
-      const filters = decodeFromBase64(params as string)
+      const filters: IFilterParams = decodeFromBase64(params as string)
+      filters.params.startAfter = null
       setFilterParams(filters)
       setLoading(false)
-      //localStorage.removeItem('holderIndex')
+      fetchingData(filters)
     } catch (error) {
       showToast(String(error as any), 'error')
     }
