@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 import React, { useState, useMemo, useEffect } from 'react';
 import {
@@ -129,7 +130,6 @@ export function GenericTable<T extends Record<string, any>>({
   const closeRowMenu = () => {
     setAnchorEl({ target: null, key: '' });
   };
-  const [totalItems, setTotalItems] = useState(0);
   const [searchText] = useState('');
   const theme = useTheme()
 
@@ -228,9 +228,7 @@ export function GenericTable<T extends Record<string, any>>({
 
 
 
-  useEffect(() => {
-    if (data.length !== 0) setTotalItems(data[0].totalItems);
-  }, [data]);
+
 
 
 
@@ -251,14 +249,17 @@ export function GenericTable<T extends Record<string, any>>({
       </Box>
 
       {selected.length > 0 && (
-        <Box sx={{ p: 1,px:3, bgcolor: 'primary.light', display: 'flex', gap: 1 }}>
+        <Box sx={{ p: 1, px: 3, bgcolor: 'primary.light', display: 'flex', gap: 1 }}>
           <Typography sx={{ flex: 1, alignSelf: 'center' }}>
             {selected.length} {t('core.table.selected')}
           </Typography>
           {rowAction.map((e, i) => {
             if (e.bulk)
               return (<Tooltip key={i} title={e.label}>
-                <SassButton startIcon={e.icon} color={e.color} variant='outlined' onClick={() => e.onPress(selected as T[])}>
+                <SassButton startIcon={e.icon} color={e.color} variant='outlined' onClick={() => {
+                  e.onPress(selected as T[])
+                  setSelected([])
+                }}>
                   {e.label}
                 </SassButton>
               </Tooltip>)
@@ -463,7 +464,7 @@ export function GenericTable<T extends Record<string, any>>({
 
         rowsPerPageOptions={[2, 5, 10, 25, 100]}
         component="div"
-        count={totalItems}
+        count={(data.length > 0) ? data[0].totalItems : 0}
         rowsPerPage={rowsPerPage ?? 5}
         page={page as number}
         onPageChange={handleChangePage}
