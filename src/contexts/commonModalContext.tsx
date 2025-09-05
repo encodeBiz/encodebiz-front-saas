@@ -16,6 +16,7 @@ export enum CommonModalType {
     ARCHIVED = 'ARCHIVED',
     EVENT_SELECTED = 'EVENT_SELECTED',
     CONTACT = 'CONTACT',
+    COLABORATOR = 'COLABORATOR',
     INFO = 'INFO',
     WEBHOOK = 'WEBHOOK',
 }

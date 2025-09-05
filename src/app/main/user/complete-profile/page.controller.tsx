@@ -127,6 +127,7 @@ export const useUserProfileController = () => {
                 refrestList(user?.uid)
                 updateUserData()
                 changeLoaderState({ show: false })
+                navivateTo('/dashboard')
 
             }
 
@@ -147,7 +148,7 @@ export const useUserProfileController = () => {
     const checkProfile = async () => {
         try {
             const userData: IUser = await fetchUserAccount(user?.uid as string)
-            if (userData.email) navivateTo(`/dashboard`)
+            if (userData.email && userData.displayName!=='Guest') navivateTo(`/dashboard`)
         } catch (error) {
             if (error instanceof Error) {
                 showToast(error.message, 'error');
@@ -169,7 +170,7 @@ export const useUserProfileController = () => {
             "active": true,
         });
 
-    }, [user, checkProfile]);
+    }, [user?.id]);
 
     return { validationSchema, initialValues, setUserDataAction, pending, fields }
 }

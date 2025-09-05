@@ -8,7 +8,7 @@ import IUserEntity from "@/domain/auth/IUserEntity";
 import { fetchUserEntities, saveStateCurrentEntity, watchEntityChange } from "@/services/common/entity.service";
 import IUser from "@/domain/auth/IUser";
 import { fetchUserAccount } from "@/services/common/account.service";
-import { GENERAL_ROUTE, MAIN_ROUTE, USER_ROUTE } from "@/config/routes";
+import { GENERAL_ROUTE, MAIN_ROUTE } from "@/config/routes";
 import { BizType, IService } from "@/domain/core/IService";
 import { fetchServiceList, fetchSuscriptionByEntity, watchSubscrptionEntityChange } from "@/services/common/subscription.service";
 import { IEntitySuscription } from "@/domain/auth/ISubscription";
@@ -80,7 +80,10 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
                 } else {
                     _currentEntity = entityList.find(e => e.isActive) as IUserEntity
                     setCurrentEntity(_currentEntity)
-                    push(`/${MAIN_ROUTE}/${_currentEntity.entity.id}/dashboard`)
+                    const extraData = await fetchUserAccount(userAuth.uid)
+                    if (extraData.fullName !== "Guest")
+                        push(`/${MAIN_ROUTE}/${_currentEntity.entity.id}/dashboard`)
+                   
                 }
 
             } else {
@@ -96,14 +99,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
                     }
                 }
 
-            }
-
-
-             
-             const extraData = await fetchUserAccount(userAuth.uid)
-            if (extraData.fullName === "Guest" && pathname!==`/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`) {
-                push(`/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`)
-            }
+            }            
         }
     }, []);
 

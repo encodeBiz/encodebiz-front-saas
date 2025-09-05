@@ -13,16 +13,14 @@ import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { SaveOutlined } from '@mui/icons-material';
-import { useSearchParams } from 'next/navigation';
-
+ 
 const CompleteProfilePage = () => {
     const t = useTranslations();
     const { initialValues, validationSchema, setUserDataAction, fields, pending } = useUserProfileController();
     const { user } = useAuth()
     const formRef = useRef(null)
     const { formStatus } = useFormStatus()
-    const searchParams = useSearchParams()
-
+ 
     const handleExternalSubmit = () => {
         if (formRef.current) {
             (formRef.current as any).submitForm()
@@ -66,3 +64,5 @@ const CompleteProfilePage = () => {
 };
 
 export default CompleteProfilePage;
+
+//http://localhost:3000/main/kQtfzGZgcWZSLBgR7Oso/entity?authToken=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImlhdCI6MTc1NzAyOTA3NywiZXhwIjoxNzU3MDMyNjc3LCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay1mYnN2Y0BlbmNvZGViaXotc2VydmljZXMuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJzdWIiOiJmaXJlYmFzZS1hZG1pbnNkay1mYnN2Y0BlbmNvZGViaXotc2VydmljZXMuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJ1aWQiOiI3cVVYajBwdVZiTTYyZmZ2SEtFaW83MzRPVWcxIn0.kD7aSwzTGQhpAUVcPJj9FUhVlNFXdn8wYMgis5Fp0j2oaCCkJficEfuipD6G4IuQ1tqhh3pRGjH09Qi91VDzRp1Ftw-CnJwQUDwLLxrwIRHzBMPGBGO-br8J8VC0H7CNBKjwpO1g0jbp65ze2-GclebYLdXliTnmnuvxP7juGeMOh4VA73KQsTTobKCwO97pAk9y__VvVyeuQX-e2RGO4poZLTODQOjvFTS2uX4pLqDcXDCyAdNKFlgsRJDXUJolTIQk6921TKcqDVGLbgTFJzusk0rr4VbrSAuoznP0wJq6XE5lmfKSP93vrWogYUPMFRxFR5npUE_4crgmzb1xxQ&guest=7qUXj0puVbM62ffvHKEio734OUg1_kQtfzGZgcWZSLBgR7Oso

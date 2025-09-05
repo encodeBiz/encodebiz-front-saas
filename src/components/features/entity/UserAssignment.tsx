@@ -69,7 +69,7 @@ export interface UserAssignmentProps {
 }
 const UserAssignment = ({ project, onAssign, onRemove, currentUser, proccesing = false }: UserAssignmentProps) => {
     const [openModalAdd, setOpenModalAdd] = useState(false);
-     
+
     const [email, setEmail] = useState<string>();
     const [selectedRole, setSelectedRole] = useState('write');
     const t = useTranslations()
@@ -78,12 +78,12 @@ const UserAssignment = ({ project, onAssign, onRemove, currentUser, proccesing =
     const theme = useTheme()
 
     const { currentEntity } = useEntity()
-  
+
 
     const handleOpen = () => setOpenModalAdd(true);
     const handleClose = () => {
         setOpenModalAdd(false);
-    
+
         closeModal()
     };
 
@@ -103,6 +103,7 @@ const UserAssignment = ({ project, onAssign, onRemove, currentUser, proccesing =
             userId,
             entityId: project.id
         });
+        closeModal(CommonModalType.COLABORATOR)
     };
 
     return (
@@ -126,26 +127,23 @@ const UserAssignment = ({ project, onAssign, onRemove, currentUser, proccesing =
                             <Card elevation={1} key={collaborator.user.id}>
                                 <ListItem
                                     secondaryAction={
-                                        currentEntity?.role !== 'owner' && collaborator.user.id !== user?.id && (
+                                        currentEntity?.role === 'owner' && collaborator.user.id !== user?.id && (
                                             <CustomIconBtn
-                                                onClick={() => openModal(CommonModalType.DELETE, { data: collaborator.user.uid })}
-                                                disabled={collaborator.user.uid === currentUser.id}
+                                                onClick={() => openModal(CommonModalType.COLABORATOR, { data: collaborator.user.uid })}
+                                                disabled={collaborator.user.uid === currentUser?.id}
                                                 icon={<TrashIcon />}
                                                 color={theme.palette.primary.main}
                                             />
                                         )
                                     }
                                 >
-
-
-
                                     <ListItemAvatar>
                                         <Avatar src={collaborator.user.photoURL as string} alt={collaborator.user.fullName} />
                                     </ListItemAvatar>
                                     <ListItemText
                                         primary={collaborator.user.fullName}
                                         secondary={
-                                            t('core.label.' + (collaborator.user.fullName==='Guest'?'guest':collaborator.role))
+                                            t('core.label.' + (collaborator.user.fullName === 'Guest' ? 'guest' : collaborator.role))
                                         }
                                     />
                                 </ListItem>
@@ -173,7 +171,7 @@ const UserAssignment = ({ project, onAssign, onRemove, currentUser, proccesing =
                         <CustomTypography sx={{ mb: 2 }}>{t('colaborators.invite')}</CustomTypography>
 
                         <FormControl fullWidth sx={{ mt: 3 }}>
-                             <TextField
+                            <TextField
                                 label={t('core.label.email')}
                                 value={email ?? ``}
                                 onChange={(e) => setEmail(e.target.value)} />
@@ -210,7 +208,7 @@ const UserAssignment = ({ project, onAssign, onRemove, currentUser, proccesing =
             </Dialog>
 
 
-            {open.type === CommonModalType.DELETE && <ConfirmModal
+            {open.type === CommonModalType.COLABORATOR && <ConfirmModal
                 isLoading={proccesing}
                 title={t('colaborators.deleteConfirmModalTitle')}
                 description={t('colaborators.deleteConfirmModalTitle2')}

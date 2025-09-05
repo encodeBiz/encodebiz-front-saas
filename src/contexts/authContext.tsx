@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const redirectUri = searchParams.get('redirect')
     const inPublicPage = pathName.startsWith('/auth')
     const { entityId } = useParams<any>()
-
+    const authToken = searchParams.get('authToken')
 
     /** Refresh User Data */
     const updateUserData = useCallback(async () => {
@@ -64,23 +64,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 (profile: any) => profile.providerId === "google.com"
             );
 
+ 
+
             if (userAuth) {
                 updateUserData()
                 setToken(await userAuth.getIdToken())
                 const extraData = await fetchUserAccount(userAuth.uid)
+
                 const userData: IUser = {
                     ...extraData,
-                    completeProfile: (extraData.email || extraData.fullName==="Guest") ? true : false
+                    completeProfile: (!extraData.email || extraData.fullName === "Guest") ? false : true
                 }
                 setUser({
                     ...userAuth,
                     ...userData,
                 })
 
-                
-                
 
-                if ((!userData.completeProfile && isGoogle) && pathName!==`/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`) {
+
+
+                if (!userData.completeProfile && pathName !== `/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`) {
                     push(`/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`)
                 }
                 setUserAuth(userAuth)
@@ -111,17 +114,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 
     useEffect(() => {
-        setPendAuth(true)
-        const unsubscribe = subscribeToAuthChanges(watchSesionState);
-        return () => unsubscribe(); // Cleanup on unmount
-    }, []);
+        if (!authToken) {
+            setPendAuth(true)
+            const unsubscribe = subscribeToAuthChanges(watchSesionState);
+            return () => unsubscribe(); // Cleanup on unmount
+        }
+    }, [authToken]);
 
     const authWithToken = async (authToken: string) => {
         await signInToken(authToken);
     }
 
     /** Auth By Token */
-    const authToken = searchParams.get('authToken')
+
     useEffect(() => {
         if (authToken)
             authWithToken(authToken)
