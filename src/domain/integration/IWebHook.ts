@@ -3,7 +3,7 @@ export type WebhookEventType = "pass.created" | "pass.created.failed" | "pass.re
 
 export interface IWebHook {
     id: string
-    subscribedEvents: Array<WebhookEventType>
+    subscribedEvents: Array<WebhookEventType> | any
     url: string
     enabled: boolean
     entityId: string

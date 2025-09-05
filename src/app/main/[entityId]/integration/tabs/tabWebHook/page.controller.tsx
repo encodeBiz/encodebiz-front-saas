@@ -111,7 +111,7 @@ export const useWebHookTabController = () => {
             id: 'subscribedEvents',
             label: t("core.label.subscribedEvents"),
             minWidth: 170,
-            format: (value, row) => row.subscribedEvents.join(", "),
+            
 
         },
         {
