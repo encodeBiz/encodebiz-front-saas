@@ -13,6 +13,8 @@ import { useTranslations } from 'next-intl';
 import { useStyles } from './page.styles';
 import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
+import logo from '../../../../public/assets/images/logo.png'
+import Image from 'next/image';
 
 
 const SignUpPage = () => {
@@ -25,7 +27,13 @@ const SignUpPage = () => {
             <Box sx={classes.locale}>
                 <LocaleSwitcher />
             </Box>
-            <BorderBox   sx={classes.root}>
+            <BorderBox sx={classes.root}>
+                <Image
+                    width={200}
+                    height={64}
+                    src={logo}
+                    alt="Company Logo"
+                />
                 <Box sx={classes.containerTop}>
                     <Typography variant="h4" component="h1" gutterBottom>
                         {t('core.signup.title')}
@@ -33,8 +41,8 @@ const SignUpPage = () => {
                     <Typography variant="body1" color="text.secondary">
                         {t('core.signup.subtitle')}
                     </Typography>
-                </Box>           
- 
+                </Box>
+
 
 
                 <GenericForm<RegisterFormValues>

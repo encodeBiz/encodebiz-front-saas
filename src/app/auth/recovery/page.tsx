@@ -16,6 +16,8 @@ import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { useRouter } from 'nextjs-toploader/app';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
+import logo from '../../../../public/assets/images/logo.png'
+import Image from 'next/image';
 
 
 const RecoveryPage = () => {
@@ -31,6 +33,12 @@ const RecoveryPage = () => {
                 <LocaleSwitcher />
             </Box>
             <BorderBox   sx={classes.root}>
+                  <Image
+                                    width={200}
+                                    height={64}
+                                    src={logo}
+                                    alt="Company Logo"
+                                />
                 <Box sx={classes.containerTop}>
                     <Typography variant="h4" component="h1" gutterBottom>
                         {t('core.recovery.title')}

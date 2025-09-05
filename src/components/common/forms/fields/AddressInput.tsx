@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // AddressInput.tsx
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   TextFieldProps,
   FormHelperText,
@@ -110,6 +111,7 @@ const AddressInput: React.FC<AutoCompletedInputProps> = ({ onHandleChange, ...pr
     <FormControl required sx={{ width: "100%", textAlign: "left" }}>
       <Autocomplete<Option, false, false, false>
         options={options}
+        disabled={props.disabled || !formStatus?.values?.country || !formStatus?.values?.city}
         value={selected}
         inputValue={inputValue !== '' ? inputValue : field.value}
         onInputChange={handleInputChange}

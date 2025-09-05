@@ -18,7 +18,7 @@ import { useLayout } from "@/hooks/useLayout";
 import { ArrayToObject, objectToArray } from "@/lib/common/String";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { country } from "@/config/country";
-import { format_date, formatLocalDateTime } from "@/lib/common/Date";
+import { formatLocalDateTime } from "@/lib/common/Date";
 import AddressInput from "@/components/common/forms/fields/AddressInput";
 
 
@@ -89,10 +89,10 @@ export default function useHolderController() {
         "imageUrl": values.imageUrl,
         "logoUrl": values.logoUrl,
         "language":values.language,
-        "date": format_date(new Date(values.date), 'YYYY-MM-DD'),
+        "date": new Date(values.date).toISOString(),
         "dateLabel": formatLocalDateTime(codeLocale ?? 'ES', new Date(values.date)),
         "status": values.status as "draft" | "published" | "archived",
-        "endDate": format_date(new Date(values.endDate), 'YYYY-MM-DD'),
+        "endDate": new Date(values.endDate).toISOString(),
         template: values.template as "default" | "vip" | "expo" | "festival",
         "metadata": ArrayToObject(values.metadata),
         "id": id,
@@ -122,7 +122,7 @@ export default function useHolderController() {
       label: t('core.label.description'),
       type: 'textarea',
       required: false,
-      fullWidth: false,
+    
       component: TextInput,
     },
 
@@ -241,7 +241,7 @@ export default function useHolderController() {
       label: t('core.label.status'),
       type: 'text',
       required: false,
-      fullWidth: true,
+      
       options: [
         { value: 'draft', label: t('core.label.draft') },
         { value: 'published', label: t('core.label.published') },

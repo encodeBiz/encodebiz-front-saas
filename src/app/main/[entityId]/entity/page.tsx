@@ -9,7 +9,7 @@ import {
 import { useTranslations } from 'next-intl';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import GenericTabs from '@/components/common/tabs/GenericTabs';
-import { TabItem, useSettingEntityController } from './page.controller';
+import { useSettingEntityController } from './page.controller';
 import EntityPreferencesTab from './tabs/tabEntity/tabEntity';
 import BrandPreferencesPage from './tabs/tabBranding/tabBranding';
 import BillingPreferencesPage from './tabs/tabBilling/tabBilling';
@@ -26,10 +26,12 @@ import { createSlug } from '@/lib/common/String';
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { Save } from '@mui/icons-material';
 import { useSearchParams } from 'next/navigation';
-
+import { TabItem } from '@/components/common/tabs/BaseTabs';
+ 
 const EntityPreferencesPage = () => {
     const t = useTranslations();
     const { user } = useAuth()
+  
     const { currentEntity, } = useEntity()
     const { openModal, open } = useCommonModal()
     const { handleDeleteEntity, pending } = useSettingEntityController()
@@ -41,34 +43,42 @@ const EntityPreferencesPage = () => {
         if (searchParams.get('tab') === 'company') tab = 0
         if (searchParams.get('tab') === 'branding') tab = 1
         if (searchParams.get('tab') === 'billing') tab = 2
-    }
-
+        if (searchParams.get('tab') === 'subscription') tab = 3
+        if (searchParams.get('tab') === 'invoice') tab = 4
+        if (searchParams.get('tab') === 'colaborators') tab = 5
+    } 
     const tabsRender: TabItem[] = [
         {
             label: <Badge color="warning" variant="dot" badgeContent={currentEntity?.entity.legal?.legalName ? 0 : 1}>
                 {`${t("entity.tabs.tab1.title")}`}
             </Badge>,
             content: <EntityPreferencesTab formRef={formRef} />,
+            id: 'company'
         },
         {
             label: <Badge color="warning" variant="dot" badgeContent={currentEntity?.entity.branding?.textColor ? 0 : 1}>{t("entity.tabs.tab2.title")}</Badge>,
             content: <BrandPreferencesPage formRef={formRef} />,
+            id: 'branding'
 
         }, {
             label: <Badge color="warning" variant="dot" badgeContent={!currentEntity?.entity.billingConfig?.payment_method || currentEntity?.entity.billingConfig?.payment_method?.length === 0 ? 1 : 0}>{t("entity.tabs.tab3.title")}</Badge>,
             content: <BillingPreferencesPage />,
+            id: 'billing'
         },
         {
             label: `${t("entity.tabs.tab4.title")}`,
             content: <RenuewPreferencesPage />,
+            id: 'subscription'
         },
         {
             label: `${t("entity.tabs.tab5.title")}`,
             content: <FacturasPreferencesPage />,
+            id: 'invoice'
         },
         {
             label: `${t("entity.tabs.tab6.title")}`,
             content: <CollaboratorsPreferencesPage />,
+            id: 'colaborators'
         },
 
     ];

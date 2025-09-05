@@ -2,7 +2,7 @@
 'use client'
 
 import * as Yup from 'yup';
-import { useState, ReactNode, useEffect, useCallback } from 'react';
+import { useState, ReactNode, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useTranslations } from 'next-intl';
@@ -73,7 +73,7 @@ export const useSettingEntityController = () => {
         "taxId": currentEntity?.entity?.legal?.taxId as string ?? "",
         "legalName": currentEntity?.entity?.legal?.legalName as string ?? "",
         billingEmail: currentEntity?.entity?.billingEmail as string ?? "",
-        language: currentEntity?.entity?.language ?? "ES"
+
     });
 
     const validationSchema = Yup.object().shape({
@@ -82,7 +82,6 @@ export const useSettingEntityController = () => {
         country: requiredRule(t),
         city: requiredRule(t),
         postalCode: requiredRule(t),
-        language: requiredRule(t),
         taxId: requiredRule(t),
         legalName: requiredRule(t),
 
@@ -172,23 +171,7 @@ export const useSettingEntityController = () => {
             fullWidth: true,
             options: cityList
         },
-        {
-            isDivider: true,
-            label: t('core.label.language'),
-        },
-
-        {
-            name: 'language',
-            label: t('core.label.language'),
-            component: SelectInput,
-            required: true,
-            fullWidth: true,
-            options: [
-                { value: 'ES', label: t('layout.header.spanish') },
-                { value: 'EN', label: t('layout.header.english') },
-
-            ],
-        },
+         
     ];
 
 
@@ -206,7 +189,7 @@ export const useSettingEntityController = () => {
                 "name": values.name,
                 "slug": createSlug(values.name),
                 "billingEmail": values.billingEmail,
-                "language": values.language,
+                "language": currentEntity?.entity?.language ?? 'ES',
                 "legal": {
                     "legalName": values.legalName,
                     "taxId": values.taxId,
@@ -243,7 +226,7 @@ export const useSettingEntityController = () => {
     };
 
 
-    const fetchData = useCallback(async () => {
+    const fetchData = async () => {
         try {
             const entity: IEntity = await fetchEntity(currentEntity?.entity.id as string)
             setInitialValues({
@@ -267,12 +250,12 @@ export const useSettingEntityController = () => {
             }
 
         }
-    }, [currentEntity?.entity.id, user?.email])
+    }
 
     useEffect(() => {
         if (currentEntity?.entity.id)
             fetchData()
-    }, [currentEntity?.entity.id, fetchData])
+    }, [currentEntity?.entity.id])
 
 
 

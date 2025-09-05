@@ -34,6 +34,7 @@ export type TabItem = {
     content: ReactNode;
     disabled?: boolean;
     sx?: SxProps<Theme>;
+    id?: string 
 };
 
 export const useUserAccountController = () => {
@@ -221,9 +222,11 @@ export const useUserAccountController = () => {
         {
             label: `${t("account.tabs.tab1.title")}`,
             content: formTabs1(),
+            id:'account'
         }, {
             label: `${t("account.tabs.tab2.title")}`,
             content: formTabs2(),
+            id:'password'
         },
     ];
 

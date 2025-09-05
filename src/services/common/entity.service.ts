@@ -51,6 +51,24 @@ export async function fetchUserEntities(
   }
 }
 
+export async function updateAuth(
+  id: string
+): Promise<void> {
+  try {
+    await updateDocument<IUserEntity>({
+      collection: collection.USER_ENTITY_ROLES,
+      data: {
+        status: 'active',
+        updatedAt: new Date(),
+      },
+      id: id as string,
+    });
+  } catch (error: any) {
+    throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
+  }
+}
+
+
 export async function saveStateCurrentEntity(
   entityList: Array<IUserEntity>
 ): Promise<void> {
@@ -69,6 +87,8 @@ export async function saveStateCurrentEntity(
     throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
   }
 }
+
+
 
 
 
@@ -99,6 +119,19 @@ export async function createEntity(data: EntityFormValues | any, token: string) 
   } catch (error: any) {
     throw new Error(error.message);
   }
+}
+
+export async function updateExtraEntity(
+  data: Partial<IEntity> | any,
+
+) {
+  await updateDocument<IEntity>({
+    collection: collection.ENTITIES,
+    data: {
+      language: data.language,
+    },
+    id: data.id as string,
+  });
 }
 
 export async function updateEntity(

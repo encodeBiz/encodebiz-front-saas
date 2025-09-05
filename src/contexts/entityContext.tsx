@@ -45,7 +45,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
     const watchServiceAccess = useCallback(async (serviceId: BizType) => {
         const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
-        const check = serviceSuscription.find(e => e.serviceId === serviceId && currentEntity?.entity.id === e.entityId)
+        const check = serviceSuscription.find(e => e.serviceId === serviceId && currentEntity?.entity.id === e.entityId && e.status !== "cancelled" && e.status !== "pending-pay")
         if (!check) {
             showToast('No tiene permiso para acceder a este recurso', 'info')
             push(`/${MAIN_ROUTE}/${entityId}/${serviceId}/onboarding`)
@@ -61,6 +61,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
 
     const watchSesionState = useCallback(async (userAuth: User) => {
+
         if (userAuth) {
             const entityList: Array<IUserEntity> = await fetchUserEntities(userAuth.uid)
 
@@ -79,7 +80,10 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
                 } else {
                     _currentEntity = entityList.find(e => e.isActive) as IUserEntity
                     setCurrentEntity(_currentEntity)
-                    push(`/${MAIN_ROUTE}/${_currentEntity.entity.id}/dashboard`)
+                    const extraData = await fetchUserAccount(userAuth.uid)
+                    if (extraData.fullName !== "Guest")
+                        push(`/${MAIN_ROUTE}/${_currentEntity.entity.id}/dashboard`)
+                   
                 }
 
             } else {
@@ -95,7 +99,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
                     }
                 }
 
-            }
+            }            
         }
     }, []);
 

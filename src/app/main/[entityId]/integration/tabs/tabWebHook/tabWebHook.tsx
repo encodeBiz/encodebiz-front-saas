@@ -41,7 +41,7 @@ const WebHookTab = () => {
                 }
             >
                 <GenericTable
-                    data={items}
+                    data={items.map(e=>({...e,subscribedEvents: e.subscribedEvents.join(", ")}))}
                     columns={columns}
                     title={''}
                     keyField="id"

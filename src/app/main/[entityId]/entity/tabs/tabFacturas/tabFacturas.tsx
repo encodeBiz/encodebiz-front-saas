@@ -24,7 +24,7 @@ const FacturasPreferencesPage = () => {
             <GenericTable
                 data={items}
                 columns={columns}
-                title={t("renew.title")}
+                title={''}
                 keyField="id"
                 loading={loading}
                 page={currentPage}

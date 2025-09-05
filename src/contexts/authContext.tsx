@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 import { createContext, useCallback, useEffect, useState } from "react";
 import { User } from "firebase/auth";
@@ -9,6 +10,8 @@ import { getUser } from "@/lib/firebase/authentication/login";
 import { fetchUserAccount, signInToken } from "@/services/common/account.service";
 import { MAIN_ROUTE, GENERAL_ROUTE, USER_ROUTE } from "@/config/routes";
 import { useToast } from "@/hooks/useToast";
+import IUserEntity from "@/domain/auth/IUserEntity";
+import { fetchUserEntities } from "@/services/common/entity.service";
 interface AuthContextType {
     user: IUser | null;
     userAuth: User | null;
@@ -30,7 +33,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const redirectUri = searchParams.get('redirect')
     const inPublicPage = pathName.startsWith('/auth')
     const { entityId } = useParams<any>()
-
+    const authToken = searchParams.get('authToken')
 
     /** Refresh User Data */
     const updateUserData = useCallback(async () => {
@@ -58,32 +61,50 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const watchSesionState = useCallback(async (userAuth: User) => {
         try {
-            const providerData = userAuth?.providerData;
+            //const providerData = userAuth?.providerData;
+            /*
             const isGoogle = providerData?.some(
                 (profile: any) => profile.providerId === "google.com"
             );
+            */
+
 
             if (userAuth) {
                 updateUserData()
                 setToken(await userAuth.getIdToken())
                 const extraData = await fetchUserAccount(userAuth.uid)
+
                 const userData: IUser = {
                     ...extraData,
-                    completeProfile: extraData.email ? true : false
+                    completeProfile: (!extraData.email || extraData.fullName === "Guest") ? false : true
                 }
                 setUser({
                     ...userAuth,
                     ...userData,
                 })
 
-                if ((!userData.completeProfile && isGoogle) || userData.fullName?.toLocaleLowerCase() === 'guest') {
+
+
+
+                if (!userData.completeProfile && pathName !== `/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`) {
                     push(`/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`)
                 }
                 setUserAuth(userAuth)
                 if (redirectUri) push(redirectUri)
                 else {
                     if (pathName === '/' || pathName === `/${MAIN_ROUTE}` || pathName === `/${MAIN_ROUTE}/${entityId}/${GENERAL_ROUTE}`)
-                        push(`/${MAIN_ROUTE}/${entityId}/dashboard`)
+                        if (entityId)
+                            push(`/${MAIN_ROUTE}/${entityId}/dashboard`)
+                        else {
+                            const entityList: Array<IUserEntity> = await fetchUserEntities(userAuth.uid)
+                            if (entityList.length > 0) {
+                                const item = entityList[0]
+                                push(`/${MAIN_ROUTE}/${item?.entity?.id}/dashboard`)
+                            } else {
+                                push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
+                            }
+                        }
+
                     else {
                         if (pathName === '/' || pathName === `/${MAIN_ROUTE}` || pathName === `/${MAIN_ROUTE}/user`)
                             push(`/${MAIN_ROUTE}/${USER_ROUTE}/account`)
@@ -107,17 +128,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 
     useEffect(() => {
-        setPendAuth(true)
-        const unsubscribe = subscribeToAuthChanges(watchSesionState);
-        return () => unsubscribe(); // Cleanup on unmount
-    }, [watchSesionState]);
+        if (!authToken) {
+            setPendAuth(true)
+            const unsubscribe = subscribeToAuthChanges(watchSesionState);
+            return () => unsubscribe(); // Cleanup on unmount
+        }
+    }, [authToken]);
 
     const authWithToken = async (authToken: string) => {
         await signInToken(authToken);
     }
 
     /** Auth By Token */
-    const authToken = searchParams.get('authToken')
+
     useEffect(() => {
         if (authToken)
             authWithToken(authToken)
@@ -136,3 +159,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     );
 };
 
+
+
+//http://localhost:3000/main/kQtfzGZgcWZSLBgR7Oso/entity?authToken=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImlhdCI6MTc1NzA0MTY1MiwiZXhwIjoxNzU3MDQ1MjUyLCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay1mYnN2Y0BlbmNvZGViaXotc2VydmljZXMuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJzdWIiOiJmaXJlYmFzZS1hZG1pbnNkay1mYnN2Y0BlbmNvZGViaXotc2VydmljZXMuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJ1aWQiOiJjb3hlU0c0dUFIZDJmRFZFbEMzM3VRNUxMUDQzIn0.rSRHn_HZtoIjJNWASyDAB2uFP19nW7JYBGz3dOobtCHfOZPjISybRp9GV8LFQaSDU-AsH4MHD4XhMQdod8eDIeCUF3lEzI1GT4u-6Bi5RMno4yZ4J8cKcyvOBCrwQlYjA1vJ7k3hVZFAG9xIexh4kqJtjq5k8kOyU9ZF6KTZkh3FFGsx5U7pnLlQp0rWuWGQZrJlskTby0drDRN_5Sq1PUgrSWqf6JT-Ym25bDZF9bb5OR0Mi7fAWQdycQAYl3L_POSTXA_PWdQ1hS8_1BLTrWBywTHCu74MZk_8UCBCSXvJ8hObuhnr9EG8aAHX_uKz1eY6OoqqAa44f9od0lpfyA&guest=coxeSG4uAHd2fDVElC33uQ5LLP43_kQtfzGZgcWZSLBgR7Oso

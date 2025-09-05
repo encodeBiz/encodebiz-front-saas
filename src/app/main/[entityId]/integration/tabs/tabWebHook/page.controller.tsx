@@ -61,6 +61,7 @@ export const useWebHookTabController = () => {
             color: 'error',
             icon: <DeleteOutline color="error" />,
             label: t('core.button.delete'),
+            showBulk: true,
             allowItem: () => true,
             onPress: (item: IWebHook) => openModal(CommonModalType.DELETE, { item })
         },
@@ -110,7 +111,7 @@ export const useWebHookTabController = () => {
             id: 'subscribedEvents',
             label: t("core.label.subscribedEvents"),
             minWidth: 170,
-            format: (value, row) => row.subscribedEvents.join(", "),
+            
 
         },
         {

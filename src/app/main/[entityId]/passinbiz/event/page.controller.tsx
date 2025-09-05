@@ -122,7 +122,7 @@ export default function useIEventListController() {
 
 
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
-    <SelectFilter
+    <SelectFilter first={false}
       defaultValue={'published'}
       value={filterParams.filter.status}
       onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, status: value } })}
@@ -155,11 +155,7 @@ export default function useIEventListController() {
       minWidth: 170,
       format: (value, row) => <Typography sx={{ textTransform: 'capitalize' }}>{formatDateInSpanish(new Date(row.date))}</Typography>,
     },
-    {
-      id: 'location',
-      label: t("core.label.location"),
-      minWidth: 170,
-    },
+     
     {
       id: 'address',
       label: t("core.label.address"),
@@ -186,7 +182,7 @@ export default function useIEventListController() {
     if (filterParams.params.filters.find((e: any) => e.field === 'name' && e.value === ''))
       filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== 'name')
 
-
+     
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any) }).then(async res => {
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
@@ -214,14 +210,12 @@ export default function useIEventListController() {
 
 
   const inicializeFilter = (params: string) => {
-    try {
-      const dataList = JSON.parse(localStorage.getItem('eventIndex') as string)
-      setItems(dataList.items ?? []);
-      setItemsHistory(dataList.itemsHistory ?? []);
-      const filters = decodeFromBase64(params as string)
+    try {     
+      const filters:IFilterParams = decodeFromBase64(params as string)
+      filters.params.startAfter=null
       setFilterParams(filters)
-      setLoading(false)
-      //localStorage.removeItem('holderIndex')
+      setLoading(false)  
+      fetchingData(filters)
     } catch (error) {
       showToast(String(error as any), 'error')
     }
@@ -273,6 +267,7 @@ export default function useIEventListController() {
       icon: <Person2 color="primary" />,
       label: t('core.label.staff1'),
       bulk: false,
+
       allowItem: () => true,
       onPress: (item: IEvent) => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event/${item.id}/staff?params=${buildState()}`)
     },
@@ -290,6 +285,7 @@ export default function useIEventListController() {
     {
       actionBtn: true,
       bulk: true,
+      showBulk: true,
       color: 'error',
       icon: <DeleteOutline color="error" />,
       label: t('core.button.delete'),
@@ -303,7 +299,7 @@ export default function useIEventListController() {
     if (currentEntity?.entity?.id) {
       watchServiceAccess('passinbiz')
     }
-  }, [currentEntity?.entity?.id, watchServiceAccess])
+  }, [currentEntity?.entity?.id])
 
   useEffect(() => {
     if (currentEntity?.entity?.id) {

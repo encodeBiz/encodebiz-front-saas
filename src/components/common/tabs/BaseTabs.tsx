@@ -8,6 +8,7 @@ export type TabItem = {
   content: ReactNode;
   disabled?: boolean;
   sx?: SxProps<Theme>;
+  id?:string
 };
 
 export type TabsOrientation = 'horizontal' | 'vertical';

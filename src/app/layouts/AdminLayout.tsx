@@ -4,10 +4,12 @@ import Footer from '@/components/layouts/Footer';
 import Header from '@/components/layouts/Header/Header';
 import Onboarding from '@/components/layouts/Onboarding/Onboarding';
 import SideMenu from '@/components/layouts/SideMenu';
+import { CommonModalType } from '@/contexts/commonModalContext';
 import { useAuth } from '@/hooks/useAuth';
+import { useCommonModal } from '@/hooks/useCommonModal';
 import { useLayout } from '@/hooks/useLayout';
 import { Box, CssBaseline, Grid } from '@mui/material';
- 
+
 const drawerWidth = 265;
 
 
@@ -18,6 +20,7 @@ export default function AdminLayout({
 }) {
   const { layoutState } = useLayout()
   const { pendAuth } = useAuth()
+  const { open } = useCommonModal()
 
   return (
     <Box>
@@ -37,7 +40,7 @@ export default function AdminLayout({
         }}
       >
         <Header drawerWidth={drawerWidth} />
-        <div style={{maxWidth: 1175, width: '100%'}}>
+        <div style={{ maxWidth: 1275, width: '100%' }}>
           <Grid container sx={{
             display: 'flex',
             minHeight: 'calc(100vh - 100px)',
@@ -46,9 +49,9 @@ export default function AdminLayout({
             paddingTop: "100px",
             paddingBottom: "24px", px: 4
           }}>
-            {pendAuth && <PageLoader backdrop  type={'circular'} fullScreen />}
+            {pendAuth && <PageLoader backdrop type={'circular'} fullScreen />}
             {children}
-            <Onboarding />
+            {open.type === CommonModalType.ONBOARDING && <Onboarding />}
           </Grid>
         </div>
 

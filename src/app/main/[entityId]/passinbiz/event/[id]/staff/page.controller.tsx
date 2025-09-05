@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
@@ -73,7 +74,7 @@ export default function useStaffController() {
     },
   ];
 
-  const fetchData = useCallback(async () => {
+  const fetchData  = async () => {
 
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
@@ -90,7 +91,7 @@ export default function useStaffController() {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
     }
-  }, [changeLoaderState, currentEntity?.entity.id, id, showToast, t])
+  } 
 
 
   useEffect(() => {
@@ -102,7 +103,7 @@ export default function useStaffController() {
       watchServiceAccess('passinbiz')
 
     }
-  }, [currentEntity?.entity.id, user?.id, id, fetchData, watchServiceAccess])
+  }, [currentEntity?.entity.id, user?.id, id])
 
 
   return { fields, initialValues, validationSchema, setDinamicDataAction, staffList }

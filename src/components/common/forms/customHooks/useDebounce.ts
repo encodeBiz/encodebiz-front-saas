@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useMemo, useEffect, useCallback } from "react";
 import debounce from "lodash.debounce";

@@ -6,11 +6,11 @@ import { requiredRule } from '@/config/yupRules';
 import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
-import { createContact } from "@/services/passinbiz/event.service";
-import { useParams } from "next/navigation";
+ import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
-import { IContact } from "@/domain/core/IContact";
+import { ContactFromModel } from "@/domain/core/IContact";
 import { PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
+import { sendFormContact } from "@/services/common/helper.service";
 
 
 export default function useFormContactController() {
@@ -21,25 +21,30 @@ export default function useFormContactController() {
   const { id } = useParams<{ id: string }>()
   const { currentEntity, watchServiceAccess } = useEntity()
   const { changeLoaderState } = useLayout()
- 
+
   const validationSchema = Yup.object().shape({
     message: requiredRule(t),
 
   });
 
-  const setDinamicDataAction = async (values: Partial<IContact>) => {
+  const setDinamicDataAction = async (values: Partial<ContactFromModel>) => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const data: Partial<IContact> = {
+      const data: ContactFromModel = {
+        name: values.name as string,
+        phone: values.phone as string,
+        "subject": values.subject as string,
+        "message": values.message as string,
+        email: values.email as string,
+        token:token as string,
 
-        "subject": user?.id as string,
-        "message": values.message,
-        "from": values.from,
       }
-      await createContact(data, token)
+      await sendFormContact(data)
+
+
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
-      navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event`)
+      navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/onboarding`)
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
@@ -57,7 +62,7 @@ export default function useFormContactController() {
       component: TextInput,
     },
     {
-      name: 'from',
+      name: 'email',
       label: t('core.label.email'),
       type: 'text',
       disabled: true,
@@ -73,7 +78,7 @@ export default function useFormContactController() {
       component: TextInput,
     },
     {
-      name: 'displayName',
+      name: 'name',
       label: t('core.label.name'),
       type: 'text',
       disabled: true,

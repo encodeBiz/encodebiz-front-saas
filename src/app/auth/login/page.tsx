@@ -6,7 +6,7 @@ import {
     Box,
     Typography,
     Divider,
- 
+
     Grid,
     Link
 } from '@mui/material';
@@ -20,6 +20,8 @@ import { useStyles } from './page.styles';
 import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
+import logo from '../../../../public/assets/images/logo.png'
+import Image from 'next/image';
 
 
 const SignInPage = () => {
@@ -28,11 +30,17 @@ const SignInPage = () => {
     const classes = useStyles();
 
     return (
-        <Container sx={{display:'flex', justifyItems:'center', alignItems:'center',  bgcolor:(theme) => theme.palette.background.paper}} maxWidth="sm">
+        <Container sx={{ display: 'flex', justifyItems: 'center', flexDirection: 'column', alignItems: 'center' }} maxWidth="sm">
             <Box sx={classes.locale}>
                 <LocaleSwitcher />
             </Box>
             <BorderBox sx={classes.root}>
+                <Image
+                    width={200}
+                    height={64}
+                    src={logo}
+                    alt="Company Logo"
+                />
                 <Box sx={classes.containerTop}>
                     <Typography variant="h4" component="h1" gutterBottom>
                         {t('core.signin.title')}

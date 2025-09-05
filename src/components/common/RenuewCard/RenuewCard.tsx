@@ -9,13 +9,13 @@ import { SassButton } from '../buttons/GenericButton';
 import { useAppLocale } from '@/hooks/useAppLocale';
 import { useLayout } from '@/hooks/useLayout';
 
-const PlanCard = styled(Box)<{ featured?: boolean }>(({ theme, featured }) => ({
+const PlanCard = styled(Box)<{ featured?: string }>(({ theme, featured }) => ({
     maxWidth: 305,
     minWidth: 305,
     minHeight: 380,
     margin: theme.spacing(2),
 
-    color: featured ? `${theme.palette.primary.contrastText}` : `${theme.palette.text.primary}`,
+    color: featured==='true' ? `${theme.palette.primary.contrastText}` : `${theme.palette.text.primary}`,
     borderRadius: 8,
     background: featured ? 'linear-gradient(23.64deg, #001551 31.23%, #002FB7 99.28%)' : theme.palette.background.paper,
     padding: 20,
@@ -36,7 +36,7 @@ export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
 
 
     return (
-        <PlanCard featured={true}>
+        <PlanCard featured={'true'}>
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2 }}>
                 <Typography textTransform={'capitalize'} variant="h4">
                     {plan.serviceId}

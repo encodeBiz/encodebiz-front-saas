@@ -14,6 +14,10 @@ import { User } from 'firebase/auth';
 import IUser from '@/domain/auth/IUser';
 import { useEntity } from '@/hooks/useEntity';
 import { useLayout } from '@/hooks/useLayout';
+import { fetchUserEntities, updateAuth } from '@/services/common/entity.service';
+import { useRouter } from 'nextjs-toploader/app';
+import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
+import IUserEntity from '@/domain/auth/IUserEntity';
 export interface UserFormValues {
     "uid": string
     "name": string
@@ -39,8 +43,8 @@ export const useUserProfileController = () => {
     const { changeLoaderState } = useLayout()
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
-    const { navivateTo } = useLayout()
-
+    const { push } = useRouter()
+    const { currentEntity } = useEntity()
     const [initialValues, setInitialValues] = useState<UserFormValues>({
         uid: user?.uid as string | "",
         "name": user?.displayName as string | "",
@@ -127,6 +131,8 @@ export const useUserProfileController = () => {
                 refrestList(user?.uid)
                 updateUserData()
                 changeLoaderState({ show: false })
+                await updateAuth(currentEntity?.id as string)
+                goEntity()
 
             }
 
@@ -143,11 +149,21 @@ export const useUserProfileController = () => {
         }
     };
 
+    const goEntity = async () => {
+        const entityList: Array<IUserEntity> = await fetchUserEntities(user?.uid as string)
+        if (entityList.length > 0) {
+            const item = entityList[0]
+            push(`/${MAIN_ROUTE}/${item?.entity?.id}/dashboard`)
+        } else {
+            push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
+        }
+    }
+
 
     const checkProfile = async () => {
         try {
             const userData: IUser = await fetchUserAccount(user?.uid as string)
-            if (userData.email) navivateTo(`/dashboard`)
+            if (userData.email && userData.fullName !== 'Guest') goEntity()
         } catch (error) {
             if (error instanceof Error) {
                 showToast(error.message, 'error');
@@ -158,18 +174,19 @@ export const useUserProfileController = () => {
     }
 
     useEffect(() => {
-        checkProfile()
-        setInitialValues({
-            uid: user?.uid as string | "",
-            "name": user?.displayName as string | "",
-            "email": user?.email as string | "",
-            "phone": user?.phoneNumber as string | "",
-            avatar: user?.photoURL as string | "",
-            legalEntityName: '',
-            "active": true,
-        });
-
-    }, [user, checkProfile]);
+        if (user?.id) {
+            checkProfile()
+            setInitialValues({
+                uid: user?.uid as string | "",
+                "name": user?.displayName !== 'Guest' ? user?.displayName as string : "",
+                "email": user?.email as string | "",
+                "phone": user?.phoneNumber as string | "",
+                avatar: user?.photoURL as string | "",
+                legalEntityName: '',
+                "active": true,
+            });
+        }
+    }, [user?.id]);
 
     return { validationSchema, initialValues, setUserDataAction, pending, fields }
 }

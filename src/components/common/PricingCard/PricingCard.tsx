@@ -15,19 +15,19 @@ import { useAppLocale } from '@/hooks/useAppLocale';
 import ContactModalModal from '../modals/ContactModal/ContactModal';
 import { useLayout } from '@/hooks/useLayout';
 
-const PlanCard = styled(Box)<{ highlighted?: boolean }>(({ theme, highlighted }) => ({
+const PlanCard = styled(Box)<{ highlighted?: string }>(({ theme, highlighted }) => ({
     maxWidth: 305,
     minWidth: 305,
     minHeight: 580,
     margin: theme.spacing(2),
     border: `1px solid ${theme.palette.primary.main}`,
-    transform: highlighted ? 'scale(1.05)' : 'scale(1)',
+    transform: highlighted==='true' ? 'scale(1.05)' : 'scale(1)',
     transition: 'transform 0.3s ease',
-    color: highlighted ? `${theme.palette.primary.contrastText}` : `${theme.palette.text.primary}`,
+    color: highlighted==='true' ? `${theme.palette.primary.contrastText}` : `${theme.palette.text.primary}`,
     borderRadius: 8,
-    background: highlighted ? 'linear-gradient(23.64deg, #001551 31.23%, #002FB7 99.28%)' : theme.palette.background.paper,
+    background: highlighted ==='true'? 'linear-gradient(23.64deg, #001551 31.23%, #002FB7 99.28%)' : theme.palette.background.paper,
     padding: 20,
-    boxShadow: highlighted ? '0px 6px 12px rgba(0, 65, 158, 0.25)' : 'none'
+    boxShadow: highlighted==='true' ? '0px 6px 12px rgba(0, 65, 158, 0.25)' : 'none'
 
 }));
 
@@ -67,8 +67,8 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
     }, [currentEntity?.entity?.billingConfig, currentEntity?.entity?.billingConfig?.payment_method?.length, currentEntity?.entity.branding?.textColor, currentEntity?.entity.id, currentEntity?.entity.legal?.legalName, id, t])
 
 
-    return (<>
-        <PlanCard highlighted={highlighted}>
+    return (<> 
+        <PlanCard highlighted={String(highlighted)}>
             <CardContent sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
                 <Box>
                     <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'} pb={2}>

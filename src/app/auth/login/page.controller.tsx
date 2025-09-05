@@ -19,7 +19,6 @@ export interface LoginFormValues {
 export const useRegisterController = () => {
     const t = useTranslations()
     const { showToast } = useToast()
-    const { navivateTo } = useLayout()
     const { changeLoaderState } = useLayout()
 
     const [initialValues] = useState<LoginFormValues>({
@@ -38,8 +37,7 @@ export const useRegisterController = () => {
         try {
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             await signInGoogle()
-            changeLoaderState({ show: false })
-            navivateTo(`/dashboard`)
+            changeLoaderState({ show: false })            
         } catch (error: any) {
             changeLoaderState({ show: false })
             showToast(error.message, 'error')
@@ -51,8 +49,7 @@ export const useRegisterController = () => {
         try {
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             await signInEmail(values.email, values.password)
-            changeLoaderState({ show: false })
-            navivateTo(`/dashboard`)
+            changeLoaderState({ show: false })           
         } catch (error: any) {
             changeLoaderState({ show: false })
             showToast(error.message, 'error')

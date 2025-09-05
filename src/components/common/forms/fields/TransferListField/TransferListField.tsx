@@ -62,7 +62,7 @@ const TransferList = ({ name, leftTitle, rightTitle, options }: ITransferListPro
       setLeft(options.filter(e => !rigthtItems.map((r: { value: any; }) => r.value).includes(e.value)));
     }
 
-  }, [field.value, field.value.length, loaded, options, options.length]);
+  }, [field.value, field?.value?.length, loaded, options, options.length]);
 
 
   React.useEffect(() => {
