@@ -58,6 +58,7 @@ export const useRegisterController = () => {
 
     const signInWithEmail = async (values: RegisterFormValues) => {
         try {
+            
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             const responseAuth = await createUser(values.email, values.password);
             const sessionToken = await responseAuth.user.getIdToken();

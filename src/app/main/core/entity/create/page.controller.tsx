@@ -161,6 +161,14 @@ export const useRegisterController = () => {
             options: cityList
         },
 
+         {
+            name: 'postalCode',
+            label: t('core.label.postalCode'),
+            component: TextInput,
+            fullWidth: true,
+            options: cityList
+        },
+
         {
             name: 'street',
             label: t('core.label.street'),
@@ -174,13 +182,7 @@ export const useRegisterController = () => {
             },
         },
 
-        {
-            name: 'postalCode',
-            label: t('core.label.postalCode'),
-            component: TextInput,
-            fullWidth: true,
-            options: cityList
-        },
+       
 
 
     ];

@@ -82,8 +82,7 @@ export async function signUpEmail(data: RegisterFormValues, sessionToken?: strin
                 Authorization: `Bearer ${sessionToken}`
             },
         });
-        const response: any = await httpClientFetchInstance.post('', {
-            entityLegalName: data.legalEntityName,
+        const response: any = await httpClientFetchInstance.post('', {           
             fullName: data.fullName,
             phoneNumber: data.phone,
             uid: uid,

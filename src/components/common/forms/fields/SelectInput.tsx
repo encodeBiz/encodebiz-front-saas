@@ -28,7 +28,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
 
     <InputLabel id="demo-simple-select-required-label">{props.label}</InputLabel>
     <Select
-      disabled={props.disabled || (props.name ==='city' && formStatus?.values?.country)}
+      disabled={props.disabled || (props.name ==='city' && !formStatus?.values?.country)}
       label={props.label}
       error={!!error}
       value={field.value}
