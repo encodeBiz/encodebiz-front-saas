@@ -21,12 +21,10 @@ export interface RegisterFormValues {
     password: string
     passwordConfirm: string
     acceptTerms: boolean
-    legalEntityName: string
 };
 
 export const useRegisterController = () => {
     const { showToast } = useToast()
-    const { navivateTo } = useLayout()
     const { changeLoaderState } = useLayout()
 
     const t = useTranslations()
@@ -35,14 +33,14 @@ export const useRegisterController = () => {
         email: '',
         phone: '',
         password: '',
-        legalEntityName: '',
+
         passwordConfirm: '',
         acceptTerms: false
     })
 
     const validationSchema = Yup.object().shape({
         fullName: requiredRule(t),
-        legalEntityName: requiredRule(t),
+
         email: emailRule(t),
         phone: requiredRule(t),
         acceptTerms: Yup.boolean().oneOf([true], t('core.formValidatorMessages.acceptTerm'))
@@ -56,7 +54,7 @@ export const useRegisterController = () => {
 
 
 
- 
+
 
     const signInWithEmail = async (values: RegisterFormValues) => {
         try {
@@ -68,7 +66,7 @@ export const useRegisterController = () => {
             } else {
                 await signUpEmail(values, sessionToken, responseAuth.user.uid as string)
                 changeLoaderState({ show: false })
-                navivateTo(`/dashboard`)
+
             }
         } catch (error: any) {
             changeLoaderState({ show: false })
@@ -101,14 +99,7 @@ export const useRegisterController = () => {
             required: true,
             component: PhoneNumberInput,
         },
-        ,
-        {
-            name: 'legalEntityName',
-            label: t('core.label.companyName'),
-            type: 'text',
-            required: true,
-            component: TextInput,
-        },
+
         {
             name: 'password',
             label: t('core.label.password'),

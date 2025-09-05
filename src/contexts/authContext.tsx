@@ -61,15 +61,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const watchSesionState = useCallback(async (userAuth: User) => {
         try {
-            //const providerData = userAuth?.providerData;
-            /*
-            const isGoogle = providerData?.some(
-                (profile: any) => profile.providerId === "google.com"
-            );
-            */
+            const providerData = userAuth?.providerData;
 
-            console.log(userAuth);
-            
+            const isPassword = providerData?.some(
+                (profile: any) => profile.providerId === "password"
+            );
+
+
+
 
 
             if (userAuth) {
@@ -79,7 +78,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
                 const userData: IUser = {
                     ...extraData,
-                    completeProfile: (!extraData.email || extraData.fullName === "Guest") ? false : true
+                    completeProfile: (!extraData.email || extraData.fullName === "Guest") && !isPassword ? false : true
                 }
                 setUser({
                     ...userAuth,
@@ -87,8 +86,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 })
 
 
-            console.log(userData);
-
+ 
 
                 if (!userData.completeProfile && pathName !== `/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`) {
                     push(`/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`)
@@ -96,7 +94,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 setUserAuth(userAuth)
                 if (redirectUri) push(redirectUri)
                 else {
-                    if (pathName === '/' || pathName === `/${MAIN_ROUTE}` || pathName === `/${MAIN_ROUTE}/${entityId}/${GENERAL_ROUTE}`)
+                    if (pathName === '/' || pathName == '/auth/register' || pathName == '/auth/login' || pathName === `/${MAIN_ROUTE}` || pathName === `/${MAIN_ROUTE}/${entityId}/${GENERAL_ROUTE}`)
                         if (entityId)
                             push(`/${MAIN_ROUTE}/${entityId}/dashboard`)
                         else {

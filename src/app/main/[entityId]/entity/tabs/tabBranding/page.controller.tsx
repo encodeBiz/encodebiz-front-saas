@@ -60,9 +60,9 @@ export const useSettingEntityController = () => {
     const [pending, setPending] = useState(false)
 
     const [initialBrandValues, setInitialBrandValues] = useState<BrandFormValues>({
-        "backgroundColor": "#417505" as string,
-        "labelColor": "#b62929" as string,
-        "textColor": "#4a90e2" as string,
+        "backgroundColor": "#476BE7" as string,
+        "labelColor": "#000" as string,
+        "textColor": "#000" as string,
         logoUrl: '',
         stripImageUrl: '',
         iconUrl: '',
@@ -203,9 +203,9 @@ export const useSettingEntityController = () => {
     const fetchData = useCallback(async () => {
 
         setInitialBrandValues({
-            "backgroundColor": currentEntity?.entity?.branding?.backgroundColor as string ?? "#417505",
-            "labelColor": currentEntity?.entity?.branding?.labelColor as string ?? "#b62929",
-            "textColor": currentEntity?.entity?.branding?.textColor as string ?? "#4a90e2",
+            "backgroundColor": currentEntity?.entity?.branding?.backgroundColor as string ?? "#476BE7",
+            "labelColor": currentEntity?.entity?.branding?.labelColor as string ?? "#000",
+            "textColor": currentEntity?.entity?.branding?.textColor as string ?? "#000",
             logoUrl: currentEntity?.entity?.branding?.logo as string ?? "",
             stripImageUrl: currentEntity?.entity?.branding?.stripImage as string ?? "",
             iconUrl: currentEntity?.entity?.branding?.icon as string ?? "",
