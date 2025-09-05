@@ -9,15 +9,14 @@ import { SassButton } from '../buttons/GenericButton';
 import { useAppLocale } from '@/hooks/useAppLocale';
 import { useLayout } from '@/hooks/useLayout';
 
-const PlanCard = styled(Box)<{ featured?: string }>(({ theme, featured }) => ({
+const PlanCard = styled(Box)<{ featured?: string }>(({ theme }) => ({
     maxWidth: 305,
     minWidth: 305,
     minHeight: 380,
     margin: theme.spacing(2),
-
-    color: featured==='true' ? `${theme.palette.primary.contrastText}` : `${theme.palette.text.primary}`,
+    color: theme.palette.text.primary,
     borderRadius: 8,
-    background: featured ? 'linear-gradient(23.64deg, #001551 31.23%, #002FB7 99.28%)' : theme.palette.background.paper,
+    background: '#E5EAFA',
     padding: 20,
     //boxShadow: featured ? '0px 6px 12px rgba(0, 65, 158, 0.25)' : 'none'
 
@@ -34,12 +33,18 @@ export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
     const { navivateTo } = useLayout()
     const { currentLocale } = useAppLocale()
 
+    const text: any = {
+        passinbiz: "PassBiz",
+        passbiz: "PassBiz",
+        checkbiz: "CheckBiz",
+        checkinbiz: "CheckBiz",
+    }
 
     return (
-        <PlanCard featured={'true'}>
+        <PlanCard>
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2 }}>
-                <Typography textTransform={'capitalize'} variant="h4">
-                    {plan.serviceId}
+                <Typography textTransform={'capitalize'} variant="h4" sx={{ color: (theme) => theme.palette.primary.main }}>
+                    {text[plan.serviceId] ?? plan.serviceId}
                 </Typography>
             </Box>
             <Box>
@@ -52,7 +57,7 @@ export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
                     </Typography>
                 </Box>
 
-                <Divider sx={{ background: "#FFF" }} />
+                <Divider sx={{ background: (theme) => theme.palette.text.primary }} />
                 <Box py={2}>
                     <Typography
                         align='center'
@@ -62,7 +67,7 @@ export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
                 </Box>
 
 
-                <Divider sx={{ background: "#FFF" }} />
+                <Divider sx={{ background: (theme) => theme.palette.text.primary }} />
 
                 <SassButton
                     sx={{ mb: 1, mt: 4, height: 40 }}
