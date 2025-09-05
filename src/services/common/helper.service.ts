@@ -13,7 +13,9 @@ export interface IAddress {
 
 export async function fetchLocation(data: {
   "address": string,
-  "country"?: string
+  "country"?: string,
+  "city"?: string,
+  "zipCode"?: string
 }, token: string): Promise<Array<IAddress>> {
   try {
     if (!token) {

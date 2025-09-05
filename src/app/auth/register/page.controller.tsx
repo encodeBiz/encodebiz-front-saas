@@ -4,6 +4,7 @@ import PasswordInput from '@/components/common/forms/fields/PasswordInput';
 import PhoneNumberInput from '@/components/common/forms/fields/PhoneNumberInput';
 import SimpleCheckTerm from '@/components/common/forms/fields/SimpleCheckTerm';
 import TextInput from '@/components/common/forms/fields/TextInput';
+import { GENERAL_ROUTE, MAIN_ROUTE } from '@/config/routes';
 import { emailRule, passwordRestrictionRule, requiredRule } from '@/config/yupRules';
 import { useAuth } from '@/hooks/useAuth';
 import { useLayout } from '@/hooks/useLayout';
@@ -11,6 +12,7 @@ import { useToast } from '@/hooks/useToast';
 import { createUser } from '@/lib/firebase/authentication/create';
 import { signUpEmail } from '@/services/common/account.service';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'nextjs-toploader/app';
 import { useState } from 'react';
 import * as Yup from 'yup';
 
@@ -28,6 +30,7 @@ export const useRegisterController = () => {
     const { showToast } = useToast()
     const { changeLoaderState } = useLayout()
     const { updateUserData } = useAuth()
+    const { push } = useRouter()
     const t = useTranslations()
     const [initialValues] = useState<RegisterFormValues>({
         fullName: '',
@@ -68,6 +71,7 @@ export const useRegisterController = () => {
             } else {
                 await signUpEmail(values, sessionToken, responseAuth.user.uid as string)
                 await updateUserData()
+                 push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
                 changeLoaderState({ show: false })
 
             }

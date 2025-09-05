@@ -39,74 +39,47 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const updateUserData = async () => {
         const userAuth: User = await getUser() as User
         const extraData = await fetchUserAccount(userAuth.uid)
-           
         const userData: IUser = {
-            ...extraData 
+            ...extraData
         }
         setUser({
             ...userAuth,
             ...userData,
         })
-
-        setTimeout(() => {
-            if (redirectUri) push(redirectUri)
-            setPendAuth(false)
-        }, 1000)
-
-
     }
 
 
-  
+
 
 
     const watchSesionState = useCallback(async (userAuth: User) => {
         try {
+            /*
             const providerData = userAuth?.providerData;
-
             const isPassword = providerData?.some(
                 (profile: any) => profile.providerId === "password"
             );
-
+            */
 
             if (userAuth) {
-                updateUserData()
+                setUserAuth(userAuth)
                 setToken(await userAuth.getIdToken())
                 const extraData = await fetchUserAccount(userAuth.uid)
-                 
+                if (!extraData.email || extraData?.fullName?.trim()?.toLowerCase() === "guest") {
+                    //push(`/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`)
+                    setPendAuth(false)
+                    return;
+                }
                 const userData: IUser = {
                     ...extraData,
-                    completeProfile: (!extraData.email || extraData.fullName === "Guest") && !isPassword ? false : true
                 }
                 setUser({
                     ...userAuth,
                     ...userData,
                 })
-
-
-                if (!userData.completeProfile && pathName !== `/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`) {
-                    push(`/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`)
-                }
-                setUserAuth(userAuth)
                 if (redirectUri) push(redirectUri)
                 else {
-                    if (pathName === '/' || pathName == '/auth/register' || pathName == '/auth/login' || pathName === `/${MAIN_ROUTE}` || pathName === `/${MAIN_ROUTE}/${entityId}/${GENERAL_ROUTE}`)
-                        if (entityId)
-                            push(`/${MAIN_ROUTE}/${entityId}/dashboard`)
-                        else {
-                            const entityList: Array<IUserEntity> = await fetchUserEntities(userAuth.uid)
-                            if (entityList.length > 0) {
-                                const item = entityList[0]
-                                push(`/${MAIN_ROUTE}/${item?.entity?.id}/dashboard`)
-                            } else {
-                                push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
-                            }
-                        }
-
-                    else {
-                        if (pathName === '/' || pathName === `/${MAIN_ROUTE}` || pathName === `/${MAIN_ROUTE}/user`)
-                            push(`/${MAIN_ROUTE}/${USER_ROUTE}/account`)
-                    }
+                    await watchPathname(userAuth)
                 }
                 setPendAuth(false)
             } else {
@@ -124,6 +97,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     }, [inPublicPage, pathName, push, redirectUri, showToast, updateUserData, entityId])
 
+    const watchPathname = async (userAuth: User) => {
+        if (pathName === '/' || pathName === `/${MAIN_ROUTE}` || pathName === `/${MAIN_ROUTE}/${entityId}/${GENERAL_ROUTE}`)
+            if (entityId)
+                push(`/${MAIN_ROUTE}/${entityId}/dashboard`)
+            else {
+                const entityList: Array<IUserEntity> = await fetchUserEntities(userAuth.uid)
+                if (entityList.length > 0) {
+                    const item = entityList[0]
+                    push(`/${MAIN_ROUTE}/${item?.entity?.id}/dashboard`)
+                } else {
+                    push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
+                }
+            }
+
+        else {
+            if (pathName === '/' || pathName === `/${MAIN_ROUTE}` || pathName === `/${MAIN_ROUTE}/user`)
+                push(`/${MAIN_ROUTE}/${USER_ROUTE}/account`)
+        }
+    }
 
     useEffect(() => {
         if (!authToken) {
@@ -135,6 +127,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const authWithToken = async (authToken: string) => {
         await signInToken(authToken);
+        push(`/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`)
     }
 
     /** Auth By Token */
