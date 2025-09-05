@@ -10,8 +10,8 @@ export const Card3 = ({ handleNext }: any) => {
     const theme = useTheme()
     const { navivateTo } = useLayout()
     const { closeModal } = useCommonModal()
-    return <Box display={'flex'} flexDirection={"column"} justifyContent={'space-between'} p={2} height={631}>
-        <Box width={'100%'} display={'flex'} flexDirection={"column"} gap={2} justifyContent={'space-between'} alignItems={'flex-start'} >
+    return <Box display={'flex'} flexDirection={"column"} justifyContent={'space-between'} p={2}  >
+        <Box width={'100%'} display={'flex'} flexDirection={"column"} gap={3} justifyContent={'space-between'} alignItems={'flex-start'} >
             <Image
                 width={220}
                 height={73}

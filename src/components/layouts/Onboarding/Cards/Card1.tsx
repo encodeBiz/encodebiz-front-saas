@@ -4,8 +4,8 @@ import image from '../../../../../public/assets/images/onboarding1.png'
 import logo from '../../../../../public/assets/images/logo.png'
 import { SassButton } from "@/components/common/buttons/GenericButton"
 
-export const Card1 = ({handleNext}: any) => <Box display={'flex'} flexDirection={"row"} p={2} height={631}>
-    <Box width={'55%'} display={'flex'} flexDirection={"column"} gap={2} justifyContent={'space-between'} alignItems={'flex-start'} >
+export const Card1 = ({handleNext}: any) => <Box display={'flex'} flexDirection={"row"} p={2}  >
+    <Box width={'55%'} display={'flex'} flexDirection={"column"} gap={10} justifyContent={'space-between'} alignItems={'flex-start'} >
         <Image
             width={220}
             height={73}

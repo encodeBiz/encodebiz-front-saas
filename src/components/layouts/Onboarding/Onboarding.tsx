@@ -13,7 +13,7 @@ import { useStyles } from './Onboarding.styles';
 import { Card1 } from './Cards/Card1';
 import { Card2 } from './Cards/Card2';
 import { Card3 } from './Cards/Card3';
- 
+
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
         children: React.ReactElement<any, any>;
@@ -33,11 +33,16 @@ function Onboarding() {
     const handleClose = (event: any, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
         if (reason !== 'backdropClick')
             closeModal(CommonModalType.ONBOARDING);
+        setActiveStep(0)
     };
 
     // Handler for moving to the next step
     const handleNext = () => {
-        if (activeStep == 2) closeModal(CommonModalType.ONBOARDING);
+        if (activeStep == 2) {
+           
+            closeModal(CommonModalType.ONBOARDING);
+             setActiveStep(0)
+        }
         else
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
@@ -55,9 +60,7 @@ function Onboarding() {
             disableEscapeKeyDown
             onClose={handleClose}
             aria-describedby="onboarding-dialog-description"
-            fullWidth
-          
-            maxWidth="lg" // Set max width for the dialog
+            fullScreen
 
         >
             <LinearProgress variant="determinate" value={(activeStep + 1) * 33} />
