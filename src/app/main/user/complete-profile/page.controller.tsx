@@ -150,7 +150,7 @@ export const useUserProfileController = () => {
     const checkProfile = async () => {
         try {
             const userData: IUser = await fetchUserAccount(user?.uid as string)
-            if (userData.email && userData.displayName !== 'Guest') navivateTo(`/dashboard`)
+            if (userData.email && userData.fullName !== 'Guest') navivateTo(`/dashboard`)
         } catch (error) {
             if (error instanceof Error) {
                 showToast(error.message, 'error');
@@ -161,17 +161,18 @@ export const useUserProfileController = () => {
     }
 
     useEffect(() => {
-        checkProfile()
-        setInitialValues({
-            uid: user?.uid as string | "",
-            "name": user?.displayName as string | "",
-            "email": user?.email as string | "",
-            "phone": user?.phoneNumber as string | "",
-            avatar: user?.photoURL as string | "",
-            legalEntityName: '',
-            "active": true,
-        });
-
+        if (user?.id) {
+            checkProfile()
+            setInitialValues({
+                uid: user?.uid as string | "",
+                "name": user?.displayName as string | "",
+                "email": user?.email as string | "",
+                "phone": user?.phoneNumber as string | "",
+                avatar: user?.photoURL as string | "",
+                legalEntityName: '',
+                "active": true,
+            });
+        }
     }, [user?.id]);
 
     return { validationSchema, initialValues, setUserDataAction, pending, fields }
