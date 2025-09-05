@@ -60,7 +60,7 @@ function Onboarding() {
             disableEscapeKeyDown
             onClose={handleClose}
             aria-describedby="onboarding-dialog-description"
-            fullScreen
+            maxWidth='lg'
 
         >
             <LinearProgress variant="determinate" value={(activeStep + 1) * 33} />
