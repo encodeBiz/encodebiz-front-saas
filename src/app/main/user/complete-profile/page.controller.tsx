@@ -14,8 +14,10 @@ import { User } from 'firebase/auth';
 import IUser from '@/domain/auth/IUser';
 import { useEntity } from '@/hooks/useEntity';
 import { useLayout } from '@/hooks/useLayout';
-import { updateAuth } from '@/services/common/entity.service';
+import { fetchUserEntities, updateAuth } from '@/services/common/entity.service';
 import { useRouter } from 'nextjs-toploader/app';
+import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
+import IUserEntity from '@/domain/auth/IUserEntity';
 export interface UserFormValues {
     "uid": string
     "name": string
@@ -130,7 +132,7 @@ export const useUserProfileController = () => {
                 updateUserData()
                 changeLoaderState({ show: false })
                 await updateAuth(currentEntity?.id as string)
-                push('/')
+                goEntity()
 
             }
 
@@ -147,11 +149,21 @@ export const useUserProfileController = () => {
         }
     };
 
+    const goEntity = async () => {
+        const entityList: Array<IUserEntity> = await fetchUserEntities(user?.uid as string)
+        if (entityList.length > 0) {
+            const item = entityList[0]
+            push(`/${MAIN_ROUTE}/${item?.entity?.id}/dashboard`)
+        } else {
+            push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
+        }
+    }
+
 
     const checkProfile = async () => {
         try {
             const userData: IUser = await fetchUserAccount(user?.uid as string)
-            if (userData.email && userData.fullName !== 'Guest') push(`/`)
+            if (userData.email && userData.fullName !== 'Guest') goEntity()
         } catch (error) {
             if (error instanceof Error) {
                 showToast(error.message, 'error');
