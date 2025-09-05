@@ -61,8 +61,8 @@ export const useSettingEntityController = () => {
 
     const [initialBrandValues, setInitialBrandValues] = useState<BrandFormValues>({
         "backgroundColor": "#476BE7" as string,
-        "labelColor": "#000" as string,
-        "textColor": "#000" as string,
+        "labelColor": "#000000" as string,
+        "textColor": "#000000" as string,
         logoUrl: '',
         stripImageUrl: '',
         iconUrl: '',
@@ -204,8 +204,8 @@ export const useSettingEntityController = () => {
 
         setInitialBrandValues({
             "backgroundColor": currentEntity?.entity?.branding?.backgroundColor as string ?? "#476BE7",
-            "labelColor": currentEntity?.entity?.branding?.labelColor as string ?? "#000",
-            "textColor": currentEntity?.entity?.branding?.textColor as string ?? "#000",
+            "labelColor": currentEntity?.entity?.branding?.labelColor as string ?? "#000000",
+            "textColor": currentEntity?.entity?.branding?.textColor as string ?? "#000000",
             logoUrl: currentEntity?.entity?.branding?.logo as string ?? "",
             stripImageUrl: currentEntity?.entity?.branding?.stripImage as string ?? "",
             iconUrl: currentEntity?.entity?.branding?.icon as string ?? "",
