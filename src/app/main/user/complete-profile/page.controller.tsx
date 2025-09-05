@@ -15,6 +15,7 @@ import IUser from '@/domain/auth/IUser';
 import { useEntity } from '@/hooks/useEntity';
 import { useLayout } from '@/hooks/useLayout';
 import { updateAuth } from '@/services/common/entity.service';
+import { useRouter } from 'nextjs-toploader/app';
 export interface UserFormValues {
     "uid": string
     "name": string
@@ -40,7 +41,7 @@ export const useUserProfileController = () => {
     const { changeLoaderState } = useLayout()
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
-    const { navivateTo } = useLayout()
+    const { push } = useRouter()
     const { currentEntity } = useEntity()
     const [initialValues, setInitialValues] = useState<UserFormValues>({
         uid: user?.uid as string | "",
@@ -129,7 +130,7 @@ export const useUserProfileController = () => {
                 updateUserData()
                 changeLoaderState({ show: false })
                 await updateAuth(currentEntity?.id as string)
-                navivateTo('/dashboard')
+                push('/')
 
             }
 
@@ -150,7 +151,7 @@ export const useUserProfileController = () => {
     const checkProfile = async () => {
         try {
             const userData: IUser = await fetchUserAccount(user?.uid as string)
-            if (userData.email && userData.fullName !== 'Guest') navivateTo(`/dashboard`)
+            if (userData.email && userData.fullName !== 'Guest') push(`/`)
         } catch (error) {
             if (error instanceof Error) {
                 showToast(error.message, 'error');
@@ -165,7 +166,7 @@ export const useUserProfileController = () => {
             checkProfile()
             setInitialValues({
                 uid: user?.uid as string | "",
-                "name": user?.displayName as string | "",
+                "name": user?.displayName !== 'Guest' ? user?.displayName as string : "",
                 "email": user?.email as string | "",
                 "phone": user?.phoneNumber as string | "",
                 avatar: user?.photoURL as string | "",
