@@ -92,7 +92,7 @@ export const useUserProfileController = () => {
         },
 
 
-        
+
     ];
 
 
@@ -110,17 +110,17 @@ export const useUserProfileController = () => {
                 await signUpEmail({
                     fullName: values.name as string,
                     acceptTerms: true,
-                    email: values.email as string,                     
+                    email: values.email as string,
                     password: '123hg3j4h5gj3h4g5j',
                     passwordConfirm: '123hg3j4h5gj3h4g5j',
                     phone: values.phone as string ?? '',
                 }, sessionToken, user?.uid)
-
+                
                 setUser({
                     ...user as any,
                     ...await getUser() as User
                 })
-                
+
                 refrestList(user?.uid)
                 updateUserData()
                 changeLoaderState({ show: false })

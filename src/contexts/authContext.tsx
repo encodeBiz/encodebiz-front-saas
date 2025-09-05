@@ -39,9 +39,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const updateUserData = async () => {
         const userAuth: User = await getUser() as User
         const extraData = await fetchUserAccount(userAuth.uid)
+           
         const userData: IUser = {
-            ...extraData,
-            completeProfile: extraData.email ? true : false
+            ...extraData 
         }
         setUser({
             ...userAuth,
@@ -57,6 +57,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
 
+  
 
 
     const watchSesionState = useCallback(async (userAuth: User) => {
@@ -72,7 +73,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 updateUserData()
                 setToken(await userAuth.getIdToken())
                 const extraData = await fetchUserAccount(userAuth.uid)
-
+                 
                 const userData: IUser = {
                     ...extraData,
                     completeProfile: (!extraData.email || extraData.fullName === "Guest") && !isPassword ? false : true
@@ -81,8 +82,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     ...userAuth,
                     ...userData,
                 })
-
-
 
 
                 if (!userData.completeProfile && pathName !== `/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`) {

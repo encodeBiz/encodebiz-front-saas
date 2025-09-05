@@ -5,6 +5,7 @@ import PhoneNumberInput from '@/components/common/forms/fields/PhoneNumberInput'
 import SimpleCheckTerm from '@/components/common/forms/fields/SimpleCheckTerm';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { emailRule, passwordRestrictionRule, requiredRule } from '@/config/yupRules';
+import { useAuth } from '@/hooks/useAuth';
 import { useLayout } from '@/hooks/useLayout';
 import { useToast } from '@/hooks/useToast';
 import { createUser } from '@/lib/firebase/authentication/create';
@@ -26,7 +27,7 @@ export interface RegisterFormValues {
 export const useRegisterController = () => {
     const { showToast } = useToast()
     const { changeLoaderState } = useLayout()
-
+    const { updateUserData } = useAuth()
     const t = useTranslations()
     const [initialValues] = useState<RegisterFormValues>({
         fullName: '',
@@ -58,7 +59,7 @@ export const useRegisterController = () => {
 
     const signInWithEmail = async (values: RegisterFormValues) => {
         try {
-            
+
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             const responseAuth = await createUser(values.email, values.password);
             const sessionToken = await responseAuth.user.getIdToken();
@@ -66,6 +67,7 @@ export const useRegisterController = () => {
                 showToast('Error to fetch user auth token', 'error')
             } else {
                 await signUpEmail(values, sessionToken, responseAuth.user.uid as string)
+                await updateUserData()
                 changeLoaderState({ show: false })
 
             }
