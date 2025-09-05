@@ -96,6 +96,8 @@
       "active": "Activo",
       "thumbnail": "Imagen en miniatura",
       "subject": "Asunto",
+      "companyName": "Nombre de la Empresa",
+
       "comminsoom": "- Muy pronto",
       "from": "Correo electronico",
       "owner": "Propietario",
@@ -122,6 +124,7 @@
       "typingAddress":"Escribe una dirección",
       "staff1": "Personal",
       "resend": "Reenviar",
+      "send":"Enviar",
       "draft": "Borrador",
       "published": "Publicado",
       "archived": "Archivado",
@@ -503,7 +506,7 @@
     "deleteConfirmModalTitle": "Eliminar Evento",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el evento y todas sus configuraciones",
     "fremiunContact": {
-      "title": "Crear evento",
+      "title": "Solicitar evento de prueba",
       "description": "Describa las caractericticas del evento que desea crear, y nos pondremos en contacto con usted"
     }
   },
