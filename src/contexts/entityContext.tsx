@@ -60,8 +60,8 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
 
-    const watchSesionState = useCallback(async (userAuth: User) => {
-
+    const watchSesionState = async (userAuth: User) => {
+ 
         if (userAuth) {
             const entityList: Array<IUserEntity> = await fetchUserEntities(userAuth.uid)
 
@@ -83,7 +83,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
                     const extraData = await fetchUserAccount(userAuth.uid)
                     if (extraData.fullName !== "Guest")
                         push(`/${MAIN_ROUTE}/${_currentEntity.entity.id}/dashboard`)
-                   
+
                 }
 
             } else {
@@ -99,11 +99,11 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
                     }
                 }
 
-            }            
+            }
         }
-    }, []);
+    };
 
-    const refrestList = useCallback(async (userId: string) => {
+    const refrestList = async (userId: string) => {
         const entityList: Array<IUserEntity> = await fetchUserEntities(userId)
         if (entityList.length > 0) {
             if (entityList.length > 0 && entityList.filter(e => e.isActive).length === 0) {
@@ -112,11 +112,13 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
                 entityList.splice(0, 1, item)
             }
             setEntityList(entityList)
-            setCurrentEntity(entityList.find(e => e.isActive) as IUserEntity)
+            const entity = entityList.find(e => e.isActive) ?? entityList[0]
+            changeCurrentEntity(entity.entity.id as string, userId)
+ 
         } else {
             push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
         }
-    }, [])
+    }
 
 
     const changeCurrentEntity = async (id: string, userId: string, callback?: () => void,) => {

@@ -10,8 +10,7 @@ import { deleteEntity } from "@/services/common/entity.service";
 import { Theme } from "@emotion/react";
 import { SxProps } from "@mui/material";
 import { useTranslations } from "next-intl";
-import { useRouter } from "nextjs-toploader/app";
- 
+  
 import { ReactNode, useState } from "react";
 
 
@@ -32,7 +31,6 @@ export const useSettingEntityController = () => {
     const { user, token } = useAuth();
     const { showToast } = useToast()
     const { refrestList } = useEntity()
-    const { push } = useRouter()
     const handleDeleteEntity = async (entityId: string) => {
         setPending(true)
         try {
@@ -46,7 +44,7 @@ export const useSettingEntityController = () => {
             showToast(t('core.feedback.success'), 'success');
             setPending(false)
             closeModal(CommonModalType.DELETE)
-            push('/main/core/dashboard')
+       
         } catch (error: unknown) {
             if (error instanceof Error) {
                 showToast(error.message, 'error');

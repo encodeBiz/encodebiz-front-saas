@@ -11,9 +11,10 @@ export interface HeaderPageProps {
   actions?: ReactNode
   children?: ReactNode
   isForm?: boolean
+  inTab?: boolean
 }
 
-export default function HeaderPage({ children, title, description, isForm = false, actions }: HeaderPageProps) {
+export default function HeaderPage({ children, title, description, isForm = false,inTab= false, actions }: HeaderPageProps) {
   const styles = useStyles()
   return (
     <Box  >
@@ -33,7 +34,7 @@ export default function HeaderPage({ children, title, description, isForm = fals
         </Box>
         <Box sx={styles.content}>
           {children}
-          {isForm && <Box sx={{pr:4,pb:4,pl:4}}>{actions}</Box>}
+          {isForm && <Box sx={{pr:inTab?8:4,pb:4,pl:4}}>{actions}</Box>}
         </Box>
       </Paper>
 

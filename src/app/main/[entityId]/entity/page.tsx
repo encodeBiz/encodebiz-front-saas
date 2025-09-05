@@ -27,11 +27,11 @@ import { useFormStatus } from '@/hooks/useFormStatus';
 import { Save } from '@mui/icons-material';
 import { useSearchParams } from 'next/navigation';
 import { TabItem } from '@/components/common/tabs/BaseTabs';
- 
+
 const EntityPreferencesPage = () => {
     const t = useTranslations();
     const { user } = useAuth()
-  
+
     const { currentEntity, } = useEntity()
     const { openModal, open } = useCommonModal()
     const { handleDeleteEntity, pending } = useSettingEntityController()
@@ -39,14 +39,15 @@ const EntityPreferencesPage = () => {
     const { formStatus } = useFormStatus()
     const searchParams = useSearchParams()
     let tab = 0
-    if (searchParams.get('tab')) {
-        if (searchParams.get('tab') === 'company') tab = 0
-        if (searchParams.get('tab') === 'branding') tab = 1
-        if (searchParams.get('tab') === 'billing') tab = 2
-        if (searchParams.get('tab') === 'subscription') tab = 3
-        if (searchParams.get('tab') === 'invoice') tab = 4
-        if (searchParams.get('tab') === 'colaborators') tab = 5
-    } 
+    const tabText = searchParams.get('tab') ?? 'company'
+    if (tabText) {
+        if (tabText === 'company') tab = 0
+        if (tabText === 'branding') tab = 1
+        if (tabText === 'billing') tab = 2
+        if (tabText === 'subscription') tab = 3
+        if (tabText === 'invoice') tab = 4
+        if (tabText === 'colaborators') tab = 5
+    }
     const tabsRender: TabItem[] = [
         {
             label: <Badge color="warning" variant="dot" badgeContent={currentEntity?.entity.legal?.legalName ? 0 : 1}>
@@ -92,7 +93,9 @@ const EntityPreferencesPage = () => {
     return (
         <Container maxWidth="xl">
             <HeaderPage
-                actions={
+                isForm
+                inTab
+                actions={<>{(tabText === 'company' || tabText === 'branding') &&
                     <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
                         <SassButton
                             disabled={!formStatus?.isValid || formStatus?.isSubmitting}
@@ -100,8 +103,8 @@ const EntityPreferencesPage = () => {
                             variant='contained'
                             startIcon={<Save />}
                         > {t('core.button.saveChanges')}</SassButton>
-                    </Box>
-                }
+                    </Box>}
+                </>}
                 title={t('entity.title')}
             >{currentEntity?.role === 'owner' &&
                 <GenericTabs
