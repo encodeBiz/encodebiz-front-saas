@@ -20,13 +20,13 @@ const BillingPreferencesPage = () => {
     const { currentEntity } = useEntity()
 
     return (
-        <Box sx={{  display: 'flex', flexDirection: 'column', gap: 1, }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, }}>
             {currentEntity?.entity?.billingConfig?.payment_method && currentEntity?.entity?.billingConfig?.payment_method?.length > 0 && <Typography variant='h5'>{t('billing.title2')}</Typography>}
             <BorderBox sx={{ mb: 4 }}>
                 <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 6, }}>
                     {currentEntity?.entity?.billingConfig?.payment_method && currentEntity?.entity?.billingConfig?.payment_method?.length > 0 ? <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
                         {currentEntity?.entity?.billingConfig?.payment_method.map((pm: any) => (
-                            <Box key={pm.id} sx={{ p: 2, width: '100%', display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap:2 }}>
+                            <Box key={pm.id} sx={{ p: 2, width: '100%', display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: 2 }}>
                                 <Image src={cards[pm.brand] ?? card} alt='Cards' width={74} height={57} />
                                 <Typography textTransform={'capitalize'} variant='body1'>{`${pm.brand}  ●●●●  ${pm.last4}`}</Typography>
                             </Box>
@@ -49,7 +49,8 @@ const BillingPreferencesPage = () => {
                         }} variant='contained' color='primary' disabled={!currentEntity?.entity.legal?.legalName && !currentEntity?.entity.legal?.taxId} onClick={configBillingAction}>{
                                 currentEntity?.entity?.billingConfig?.payment_method && currentEntity?.entity?.billingConfig?.payment_method?.length > 0 ? t('billing.btn2') :
                                     t('billing.btn')}</SassButton>
-                                    <Alert severity="warning">{t('entity.tabs.tab3.advise')}</Alert>
+                        {(!currentEntity?.entity.legal?.legalName && !currentEntity?.entity.legal?.taxId) && <Alert severity="warning">{t('entity.tabs.tab3.pendingLegal')}</Alert>}
+                        <Alert severity="warning">{t('entity.tabs.tab3.advise')}</Alert>
                     </Box>
                 </Box>
             </BorderBox>

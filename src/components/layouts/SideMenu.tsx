@@ -161,13 +161,13 @@ export default function SideMenu() {
           {menuItemsServices.map((item: any, i: number) => {
             if (item.divider) return null
             else
-              if ((item.subMenu.length == 0 || !entityServiceList.find(e => e.id === item.id)?.isBillingActive || item.header))
+              if ((item.subMenu.length == 0 || !entityServiceList.filter(e=>e.active).find(e => e.id === item.id)?.isBillingActive || item.header))
                 return <ListItem key={i} disablePadding>
                   <CustomListItemButton item={item} />
                 </ListItem>
 
               else
-                if (entityServiceList.map(e => e.id).includes(item.id)) {
+                if (entityServiceList.filter(e=>e.active).map(e => e.id).includes(item.id)) {
                   return <div key={i} >
                     <ListItem disablePadding>
                       <CustomListItemButton item={item} handleSubMenuToggle={handleSubMenuToggle} >

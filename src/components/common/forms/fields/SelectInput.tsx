@@ -4,6 +4,7 @@ import { TextFieldProps, MenuItem, Select, FormHelperText, FormControl, InputLab
 import { FieldProps, useField } from 'formik';
 import { createSlug } from '@/lib/common/String';
 import { Error } from '@mui/icons-material';
+import { useFormStatus } from '@/hooks/useFormStatus';
 
 type SelectInputProps = FieldProps & TextFieldProps & {
   options: Array<{ value: any; label: string }>;
@@ -19,6 +20,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
   const [field, meta, helper] = useField(props.name);
   const { touched, error } = meta
   const helperText = touched && error;
+  const { formStatus } = useFormStatus();
 
 
 
@@ -26,7 +28,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
 
     <InputLabel id="demo-simple-select-required-label">{props.label}</InputLabel>
     <Select
-      disabled={props.disabled}
+      disabled={props.disabled || (props.name ==='city' && formStatus?.values?.country)}
       label={props.label}
       error={!!error}
       value={field.value}

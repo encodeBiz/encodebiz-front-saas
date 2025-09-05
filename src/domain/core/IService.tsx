@@ -2,6 +2,7 @@ export interface IService {
 
     id: BizType; // o string si lo generalizas
     name: string;
+    status: 'cooming_soom' | 'active';
     description: {
         es: string
         en: string
@@ -10,13 +11,13 @@ export interface IService {
         es: string
         en: string
     };
-     steps: {
-        es: Array<{title: string, description: string}>
-        en: Array<{title: string, description: string}>
+    steps: {
+        es: Array<{ title: string, description: string }>
+        en: Array<{ title: string, description: string }>
     };
     target: {
-        es: Array<{title: string, description: string}>
-        en: Array<{title: string, description: string}>
+        es: Array<{ title: string, description: string }>
+        en: Array<{ title: string, description: string }>
     };
     availablePlans: Array<PlanType>;
     activatedAt: Date

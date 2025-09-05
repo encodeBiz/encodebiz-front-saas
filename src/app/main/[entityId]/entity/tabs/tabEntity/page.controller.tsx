@@ -153,6 +153,13 @@ export const useSettingEntityController = () => {
             options: cityList
         },
         {
+            name: 'postalCode',
+            label: t('core.label.postalCode'),
+            component: TextInput,
+            fullWidth: true,
+            options: cityList
+        },
+        {
             name: 'street',
             label: t('core.label.street'),
             type: 'textarea',
@@ -164,14 +171,8 @@ export const useSettingEntityController = () => {
                 },
             },
         },
-        {
-            name: 'postalCode',
-            label: t('core.label.postalCode'),
-            component: TextInput,
-            fullWidth: true,
-            options: cityList
-        },
-         
+
+
     ];
 
 

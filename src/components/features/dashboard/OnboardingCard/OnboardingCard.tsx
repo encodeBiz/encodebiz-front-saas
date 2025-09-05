@@ -9,6 +9,7 @@ import { useStyles } from './OnboardingCard.styles';
 import { useAuth } from '@/hooks/useAuth';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { useTranslations } from 'next-intl';
+import { IService } from '@/domain/core/IService';
 export interface OnboardingCardProps {
   title?: string
   description?: string
@@ -20,9 +21,10 @@ export interface OnboardingCardProps {
   width?: number
   height?: number
   heightCard?: number
+  serviceData?:IService
 }
 
-export default function OnboardingCard({ children, title, description, image, onPress,heightCard=250, right = -10, top = -60, width = 705, height = 422 }: OnboardingCardProps) {
+export default function OnboardingCard({ children,serviceData, title, description, image, onPress,heightCard=250, right = -10, top = -60, width = 705, height = 422 }: OnboardingCardProps) {
   const { user } = useAuth()
   const styles = useStyles(!!user?.id)
   const t = useTranslations()
@@ -40,8 +42,8 @@ export default function OnboardingCard({ children, title, description, image, on
               {description}
             </Typography>
 
-            {typeof onPress === 'function' && <SassButton onClick={onPress} variant="contained" color="primary" sx={{ mt: 2 }}>{t('core.button.start')}</SassButton>
-            }
+            {typeof onPress === 'function' && serviceData?.status==='active' && <SassButton onClick={onPress} variant="contained" color="primary" sx={{ mt: 2 }}>{t('core.button.start')}</SassButton>}
+            {serviceData?.status==='cooming_soom' && <SassButton onClick={onPress} variant="contained" color="primary" sx={{ mt: 2 }}>{t('core.label.cooming_soom')}</SassButton>}
           </Box>
           {image && <Box sx={{ ...styles.imageContainer, right, top }}>
             <Image width={width} height={height} alt='EncodeBiz' src={image} />

@@ -28,7 +28,7 @@ const ServiceList = () => {
     const handleActionClick = (id: any) => {
         navivateTo(`/${id}/onboarding`)
     };
-    if (entityServiceList.length > 0)
+    if (entityServiceList.filter(e => e.active).length > 0)
         return (
             <Grid container spacing={4} display={'flex'} flexDirection={{
                 sx: 'column',
@@ -37,15 +37,15 @@ const ServiceList = () => {
                 lg: 'row',
                 xl: 'row',
             }} justifyContent="space-between" marginTop={10}>
-                {entityServiceList.map((card) => (
-                    <Card key={card.id} sx={styles.card} style={{cursor: card.id != 'checkinbiz' ? 'pointer' : 'default'}} onClick={() => card.id != 'checkinbiz' ? handleActionClick(card.id) : null} elevation={0} >
+                {entityServiceList.filter(e => e.active).map((card) => (
+                    <Card key={card.id} sx={styles.card} style={{ cursor: card.id != 'checkinbiz' ? 'pointer' : 'default' }} onClick={() => card.id != 'checkinbiz' ? handleActionClick(card.id) : null} elevation={0} >
                         <CardContent sx={styles.card}>
                             <Box sx={styles.iconContainer} >
                                 <Image src={icons[card.id]} width={76} height={76} alt='' />
                             </Box>
                             <Box sx={styles.textContainer} >
-                                <Typography textTransform={'uppercase'}  variant="h5" component="div">
-                                    {card.name} {card.id==='checkinbiz' && <span style={{color:theme.palette.primary.main}}>{t('core.label.comminsoom')}</span>}
+                                <Typography textTransform={'uppercase'} variant="h5" component="div">
+                                    {card.name} {card.id === 'checkinbiz' && <span style={{ color: theme.palette.primary.main }}>{t('core.label.comminsoom')}</span>}
                                 </Typography>
                                 <Typography variant="body2" color="text.primary" fontSize={16}>
                                     {card?.description ? (card?.description as any)[currentLocale] : ''}
