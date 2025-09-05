@@ -14,6 +14,7 @@ import { useAppLocale } from "@/hooks/useAppLocale";
 import { useTranslations } from "next-intl";
 import { StepIcon } from "@/components/common/icons/StepIcon";
 import { TargetIcon } from "@/components/common/icons/TargetIcon";
+import { useEntity } from "@/hooks/useEntity";
 const imageModule: any = {
   passinbiz:passinbiz,
   checkinbiz:checkbiz
@@ -25,8 +26,9 @@ export default function Dashboard() {
   const { service } = useParams<any>()
   const { currentLocale } = useAppLocale()
   const t = useTranslations()
-
-
+  const { currentEntity , entitySuscription} = useEntity()
+ 
+  const activeService = entitySuscription.filter(e => e.serviceId === service && e.status === 'active').length > 0 && currentEntity?.role === 'owner'
   const scrollToPlan = () => {
     if (sectionServicesRef.current) {
       (sectionServicesRef.current as any).scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -65,7 +67,7 @@ export default function Dashboard() {
 
       ]} />
 
-      {!pending && Array.isArray(planList) && <SalesPlan ref={sectionServicesRef} salesPlans={planList as Array<IPlan>} fromService={service} />}
+      {!pending && activeService && Array.isArray(planList) && <SalesPlan ref={sectionServicesRef} salesPlans={planList as Array<IPlan>} fromService={service} />}
 
 
 
