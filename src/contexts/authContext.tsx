@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const authToken = searchParams.get('authToken')
 
     /** Refresh User Data */
-    const updateUserData = useCallback(async () => {
+    const updateUserData = async () => {
         const userAuth: User = await getUser() as User
         const extraData = await fetchUserAccount(userAuth.uid)
         const userData: IUser = {
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }, 1000)
 
 
-    }, [push, redirectUri])
+    }
 
 
 
@@ -66,9 +66,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             const isPassword = providerData?.some(
                 (profile: any) => profile.providerId === "password"
             );
-
-
-
 
 
             if (userAuth) {
@@ -86,7 +83,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 })
 
 
- 
+
 
                 if (!userData.completeProfile && pathName !== `/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`) {
                     push(`/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`)
