@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import useHolderController from './page.controller';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
-import { ContactFromModel, IContact } from '@/domain/core/IContact';
+import { ContactFromModel } from '@/domain/core/IContact';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useRef } from 'react';

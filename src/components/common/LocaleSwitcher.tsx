@@ -15,9 +15,7 @@ import {
 import { useAppLocale } from '@/hooks/useAppLocale';
 import { Language } from '@mui/icons-material';
 import { useEntity } from '@/hooks/useEntity';
-import { createSlug } from '@/lib/common/String';
-import { useAuth } from '@/hooks/useAuth';
-import { updateEntity, updateExtraEntity } from '@/services/common/entity.service';
+import { updateExtraEntity } from '@/services/common/entity.service';
 import { useToast } from '@/hooks/useToast';
 export const locales = ['en', 'es']; // Define your supported locales
 
@@ -26,7 +24,6 @@ const LocaleSwitcher: React.FC = () => {
   const { changeLocale, currentLocale } = useAppLocale()
   const [selectedLocale, setSelectedLocale] = useState(currentLocale);
   const { currentEntity } = useEntity()
-  const { token } = useAuth()
   const { showToast } = useToast()
   // Update internal state if currentLocale changes externally (e.g., initial load)
   useEffect(() => {

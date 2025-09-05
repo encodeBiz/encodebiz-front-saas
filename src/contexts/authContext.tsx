@@ -59,11 +59,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const watchSesionState = useCallback(async (userAuth: User) => {
         try {
-            const providerData = userAuth?.providerData;
+            //const providerData = userAuth?.providerData;
+            /*
             const isGoogle = providerData?.some(
                 (profile: any) => profile.providerId === "google.com"
             );
-
+            */
  
 
             if (userAuth) {

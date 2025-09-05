@@ -25,15 +25,13 @@ import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { createSlug } from '@/lib/common/String';
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { Save } from '@mui/icons-material';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { TabItem } from '@/components/common/tabs/BaseTabs';
-import { useRouter } from 'nextjs-toploader/app';
-
+ 
 const EntityPreferencesPage = () => {
     const t = useTranslations();
     const { user } = useAuth()
-    const { push } = useRouter()
-    const pathname = usePathname()
+  
     const { currentEntity, } = useEntity()
     const { openModal, open } = useCommonModal()
     const { handleDeleteEntity, pending } = useSettingEntityController()

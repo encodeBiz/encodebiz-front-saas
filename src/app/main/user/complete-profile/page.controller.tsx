@@ -14,6 +14,7 @@ import { User } from 'firebase/auth';
 import IUser from '@/domain/auth/IUser';
 import { useEntity } from '@/hooks/useEntity';
 import { useLayout } from '@/hooks/useLayout';
+import { updateAuth } from '@/services/common/entity.service';
 export interface UserFormValues {
     "uid": string
     "name": string
@@ -40,7 +41,7 @@ export const useUserProfileController = () => {
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
     const { navivateTo } = useLayout()
-
+    const { currentEntity } = useEntity()
     const [initialValues, setInitialValues] = useState<UserFormValues>({
         uid: user?.uid as string | "",
         "name": user?.displayName as string | "",
@@ -127,6 +128,7 @@ export const useUserProfileController = () => {
                 refrestList(user?.uid)
                 updateUserData()
                 changeLoaderState({ show: false })
+                await updateAuth(currentEntity?.id as string)
                 navivateTo('/dashboard')
 
             }
@@ -148,7 +150,7 @@ export const useUserProfileController = () => {
     const checkProfile = async () => {
         try {
             const userData: IUser = await fetchUserAccount(user?.uid as string)
-            if (userData.email && userData.displayName!=='Guest') navivateTo(`/dashboard`)
+            if (userData.email && userData.displayName !== 'Guest') navivateTo(`/dashboard`)
         } catch (error) {
             if (error instanceof Error) {
                 showToast(error.message, 'error');
