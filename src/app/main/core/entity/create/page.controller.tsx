@@ -14,6 +14,7 @@ import { requiredRule } from '@/config/yupRules';
 import { MAIN_ROUTE } from '@/config/routes';
 import { createSlug } from '@/lib/common/String';
 import AddressInput from '@/components/common/forms/fields/AddressInput';
+import { useLayout } from '@/hooks/useLayout';
 
 
 export interface EntityFormValues {
@@ -38,7 +39,7 @@ export const useRegisterController = () => {
     const { push } = useRouter()
     const [cityList, setCityList] = useState<any>([])
     const [geo, setGeo] = useState<{ lat: number, lng: number }>({ lat: 0, lng: 0 })
-
+    const { changeLoaderState } = useLayout()
     const [initialValues, setInitialValues] = useState<EntityFormValues>({
         uid: user?.id as string,
         "name": "",
@@ -65,9 +66,10 @@ export const useRegisterController = () => {
     });
     const handleCreateEntity = async (values: EntityFormValues) => {
         try {
+            changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
 
             const createData = {
-                
+
                 "name": values.name,
                 "slug": createSlug(values.name),
                 "billingEmail": values.billingEmail,
@@ -97,8 +99,10 @@ export const useRegisterController = () => {
                 //navivateTo(`/${GENERAL_ROUTE}/dashboard`)
 
             }
+            changeLoaderState({ show: false })
 
         } catch (error: any) {
+            changeLoaderState({ show: false })
             showToast(error.message, 'error')
         }
     };
@@ -162,25 +166,27 @@ export const useRegisterController = () => {
         },
 
         {
-            name: 'street',
-            label: t('core.label.street'),
-            type: 'textarea',
-            fullWidth: true,
-            component: AddressInput,
-            extraProps: {
-                onHandleChange: (data: {lat:number, lng: number}) => {
-                    setGeo(data)
-                },
-            },
-        },
-
-        {
             name: 'postalCode',
             label: t('core.label.postalCode'),
             component: TextInput,
             fullWidth: true,
             options: cityList
         },
+
+        {
+            name: 'street',
+            label: t('core.label.street'),
+            type: 'textarea',
+            fullWidth: true,
+            component: AddressInput,
+            extraProps: {
+                onHandleChange: (data: { lat: number, lng: number }) => {
+                    setGeo(data)
+                },
+            },
+        },
+
+
 
 
     ];
@@ -202,7 +208,8 @@ export const useRegisterController = () => {
             })
         }
         return () => { }
-    }, [user?.email, user?.id, user?.uid])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user?.id])
 
 
 

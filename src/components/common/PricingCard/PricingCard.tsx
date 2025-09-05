@@ -51,7 +51,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
     const { open, closeModal } = useCommonModal()
     const { entitySuscription, currentEntity } = useEntity()
     const [items, setItems] = useState<Array<{ text: string, link: string }>>([])
-    const [suscribed] = useState(entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length > 0)
+   
     const [price] = useState(payPerUse ? pricePerUse : monthlyPrice)
 
 
@@ -91,7 +91,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
                             disabled={false}
 
                         >
-                            {suscribed ? t("salesPlan.contract") : t("salesPlan.pay")}
+                            {entitySuscription.filter(e => e.plan === id && e.serviceId === fromService && e.status === 'active').length > 0 ? t("salesPlan.contract") : t("salesPlan.pay")}
                         </SassButton>
                         {price && <Typography
                             align='center'

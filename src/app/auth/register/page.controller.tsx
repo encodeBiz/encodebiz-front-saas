@@ -4,12 +4,15 @@ import PasswordInput from '@/components/common/forms/fields/PasswordInput';
 import PhoneNumberInput from '@/components/common/forms/fields/PhoneNumberInput';
 import SimpleCheckTerm from '@/components/common/forms/fields/SimpleCheckTerm';
 import TextInput from '@/components/common/forms/fields/TextInput';
+import { GENERAL_ROUTE, MAIN_ROUTE } from '@/config/routes';
 import { emailRule, passwordRestrictionRule, requiredRule } from '@/config/yupRules';
+import { useAuth } from '@/hooks/useAuth';
 import { useLayout } from '@/hooks/useLayout';
 import { useToast } from '@/hooks/useToast';
 import { createUser } from '@/lib/firebase/authentication/create';
 import { signUpEmail } from '@/services/common/account.service';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'nextjs-toploader/app';
 import { useState } from 'react';
 import * as Yup from 'yup';
 
@@ -21,28 +24,27 @@ export interface RegisterFormValues {
     password: string
     passwordConfirm: string
     acceptTerms: boolean
-    legalEntityName: string
 };
 
 export const useRegisterController = () => {
     const { showToast } = useToast()
-    const { navivateTo } = useLayout()
     const { changeLoaderState } = useLayout()
-
+    const { updateUserData } = useAuth()
+    const { push } = useRouter()
     const t = useTranslations()
     const [initialValues] = useState<RegisterFormValues>({
         fullName: '',
         email: '',
         phone: '',
         password: '',
-        legalEntityName: '',
+
         passwordConfirm: '',
         acceptTerms: false
     })
 
     const validationSchema = Yup.object().shape({
         fullName: requiredRule(t),
-        legalEntityName: requiredRule(t),
+
         email: emailRule(t),
         phone: requiredRule(t),
         acceptTerms: Yup.boolean().oneOf([true], t('core.formValidatorMessages.acceptTerm'))
@@ -56,10 +58,11 @@ export const useRegisterController = () => {
 
 
 
- 
+
 
     const signInWithEmail = async (values: RegisterFormValues) => {
         try {
+
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             const responseAuth = await createUser(values.email, values.password);
             const sessionToken = await responseAuth.user.getIdToken();
@@ -67,8 +70,10 @@ export const useRegisterController = () => {
                 showToast('Error to fetch user auth token', 'error')
             } else {
                 await signUpEmail(values, sessionToken, responseAuth.user.uid as string)
+                await updateUserData()
+                 push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
                 changeLoaderState({ show: false })
-                navivateTo(`/dashboard`)
+
             }
         } catch (error: any) {
             changeLoaderState({ show: false })
@@ -101,14 +106,7 @@ export const useRegisterController = () => {
             required: true,
             component: PhoneNumberInput,
         },
-        ,
-        {
-            name: 'legalEntityName',
-            label: t('core.label.companyName'),
-            type: 'text',
-            required: true,
-            component: TextInput,
-        },
+
         {
             name: 'password',
             label: t('core.label.password'),

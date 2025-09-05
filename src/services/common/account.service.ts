@@ -7,7 +7,7 @@ import httpClientFetchInstance, { codeError, HttpClient } from "@/lib/http/httpC
 import IUser from "@/domain/auth/IUser";
 import { EmailAuthProvider, reauthenticateWithCredential, updateProfile, User, UserCredential } from "firebase/auth";
 import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
-
+ 
 
 export async function validateToken(
     token: string,
@@ -82,8 +82,7 @@ export async function signUpEmail(data: RegisterFormValues, sessionToken?: strin
                 Authorization: `Bearer ${sessionToken}`
             },
         });
-        const response: any = await httpClientFetchInstance.post('', {
-            entityLegalName: data.legalEntityName,
+        const response: any = await httpClientFetchInstance.post('', {           
             fullName: data.fullName,
             phoneNumber: data.phone,
             uid: uid,
@@ -175,3 +174,5 @@ export async function updateAccout(photoURL: string, phoneNumber: string, displa
 
     }
 }
+
+ 
