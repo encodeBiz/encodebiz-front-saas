@@ -14,7 +14,7 @@ const BrandPreferencesPage = ({ formRef }: { formRef: any }) => {
     const { user } = useAuth()
     const { currentEntity } = useEntity()
     return (
-        <> <Typography variant="h4" component="h1" align="left" sx={{ textAlign: 'left' }} gutterBottom>
+        <> <Typography variant="h4" component="h1" align="left" sx={{ textAlign: 'left' }} >
             {t('entity.tabs.tab1.titleAbout')}
         </Typography>
             <Typography variant="subtitle1" align="left" color="text.secondary" sx={{ mb: 4, textAlign: 'left' }}>

@@ -200,10 +200,10 @@ const CSVUploadModal = ({ open, onClose, onConfirm }: ICSVUploadModal) => {
           </Box>
         ) : (
           <>
-            <Typography variant="subtitle1" gutterBottom>
+            <Typography variant="subtitle1" >
               {t('core.upload.file')}: {file.name}
             </Typography>
-            <Typography variant="body2" gutterBottom>
+            <Typography variant="body2" >
               {t('core.upload.preview')}:
             </Typography>
             <TableContainer component={Paper} style={{ marginTop: '10px' }}>

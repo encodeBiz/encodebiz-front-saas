@@ -23,7 +23,7 @@ export default function DescriptionCard({ title, description1, description2 }: D
       <Paper elevation={0} sx={styles.base}>
         <Box sx={styles.rootSimple}>
           <Box sx={styles.container}>
-            <Typography sx={styles.title} variant="h4" component="h1" align="center" gutterBottom>
+            <Typography sx={styles.title} variant="h4" component="h1" align="center" >
               {title}
             </Typography>
             <Typography sx={styles.subtitle} variant="subtitle1" align="center" >

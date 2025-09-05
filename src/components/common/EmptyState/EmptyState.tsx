@@ -83,7 +83,7 @@ const EmptyState = ({
                     )}
                 </IconContainer>
 
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="h6" >
                     {title?title:t('core.feedback.empthy')}
                 </Typography>
 

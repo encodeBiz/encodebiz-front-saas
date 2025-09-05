@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material"
 import Image from "next/image"
 import image from '../../../../../public/assets/images/onboarding1.png'
-import logo from '../../../../../public/assets/images/logo.png'
+import logo from '../../../../../public/assets/images/logo.svg'
 import { SassButton } from "@/components/common/buttons/GenericButton"
 
 export const Card1 = ({handleNext}: any) => <Box display={'flex'} flexDirection={"row"} p={2}  >

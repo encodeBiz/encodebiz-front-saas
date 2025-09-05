@@ -1,6 +1,6 @@
 import { Box, Typography, useTheme } from "@mui/material"
 import Image from "next/image"
-import logo from '../../../../../public/assets/images/logo.png'
+import logo from '../../../../../public/assets/images/logo.svg'
 import { SassButton } from "@/components/common/buttons/GenericButton"
 import { BorderBox } from "@/components/common/tabs/BorderBox"
 import { HealthAndSafetyOutlined, PaletteOutlined,  TextSnippetOutlined } from "@mui/icons-material"

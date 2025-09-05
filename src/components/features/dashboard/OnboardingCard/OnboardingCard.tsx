@@ -33,7 +33,7 @@ export default function OnboardingCard({ children, title, description, image, on
       <Paper elevation={2} sx={{...styles.base,minHeight:heightCard}}>
         <Box sx={image ? styles.root : styles.rootSimple}>
           <Box sx={styles.container}>
-            <Typography sx={styles.title} variant="h4" component="h1" align="center" gutterBottom>
+            <Typography sx={styles.title} variant="h4" component="h1" align="center" >
               {title}
             </Typography>
             <Typography sx={styles.subtitle} variant="subtitle1" align="center" >

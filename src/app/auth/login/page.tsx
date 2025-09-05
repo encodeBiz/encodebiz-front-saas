@@ -20,7 +20,7 @@ import { useStyles } from './page.styles';
 import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
-import logo from '../../../../public/assets/images/logo.png'
+import logo from '../../../../public/assets/images/logo.svg'
 import Image from 'next/image';
 
 
@@ -42,7 +42,7 @@ const SignInPage = () => {
                     alt="Company Logo"
                 />
                 <Box sx={classes.containerTop}>
-                    <Typography variant="h4" component="h1" gutterBottom>
+                    <Typography variant="h4" component="h1" >
                         {t('core.signin.title')}
                     </Typography>
                     <Typography variant="body1" color="text.secondary">

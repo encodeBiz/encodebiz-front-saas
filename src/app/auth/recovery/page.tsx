@@ -16,7 +16,7 @@ import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { useRouter } from 'nextjs-toploader/app';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
-import logo from '../../../../public/assets/images/logo.png'
+import logo from '../../../../public/assets/images/logo.svg'
 import Image from 'next/image';
 
 
@@ -40,7 +40,7 @@ const RecoveryPage = () => {
                                     alt="Company Logo"
                                 />
                 <Box sx={classes.containerTop}>
-                    <Typography variant="h4" component="h1" gutterBottom>
+                    <Typography variant="h4" component="h1" >
                         {t('core.recovery.title')}
                     </Typography>
                     <Typography variant="body1" color="text.secondary">

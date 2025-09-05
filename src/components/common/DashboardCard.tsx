@@ -12,7 +12,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({ title, children, height =
   return (
     <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <CardContent sx={{ flexGrow: 1, p: 2 }}>
-        <Typography variant="h6" component="h2" gutterBottom>
+        <Typography variant="h6" component="h2" >
           {title}
         </Typography>
         <Box sx={{ height: height, width: '100%' }}>
