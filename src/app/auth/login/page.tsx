@@ -8,7 +8,8 @@ import {
     Divider,
 
     Grid,
-    Link
+    Link,
+    SvgIcon
 } from '@mui/material';
 import {
     Google as GoogleIcon
@@ -50,21 +51,21 @@ const SignInPage = () => {
                     </Typography>
                 </Box>
 
-                <Grid container spacing={2} sx={classes.fullWidth}>
+                {/* <Grid container spacing={2} sx={classes.fullWidth}>
                     <Grid size={{ xs: 12, sm: 12 }} sx={classes.fullWidth}>
-                        <SassButton fullWidth variant="contained" color='secondary' startIcon={<GoogleIcon color="primary" />} onClick={() => signInWithGoogle()}>
+                        <SassButton fullWidth variant="contained" color='secondary' startIcon={<SvgIcon ></SvgIcon>} onClick={() => signInWithGoogle()}>
                             {t('core.signin.google')}
                         </SassButton>
                     </Grid>
 
-                </Grid>
+                </Grid> */}
 
-                <Divider sx={{ my: 3 }}>
+                {/* <Divider sx={{ my: 3 }}>
                     <Typography variant="body2" color="text.secondary">
                         {t('core.signin.or')}
                     </Typography>
                 </Divider>
-
+ */}
 
                 <GenericForm<LoginFormValues>
                     initialValues={initialValues}

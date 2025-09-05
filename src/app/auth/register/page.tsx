@@ -23,7 +23,7 @@ const SignUpPage = () => {
     const classes = useStyles();
 
     return (
-        <Container maxWidth="sm">
+        <Container  style={{minWidth: 600, maxWidth: 700, width: '100%'}}>
             <Box sx={classes.locale}>
                 <LocaleSwitcher />
             </Box>
