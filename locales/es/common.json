@@ -96,8 +96,7 @@
       "active": "Activo",
       "thumbnail": "Imagen en miniatura",
       "subject": "Asunto",
-      "companyName": "Nombre de la Empresa",
-
+ 
       "comminsoom": "- Muy pronto",
       "from": "Correo electronico",
       "owner": "Propietario",
@@ -443,7 +442,7 @@
     "pay": "Obtener Plan",
     "contract": "Plan Actual",
     "renew": "Cambiar plan",
-    "del": "Eliminar suscripción",
+    "del": "Cancelar suscripción",
     "imageConfirmModalTitle": "Configura tu Entidad para continuar",
     "imageConfirmModalTitle2": "Antes de contratar un plan, completa la información pendiente en la sección Entidad de tu cuenta:",
     "notAllowedPlan": "Debes actualizar los datos legales de la entidad seleccionada antes de obtener un plan."

@@ -15,19 +15,20 @@ import { useAppLocale } from '@/hooks/useAppLocale';
 import ContactModalModal from '../modals/ContactModal/ContactModal';
 import { useLayout } from '@/hooks/useLayout';
 
-const PlanCard = styled(Box)<{ highlighted?: string }>(({ theme, highlighted }) => ({
+
+const PlanCard = styled(Box)<{ highlighted?: string, current?: string }>(({ theme, highlighted, current }) => ({
     maxWidth: 305,
     minWidth: 305,
     minHeight: 580,
     margin: theme.spacing(2),
-    border: `1px solid ${theme.palette.primary.main}`,
-    transform: highlighted==='true' ? 'scale(1.05)' : 'scale(1)',
+    border: `1px solid ${current === 'true' ? '#4AB84F' : theme.palette.primary.main}`,
+    transform: highlighted === 'true' ? 'scale(1.05)' : 'scale(1)',
     transition: 'transform 0.3s ease',
-    color: highlighted==='true' ? `${theme.palette.primary.contrastText}` : `${theme.palette.text.primary}`,
+    color: current === 'true' ? `${theme.palette.text.primary}` : highlighted === 'true' ? `${theme.palette.primary.contrastText}` : `${theme.palette.text.primary}`,
     borderRadius: 8,
-    background: highlighted ==='true'? 'linear-gradient(23.64deg, #001551 31.23%, #002FB7 99.28%)' : theme.palette.background.paper,
-    padding: 20,
-    boxShadow: highlighted==='true' ? '0px 6px 12px rgba(0, 65, 158, 0.25)' : 'none'
+    background: current === 'true' ? theme.palette.background.paper : highlighted === 'true' ? 'linear-gradient(23.64deg, #001551 31.23%, #002FB7 99.28%)' : theme.palette.background.paper,
+
+    boxShadow: current === 'true' ? '#4AB84F' : highlighted === 'true' ? '0px 6px 12px rgba(0, 65, 158, 0.25)' : 'none'
 
 }));
 
@@ -51,7 +52,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
     const { open, closeModal } = useCommonModal()
     const { entitySuscription, currentEntity } = useEntity()
     const [items, setItems] = useState<Array<{ text: string, link: string }>>([])
-   
+
     const [price] = useState(payPerUse ? pricePerUse : monthlyPrice)
 
 
@@ -66,10 +67,11 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
         setItems(data)
     }, [currentEntity?.entity?.billingConfig, currentEntity?.entity?.billingConfig?.payment_method?.length, currentEntity?.entity.branding?.textColor, currentEntity?.entity.id, currentEntity?.entity.legal?.legalName, id, t])
 
-
-    return (<> 
-        <PlanCard highlighted={String(highlighted)}>
-            <CardContent sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
+    const current = entitySuscription.filter(e => e.plan === id && e.serviceId === fromService && e.status === 'active').length > 0
+    return (<>
+        <PlanCard highlighted={String(highlighted)} current={String(current)} >
+            {current && <Box display={'flex'} alignItems={'center'} justifyContent={'center'} sx={{ fontSize: 22, color: '#FFF', background: '#4AB84F', width: '100%', height: 55, textAlign: 'center' }}>{t("salesPlan.contract")}</Box>}
+            <CardContent sx={{ display: "flex", padding: 4, flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
                 <Box>
                     <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'} pb={2}>
                         <Typography variant="h6">
@@ -80,10 +82,10 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
                         </Typography>
                     </Box>
 
-                    <Divider sx={{ background: (theme) => highlighted ? "#FFF" : theme.palette.divider }} />
+                    <Divider sx={{ background: (theme) => current ? '#4AB84F' :highlighted ? "#FFF" : theme.palette.divider }} />
 
                     <Box py={2}>
-                        <SassButton
+                        {!current && <SassButton
                             sx={{ mb: 1 }}
                             fullWidth
                             variant="contained"
@@ -91,43 +93,42 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
                             disabled={false}
 
                         >
-                            {entitySuscription.filter(e => e.plan === id && e.serviceId === fromService && e.status === 'active').length > 0 ? t("salesPlan.contract") : t("salesPlan.pay")}
-                        </SassButton>
-                        {price && <Typography
+                            {current ? t("salesPlan.contract") : t("salesPlan.pay")}
+                        </SassButton>}
+                        
+                        {price && name !== 'freemium' && <Typography
                             align='center'
                             variant="h6"                   >
                             {price}
                         </Typography>}
 
                     </Box>
-                    <Divider sx={{ background: (theme) => highlighted ? "#FFF" : theme.palette.divider }} />
+                    {name !== 'freemium' && <Divider sx={{ background: (theme) => current ? '#4AB84F' : highlighted ? "#FFF" : theme.palette.divider }} />}
 
 
                     <List sx={{ marginTop: "10px" }}>
                         {(features as Array<string> ?? [])?.map((feature, i) => (
                             <ListItem key={i} disableGutters>
                                 <ListItemIcon sx={{ minWidth: 30 }}>
-                                    {featuredList[i] ? <CheckOutlined fontSize="small" sx={{ color: (theme) => highlighted ? "#FFF" : theme.palette.primary.main }} /> : <Cancel fontSize="small" sx={{ color: (theme) => highlighted ? "#FFF" : theme.palette.primary.main }} />}
+                                    {featuredList[i] ? <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main }} /> : <Cancel fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main }} />}
                                 </ListItemIcon>
                                 <Typography variant="body2">{feature}{feature == t('salesPlan.emissionLimit') && (maxHolders ?? t('salesPlan.sinLimit'))}</Typography>
                             </ListItem>
                         ))}
                     </List>
+                    {current && <SassButton
+                        fullWidth
+
+                        variant="outlined"
+                        color='error'
+                        onClick={() => {
+                            if (current) {
+                                ubSubcribeAction()
+                            }
+                        }}>
+                        {t("salesPlan.del")}
+                    </SassButton>}
                 </Box>
-
-
-                {entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length > 0 && <SassButton
-                    fullWidth
-                    sx={{ mt: 1 }}
-                    variant="contained"
-                    color='error'
-                    onClick={() => {
-                        if (entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length > 0) {
-                            ubSubcribeAction()
-                        }
-                    }}>
-                    {t("salesPlan.del")}
-                </SassButton>}
             </CardContent>
         </PlanCard>
         {open.type === CommonModalType.BILLING && <SheetModalModal
@@ -145,7 +146,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
             }}
         />}
 
-        {open.type === CommonModalType.CONTACT && <ContactModalModal/>}
+        {open.type === CommonModalType.CONTACT && <ContactModalModal />}
     </>
     );
 };
