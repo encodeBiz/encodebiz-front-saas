@@ -16,8 +16,8 @@ import { StepIcon } from "@/components/common/icons/StepIcon";
 import { TargetIcon } from "@/components/common/icons/TargetIcon";
 import { useEntity } from "@/hooks/useEntity";
 const imageModule: any = {
-  passinbiz:passinbiz,
-  checkinbiz:checkbiz
+  passinbiz: passinbiz,
+  checkinbiz: checkbiz
 }
 export default function Dashboard() {
   const { serviceData, pending, planList, dataTab1, dataTab2 } = useDashboardController()
@@ -26,9 +26,9 @@ export default function Dashboard() {
   const { service } = useParams<any>()
   const { currentLocale } = useAppLocale()
   const t = useTranslations()
-  const { currentEntity , entitySuscription} = useEntity()
- 
-  const activeService = entitySuscription.filter(e => e.serviceId === service && e.status === 'active').length > 0 && currentEntity?.role === 'owner'
+  const { currentEntity, entitySuscription } = useEntity()
+
+  const activeService = entitySuscription.filter(e => e.serviceId === service && e.status === 'active').length > 0 || currentEntity?.role === 'owner'
   const scrollToPlan = () => {
     if (sectionServicesRef.current) {
       (sectionServicesRef.current as any).scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -50,18 +50,18 @@ export default function Dashboard() {
         heightCard={376}
       />
 
- 
+
       <HelpTabs ref={sectionMoreInfofRef} tabs={[
         {
           id: '1',
           title: t(`onboarding.${service}.tab1Title`),
-          icon: (props: any)=> <StepIcon {...props} fontSize="small" />,
+          icon: (props: any) => <StepIcon {...props} fontSize="small" />,
           tabContent: <TabContent title={dataTab1.title} subtitle={dataTab1.subtitle} data={dataTab1.data} />
         },
         {
           id: '2',
           title: t(`onboarding.${service}.tab2Title`),
-          icon:(props: any)=> <TargetIcon {...props} fontSize="small" />,
+          icon: (props: any) => <TargetIcon {...props} fontSize="small" />,
           tabContent: <TabContent title={dataTab2.title} data={dataTab2.data} />
         },
 
