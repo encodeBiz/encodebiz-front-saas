@@ -26,8 +26,9 @@ export default function Dashboard() {
   const { service } = useParams<any>()
   const { currentLocale } = useAppLocale()
   const t = useTranslations()
-  const { currentEntity, entitySuscription } = useEntity()
-
+  const { currentEntity, entitySuscription, entityServiceList } = useEntity()
+ 
+  const isCommingZoom = entityServiceList.find(e=>e.id===service)?.status==='cooming_soon'
   const activeService = entitySuscription.filter(e => e.serviceId === service && e.status === 'active').length > 0 || currentEntity?.role === 'owner'
   const scrollToPlan = () => {
     if (sectionServicesRef.current) {
@@ -39,6 +40,7 @@ export default function Dashboard() {
     <Container maxWidth="xl">
 
       <OnboardingCard
+
         serviceData={serviceData}
         title={serviceData?.name}
         description={serviceData?.about ? (serviceData?.about as any)[currentLocale] : ''}
@@ -68,7 +70,7 @@ export default function Dashboard() {
 
       ]} />
 
-      {!pending && activeService && Array.isArray(planList) && <SalesPlan ref={sectionServicesRef} salesPlans={planList as Array<IPlan>} fromService={service} />}
+      {!pending && !isCommingZoom && activeService && Array.isArray(planList) && <SalesPlan ref={sectionServicesRef} salesPlans={planList as Array<IPlan>} fromService={service} />}
 
 
 

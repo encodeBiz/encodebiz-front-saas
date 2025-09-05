@@ -5,6 +5,7 @@ import { createContext, useCallback, useState } from "react";
 
 export enum CommonModalType {
     ONBOARDING = 'ONBOARDING',
+    WELCOMEGUEST = 'WELCOMEGUEST',
     DELETE = 'DELETE',
     FILES = 'FILES',
     SEND = 'SEND',

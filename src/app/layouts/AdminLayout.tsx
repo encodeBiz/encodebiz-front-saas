@@ -1,4 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
+import WelcomeInviteModal from '@/components/common/modals/WelcomeInvite';
 import PageLoader from '@/components/common/PageLoader';
 import Footer from '@/components/layouts/Footer';
 import Header from '@/components/layouts/Header/Header';
@@ -7,8 +9,10 @@ import SideMenu from '@/components/layouts/SideMenu';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useAuth } from '@/hooks/useAuth';
 import { useCommonModal } from '@/hooks/useCommonModal';
+import { useEntity } from '@/hooks/useEntity';
 import { useLayout } from '@/hooks/useLayout';
 import { Box, CssBaseline, Grid } from '@mui/material';
+import { useEffect } from 'react';
 
 const drawerWidth = 265;
 
@@ -19,8 +23,16 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const { layoutState } = useLayout()
-  const { pendAuth } = useAuth()
-  const { open } = useCommonModal()
+  const { pendAuth, user } = useAuth()
+  const { open, openModal } = useCommonModal()
+  const { currentEntity } = useEntity()
+
+  useEffect(() => {
+     
+    if (currentEntity?.id && user?.id && currentEntity.status === 'invited' && !pendAuth) {
+      openModal(CommonModalType.WELCOMEGUEST)
+    }
+  }, [currentEntity?.id, user?.id, pendAuth])
 
   return (
     <Box>
@@ -52,6 +64,7 @@ export default function AdminLayout({
             {pendAuth && <PageLoader backdrop type={'circular'} fullScreen />}
             {children}
             {open.type === CommonModalType.ONBOARDING && <Onboarding />}
+            {open.type === CommonModalType.WELCOMEGUEST && <WelcomeInviteModal />}
           </Grid>
         </div>
 

@@ -2,7 +2,7 @@ export interface IService {
 
     id: BizType; // o string si lo generalizas
     name: string;
-    status: 'cooming_soom' | 'active';
+    status: 'cooming_soon' | 'active';
     description: {
         es: string
         en: string

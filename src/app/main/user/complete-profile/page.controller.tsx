@@ -124,7 +124,7 @@ export const useUserProfileController = () => {
                 refrestList(user?.uid)
                 updateUserData()
                 changeLoaderState({ show: false })
-                await updateAuth(currentEntity?.id as string)
+               
                 goEntity()
 
             }

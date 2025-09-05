@@ -71,7 +71,7 @@ export const useRegisterController = () => {
             } else {
                 await signUpEmail(values, sessionToken, responseAuth.user.uid as string)
                 await updateUserData()
-                 push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
+                push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
                 changeLoaderState({ show: false })
 
             }

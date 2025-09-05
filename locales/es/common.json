@@ -81,9 +81,8 @@
       "empthytext": "No existen elementos para mostrar en este momento"
     },
     "label": {
-      "text":"Textos",
-      "pendingLegal":"Para poder configurar los métodos de pago debe primero configurar los datos legales de la empresa",
-      "language":"Idioma",
+      "text": "Textos",
+      "language": "Idioma",
       "filename": "Nombre de Archivo",
       "default": "Por defecto",
       "state": "Estado",
@@ -96,7 +95,6 @@
       "active": "Activo",
       "thumbnail": "Imagen en miniatura",
       "subject": "Asunto",
- 
       "comminsoom": "- Muy pronto",
       "from": "Correo electronico",
       "owner": "Propietario",
@@ -105,7 +103,7 @@
       "events": "Eventos",
       "credential": "Credencial",
       "admin": "Administrador",
-      "guest":"Invitado",
+      "guest": "Invitado",
       "select": "Seleccionar",
       "typePass": "Tipo de pase",
       "credencial": "Credenciales",
@@ -114,16 +112,16 @@
       "pending": "Pendiente",
       "revoke": "Revocar",
       "reactive": "Reactivar",
-      "archivedHolder":"Archivar",
-      "cooming_soom":"Proximamente",
+      "archivedHolder": "Archivar",
+      "cooming_soon": "Proximamente",
       "firstName": "Nombre",
       "status": "Estado",
       "customFields": "Campos personalizados",
       "staff": "Personal de apoyo",
-      "typingAddress":"Escribe una dirección",
+      "typingAddress": "Escribe una dirección",
       "staff1": "Personal",
       "resend": "Reenviar",
-      "send":"Enviar",
+      "send": "Enviar",
       "draft": "Borrador",
       "published": "Publicado",
       "archived": "Archivado",
@@ -211,6 +209,7 @@
     },
     "button": {
       "revoke": "Revocar",
+      "close": "Cerrar",
       "contactUs": "Contactar con encodeBiz",
       "upgrade": "Upgradear",
       "resend": "Reenviar",
@@ -218,7 +217,7 @@
       "submitting": "Enviando...",
       "submit": "Enviar",
       "send": "Relanzar",
-      "accept":"Aceptar",
+      "accept": "Aceptar",
       "replaceImage": "Reemplazar Imagen",
       "add": "Añadir",
       "edit": "Editar",
@@ -327,7 +326,8 @@
         "title": "Gestionar Perfil"
       },
       "tab2": {
-        "title": "Cambiar Contraseña"
+        "title": "Cambiar Contraseña",
+        "text": "Toque el siguiente botón para enviarle las instrucciones para cambiar la contraseña"
       }
     },
     "sessionLastTime": "Último inicio de sesión"
@@ -352,7 +352,8 @@
       "tab3": {
         "title": "Configurar Facturación",
         "btn": "Configurar Billing",
-        "advise":"Para configurar los metodos de pago es necesario abrir una ventana emergente, si al intentarlo el navegador bloquea la acción debes desbloquear e intentar de nuevo."
+        "pendingLegal": "Para poder configurar los métodos de pago debe primero configurar los datos legales de la empresa",
+        "advise": "Para configurar los metodos de pago es necesario abrir una ventana emergente, si al intentarlo el navegador bloquea la acción debes desbloquear e intentar de nuevo."
       },
       "tab4": {
         "title": "Suscripciones",
@@ -370,9 +371,7 @@
   },
   "onboarding": {
     "presentation": {
-      "card1":{
-
-      },
+      "card1": {},
       "title": "Webhook",
       "text": "Webhook asociados a los eventos disponibles en los servicios."
     },
@@ -601,5 +600,11 @@
   "webhook": {
     "title": "Webhook",
     "text": "Webhook asociados a los eventos disponibles en los servicios."
+  },
+  "guestModal": {
+    "title": "Has sido invitado como colaborador ",
+    "text1": " Como colaborador podrás gestionar proyectos, acceder a herramientas administrativas y trabajar junto al equipo asignado.",
+    "text2": " Por favor configure la información de la cuenta y agregue una contraseña",
+    "btn": "Configurar cuenta"
   }
 }

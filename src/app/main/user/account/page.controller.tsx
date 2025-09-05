@@ -3,15 +3,18 @@ import * as Yup from 'yup';
 import { useState, ReactNode, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useTranslations } from 'next-intl';
-import { SxProps, Theme } from '@mui/material';
+import { Box, SxProps, Theme, Typography } from '@mui/material';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { useToast } from '@/hooks/useToast';
-import { changePassword, reAuth, updateAccout } from '@/services/common/account.service';
+import { recoveryPassword, updateAccout } from '@/services/common/account.service';
 import ImageUploadInput from '@/components/common/forms/fields/ImageUploadInput';
 import { uploadFile } from '@/lib/firebase/storage/fileManager';
-import { emailRule, fileImageRule, passwordRestrictionRule, requiredRule } from '@/config/yupRules';
+import { emailRule, fileImageRule, requiredRule } from '@/config/yupRules';
 import { useLayout } from '@/hooks/useLayout';
+import { SassButton } from '@/components/common/buttons/GenericButton';
+import { useCommonModal } from '@/hooks/useCommonModal';
+import { CommonModalType } from '@/contexts/commonModalContext';
 export interface UserFormValues {
     "uid": string
     "name": string
@@ -34,7 +37,7 @@ export type TabItem = {
     content: ReactNode;
     disabled?: boolean;
     sx?: SxProps<Theme>;
-    id?: string 
+    id?: string
 };
 
 export const useUserAccountController = () => {
@@ -43,6 +46,7 @@ export const useUserAccountController = () => {
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
     const { changeLoaderState } = useLayout()
+    const { openModal } = useCommonModal()
     const [initialValues, setInitialValues] = useState<UserFormValues>({
         uid: user?.uid as string | "",
         "name": user?.displayName as string | "",
@@ -52,11 +56,10 @@ export const useUserAccountController = () => {
         "active": true,
     });
 
-    const [passwordwordValues, setPasswordwordValues] = useState<PasswordFormValues>({
-        "password": "" as string,
-        "passwordConfirm": "" as string,
-        currentPassword: "" as string
-    });
+    const changePasswrod = async () => {
+        await recoveryPassword(user?.email as string)
+        openModal(CommonModalType.RECOVERY)
+    }
 
     const validationSchema = Yup.object().shape({
         email: emailRule(t),
@@ -66,18 +69,13 @@ export const useUserAccountController = () => {
 
     });
 
-    const passwordValidationSchema = Yup.object().shape({
-        currentPassword: requiredRule(t),
-        password: passwordRestrictionRule(t),
-        passwordConfirm: requiredRule(t).oneOf([Yup.ref('password'), ''], t('core.formValidatorMessages.passwordMatch'))
 
-    });
 
     const fields = [
         {
             name: 'avatar',
             label: t('core.label.logo'),
-            type:'custom',
+            type: 'custom',
             component: ImageUploadInput,
             required: true,
         },
@@ -104,29 +102,7 @@ export const useUserAccountController = () => {
         }
     ];
 
-    const fields2 = [
-        {
-            name: 'currentPassword',
-            label: t('core.label.currentPassword'),
-            type: 'password',
-            required: true,
-            component: TextInput,
-        },
-        {
-            name: 'password',
-            label: t('core.label.password'),
-            type: 'password',
-            required: true,
-            component: TextInput,
-        },
-        {
-            name: 'passwordConfirm',
-            label: t('core.label.passwordConfirm'),
-            type: 'password',
-            required: true,
-            component: TextInput,
-        },
-    ];
+    
 
 
     const setUserDataAction = async (values: UserFormValues) => {
@@ -157,30 +133,7 @@ export const useUserAccountController = () => {
         }
     };
 
-    const changePasswordAction = async (values: PasswordFormValues) => {
-        try {
-            setPending(true)
-            changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-            await reAuth(values.currentPassword)
-            await changePassword(values.password)
-            setPending(false)
-            showToast(t('core.feedback.success'), 'success');
-            setPasswordwordValues({
-                "password": "" as string,
-                "passwordConfirm": "" as string,
-                currentPassword: "" as string
-            })
-            changeLoaderState({ show: false })
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                showToast(error.message, 'error');
-            } else {
-                showToast(String(error), 'error');
-            }
-            setPending(false)
-            changeLoaderState({ show: false })
-        }
-    };
+
 
     const formTabs1 = () => {
         return (
@@ -203,18 +156,27 @@ export const useUserAccountController = () => {
 
     const formTabs2 = () => {
         return (
+            <Box px={5} pb={5} display={'flex'} justifyContent={'flex-start'} alignItems={'flex-start'} flexDirection={'column'} width={'100%'}>
+                <Typography variant="h4" component="h1" align="left" sx={{ textAlign: 'left' }} >
+                    {t('account.tabs.tab2.title')}
+                </Typography>
+                <Typography variant="subtitle1" align="left" color="text.secondary" sx={{ mb: 4, textAlign: 'left' }}>
+                    {t('account.tabs.tab2.text')}
+                </Typography>
+                <Box px={5} pb={5} display={'flex'} justifyContent={'center'} alignItems={'center'} flexDirection={'column'} width={'100%'}>
 
-            <GenericForm<PasswordFormValues>
-                column={1}
-                enableReinitialize
-                disabled={!user?.id || pending}
-                initialValues={passwordwordValues}
-                validationSchema={passwordValidationSchema}
-                onSubmit={changePasswordAction}
-                fields={fields2 as FormField[]}
-                submitButtonText={t('core.button.submit')}
+                    <SassButton sx={{
+                        width: {
+                            sx: '90%',
+                            sm: '90%',
+                            md: '90%',
+                            lg: 610,
+                            xl: 610
+                        }
+                    }} variant='contained' color='primary' onClick={changePasswrod}>{t('account.tabs.tab2.title')}</SassButton>
+                </Box>
+            </Box>
 
-            />
         );
     }
 
@@ -222,11 +184,11 @@ export const useUserAccountController = () => {
         {
             label: `${t("account.tabs.tab1.title")}`,
             content: formTabs1(),
-            id:'account'
+            id: 'account'
         }, {
             label: `${t("account.tabs.tab2.title")}`,
             content: formTabs2(),
-            id:'password'
+            id: 'password'
         },
     ];
 
@@ -239,7 +201,7 @@ export const useUserAccountController = () => {
             avatar: user?.photoURL as string | "",
             "active": true,
         });
-        
+
     }, [user]);
 
     return { validationSchema, initialValues, tabsRender }
