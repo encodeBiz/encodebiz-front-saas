@@ -79,7 +79,7 @@ export default function useFormContactController() {
     },
     {
       name: 'name',
-      label: t('core.label.name'),
+      label: t('core.label.companyName'),
       type: 'text',
       disabled: true,
       required: true,
