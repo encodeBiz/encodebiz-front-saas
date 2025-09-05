@@ -23,7 +23,7 @@ import { menuItemsServices, menuItemsGeneral, menuItemsHome } from '@/config/rou
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useEntity } from '@/hooks/useEntity';
-import logo from '../../../public/assets/images/logo.png'
+import logo from '../../../public/assets/images/logo.svg'
 import Image from 'next/image';
 const drawerWidth = 265;
 

@@ -153,7 +153,7 @@ const GenericForm = <T extends Record<string, any>>({
       {...formContainerProps}
     >
       {title && (
-        <Typography variant="h5" component="h2" gutterBottom align="center">
+        <Typography variant="h5" component="h2"  align="center">
           {title}
         </Typography>
       )}

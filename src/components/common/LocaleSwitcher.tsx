@@ -59,7 +59,7 @@ const LocaleSwitcher: React.FC = () => {
   };
 
   return (
-    <Box sx={{ minWidth: 120, mt: 1 }}>
+    <Box sx={{ minWidth: 160, mt: 1 }}>
       <FormControl fullWidth>
         <Select
           labelId="locale-switcher-label"
@@ -67,6 +67,11 @@ const LocaleSwitcher: React.FC = () => {
           value={selectedLocale}
           onChange={handleChange}
           size='small'
+          sx={{
+            "& .MuiSelect-icon": {
+              marginLeft: '10px'
+            },
+          }}
         >
           {locales.map((locale) => (
             <MenuItem key={locale} value={locale} >

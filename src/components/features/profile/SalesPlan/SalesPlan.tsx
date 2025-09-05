@@ -13,10 +13,10 @@ export default function SalesPlan({fromService,salesPlans,ref}:{ref?: any,fromSe
     return (
         <Box maxWidth="xl" sx={{mt:10}} flexDirection={'column'} display={'flex'} justifyContent={'center'} alignItems={'center'} ref={ref}>
             
-            <Typography variant="h4" align="center" gutterBottom>
+            <Typography variant="h4" align="center" >
                 {t("salesPlan.title")}
             </Typography>
-            <Typography sx={{width:'60%'}} variant="subtitle1" align="center" color="text.secondary" gutterBottom>
+            <Typography sx={{width:'60%'}} variant="subtitle1" align="center" color="text.secondary" >
                 {t("salesPlan.subTitle")}
             </Typography>            
             <br />

@@ -21,10 +21,10 @@ export default function HeaderPage({ children, title, description, isForm = fals
         <Box sx={styles.rootSimple}>
           <Box pb={4} display={'flex'} flexDirection={'row'} justifyContent={'space-between'} alignItems={'flex-start'} width={'100%'} >
             <Box display={'flex'} flexDirection={'column'} justifyContent={'space-between'} alignItems={'flex-start'} width={'100%'} >
-              <Typography variant="h4" component="h1" align="center" gutterBottom sx={{ mb: 0, textAlign: 'left' }}>
+              <Typography variant="h4" component="h1" align="center"  sx={{ mb: 0, textAlign: 'left' }}>
                 {title}
               </Typography>
-              {description && <Typography variant="body1" align="center" gutterBottom sx={{  textAlign: 'left' }}>
+              {description && <Typography variant="body1" align="center"  sx={{  textAlign: 'left' }}>
                 {description}
               </Typography>}
             </Box>

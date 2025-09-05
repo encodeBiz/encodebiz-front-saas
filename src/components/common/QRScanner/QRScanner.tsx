@@ -38,14 +38,14 @@ const QRScanner = () => {
 
             {staffValidating && (
                 <Box sx={{ textAlign: 'center', mb: 4 }}>
-                    <Typography variant="h6" component="h2" gutterBottom>
+                    <Typography variant="h6" component="h2" >
                         {t('scan.validatingStaff')}
                     </Typography>
                     <LinearProgress />
                 </Box>
             )}
             {!scanRessult && !staffValidating && staffValid && !error && <Box sx={{ textAlign: 'center', mb: 4 }}>
-                <Typography variant="h4" component="h1" gutterBottom>
+                <Typography variant="h4" component="h1" >
                     {t('scan.title')}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
@@ -87,7 +87,7 @@ const QRScanner = () => {
                     <CardContent>
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                             <CheckCircle color="success" sx={{ fontSize: 100 }} />
-                            <Typography variant="h5" gutterBottom>
+                            <Typography variant="h5" >
                                 {t('scan.resultTitle')}
                             </Typography>
                             <Typography variant="body1">{scanRessult?.fullName}</Typography>
@@ -117,7 +117,7 @@ const QRScanner = () => {
                     <CardContent>
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                             <Error color="error" sx={{ fontSize: 100 }} />
-                            <Typography variant="h5" gutterBottom sx={{ textAlign: 'center' }}>
+                            <Typography variant="h5"  sx={{ textAlign: 'center' }}>
                                 {t('scan.failed')}
                             </Typography>
                             <Alert severity="error" sx={{ width: '100%', textAlign: 'center' }}>
@@ -142,7 +142,7 @@ const QRScanner = () => {
                     <CardContent>
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                             <Error color="error" sx={{ fontSize: 100 }} />
-                            <Typography variant="h5" gutterBottom sx={{ textAlign: 'center' }}>
+                            <Typography variant="h5"  sx={{ textAlign: 'center' }}>
                                 {t('scan.failedStaff')}
                             </Typography>
 

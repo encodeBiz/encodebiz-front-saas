@@ -44,7 +44,7 @@ const ServiceList = () => {
                                 <Image src={icons[card.id]} width={76} height={76} alt='' />
                             </Box>
                             <Box sx={styles.textContainer} >
-                                <Typography textTransform={'uppercase'} gutterBottom variant="h5" component="div">
+                                <Typography textTransform={'uppercase'}  variant="h5" component="div">
                                     {card.name} {card.id==='checkinbiz' && <span style={{color:theme.palette.primary.main}}>{t('core.label.comminsoom')}</span>}
                                 </Typography>
                                 <Typography variant="body2" color="text.primary" fontSize={16}>

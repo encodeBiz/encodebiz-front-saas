@@ -71,7 +71,7 @@ export const useRegisterController = () => {
                 navivateTo(`/dashboard`)
             }
         } catch (error: any) {
-             changeLoaderState({ show: false })
+            changeLoaderState({ show: false })
             showToast(error.message, 'error')
         }
     };
@@ -104,7 +104,7 @@ export const useRegisterController = () => {
         ,
         {
             name: 'legalEntityName',
-            label: t('core.label.legalEntityName'),
+            label: t('core.label.companyName'),
             type: 'text',
             required: true,
             component: TextInput,
