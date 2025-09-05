@@ -39,6 +39,7 @@ export default function Dashboard() {
     <Container maxWidth="xl">
 
       <OnboardingCard
+        serviceData={serviceData}
         title={serviceData?.name}
         description={serviceData?.about ? (serviceData?.about as any)[currentLocale] : ''}
         image={imageModule[service]}

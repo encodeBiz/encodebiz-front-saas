@@ -28,11 +28,12 @@ export default function HeaderPage({ children, title, description, isForm = fals
                 {description}
               </Typography>}
             </Box>
-            {actions}
+            
           </Box>
         </Box>
         <Box sx={styles.content}>
           {children}
+          {actions}
         </Box>
       </Paper>
 

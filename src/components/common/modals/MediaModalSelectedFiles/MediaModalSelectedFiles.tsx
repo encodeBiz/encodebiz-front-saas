@@ -270,7 +270,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
               onClick={() => handleSelectedChange()}
               startIcon={<CheckOutlined />}
             >
-              {t('core.button.selected')}
+              {t('core.button.accept')}
             </SassButton>
           </Box>
         </Paper>

@@ -68,6 +68,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             );
             */
 
+            console.log(userAuth);
+            
+
 
             if (userAuth) {
                 updateUserData()
@@ -84,6 +87,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 })
 
 
+            console.log(userData);
 
 
                 if (!userData.completeProfile && pathName !== `/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`) {
