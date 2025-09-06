@@ -26,7 +26,7 @@ export const Card3 = ({ handleNext }: any) => {
                 <Box borderRadius={2} width={'100%'} display={'flex'} flexDirection={"column"} gap={2} sx={{ background: (theme) => theme.palette.primary.light }}>
                     <Box position={'relative'} overflow={'hidden'} borderRadius={'10px 10px 0px 0px'} p={4} display={'flex'} flexDirection={"row"} alignItems={'flex-start'} gap={2} sx={{ background: (theme) => theme.palette.primary.dark, color: "#FFF" }}>
                         <Image
-                            style={{ position: 'absolute' }}
+                            style={{ position: 'absolute', right:10,top:0 }}
                             width={239}
                             height={265}
                             alt=""

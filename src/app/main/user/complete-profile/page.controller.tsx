@@ -14,7 +14,7 @@ import { User } from 'firebase/auth';
 import IUser from '@/domain/auth/IUser';
 import { useEntity } from '@/hooks/useEntity';
 import { useLayout } from '@/hooks/useLayout';
-import { fetchUserEntities, updateAuth } from '@/services/common/entity.service';
+import { fetchUserEntities } from '@/services/common/entity.service';
 import { useRouter } from 'nextjs-toploader/app';
 import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
 import IUserEntity from '@/domain/auth/IUserEntity';
@@ -44,7 +44,6 @@ export const useUserProfileController = () => {
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
     const { push } = useRouter()
-    const { currentEntity } = useEntity()
     const [initialValues, setInitialValues] = useState<UserFormValues>({
         uid: user?.uid as string | "",
         "name": user?.displayName as string | "",
