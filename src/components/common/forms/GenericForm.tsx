@@ -15,6 +15,7 @@ import { IUserMedia } from '@/domain/core/IUserMedia';
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { BorderBox } from '../tabs/BorderBox';
 import { SassButton } from '../buttons/GenericButton';
+import Link from 'next/link';
 
 
 // A component that watches the form state
@@ -76,6 +77,7 @@ type GenericFormProps<T> = {
   hideBtn?: boolean;
   formRef?: any
   activateWatchStatus?: boolean;
+  linkForm?: boolean;
 
 };
 
@@ -137,6 +139,7 @@ const GenericForm = <T extends Record<string, any>>({
   disabled = false,
   activateWatchStatus = false,
   hideBtn = false,
+  linkForm= false,
   formRef
 }: GenericFormProps<T>) => {
   const t = useTranslations()
@@ -153,7 +156,7 @@ const GenericForm = <T extends Record<string, any>>({
       {...formContainerProps}
     >
       {title && (
-        <Typography variant="h5" component="h2"  align="center">
+        <Typography variant="h5" component="h2" align="center">
           {title}
         </Typography>
       )}
@@ -170,7 +173,7 @@ const GenericForm = <T extends Record<string, any>>({
       >
         {(formikProps: FormikProps<T>) => (
           <Form noValidate>
-        {/*JSON.stringify(formikProps.errors)*/}
+            {/*JSON.stringify(formikProps.errors)*/}
             {activateWatchStatus && <FormStatusWatcher />}
             <Grid container spacing={3}>
               {fields.map((field, i) => {
@@ -194,6 +197,9 @@ const GenericForm = <T extends Record<string, any>>({
                   </BorderBox>
                 }
               })}
+              {linkForm && <Typography variant="body2">
+                <Link href="/auth/recovery">{t('core.signup.recovery')}</Link>
+              </Typography>}
 
               <Grid sx={{ width: '100%' }}>
                 <Box display="flex" justifyContent="flex-end" gap={2}>

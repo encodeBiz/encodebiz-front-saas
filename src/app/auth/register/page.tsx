@@ -23,41 +23,42 @@ const SignUpPage = () => {
     const classes = useStyles();
 
     return (
-        <Container  style={{minWidth: 600, maxWidth: 700, width: '100%'}}>
+        <Container style={{ minWidth: 600, maxWidth: 700, width: '100%' }}>
             <Box sx={classes.locale}>
                 <LocaleSwitcher />
             </Box>
             <BorderBox sx={classes.root}>
                 <Image
-                    width={200}
-                    height={64}
+                    width={150}
+                    height={44}
                     src={logo}
                     alt="Company Logo"
+                    style={{ position: 'relative', left: -15 }}
                 />
-                <Box sx={classes.containerTop}>
-                    <Typography variant="h4" component="h1" >
-                        {t('core.signup.title')}
-                    </Typography>
-                    <Typography variant="body1" color="text.secondary">
-                        {t('core.signup.subtitle')}
-                    </Typography>
-                </Box>
+                <Box sx={{ ...classes.containerTop, px: 6 }}>
+                    <Box sx={classes.containerTop}>
+                        <Typography variant="h4" component="h1" >
+                            {t('core.signup.title')}
+                        </Typography>
+                        <Typography variant="body1" color="text.secondary">
+                            {t('core.signup.subtitle')}
+                        </Typography>
+                    </Box>
+                    <GenericForm<RegisterFormValues>
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}
+                        onSubmit={signInWithEmail}
+                        fields={fields as FormField[]}
+                        btnFullWidth
+                        column={2}
+                        submitButtonText={t('core.signup.signup')}
+                    />
 
-
-
-                <GenericForm<RegisterFormValues>
-                    initialValues={initialValues}
-                    validationSchema={validationSchema}
-                    onSubmit={signInWithEmail}
-                    fields={fields as FormField[]}
-                    btnFullWidth
-                    submitButtonText={t('core.signup.signup')}
-                />
-
-                <Box sx={{ textAlign: 'center' }}>
-                    <Typography variant="body2">
-                        {t('core.signup.existAccount')} <Link href="/auth/login">{t('core.signup.signIn')}</Link>
-                    </Typography>
+                    <Box sx={{ textAlign: 'center' }}>
+                        <Typography variant="body2">
+                            {t('core.signup.existAccount')} <Link style={{color:'#1C1D1B', textUnderlineOffset:4}} href="/auth/login">{t('core.signup.signIn')}</Link>
+                        </Typography>
+                    </Box>
                 </Box>
             </BorderBox>
 

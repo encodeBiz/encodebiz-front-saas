@@ -5,7 +5,7 @@ import {
     Container,
     Box,
     Typography,
-     Link
+    Link
 } from '@mui/material';
 import { RecoveryFormValues, useRegisterController } from './page.controller';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
@@ -32,41 +32,41 @@ const RecoveryPage = () => {
             <Box sx={classes.locale}>
                 <LocaleSwitcher />
             </Box>
-            <BorderBox   sx={classes.root}>
-                  <Image
-                                    width={200}
-                                    height={64}
-                                    src={logo}
-                                    alt="Company Logo"
-                                />
-                <Box sx={classes.containerTop}>
-                    <Typography variant="h4" component="h1" >
-                        {t('core.recovery.title')}
-                    </Typography>
-                    <Typography variant="body1" color="text.secondary">
-                        {t('core.recovery.subtitle')}
-                    </Typography>
-                </Box>
-
- 
-
-
-                <GenericForm<RecoveryFormValues>
-                    initialValues={initialValues}
-                    validationSchema={validationSchema}
-                    onSubmit={handleRecoveryPassword}
-                    fields={fields as FormField[]}
-                    btnFullWidth
-                    submitButtonText={t('core.recovery.recovery')}
+            <BorderBox sx={classes.root}>
+                <Image
+                    width={150}
+                    height={44}
+                    src={logo}
+                    alt="Company Logo"
+                    style={{ position: 'relative', left: -15 }}
                 />
+                <Box sx={{ ...classes.containerTop, px: 6 }}>
+                    <Box sx={classes.containerTop}>
+                        <Typography variant="h4" component="h1" >
+                            {t('core.recovery.title')}
+                        </Typography>
+                        <Typography variant="body1" color="text.secondary">
+                            {t('core.recovery.subtitle')}
+                        </Typography>
+                    </Box>
 
-                <Box sx={{ textAlign: 'center' }}>
-                    <Typography variant="body2">
-                        {t('core.recovery.noAccount')} <Link href="/auth/register">{t('core.recovery.signup')}</Link>
-                    </Typography>
-                    <Typography variant="body2">
-                        {t('core.recovery.existAccount')} <Link href="/auth/login">{t('core.recovery.signin')}</Link>
-                    </Typography>
+                    <GenericForm<RecoveryFormValues>
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}
+                        onSubmit={handleRecoveryPassword}
+                        fields={fields as FormField[]}
+                        btnFullWidth
+                        submitButtonText={t('core.recovery.recovery')}
+                    />
+
+                    <Box sx={{ textAlign: 'center' }}>
+                        <Typography variant="body2">
+                            {t('core.recovery.noAccount')} <Link style={{color:'#1C1D1B', textUnderlineOffset:4}} href="/auth/register">{t('core.recovery.signup')}</Link>
+                        </Typography>
+                        <Typography variant="body2">
+                            {t('core.recovery.existAccount')} <Link style={{color:'#1C1D1B', textUnderlineOffset:4}} href="/auth/login">{t('core.recovery.signin')}</Link>
+                        </Typography>
+                    </Box>
                 </Box>
             </BorderBox>
 

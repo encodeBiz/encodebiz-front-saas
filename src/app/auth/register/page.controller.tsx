@@ -1,7 +1,6 @@
 'use client'
 
 import PasswordInput from '@/components/common/forms/fields/PasswordInput';
-import PhoneNumberInput from '@/components/common/forms/fields/PhoneNumberInput';
 import SimpleCheckTerm from '@/components/common/forms/fields/SimpleCheckTerm';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { GENERAL_ROUTE, MAIN_ROUTE } from '@/config/routes';
@@ -83,14 +82,7 @@ export const useRegisterController = () => {
 
 
     const fields = [
-        {
-            name: 'fullName',
-            label: t('core.label.fullName'),
-            type: 'text',
-            required: true,
-            component: TextInput,
-            fullWidth: true
-        },
+
 
         {
             name: 'email',
@@ -98,13 +90,6 @@ export const useRegisterController = () => {
             type: 'email',
             required: true,
             component: TextInput,
-        },
-        {
-            name: 'phone',
-            label: t('core.label.phone'),
-            type: 'phone',
-            required: true,
-            component: PhoneNumberInput,
         },
 
         {
@@ -115,17 +100,36 @@ export const useRegisterController = () => {
             component: PasswordInput,
         },
         {
+            name: 'phone',
+            label: t('core.label.phone'),
+            type: 'number',
+            required: true,
+            component: TextInput,
+        },
+
+
+        {
             name: 'passwordConfirm',
             label: t('core.label.passwordConfirm'),
             type: 'password',
             required: true,
             component: PasswordInput,
         },
+
+        {
+            name: 'fullName',
+            label: t('core.label.fullName'),
+            type: 'text',
+            required: true,
+            component: TextInput,
+            fullWidth: true
+        },
         {
             name: 'acceptTerms',
             label: 'acceptTerms',
             type: 'checkbox',
             required: true,
+            fullWidth: true,
             component: SimpleCheckTerm,
         },
 

@@ -5,8 +5,9 @@ import {
     Container,
     Box,
     Typography,
-    
-    Link} from '@mui/material';
+
+    Link
+} from '@mui/material';
 import { LoginFormValues, useRegisterController } from './page.controller';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { useTranslations } from 'next-intl';
@@ -29,52 +30,39 @@ const SignInPage = () => {
             </Box>
             <BorderBox sx={classes.root}>
                 <Image
-                    width={200}
-                    height={64}
+                    width={150}
+                    height={44}
                     src={logo}
                     alt="Company Logo"
+                    style={{ position: 'relative', left: -15 }}
                 />
-                <Box sx={classes.containerTop}>
-                    <Typography variant="h4" component="h1" >
-                        {t('core.signin.title')}
-                    </Typography>
-                    <Typography variant="body1" color="text.secondary">
-                        {t('core.signin.subtitle')}
-                    </Typography>
-                </Box>
+                <Box sx={{ ...classes.containerTop, px: 6 }}>
+                    <Box sx={classes.containerTop}>
+                        <Typography variant="h4" component="h1" >
+                            {t('core.signin.title')}
+                        </Typography>
+                        <Typography variant="body1" color="text.secondary">
+                            {t('core.signin.subtitle')}
+                        </Typography>
+                    </Box>
 
-                {/* <Grid container spacing={2} sx={classes.fullWidth}>
-                    <Grid size={{ xs: 12, sm: 12 }} sx={classes.fullWidth}>
-                        <SassButton fullWidth variant="contained" color='secondary' startIcon={<SvgIcon ></SvgIcon>} onClick={() => signInWithGoogle()}>
-                            {t('core.signin.google')}
-                        </SassButton>
-                    </Grid>
 
-                </Grid> */}
+                    <GenericForm<LoginFormValues>
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}
+                        onSubmit={signInWithEmail}
+                        fields={fields as FormField[]}
+                        btnFullWidth
+                        linkForm
+                        submitButtonText={t('core.signin.signup')}
+                    />
 
-                {/* <Divider sx={{ my: 3 }}>
-                    <Typography variant="body2" color="text.secondary">
-                        {t('core.signin.or')}
-                    </Typography>
-                </Divider>
- */}
+                    <Box sx={{ textAlign: 'center' }}>
 
-                <GenericForm<LoginFormValues>
-                    initialValues={initialValues}
-                    validationSchema={validationSchema}
-                    onSubmit={signInWithEmail}
-                    fields={fields as FormField[]}
-                    btnFullWidth
-                    submitButtonText={t('core.signin.signup')}
-                />
-
-                <Box sx={{ textAlign: 'center' }}>
-                    <Typography variant="body2">
-                        <Link href="/auth/recovery">{t('core.signup.recovery')}</Link>
-                    </Typography>
-                    <Typography variant="body2">
-                        {t('core.signin.noAccount')} <Link href="/auth/register">{t('core.signup.signup')}</Link>
-                    </Typography>
+                        <Typography variant="body2">
+                            {t('core.signin.noAccount')} <Link style={{color:'#1C1D1B', textUnderlineOffset:4}} href="/auth/register">{t('core.signup.signup')}</Link>
+                        </Typography>
+                    </Box>
                 </Box>
             </BorderBox>
 

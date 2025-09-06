@@ -267,7 +267,7 @@
       "or": "O",
       "google": "Unete con Google",
       "facebook": "Unete con Facebook",
-      "noAccount": "No tienes una cuenta?",
+      "noAccount": "¿No tienes cuenta?",
       "signIn": "Inicia sesión"
     },
     "recovery": {
@@ -277,7 +277,7 @@
       "or": "O",
       "google": "Unete con Google",
       "facebook": "Unete con Facebook",
-      "noAccount": "No tienes una cuenta?",
+      "noAccount": "¿No tienes una cuenta?",
       "existAccount": "¿Ya tienes una cuenta?",
       "recovery": "Recuperar contraseña",
       "signin": "Inicia sesión",
