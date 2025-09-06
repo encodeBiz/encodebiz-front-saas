@@ -65,18 +65,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 setUserAuth(userAuth)
                 setToken(await userAuth.getIdToken())
                 const extraData = await fetchUserAccount(userAuth.uid)
+                setUser({
+                    ...userAuth,
+                    ...extraData,
+                })
                 if (!extraData.email || extraData?.fullName?.trim()?.toLowerCase() === "guest") {
                     //push(`/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`)
                     setPendAuth(false)
                     return;
                 }
-                const userData: IUser = {
-                    ...extraData,
-                }
-                setUser({
-                    ...userAuth,
-                    ...userData,
-                })
+
                 if (redirectUri) push(redirectUri)
                 else {
                     await watchPathname(userAuth)
@@ -126,8 +124,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, [authToken]);
 
     const authWithToken = async (authToken: string) => {
-        await signInToken(authToken);
-        push(`/${MAIN_ROUTE}/${USER_ROUTE}/complete-profile`)
+        try {
+            const data = await signInToken(authToken);
+            updateUserData()
+            goEntity(data.user.uid)
+        } catch (error) {
+            push(`/auth/login`)
+            if (error instanceof Error) {
+                showToast(error.message, 'error');
+            } else {
+                showToast(String(error), 'error');
+            }
+        }
+
+    }
+
+    const goEntity = async (uid: string) => {
+        const entityList: Array<IUserEntity> = await fetchUserEntities(uid as string)
+        if (entityList.length > 0) {
+            const item = entityList.find(e => e.isActive) ?? entityList[0]
+            push(`/${MAIN_ROUTE}/${item?.entity?.id}/dashboard`)
+        } else {
+            push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
+        }
     }
 
     /** Auth By Token */

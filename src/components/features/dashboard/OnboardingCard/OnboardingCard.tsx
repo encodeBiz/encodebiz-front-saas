@@ -28,7 +28,7 @@ export default function OnboardingCard({ children,serviceData, title, descriptio
   const { user } = useAuth()
   const styles = useStyles(!!user?.id)
   const t = useTranslations()
-
+   
 
   return (
     <Box  >
@@ -41,9 +41,8 @@ export default function OnboardingCard({ children,serviceData, title, descriptio
             <Typography sx={styles.subtitle} variant="subtitle1" align="center" >
               {description}
             </Typography>
-
             {typeof onPress === 'function' && serviceData?.status==='active' && <SassButton onClick={onPress} variant="contained" color="primary" sx={{ mt: 2 }}>{t('core.button.start')}</SassButton>}
-            {serviceData?.status==='cooming_soom' && <SassButton onClick={onPress} variant="contained" color="primary" sx={{ mt: 2 }}>{t('core.label.cooming_soom')}</SassButton>}
+            {serviceData?.status==='cooming_soon' && <SassButton onClick={serviceData?.status!=='cooming_soon'?onPress:()=>{}} variant="contained" color="primary" sx={{ mt: 2 }}>{t('core.label.cooming_soon')}</SassButton>}
           </Box>
           {image && <Box sx={{ ...styles.imageContainer, right, top }}>
             <Image width={width} height={height} alt='EncodeBiz' src={image} />
