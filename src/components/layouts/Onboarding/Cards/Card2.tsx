@@ -14,7 +14,7 @@ export const Card2 = ({ handleNext }: any) => {
     const { navivateTo } = useLayout()
     const { closeModal } = useCommonModal()
     return <Box display={'flex'} flexDirection={"column"} justifyContent={'space-between'} p={2} >
-        <Box width={'100%'} display={'flex'} flexDirection={"column"} gap={8} justifyContent={'space-between'} alignItems={'flex-start'} >
+        <Box width={'100%'} display={'flex'} flexDirection={"column"} gap={2} justifyContent={'space-between'} alignItems={'flex-start'} >
             <Image
                 width={220}
                 height={73}
@@ -50,12 +50,12 @@ export const Card2 = ({ handleNext }: any) => {
                 </Box>
             </Box>
         </Box>
-        <Box marginTop={10}  display={'flex'} flexDirection={"row"} justifyContent={'flex-end'} alignItems={'flex-end'} gap={4}>
-            <SassButton sx={{ width: '420' }} size="small" onClick={() => {
+        <Box    marginTop={10}  display={'flex'} flexDirection={"row"} justifyContent={'flex-end'} alignItems={'flex-end'} gap={4}>
+            <SassButton sx={{ width: '100%' }} size="small" onClick={() => {
                 navivateTo(`/entity?tab=company`)
                 closeModal(CommonModalType.ONBOARDING)
             }} variant="contained" color="primary">Ir a Configurar Entidad</SassButton>
-            <SassButton sx={{ width: '420' }} size="small" onClick={handleNext} variant="outlined" color="primary">Continuar</SassButton>
+            <SassButton sx={{ background:'#EBEEFB' }} size="small" onClick={handleNext} variant="outlined" color="primary">Continuar</SassButton>
         </Box>
 
     </Box>
