@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client'
+import { SassButton } from '@/components/common/buttons/GenericButton';
 import WelcomeInviteModal from '@/components/common/modals/WelcomeInvite';
 import PageLoader from '@/components/common/PageLoader';
 import Footer from '@/components/layouts/Footer';
@@ -11,7 +12,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { useEntity } from '@/hooks/useEntity';
 import { useLayout } from '@/hooks/useLayout';
-import { Box, CssBaseline, Grid } from '@mui/material';
+import { Alert, Box, CssBaseline, Grid } from '@mui/material';
+import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 
 const drawerWidth = 265;
@@ -22,13 +24,14 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { layoutState } = useLayout()
+  const { layoutState, navivateTo } = useLayout()
   const { pendAuth, user } = useAuth()
   const { open, openModal } = useCommonModal()
-  const { currentEntity } = useEntity()
+  const { currentEntity, entitySuscription } = useEntity()
+  const t = useTranslations()
+  const enableAdvise = entitySuscription.filter(e => (e.plan === "bronze" || e.plan === "enterprise")).length > 0 && currentEntity?.entity.billingConfig?.payment_method?.length === 0
 
   useEffect(() => {
-     
     if (currentEntity?.id && user?.id && currentEntity.status === 'invited' && !pendAuth) {
       openModal(CommonModalType.WELCOMEGUEST)
     }
@@ -62,6 +65,13 @@ export default function AdminLayout({
             paddingBottom: "24px", px: 4
           }}>
             {pendAuth && <PageLoader backdrop type={'circular'} fullScreen />}
+            {enableAdvise && <Alert
+              action={
+                <SassButton onClick={() => navivateTo('/entity?tab=billing', true)} color="inherit" size="small">
+                  {t('core.button.configure')}
+                </SassButton>
+              }
+              sx={{ margin: 'auto', mb: 2 }} variant="filled" severity="error">{t('core.feedback.nocard')}</Alert>}
             {children}
             {open.type === CommonModalType.ONBOARDING && <Onboarding />}
             {open.type === CommonModalType.WELCOMEGUEST && <WelcomeInviteModal />}

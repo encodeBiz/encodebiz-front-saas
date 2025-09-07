@@ -78,7 +78,8 @@
     "feedback": {
       "success": "La operación se realizó exitosamente",
       "empthy": "Nada que mostrar",
-      "empthytext": "No existen elementos para mostrar en este momento"
+      "empthytext": "No existen elementos para mostrar en este momento",
+      "nocard":"No tienes métodos de pago asociado a la entidad, por favor configure al menos uno."
     },
     "label": {
       "text": "Textos",
@@ -210,6 +211,7 @@
     },
     "button": {
       "revoke": "Revocar",
+      "configure":"Configurar",
       "close": "Cerrar",
       "contactUs": "Contactar con encodeBiz",
       "upgrade": "Actualizar plan",
