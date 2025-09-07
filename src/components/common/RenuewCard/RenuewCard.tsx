@@ -4,7 +4,6 @@ import { styled } from '@mui/material/styles';
 import { useTranslations } from 'next-intl';
 import usePricingCardController from './RenuewCard.controller';
 import { IEntitySuscription } from '@/domain/auth/ISubscription';
-import ConfirmModal from '../modals/ConfirmModal';
 import { SassButton } from '../buttons/GenericButton';
 import { useAppLocale } from '@/hooks/useAppLocale';
 import { useLayout } from '@/hooks/useLayout';
@@ -29,7 +28,7 @@ export type PricingCardProps = {
 
 export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
     const t = useTranslations();
-    const { unSubcribeAction, loadingGetPlan, planInfo } = usePricingCardController(plan);
+    const { planInfo } = usePricingCardController(plan);
     const { navivateTo } = useLayout()
     const { currentLocale } = useAppLocale()
 
@@ -73,36 +72,12 @@ export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
                     sx={{ mb: 1, mt: 4, height: 40 }}
                     fullWidth
                     variant="contained"
-                    onClick={() => navivateTo(`/${plan.serviceId}/onboarding`)}
+                    onClick={() => navivateTo(`/${plan.serviceId}/onboarding?to=plans`)}
                     disabled={false}
-
                 >
                     {t("renew.btn")}
-                </SassButton>
-
-                {/* <SassButton
-                    sx={{ mb: 1 , height: 40}}
-                    fullWidth
-                    variant="contained"
-                    color='error'
-                    onClick={() => {
-                        openModal(CommonModalType.DELETE)
-                    }} disabled={false}
-
-                >
-                    {t("salesPlan.del")}
-                </SassButton> */}
-
-
-
-            </Box>
-
-            <ConfirmModal
-                isLoading={loadingGetPlan}
-                title={t('renew.deleteConfirmModalTitle')}
-                description={t('renew.deleteConfirmModalTitle2')}
-                onOKAction={() => unSubcribeAction()}
-            />
+                </SassButton>     
+            </Box>          
         </PlanCard>
     );
 };

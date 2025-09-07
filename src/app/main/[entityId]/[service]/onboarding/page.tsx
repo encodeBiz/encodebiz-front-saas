@@ -25,7 +25,7 @@ export default function Dashboard() {
   const sectionMoreInfofRef = useRef(null); // Create a ref for the section
   const sectionServicesRef = useRef(null); // Create a ref for the section
 
-   
+
   const { service } = useParams<any>()
   const { currentLocale } = useAppLocale()
   const t = useTranslations()
@@ -34,26 +34,24 @@ export default function Dashboard() {
   const isCommingZoom = entityServiceList.find(e => e.id === service)?.status === 'cooming_soon'
   const activeService = entitySuscription.filter(e => e.serviceId === service && e.status === 'active').length > 0 || currentEntity?.role === 'owner'
   const scrollToPlan = () => {
-    if (sectionServicesRef.current) {     
+    if (sectionServicesRef.current) {
       (sectionServicesRef.current as any).scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     }
   };
 
   useEffect(() => {
-    console.log(searchParams.get('to'));
-    console.log( (sectionServicesRef?.current as any)?.id);
-    
-    if (searchParams.get('to') === 'plans' && (sectionServicesRef?.current as any)?.id)
-      scrollToPlan()
-  }, [searchParams.get('to'), (sectionServicesRef?.current as any)?.id])
 
+    if (searchParams.get('to') === 'plans' && !pending && sectionServicesRef?.current && planList?.length)
+      setTimeout(() => {
+        scrollToPlan()
+      }, 1000);
+  }, [searchParams.get('to'), (sectionServicesRef?.current as any), pending, planList?.length])
 
   return (
     <Container maxWidth="xl">
 
       <OnboardingCard
-
         serviceData={serviceData}
         title={serviceData?.name}
         description={serviceData?.about ? (serviceData?.about as any)[currentLocale] : ''}
@@ -83,10 +81,7 @@ export default function Dashboard() {
 
       ]} />
 
-      {!pending && !isCommingZoom && activeService && Array.isArray(planList) && <Box id="plans" ref={sectionServicesRef} ><SalesPlan salesPlans={planList as Array<IPlan>} fromService={service} /></Box>}
-
-
-
+      <Box id="plans" ref={sectionServicesRef} >{!pending && !isCommingZoom && activeService && Array.isArray(planList) && <SalesPlan salesPlans={planList as Array<IPlan>} fromService={service} />}</Box>
     </Container>
   );
 }

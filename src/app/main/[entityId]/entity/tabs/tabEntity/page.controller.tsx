@@ -126,7 +126,7 @@ export const useSettingEntityController = () => {
         },
         {
             name: 'billingEmail',
-            label: t('core.label.billingEmail'),
+            label: t('core.label.companyEmail'),
             type: 'email',
             component: TextInput,
         },
