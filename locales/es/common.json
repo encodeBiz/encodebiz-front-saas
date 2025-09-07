@@ -79,7 +79,7 @@
       "success": "La operación se realizó exitosamente",
       "empthy": "Nada que mostrar",
       "empthytext": "No existen elementos para mostrar en este momento",
-      "nocard":"No tienes métodos de pago asociado a la entidad, por favor configure al menos uno."
+      "nocard": "No tienes métodos de pago asociado a la entidad, por favor configure al menos uno."
     },
     "label": {
       "text": "Textos",
@@ -211,7 +211,7 @@
     },
     "button": {
       "revoke": "Revocar",
-      "configure":"Configurar",
+      "configure": "Configurar",
       "close": "Cerrar",
       "contactUs": "Contactar con encodeBiz",
       "upgrade": "Actualizar plan",
@@ -445,6 +445,10 @@
     "contract": "Plan Actual",
     "renew": "Cambiar plan",
     "del": "Cancelar suscripción",
+    "feedText1": "La suscripción al plan",
+    "feedText2": "del servicio",
+    "feedText3": "se ha completado con éxito",
+    "feedText4": "se ha eliminado con éxito",
     "imageConfirmModalTitle": "Configura tu Entidad para continuar",
     "imageConfirmModalTitle2": "Antes de contratar un plan, completa la información pendiente en la sección Entidad de tu cuenta:",
     "notAllowedPlan": "Debes actualizar los datos legales de la entidad seleccionada antes de obtener un plan."
@@ -623,10 +627,10 @@
       "text3": "Esto nos permite,",
       "text4": "Personalizar la experiencia",
       "text5": "con la identidad corporativa de tu organización en cualquier servicio.",
-      "text6":"Personalizar la experiencia",
-      "text7":" con la identidad corporativa de tu organización en cualquier servicio.",
-      "text8":"Asegurar un uso legítimo y transparente",
-      "text9":"de los servicios, cumpliendo con los requisitos legales y de protección",
+      "text6": "Personalizar la experiencia",
+      "text7": " con la identidad corporativa de tu organización en cualquier servicio.",
+      "text8": "Asegurar un uso legítimo y transparente",
+      "text9": "de los servicios, cumpliendo con los requisitos legales y de protección",
       "continue": "Continuar"
     },
     "card3": {

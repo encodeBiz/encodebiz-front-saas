@@ -38,7 +38,7 @@ export const codeError: any = {
   "auth/invalid_plan": "El plan Freemium no puede crear eventos",
   "auth/unauthorized": "Acceso a recurso no autorizado",
   "staff/unauthorized": "Acceso de personal de apoyo deshabilitado o vencido",
-
+  "media/not_found": "Archivo no encontrado"
 };
 
 /**
@@ -102,14 +102,23 @@ export class HttpClient {
       const response = await fetch(fullURL, { ...config, cache: forceCache });
 
       if (!response.ok) {
-        if (response.status === 400 || response.status === 401) {
+ 
+        if (response.status >= 400 && response.status <= 500) {
           let responseError: { code: string; message: string; error: string, errors: Array<string> }
           const responseErrorData = await response.json()
-          if (typeof responseErrorData === 'string')
-            try { responseError = JSON.parse(responseErrorData) }
+
+          if (responseErrorData?.message && typeof responseErrorData?.message === 'string') {
+            try { responseError = JSON.parse(responseErrorData?.message ) }
             catch (error: any) { responseError = { code: 'error', message: '', error: error, errors: [] } }
-          else
-            responseError = responseErrorData
+
+          } else {
+            if (typeof responseErrorData === 'string')
+              try { responseError = JSON.parse(responseErrorData) }
+              catch (error: any) { responseError = { code: 'error', message: '', error: error, errors: [] } }
+            else
+              responseError = responseErrorData
+          }
+
 
           if (Array.isArray(responseError.errors) && responseError.errors.length > 0) {
             throw new Error(responseError.errors[0])

@@ -7,9 +7,11 @@ import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/useToast';
 import { IEntitySuscription, IUnSubscription } from '@/domain/auth/ISubscription';
 import { IPlan } from '@/domain/core/IPlan';
+import { useTranslations } from 'next-intl';
 export default function usePricingCardController(planSubscription: IEntitySuscription) {
     const { currentEntity } = useEntity();
     const { token } = useAuth()
+    const t = useTranslations()
     const [loadingGetPlan, setLoadingGetPlan] = useState(false);
     const { showToast } = useToast()
     const [planInfo, setPlanInfo] = useState<IPlan>()
@@ -32,7 +34,7 @@ export default function usePricingCardController(planSubscription: IEntitySuscri
                 serviceId: planSubscription.serviceId as any
             }
             await unSubscribeInSassProduct(data, token)
-            showToast(`La suscripción al servicio ${planSubscription.serviceId as any} se ha eliminado con exito`, 'success');
+            showToast(`${t('salesPlan.feedText1')} ${planSubscription.serviceId as any} ${t('salesPlan.feedText4')}`, 'success');
             setLoadingGetPlan(false);
         } catch (error: unknown) {
             setLoadingGetPlan(false);

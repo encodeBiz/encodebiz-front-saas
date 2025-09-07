@@ -36,7 +36,7 @@ export default function usePricingCardController(id: string, name: string, fromS
 
                 await subscribeInSassProduct(data, token)
 
-                showToast(`La suscripción al plan ${id} del servicio ${fromService} se ha completado con exito'`, 'success');
+                showToast(`${t('salesPlan.feedText1')} ${id} ${t('salesPlan.feedText2')} ${fromService} ${t('salesPlan.feedText3')}`, 'success');
                 setLoadingGetPlan(false);
                 changeLoaderState({ show: false })
                 if(fromService === 'passinbiz'){
@@ -64,7 +64,7 @@ export default function usePricingCardController(id: string, name: string, fromS
 
             await unSubscribeInSassProduct(data, token)
 
-            showToast(`La suscripción al servicio ${fromService} se ha eliminado con exito`, 'success');
+            showToast(`${t('salesPlan.feedText1')} ${fromService} ${t('salesPlan.feedText4')}`, 'success');
             setLoadingGetPlan(false);
             changeLoaderState({ show: false })
 
