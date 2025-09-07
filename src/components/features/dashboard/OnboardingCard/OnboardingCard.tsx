@@ -42,7 +42,7 @@ export default function OnboardingCard({ children,serviceData, title, descriptio
               {description}
             </Typography>
             {typeof onPress === 'function' && serviceData?.status==='active' && <SassButton onClick={onPress} variant="contained" color="primary" sx={{ mt: 2 }}>{t('core.button.start')}</SassButton>}
-            {serviceData?.status==='cooming_soon' && <SassButton onClick={serviceData?.status!=='cooming_soon'?onPress:()=>{}} variant="contained" color="primary" sx={{ mt: 2 }}>{t('core.label.cooming_soon')}</SassButton>}
+            {serviceData?.status==='cooming_soon' &&  <Typography mt={5} textAlign={'center'} fontSize={36} fontWeight={400} variant="body1">{t('cards.card3.comminsoom')}</Typography>}
           </Box>
           {image && <Box sx={{ ...styles.imageContainer, right, top }}>
             <Image width={width} height={height} alt='EncodeBiz' src={image} />

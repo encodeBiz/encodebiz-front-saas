@@ -8,11 +8,13 @@ import { HealthAndSafetyOutlined, PaletteOutlined,  TextSnippetOutlined } from "
 import { useLayout } from "@/hooks/useLayout"
 import { useCommonModal } from "@/hooks/useCommonModal"
 import { CommonModalType } from "@/contexts/commonModalContext"
-
+import { useTranslations } from "next-intl"
+ 
 export const Card2 = ({ handleNext }: any) => {
     const theme = useTheme()
     const { navivateTo } = useLayout()
     const { closeModal } = useCommonModal()
+    const t = useTranslations()
     return <Box display={'flex'} flexDirection={"column"} justifyContent={'space-between'} p={2} >
         <Box width={'100%'} display={'flex'} flexDirection={"column"} gap={2} justifyContent={'space-between'} alignItems={'flex-start'} >
             <Image
@@ -21,16 +23,16 @@ export const Card2 = ({ handleNext }: any) => {
                 alt=""
                 src={logo}
             />
-            <Typography marginTop={10} variant="h3">Primero, configura tu entidad</Typography>
+            <Typography marginTop={10} variant="h3">{t('cards.card2.text1')}</Typography>
             <Box display={'flex'} flexDirection={"column"} gap={2}>
-                <Typography variant="body1">Antes de elegir un servicio y plan te recomendamos completar la configuración de tu entidad.</Typography>
-                <Typography variant="body1">Esto nos permite,</Typography>
+                <Typography variant="body1">{t('cards.card2.text2')}</Typography>
+                <Typography variant="body1">{t('cards.card2.text3')}</Typography>
             </Box>
             <Box display={'flex'} flexDirection={"row"} gap={5} marginTop={3}>
                 <Box sx={{ position: 'relative' }}>
                     <PaletteOutlined sx={{ position: 'absolute', top: -20, left: -20, color: '#FFF', background: (theme) => theme.palette.primary.main, p: 1, fontSize: 40, borderRadius: '50%' }} />
                     <BorderBox sx={{ p: 4 }}>
-                        <span style={{ color: theme.palette.primary.main }}> Personalizar la experiencia</span> con la identidad corporativa de tu organización en cualquier servicio.
+                        <span style={{ color: theme.palette.primary.main }}> {t('cards.card2.text4')}</span> {t('cards.card2.text5')}
                     </BorderBox>
 
                 </Box>
@@ -38,14 +40,14 @@ export const Card2 = ({ handleNext }: any) => {
                     <TextSnippetOutlined sx={{ position: 'absolute', top: -20, left: -20, color: '#FFF', background: (theme) => theme.palette.primary.main, p: 1, fontSize: 40, borderRadius: '50%' }} />
 
                     <BorderBox sx={{ p: 4 }}>
-                        <span style={{ color: theme.palette.primary.main }}>Personalizar la experiencia</span> con la identidad corporativa de tu organización en cualquier servicio.
+                        <span style={{ color: theme.palette.primary.main }}>{t('cards.card2.text6')}</span>{t('cards.card2.text7')}
                     </BorderBox>
                 </Box>
                 <Box sx={{ position: 'relative' }}>
                     <HealthAndSafetyOutlined sx={{ position: 'absolute', top: -20, left: -20, color: '#FFF', background: (theme) => theme.palette.primary.main, p: 1, fontSize: 40, borderRadius: '50%' }} />
 
                     <BorderBox sx={{ p: 4 }}>
-                        <span style={{ color: theme.palette.primary.main }}> Asegurar un uso legítimo y transparente</span> de los servicios, cumpliendo con los requisitos legales y de protección
+                        <span style={{ color: theme.palette.primary.main }}> {t('cards.card2.text8')}</span> {t('cards.card2.text9')}
                     </BorderBox>
                 </Box>
             </Box>
@@ -54,8 +56,8 @@ export const Card2 = ({ handleNext }: any) => {
             <SassButton sx={{ width: '437px' }} size="small" onClick={() => {
                 navivateTo(`/entity?tab=company`)
                 closeModal(CommonModalType.ONBOARDING)
-            }} variant="contained" color="primary">Ir a Configurar Entidad</SassButton>
-            <SassButton sx={{ background:'#EBEEFB' }} size="small" onClick={handleNext} variant="outlined" color="primary">Continuar</SassButton>
+            }} variant="contained" color="primary">{t('cards.card3.text14')}</SassButton>
+            <SassButton sx={{ background:'#EBEEFB' }} size="small" onClick={handleNext} variant="outlined" color="primary">{t('cards.card2.continue')}</SassButton>
         </Box>
 
     </Box>

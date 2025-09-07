@@ -607,5 +607,43 @@
     "text1": " Como colaborador podrás gestionar proyectos, acceder a herramientas administrativas y trabajar junto al equipo asignado.",
     "text2": " Por favor configure la información de la cuenta y agregue una contraseña",
     "btn": "Configurar cuenta"
+  },
+  "cards": {
+    "card1": {
+      "text1": "Bienvenido a encodeBiz SaaS",
+      "text2": "Una plataforma creada para centralizar todos tus servicios digitales en un único lugar.",
+      "text3": "En encodeBiz convertimos tus ideas en soluciones digitales. Cuando nuestros servicios no cubren todas tus necesidades, creamos a tu medida lo que tu negocio requiere.",
+      "start": "Comenzar"
+    },
+    "card2": {
+      "text1": "Primero, configura tu entidad",
+      "text2": "Antes de elegir un servicio y plan te recomendamos completar la configuración de tu entidad.",
+      "text3": "Esto nos permite,",
+      "text4": "Personalizar la experiencia",
+      "text5": "con la identidad corporativa de tu organización en cualquier servicio.",
+      "text6":"Personalizar la experiencia",
+      "text7":" con la identidad corporativa de tu organización en cualquier servicio.",
+      "text8":"Asegurar un uso legítimo y transparente",
+      "text9":"de los servicios, cumpliendo con los requisitos legales y de protección",
+      "continue": "Continuar"
+    },
+    "card3": {
+      "comminsoom": "MUY PRONTO",
+      "text1": "Hoy con encodeBiz SaaS",
+      "text2": "Tu primer servicio,",
+      "text3": "Servicio SaaS para",
+      "text4": "emitir y gestionar credenciales",
+      "text5": "y",
+      "text6": "pases de eventos",
+      "text7": "digitales desde un único panel.",
+      "text8": "Emitir credenciales digitales para empleados, estudiantes o clientes.",
+      "text9": "Crear y gestionar eventos con pases para asistentes y staff.",
+      "text10": " Controlar accesos de forma segura y en tiempo real.",
+      "text11": "Servicio de control y gestión de asistencia.",
+      "text12": " Registra entradas y salidas con geolocalización",
+      "text13": ", organiza equipos y proyectos, y genera reportes en tiempo real.",
+      "text14": "Ir a Configurar Entidad",
+      "text15": "Configurar mas tarde"
+    }
   }
 }
