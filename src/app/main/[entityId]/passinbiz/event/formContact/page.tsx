@@ -41,7 +41,7 @@ export default function FormContact() {
               onClick={handleExternalSubmit}
               variant='contained'
               startIcon={<SendOutlined />}
-            > {t('core.button.send')}</SassButton>
+            > {t('core.label.send')}</SassButton>
           </Box>
         }
       >

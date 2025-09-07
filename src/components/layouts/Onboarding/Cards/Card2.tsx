@@ -51,7 +51,7 @@ export const Card2 = ({ handleNext }: any) => {
             </Box>
         </Box>
         <Box    marginTop={10}  display={'flex'} flexDirection={"row"} justifyContent={'flex-end'} alignItems={'flex-end'} gap={4}>
-            <SassButton sx={{ width: '100%' }} size="small" onClick={() => {
+            <SassButton sx={{ width: '437px' }} size="small" onClick={() => {
                 navivateTo(`/entity?tab=company`)
                 closeModal(CommonModalType.ONBOARDING)
             }} variant="contained" color="primary">Ir a Configurar Entidad</SassButton>

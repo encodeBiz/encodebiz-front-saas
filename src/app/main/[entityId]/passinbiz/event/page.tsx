@@ -38,8 +38,7 @@ export default function HolderList() {
               startIcon={<Add />}
             > {t('event.add')}</SassButton> :
               <SassButton
-                role='link'
-                href={`/${MAIN_ROUTE}/${PASSSINBIZ_MODULE_ROUTE}/onboarding`}
+                onClick={() => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/onboarding?to=plans`)}
                 variant='contained'
                 color='warning'
                 startIcon={<ArrowUpward />}

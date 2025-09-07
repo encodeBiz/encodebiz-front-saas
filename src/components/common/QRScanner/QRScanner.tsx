@@ -23,16 +23,9 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 
 const QRScanner = () => {
-    const { handleScan, handleError, resetScanner, scanRessult, staffValidating, staffValid, error, eventList, setEventSelected  } = useQRScanner()
+    const { handleScan, handleError, resetScanner, scanRessult, staffValidating, staffValid, error, eventList, setEventSelected } = useQRScanner()
     const t = useTranslations()
     const { open } = useCommonModal()
-
-
-
-
-
-
-
     return (
         <Box sx={{ p: 1, maxWidth: 600, margin: '0 auto' }}>
 
@@ -53,7 +46,7 @@ const QRScanner = () => {
                 </Typography>
             </Box>}
 
-            {!scanRessult && !staffValidating && staffValid && !error &&  (
+            {!scanRessult && !staffValidating && staffValid && !error && (
                 <StyledCard>
                     <ScannerContainer elevation={1}>
                         <PreviewContainer>
@@ -117,7 +110,7 @@ const QRScanner = () => {
                     <CardContent>
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                             <Error color="error" sx={{ fontSize: 100 }} />
-                            <Typography variant="h5"  sx={{ textAlign: 'center' }}>
+                            <Typography variant="h5" sx={{ textAlign: 'center' }}>
                                 {t('scan.failed')}
                             </Typography>
                             <Alert severity="error" sx={{ width: '100%', textAlign: 'center' }}>
@@ -142,7 +135,7 @@ const QRScanner = () => {
                     <CardContent>
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                             <Error color="error" sx={{ fontSize: 100 }} />
-                            <Typography variant="h5"  sx={{ textAlign: 'center' }}>
+                            <Typography variant="h5" sx={{ textAlign: 'center' }}>
                                 {t('scan.failedStaff')}
                             </Typography>
 

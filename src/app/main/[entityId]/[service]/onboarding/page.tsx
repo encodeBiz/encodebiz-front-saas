@@ -1,13 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 import HelpTabs from "@/components/features/dashboard/HelpTabs/HelpTabs";
 import passinbiz from '@/../public/assets/images/passinbiz.svg'
 import checkbiz from '@/../public/assets/images/checkbiz-onbooarding.svg'
-import { Container } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import useDashboardController from "./page.controller";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import SalesPlan from "@/components/features/profile/SalesPlan/SalesPlan";
 import { IPlan } from "@/domain/core/IPlan";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import OnboardingCard from "@/components/features/dashboard/OnboardingCard/OnboardingCard";
 import TabContent from "./passBiz/tabContent";
 import { useAppLocale } from "@/hooks/useAppLocale";
@@ -23,18 +24,30 @@ export default function Dashboard() {
   const { serviceData, pending, planList, dataTab1, dataTab2 } = useDashboardController()
   const sectionMoreInfofRef = useRef(null); // Create a ref for the section
   const sectionServicesRef = useRef(null); // Create a ref for the section
+
+   
   const { service } = useParams<any>()
   const { currentLocale } = useAppLocale()
   const t = useTranslations()
   const { currentEntity, entitySuscription, entityServiceList } = useEntity()
- 
-  const isCommingZoom = entityServiceList.find(e=>e.id===service)?.status==='cooming_soon'
+  const searchParams = useSearchParams()
+  const isCommingZoom = entityServiceList.find(e => e.id === service)?.status === 'cooming_soon'
   const activeService = entitySuscription.filter(e => e.serviceId === service && e.status === 'active').length > 0 || currentEntity?.role === 'owner'
   const scrollToPlan = () => {
-    if (sectionServicesRef.current) {
+    if (sectionServicesRef.current) {     
       (sectionServicesRef.current as any).scrollIntoView({ behavior: 'smooth', block: 'start' });
+
     }
   };
+
+  useEffect(() => {
+    console.log(searchParams.get('to'));
+    console.log( (sectionServicesRef?.current as any)?.id);
+    
+    if (searchParams.get('to') === 'plans' && (sectionServicesRef?.current as any)?.id)
+      scrollToPlan()
+  }, [searchParams.get('to'), (sectionServicesRef?.current as any)?.id])
+
 
   return (
     <Container maxWidth="xl">
@@ -70,7 +83,7 @@ export default function Dashboard() {
 
       ]} />
 
-      {!pending && !isCommingZoom && activeService && Array.isArray(planList) && <SalesPlan ref={sectionServicesRef} salesPlans={planList as Array<IPlan>} fromService={service} />}
+      {!pending && !isCommingZoom && activeService && Array.isArray(planList) && <Box id="plans" ref={sectionServicesRef} ><SalesPlan salesPlans={planList as Array<IPlan>} fromService={service} /></Box>}
 
 
 
