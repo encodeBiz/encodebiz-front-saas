@@ -38,7 +38,8 @@ export const codeError: any = {
   "auth/invalid_plan": "El plan Freemium no puede crear eventos",
   "auth/unauthorized": "Acceso a recurso no autorizado",
   "staff/unauthorized": "Acceso de personal de apoyo deshabilitado o vencido",
-  "media/not_found": "Archivo no encontrado"
+  "media/not_found": "Archivo no encontrado",
+  "staff/not_found":"Personal de apoyo no encontrado",
 };
 
 /**
@@ -119,6 +120,9 @@ export class HttpClient {
               responseError = responseErrorData
           }
 
+
+          console.log(responseError);
+          
 
           if (Array.isArray(responseError.errors) && responseError.errors.length > 0) {
             throw new Error(responseError.errors[0])

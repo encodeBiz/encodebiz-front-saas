@@ -48,7 +48,7 @@ const QRScanner = () => {
 
             {!scanRessult && !staffValidating && staffValid && !error && (
                 <StyledCard>
-                    <ScannerContainer elevation={1}>
+                    <ScannerContainer elevation={0}>
                         <PreviewContainer>
                             <Scanner
                                 scanDelay={1500}

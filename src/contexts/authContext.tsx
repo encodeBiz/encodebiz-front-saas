@@ -8,7 +8,7 @@ import IUser from "@/domain/auth/IUser";
 import { subscribeToAuthChanges } from "@/lib/firebase/authentication/stateChange";
 import { getUser } from "@/lib/firebase/authentication/login";
 import { fetchUserAccount, signInToken } from "@/services/common/account.service";
-import { MAIN_ROUTE, GENERAL_ROUTE, USER_ROUTE } from "@/config/routes";
+import { MAIN_ROUTE, GENERAL_ROUTE, USER_ROUTE, PUBLIC_PATH } from "@/config/routes";
 import { useToast } from "@/hooks/useToast";
 import IUserEntity from "@/domain/auth/IUserEntity";
 import { fetchUserEntities } from "@/services/common/entity.service";
@@ -20,6 +20,7 @@ interface AuthContextType {
     token: string
     updateUserData: (loggedUser?: User) => void
 }
+
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<IUser | any>(null);
@@ -116,12 +117,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     useEffect(() => {
-        if (!authToken) {
+        console.log(!PUBLIC_PATH.includes(pathName));
+        
+        if (!authToken && !PUBLIC_PATH.includes(pathName)) {
             setPendAuth(true)
             const unsubscribe = subscribeToAuthChanges(watchSesionState);
             return () => unsubscribe(); // Cleanup on unmount
         }
-    }, [authToken]);
+    }, [authToken, pathName]);
 
     const authWithToken = async (authToken: string) => {
         try {

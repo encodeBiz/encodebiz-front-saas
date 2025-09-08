@@ -118,3 +118,6 @@ export const menuItemsGeneral = [
         subMenu: []
     }
 ]
+
+
+export const PUBLIC_PATH=['/tools/scanner']
