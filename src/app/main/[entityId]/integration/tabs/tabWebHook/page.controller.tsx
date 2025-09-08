@@ -174,7 +174,7 @@ export const useWebHookTabController = () => {
     const onDelete = async (item: any) => {
         try {
             setDeleting(true)
-            const id = item[0]
+            const id = item.id
             await deleteWebhook({
                 "endpointId": id,
                 "entityId": currentEntity?.entity.id

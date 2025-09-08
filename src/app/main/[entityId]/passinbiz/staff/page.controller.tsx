@@ -263,6 +263,7 @@ export default function useStaffListController() {
       filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== 'email')
 
 
+
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any) }).then(async res => {
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
@@ -278,7 +279,6 @@ export default function useStaffListController() {
         setItems([])
         setItemsHistory([])
       }
-      setLoading(false)
 
     }).catch(e => {
       showToast(e?.message, 'error')
@@ -308,15 +308,19 @@ export default function useStaffListController() {
       } else {
         ids.push(item.id)
       }
-      ids.forEach(async id => {
-        try {
-          await deleteStaff(currentEntity?.entity.id as string, id, token)
-        } catch (e: any) {
-          showToast(e?.message, 'error')
-          setDeleting(false)
-        }
-      });
-      fetchingData(filterParams)
+      await Promise.all(
+        ids.map(async (id) => {
+          try {
+            await deleteStaff(currentEntity?.entity.id as string, id, token)
+          } catch (e: any) {
+            showToast(e?.message, 'error')
+            setDeleting(false)
+          }
+        })
+      );
+
+      const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
+      fetchingData(filterParamsUpdated)
       setDeleting(false)
       closeModal(CommonModalType.DELETE)
     } catch (e: any) {

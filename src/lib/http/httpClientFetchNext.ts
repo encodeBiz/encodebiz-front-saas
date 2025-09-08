@@ -109,7 +109,7 @@ export class HttpClient {
 
           if (responseErrorData?.message && typeof responseErrorData?.message === 'string') {
             try { responseError = JSON.parse(responseErrorData?.message ) }
-            catch (error: any) { responseError = { code: 'error', message: '', error: error, errors: [] } }
+            catch (error: any) { responseError = { code: responseErrorData?.code, message: responseErrorData?.message, error: error, errors: [] } }
 
           } else {
             if (typeof responseErrorData === 'string')
