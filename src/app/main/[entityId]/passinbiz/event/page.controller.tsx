@@ -212,8 +212,7 @@ export default function useIEventListController() {
 
   const inicializeFilter = (params: string) => {
     try {
-      console.log(params!=='null');
-      
+    
       const filters: IFilterParams = params!=='null'?filterParams:decodeFromBase64(params as string)
       filters.params.startAfter = null
       setFilterParams(filters)

@@ -7,7 +7,6 @@ import Footer from '@/components/layouts/Footer';
 import Header from '@/components/layouts/Header/Header';
 import Onboarding from '@/components/layouts/Onboarding/Onboarding';
 import SideMenu from '@/components/layouts/SideMenu';
-import { AuthProvider } from '@/contexts/authContext';
 import { CommonModalProvider, CommonModalType } from '@/contexts/commonModalContext';
 import { EntityProvider } from '@/contexts/entityContext';
 import { FormStatusProvider } from '@/contexts/formStatusContext';

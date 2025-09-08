@@ -1,7 +1,6 @@
 'use client'
 import { Box, CssBaseline } from '@mui/material';
 import bg from '../../../public/assets/images/bg.jpg'
-import { AuthProvider } from '@/contexts/authContext';
 import { CommonModalProvider } from '@/contexts/commonModalContext';
 import { EntityProvider } from '@/contexts/entityContext';
 import { FormStatusProvider } from '@/contexts/formStatusContext';
