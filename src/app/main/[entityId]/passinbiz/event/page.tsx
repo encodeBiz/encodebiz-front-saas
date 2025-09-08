@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import useHolderListController from './page.controller';
 import { GenericTable } from "@/components/common/table/GenericTable";
 import { Add, ArrowUpward } from '@mui/icons-material';
-import { MAIN_ROUTE, PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
+import { PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { useEntity } from '@/hooks/useEntity';
 import FormContact from './formContact/page';
