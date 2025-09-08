@@ -13,6 +13,7 @@ import { useStyles } from './Onboarding.styles';
 import { Card1 } from './Cards/Card1';
 import { Card2 } from './Cards/Card2';
 import { Card3 } from './Cards/Card3';
+import { useAuth } from '@/hooks/useAuth';
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
@@ -26,22 +27,24 @@ const Transition = React.forwardRef(function Transition(
 function Onboarding() {
     const { open, closeModal } = useCommonModal()
     const [activeStep, setActiveStep] = useState(0);
-
+    const { user } = useAuth()
     const classes = useStyles()
 
     // Handler for closing the dialog
     const handleClose = (event: any, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
-        if (reason !== 'backdropClick')
+        if (reason !== 'backdropClick') {
+            localStorage.setItem('view-onboarding-' + user?.id, '1')
             closeModal(CommonModalType.ONBOARDING);
-        setActiveStep(0)
+            setActiveStep(0)
+        }
     };
 
     // Handler for moving to the next step
     const handleNext = () => {
         if (activeStep == 2) {
-           
+            localStorage.setItem('view-onboarding-' + user?.id, '1')
             closeModal(CommonModalType.ONBOARDING);
-             setActiveStep(0)
+            setActiveStep(0)
         }
         else
             setActiveStep((prevActiveStep) => prevActiveStep + 1);

@@ -11,9 +11,11 @@ import {
   ListItemIcon,
   TextField,
   ListItemText,
+  InputAdornment,
+  CircularProgress,
 } from "@mui/material";
 import { FieldProps, useField } from "formik";
-import { CheckCircleOutline } from "@mui/icons-material";
+import { CheckCircleOutline, Error } from "@mui/icons-material";
 import { useAuth } from "@/hooks/useAuth";
 import { fetchLocation } from "@/services/common/helper.service";
 import { useFormStatus } from "@/hooks/useFormStatus";
@@ -46,12 +48,15 @@ const AddressInput: React.FC<AutoCompletedInputProps> = ({ onHandleChange, ...pr
   const debouncedSearch = useDebouncedCallback(
     async (q: string, code: string) => {
       const query = (q ?? "").trim();
+
+
       if (!query || query == inputValue) {
         setOptions([]);
         setPending(false);
         return;
       }
       try {
+        setPending(true);
         const data = await fetchLocation({ address: query.toLowerCase(), country: code }, token);
         setOptions(
           data.map((e: any) => ({
@@ -65,6 +70,7 @@ const AddressInput: React.FC<AutoCompletedInputProps> = ({ onHandleChange, ...pr
       }
     },
     600
+    , [token]
   );
 
   useEffect(() => {
@@ -74,10 +80,10 @@ const AddressInput: React.FC<AutoCompletedInputProps> = ({ onHandleChange, ...pr
   }, [debouncedSearch]);
 
   useEffect(() => {
-    if(field.value != '')
+    if (field.value != '')
       setInputValue(field.value ?? "");
   }, [field.value]);
-  
+
   useEffect(() => {
     const code2 =
       country.find((e) => e.name === formStatus?.values?.country)?.code2 ?? "ES";
@@ -90,12 +96,12 @@ const AddressInput: React.FC<AutoCompletedInputProps> = ({ onHandleChange, ...pr
     } else {
       setOptions([]);
     }
-  }, [formStatus?.values?.country]); 
+  }, [formStatus?.values?.country]);
 
   const handleChange = (_: any, newOption: Option | null) => {
     setSelected(newOption);
     setOptions([])
-     debouncedSearch?.cancel?.();
+    debouncedSearch?.cancel?.();
     helper.setValue(newOption?.label ?? "");
     if (typeof onHandleChange === "function" && newOption?.data) {
       onHandleChange({ lat: newOption.data.lat, lng: newOption.data.lng });
@@ -104,11 +110,12 @@ const AddressInput: React.FC<AutoCompletedInputProps> = ({ onHandleChange, ...pr
 
   const handleInputChange = (_: any, newInput: string) => {
     setInputValue(newInput ?? "");
-    setPending(true);
+
     debouncedSearch(newInput, countryCode);
   };
   return (
-    <FormControl required sx={{ width: "100%", textAlign: "left" }}>
+    <FormControl required={props.required} sx={{ width: "100%", textAlign: "left" }}>
+
       <Autocomplete<Option, false, false, false>
         options={options}
         disabled={props.disabled || !formStatus?.values?.country || !formStatus?.values?.city}
@@ -121,7 +128,31 @@ const AddressInput: React.FC<AutoCompletedInputProps> = ({ onHandleChange, ...pr
         filterOptions={(x) => x} // no filtres en cliente si ya filtras en servidor
         loading={pending}
         open={options.length > 0}
-        renderOption={ (liProps, option, { selected }) => (
+
+        renderInput={(params) => (
+          <TextField required={props.required}
+            {...params}
+            label={props.label}
+            placeholder={t("core.label.typingAddress")}
+            error={!!error}
+            helperText={helperText as string}
+            slotProps={{
+              input: {
+                ...params.InputProps,
+                endAdornment: <React.Fragment>
+                  {pending ? <CircularProgress color="inherit" size={20} /> : null}
+                  {error ? <InputAdornment position="end"><Error color='error' /></InputAdornment> : null}
+                  {params.InputProps.endAdornment}
+                </React.Fragment>
+
+
+              },
+            }}
+
+          />
+        )}
+
+        renderOption={(liProps, option, { selected }) => (
           <ListItem {...liProps} key={option.id}>
             {selected && (
               <ListItemIcon>
@@ -131,20 +162,17 @@ const AddressInput: React.FC<AutoCompletedInputProps> = ({ onHandleChange, ...pr
             <ListItemText key={option.id} primary={option.label} />
           </ListItem>
         )}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label={props.label}
-            placeholder={t("core.label.typingAddress")}
-          />
-        )}
         sx={{
           "& .MuiAutocomplete-inputRoot": { padding: "8px" },
         }}
       />
 
-      <FormHelperText>{helperText as string}</FormHelperText>
-    </FormControl>
+      {!!error && <FormHelperText sx={{
+        ml: 2,
+        color: error ? 'error.main' : 'text.secondary'
+      }}>
+        {error}
+      </FormHelperText>}    </FormControl>
   );
 };
 

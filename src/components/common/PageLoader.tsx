@@ -62,8 +62,7 @@ const PageLoader: React.FC<PageLoaderProps> = ({
 
   return (
     <Box sx={loaderStyle}>
-      <AnimatedLogo />
-      
+      <AnimatedLogo />      
         <Typography style={{ color: '#FFF' }} variant="body1" color="textSecondary">
           {message?message:t('core.title.loader')}
         </Typography>

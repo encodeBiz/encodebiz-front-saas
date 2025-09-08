@@ -7,7 +7,12 @@ import Footer from '@/components/layouts/Footer';
 import Header from '@/components/layouts/Header/Header';
 import Onboarding from '@/components/layouts/Onboarding/Onboarding';
 import SideMenu from '@/components/layouts/SideMenu';
-import { CommonModalType } from '@/contexts/commonModalContext';
+import { AuthProvider } from '@/contexts/authContext';
+import { CommonModalProvider, CommonModalType } from '@/contexts/commonModalContext';
+import { EntityProvider } from '@/contexts/entityContext';
+import { FormStatusProvider } from '@/contexts/formStatusContext';
+import { LayoutProvider } from '@/contexts/layoutContext';
+import { MediaProvider } from '@/contexts/mediaContext';
 import { useAuth } from '@/hooks/useAuth';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { useEntity } from '@/hooks/useEntity';
@@ -19,7 +24,7 @@ import { useEffect } from 'react';
 const drawerWidth = 265;
 
 
-export default function AdminLayout({
+function Admin({
   children,
 }: {
   children: React.ReactNode;
@@ -84,5 +89,29 @@ export default function AdminLayout({
     </Box>
 
 
+  );
+}
+
+
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+
+  return (
+  
+      <EntityProvider>
+        <LayoutProvider>
+            <CommonModalProvider>
+              <MediaProvider>
+                <FormStatusProvider>
+                  <Admin>{children}</Admin>
+                </FormStatusProvider>
+              </MediaProvider>
+            </CommonModalProvider>         
+        </LayoutProvider>
+      </EntityProvider>
+   
   );
 }

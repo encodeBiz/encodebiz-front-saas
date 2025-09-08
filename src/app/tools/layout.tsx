@@ -1,5 +1,4 @@
-import PublicLayout from '../layouts/PublicLayout';
-
+import ToolLayout from '../layouts/ToolLayout';
 
 export default function Layout({
     children,
@@ -7,10 +6,8 @@ export default function Layout({
     children: React.ReactNode;
 }) {
     return (
-        <PublicLayout>
-            
-               {children}
-           
-        </PublicLayout>
+        <ToolLayout>            
+               {children}           
+        </ToolLayout>
     );
 }
