@@ -233,7 +233,7 @@ export default function useStaffListController() {
 
   const inicializeFilter = (params: string) => {
     try {
-      const filters: IFilterParams = decodeFromBase64(params as string)
+      const filters: IFilterParams = params!=='null'?filterParams:decodeFromBase64(params as string)
       filters.params.startAfter = null
       setFilterParams(filters)
       setLoading(false)

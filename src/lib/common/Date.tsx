@@ -128,13 +128,16 @@ export function format_range(range: Array<Timestamp>): string {
 
 
 export function formatDateInSpanish(date: any, extra?: DateTimeFormatOptions) {
-
+    
     let jsDate: Date;
-    if (date instanceof Date) {
+    if (date instanceof Date) 
         jsDate = date;
-    } else {
-        jsDate = new Date(date.seconds * 1000 + date.nanoseconds / 1_000_000);
-    }
+    else 
+        if (date instanceof Timestamp )
+            jsDate = new Date(date.seconds * 1000 + date.nanoseconds / 1_000_000);
+        else
+            jsDate = new Date(date as string)
+    
 
 
     const options: DateTimeFormatOptions = {
