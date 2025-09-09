@@ -48,10 +48,7 @@ const InfoModal = ({ title, description, cancelBtn = true }: InfoModalProps): Re
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
                     <CustomTypography >{title}</CustomTypography>
                 </Box>
-                <CustomIconBtn
-                    onClick={() => handleClose(null, 'manual')}
-                    color={theme.palette.primary.main}
-                />
+                
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description" sx={{ mb: 3 }}>
@@ -64,9 +61,9 @@ const InfoModal = ({ title, description, cancelBtn = true }: InfoModalProps): Re
                     variant="outlined"
                     onClick={(e) => handleClose(e, 'manual')}
                     size='small'
-                    startIcon={<CancelOutlined />}
+               
                 >
-                    {t('core.button.close')}
+                    {t('core.button.accept')}
                 </SassButton>}
 
             </DialogActions>

@@ -275,8 +275,8 @@
     },
     "recovery": {
       "title": "Recuperar contraseña",
-      "signup": "Recuperar contraseña",
-      "subtitle": "Entre el correo electronico para recuperar su clave de acceso  a EncodeBiz Saas",
+      "signup": "Crear cuenta",
+      "subtitle": "Introduzca el correo electrónico para recuperar su clave de acceso a EncodeBiz Saas",
       "or": "O",
       "google": "Unete con Google",
       "facebook": "Unete con Facebook",
