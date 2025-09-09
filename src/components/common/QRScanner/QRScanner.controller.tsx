@@ -110,7 +110,7 @@ export const useQRScanner = () => {
 
     useEffect(() => {
         if (tokenBase64) handleValidateStaff()
-    }, [handleValidateStaff, tokenBase64])
+    }, [tokenBase64])
 
 
 

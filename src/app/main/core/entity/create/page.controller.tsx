@@ -111,7 +111,7 @@ export const useRegisterController = () => {
 
         {
             name: 'name',
-            label: t('core.label.name'),
+            label: t('core.label.companyName'),
             type: 'text',
             required: true,
             fullWidth: true,
@@ -132,7 +132,7 @@ export const useRegisterController = () => {
         },
         {
             name: 'billingEmail',
-            label: t('core.label.billingEmail'),
+            label: t('core.label.companyEmail'),
             type: 'email',
             component: TextInput,
         },

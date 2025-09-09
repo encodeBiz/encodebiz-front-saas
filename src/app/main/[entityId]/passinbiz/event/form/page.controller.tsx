@@ -20,6 +20,7 @@ import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { country } from "@/config/country";
 import { formatLocalDateTime } from "@/lib/common/Date";
 import AddressInput from "@/components/common/forms/fields/AddressInput";
+import { Timestamp } from "firebase/firestore";
 
 
 export default function useHolderController() {
@@ -281,8 +282,12 @@ export default function useHolderController() {
         country = location[1]
         city = location[0]
       }
+      
+      
       setInitialValues({
         ...event,
+        date:(event.date instanceof Timestamp)?event.date.toDate(): new Date(event.date),
+        endDate:(event.endDate instanceof Timestamp)?event.endDate.toDate(): new Date(event.endDate),
         country, city,
         metadata: objectToArray(event.metadata)
       })

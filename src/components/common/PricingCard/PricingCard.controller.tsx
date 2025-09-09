@@ -9,12 +9,13 @@ import { useLayout } from '@/hooks/useLayout';
 import { useTranslations } from 'next-intl';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useCommonModal } from '@/hooks/useCommonModal';
+import { PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
 export default function usePricingCardController(id: string, name: string, fromService: "passinbiz" | "checkinbiz") {
     const { currentEntity, entitySuscription } = useEntity();
     const { token } = useAuth()
     const [loadingGetPlan, setLoadingGetPlan] = useState(false);
     const { showToast } = useToast()
-    const { changeLoaderState } = useLayout()
+    const { changeLoaderState, navivateTo } = useLayout()
     const t = useTranslations()
     const { openModal } = useCommonModal()
 
@@ -35,9 +36,12 @@ export default function usePricingCardController(id: string, name: string, fromS
 
                 await subscribeInSassProduct(data, token)
 
-                showToast(`La suscripción al plan ${id} del servicio ${fromService} se ha completado con exito'`, 'success');
+                showToast(`${t('salesPlan.feedText1')} ${id} ${t('salesPlan.feedText2')} ${fromService} ${t('salesPlan.feedText3')}`, 'success');
                 setLoadingGetPlan(false);
                 changeLoaderState({ show: false })
+                if(fromService === 'passinbiz'){
+                    navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/holder`)
+                }
             } catch (error: unknown) {
                 setLoadingGetPlan(false);
                 if (error instanceof Error) {
@@ -60,7 +64,7 @@ export default function usePricingCardController(id: string, name: string, fromS
 
             await unSubscribeInSassProduct(data, token)
 
-            showToast(`La suscripción al servicio ${fromService} se ha eliminado con exito`, 'success');
+            showToast(`${t('salesPlan.feedText1')} ${fromService} ${t('salesPlan.feedText4')}`, 'success');
             setLoadingGetPlan(false);
             changeLoaderState({ show: false })
 

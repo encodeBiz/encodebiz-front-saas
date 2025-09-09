@@ -1,5 +1,7 @@
-import PublicLayout from '../layouts/PublicLayout';
-
+import { CommonModalProvider } from '@/contexts/commonModalContext';
+import { EntityProvider } from '@/contexts/entityContext';
+import { LayoutProvider } from '@/contexts/layoutContext';
+import ToolLayout from '../layouts/ToolLayout';
 
 export default function Layout({
     children,
@@ -7,10 +9,14 @@ export default function Layout({
     children: React.ReactNode;
 }) {
     return (
-        <PublicLayout>
-            
-               {children}
-           
-        </PublicLayout>
+        <ToolLayout>
+            <EntityProvider>
+                <LayoutProvider>
+                    <CommonModalProvider>
+                        {children}
+                    </CommonModalProvider>
+                </LayoutProvider>
+            </EntityProvider>
+        </ToolLayout>
     );
 }

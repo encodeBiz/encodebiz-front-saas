@@ -3,17 +3,12 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/contexts/themeContext";
 import { LocaleProvider } from "@/contexts/localeContext";
-import { LayoutProvider } from "@/contexts/layoutContext";
-import { AuthProvider } from "@/contexts/authContext";
-import { EntityProvider } from "@/contexts/entityContext";
 import NextTopLoader from 'nextjs-toploader';
 import { ToastProvider } from "@/contexts/toastContext";
-import { CommonModalProvider } from "@/contexts/commonModalContext";
-import { MediaProvider } from "@/contexts/mediaContext";
 import { Suspense } from "react";   // ✅ Importar Suspense
 import PageLoader from "@/components/common/PageLoader";
-import { FormStatusProvider } from "@/contexts/formStatusContext";
- 
+import { AuthProvider } from "@/contexts/authContext";
+
 const geistSans = Geist({
     variable: "--font-geist-sans",
     subsets: ["latin"],
@@ -40,24 +35,12 @@ export default async function RootLayout({
                 <LocaleProvider>
                     <Suspense fallback={<PageLoader backdrop />}>  {/* ✅ Suspense envuelve AuthProvider */}
                         <ToastProvider>
-                            <AuthProvider>
-                                <EntityProvider>
-                                    <LayoutProvider>
-                                        <ThemeProvider>
-                                            <CommonModalProvider>
-                                                <MediaProvider>
-                                                    <FormStatusProvider>
-                                                        
-                                                            <NextTopLoader showSpinner={false} color="#456456" />
-                                                            {children}
-                                                     
-                                                    </FormStatusProvider>
-                                                </MediaProvider>
-                                            </CommonModalProvider>
-                                        </ThemeProvider>
-                                    </LayoutProvider>
-                                </EntityProvider>
-                            </AuthProvider>
+                            <ThemeProvider>
+                                <AuthProvider>
+                                    <NextTopLoader showSpinner={false} color="#456456" />
+                                    {children}
+                                </AuthProvider>
+                            </ThemeProvider>
                         </ToastProvider>
                     </Suspense>
                 </LocaleProvider>

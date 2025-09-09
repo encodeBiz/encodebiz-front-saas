@@ -1,6 +1,4 @@
 "use client";
-
-import { useAuth } from "@/hooks/useAuth";
 import { createContext, useCallback, useState } from "react";
 
 export enum CommonModalType {
@@ -28,13 +26,10 @@ interface CommonModalContextType {
 }
 export const CommonModalContext = createContext<CommonModalContextType | undefined>(undefined);
 export const CommonModalProvider = ({ children }: { children: React.ReactNode }) => {
-    const { user } = useAuth()
     const [open, setOpen] = useState<{ type: CommonModalType, open: boolean, args?: any }>({ open: false, type: CommonModalType.ONBOARDING, args: {} })
-    const closeModal = useCallback((type: CommonModalType = CommonModalType.ONBOARDING,) => {
+    const closeModal = (type: CommonModalType = CommonModalType.ONBOARDING,) => {
         setOpen({ open: false, type })
-        if (type === CommonModalType.ONBOARDING)
-            localStorage.setItem('view-onboarding-' + user?.id, '1')
-    }, [user?.id])
+    }
     const openModal = useCallback((type: CommonModalType = CommonModalType.ONBOARDING, args?: any) => setOpen({ open: true, type, args })
         , [])
 

@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 import { useField } from 'formik';
 import { useStyles } from './TransferListField.styles.';
+import { useTranslations } from 'next-intl';
 
 
 
@@ -33,6 +34,7 @@ export interface ITransferListProps {
   options: Array<{ value: string, label: string }>
 }
 const TransferList = ({ name, leftTitle, rightTitle, options }: ITransferListProps) => {
+  const t = useTranslations()
   const theme = useTheme()
   const classes = useStyles(theme);
   const [field, meta, helpers] = useField(name);
@@ -111,6 +113,7 @@ const TransferList = ({ name, leftTitle, rightTitle, options }: ITransferListPro
       </Box>
       <Divider />
       <CardContent>
+        {items.length === 0 && <Box display={'flex'} justifyContent={'center'} alignItems={'center'}>{t('core.table.nodata')}</Box>}
         <List dense sx={classes.list}>
           {items.map((item) => (
             <ListItem

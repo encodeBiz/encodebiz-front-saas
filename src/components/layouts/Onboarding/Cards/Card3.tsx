@@ -5,10 +5,12 @@ import { SassButton } from "@/components/common/buttons/GenericButton"
 import { useLayout } from "@/hooks/useLayout"
 import { useCommonModal } from "@/hooks/useCommonModal"
 import { CommonModalType } from "@/contexts/commonModalContext"
-import icono from '../../../../../public/assets/images/icono passbiz.png'
+import icono from '../../../../../public/assets/images/bgCard.svg'
+import { useTranslations } from "next-intl"
 
 export const Card3 = ({ handleNext }: any) => {
     const { navivateTo } = useLayout()
+    const t = useTranslations()
     const { closeModal } = useCommonModal()
     return <Box display={'flex'} flexDirection={"column"} justifyContent={'space-between'} p={2}  >
         <Box width={'100%'} display={'flex'} flexDirection={"column"} gap={1} justifyContent={'space-between'} alignItems={'flex-start'} >
@@ -18,17 +20,18 @@ export const Card3 = ({ handleNext }: any) => {
                 alt=""
                 src={logo}
             />
-            <Typography marginTop={2} variant="h3">Hoy con encodeBiz SaaS</Typography>
+            <Typography marginTop={2} variant="h3">{t('cards.card3.text1')}</Typography>
             <Box display={'flex'} flexDirection={"column"} gap={2}>
-                <Typography variant="body1">Tu primer servicio,</Typography>
+                <Typography  fontSize={20} variant="body1">{t('cards.card3.text2')}</Typography>
             </Box>
+            <br />
             <Box display={'flex'} flexDirection={"row"} gap={5}  >
                 <Box borderRadius={2} width={'100%'} display={'flex'} flexDirection={"column"} gap={2} sx={{ background: (theme) => theme.palette.primary.light }}>
                     <Box position={'relative'} overflow={'hidden'} borderRadius={'10px 10px 0px 0px'} p={4} display={'flex'} flexDirection={"row"} alignItems={'flex-start'} gap={2} sx={{ background: (theme) => theme.palette.primary.dark, color: "#FFF" }}>
                         <Image
-                            style={{ position: 'absolute', right:10,top:0 }}
-                            width={239}
-                            height={265}
+                            style={{ position: 'absolute', right: 0, top: -180 }}
+                            width={500}
+                            height={565}
                             alt=""
                             src={icono}
                         />
@@ -52,36 +55,45 @@ export const Card3 = ({ handleNext }: any) => {
                         <Box>
                             <Typography variant="body1" fontSize={24}>PassBiz</Typography>
                             <Typography variant="body1" fontSize={20}>
-                                Servicio SaaS para <span style={{ color: '#B7C4FF' }}>emitir y gestionar credenciales</span> y <span style={{ color: '#B7C4FF' }}>pases de eventos</span> digitales desde un único panel.
+                                {t('cards.card3.text3')} <span style={{ color: '#B7C4FF' }}>{t('cards.card3.text4')} </span> {t('cards.card3.text5')} <span style={{ color: '#B7C4FF' }}>{t('cards.card3.text6')}</span> {t('cards.card3.text7')}
                             </Typography>
                         </Box>
                     </Box>
                     <Box p={4} display={'flex'} flexDirection={"column"} gap={2}   >
                         <Typography variant="body1" fontSize={20}>
-                            Emitir credenciales digitales para empleados, estudiantes o clientes.
+                            {t('cards.card3.text8')}
                         </Typography>
                         <Typography variant="body1" fontSize={20}>
-                            Crear y gestionar eventos con pases para asistentes y staff.
+                            {t('cards.card3.text9')}
+
                         </Typography>
                         <Typography variant="body1" fontSize={20}>
-                            Controlar accesos de forma segura y en tiempo real.
+                            {t('cards.card3.text10')}
+
                         </Typography>
                     </Box>
                 </Box>
                 <Box width={'100%'} display={'flex'} flexDirection={"column"} gap={2}  >
-                    <Box borderRadius={2} p={4} display={'flex'} flexDirection={"row"} alignItems={'flex-start'} gap={2} sx={{ background: (theme) => theme.palette.primary.dark, color: "#FFF" }}>
-                        <Box>
-                            <svg width="76" height="94" viewBox="0 0 76 94" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M62.5 63L36.5 88.5L10.5 63C10.5 54.1226 18 47 36.5 47C55 47 62.5 54.1226 62.5 63Z" fill="#FFFBFF" />
-                                <path d="M38 43C43.5228 43 48 38.5228 48 33C48 27.4772 43.5228 23 38 23C32.4771 23 28 27.4772 28 33C28 38.5228 32.4771 43 38 43Z" stroke="#FFFBFF" strokeWidth="4" strokeMiterlimit="10" />
-                                <path d="M68 37.9629C68 55.0601 60.2785 71.0997 36.5 86.2581C14.6518 72.9798 5 55.0601 5 37.9629C5 20.8658 19.0975 7 36.5 7C53.9025 7 68 20.8658 68 37.9629Z" stroke="#FFFBFF" strokeWidth="7" strokeMiterlimit="10" />
-                                <path d="M37 30V33.6L42 36" stroke="#FFFBFF" strokeWidth="2" stroke-linecap="round" strokeLinejoin="round" />
-                            </svg>
+                    <Box borderRadius={2} p={2} display={'flex'} flexDirection={"column"}   gap={1} sx={{ background: (theme) => theme.palette.primary.dark, color: "#FFF" }}>
+                        <Box  display={'flex'} flexDirection={"column"} alignItems={'center'} justifyContent={'center'}   >
+                            <Typography textAlign={'center'} fontSize={36} fontWeight={400} variant="body1">{t('cards.card3.comminsoom')}</Typography>
                         </Box>
-                        <Box>
-                            <Typography variant="body1" fontSize={24}>CheckBiz</Typography>
-                            <Typography variant="body1" fontSize={20}>
-                                Servicio de control y gestión de asistencia.<span style={{ color: '#B7C4FF' }}> Registra entradas y salidas con geolocalización</span>, organiza equipos y proyectos, y genera reportes en tiempo real.                        </Typography>
+                        <Box borderRadius={2} p={4} display={'flex'} flexDirection={"row"} alignItems={'flex-start'} gap={2}  >
+
+                            <Box>
+                                <svg width="76" height="94" viewBox="0 0 76 94" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M62.5 63L36.5 88.5L10.5 63C10.5 54.1226 18 47 36.5 47C55 47 62.5 54.1226 62.5 63Z" fill="#FFFBFF" />
+                                    <path d="M38 43C43.5228 43 48 38.5228 48 33C48 27.4772 43.5228 23 38 23C32.4771 23 28 27.4772 28 33C28 38.5228 32.4771 43 38 43Z" stroke="#FFFBFF" strokeWidth="4" strokeMiterlimit="10" />
+                                    <path d="M68 37.9629C68 55.0601 60.2785 71.0997 36.5 86.2581C14.6518 72.9798 5 55.0601 5 37.9629C5 20.8658 19.0975 7 36.5 7C53.9025 7 68 20.8658 68 37.9629Z" stroke="#FFFBFF" strokeWidth="7" strokeMiterlimit="10" />
+                                    <path d="M37 30V33.6L42 36" stroke="#FFFBFF" strokeWidth="2" stroke-linecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </Box>
+                            <Box>
+
+                                <Typography variant="body1" fontSize={24}>CheckBiz</Typography>
+                                <Typography variant="body1" fontSize={20}>
+                                    {t('cards.card3.text11')}<span style={{ color: '#B7C4FF' }}>{t('cards.card3.text12')}</span>{t('cards.card3.text13')}                        </Typography>
+                            </Box>
                         </Box>
                     </Box>
                     <Box p={4} display={'flex'} flexDirection={"column"} gap={2} justifyContent={'center'} alignItems={'center'}  >
@@ -89,8 +101,8 @@ export const Card3 = ({ handleNext }: any) => {
                             <SassButton fullWidth sx={{ width: '420px' }} size="small" onClick={() => {
                                 navivateTo(`/entity?tab=company`)
                                 closeModal(CommonModalType.ONBOARDING)
-                            }} variant="contained" color="primary">Ir a Configurar Entidad</SassButton>
-                            <SassButton fullWidth sx={{ width: '420' }} size="small" onClick={handleNext} variant="text" color="primary">Configurar mas tarde</SassButton>
+                            }} variant="contained" color="primary">{t('cards.card3.text14')}</SassButton>
+                            <SassButton fullWidth sx={{ width: '420' }} size="small" onClick={handleNext} variant="text" color="primary">{t('cards.card3.text15')}</SassButton>
                         </Box>
                     </Box>
                 </Box>

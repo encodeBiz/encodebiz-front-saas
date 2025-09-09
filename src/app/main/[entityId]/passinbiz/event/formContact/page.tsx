@@ -10,8 +10,7 @@ import { useEntity } from '@/hooks/useEntity';
 import { useRef } from 'react';
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { SassButton } from '@/components/common/buttons/GenericButton';
-import {  SendOutlined } from '@mui/icons-material';
-
+ 
 
 
 export default function FormContact() {
@@ -39,9 +38,8 @@ export default function FormContact() {
             <SassButton
               disabled={!formStatus?.isValid || formStatus?.isSubmitting}
               onClick={handleExternalSubmit}
-              variant='contained'
-              startIcon={<SendOutlined />}
-            > {t('core.button.send')}</SassButton>
+              variant='contained'           
+            > {t('core.label.send')}</SassButton>
           </Box>
         }
       >

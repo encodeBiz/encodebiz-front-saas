@@ -102,14 +102,14 @@ export default function useIEventListController() {
     fetchingData(filterParamsUpdated)
   }
 
-  const onFilter = (filter: any) => {
+  const onFilter = (filterParamsData: any) => {
 
     const filterData: Array<{ field: string, operator: any, value: any }> = []
+    const filter = filterParamsData.filter
     Object.keys(filter).forEach((key) => {
       filterData.push({ field: key, operator: '==', value: filter[key] })
-
     })
-    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null, filters: filterData }, filter }
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null, filters: filterData }, filter: filter }
     setFilterParams(filterParamsUpdated)
     fetchingData(filterParamsUpdated)
   }
@@ -153,9 +153,9 @@ export default function useIEventListController() {
       id: 'date',
       label: t("core.label.date"),
       minWidth: 170,
-      format: (value, row) => <Typography sx={{ textTransform: 'capitalize' }}>{formatDateInSpanish(new Date(row.date))}</Typography>,
+      format: (value, row) => <Typography sx={{ textTransform: 'capitalize' }}>{formatDateInSpanish(row.date)}</Typography>,
     },
-     
+
     {
       id: 'address',
       label: t("core.label.address"),
@@ -182,8 +182,9 @@ export default function useIEventListController() {
     if (filterParams.params.filters.find((e: any) => e.field === 'name' && e.value === ''))
       filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== 'name')
 
-     
+
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any) }).then(async res => {
+
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
         setItems(res)
@@ -210,11 +211,12 @@ export default function useIEventListController() {
 
 
   const inicializeFilter = (params: string) => {
-    try {     
-      const filters:IFilterParams = decodeFromBase64(params as string)
-      filters.params.startAfter=null
+    try {
+    
+      const filters: IFilterParams = params!=='null'?filterParams:decodeFromBase64(params as string)
+      filters.params.startAfter = null
       setFilterParams(filters)
-      setLoading(false)  
+      setLoading(false)
       fetchingData(filters)
     } catch (error) {
       showToast(String(error as any), 'error')
@@ -246,10 +248,18 @@ export default function useIEventListController() {
       } else {
         ids.push(item.id)
       }
-      ids.forEach(async id => {
-        await deleteEvent(currentEntity?.entity.id as string, id, token)
-      });
-      fetchingData(filterParams)
+      await Promise.all(
+        ids.map(async (id) => {
+          try {
+            await deleteEvent(currentEntity?.entity.id as string, id, token)
+          } catch (e: any) {
+            showToast(e?.message, 'error')
+            setDeleting(false)
+          }
+        })
+      );
+      const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
+      fetchingData(filterParamsUpdated)
       setDeleting(false)
       closeModal(CommonModalType.DELETE)
     } catch (e: any) {
@@ -267,7 +277,6 @@ export default function useIEventListController() {
       icon: <Person2 color="primary" />,
       label: t('core.label.staff1'),
       bulk: false,
-
       allowItem: () => true,
       onPress: (item: IEvent) => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event/${item.id}/staff?params=${buildState()}`)
     },

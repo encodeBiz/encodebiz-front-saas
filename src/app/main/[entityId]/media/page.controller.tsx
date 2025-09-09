@@ -144,7 +144,7 @@ export const useMediaList = () => {
                     </Box>
 
                 </Box>
-                                        <SassButton color='error' variant='outlined' startIcon={<DeleteOutline />} onClick={() => openModal(CommonModalType.DELETE, { row })} >{t('core.button.delete')}</SassButton>
+                <SassButton color='error' variant='outlined' startIcon={<DeleteOutline />} onClick={() => openModal(CommonModalType.DELETE, { data: row })} >{t('core.button.delete')}</SassButton>
 
             </Box>
         },
@@ -179,9 +179,10 @@ export const useMediaList = () => {
 
     const [deleting, setDeleting] = useState(false)
     const onDelete = async (item: any) => {
+ 
         try {
             setDeleting(true)
-            const id = item[0]
+            const id = item?.id
             await deleteMedia({
                 "mediaId": id,
                 "entityId": currentEntity?.entity.id
@@ -198,19 +199,30 @@ export const useMediaList = () => {
 
     const [selectedType, setSelectedType] = useState<string>('')
     const [isUploading, setIsUploading] = useState(false);
+    const renameFile = async (originalFile: File, newName: string) => {
+        // Get the file data
+        const buffer = await originalFile.arrayBuffer();
+
+        // Create new file with same data but new name
+        return new File([buffer], newName, {
+            type: originalFile.type,
+            lastModified: originalFile.lastModified
+        });
+    }
 
 
     const handleFileChange = async (file: File) => {
         try {
             if (!file) return;
             setIsUploading(true);
+            const renameF = await renameFile(file, file.name)
             const form = new FormData();
             form.append('entityId', currentEntity?.entity.id as string);
             form.append('uid', user?.id as string);
             form.append('type', selectedType);
-            form.append('file', file);
+            form.append('file', renameF);
             await uploadMedia(form, token)
-
+            fetchingData(filterParams)
             setIsUploading(false);
         } catch (error: unknown) {
             if (error instanceof Error) {

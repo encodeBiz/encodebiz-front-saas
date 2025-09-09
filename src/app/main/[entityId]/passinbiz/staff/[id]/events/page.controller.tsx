@@ -13,12 +13,12 @@ import TransferList from "@/components/common/forms/fields/TransferListField/Tra
 export default function useStaffController() {
   const t = useTranslations();
   const { showToast } = useToast()
-    const { navivateTo } = useLayout()
+  const { navivateTo } = useLayout()
   const { user, token } = useAuth()
   const { id } = useParams<{ id: string }>()
   const { currentEntity, watchServiceAccess } = useEntity()
-  const [eventList, setEventList] = useState<Array<IEvent>>([])
   const { changeLoaderState } = useLayout()
+  const [fields, setFields] = useState<Array<any>>([])
   const [initialValues, setInitialValues] = useState<{ event: Array<string> }>({
     event: [],
   });
@@ -74,35 +74,37 @@ export default function useStaffController() {
   };
 
 
-  const fields = [
-    {
-      isDivider: true,
-      label: t('core.label.events'),
-    },
-    {
-      name: 'event',
-      label: t('core.label.events'),
-      type: 'text',
-      required: false,
-      fullWidth: true,
-      options: [eventList.map(event => ({ value: event.id as string, label: `${event.name} (${event.location})` }))].flat(),
-      component: TransferList,
-      extraProps: {
-        leftTitle: t('core.label.availableEvent'),
-        rightTitle: t('core.label.selectedEvent'),
-      }
-    },
-  ];
+
 
   const fetchData = useCallback(async () => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const eventStaffList: Array<IEvent> = await searchEventsByStaff(id)
+      
       setInitialValues({
         event: eventStaffList.map(e => e.id)
       })
       const eventList: IEvent[] = await search(currentEntity?.entity.id as string, { limit: 100 } as any)
-      setEventList(eventList)
+ 
+      setFields([
+        {
+          isDivider: true,
+          label: t('core.label.events'),
+        },
+        {
+          name: 'event',
+          label: t('core.label.events'),
+          type: 'text',
+          required: false,
+          fullWidth: true,
+          options: [eventList.map(event => ({ value: event.id as string, label: `${event.name} (${event.location})` }))].flat(),
+          component: TransferList,
+          extraProps: {
+            leftTitle: t('core.label.availableEvent'),
+            rightTitle: t('core.label.selectedEvent'),
+          }
+        },
+      ])
       changeLoaderState({ show: false })
     } catch (error: any) {
       changeLoaderState({ show: false })

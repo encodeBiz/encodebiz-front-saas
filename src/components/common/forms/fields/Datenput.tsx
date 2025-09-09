@@ -6,27 +6,28 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
+import { useFormStatus } from '@/hooks/useFormStatus';
 const DateInput: React.FC<FieldProps & TextFieldProps> = ({
   ...props
 }) => {
   const [field, meta, helper] = useField(props.name);
   const { touched, error } = meta
-  const helperText = touched && error; 
-
+  const helperText = touched && error;
+  const { formStatus } = useFormStatus()
   return (<LocalizationProvider dateAdapter={AdapterDayjs}>
-    <FormControlLabel   
+    <FormControlLabel
       control={
-        <DateTimePicker  label={props.label}
-  
+        <DateTimePicker label={props.label}
+          minDateTime={dayjs(props.name === 'endDate' ? new Date(formStatus?.values?.date) ?? new Date() : new Date())}
           defaultValue={dayjs(field.value ?? new Date())}
           value={dayjs(field.value ?? new Date())}
           onChange={(e) => helper.setValue(e)}
           disabled={props.disabled}
-          sx={{width:'100%'}}
+          sx={{ width: '100%' }}
         />
       }
       label={''}
-      sx={{ ml:0, width:'100%' }}
+      sx={{ ml: 0, width: '100%' }}
     />
 
     {helperText && !!error && <FormHelperText sx={{

@@ -13,12 +13,13 @@ import { IStaff } from "@/domain/features/passinbiz/IStaff";
 import SelectMultipleInput from "@/components/common/forms/fields/SelectMultipleInput";
 import { fetchEvent, search, searchEventsByStaff, updateEvent } from "@/services/passinbiz/event.service";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
+import { Timestamp } from "firebase/firestore";
 
 
 export default function useStaffController() {
   const t = useTranslations();
   const { showToast } = useToast()
- 
+
   const { token, user } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
   const searchParams = useSearchParams()
@@ -113,7 +114,9 @@ export default function useStaffController() {
             await updateEvent({
               id: event.id,
               entityId: event.entityId,
-              assignedStaff: event.assignedStaff
+              assignedStaff: event.assignedStaff,
+              date: (event.date instanceof Timestamp) ? event.date.toDate() : new Date(event.date),
+              endDate: (event.endDate instanceof Timestamp) ? event.endDate.toDate() : new Date(event.endDate),
             }, token);
 
           }
@@ -129,6 +132,8 @@ export default function useStaffController() {
               await updateEvent({
                 id: event.id,
                 entityId: event.entityId,
+                date: (event.date instanceof Timestamp) ? event.date.toDate() : new Date(event.date),
+                endDate: (event.endDate instanceof Timestamp) ? event.endDate.toDate() : new Date(event.endDate),
                 assignedStaff: event.assignedStaff
               }, token);
             }

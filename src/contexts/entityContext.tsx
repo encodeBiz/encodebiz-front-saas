@@ -8,7 +8,7 @@ import IUserEntity from "@/domain/auth/IUserEntity";
 import { fetchUserEntities, saveStateCurrentEntity, watchEntityChange } from "@/services/common/entity.service";
 import IUser from "@/domain/auth/IUser";
 import { fetchUserAccount } from "@/services/common/account.service";
-import { GENERAL_ROUTE, MAIN_ROUTE } from "@/config/routes";
+import { GENERAL_ROUTE, MAIN_ROUTE, PUBLIC_PATH } from "@/config/routes";
 import { BizType, IService } from "@/domain/core/IService";
 import { fetchServiceList, fetchSuscriptionByEntity, watchSubscrptionEntityChange } from "@/services/common/subscription.service";
 import { IEntitySuscription } from "@/domain/auth/ISubscription";
@@ -61,7 +61,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
 
     const watchSesionState = async (userAuth: User) => {
- 
+
         if (userAuth) {
             const entityList: Array<IUserEntity> = await fetchUserEntities(userAuth.uid)
 
@@ -114,7 +114,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
             setEntityList(entityList)
             const entity = entityList.find(e => e.isActive) ?? entityList[0]
             changeCurrentEntity(entity.entity.id as string, userId)
- 
+
         } else {
             push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
         }
@@ -158,7 +158,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     const watchEntityState = async (entity: IEntity) => {
-         
+
         changeLocale(entity.language?.toLowerCase() ?? 'es')
         const item = entityList.find(e => e.entity.id == entity.id && e.entity.active)
         const itemIndex = entityList.findIndex(e => e.entity.id == entity.id && e.entity.active)
@@ -173,8 +173,10 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
 
     useEffect(() => {
-        const unsubscribe = subscribeToAuthChanges(watchSesionState);
-        return () => unsubscribe();
+        if (!PUBLIC_PATH.includes(pathname)) {
+            const unsubscribe = subscribeToAuthChanges(watchSesionState);
+            return () => unsubscribe();
+        }
     }, []);
 
 

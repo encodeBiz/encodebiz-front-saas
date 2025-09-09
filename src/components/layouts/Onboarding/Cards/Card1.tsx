@@ -3,8 +3,13 @@ import Image from "next/image"
 import image from '../../../../../public/assets/images/onboarding1.png'
 import logo from '../../../../../public/assets/images/logo.svg'
 import { SassButton } from "@/components/common/buttons/GenericButton"
+import { useTranslations } from "next-intl"
 
-export const Card1 = ({handleNext}: any) => <Box display={'flex'} flexDirection={"row"} p={2}  >
+export const Card1 = ({handleNext}: any) => {
+    const t = useTranslations()
+
+    return <Box display={'flex'} flexDirection={"row"} p={2}  >
+    
     <Box width={'55%'} display={'flex'} flexDirection={"column"} gap={10} justifyContent={'space-between'} alignItems={'flex-start'} >
         <Image
             width={220}
@@ -12,12 +17,12 @@ export const Card1 = ({handleNext}: any) => <Box display={'flex'} flexDirection=
             alt=""
             src={logo}
         />
-        <Typography variant="h3">Bienvenido a encodeBiz SaaS</Typography>
+        <Typography variant="h3">{t('cards.card1.text1')}</Typography>
         <Box  display={'flex'} flexDirection={"column"} gap={2}>
-            <Typography variant="h6">Una plataforma creada para centralizar todos tus servicios digitales en un único lugar.</Typography>
-            <Typography variant="body1">En encodeBiz convertimos tus ideas en soluciones digitales. Cuando nuestros servicios no cubren todas tus necesidades, creamos a tu medida lo que tu negocio requiere.</Typography>
+            <Typography variant="h6">{t('cards.card1.text2')}</Typography>
+            <Typography variant="body1">{t('cards.card1.text3')}</Typography>
         </Box>
-        <SassButton sx={{width:'420px', background:'#EBEEFB'}} size="small" onClick={handleNext} variant="outlined" color="primary">Comenzar</SassButton>
+        <SassButton sx={{width:'420px', background:'#EBEEFB'}} size="small" onClick={handleNext} variant="outlined" color="primary">{t('cards.card1.start')}</SassButton>
     </Box>
     <Box width={'45%'} display={'flex'} alignItems={'center'} justifyContent={'center'} padding={0}>
         <Image
@@ -28,3 +33,5 @@ export const Card1 = ({handleNext}: any) => <Box display={'flex'} flexDirection=
         />
     </Box>
 </Box>
+
+}

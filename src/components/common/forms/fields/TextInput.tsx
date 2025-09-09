@@ -3,6 +3,7 @@ import React from 'react';
 import { Box, InputAdornment, TextField, TextFieldProps } from '@mui/material';
 import { FieldProps, useField } from 'formik';
 import { Error } from '@mui/icons-material';
+import { useFormStatus } from '@/hooks/useFormStatus';
 
 const TextInput: React.FC<FieldProps & TextFieldProps & { afterTextField: string }> = ({
   ...props
@@ -10,7 +11,7 @@ const TextInput: React.FC<FieldProps & TextFieldProps & { afterTextField: string
   const [field, meta] = useField(props.name);
   const { touched, error } = meta
   const helperText = touched && error;
-
+  const { formStatus } = useFormStatus()
   return (<Box display={'flex'} justifyItems={'center'} alignItems={'center'} >
     <TextField
       {...field}
@@ -19,9 +20,9 @@ const TextInput: React.FC<FieldProps & TextFieldProps & { afterTextField: string
       error={!!error}
       multiline={props.type === 'textarea'}
       rows={2}
-      disabled={props.disabled}
+      disabled={props.disabled || (props.name === 'postalCode' && (!formStatus?.values?.country || !formStatus?.values?.city))}
       helperText={helperText as string}
-      
+
       slotProps={{
         input: helperText ? {
           endAdornment: <InputAdornment position="end"><Error color='error' /></InputAdornment>,
