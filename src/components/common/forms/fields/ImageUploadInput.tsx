@@ -96,7 +96,7 @@ const ImageUploadInput = ({ name, ...props }: any & FieldProps & TextFieldProps 
 
 
           <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
-            <Typography textTransform={'uppercase'}>{t('core.label.' + typeUpload)}</Typography>
+            <Typography textTransform={'uppercase'}>{props.label}</Typography>
             <Paper onClick={() => openModal(CommonModalType.FILES, { name })}
               variant="outlined"
               sx={{

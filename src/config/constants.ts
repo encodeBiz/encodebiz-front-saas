@@ -145,12 +145,14 @@ export const countries = [
 
 
 export const fileTypes = (t: any) => [
+  
   { label: t('core.label.logo'), value: 'logo', size: { w: 300, h: 300, locked: true, boxH: 160, boxW: 160 } },
   { label: t('core.label.background'), value: 'background', size: { w: 400, h: 400, locked: true, boxH: 160, boxW: 160 } },
   { label: t('core.label.stripImage'), value: 'stripImage', size: { w: 375, h: 98, locked: true, boxH: 123, boxW: 312 } },
   { label: t('core.label.icon'), value: 'icon', size: { w: 26, h: 26, locked: true, boxH: 120, boxW: 120 } },
   { label: t('core.label.iconx2'), value: 'iconx2', size: { w: 58, h: 58, locked: true, boxH: 140, boxW: 140 } },
   { label: t('core.label.custom'), value: 'custom', size: { w: 0, h: 0, locked: false, boxH: 140, boxW: 140 } },
+  { label: t('core.label.avatar'), value: 'avatar', size: { w: 300, h: 300, locked: true, boxH: 160, boxW: 160 } },
   { label: t('core.label.thumbnail'), value: 'thumbnail', size: { w: 612, h: 612, locked: true, boxH: 140, boxW: 140 } },
 
 ]

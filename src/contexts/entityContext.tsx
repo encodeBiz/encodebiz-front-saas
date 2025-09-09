@@ -29,6 +29,7 @@ interface EntityContextType {
     entitySuscription: Array<IEntitySuscription>
     watchServiceAccess: (serviceId: BizType) => void
     cleanEntityContext: () => void
+   
 
 }
 export const EntityContext = createContext<EntityContextType | undefined>(undefined);

@@ -14,4 +14,4 @@ export interface IUserMedia {
     width: number
 }
 
-export type IUserMediaType =  'logo' | 'background' | 'stripImage' | 'icon' | 'eventLogo' | 'eventBackground' | 'eventStripImage' | 'custom'
+export type IUserMediaType =  'avatar' | 'logo' | 'background' | 'stripImage' | 'icon' | 'eventLogo' | 'eventBackground' | 'eventStripImage' | 'custom'

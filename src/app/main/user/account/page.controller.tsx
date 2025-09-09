@@ -74,8 +74,8 @@ export const useUserAccountController = () => {
     const fields = [
         {
             name: 'avatar',
-            label: t('core.label.logo'),
-            type: 'custom',
+            label: t('core.label.avatar'),
+            type: 'logo',
             component: ImageUploadInput,
             required: true,
         },
