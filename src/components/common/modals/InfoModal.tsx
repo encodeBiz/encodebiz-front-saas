@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import {
     Dialog,
     DialogActions,
@@ -27,9 +27,11 @@ const InfoModal = ({ title, description, cancelBtn = true }: InfoModalProps): Re
     const theme = useTheme()
     const t = useTranslations()
     // Handler for closing the dialog
+
     const handleClose = (event: any, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
         if (reason !== 'backdropClick')
             closeModal(CommonModalType.DELETE);
+        closeModal(CommonModalType.INFO);
     };
 
     return (
@@ -64,7 +66,7 @@ const InfoModal = ({ title, description, cancelBtn = true }: InfoModalProps): Re
                     size='small'
                     startIcon={<CancelOutlined />}
                 >
-                    {t('core.button.cancel')}
+                    {t('core.button.close')}
                 </SassButton>}
 
             </DialogActions>

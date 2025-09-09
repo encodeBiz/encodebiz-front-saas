@@ -243,7 +243,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
               </IconButton>
             </Tooltip>
 
-            <Divider orientation="vertical" flexItem />
+            <Divider sx={{height: 30,mt:1.5}} orientation="vertical" flexItem />
 
             <Tooltip title={t('layout.header.profile')}>
               <IconButton

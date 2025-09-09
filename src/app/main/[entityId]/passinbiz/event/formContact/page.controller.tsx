@@ -1,27 +1,29 @@
 import { useTranslations } from "next-intl";
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { requiredRule } from '@/config/yupRules';
 import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
- import { useParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { ContactFromModel } from "@/domain/core/IContact";
-import { PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { sendFormContact } from "@/services/common/helper.service";
+import { useCommonModal } from "@/hooks/useCommonModal";
+import { CommonModalType } from "@/contexts/commonModalContext";
 
 
 export default function useFormContactController() {
   const t = useTranslations();
   const { showToast } = useToast()
-  const { navivateTo } = useLayout()
+  
   const { token, user } = useAuth()
   const { id } = useParams<{ id: string }>()
   const { currentEntity, watchServiceAccess } = useEntity()
   const { changeLoaderState } = useLayout()
-
+  const { openModal } = useCommonModal()
+  const formRef = useRef(null)
   const validationSchema = Yup.object().shape({
     message: requiredRule(t),
 
@@ -36,15 +38,17 @@ export default function useFormContactController() {
         "subject": values.subject as string,
         "message": values.message as string,
         email: values.email as string,
-        token:token as string,
+        token: token as string,
 
       }
       await sendFormContact(data)
 
-
       changeLoaderState({ show: false })
-      showToast(t('core.feedback.success'), 'success');
-      navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/onboarding`)
+      openModal(CommonModalType.INFO)
+      if (formRef.current) {
+        (formRef.current as any).resetForm()
+      }
+
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
@@ -108,5 +112,5 @@ export default function useFormContactController() {
   }, [currentEntity?.entity.id, user?.id, id, watchServiceAccess])
 
 
-  return { fields, validationSchema, setDinamicDataAction }
+  return { fields, validationSchema, setDinamicDataAction, formRef }
 }

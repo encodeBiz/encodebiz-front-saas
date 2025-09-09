@@ -1,25 +1,28 @@
 'use client';
 import { Box, Container } from '@mui/material';
 import { useTranslations } from "next-intl";
-import useHolderController from './page.controller';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { ContactFromModel } from '@/domain/core/IContact';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
-import { useRef } from 'react';
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { SassButton } from '@/components/common/buttons/GenericButton';
- 
+import InfoModal from '@/components/common/modals/InfoModal';
+import { useCommonModal } from '@/hooks/useCommonModal';
+import { CommonModalType } from '@/contexts/commonModalContext';
+import useFormContactController from './page.controller';
+
 
 
 export default function FormContact() {
-  const { fields, validationSchema, setDinamicDataAction } = useHolderController();
+  const { fields, validationSchema, setDinamicDataAction, formRef } = useFormContactController();
   const t = useTranslations();
   const { user } = useAuth()
   const { currentEntity } = useEntity()
-  const formRef = useRef(null)
+ 
   const { formStatus } = useFormStatus()
+  const { open } = useCommonModal()
 
   const handleExternalSubmit = () => {
     if (formRef.current) {
@@ -38,7 +41,7 @@ export default function FormContact() {
             <SassButton
               disabled={!formStatus?.isValid || formStatus?.isSubmitting}
               onClick={handleExternalSubmit}
-              variant='contained'           
+              variant='contained'
             > {t('core.label.send')}</SassButton>
           </Box>
         }
@@ -65,6 +68,12 @@ export default function FormContact() {
           />
         </Box>
       </HeaderPage>
+
+      {open.type === CommonModalType.INFO && <InfoModal
+        title={t('event.info.title')}
+        description={t('event.info.description')}
+        cancelBtn
+      />}
     </Container>
   );
 }

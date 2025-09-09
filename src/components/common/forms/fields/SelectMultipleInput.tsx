@@ -37,7 +37,7 @@ const SelectMultipleInput: React.FC<SelectMultipleInputProps> = ({
       }}
     >
       {options.map((option) => (
-        <MenuItem key={option.value} value={option.value}>
+        <MenuItem  key={option.value} value={option.value}>
           {option.label}
         </MenuItem>
       ))}

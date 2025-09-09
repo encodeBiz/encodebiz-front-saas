@@ -513,6 +513,10 @@
     "fremiunContact": {
       "title": "Solicitar evento de prueba",
       "description": "Describa las caractericticas del evento que desea crear, y nos pondremos en contacto con usted"
+    },
+    "info": {
+      "title": "Solicitar enviada",
+      "description": "La solicitud de evento de prueba ha sido enviada correctamente, nos pondremos en contacto con usted en breve."
     }
   },
   "staff": {
