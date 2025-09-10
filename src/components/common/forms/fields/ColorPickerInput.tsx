@@ -26,12 +26,16 @@ const ColorPickerInput: React.FC<FieldProps & TextFieldProps> = ({
     const id = open ? 'simple-popover' : undefined;
 
     return (
-        <Box sx={{cursor:'pointer'}}>  
+        <Box sx={{ cursor: 'pointer' }}>
             <TextField
                 {...field}
                 {...props}
                 onClick={handleClick}
-                sx={{cursor:'pointer'}}
+                sx={{
+                    input: {
+                        '&:hover': { cursor: 'pointer' }
+                    }
+                }}
                 value={field.value}
                 error={!!error}
                 multiline={props.type === 'textarea'}
@@ -39,10 +43,10 @@ const ColorPickerInput: React.FC<FieldProps & TextFieldProps> = ({
                 disabled={props.disabled}
                 helperText={helperText as string}
                 aria-readonly
-               
+
                 slotProps={{
                     input: {
-                       sx:{cursor:'pointer'},
+                        sx: { cursor: 'pointer' },
                         startAdornment: field.value ? (
                             <InputAdornment position="start" sx={{ textAlign: 'center', height: 40, width: 40, background: field && field.value ? field.value : '#ffffff' }}>
                                 <PaletteRounded sx={{
@@ -50,8 +54,8 @@ const ColorPickerInput: React.FC<FieldProps & TextFieldProps> = ({
                                     m: 'auto'
                                 }} />
                             </InputAdornment>
-                        ):null,
-            endAdornment: helperText?<InputAdornment position="end"><Error color='error' /></InputAdornment>:null,
+                        ) : null,
+                        endAdornment: helperText ? <InputAdornment position="end"><Error color='error' /></InputAdornment> : null,
 
                     },
                 }}
