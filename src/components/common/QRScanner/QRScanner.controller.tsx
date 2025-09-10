@@ -48,7 +48,7 @@ export const useQRScanner = () => {
     const [eventSelected, setEventSelected] = useState<{name: string, eventId: string}>()
 
     const handleValidateStaff = useCallback(async () => {
-         openModal(CommonModalType.EVENT_SELECTED)
+         
         try {
             setStaffValidating(true)
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })

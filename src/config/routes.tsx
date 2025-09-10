@@ -102,7 +102,7 @@ export const menuItemsGeneral = [
     {
         name: 'Entity',
         icon: <BusinessIcon />,
-        link: `/entity`,
+        link: `/entity?tab=company`,
         subMenu: []
     },
     {

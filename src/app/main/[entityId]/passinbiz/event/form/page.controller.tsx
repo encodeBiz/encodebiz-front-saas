@@ -39,6 +39,8 @@ export default function useHolderController() {
   const [initialValues, setInitialValues] = useState<Partial<IEvent>>({
     "name": '',
     "description": '',
+    "address": '',
+    "language": 'ES',
     "date": new Date(),
     "endDate": new Date(),
     "location": '',
@@ -83,7 +85,7 @@ export default function useHolderController() {
         "name": values.name,
         "description": values.description,
         "location": `${values.city},${values.country}`,
-        "address": `${values.address as string}, ${values.city}, ${values.country}`,
+        "address": `${values.address as string}`,
         "entityId": currentEntity?.entity?.id as string,
         "colorPrimary": values.colorPrimary,
         "colorAccent": values.colorAccent,
@@ -236,20 +238,7 @@ export default function useHolderController() {
 
       ],
     },
-    /* {
-      name: 'template',
-      label: t('core.label.template'),
-      type: 'text',
-      required: true,
-      options: [
-        { value: 'default', label: t('core.label.default') },
-        { value: 'vip', label: t('core.label.vip') },
-        { value: 'expo', label: t('core.label.expo') },
-        { value: 'festival', label: t('core.label.festival') }
-      ],
-      component: SelectInput,
-
-    },*/ {
+      {
       name: 'status',
       label: t('core.label.status'),
       type: 'text',
@@ -287,6 +276,8 @@ export default function useHolderController() {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, id)
 
+      console.log(event);
+      
       const location = event.location.split(',')
       let country = 'España'
       let city = 'Madrid'

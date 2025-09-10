@@ -113,9 +113,9 @@ const EntityPreferencesPage = () => {
                 }
             </HeaderPage>
 
-            <Box display={'flex'} justifyContent={'flex-start'} alignItems='flex-start' sx={{ width: '100%', mt: 6 }}>
+            {tab === 0 && <Box display={'flex'} justifyContent={'flex-start'} alignItems='flex-start' sx={{ width: '100%', mt: 6 }}>
                 <SassButton disabled={!user?.id || !currentEntity} onClick={() => openModal(CommonModalType.DELETE, { entityId: currentEntity?.entity.id })} variant='contained' color='error' >{t('entity.tabs.tab2.btn')}</SassButton>
-            </Box>
+            </Box>}
 
             {CommonModalType.DELETE == open.type && open.open && <ConfirmModal
                 codeValidator
