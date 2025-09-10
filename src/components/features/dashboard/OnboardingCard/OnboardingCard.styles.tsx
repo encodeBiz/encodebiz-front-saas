@@ -61,6 +61,8 @@ export const useStyles = (show:boolean): Record<string, SxProps<Theme>> => ({
   subtitle: {
     fontWeight: 400,
     fontSize: 24,
+    mt:2,
+    lineHeight:'2rem',
     textAlign: 'left',
      zIndex: 10
 

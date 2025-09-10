@@ -28,6 +28,8 @@ const ServiceList = () => {
     const handleActionClick = (id: any) => {
         navivateTo(`/${id}/onboarding`)
     };
+
+
     if (entityServiceList.filter(e => e.active).length > 0)
         return (
             <Grid container spacing={4} display={'flex'} flexDirection={{
@@ -41,7 +43,7 @@ const ServiceList = () => {
                     <Card key={card.id} sx={styles.card} style={{ cursor: card.id != 'checkinbiz' ? 'pointer' : 'default' }} onClick={() => card.id != 'checkinbiz' ? handleActionClick(card.id) : null} elevation={0} >
                         <CardContent sx={styles.card}>
                             <Box sx={styles.iconContainer} >
-                                <Image src={icons[card.id]} width={76} height={76} alt='' />
+                                <Image src={icons[card.id]} width={card.id == 'checkinbiz'?76:70} height={card.id == 'checkinbiz'?76:70} alt='' />
                             </Box>
                             <Box sx={styles.textContainer} >
                                 <Typography textTransform={'uppercase'} variant="h5" component="div">

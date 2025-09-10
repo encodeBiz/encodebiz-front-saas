@@ -41,6 +41,7 @@ export const lightTheme: PaletteOptions = {
     secondary: 'rgba(0, 0, 0, 0.6)',
     disabled: '#48494C',
   },
+ 
 }
 
 

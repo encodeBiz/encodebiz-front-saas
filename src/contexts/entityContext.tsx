@@ -57,7 +57,8 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
         const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
         setEntitySuscription(serviceSuscription.filter(e => e.status !== "cancelled" && e.status !== "pending-pay"))
         const serviceList: Array<IService> = await fetchServiceList()
-        setEntityServiceList(serviceList.map(e => ({ ...e, isBillingActive: !!serviceSuscription.find(service => service.serviceId === e.id && service.status !== "cancelled" && service.status !== "pending-pay") })))
+        setEntityServiceList(serviceList.sort((a,b)=>a.order-b.order).map(e => ({ ...e, isBillingActive: !!serviceSuscription.find(service => service.serviceId === e.id && service.status !== "cancelled" && service.status !== "pending-pay") })))
+       
     }
 
 

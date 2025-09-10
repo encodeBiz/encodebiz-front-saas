@@ -7,8 +7,13 @@ interface ThemeType {
     mode: 'light' | 'dark';
     changeColorMode: () => void;
 }
+/**
+ * 
+ * ({ theme }) => ({
+          color: theme.palette.brand.main,
+        }),
+ */
 
- 
 export const ThemeContext = createContext<ThemeType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
@@ -20,7 +25,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     const theme = useMemo(
         () =>
-            createTheme({ 
+            createTheme({
+
                 palette: {
                     mode,
                     ...(mode === 'light'
@@ -38,8 +44,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
                 },
                 components: {
-                    MuiTypography: {
-
+                    MuiSvgIcon: {
+                        defaultProps: {
+                            // Set the color prop to your desired color
+                            sx: {
+                                color: mode === 'light' ? '#1C1B1D' : '#FFF'
+                            }
+                        },
                     },
                     MuiCard: {
                         styleOverrides: {
@@ -49,10 +60,18 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
                                     background: '#FFFBFF',
                                     boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)'
                                 } : {
-                                     boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)'
+                                    boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)'
                                 }
                             }
                         }
+                    },
+                    MuiSelect: {
+                        styleOverrides: {
+                            icon: {
+                                color: mode === 'light' ? '#1C1B1D' : '#FFF',
+                                fontSize: '2rem',
+                            },
+                        },
                     },
                     MuiPaper: {
                         styleOverrides: {
@@ -68,7 +87,15 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
                                     })
                             }
                         }
-                    }
+                    },
+
+                    MuiDrawer: {
+                        styleOverrides: {
+                            paper: () => ({
+                                 borderRight: 'none',
+                            }),
+                        },
+                    },
                 }
             }),
         [mode]

@@ -23,7 +23,8 @@ export default function Dashboard() {
       <ServiceList />
 
       <DescriptionCard
-        title={t('features.dashboard.cardDesc.title')}
+        title1={t('features.dashboard.cardDesc.title1')}
+         title2={t('features.dashboard.cardDesc.title2')}
         description1={t('features.dashboard.cardDesc.subtitle1')}
         description2={t('features.dashboard.cardDesc.subtitle2')}
       />

@@ -121,6 +121,7 @@ export default function SideMenu() {
             width: drawerWidth,
             boxSizing: 'border-box',
           },
+          
         }}
         variant="persistent"
         anchor="left"

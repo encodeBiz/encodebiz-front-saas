@@ -4,18 +4,18 @@ import { SxProps, Theme } from "@mui/material";
 export const useStyles = (show: boolean): Record<string, SxProps<Theme>> => ({
   base: {
     width: '100%',
-    display: 'flex', flexDirection: 'column', justifyContent: 'space-around',  
+    display: 'flex', flexDirection: 'column', justifyContent: 'space-around',
     minHeight: 277,
     overflow: 'hidden',
     position: 'relative',
     p: 4,
     height: 277,
-    borderColor:(theme) => theme.palette.divider,
-    background:() => 'transparent',
+    background: () => 'transparent',
+    borderRadius: 2,
+    borderColor: '#001551',
+    borderWidth:1,
     borderStyle:'solid',
-    borderWidth:2,
-    borderRadius: 2
-
+    mt:10
 
   },
 
@@ -34,7 +34,7 @@ export const useStyles = (show: boolean): Record<string, SxProps<Theme>> => ({
     fontWeight: 400,
     fontSize: 32,
     textAlign: 'left',
-    width: 400
+
   },
   subtitle: {
     fontWeight: 400,

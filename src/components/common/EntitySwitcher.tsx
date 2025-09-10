@@ -7,7 +7,6 @@ import {
 
   Select,
   MenuItem,
-  SelectChangeEvent,
   Box,
   Typography
 } from '@mui/material';
@@ -29,8 +28,8 @@ const EntitySwitcher: React.FC = () => {
   const { changeLoaderState } = useLayout()
   const { user } = useAuth()
   const { push } = useRouter()
-  const handleChange = (event: SelectChangeEvent) => {
-    const newEntityId = event.target.value as string;
+  const handleChange = (entity: IUserEntity) => {
+    const newEntityId = entity.entity.id
     if (newEntityId) {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderChangeEntity') } })
       changeCurrentEntity(newEntityId, user?.id as string, () => changeLoaderState({ show: false }));
@@ -42,23 +41,35 @@ const EntitySwitcher: React.FC = () => {
       {currentEntity && <FormControl fullWidth >
         <Select
           sx={{
+            '&.MuiSelect-root': {
+              fontWeight: 400,
+              height: 50
+            },
+            '.MuiOutlinedInput-notchedOutline': { border: 0, fontWeight: 'bold', },
             boxShadow: 'none',
-            '.MuiOutlinedInput-notchedOutline': { border: 0 },
+            "& .MuiSelect-icon": {
+              right: -5
+            },
+            '&:hover': {
+              backgroundColor: 'transparent',
+            },
+
 
           }}
+
           value={currentEntity?.entity.id}
-          onChange={handleChange} style={{ textAlign: 'left' }}
+          style={{ textAlign: 'left' }}
           size='small'
           variant='outlined'
         >
           {entityList.map((entity: IUserEntity, i: number) => (
-            <MenuItem key={i} value={entity.entity.id} style={{ textAlign: 'left' }}>
-              <Typography>  {entity.entity.name} </Typography>
+            <MenuItem sx={{ height: 50 }} onClick={() => handleChange(entity)} key={i} value={entity.entity.id} style={{ textAlign: 'left' }}>
+              <Typography sx={{ fontWeight: 400 }}>  {entity.entity.name} </Typography>
             </MenuItem>
           ))}
 
           <MenuItem style={{ textAlign: 'left', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: 4 }} onClick={() => push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)} value={undefined}>
-            <Add /><Typography textTransform={'uppercase'}>{t('features.entity.create.card.createEntity')}</Typography>
+            <Add /><Typography sx={{ fontWeight: 400 }} textTransform={'uppercase'}>{t('features.entity.create.card.createEntity')}</Typography>
           </MenuItem>
         </Select>
       </FormControl>}
