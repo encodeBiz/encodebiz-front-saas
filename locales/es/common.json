@@ -48,11 +48,11 @@
       }
     },
     "footer": {
-      "copyright": "EncodeBiz Sass.",
+      "copyright": "encodeBiz Sass.",
       "web": "Nuestra Web",
       "contactUs": "Contáctenos",
       "whatsApp": "WhatsApp",
-      "policy": "Política y Privacidad",
+      "policy": "Política de Privacidad",
       "terms": "Términos y Condiciones"
     }
   },
@@ -173,7 +173,7 @@
       "avatar": "Avatar",
       "sessionLastTime": "Último inicio de sesión",
       "createAt": "Fecha de creación",
-      "logo": "Logo",
+      "logo": "Logotipo",
       "comercial": "IDENTIDAD COMERCIAL",
       "background": "Fondo",
       "custom": "Personalizado",
@@ -184,7 +184,7 @@
       "taxId": "NIF / CIF / NIE / VAT",
       "street": "Dirección",
       "city": "Ciudad",
-      "postalCode": "Código postal",
+      "postalCode": "Código Postal",
       "region": "Región",
       "addNew": "Crear campo personalizado",
       "country": "País",
@@ -237,7 +237,7 @@
       "start": "Comenzar",
       "saveChanges": "Guardar",
       "ok": "Entiendo",
-      "configurenow": "Configurar ahora",
+      "configurenow": "Configurar",
       "update": "Actualizar"
     },
     "formValidatorMessages": {
@@ -275,8 +275,8 @@
     },
     "recovery": {
       "title": "Recuperar contraseña",
-      "signup": "Recuperar contraseña",
-      "subtitle": "Entre el correo electronico para recuperar su clave de acceso  a EncodeBiz Saas",
+      "signup": "Crear cuenta",
+      "subtitle": "Introduzca el correo electrónico para recuperar su clave de acceso a EncodeBiz Saas",
       "or": "O",
       "google": "Unete con Google",
       "facebook": "Unete con Facebook",
@@ -307,7 +307,8 @@
         "subtitle": "Registra, controla y gestiona accesos en un solo lugar, PassBiz listo para ti y muy pronto CheckBiz."
       },
       "cardDesc": {
-        "title": "Más que un software, tu socio en desarrollo digital",
+        "title1": "Más que un software,",
+        "title2": "tu socio en desarrollo digital",
         "subtitle1": "En Encodebiz creamos soluciones a medida para necesidades únicas.",
         "subtitle2": "Si tu empresa requiere un desarrollo especializado, estamos listos para hacerlo realidad."
       }
@@ -513,6 +514,10 @@
     "fremiunContact": {
       "title": "Solicitar evento de prueba",
       "description": "Describa las caractericticas del evento que desea crear, y nos pondremos en contacto con usted"
+    },
+    "info": {
+      "title": "Solicitar enviada",
+      "description": "La solicitud de evento de prueba ha sido enviada correctamente, nos pondremos en contacto con usted en breve."
     }
   },
   "staff": {

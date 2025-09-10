@@ -69,7 +69,7 @@ const LocaleSwitcher: React.FC = () => {
           size='small'
           sx={{
             "& .MuiSelect-icon": {
-              marginLeft: '10px'
+              marginLeft: '20px'
             },
           }}
         >

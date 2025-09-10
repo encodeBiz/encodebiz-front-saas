@@ -9,23 +9,27 @@ import { useAuth } from '@/hooks/useAuth';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { useTranslations } from 'next-intl';
 export interface DescriptionCardProps {
-  title?: string
+  title1?: string
+  title2?: string
   description1?: string
   description2?: string
 }
 
-export default function DescriptionCard({ title, description1, description2 }: DescriptionCardProps) {
+export default function DescriptionCard({ title1, title2, description1, description2 }: DescriptionCardProps) {
   const { user } = useAuth()
   const styles = useStyles(!!user?.id)
   const t = useTranslations()
   return (
-    <Box marginTop={10}>
+  
       <Paper elevation={0} sx={styles.base}>
         <Box sx={styles.rootSimple}>
           <Box sx={styles.container}>
             <Typography sx={styles.title} variant="h4" component="h1" align="center" >
-              {title}
+              {title1}
             </Typography>
+            {title2 && <Typography sx={styles.title} variant="h4" component="h1" align="center" >
+              {title2}
+            </Typography>}
             <Typography sx={styles.subtitle} variant="subtitle1" align="center" >
               {description1}
             </Typography>
@@ -33,14 +37,13 @@ export default function DescriptionCard({ title, description1, description2 }: D
               {description2}
             </Typography>
 
-            <SassButton variant="contained" color="primary" sx={{ mt: 2 }}>{t('core.button.contactUs')}</SassButton>
+            <SassButton variant="contained" color="primary" sx={{ mt: 2, textTransform:'none' }}>{t('core.button.contactUs')}</SassButton>
 
           </Box>
 
         </Box>
 
       </Paper>
-
-    </Box>
+ 
   );
 }

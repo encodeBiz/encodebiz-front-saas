@@ -90,7 +90,7 @@ const FieldItem = ({ field, i, formikProps, column, disabled }: { field: FormFie
   if (field.isDivider) return <Grid size={{
     xs: 12,
     sm: 12
-  }} key={i} sx={{ width: '100%' }}>
+  }} key={i} sx={{ width: '100%',position:'relative', top:10, mt:2 }}>
     <Typography variant='subtitle1'>{field.label as string}</Typography>
   </Grid>
   else

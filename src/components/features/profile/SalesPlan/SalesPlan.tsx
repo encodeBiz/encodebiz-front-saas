@@ -16,7 +16,7 @@ export default function SalesPlan({fromService,salesPlans,ref}:{ref?: any,fromSe
             <Typography variant="h4" align="center" >
                 {t("salesPlan.title")}
             </Typography>
-            <Typography sx={{width:'60%'}} variant="subtitle1" align="center" color="text.secondary" >
+            <Typography sx={{width:'80%'}} variant="subtitle1" align="center" color="text.secondary" >
                 {t("salesPlan.subTitle")}
             </Typography>            
             <br />

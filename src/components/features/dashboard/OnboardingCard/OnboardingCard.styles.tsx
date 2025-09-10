@@ -7,7 +7,8 @@ export const useStyles = (show:boolean): Record<string, SxProps<Theme>> => ({
     minHeight:237,
     display: 'flex', flexDirection: 'column', justifyContent: 'space-around',
     background: 'linear-gradient(77.62deg, #001551 41.78%, #002FB7 98.81%)',
-    boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.45)',
+    boxShadow: '0px 1px 4px 0.5px rgba(0, 21, 81, 0.45)',
+    
     borderRadius: 2,
     color: '#FFF',
     overflow: 'hidden',
@@ -61,6 +62,8 @@ export const useStyles = (show:boolean): Record<string, SxProps<Theme>> => ({
   subtitle: {
     fontWeight: 400,
     fontSize: 24,
+    mt:2,
+    lineHeight:'2rem',
     textAlign: 'left',
      zIndex: 10
 

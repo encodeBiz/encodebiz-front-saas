@@ -24,7 +24,6 @@ import { CommonModalType } from '@/contexts/commonModalContext';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { createSlug } from '@/lib/common/String';
 import { useFormStatus } from '@/hooks/useFormStatus';
-import { Save } from '@mui/icons-material';
 import { useSearchParams } from 'next/navigation';
 import { TabItem } from '@/components/common/tabs/BaseTabs';
 
@@ -100,9 +99,8 @@ const EntityPreferencesPage = () => {
                         <SassButton
                             disabled={!formStatus?.isValid || formStatus?.isSubmitting}
                             onClick={handleExternalSubmit}
-                            variant='contained'
-                            startIcon={<Save />}
-                        > {t('core.button.saveChanges')}</SassButton>
+                            variant='contained'                             
+                        > {t('core.button.save')}</SassButton>
                     </Box>}
                 </>}
                 title={t('entity.title')}

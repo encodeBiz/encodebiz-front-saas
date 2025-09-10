@@ -24,7 +24,7 @@ const EntityPreferencesTab = ({formRef}:{formRef:any}) => {
                 {t('entity.tabs.tab1.titleAbout')}
             </Typography>
             <Typography variant="subtitle1" align="left" color="text.secondary" sx={{ mb: 4, textAlign: 'left' }}>                
-                  {t('entity.tabs.tab1.titleAbout')}
+                  {t('entity.tabs.tab1.descriptionAbout')}
             </Typography>
             <GenericForm<EntityUpdatedFormValues>
                 column={2}

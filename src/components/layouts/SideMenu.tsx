@@ -121,6 +121,7 @@ export default function SideMenu() {
             width: drawerWidth,
             boxSizing: 'border-box',
           },
+          
         }}
         variant="persistent"
         anchor="left"
@@ -142,7 +143,7 @@ export default function SideMenu() {
         </DrawerHeader>
         <Box display={'flex'} width={'100%'} alignItems={'flex-end'} justifyContent={'flex-end'}>
           <IconButton onClick={() => changeLayoutState({ ...layoutState, openDraw: false })}>
-            {theme.direction === 'ltr' ? <MenuOpen /> : <Menu />}
+            {theme.direction === 'ltr' ? <MenuOpen sx={{color:'#1C1B1D' }} /> : <Menu sx={{color:'#1C1B1D' }} />}
           </IconButton>
         </Box>
 

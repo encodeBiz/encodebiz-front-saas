@@ -62,7 +62,7 @@ const EventSelectorModal = ({ eventList, onOKAction }: EventSelectorProps): Reac
                     color="error"
                     size='small'
                     variant="contained"
-                    startIcon={<CheckOutlined />}
+                  
                 >
                     {t('scan.selected')}
                 </SassButton>

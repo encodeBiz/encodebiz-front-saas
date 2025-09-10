@@ -52,7 +52,8 @@ export async function fetchUserEntities(
 }
 
 export async function updateAuth(
-  id: string
+  id: string,
+  userId: string
 ): Promise<void> {
   try {
     await updateDocument<IUserEntity>({
@@ -63,6 +64,7 @@ export async function updateAuth(
       },
       id: id as string,
     });
+    localStorage.setItem(`ENTITY-${id}-${userId}`,'1')
   } catch (error: any) {
     throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
   }

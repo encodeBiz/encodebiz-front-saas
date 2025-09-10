@@ -8,7 +8,7 @@ export type BaseButtonProps = ButtonProps & {
 };
 
 export const BaseButton = styled(Button)<ButtonProps>(({ theme, variant, color = 'primary' }) => ({
-    
+
     fontWeight: 600,
     /*textTransform: 'none',*/
     padding: theme.spacing(1.5, 3),
@@ -17,7 +17,7 @@ export const BaseButton = styled(Button)<ButtonProps>(({ theme, variant, color =
     '&:hover': {
         boxShadow: 'none',
         ...(variant === 'contained' && {
-            backgroundColor: (theme.palette as Palette | any)[color].dark,
+            backgroundColor: color != 'primary' ? (theme.palette as Palette | any)[color].dark : theme.palette.primary.main,
         }),
     },
     '&.Mui-disabled': {

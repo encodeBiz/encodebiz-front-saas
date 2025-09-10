@@ -1,6 +1,6 @@
 import React from 'react';
 import { ColorResult, SketchPicker } from 'react-color';
-import { InputAdornment, Popover, TextField, TextFieldProps } from '@mui/material';
+import { Box, InputAdornment, Popover, TextField, TextFieldProps } from '@mui/material';
 import { FieldProps, useField } from 'formik';
 import { Error, PaletteRounded } from '@mui/icons-material';
 
@@ -26,12 +26,16 @@ const ColorPickerInput: React.FC<FieldProps & TextFieldProps> = ({
     const id = open ? 'simple-popover' : undefined;
 
     return (
-        <>  
+        <Box sx={{ cursor: 'pointer' }}>
             <TextField
                 {...field}
                 {...props}
                 onClick={handleClick}
-                
+                sx={{
+                    input: {
+                        '&:hover': { cursor: 'pointer' }
+                    }
+                }}
                 value={field.value}
                 error={!!error}
                 multiline={props.type === 'textarea'}
@@ -42,6 +46,7 @@ const ColorPickerInput: React.FC<FieldProps & TextFieldProps> = ({
 
                 slotProps={{
                     input: {
+                        sx: { cursor: 'pointer' },
                         startAdornment: field.value ? (
                             <InputAdornment position="start" sx={{ textAlign: 'center', height: 40, width: 40, background: field && field.value ? field.value : '#ffffff' }}>
                                 <PaletteRounded sx={{
@@ -49,8 +54,8 @@ const ColorPickerInput: React.FC<FieldProps & TextFieldProps> = ({
                                     m: 'auto'
                                 }} />
                             </InputAdornment>
-                        ):null,
-            endAdornment: helperText?<InputAdornment position="end"><Error color='error' /></InputAdornment>:null,
+                        ) : null,
+                        endAdornment: helperText ? <InputAdornment position="end"><Error color='error' /></InputAdornment> : null,
 
                     },
                 }}
@@ -72,7 +77,7 @@ const ColorPickerInput: React.FC<FieldProps & TextFieldProps> = ({
 
             </Popover>
 
-        </>
+        </Box>
 
     );
 };

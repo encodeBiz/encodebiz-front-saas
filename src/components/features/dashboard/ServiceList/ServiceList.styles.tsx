@@ -19,7 +19,7 @@ export const useStyles = (): Record<string, SxProps<Theme>> => ({
     justifyContent: 'center',
     gap: 2,
     p: 1,
-    px: 4,
+    px: 2,
     textAlign: 'center',
     cursor: 'pointer'
   },
@@ -27,7 +27,7 @@ export const useStyles = (): Record<string, SxProps<Theme>> => ({
   iconContainer: {
     width: 112,
     height: 112,
-    background: 'radial-gradient(circle at center, #001551 0, #002FB7 50%, #002FB7 100%)',
+    background: 'radial-gradient(86.25% 86.25% at 69.17% 5.83%, #001551 12.39%, #1953FA 48.37%, #0A2572 97.86%)',
     borderRadius: '50%',
     display: 'flex',
     justifyItems: 'center',
@@ -36,7 +36,7 @@ export const useStyles = (): Record<string, SxProps<Theme>> => ({
   },
   icon: {
     color: '#FFF',
-    fontSize: 40
+    fontSize: 35
   },
   textContainer:{
     display:'flex',
@@ -44,6 +44,7 @@ export const useStyles = (): Record<string, SxProps<Theme>> => ({
     gap:1,
     justifyContent:'flex-start',
     alignItems:'flex-start',
-    textAlign:'left'
+    textAlign:'left',
+    mt:2
   }
 })

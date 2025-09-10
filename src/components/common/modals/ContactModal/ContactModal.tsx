@@ -104,7 +104,7 @@ const ContactModalModal = (): React.JSX.Element => {
                     onClick={(e) => handleClose(e, 'manual')}
                     disabled={isLoading}
                     size='small'
-                    startIcon={<CancelOutlined />}
+                  
 
                 >
                     {t('core.button.cancel')}
@@ -115,7 +115,7 @@ const ContactModalModal = (): React.JSX.Element => {
                     color="primary"
                     size='small'
                     variant="contained"
-                    startIcon={isLoading ? <CircularProgress size={20} /> : <SendOutlined />}
+                    startIcon={isLoading ? <CircularProgress size={20} /> : null}
                 >
                     {t('core.button.submit')}
                 </SassButton>

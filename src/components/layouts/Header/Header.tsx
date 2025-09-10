@@ -189,7 +189,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
         pl: { sm: `${layoutState.openDraw ? drawerWidth : 0}px` }, // For persistent drawe
         zIndex: (theme) => theme.zIndex.drawer - 1,
         bgcolor: (theme) => theme.palette.background.default,
-        pt: 2, pb: 2
+        pt: 2, pb: 2,
 
       }}>
         <Toolbar>
@@ -218,7 +218,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
                 width: 40
               }}
             >
-              {theme.palette.mode === 'dark' ? <BrightnessHigh /> : <BedtimeOutlined />}
+              {theme.palette.mode === 'dark' ? <BrightnessHigh /> : <BedtimeOutlined sx={{color:'#1C1B1D' }} />}
             </IconButton>
 
 
@@ -239,11 +239,11 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
                 }}
                 onClick={() => openModal()}
               >
-                <QuestionMarkOutlined />
+                <QuestionMarkOutlined sx={{color:'#1C1B1D' }} />
               </IconButton>
             </Tooltip>
 
-            <Divider orientation="vertical" flexItem />
+            <Divider sx={{height: 30,mt:1.5}} orientation="vertical" flexItem />
 
             <Tooltip title={t('layout.header.profile')}>
               <IconButton
