@@ -44,14 +44,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
                 },
                 components: {
-                    MuiSvgIcon: {
-                        defaultProps: {
-                            // Set the color prop to your desired color
-                            sx: {
-                                color: mode === 'light' ? '#1C1B1D' : '#FFF'
-                            }
-                        },
-                    },
+                    
                     MuiCard: {
                         styleOverrides: {
                             root: {

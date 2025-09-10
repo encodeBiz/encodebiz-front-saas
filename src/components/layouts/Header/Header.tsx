@@ -218,7 +218,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
                 width: 40
               }}
             >
-              {theme.palette.mode === 'dark' ? <BrightnessHigh /> : <BedtimeOutlined />}
+              {theme.palette.mode === 'dark' ? <BrightnessHigh /> : <BedtimeOutlined sx={{color:'#1C1B1D' }} />}
             </IconButton>
 
 
@@ -239,7 +239,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
                 }}
                 onClick={() => openModal()}
               >
-                <QuestionMarkOutlined />
+                <QuestionMarkOutlined sx={{color:'#1C1B1D' }} />
               </IconButton>
             </Tooltip>
 

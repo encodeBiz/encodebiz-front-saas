@@ -8,7 +8,6 @@ import { useStyles } from './DescriptionCard.styles';
 import { useAuth } from '@/hooks/useAuth';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { useTranslations } from 'next-intl';
-import { BorderBox } from '@/components/common/tabs/BorderBox';
 export interface DescriptionCardProps {
   title1?: string
   title2?: string

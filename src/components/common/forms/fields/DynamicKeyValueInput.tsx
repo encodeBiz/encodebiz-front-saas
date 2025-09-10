@@ -44,7 +44,7 @@ const DynamicKeyValueInput: React.FC<FieldProps> = ({ ...props }) => {
 
 
     return (
-        <Box sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'flex-start' }}>
+        <Box sx={{ display: 'flex', gap: 2, mb: 2, flexDirection:'column', alignItems: 'flex-start' }}>
 
             {(field.value as Array<{ label: string, value: string }>)?.map((item, index) => (
                 <Box key={index} sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'center', width: '100%' }}>

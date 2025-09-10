@@ -268,7 +268,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
               disabled={(Array.isArray(selectedFile) && selectedFile.length === 0) || !selectedFile}
               color="primary"
               onClick={() => handleSelectedChange()}
-              startIcon={<CheckOutlined />}
+             
             >
               {t('core.button.accept')}
             </SassButton>

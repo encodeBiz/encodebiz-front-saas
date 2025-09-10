@@ -17,7 +17,7 @@ export interface HeaderPageProps {
 export default function HeaderPage({ children, title, description, isForm = false,inTab= false, actions }: HeaderPageProps) {
   const styles = useStyles()
   return (
-    <Box  >
+    <Box  > 
       <Paper elevation={0} sx={{ ...styles.base, background: (theme) => isForm ? theme.palette.background.paper : theme.palette.secondary.main }} >
         <Box sx={styles.rootSimple}>
           <Box pb={4} display={'flex'} flexDirection={'row'} justifyContent={'space-between'} alignItems={'flex-start'} width={'100%'} >

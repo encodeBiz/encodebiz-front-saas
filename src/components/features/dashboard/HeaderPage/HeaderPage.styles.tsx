@@ -7,7 +7,7 @@ export const useStyles = (): Record<string, SxProps<Theme>> => ({
     borderRadius: 2, display: 'flex', flexDirection: 'column', justifyContent: 'space-around', pt: 4, pb: 0
   },
   content: {
-    pl: 0, pr: 0,
+    pl: 0, pr: 0,borderRadius:2,
     background: (theme) => theme.palette.background.paper,
   },
   root: {
