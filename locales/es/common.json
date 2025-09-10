@@ -82,6 +82,10 @@
       "nocard": "No tienes métodos de pago asociado a la entidad, por favor configure al menos uno."
     },
     "label": {
+      "comercialEvent":"INFORMACIÓN DEL EVENTO",
+      "brandEvent":"COLORES DE MARCA DEL EVENTO",
+      "resourceEvent":"RECURSOS GRÁFICOS DEL EVENTO",
+      "configEvent":"CONFIGURACIÓN DEL EVENTO",
       "text": "Textos",
       "language": "Idioma",
       "filename": "Nombre de Archivo",

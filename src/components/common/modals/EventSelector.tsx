@@ -13,19 +13,17 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useTranslations } from 'next-intl';
 import { SassButton } from '../buttons/GenericButton';
-import { CheckOutlined } from '@mui/icons-material';
 import { CustomTypography } from '../Text/CustomTypography';
-import { IEvent } from '@/domain/features/passinbiz/IEvent';
-
+ 
 interface EventSelectorProps {
-    eventList: Array<IEvent>
-    onOKAction: (event: IEvent) => void
+    eventList: Array<{name: string, eventId: string}>
+    onOKAction: (event: {name: string, eventId: string}) => void
 
 }
 const EventSelectorModal = ({ eventList, onOKAction }: EventSelectorProps): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const t = useTranslations()
-    const [eventSelected, setEventSelected] = useState<IEvent>()
+    const [eventSelected, setEventSelected] = useState<{name: string, eventId: string}>()
     return (
         <Dialog
             open={open.open}
@@ -45,21 +43,21 @@ const EventSelectorModal = ({ eventList, onOKAction }: EventSelectorProps): Reac
             <DialogContent>
                 <List component="nav" aria-label="main mailbox folders">
                     {eventList.map((e, i) => <ListItemButton key={i}
-                        selected={eventSelected?.id === e.id}
+                        selected={eventSelected?.eventId === e.eventId}
                         onClick={() => setEventSelected(e)}
                     >
-                        <ListItemText primary={e.name} secondary={e.address} />
+                        <ListItemText primary={e.name} />
                     </ListItemButton>)}
                 </List>
             </DialogContent>
             <DialogActions>
                 <SassButton
                     onClick={() => {
-                        onOKAction(eventSelected as IEvent)
+                        onOKAction(eventSelected as {name: string, eventId: string})
                         closeModal(CommonModalType.EVENT_SELECTED)
                     }}
                     disabled={!eventSelected}
-                    color="error"
+                    color="primary"
                     size='small'
                     variant="contained"
                   

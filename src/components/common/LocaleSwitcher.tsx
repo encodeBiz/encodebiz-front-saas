@@ -17,6 +17,7 @@ import { Language } from '@mui/icons-material';
 import { useEntity } from '@/hooks/useEntity';
 import { updateExtraEntity } from '@/services/common/entity.service';
 import { useToast } from '@/hooks/useToast';
+import { usePathname } from 'next/navigation';
 export const locales = ['en', 'es']; // Define your supported locales
 
 const LocaleSwitcher: React.FC = () => {
@@ -25,6 +26,7 @@ const LocaleSwitcher: React.FC = () => {
   const [selectedLocale, setSelectedLocale] = useState(currentLocale);
   const { currentEntity } = useEntity()
   const { showToast } = useToast()
+  const pathname = usePathname()
   // Update internal state if currentLocale changes externally (e.g., initial load)
   useEffect(() => {
     setSelectedLocale(currentLocale);
@@ -34,6 +36,7 @@ const LocaleSwitcher: React.FC = () => {
     const newLocale = event.target.value as string;
     setSelectedLocale(newLocale);
     changeLocale(newLocale); // Inform parent about the locale change
+    if(currentEntity || pathname.includes('/main')) 
     updateEntityLang(newLocale.toUpperCase() as 'ES' | 'EN')
 
   };

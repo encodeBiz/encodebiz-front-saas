@@ -89,7 +89,7 @@ export default function useHolderController() {
         "colorAccent": values.colorAccent,
         "imageUrl": values.imageUrl,
         "logoUrl": values.logoUrl,
-        "language":values.language,
+        "language": values.language,
         "date": new Date(values.date).toISOString(),
         "dateLabel": formatLocalDateTime(codeLocale ?? 'ES', new Date(values.date)),
         "status": values.status as "draft" | "published" | "archived",
@@ -112,6 +112,10 @@ export default function useHolderController() {
 
   const fields = [
     {
+      isDivider: true,
+      label: t('core.label.comercialEvent'),
+    },
+    {
       name: 'name',
       label: t('core.label.name'),
       type: 'text',
@@ -123,7 +127,7 @@ export default function useHolderController() {
       label: t('core.label.description'),
       type: 'textarea',
       required: false,
-    
+
       component: TextInput,
     },
 
@@ -151,7 +155,7 @@ export default function useHolderController() {
         onHandleChange: (value: any) => {
           setCityList(country.find((e: any) => e.name === value)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
           setCountrySelected(value)
-      
+
         },
       },
       component: SelectInput,
@@ -162,7 +166,7 @@ export default function useHolderController() {
       label: t('core.label.city'),
       component: SelectInput,
       options: cityList,
-      
+
     },
     {
       name: 'address',
@@ -181,9 +185,8 @@ export default function useHolderController() {
 
 
     {
-
       isDivider: true,
-      label: t('core.label.designed'),
+      label: t('core.label.brandEvent'),
     },
     {
       name: 'colorPrimary',
@@ -199,6 +202,11 @@ export default function useHolderController() {
 
       component: ColorPickerInput,
     },
+
+    {
+      isDivider: true,
+      label: t('core.label.resourceEvent'),
+    },
     {
       name: 'logoUrl',
       label: t('core.label.logo'),
@@ -213,6 +221,10 @@ export default function useHolderController() {
       type: 'stripImage',
       component: ImageUploadInput,
     },
+     {
+      isDivider: true,
+      label: t('core.label.configEvent'),
+    },
     {
       name: 'language',
       label: t('core.label.language'),
@@ -221,7 +233,7 @@ export default function useHolderController() {
       options: [
         { value: 'ES', label: t('layout.header.spanish') },
         { value: 'EN', label: t('layout.header.english') },
-        
+
       ],
     },
     /* {
@@ -242,7 +254,7 @@ export default function useHolderController() {
       label: t('core.label.status'),
       type: 'text',
       required: false,
-      
+
       options: [
         { value: 'draft', label: t('core.label.draft') },
         { value: 'published', label: t('core.label.published') },
@@ -282,17 +294,17 @@ export default function useHolderController() {
         country = location[1]
         city = location[0]
       }
-      
-      
+
+
       setInitialValues({
         ...event,
-        date:(event.date instanceof Timestamp)?event.date.toDate(): new Date(event.date),
-        endDate:(event.endDate instanceof Timestamp)?event.endDate.toDate(): new Date(event.endDate),
+        date: (event.date instanceof Timestamp) ? event.date.toDate() : new Date(event.date),
+        endDate: (event.endDate instanceof Timestamp) ? event.endDate.toDate() : new Date(event.endDate),
         country, city,
         metadata: objectToArray(event.metadata)
       })
 
-     
+
       setCountrySelected(country)
       changeLoaderState({ show: false })
     } catch (error: any) {
