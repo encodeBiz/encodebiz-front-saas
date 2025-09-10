@@ -79,6 +79,14 @@ export const getRefByPath = async <T>(
   return docSnap as T;
 };
 
+export const getRefByPathData = async (
+  path: string,
+): Promise<any> => {
+  const docRef = doc(db, `${path}`);
+  const docSnap = await getDoc(docRef);
+  return docSnap.data();
+};
+
 export const getAll = async <T>(collectionName: string): Promise<T[]> => {
   try {
     const querySnapshot = await getDocs(collection(db, collectionName));

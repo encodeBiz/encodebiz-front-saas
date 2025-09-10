@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-// AddressInput.tsx
+
 "use client";
 import React, { useEffect, useState } from "react";
 import {
@@ -17,8 +16,6 @@ import { useTranslations } from "next-intl";
 import { useEntity } from "@/hooks/useEntity";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { useDebouncedCallback } from "../../forms/customHooks/useDebounce";
-import { IEvent } from "@/domain/features/passinbiz/IEvent";
-import { getIndex, getRefByPath } from "@/lib/firebase/firestore/readDocument";
 
 type Option = { id: string; label: string; data: ISearchIndex };
 
@@ -29,21 +26,20 @@ interface SearchIndexInputProps {
   onChange: (value: any) => void,
 }
 
-const EventListItemText = ({ index }: { index: string }) => {
-  const [event, setEvent] = useState<IEvent>()
-  useEffect(() => {
-    const fetch = async () => {
-      console.log(await getRefByPath(index));
-      
-      setEvent(await getRefByPath(index))
-    }
-    if (index) fetch()
-  }, [index])
+const getDataLabel = (data: ISearchIndex, type: "entities" | "users" | "events" | "staff" | "holder") => {
+  switch (type) {
+    case "events":
+      return data.fields['name']
+      break;
 
-  return <ListItemText key={event?.id} primary={event?.name} secondary={event?.address} />
+    default:
+      return data.id
+      break;
+  }
 }
 
-const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, value, label, type }) => {
+
+const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, label, type }) => {
   const t = useTranslations();
   const { currentEntity } = useEntity()
 
@@ -71,7 +67,7 @@ const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, value, l
         setOptions(
           data.map((e: any) => ({
             id: `${e.id}`,
-            label: e.id,
+            label: getDataLabel(e, type) ?? '',
             data: e,
           }))
         );
@@ -96,8 +92,10 @@ const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, value, l
     setOptions([])
     debouncedSearch?.cancel?.();
 
-    if (typeof onChange === "function" && newOption?.data) {
-      onChange(newOption?.data);
+    if (typeof onChange === "function") {
+      if (newOption?.data)
+        onChange(newOption?.data);
+      else onChange(null);
     }
   };
 
@@ -111,7 +109,6 @@ const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, value, l
 
       <Autocomplete<Option, false, false, false>
         options={options}
-
         value={selected}
         inputValue={inputValue}
         onInputChange={handleInputChange}
@@ -161,7 +158,7 @@ const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, value, l
                 <CheckCircleOutline />
               </ListItemIcon>
             )}
-            {type === 'events' && <EventListItemText index={option.data.index} />}
+            {type === 'events' && <ListItemText key={option?.id} primary={option?.data?.fields['name']} />}
             {type !== 'events' && <ListItemText key={option.id} primary={option.label} />}
           </ListItem>
         )}

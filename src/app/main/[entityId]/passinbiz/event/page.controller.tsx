@@ -14,15 +14,14 @@ import { DeleteOutline, Edit, Person2 } from "@mui/icons-material";
 import { Box, Chip, Typography } from "@mui/material";
 import { formatDateInSpanish } from "@/lib/common/Date";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
-import { TextFilter } from "@/components/common/table/filters/TextFilter";
 import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
 import { useSearchParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
+import { ISearchIndex } from "@/domain/core/SearchIndex";
+import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
 
 
-
-let resource: any = null;
 interface IFilterParams {
   filter: { status: string, name: string }
   params: {
@@ -148,15 +147,19 @@ export default function useIEventListController() {
       type="events"
       label={t('core.label.search')}
       value={filterParams.filter.name}
-      onChange={(value) => {
-        console.log(value);
-        /*
-        setFilterParams({ ...filterParams, filter: { ...filterParams.filter, name: value } });
-        if (resource) clearTimeout(resource);
-        resource = setTimeout(() => {
-          onFilter({ ...filterParams, filter: { ...filterParams.filter, name: value } })
-        }, 1500);
-        */
+      onChange={async (value: ISearchIndex) => {
+ 
+      if (value?.id) {
+          const item = await getRefByPathData(value.index)
+          if (item)
+            setItems([item])
+          else
+            fetchingData(filterParams)
+        }
+        else {
+          setItems([])
+          fetchingData(filterParams)
+        }         
       }}
     />
   </Box>
@@ -194,7 +197,7 @@ export default function useIEventListController() {
 
   const fetchingData = (filterParams: IFilterParams) => {
     setLoading(true)
-
+     
     if (filterParams.params.filters.find((e: any) => e.field === 'status' && e.value === 'none'))
       filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "status")
     if (filterParams.params.filters.find((e: any) => e.field === 'name' && e.value === ''))
