@@ -23,12 +23,12 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 
 const QRScanner = () => {
-    const { handleScan, handleError, resetScanner, scanRessult, staffValidating, staffValid, error, eventList, setEventSelected } = useQRScanner()
+    const {eventSelected,  handleScan, handleError, resetScanner, scanRessult, staffValidating, staffValid, error, eventList, setEventSelected } = useQRScanner()
     const t = useTranslations()
     const { open } = useCommonModal()
     return (
         <Box sx={{ p: 1, maxWidth: 600, margin: '0 auto' }}>
-
+            
             {staffValidating && (
                 <Box sx={{ textAlign: 'center', mb: 4 }}>
                     <Typography variant="h6" component="h2" >
@@ -46,7 +46,7 @@ const QRScanner = () => {
                 </Typography>
             </Box>}
 
-            {!scanRessult && !staffValidating && staffValid && !error && (
+            {!scanRessult && !staffValidating && staffValid && !error && (eventList.length>0 && !!eventSelected || eventList.length==0 ) && (
                 <StyledCard>
                     <ScannerContainer elevation={0}>
                         <PreviewContainer>

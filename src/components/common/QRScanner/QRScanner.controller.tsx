@@ -72,6 +72,7 @@ export const useQRScanner = () => {
 
     const validateData = async (data: any) => {
         try {
+             
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             const response = await validateHolder({
                 ...data,
@@ -114,6 +115,6 @@ export const useQRScanner = () => {
 
 
 
-    return { handleScan, handleError, resetScanner, scanRessult, scanning, error, staffValidating, staffValid, eventList, setEventSelected }
+    return {eventSelected, handleScan, handleError, resetScanner, scanRessult, scanning, error, staffValidating, staffValid, eventList, setEventSelected }
 }
 

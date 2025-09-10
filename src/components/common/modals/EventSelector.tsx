@@ -53,6 +53,7 @@ const EventSelectorModal = ({ eventList, onOKAction }: EventSelectorProps): Reac
             <DialogActions>
                 <SassButton
                     onClick={() => {
+                         
                         onOKAction(eventSelected as {name: string, eventId: string})
                         closeModal(CommonModalType.EVENT_SELECTED)
                     }}
