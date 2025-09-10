@@ -127,6 +127,13 @@ export const useSettingEntityController = () => {
                     required: true,
                     type: 'logo'
                 },
+                 {
+                    name: 'icon2Url',
+                    label: t('core.label.iconx2'),
+                    component: ImageUploadInput,
+                    required: true,
+                    type: 'iconx2'
+                },
                 {
                     name: 'stripImageUrl',
                     label: t('core.label.stripImageUrl'),
@@ -142,13 +149,7 @@ export const useSettingEntityController = () => {
                     type: 'icon'
                 },
 
-                {
-                    name: 'icon2Url',
-                    label: t('core.label.iconx2'),
-                    component: ImageUploadInput,
-                    required: true,
-                    type: 'iconx2'
-                },
+               
             ]
 
         }

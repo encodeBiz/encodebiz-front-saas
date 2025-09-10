@@ -18,8 +18,7 @@ import { IUserMedia, IUserMediaType } from '@/domain/core/IUserMedia';
 import ImagePreview from '../../ImagePreview';
 import { fileTypes } from '@/config/constants';
 import { SassButton } from '../../buttons/GenericButton';
-import { BorderBox } from '../../tabs/BorderBox';
-
+ 
 interface ImageFieldProps {
   accept: string
   typeUpload: IUserMediaType
@@ -64,9 +63,10 @@ const ImageUploadInput = ({ name, ...props }: any & FieldProps & TextFieldProps 
   return (
     <FormControl key={name} required sx={{ m: 1, width: '100%' }}>
 
+
       <Box sx={{ paddingTop: 5 }}>
         {preview ? (<Box display={'flex'} flexDirection={'column'} alignItems={'center'} gap={1}>
-          <BorderBox>
+          <Box sx={{ width:377, height:259, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', py: 4 }}>
             <CardContent>
               <Box display={'flex'} flexDirection={'column'} alignItems={'center'} gap={1}>
                 <Typography textTransform={'uppercase'}>{t('core.label.' + typeUpload)}</Typography>
@@ -74,16 +74,16 @@ const ImageUploadInput = ({ name, ...props }: any & FieldProps & TextFieldProps 
                   <ImagePreview
                     src={preview}
                     alt=""
-                    width={width + 'px'}
+                    width={(width==height && width>130?130:width) + 'px'}
                     height={height + 'px'}
-
+                    style={{  maxHeight: 130}}
                     zoomIconPosition="center"
                   />
                 </Box>
               </Box>
-              <Typography variant='caption'>{t('core.label.medida')}: {fileTypes(t).find(e => e.value === typeUpload)?.size.w} x {fileTypes(t).find(e => e.value === typeUpload)?.size.h} px. PNG.</Typography>
-              </CardContent>
-          </BorderBox>
+              <Typography sx={{color:'#76777D'}} variant='caption'>{t('core.label.medida')}: {fileTypes(t).find(e => e.value === typeUpload)?.size.w} x {fileTypes(t).find(e => e.value === typeUpload)?.size.h} px. PNG.</Typography>
+            </CardContent>
+          </Box>
           <Box display={'flex'} gap={1} sx={{ pt: 1 }}>
             <SassButton sx={{ height: 35, textTransform: 'capitalize' }} onClick={() => openModal(CommonModalType.FILES, { name })} size='small' variant='contained' color='primary' startIcon={<Upload />}>
               {t('core.button.replaceImage')}
@@ -95,7 +95,7 @@ const ImageUploadInput = ({ name, ...props }: any & FieldProps & TextFieldProps 
         </Box>) : (
 
 
-          <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
+          <Box sx={{ width:377, height:259,  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', py: 4 }}>
             <Typography textTransform={'uppercase'}>{props.label}</Typography>
             <Paper onClick={() => openModal(CommonModalType.FILES, { name })}
               variant="outlined"
@@ -103,6 +103,7 @@ const ImageUploadInput = ({ name, ...props }: any & FieldProps & TextFieldProps 
                 position: 'relative',
                 width: width,
                 height: height,
+                maxHeight: 160,
                 border: '2px dashed #476BE7',
                 borderRadius: 2,
                 display: 'flex',
@@ -136,7 +137,7 @@ const ImageUploadInput = ({ name, ...props }: any & FieldProps & TextFieldProps 
 
               </Box>
             </Paper>
-            <Typography variant='caption'>{t('core.label.medida')}: {fileTypes(t).find(e => e.value === typeUpload)?.size.w} x {fileTypes(t).find(e => e.value === typeUpload)?.size.h} px. PNG.</Typography>
+            <Typography sx={{color:'#76777D'}}  variant='caption'>{t('core.label.medida')}: {fileTypes(t).find(e => e.value === typeUpload)?.size.w} x {fileTypes(t).find(e => e.value === typeUpload)?.size.h} px. PNG.</Typography>
           </Box>
 
         )}

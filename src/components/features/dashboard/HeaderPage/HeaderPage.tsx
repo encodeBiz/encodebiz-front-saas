@@ -20,7 +20,7 @@ export default function HeaderPage({ children, title, description, isForm = fals
     <Box  > 
       <Paper elevation={0} sx={{ ...styles.base, background: (theme) => isForm ? theme.palette.background.paper : theme.palette.secondary.main }} >
         <Box sx={styles.rootSimple}>
-          <Box pb={4} display={'flex'} flexDirection={'row'} justifyContent={'space-between'} alignItems={'flex-start'} width={'100%'} >
+          <Box pb={5} display={'flex'} flexDirection={'row'} justifyContent={'space-between'} alignItems={'flex-start'} width={'100%'} >
             <Box display={'flex'} flexDirection={'column'} justifyContent={'space-between'} alignItems={'flex-start'} width={'100%'} >
               <Typography variant="h4" component="h1" align="center"  sx={{ mb: 0, textAlign: 'left' }}>
                 {title}
