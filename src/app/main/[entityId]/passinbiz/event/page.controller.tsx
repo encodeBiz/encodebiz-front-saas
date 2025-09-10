@@ -18,6 +18,7 @@ import { TextFilter } from "@/components/common/table/filters/TextFilter";
 import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
 import { useSearchParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
+import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 
 
 
@@ -129,7 +130,7 @@ export default function useIEventListController() {
       items={options}
     />
 
-
+    {/** 
     <TextFilter
       label={t('core.label.name')}
       value={filterParams.filter.name}
@@ -139,6 +140,23 @@ export default function useIEventListController() {
         resource = setTimeout(() => {
           onFilter({ ...filterParams, filter: { ...filterParams.filter, name: value } })
         }, 1500);
+      }}
+    />
+    */}
+
+    <SearchIndexFilter
+      type="events"
+      label={t('core.label.search')}
+      value={filterParams.filter.name}
+      onChange={(value) => {
+        console.log(value);
+        /*
+        setFilterParams({ ...filterParams, filter: { ...filterParams.filter, name: value } });
+        if (resource) clearTimeout(resource);
+        resource = setTimeout(() => {
+          onFilter({ ...filterParams, filter: { ...filterParams.filter, name: value } })
+        }, 1500);
+        */
       }}
     />
   </Box>
@@ -212,8 +230,8 @@ export default function useIEventListController() {
 
   const inicializeFilter = (params: string) => {
     try {
-    
-      const filters: IFilterParams = params!=='null'?filterParams:decodeFromBase64(params as string)
+
+      const filters: IFilterParams = params !== 'null' ? filterParams : decodeFromBase64(params as string)
       filters.params.startAfter = null
       setFilterParams(filters)
       setLoading(false)

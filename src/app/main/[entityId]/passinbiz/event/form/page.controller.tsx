@@ -275,9 +275,6 @@ export default function useHolderController() {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, id)
-
-      console.log(event);
-      
       const location = event.location.split(',')
       let country = 'España'
       let city = 'Madrid'

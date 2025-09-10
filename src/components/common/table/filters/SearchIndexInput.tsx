@@ -11,12 +11,14 @@ import {
   ListItemText,
   CircularProgress,
 } from "@mui/material";
-import { CheckCircleOutline } from "@mui/icons-material";
+import { CheckCircleOutline, SearchOutlined } from "@mui/icons-material";
 import { fetchIndex } from "@/services/common/helper.service";
 import { useTranslations } from "next-intl";
 import { useEntity } from "@/hooks/useEntity";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { useDebouncedCallback } from "../../forms/customHooks/useDebounce";
+import { IEvent } from "@/domain/features/passinbiz/IEvent";
+import { getIndex, getRefByPath } from "@/lib/firebase/firestore/readDocument";
 
 type Option = { id: string; label: string; data: ISearchIndex };
 
@@ -27,7 +29,21 @@ interface SearchIndexInputProps {
   onChange: (value: any) => void,
 }
 
-const  SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, value, label, type }) => {
+const EventListItemText = ({ index }: { index: string }) => {
+  const [event, setEvent] = useState<IEvent>()
+  useEffect(() => {
+    const fetch = async () => {
+      console.log(await getRefByPath(index));
+      
+      setEvent(await getRefByPath(index))
+    }
+    if (index) fetch()
+  }, [index])
+
+  return <ListItemText key={event?.id} primary={event?.name} secondary={event?.address} />
+}
+
+const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, value, label, type }) => {
   const t = useTranslations();
   const { currentEntity } = useEntity()
 
@@ -111,16 +127,27 @@ const  SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, value, 
             {...params}
             label={label}
             placeholder={t("core.label.search")}
+            sx={{
 
+              height: 46,
+              '& .MuiOutlinedInput-root': {
+                transition: 'width 0.3s ease',
+                width: '200px',
+                height: 46,
+                '&.Mui-focused': {
+                  width: '300px',
+                },
+              },
+
+            }}
             slotProps={{
               input: {
                 ...params.InputProps,
+                startAdornment: <SearchOutlined sx={{ mr: 1 }} />,
                 endAdornment: <React.Fragment>
                   {pending ? <CircularProgress color="inherit" size={20} /> : null}
                   {params.InputProps.endAdornment}
                 </React.Fragment>
-
-
               },
             }}
 
@@ -134,7 +161,8 @@ const  SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, value, 
                 <CheckCircleOutline />
               </ListItemIcon>
             )}
-            <ListItemText key={option.id} primary={option.label} />
+            {type === 'events' && <EventListItemText index={option.data.index} />}
+            {type !== 'events' && <ListItemText key={option.id} primary={option.label} />}
           </ListItem>
         )}
         sx={{
