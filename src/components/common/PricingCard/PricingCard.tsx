@@ -26,8 +26,7 @@ const PlanCard = styled(Box)<{ highlighted?: string, current?: string }>(({ them
     transition: 'transform 0.3s ease',
     color: current === 'true' ? `${theme.palette.text.primary}` : highlighted === 'true' ? `${theme.palette.primary.contrastText}` : `${theme.palette.text.primary}`,
     borderRadius: 8,
-    background: current === 'true' ? theme.palette.background.paper : highlighted === 'true' ? 'linear-gradient(23.64deg, #001551 31.23%, #002FB7 99.28%)' : theme.palette.background.paper,
-
+    background: current === 'true' ? theme.palette.background.paper : highlighted === 'true' ? 'linear-gradient(23.64deg, #001551 31.23%, #002FB7 99.28%)' : 'transparent',
     boxShadow: current === 'true' ? '#4AB84F' : highlighted === 'true' ? '0px 6px 12px rgba(0, 65, 158, 0.25)' : 'none'
 
 }));
@@ -82,7 +81,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
                         </Typography>
                     </Box>
 
-                    <Divider sx={{ background: (theme) => current ? '#4AB84F' :highlighted ? "#FFF" : theme.palette.divider }} />
+                    <Divider sx={{ background: () => current ? '#4AB84F' :highlighted ? "#FFF" : '#002FB7'}} />
 
                     <Box py={2}>
                         {!current && <SassButton
@@ -103,7 +102,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
                         </Typography>}
 
                     </Box>
-                    {name !== 'freemium' && <Divider sx={{ background: (theme) => current ? '#4AB84F' : highlighted ? "#FFF" : theme.palette.divider }} />}
+                    {name !== 'freemium' && <Divider sx={{ background: () => current ? '#4AB84F' : highlighted ? "#FFF" :  '#002FB7' }} />}
 
 
                     <List sx={{ marginTop: "10px" }}>
@@ -131,12 +130,13 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
                 </Box>
             </CardContent>
         </PlanCard>
-        {open.type === CommonModalType.BILLING && <SheetModalModal
+        {open.type === CommonModalType.BILLING && <SheetModalModal hideCancel
             title={t('salesPlan.imageConfirmModalTitle')}
             description={t('salesPlan.imageConfirmModalTitle2')}
             textPoint={items}
             textBtn={t('core.button.configurenow')}
             type={CommonModalType.BILLING}
+        
             onOKAction={() => {
                 closeModal(CommonModalType.BILLING)
                 if (items.length > 0)

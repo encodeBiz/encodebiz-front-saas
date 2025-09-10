@@ -71,7 +71,7 @@ const HelpTabs = ({ tabs, ref }: HelpTabsProps) => {
   return (
 
     <Paper ref={ref} elevation={0} sx={{
-      border: `1px solid ${theme.palette.divider}`,
+     boxShadow:'none',
       borderRadius: 1,
       marginTop: 10
     }}>
@@ -94,7 +94,7 @@ const HelpTabs = ({ tabs, ref }: HelpTabsProps) => {
       </Tabs>
 
       {/* Tab content */}
-      <Box sx={{ border: `1px solid ${theme.palette.divider}`, borderTop: 0, width: '100%' }}>
+      <Box sx={{ borderTop: 0, width: '100%' }}>
 
         {tabs.map((e, i) => <span key={i}>
           {value === i && (<>

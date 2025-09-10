@@ -29,7 +29,7 @@ export const lightTheme: PaletteOptions = {
   secondary: {
     main: '#E9E8F5',
     light: '#DDE2F7',
-    dark: '#E9E8F5',
+    dark: '#C6C6CC',
     contrastText: '#000',
   },
   background: {

@@ -48,11 +48,11 @@
       }
     },
     "footer": {
-      "copyright": "EncodeBiz Sass.",
+      "copyright": "encodeBiz Sass.",
       "web": "Nuestra Web",
       "contactUs": "Contáctenos",
       "whatsApp": "WhatsApp",
-      "policy": "Política y Privacidad",
+      "policy": "Política de Privacidad",
       "terms": "Términos y Condiciones"
     }
   },
@@ -237,7 +237,7 @@
       "start": "Comenzar",
       "saveChanges": "Guardar",
       "ok": "Entiendo",
-      "configurenow": "Configurar ahora",
+      "configurenow": "Configurar",
       "update": "Actualizar"
     },
     "formValidatorMessages": {

@@ -29,10 +29,11 @@ export default function OnboardingCard({ children,serviceData, title, descriptio
   const styles = useStyles(!!user?.id)
   const t = useTranslations()
    
+ 
 
   return (
-    <Box  >
-      <Paper elevation={2} sx={{...styles.base,minHeight:heightCard}}>
+  
+      <Paper  sx={{...styles.base,minHeight:heightCard}}>
         <Box sx={image ? styles.root : styles.rootSimple}>
           <Box sx={styles.container}>
             <Typography sx={styles.title} variant="h4" component="h1" align="center" >
@@ -52,7 +53,6 @@ export default function OnboardingCard({ children,serviceData, title, descriptio
           {children}
         </Box>
       </Paper>
-
-    </Box>
+ 
   );
 }

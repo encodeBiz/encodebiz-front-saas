@@ -22,7 +22,7 @@ import { TransitionProps } from '@mui/material/transitions';
 import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import { CustomTypography } from '../Text/CustomTypography';
 import { SassButton } from '../buttons/GenericButton';
-import { CancelOutlined, CheckOutlined, Warning } from '@mui/icons-material';
+import {  Warning } from '@mui/icons-material';
 import { BorderBox } from '../tabs/BorderBox';
 
 interface SheetModalProps {
@@ -36,6 +36,7 @@ interface SheetModalProps {
     isLoading?: boolean
     onOKAction: (args: any) => void
     type?: CommonModalType
+    hideCancel?: boolean
 }
 
 const Transition = React.forwardRef(function Transition(
@@ -48,7 +49,7 @@ const Transition = React.forwardRef(function Transition(
 });
 
 
-const SheetModalModal = ({ title, textBtn, description, textPoint = [], type = CommonModalType.DELETE, isLoading = false, onOKAction }: SheetModalProps): React.JSX.Element => {
+const SheetModalModal = ({ title,hideCancel=false, textBtn, description, textPoint = [], type = CommonModalType.DELETE, isLoading = false, onOKAction }: SheetModalProps): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const theme = useTheme()
     const t = useTranslations()
@@ -95,7 +96,7 @@ const SheetModalModal = ({ title, textBtn, description, textPoint = [], type = C
                 <BorderBox sx={{ p: 1 }}>
                     {textPoint.length > 0 && <List dense={true}>
                         {textPoint.map((e, i) => <ListItem key={i}>
-                            <ListItemIcon><Warning color='warning' /></ListItemIcon>
+                            <ListItemIcon><Warning sx={{color:(theme)=>theme.palette.warning.main}} color='warning' /></ListItemIcon>
                             <ListItemText
                                 primary={<Typography variant='body1'>{e.text}</Typography>}
                             />
@@ -105,22 +106,22 @@ const SheetModalModal = ({ title, textBtn, description, textPoint = [], type = C
             </DialogContent>
             <DialogActions>
 
-                <SassButton
+                {!hideCancel && <SassButton
                     onClick={(e) => handleClose(e, 'manual')}
                     disabled={isLoading}
                     variant="outlined"
                     size='small'
-                    startIcon={<CancelOutlined />}
+                    startIcon={null}
                     color='primary'
                 >
                     {t('core.button.cancel')}
-                </SassButton>
+                </SassButton>}
                 <SassButton
                     onClick={handleConfirm}
                     disabled={isLoading}
                     variant="contained"
                     color='primary'
-                    startIcon={isLoading ? <CircularProgress size={20} /> : <CheckOutlined />}
+                    startIcon={isLoading ? <CircularProgress size={20} /> : null}
                 >
                     {textBtn ? textBtn : t('core.button.ok')}
                 </SassButton>

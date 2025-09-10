@@ -12,9 +12,7 @@ import {
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useTranslations } from 'next-intl';
-import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import { SassButton } from '../buttons/GenericButton';
-import { CancelOutlined } from '@mui/icons-material';
 import { CustomTypography } from '../Text/CustomTypography';
 
 interface InfoModalProps {

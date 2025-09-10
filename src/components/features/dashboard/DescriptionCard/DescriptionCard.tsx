@@ -38,7 +38,7 @@ export default function DescriptionCard({ title1, title2, description1, descript
               {description2}
             </Typography>
 
-            <SassButton variant="contained" color="primary" sx={{ mt: 2, textTransform:'capitalize' }}>{t('core.button.contactUs')}</SassButton>
+            <SassButton variant="contained" color="primary" sx={{ mt: 2, textTransform:'none' }}>{t('core.button.contactUs')}</SassButton>
 
           </Box>
 

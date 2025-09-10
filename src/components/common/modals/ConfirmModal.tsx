@@ -16,8 +16,6 @@ import { CommonModalType } from '@/contexts/commonModalContext';
 import { useTranslations } from 'next-intl';
 import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import { SassButton } from '../buttons/GenericButton';
-import { TrashIcon } from '../icons/TrashIcon';
-import { CancelOutlined } from '@mui/icons-material';
 import { CustomTypography } from '../Text/CustomTypography';
 import { BorderBox } from '../tabs/BorderBox';
 
@@ -34,7 +32,7 @@ interface ConfirmProps {
     onOKAction: (args: any) => void
 
 }
-const ConfirmModal = ({ word, title, label, textBtn, icon = <TrashIcon />, description, isLoading = false, cancelBtn = true, codeValidator = false, onOKAction }: ConfirmProps): React.JSX.Element => {
+const ConfirmModal = ({ word, title, label, textBtn, description, isLoading = false, cancelBtn = true, codeValidator = false, onOKAction }: ConfirmProps): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const theme = useTheme()
     const [confirmationText, setConfirmationText] = useState('');
@@ -110,7 +108,7 @@ const ConfirmModal = ({ word, title, label, textBtn, icon = <TrashIcon />, descr
                     onClick={(e) => handleClose(e, 'manual')}
                     disabled={isLoading}
                     size='small'
-                    startIcon={<CancelOutlined />}
+                   
 
                 >
                     {t('core.button.cancel')}
@@ -121,7 +119,7 @@ const ConfirmModal = ({ word, title, label, textBtn, icon = <TrashIcon />, descr
                     color="error"
                     size='small'
                     variant="contained"
-                    startIcon={isLoading ? <CircularProgress size={20} /> : icon}
+                    startIcon={isLoading ? <CircularProgress size={20} /> : null}
                 >
                     {textBtn ? textBtn : codeValidator ? t('core.button.submit') : t('core.button.delete')}
                 </SassButton>
