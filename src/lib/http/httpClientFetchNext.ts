@@ -1,3 +1,6 @@
+import { logout } from "../firebase/authentication/logout";
+
+
 /**
  * HttpClientOptions
  *
@@ -104,6 +107,8 @@ export class HttpClient {
 
       if (!response.ok) {
 
+
+
         if (response.status >= 400 && response.status <= 500) {
           let responseError: { code: string; message: string; error: string, errors: Array<string> }
           const responseErrorData = await response.json()
@@ -122,6 +127,11 @@ export class HttpClient {
 
           if (Array.isArray(responseError.errors) && responseError.errors.length > 0) {
             throw new Error(responseError.errors[0])
+          }
+
+          if (responseError.code === 'twofactor/invalid_token') {
+            logout()
+            window.location.href = "/auth/login?expiredToken=1"
           }
           const message = codeError[responseError.code];
           throw new Error(message ? message : responseError.error ? responseError.error : `HTTP error! status: ${response.status}`);
