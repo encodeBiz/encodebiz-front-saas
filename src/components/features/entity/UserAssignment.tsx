@@ -119,7 +119,7 @@ const UserAssignment = ({ project, onAssign, onRemove, proccesing = false }: Use
                 <BorderBox sx={{ p: 2 }}>
                     <List>
                         {project.collaborators.map((collaborator) => (
-                            <Card elevation={1} key={collaborator.user.id}>
+                            <Card sx={{boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', mb:1}} elevation={0} key={collaborator.user.id}>
 
                                 <ListItem
                                     secondaryAction={
@@ -147,9 +147,9 @@ const UserAssignment = ({ project, onAssign, onRemove, proccesing = false }: Use
 
                                     }
                                 >
-                                    <ListItemAvatar>
+                                    {collaborator.status !== 'invited' && <ListItemAvatar>
                                         <Avatar src={collaborator.user.photoURL as string} alt={collaborator.user.fullName} />
-                                    </ListItemAvatar>
+                                    </ListItemAvatar>}
                                     <ListItemText
                                         primary={collaborator.user.fullName === 'Guest' ? collaborator.user.email : collaborator.user.fullName}
                                         secondary={
