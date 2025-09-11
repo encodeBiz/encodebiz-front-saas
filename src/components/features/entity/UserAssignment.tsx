@@ -66,7 +66,7 @@ export interface UserAssignmentProps {
     currentUser: IUser
     proccesing?: boolean
 }
-const UserAssignment = ({ project, onAssign, onRemove, currentUser, proccesing = false }: UserAssignmentProps) => {
+const UserAssignment = ({ project, onAssign, onRemove, proccesing = false }: UserAssignmentProps) => {
     const [openModalAdd, setOpenModalAdd] = useState(false);
 
     const [email, setEmail] = useState<string>();
