@@ -54,7 +54,14 @@ export const ImageCropper = ({ onComplete, disabled = false, isUploading, size =
                     </Box>
                 </DialogTitle>
 
-                <DialogContent dividers>
+                <DialogContent
+                    sx={{
+                        minHeight: 700,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-around'
+                    }}
+                    dividers>
                     {image && (
                         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
 

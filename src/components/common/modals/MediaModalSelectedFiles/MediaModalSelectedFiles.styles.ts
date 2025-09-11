@@ -4,6 +4,8 @@ export const useStyles = (theme: Theme): Record<string, SxProps<Theme>> => ({
   root: {
     width: '100%',
     marginTop: theme.spacing(2),
+    
+
   },
   header: {
     padding: theme.spacing(1, 2),
@@ -15,7 +17,8 @@ export const useStyles = (theme: Theme): Record<string, SxProps<Theme>> => ({
       sm: 'column-reverse',
       md: 'column-reverse',
       lg: 'row',
-      xl: 'row',    }
+      xl: 'row',
+    }
   },
   content: {
     padding: theme.spacing(2),
