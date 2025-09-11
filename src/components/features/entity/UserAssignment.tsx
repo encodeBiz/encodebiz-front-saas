@@ -125,7 +125,7 @@ const UserAssignment = ({ project, onAssign, onRemove, currentUser, proccesing =
                                     secondaryAction={
                                         <Box display={'flex'}>
 
-                                            {collaborator.status === 'active' && <CustomChip
+                                            {collaborator.status === 'invited' && <CustomChip
                                                 id={collaborator.user.id}
                                                 background={'gray'}
                                                 text={'Estado de la invitación: Pendiente a aceptar'}
@@ -137,7 +137,7 @@ const UserAssignment = ({ project, onAssign, onRemove, currentUser, proccesing =
                                                 (collaborator.role === 'owner' && collaborator.status !== 'invited' && project.collaborators.filter(e => e.role === 'owner' && e.status === 'active').length > 1) && (
                                                     <CustomIconBtn
                                                         onClick={() => openModal(CommonModalType.COLABORATOR, { data: collaborator.user.uid })}
-                                                        disabled={collaborator.user.uid === currentUser?.id}
+                                                         
                                                         icon={<TrashIcon />}
                                                         color={theme.palette.primary.main}
                                                     />
