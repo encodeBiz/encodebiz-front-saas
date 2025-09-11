@@ -9,11 +9,11 @@ import { Box, Grid, Typography } from '@mui/material';
 const FacturasPreferencesPage = () => {
     const t = useTranslations();
     const {
-        items,
+        items, rowAction, onRowsPerPageChange, onSort,
         onNext, onBack,
-        currentPage,
+        filterParams,
         columns,
-        loading, rowsPerPage, setRowsPerPage } = useFacturaController();
+        loading } = useFacturaController();
 
     return (
         <Grid container spacing={1} display={'flex'} flexDirection={'column'} justifyContent="flex-start" pb={10}>
@@ -23,16 +23,18 @@ const FacturasPreferencesPage = () => {
             </Box>
             <GenericTable
                 data={items}
+                rowAction={rowAction}
                 columns={columns}
                 title={''}
                 keyField="id"
                 loading={loading}
-                page={currentPage}
-                rowsPerPage={rowsPerPage}
-                onRowsPerPageChange={setRowsPerPage}
+                page={filterParams.currentPage}
+                rowsPerPage={filterParams.params.limit}
+                onRowsPerPageChange={onRowsPerPageChange}
+                onSorteable={onSort}
+                sort={{ orderBy: filterParams.params.orderBy, orderDirection: filterParams.params.orderDirection }}
                 onBack={onBack}
                 onNext={onNext}
-
             />
 
         </Grid>
