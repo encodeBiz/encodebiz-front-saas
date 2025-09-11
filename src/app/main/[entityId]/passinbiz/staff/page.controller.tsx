@@ -13,7 +13,6 @@ import { DeleteOutline, Event, ReplyAllOutlined } from "@mui/icons-material";
 import { PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { Box } from "@mui/material";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
-import { TextFilter } from "@/components/common/table/filters/TextFilter";
 import { useLayout } from "@/hooks/useLayout";
 import { useSearchParams } from "next/navigation";
 import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
@@ -22,8 +21,7 @@ import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
 
 
-let resource: any = null;
-
+ 
 
 interface IFilterParams {
   filter: { allowedTypes: string, email: string }
