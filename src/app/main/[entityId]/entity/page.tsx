@@ -90,16 +90,16 @@ const EntityPreferencesPage = () => {
     }
 
     return (
-        <Container maxWidth="xl">
+        <Container maxWidth="xl">{tab}
             <HeaderPage
                 isForm
                 inTab
-                actions={<>{(tabText === 'company' || tabText === 'branding') &&
+                actions={<>{(tab === 0 || tab === 1) &&
                     <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
                         <SassButton
                             disabled={!formStatus?.isValid || formStatus?.isSubmitting}
                             onClick={handleExternalSubmit}
-                            variant='contained'                             
+                            variant='contained'
                         > {t('core.button.save')}</SassButton>
                     </Box>}
                 </>}

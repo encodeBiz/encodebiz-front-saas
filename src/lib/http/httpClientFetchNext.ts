@@ -43,6 +43,7 @@ export const codeError: any = {
   "staff/unauthorized": "Acceso de personal de apoyo deshabilitado o vencido",
   "media/not_found": "Archivo no encontrado",
   "staff/not_found": "Personal de apoyo no encontrado",
+  'twofactor/invalid_token':"La sesión ha expirado"
 };
 
 /**

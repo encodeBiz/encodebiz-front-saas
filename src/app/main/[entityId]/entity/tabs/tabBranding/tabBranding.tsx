@@ -15,10 +15,10 @@ const BrandPreferencesPage = ({ formRef }: { formRef: any }) => {
     const { currentEntity } = useEntity()
     return (
         <> <Typography variant="h4" component="h1" align="left" sx={{ textAlign: 'left' }} >
-            {t('entity.tabs.tab1.titleAbout')}
+            {t('entity.tabs.tab2.titleAbout')}
         </Typography>
             <Typography variant="subtitle1" align="left" color="text.secondary" sx={{ mb: 4, textAlign: 'left' }}>
-                {t('entity.tabs.tab1.descriptionAbout')}
+                {t('entity.tabs.tab2.descriptionAbout')}
             </Typography>
             <GenericForm<BrandFormValues>
                 column={3}
