@@ -35,6 +35,7 @@ import { BorderBox } from '@/components/common/tabs/BorderBox';
 import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import { TrashIcon } from '@/components/common/icons/TrashIcon';
 import { CustomTypography } from '@/components/common/Text/CustomTypography';
+import { CustomChip } from '@/components/common/table/CustomChip';
 
 const roleOptions = [
     { value: 'admin', label: 'Adminstrador' },
@@ -74,11 +75,7 @@ const UserAssignment = ({ project, onAssign, onRemove, currentUser, proccesing =
     const [selectedRole, setSelectedRole] = useState('write');
     const t = useTranslations()
     const { openModal, closeModal, open } = useCommonModal()
-    const { user } = useAuth()
     const theme = useTheme()
-
-    const { currentEntity } = useEntity()
-
 
     const handleOpen = () => setOpenModalAdd(true);
     const handleClose = () => {
@@ -125,16 +122,30 @@ const UserAssignment = ({ project, onAssign, onRemove, currentUser, proccesing =
                     <List>
                         {project.collaborators.map((collaborator) => (
                             <Card elevation={1} key={collaborator.user.id}>
+                               
                                 <ListItem
-                                    secondaryAction={
-                                        currentEntity?.role === 'owner' && collaborator.user.id !== user?.id && (
-                                            <CustomIconBtn
-                                                onClick={() => openModal(CommonModalType.COLABORATOR, { data: collaborator.user.uid })}
-                                                disabled={collaborator.user.uid === currentUser?.id}
-                                                icon={<TrashIcon />}
-                                                color={theme.palette.primary.main}
-                                            />
-                                        )
+                                    secondaryAction={ collaborator.status==='active'?
+                                        <>
+                                            {
+                                                project.collaborators.filter(e => e.role === 'owner' && e.status === 'active').length > 1 && (
+                                                    <CustomIconBtn
+                                                        onClick={() => openModal(CommonModalType.COLABORATOR, { data: collaborator.user.uid })}
+                                                        disabled={collaborator.user.uid === currentUser?.id}
+                                                        icon={<TrashIcon />}
+                                                        color={theme.palette.primary.main}
+                                                    />
+                                                )
+                                            }
+                                        </>
+                                        :
+                                        <CustomChip
+                                                id={collaborator.user.id}
+                                                background={'gray'}
+                                                text={'Estado de la invitación: Pendiente a aceptar'}
+                                                size="small"
+                                                label={'Estado de la invitación: Pendiente a aceptar'}
+                                        
+                                              />
                                     }
                                 >
                                     <ListItemAvatar>
@@ -143,7 +154,7 @@ const UserAssignment = ({ project, onAssign, onRemove, currentUser, proccesing =
                                     <ListItemText
                                         primary={collaborator.user.fullName}
                                         secondary={
-                                            t('core.label.' + (collaborator.user.fullName === 'Guest' ? 'guest' : collaborator.role))
+                                            t('core.label.' + (collaborator.role))
                                         }
                                     />
                                 </ListItem>

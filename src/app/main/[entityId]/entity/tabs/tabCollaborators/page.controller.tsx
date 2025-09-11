@@ -96,7 +96,7 @@ export const useCollaboratorsController = () => {
                 user: data.find(e => e.role === 'owner')?.user as IUser,
                 role: 'owner'
             },
-            collaborators: data.map(e => ({ user: e.user, role: e.role })),
+            collaborators: data.map(e => ({ user: e.user, role: e.role , status: e.status })),
             id: currentEntity?.entity.id as string,
             data
         })
