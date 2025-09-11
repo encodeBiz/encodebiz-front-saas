@@ -6,8 +6,7 @@ import {
     DialogContentText,
     DialogTitle,
     Box,
-    Typography,
-    useTheme
+    Typography
 } from '@mui/material';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
@@ -19,10 +18,10 @@ interface InfoModalProps {
     title: string
     description: string
     cancelBtn?: boolean
+    onClose?: () => void
 }
-const InfoModal = ({ title, description, cancelBtn = true }: InfoModalProps): React.JSX.Element => {
+const InfoModal = ({ title, description, onClose, cancelBtn = true }: InfoModalProps): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
-    const theme = useTheme()
     const t = useTranslations()
     // Handler for closing the dialog
 
@@ -30,6 +29,10 @@ const InfoModal = ({ title, description, cancelBtn = true }: InfoModalProps): Re
         if (reason !== 'backdropClick')
             closeModal(CommonModalType.DELETE);
         closeModal(CommonModalType.INFO);
+
+        if (typeof onClose === 'function') {
+            onClose()
+        }
     };
 
     return (
@@ -46,7 +49,7 @@ const InfoModal = ({ title, description, cancelBtn = true }: InfoModalProps): Re
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
                     <CustomTypography >{title}</CustomTypography>
                 </Box>
-                
+
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description" sx={{ mb: 3 }}>
@@ -59,7 +62,7 @@ const InfoModal = ({ title, description, cancelBtn = true }: InfoModalProps): Re
                     variant="outlined"
                     onClick={(e) => handleClose(e, 'manual')}
                     size='small'
-               
+
                 >
                     {t('core.button.accept')}
                 </SassButton>}

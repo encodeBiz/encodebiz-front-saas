@@ -6,12 +6,13 @@ import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useTranslations } from 'next-intl';
 import { useLayout } from '@/hooks/useLayout';
-import IUser  from '@/domain/auth/IUser';
+import IUser from '@/domain/auth/IUser';
 import { EntityCollaboratorData } from '@/components/features/entity/UserAssignment';
 import { useToast } from '@/hooks/useToast';
 import { assignedUserToEntity, deleteOwnerOfEntity, fetchAllOwnerOfEntity } from '@/services/common/entity.service';
 import IUserEntity from '@/domain/auth/IUserEntity';
 import { useCommonModal } from '@/hooks/useCommonModal';
+import { CommonModalType } from '@/contexts/commonModalContext';
 
 export interface IAssing {
     "role": "admin" | 'owner'
@@ -27,7 +28,7 @@ export const useCollaboratorsController = () => {
     const { token, user } = useAuth()
     const { changeLoaderState } = useLayout()
     const { showToast } = useToast()
-    const { closeModal } = useCommonModal()
+    const { closeModal, openModal } = useCommonModal()
     const [loading, setLoading] = useState(false)
     const [currentProject, setCurrentProject] = useState<EntityCollaboratorData>({
         owner: { user: user as IUser, role: 'owner' },
@@ -72,7 +73,11 @@ export const useCollaboratorsController = () => {
             showToast(t('core.feedback.success'), 'success');
             setLoading(false)
             updateColaborators()
-            closeModal()
+            closeModal(CommonModalType.DELETE)
+
+            if (userId === user?.id) {
+                openModal(CommonModalType.INFO)
+            }
         } catch (error: unknown) {
             if (error instanceof Error) {
                 showToast(error.message, 'error');
@@ -85,7 +90,7 @@ export const useCollaboratorsController = () => {
 
     };
 
- 
+
 
 
 
@@ -96,7 +101,7 @@ export const useCollaboratorsController = () => {
                 user: data.find(e => e.role === 'owner')?.user as IUser,
                 role: 'owner'
             },
-            collaborators: data.map(e => ({ user: e.user, role: e.role , status: e.status })),
+            collaborators: data.map(e => ({ user: e.user, role: e.role, status: e.status })),
             id: currentEntity?.entity.id as string,
             data
         })

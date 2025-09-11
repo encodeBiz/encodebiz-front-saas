@@ -76,6 +76,8 @@
       "loaderActionBilling": "Accediendo a la información de tu pasarela de pago"
     },
     "feedback": {
+      "userDeletedTitle":"Has abandonado la entidad",
+      "userDeletedText":"Te has dado de baja de la entidad exitosamente, por favor inicie sesión para comenzar de nuevo",
       "tokenExireTitle": "La sesión ha caducado",
       "tokenExireText": "La sesión ha caducado, por favor inicie sesión nuevamente para acceder al panel de encodeBiz SaaS",
       "success": "La operación se realizó exitosamente",

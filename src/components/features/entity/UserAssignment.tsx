@@ -152,7 +152,7 @@ const UserAssignment = ({ project, onAssign, onRemove, currentUser, proccesing =
                                         <Avatar src={collaborator.user.photoURL as string} alt={collaborator.user.fullName} />
                                     </ListItemAvatar>
                                     <ListItemText
-                                        primary={collaborator.user.fullName}
+                                        primary={collaborator.user.fullName ==='Guest'?collaborator.user.email:collaborator.user.fullName}
                                         secondary={
                                             t('core.label.' + (collaborator.role))
                                         }
