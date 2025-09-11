@@ -10,6 +10,7 @@ const colorRepository: any = {
     "failed": '#F4AA32',
     "active": 'rgba(122, 223, 127, 0.65)',
     "revoked": 'rgba(177, 35, 33, 0.65)',
+    "revoke": 'rgba(177, 35, 33, 0.65)',
     "default": 'rgba(0, 84, 202, 0.08)',
     "archived": 'rgba(199, 184, 22, 0.63)',
     'gray': 'rgba(121, 123, 125, 0.08)',

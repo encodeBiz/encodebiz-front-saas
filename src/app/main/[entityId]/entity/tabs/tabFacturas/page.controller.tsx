@@ -5,53 +5,104 @@ import { useCallback, useEffect, useState } from 'react';
 import { useEntity } from '@/hooks/useEntity';
 import { useTranslations } from 'next-intl';
 import { fetchInvoicesByEntity } from '@/services/common/subscription.service';
-import { buildSearch, Column } from '@/components/common/table/GenericTable';
+import { buildSearch, Column, IRowAction } from '@/components/common/table/GenericTable';
 import { useToast } from '@/hooks/useToast';
 import { StripeInvoice } from '@/domain/auth/ISubscription';
+import { Download, DownloadOutlined } from '@mui/icons-material';
+
+
+interface IFilterParams {
+
+    params: {
+        orderBy: string,
+        orderDirection: 'desc' | 'asc',
+        startAfter: any,
+        limit: number,
+        filters: Array<{
+            field: string;
+            operator: | '<' | '<=' | '==' | '!=' | '>=' | '>' | 'array-contains' | 'in' | 'array-contains-any' | 'not-in'
+            value: any;
+        }>
+    }
+    total: number
+    currentPage: number
+    startAfter: string | null,
+}
 
 export const useFacturaController = () => {
     const t = useTranslations();
     const { currentEntity } = useEntity()
     const { showToast } = useToast()
-    const [rowsPerPage, setRowsPerPage] = useState<number>(5); // Límite inicial
-    const [params, setParams] = useState<any>({});
+    /** Filter and PAgination Control */
     const [loading, setLoading] = useState<boolean>(true);
-    const [atStart, setAtStart] = useState(true);
-    const [atEnd, setAtEnd] = useState(false)
-    const [last, setLast] = useState<any>()
-    const [pagination, setPagination] = useState(``);
     const [items, setItems] = useState<StripeInvoice[]>([]);
     const [itemsHistory, setItemsHistory] = useState<StripeInvoice[]>([]);
-    const [currentPage, setCurrentPage] = useState(0);
-    const [total, setTotal] = useState(0);
+    const [filterParams, setFilterParams] = useState<IFilterParams>({
+        startAfter: null,
+        currentPage: 0,
+        total: 0,
+        params: {
+            filters: [],
+            startAfter: null,
+            limit: 5,
+            orderBy: 'createdAt',
+            orderDirection: 'desc',
+        }
+    })
+    /** Filter and PAgination Control */
 
 
-    const onSearch = (term: string): void => {
-        setParams({ ...params, startAfter: null, filters: buildSearch(term) })
-    }
+    const rowAction: Array<IRowAction> = [
+        {
+            actionBtn: true,
+            color: 'error',
+            icon: <DownloadOutlined color="primary" />,
+            label: t('core.button.download'),
+            allowItem: () => true,
+            showBulk: false,
+            onPress: (item: StripeInvoice) => { },
+            bulk: false
+        },
 
+    ]
+
+    /** Paginated Changed */
     const onBack = (): void => {
         const backSize = items.length
         itemsHistory.splice(-backSize)
         setItemsHistory([...itemsHistory])
-        setItems([...itemsHistory.slice(-rowsPerPage)])
-        setAtEnd(false)
-        setCurrentPage(currentPage - 1)
-        setLast((itemsHistory[itemsHistory.length - 1] as any).last)
+        setItems([...itemsHistory.slice(-filterParams.params.limit)])
+        setFilterParams({ ...filterParams, currentPage: filterParams.currentPage - 1, params: { ...filterParams.params, startAfter: (itemsHistory[itemsHistory.length - 1] as any).last } })
+
     }
 
-
+    /** Paginated Changed */
     const onNext = async (): Promise<void> => {
         setLoading(true)
-        setParams({ ...params, startAfter: last })
-        setCurrentPage(currentPage + 1)
+        const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: filterParams.currentPage + 1 }
+        fetchingData(filterParamsUpdated)
     }
 
-    useEffect(() => {
-        setAtStart(itemsHistory.length <= rowsPerPage)
-    }, [itemsHistory.length, rowsPerPage])
+    /** Sort Change */
+    const onSort = (sort: { orderBy: string, orderDirection: 'desc' | 'asc' }) => {
+        const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, ...sort, startAfter: null, } }
+        setFilterParams(filterParamsUpdated)
+        fetchingData(filterParamsUpdated)
+    }
 
 
+    /** Limit Change */
+    const onRowsPerPageChange = (limit: number) => {
+        const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null, limit } }
+        setFilterParams(filterParamsUpdated)
+        fetchingData(filterParamsUpdated)
+    }
+
+
+    /** Filter Changed */
+    const onFilter = () => {
+
+    }
 
 
     const columns: Column<StripeInvoice>[] = [
@@ -77,32 +128,23 @@ export const useFacturaController = () => {
         },
     ];
 
-    const fetchingData = useCallback(() => {
+    const fetchingData = (filterParams: IFilterParams) => {
         setLoading(true)
-        fetchInvoicesByEntity(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
-             
-            if (res.length < rowsPerPage || res.length === 0)
-                setAtEnd(true)
-            else
-                setAtEnd(false)
-
+        fetchInvoicesByEntity(currentEntity?.entity.id as string, { ...(filterParams.params as any) }).then(async res => {
             if (res.length !== 0) {
+                setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
                 setItems(res)
-                if (!params.startAfter)
+                if (!filterParams.params.startAfter) {
                     setItemsHistory([...res])
-                else
+                } else {
                     setItemsHistory(prev => [...prev, ...res])
-                setLoading(false)
+                }
             }
 
-            if (!params.startAfter && res.length === 0) {
+            if (!filterParams.params.startAfter && res.length === 0) {
                 setItems([])
                 setItemsHistory([])
             }
-
-            setLast(res.length > 0 ? (res[0] as any).last : null)
-            setPagination(`Total ${res.length > 0 ? (res[0] as any).totalItems : 0}`)
-            setTotal(res.length > 0 ? (res[0] as any).totalItems : 0)
 
         }).catch(e => {
             showToast(e?.message, 'error')
@@ -110,32 +152,22 @@ export const useFacturaController = () => {
             setLoading(false)
         })
 
-    }, [currentEntity?.entity.id, params, rowsPerPage, showToast])
+    }
 
     useEffect(() => {
-        if (params && currentEntity?.entity?.id)
-            fetchingData()
-    }, [params, currentEntity?.entity?.id])
-
-    useEffect(() => {
-        setCurrentPage(0)
-        setParams({ limit: rowsPerPage })
-        setAtStart(true)
-    }, [rowsPerPage])
-
-
+        if (currentEntity?.entity?.id) {
+            fetchingData(filterParams)
+        }
+    }, [currentEntity?.entity?.id])
 
 
 
 
     return {
-        items,
-        atEnd,
-        atStart,
-        onSearch, onNext, onBack,
-        pagination, currentPage,
-        columns, total,
-        loading, rowsPerPage, setRowsPerPage
+        items, onSort, onRowsPerPageChange,
+        onNext, onBack,
+        columns, rowAction,
+        loading, filterParams,
     }
 }
 
