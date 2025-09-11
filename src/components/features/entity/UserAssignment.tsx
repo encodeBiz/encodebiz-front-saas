@@ -28,8 +28,6 @@ import IUserEntity from '@/domain/auth/IUserEntity';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
-import { useAuth } from '@/hooks/useAuth';
-import { useEntity } from '@/hooks/useEntity';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
@@ -122,12 +120,21 @@ const UserAssignment = ({ project, onAssign, onRemove, currentUser, proccesing =
                     <List>
                         {project.collaborators.map((collaborator) => (
                             <Card elevation={1} key={collaborator.user.id}>
-                               
+
                                 <ListItem
-                                    secondaryAction={ collaborator.status==='active'?
-                                        <>
+                                    secondaryAction={
+                                        <Box display={'flex'}>
+
+                                            {collaborator.status === 'active' && <CustomChip
+                                                id={collaborator.user.id}
+                                                background={'gray'}
+                                                text={'Estado de la invitación: Pendiente a aceptar'}
+                                                size="small"
+                                                label={'Estado de la invitación: Pendiente a aceptar'}
+
+                                            />}
                                             {
-                                                project.collaborators.filter(e => e.role === 'owner' && e.status === 'active').length > 1 && (
+                                                (collaborator.role === 'owner' && collaborator.status !== 'invited' && project.collaborators.filter(e => e.role === 'owner' && e.status === 'active').length > 1) && (
                                                     <CustomIconBtn
                                                         onClick={() => openModal(CommonModalType.COLABORATOR, { data: collaborator.user.uid })}
                                                         disabled={collaborator.user.uid === currentUser?.id}
@@ -136,23 +143,15 @@ const UserAssignment = ({ project, onAssign, onRemove, currentUser, proccesing =
                                                     />
                                                 )
                                             }
-                                        </>
-                                        :
-                                        <CustomChip
-                                                id={collaborator.user.id}
-                                                background={'gray'}
-                                                text={'Estado de la invitación: Pendiente a aceptar'}
-                                                size="small"
-                                                label={'Estado de la invitación: Pendiente a aceptar'}
-                                        
-                                              />
+                                        </Box>
+
                                     }
                                 >
                                     <ListItemAvatar>
                                         <Avatar src={collaborator.user.photoURL as string} alt={collaborator.user.fullName} />
                                     </ListItemAvatar>
                                     <ListItemText
-                                        primary={collaborator.user.fullName ==='Guest'?collaborator.user.email:collaborator.user.fullName}
+                                        primary={collaborator.user.fullName === 'Guest' ? collaborator.user.email : collaborator.user.fullName}
                                         secondary={
                                             t('core.label.' + (collaborator.role))
                                         }
