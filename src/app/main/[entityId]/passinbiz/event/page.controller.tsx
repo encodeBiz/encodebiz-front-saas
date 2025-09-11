@@ -146,20 +146,19 @@ export default function useIEventListController() {
     <SearchIndexFilter
       type="events"
       label={t('core.label.search')}
-      value={filterParams.filter.name}
       onChange={async (value: ISearchIndex) => {
- 
-      if (value?.id) {
+        const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
+        if (value?.id) {
           const item = await getRefByPathData(value.index)
           if (item)
             setItems([item])
           else
-            fetchingData(filterParams)
+            fetchingData(filterParamsUpdated)
         }
         else {
           setItems([])
-          fetchingData(filterParams)
-        }         
+          fetchingData(filterParamsUpdated)
+        }
       }}
     />
   </Box>
@@ -197,7 +196,7 @@ export default function useIEventListController() {
 
   const fetchingData = (filterParams: IFilterParams) => {
     setLoading(true)
-     
+
     if (filterParams.params.filters.find((e: any) => e.field === 'status' && e.value === 'none'))
       filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "status")
     if (filterParams.params.filters.find((e: any) => e.field === 'name' && e.value === ''))

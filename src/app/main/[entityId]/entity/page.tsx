@@ -90,7 +90,7 @@ const EntityPreferencesPage = () => {
     }
 
     return (
-        <Container maxWidth="xl">{tab}
+        <Container maxWidth="xl"> 
             <HeaderPage
                 isForm
                 inTab

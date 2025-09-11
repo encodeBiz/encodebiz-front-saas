@@ -20,7 +20,6 @@ import { useDebouncedCallback } from "../../forms/customHooks/useDebounce";
 type Option = { id: string; label: string; data: ISearchIndex };
 
 interface SearchIndexInputProps {
-  value: any,
   type: "entities" | "users" | "events" | "staff" | "holder",
   label?: any,
   onChange: (value: any) => void,
@@ -30,6 +29,12 @@ const getDataLabel = (data: ISearchIndex, type: "entities" | "users" | "events" 
   switch (type) {
     case "events":
       return data.fields['name']
+      break;
+    case "holder":
+      return data.fields['fullName']
+      break;
+    case "staff":
+      return data.fields['fullName']
       break;
 
     default:
@@ -64,6 +69,7 @@ const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, label, t
         const data = await fetchIndex({
           keyword: query, type, entityId: currentEntity?.entity?.id as string
         });
+         
         setOptions(
           data.map((e: any) => ({
             id: `${e.id}`,

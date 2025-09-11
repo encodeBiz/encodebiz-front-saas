@@ -45,6 +45,6 @@ export const useStyles = (): Record<string, SxProps<Theme>> => ({
     justifyContent:'flex-start',
     alignItems:'flex-start',
     textAlign:'left',
-    mt:2
+    mt:1.5
   }
 })

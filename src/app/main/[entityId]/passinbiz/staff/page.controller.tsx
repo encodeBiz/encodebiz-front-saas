@@ -17,6 +17,9 @@ import { TextFilter } from "@/components/common/table/filters/TextFilter";
 import { useLayout } from "@/hooks/useLayout";
 import { useSearchParams } from "next/navigation";
 import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
+import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
+import { ISearchIndex } from "@/domain/core/SearchIndex";
+import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
 
 
 let resource: any = null;
@@ -347,15 +350,22 @@ export default function useStaffListController() {
     />
 
 
-    <TextFilter
-      label={t('core.label.email')}
-      value={filterParams.filter.email}
-      onChange={(value) => {
-        setFilterParams({ ...filterParams, filter: { ...filterParams.filter, email: value } });
-        if (resource) clearTimeout(resource);
-        resource = setTimeout(() => {
-          onFilter({ ...filterParams, filter: { ...filterParams.filter, email: value } })
-        }, 1500);
+    <SearchIndexFilter
+      type="staff"
+      label={t('core.label.search')}
+      onChange={async (value: ISearchIndex) => {
+        const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
+        if (value?.id) {
+          const item = await getRefByPathData(value.index)
+          if (item)
+            setItems([item])
+          else
+            fetchingData(filterParamsUpdated)
+        }
+        else {
+          setItems([])
+          fetchingData(filterParamsUpdated)
+        }
       }}
     />
   </Box>
