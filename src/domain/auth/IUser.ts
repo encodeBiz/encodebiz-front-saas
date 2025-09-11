@@ -1,6 +1,6 @@
 import { User } from "firebase/auth";
 
- 
+
 /**
  * IUser model interface
  *
@@ -12,20 +12,21 @@ interface IUser extends User {
   id?: string;
   email: string;
   fullName: string;
-  phoneNumber: string; 
+  phoneNumber: string;
   lastLoginAt?: string;
-  active: boolean;   
+  active: boolean;
   createdAt: Date;
-  updatedAt: Date;   
+  updatedAt: Date;
   password?: string;
-  completeProfile?: boolean;   
+  completeProfile?: boolean;
   accessToken?: string;
 
   role?: string;
 }
 
 export interface ICollaborator {
-  user:IUser
-  role?: string;
+  user: IUser
+  role?: 'owner' | 'admin' | 'member' | 'viewer';
+  status?: 'active' | 'invited' | 'disabled';
 }
 export default IUser;

@@ -48,7 +48,7 @@
       }
     },
     "footer": {
-      "copyright": "encodeBiz Sass.",
+      "copyright": "encodeBiz Saas.",
       "web": "Nuestra Web",
       "contactUs": "Contáctenos",
       "whatsApp": "WhatsApp",
@@ -76,18 +76,27 @@
       "loaderActionBilling": "Accediendo a la información de tu pasarela de pago"
     },
     "feedback": {
+      "userDeletedTitle":"Has abandonado la entidad",
+      "userDeletedText":"Te has dado de baja de la entidad exitosamente, por favor inicie sesión para comenzar de nuevo",
+      "tokenExireTitle": "La sesión ha caducado",
+      "tokenExireText": "La sesión ha caducado, por favor inicie sesión nuevamente para acceder al panel de encodeBiz SaaS",
       "success": "La operación se realizó exitosamente",
       "empthy": "Nada que mostrar",
       "empthytext": "No existen elementos para mostrar en este momento",
       "nocard": "No tienes métodos de pago asociado a la entidad, por favor configure al menos uno."
     },
     "label": {
+      "comercialEvent": "INFORMACIÓN DEL EVENTO",
+      "brandEvent": "COLORES DE MARCA DEL EVENTO",
+      "resourceEvent": "RECURSOS GRÁFICOS DEL EVENTO",
+      "configEvent": "CONFIGURACIÓN DEL EVENTO",
       "text": "Textos",
       "language": "Idioma",
       "filename": "Nombre de Archivo",
       "default": "Por defecto",
       "state": "Estado",
       "vip": "VIP",
+      "search": "Buscar...",
       "template": "Plantilla",
       "expo": "Expositivo",
       "festival": "Festival",
@@ -348,7 +357,7 @@
         "deleteConfirmModalTitle3": "Por favor entre la siguiente palabra para continuar con la accion"
       },
       "tab2": {
-        "title": "Marca",
+        "title": "Identidad visual",
         "btn": "Eliminar Entidad",
         "titleAbout": "Acerca de tu empresa",
         "descriptionAbout": "Completa la información de la marca"
@@ -632,8 +641,8 @@
       "text3": "Esto nos permite,",
       "text4": "Personalizar la experiencia",
       "text5": "con la identidad corporativa de tu organización en cualquier servicio.",
-      "text6": "Personalizar la experiencia",
-      "text7": " con la identidad corporativa de tu organización en cualquier servicio.",
+      "text6": "Centralizar la información",
+      "text7": " de tu entidad para que sus datos estén disponibles en todos los documentos y procesos de la plataforma.",
       "text8": "Asegurar un uso legítimo y transparente",
       "text9": "de los servicios, cumpliendo con los requisitos legales y de protección",
       "continue": "Continuar"

@@ -301,7 +301,7 @@ export function GenericTable<T extends Record<string, any>>({
                 <TableCell
                   sx={{
                     '&.MuiTableCell-head': {
-                      backgroundColor: theme.palette.common.white,
+                      backgroundColor: theme.palette.background.paper,
                       fontWeight: 'bold',
                     },
                   }}
@@ -329,7 +329,7 @@ export function GenericTable<T extends Record<string, any>>({
                 <TableCell
                   sx={{
                     '&.MuiTableCell-head': {
-                      backgroundColor: theme.palette.common.white,
+                      backgroundColor: theme.palette.background.paper,
                       fontWeight: 'bold',
                       textAlign: 'left'
                     },

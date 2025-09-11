@@ -28,13 +28,12 @@ import IUserEntity from '@/domain/auth/IUserEntity';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
-import { useAuth } from '@/hooks/useAuth';
-import { useEntity } from '@/hooks/useEntity';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import { TrashIcon } from '@/components/common/icons/TrashIcon';
 import { CustomTypography } from '@/components/common/Text/CustomTypography';
+import { CustomChip } from '@/components/common/table/CustomChip';
 
 const roleOptions = [
     { value: 'admin', label: 'Adminstrador' },
@@ -67,18 +66,14 @@ export interface UserAssignmentProps {
     currentUser: IUser
     proccesing?: boolean
 }
-const UserAssignment = ({ project, onAssign, onRemove, currentUser, proccesing = false }: UserAssignmentProps) => {
+const UserAssignment = ({ project, onAssign, onRemove, proccesing = false }: UserAssignmentProps) => {
     const [openModalAdd, setOpenModalAdd] = useState(false);
 
     const [email, setEmail] = useState<string>();
     const [selectedRole, setSelectedRole] = useState('write');
     const t = useTranslations()
     const { openModal, closeModal, open } = useCommonModal()
-    const { user } = useAuth()
     const theme = useTheme()
-
-    const { currentEntity } = useEntity()
-
 
     const handleOpen = () => setOpenModalAdd(true);
     const handleClose = () => {
@@ -124,26 +119,41 @@ const UserAssignment = ({ project, onAssign, onRemove, currentUser, proccesing =
                 <BorderBox sx={{ p: 2 }}>
                     <List>
                         {project.collaborators.map((collaborator) => (
-                            <Card elevation={1} key={collaborator.user.id}>
+                            <Card sx={{boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', mb:1}} elevation={0} key={collaborator.user.id}>
+
                                 <ListItem
                                     secondaryAction={
-                                        currentEntity?.role === 'owner' && collaborator.user.id !== user?.id && (
-                                            <CustomIconBtn
-                                                onClick={() => openModal(CommonModalType.COLABORATOR, { data: collaborator.user.uid })}
-                                                disabled={collaborator.user.uid === currentUser?.id}
-                                                icon={<TrashIcon />}
-                                                color={theme.palette.primary.main}
-                                            />
-                                        )
+                                        <Box display={'flex'}>
+
+                                            {collaborator.status === 'invited' && <CustomChip
+                                                id={collaborator.user.id}
+                                                background={'gray'}
+                                                text={'Estado de la invitación: Pendiente a aceptar'}
+                                                size="small"
+                                                label={'Estado de la invitación: Pendiente a aceptar'}
+
+                                            />}
+                                            {
+                                                (collaborator.role === 'owner' && collaborator.status !== 'invited' && project.collaborators.filter(e => e.role === 'owner' && e.status === 'active').length > 1) && (
+                                                    <CustomIconBtn
+                                                        onClick={() => openModal(CommonModalType.COLABORATOR, { data: collaborator.user.uid })}
+                                                         
+                                                        icon={<TrashIcon />}
+                                                        color={theme.palette.primary.main}
+                                                    />
+                                                )
+                                            }
+                                        </Box>
+
                                     }
                                 >
-                                    <ListItemAvatar>
+                                    {collaborator.status !== 'invited' && <ListItemAvatar>
                                         <Avatar src={collaborator.user.photoURL as string} alt={collaborator.user.fullName} />
-                                    </ListItemAvatar>
+                                    </ListItemAvatar>}
                                     <ListItemText
-                                        primary={collaborator.user.fullName}
+                                        primary={collaborator.user.fullName === 'Guest' ? collaborator.user.email : collaborator.user.fullName}
                                         secondary={
-                                            t('core.label.' + (collaborator.user.fullName === 'Guest' ? 'guest' : collaborator.role))
+                                            t('core.label.' + (collaborator.role))
                                         }
                                     />
                                 </ListItem>

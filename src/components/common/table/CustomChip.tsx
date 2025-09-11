@@ -12,6 +12,7 @@ const colorRepository: any = {
     "revoked": 'rgba(177, 35, 33, 0.65)',
     "default": 'rgba(0, 84, 202, 0.08)',
     "archived": 'rgba(199, 184, 22, 0.63)',
+    'gray': 'rgba(121, 123, 125, 0.08)',
 }
 
 export const CustomChip = ({ label, background = "default", id = '', text = '', ...props }: { label: string; id?: string; text?: string; background?: string; } & any) => {
@@ -29,7 +30,7 @@ export const CustomChip = ({ label, background = "default", id = '', text = '', 
                 background: colorRepository[background],
                 borderColor: (theme) => background == "default" ? theme.palette.primary.main : colorRepository[background],
                 px: 1, py: 2,
-                width: 100,
+                width: 'fit-content',
                 cursor: text ? 'pointer' : 'default',
                 ...props.sx
             }}

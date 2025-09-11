@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 import { CommonModalType } from "@/contexts/commonModalContext"
-import { IEvent } from "@/domain/features/passinbiz/IEvent"
 import { useCommonModal } from "@/hooks/useCommonModal"
 import { useLayout } from "@/hooks/useLayout"
 import { useToast } from "@/hooks/useToast"
@@ -28,7 +27,7 @@ interface StaffResponse {
     },
     "sessionToken": string
     "expiresAt": any
-    "events": Array<IEvent>
+    "events": Array<{name: string, eventId: string}>
 }
 
 export const useQRScanner = () => {
@@ -45,10 +44,11 @@ export const useQRScanner = () => {
     const [staffValid, setStaffValid] = useState(false)
     const { openModal } = useCommonModal()
 
-    const [eventList, setEventList] = useState<Array<IEvent>>([])
-    const [eventSelected, setEventSelected] = useState<IEvent>()
+    const [eventList, setEventList] = useState<Array<{name: string, eventId: string}>>([])
+    const [eventSelected, setEventSelected] = useState<{name: string, eventId: string}>()
 
     const handleValidateStaff = useCallback(async () => {
+         
         try {
             setStaffValidating(true)
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
@@ -72,10 +72,11 @@ export const useQRScanner = () => {
 
     const validateData = async (data: any) => {
         try {
+             
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             const response = await validateHolder({
                 ...data,
-                eventId: eventSelected?.id as string
+                eventId: eventSelected?.eventId as string
             }, tokenValidateStaff)
             setScanRessult({
                 ...data,
@@ -114,6 +115,6 @@ export const useQRScanner = () => {
 
 
 
-    return { handleScan, handleError, resetScanner, scanRessult, scanning, error, staffValidating, staffValid, eventList, setEventSelected }
+    return {eventSelected, handleScan, handleError, resetScanner, scanRessult, scanning, error, staffValidating, staffValid, eventList, setEventSelected }
 }
 

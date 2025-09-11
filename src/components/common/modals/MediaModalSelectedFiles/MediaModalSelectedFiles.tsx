@@ -20,7 +20,6 @@ import {
 } from '@mui/material';
 import {
   CheckCircle as CheckCircleIcon,
-  CheckOutlined,
   CloudUpload
 } from '@mui/icons-material';
 import { useStyles } from './MediaModalSelectedFiles.styles';

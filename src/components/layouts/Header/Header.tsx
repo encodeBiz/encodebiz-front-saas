@@ -39,6 +39,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import EntitySwitcher from '@/components/common/EntitySwitcher';
 import { CommonModalType } from '@/contexts/commonModalContext';
+import { MoonIcon } from '@/components/common/icons/MoonIcon';
+import { QuestionIcon } from '@/components/common/icons/QuestionIcon';
 
 
 export default function Header({ drawerWidth }: { drawerWidth: number }) {
@@ -218,7 +220,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
                 width: 40
               }}
             >
-              {theme.palette.mode === 'dark' ? <BrightnessHigh /> : <BedtimeOutlined sx={{color:'#1C1B1D' }} />}
+              {theme.palette.mode === 'dark' ? <BrightnessHigh /> : <MoonIcon sx={{color:'#1C1B1D' }} />}
             </IconButton>
 
 
@@ -239,7 +241,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
                 }}
                 onClick={() => openModal()}
               >
-                <QuestionMarkOutlined sx={{color:'#1C1B1D' }} />
+                <QuestionIcon sx={{color:'#1C1B1D' }} />
               </IconButton>
             </Tooltip>
 

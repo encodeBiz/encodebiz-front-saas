@@ -1,5 +1,8 @@
 
+import { collection } from "@/config/collection";
 import { ContactFromModel } from "@/domain/core/IContact";
+import { ISearchIndex } from "@/domain/core/SearchIndex";
+import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
 export interface IAddress {
   addressQuery: string
@@ -41,6 +44,32 @@ export async function fetchLocation(data: {
 }
 
 
+export async function fetchIndex(data: {
+  "entityId": string,
+  "keyword"?: string,
+  type?: "entities" | "users" | "events" | "staff" | "holder",
+
+}): Promise<Array<ISearchIndex>> {
+  const filters = []
+  if (data.type) filters.push({
+    field: 'type', operator: '==', value: data.type
+  })
+
+  if (data.keyword) filters.push({
+    field: 'keywords_prefix', operator: 'array-contains', value: data.keyword
+  })
+
+  if (data.entityId) filters.push({
+    field: 'entityId', operator: '==', value: data.entityId
+  })
+  const params: any = { filters }
+  const result: ISearchIndex[] = await searchFirestore({
+    ...params,
+    collection: `${collection.INDEX}`,
+  });
+  return result;
+}
+
 
 
 export async function sendFormContact(data: ContactFromModel | any): Promise<void> {
@@ -54,7 +83,7 @@ export async function sendFormContact(data: ContactFromModel | any): Promise<voi
           authorization: `Bearer ${data.token}`,
         },
       });
-      data.mesagge=data.message
+      data.mesagge = data.message
       const response: any = await httpClientFetchInstance.post(
         process.env.NEXT_PUBLIC_BACKEND_ENDPOINT_CONTACT as string,
         {

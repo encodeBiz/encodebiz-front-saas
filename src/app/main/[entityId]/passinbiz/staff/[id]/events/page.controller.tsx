@@ -9,6 +9,7 @@ import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { useParams, useSearchParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import TransferList from "@/components/common/forms/fields/TransferListField/TransferListField";
+import { Timestamp } from "firebase/firestore";
 
 export default function useStaffController() {
   const t = useTranslations();
@@ -41,6 +42,8 @@ export default function useStaffController() {
             event.assignedStaff = [...event.assignedStaff, id]
             await updateEvent({
               id: event.id,
+              date: (event.date instanceof Timestamp) ? event.date.toDate() : new Date(event.date),
+              endDate: (event.endDate instanceof Timestamp) ? event.endDate.toDate() : new Date(event.endDate),
               entityId: event.entityId,
               assignedStaff: event.assignedStaff
             }, token);
@@ -57,6 +60,8 @@ export default function useStaffController() {
             await updateEvent({
               id: event.id,
               entityId: event.entityId,
+              date: (event.date instanceof Timestamp) ? event.date.toDate() : new Date(event.date),
+              endDate: (event.endDate instanceof Timestamp) ? event.endDate.toDate() : new Date(event.endDate),
               assignedStaff: event.assignedStaff
             }, token);
 
@@ -80,12 +85,12 @@ export default function useStaffController() {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const eventStaffList: Array<IEvent> = await searchEventsByStaff(id)
-      
+
       setInitialValues({
         event: eventStaffList.map(e => e.id)
       })
       const eventList: IEvent[] = await search(currentEntity?.entity.id as string, { limit: 100 } as any)
- 
+
       setFields([
         {
           isDivider: true,

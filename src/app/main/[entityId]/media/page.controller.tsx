@@ -44,7 +44,7 @@ export const useMediaList = () => {
     const { currentEntity } = useEntity()
     const { showToast } = useToast()
 
-    const { openModal } = useCommonModal()
+    const { openModal, closeModal } = useCommonModal()
 
     /** Filter and PAgination Control */
     const [loading, setLoading] = useState<boolean>(true);
@@ -190,6 +190,7 @@ export const useMediaList = () => {
             setItemsHistory(itemsHistory.filter(e => e.id !== id))
             setItems(itemsHistory.filter(e => e.id !== id))
             setDeleting(false)
+            closeModal(CommonModalType.DELETE)
         } catch (e: any) {
             showToast(e?.message, 'error')
             setDeleting(false)

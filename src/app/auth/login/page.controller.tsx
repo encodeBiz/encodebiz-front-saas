@@ -1,17 +1,21 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
 import PasswordInput from '@/components/common/forms/fields/PasswordInput';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
 import { emailRule, passwordRestrictionRule } from '@/config/yupRules';
+import { CommonModalType } from '@/contexts/commonModalContext';
 import IUserEntity from '@/domain/auth/IUserEntity';
+import { useCommonModal } from '@/hooks/useCommonModal';
 import { useLayout } from '@/hooks/useLayout';
 import { useToast } from '@/hooks/useToast';
 import { signInEmail, signInGoogle } from '@/services/common/account.service';
 import { fetchUserEntities } from '@/services/common/entity.service';
 import { useTranslations } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'nextjs-toploader/app';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 
 
@@ -25,6 +29,9 @@ export const useRegisterController = () => {
     const { showToast } = useToast()
     const { changeLoaderState } = useLayout()
     const { push } = useRouter()
+    const search = useSearchParams()
+    const { openModal } = useCommonModal()
+
     const [initialValues] = useState<LoginFormValues>({
         email: '',
         password: '',
@@ -91,6 +98,13 @@ export const useRegisterController = () => {
 
 
     ];
+
+    useEffect(() => {
+        if (search.get('expiredToken'))
+            openModal(CommonModalType.INFO)
+
+    }, [search.get('expiredToken')])
+
 
 
 

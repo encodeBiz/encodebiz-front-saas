@@ -147,7 +147,7 @@ export const useUserAccountController = () => {
                     validationSchema={validationSchema}
                     onSubmit={setUserDataAction}
                     fields={fields as FormField[]}
-                    submitButtonText={t('core.button.submit')}
+                    submitButtonText={t('core.button.save')}
 
                 />
             </>

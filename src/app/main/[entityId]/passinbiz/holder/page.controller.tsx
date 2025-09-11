@@ -16,10 +16,12 @@ import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { search as searchEvent } from "@/services/passinbiz/event.service";
 import { CustomChip } from "@/components/common/table/CustomChip";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
-import { TextFilter } from "@/components/common/table/filters/TextFilter";
 import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
 import { useSearchParams } from "next/navigation";
 import { PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
+import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
+import { ISearchIndex } from "@/domain/core/SearchIndex";
+import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
 
 interface IFilterParams {
   filter: { passStatus: string, type: string, email: string, parentId: string }
@@ -39,8 +41,7 @@ interface IFilterParams {
   startAfter: string | null,
 }
 
-
-let resource: any = null;
+ 
 export default function useHolderListController() {
   const t = useTranslations();
   const { token, user } = useAuth()
@@ -159,15 +160,22 @@ export default function useHolderListController() {
       items={holderState}
     />
 
-    <TextFilter
-      label={t('holders.filter.email')}
-      value={filterParams.filter.email}
-      onChange={(value) => {
-        setFilterParams({ ...filterParams, filter: { ...filterParams.filter, email: value } });
-        if (resource) clearTimeout(resource);
-        resource = setTimeout(() => {
-          onFilter({ ...filterParams, filter: { ...filterParams.filter, email: value } })
-        }, 1500);
+   <SearchIndexFilter
+      type="holder"
+      label={t('core.label.search')}     
+      onChange={async (value: ISearchIndex) => {
+        const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
+        if (value?.id) {
+          const item = await getRefByPathData(value.index)
+          if (item)
+            setItems([item])
+          else
+            fetchingData(filterParamsUpdated)
+        }
+        else {
+          setItems([])
+          fetchingData(filterParamsUpdated)
+        }
       }}
     />
   </Box >

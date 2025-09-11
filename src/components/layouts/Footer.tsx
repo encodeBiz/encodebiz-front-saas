@@ -13,8 +13,11 @@ const Footer: React.FC = () => {
         position: 'relative',
         zIndex: (theme) => theme.zIndex.drawer + 1,
         py: 3,
+        mt:6,
+        height:110,
         bottom: 0,
-        borderTop: 2, borderColor: 'secondary.dark',
+        pt:6,
+        borderTop: 3, borderColor: 'secondary.dark',
       }}
     >
       <Container maxWidth="lg" >

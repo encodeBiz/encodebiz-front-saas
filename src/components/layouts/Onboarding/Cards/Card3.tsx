@@ -21,12 +21,10 @@ export const Card3 = ({ handleNext }: any) => {
                 src={logo}
             />
             <Typography marginTop={2} variant="h3">{t('cards.card3.text1')}</Typography>
-            <Box display={'flex'} flexDirection={"column"} gap={2}>
-                <Typography  fontSize={20} variant="body1">{t('cards.card3.text2')}</Typography>
-            </Box>
+           
             <br />
-            <Box display={'flex'} flexDirection={"row"} gap={5}  >
-                <Box borderRadius={2} width={'100%'} display={'flex'} flexDirection={"column"} gap={2} sx={{ background: (theme) => theme.palette.primary.light }}>
+            <Box height={480} display={'flex'} flexDirection={"row"} gap={5}  >
+                <Box  borderRadius={2} width={'100%'} display={'flex'} flexDirection={"column"} gap={2} sx={{ background: (theme) => theme.palette.primary.light }}>
                     <Box position={'relative'} overflow={'hidden'} borderRadius={'10px 10px 0px 0px'} p={4} display={'flex'} flexDirection={"row"} alignItems={'flex-start'} gap={2} sx={{ background: (theme) => theme.palette.primary.dark, color: "#FFF" }}>
                         <Image
                             style={{ position: 'absolute', right: 0, top: -180 }}
@@ -78,7 +76,7 @@ export const Card3 = ({ handleNext }: any) => {
                         <Box  display={'flex'} flexDirection={"column"} alignItems={'center'} justifyContent={'center'}   >
                             <Typography textAlign={'center'} fontSize={36} fontWeight={400} variant="body1">{t('cards.card3.comminsoom')}</Typography>
                         </Box>
-                        <Box borderRadius={2} p={4} display={'flex'} flexDirection={"row"} alignItems={'flex-start'} gap={2}  >
+                        <Box borderRadius={2} p={2} display={'flex'} flexDirection={"row"} alignItems={'flex-start'} gap={2}  >
 
                             <Box>
                                 <svg width="76" height="94" viewBox="0 0 76 94" fill="none" xmlns="http://www.w3.org/2000/svg">
