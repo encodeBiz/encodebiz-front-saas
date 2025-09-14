@@ -380,13 +380,12 @@ export default function useHolderListController() {
             update['status'] = status
           }
           try {
-            const res = await updateHolder({
+            await updateHolder({
               id: id,
               entityId: currentEntity?.entity?.id,
               ...update,
             }, token)
-            console.log(res);
-            
+             
           } catch (e: any) {
             showToast(e?.message, 'error')            
           }
