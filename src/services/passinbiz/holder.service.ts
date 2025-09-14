@@ -97,7 +97,7 @@ export async function updateHolder(data: Partial<Holder>, token: string) {
           authorization: `Bearer ${token}`,
         },
       });
-      const response: any = await httpClientFetchInstance.post(
+      const response: any = await httpClientFetchInstance.put(
         process.env.NEXT_PUBLIC_BACKEND_URI_PASSINBIZ_UPDATE_HOLDER as string,
         {
           ...data,
