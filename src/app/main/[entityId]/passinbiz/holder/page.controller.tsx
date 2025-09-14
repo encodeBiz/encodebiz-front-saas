@@ -385,16 +385,17 @@ export default function useHolderListController() {
               entityId: currentEntity?.entity?.id,
               ...update,
             }, token)
-             
+
           } catch (e: any) {
-            showToast(e?.message, 'error')            
+            showToast(e?.message, 'error')
           }
         })
       );
 
       setRevoking(false)
       closeModal(CommonModalType.DELETE)
-      fetchingData(filterParams)
+      const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
+      fetchingData(filterParamsUpdated)
     } catch (e: any) {
       showToast(e?.message, 'error')
       setRevoking(false)
