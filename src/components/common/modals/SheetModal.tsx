@@ -22,8 +22,9 @@ import { TransitionProps } from '@mui/material/transitions';
 import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import { CustomTypography } from '../Text/CustomTypography';
 import { SassButton } from '../buttons/GenericButton';
-import {  Warning } from '@mui/icons-material';
+import { Warning } from '@mui/icons-material';
 import { BorderBox } from '../tabs/BorderBox';
+import { karla } from '@/config/fonts/google_fonts';
 
 interface SheetModalProps {
     word?: string
@@ -49,7 +50,7 @@ const Transition = React.forwardRef(function Transition(
 });
 
 
-const SheetModalModal = ({ title,hideCancel=false, textBtn, description, textPoint = [], type = CommonModalType.DELETE, isLoading = false, onOKAction }: SheetModalProps): React.JSX.Element => {
+const SheetModalModal = ({ title, hideCancel = false, textBtn, description, textPoint = [], type = CommonModalType.DELETE, isLoading = false, onOKAction }: SheetModalProps): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const theme = useTheme()
     const t = useTranslations()
@@ -96,9 +97,9 @@ const SheetModalModal = ({ title,hideCancel=false, textBtn, description, textPoi
                 <BorderBox sx={{ p: 1 }}>
                     {textPoint.length > 0 && <List dense={true}>
                         {textPoint.map((e, i) => <ListItem key={i}>
-                            <ListItemIcon><Warning sx={{color:(theme)=>theme.palette.warning.main}} color='warning' /></ListItemIcon>
+                            <ListItemIcon><Warning sx={{ color: (theme) => theme.palette.warning.main }} color='warning' /></ListItemIcon>
                             <ListItemText
-                                primary={<Typography variant='body1'>{e.text}</Typography>}
+                                primary={<Typography fontFamily={karla.style.fontFamily} variant='body1'>{e.text}</Typography>}
                             />
                         </ListItem>)}
                     </List>}

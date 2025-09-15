@@ -6,11 +6,11 @@ import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useTranslations } from 'next-intl';
 import { useLayout } from '@/hooks/useLayout';
-import IUser from '@/domain/auth/IUser';
+import IUser from '@/domain/core/auth/IUser';
 import { EntityCollaboratorData } from '@/components/features/entity/UserAssignment';
 import { useToast } from '@/hooks/useToast';
 import { assignedUserToEntity, deleteOwnerOfEntity, fetchAllOwnerOfEntity } from '@/services/core/entity.service';
-import IUserEntity from '@/domain/auth/IUserEntity';
+import IUserEntity from '@/domain/core/auth/IUserEntity';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 

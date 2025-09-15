@@ -13,7 +13,7 @@ import {
 
 
 import { useEntity } from '@/hooks/useEntity';
-import IUserEntity from '@/domain/auth/IUserEntity';
+import IUserEntity from '@/domain/core/auth/IUserEntity';
 import { useRouter } from 'nextjs-toploader/app';
 import { useLayout } from '@/hooks/useLayout';
 import { GENERAL_ROUTE, MAIN_ROUTE } from '@/config/routes';

@@ -7,6 +7,7 @@ import {
   Paper,
   useTheme
 } from '@mui/material';
+import { karla } from '@/config/fonts/google_fonts';
 
 export interface HelpTab {
   id: string,
@@ -45,7 +46,7 @@ const HelpTabs = ({ tabs, ref }: HelpTabsProps) => {
           textAlign: 'left',
 
         }}>
-          <Typography variant="h4" sx={{ fontWeight: 400, fontSize: 22, marginLeft:1 }}>
+          <Typography fontFamily={karla.style.fontFamily} variant="h4" sx={{ fontWeight: 400, fontSize: 22, marginLeft: 1 }}>
             {props.maintext}
           </Typography>
           {props.subtext && <Typography variant="body1" color="text.secondary">
@@ -71,7 +72,7 @@ const HelpTabs = ({ tabs, ref }: HelpTabsProps) => {
   return (
 
     <Paper ref={ref} elevation={0} sx={{
-     boxShadow:'none',
+      boxShadow: 'none',
       borderRadius: 1,
       marginTop: 10
     }}>

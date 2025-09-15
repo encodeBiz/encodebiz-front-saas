@@ -6,7 +6,7 @@ import TextInput from '@/components/common/forms/fields/TextInput';
 import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
 import { emailRule, passwordRestrictionRule } from '@/config/yupRules';
 import { CommonModalType } from '@/contexts/commonModalContext';
-import IUserEntity from '@/domain/auth/IUserEntity';
+import IUserEntity from '@/domain/core/auth/IUserEntity';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { useLayout } from '@/hooks/useLayout';
 import { useToast } from '@/hooks/useToast';

@@ -2,7 +2,7 @@
 
 import PageLoader from "@/components/common/PageLoader";
 import { MAIN_ROUTE } from "@/config/routes";
-import IUserEntity from "@/domain/auth/IUserEntity";
+import IUserEntity from "@/domain/core/auth/IUserEntity";
 import { useAuth } from "@/hooks/useAuth";
 import { fetchUserEntities } from "@/services/core/entity.service";
 import { useParams } from "next/navigation";

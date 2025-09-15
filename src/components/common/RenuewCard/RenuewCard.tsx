@@ -3,10 +3,11 @@ import { Typography, Box, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useTranslations } from 'next-intl';
 import usePricingCardController from './RenuewCard.controller';
-import { IEntitySuscription } from '@/domain/auth/ISubscription';
+import { IEntitySuscription } from '@/domain/core/auth/ISubscription';
 import { SassButton } from '../buttons/GenericButton';
 import { useAppLocale } from '@/hooks/useAppLocale';
 import { useLayout } from '@/hooks/useLayout';
+import { karla } from '@/config/fonts/google_fonts';
 
 const PlanCard = styled(Box)<{ featured?: string }>(({ theme }) => ({
     maxWidth: 305,
@@ -48,7 +49,7 @@ export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
             </Box>
             <Box>
                 <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'} pb={2}>
-                    <Typography variant="h6">
+                    <Typography variant="h6" fontFamily={karla.style.fontFamily}>
                         {t(`salesPlan.${plan.plan}`) || plan.plan}
                     </Typography>
                     <Typography variant="body1">

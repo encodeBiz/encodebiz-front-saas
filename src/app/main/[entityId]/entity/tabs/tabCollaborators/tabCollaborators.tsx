@@ -4,7 +4,7 @@ import React from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useCollaboratorsController } from './page.controller';
 import UserAssignment, { EntityCollaboratorData } from '@/components/features/entity/UserAssignment';
-import IUser from '@/domain/auth/IUser';
+import IUser from '@/domain/core/auth/IUser';
 import { Grid, Box, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import InfoModal from '@/components/common/modals/InfoModal';

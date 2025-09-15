@@ -5,7 +5,7 @@ import { useEntity } from '@/hooks/useEntity';
 import { useEffect, useState } from 'react';
 
 import { useToast } from '@/hooks/useToast';
-import { IEntitySuscription, IUnSubscription } from '@/domain/auth/ISubscription';
+import { IEntitySuscription, IUnSubscription } from '@/domain/core/auth/ISubscription';
 import { IPlan } from '@/domain/core/IPlan';
 import { useTranslations } from 'next-intl';
 export default function usePricingCardController(planSubscription: IEntitySuscription) {

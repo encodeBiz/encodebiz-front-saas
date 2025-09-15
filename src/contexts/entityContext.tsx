@@ -4,14 +4,14 @@
 import { createContext, useEffect, useState, useCallback } from "react";
 import { subscribeToAuthChanges } from "@/lib/firebase/authentication/stateChange";
 import { User } from "firebase/auth";
-import IUserEntity from "@/domain/auth/IUserEntity";
+import IUserEntity from "@/domain/core/auth/IUserEntity";
 import { fetchUserEntities, saveStateCurrentEntity, watchEntityChange } from "@/services/core/entity.service";
-import IUser from "@/domain/auth/IUser";
+import IUser from "@/domain/core/auth/IUser";
 import { fetchUserAccount } from "@/services/core/account.service";
 import { GENERAL_ROUTE, MAIN_ROUTE, PUBLIC_PATH } from "@/config/routes";
 import { BizType, IService } from "@/domain/core/IService";
 import { fetchServiceList, fetchSuscriptionByEntity, watchSubscrptionEntityChange } from "@/services/core/subscription.service";
-import { IEntitySuscription } from "@/domain/auth/ISubscription";
+import { IEntitySuscription } from "@/domain/core/auth/ISubscription";
 import { useToast } from "@/hooks/useToast";
 import { Unsubscribe } from "firebase/firestore";
 import IEntity from "@/domain/auth/IEntity";

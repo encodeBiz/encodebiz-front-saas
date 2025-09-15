@@ -22,9 +22,9 @@ import {
     useTheme
 } from '@mui/material';
 import { PersonAdd } from '@mui/icons-material';
-import IUser, { ICollaborator } from '@/domain/auth/IUser';
+import IUser, { ICollaborator } from '@/domain/core/auth/IUser';
 import { useTranslations } from 'next-intl';
-import IUserEntity from '@/domain/auth/IUserEntity';
+import IUserEntity from '@/domain/core/auth/IUserEntity';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';

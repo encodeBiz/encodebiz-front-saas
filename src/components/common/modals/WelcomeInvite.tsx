@@ -20,7 +20,7 @@ import { updateAuth } from '@/services/core/entity.service';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'nextjs-toploader/app';
 import { MAIN_ROUTE } from '@/config/routes';
-import IUserEntity from '@/domain/auth/IUserEntity';
+import IUserEntity from '@/domain/core/auth/IUserEntity';
 
 
 const WelcomeInviteModal = (): React.JSX.Element => {

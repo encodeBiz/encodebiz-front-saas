@@ -1,6 +1,6 @@
 import { collection } from "@/config/collection";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
-import { IEntitySuscription, ISubscription, IUnSubscription, StripeInvoice } from "@/domain/auth/ISubscription";
+import { IEntitySuscription, ISubscription, IUnSubscription, StripeInvoice } from "@/domain/core/auth/ISubscription";
 import { IPlan, IPlanData } from "@/domain/core/IPlan";
 import { getAll, getOne } from "@/lib/firebase/firestore/readDocument";
 import { IService } from "@/domain/core/IService";

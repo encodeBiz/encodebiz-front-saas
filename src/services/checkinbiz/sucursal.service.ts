@@ -3,7 +3,7 @@ import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
-import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
+import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
  
 
 /**
@@ -13,9 +13,9 @@ import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
    * @param {SearchParams} params
    * @returns {Promise<Iemployee[]>}
    */
-export const fetchEmployee = async (entityId: string, id: string): Promise<IEmployee> => {
+export const fetchSucursal = async (entityId: string, id: string): Promise<ISucursal> => {
   return await getOne(
-    `${collection.ENTITIES}/${entityId}/${collection.EMPLOYEE}`,
+    `${collection.ENTITIES}/${entityId}/${collection.SUCURSAL}`,
     id);
 }
 
@@ -28,16 +28,16 @@ export const fetchEmployee = async (entityId: string, id: string): Promise<IEmpl
    * @param {SearchParams} params
    * @returns {Promise<Iemployee[]>}
    */
-export const search = async (entityId: string, params: SearchParams): Promise<IEmployee[]> => {
-  const result: IEmployee[] = await searchFirestore({
+export const search = async (entityId: string, params: SearchParams): Promise<ISucursal[]> => {
+  const result: ISucursal[] = await searchFirestore({
     ...params,
-    collection: `${collection.ENTITIES}/${entityId}/${collection.EMPLOYEE}`,
+    collection: `${collection.ENTITIES}/${entityId}/${collection.SUCURSAL}`,
   });
 
   return result;
 }
 
-export async function createEmployee(data: Partial<IEmployee>, token: string) {
+export async function createSucursal(data: Partial<ISucursal>, token: string) {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -49,7 +49,7 @@ export async function createEmployee(data: Partial<IEmployee>, token: string) {
         },
       });
       const response: any = await httpClientFetchInstance.post(
-        process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_CREATE_EMPLOYEE as string,
+        process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_CREATE_SUCURSAL as string,
         {
           ...data,
         }
@@ -65,7 +65,7 @@ export async function createEmployee(data: Partial<IEmployee>, token: string) {
   }
 }
 
-export async function updateEmployee(data: Partial<IEmployee>, token: string) {
+export async function updateSucursal(data: Partial<ISucursal>, token: string) {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -77,7 +77,7 @@ export async function updateEmployee(data: Partial<IEmployee>, token: string) {
         },
       });
       const response: any = await httpClientFetchInstance.post(
-        process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_UPDATE_EMPLOYEE as string,
+        process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_UPDATE_SUCURSAL as string,
         {
           ...data,
         }
@@ -101,7 +101,7 @@ export async function updateEmployee(data: Partial<IEmployee>, token: string) {
    * @param {SearchParams} params
    * @returns {Promise<Iemployee[]>}
    */
-export const deleteEmployee = async (entityId: string, id: string, token: string): Promise<void> => {
+export const deleteSucursal = async (entityId: string, id: string, token: string): Promise<void> => {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -113,7 +113,7 @@ export const deleteEmployee = async (entityId: string, id: string, token: string
         },
       });
       const response: any = await httpClientFetchInstance.delete(
-        process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_DELETE_EMPLOYEE as string,
+        process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_DELETE_SUCURSAL as string,
         {
           id, entityId
         }

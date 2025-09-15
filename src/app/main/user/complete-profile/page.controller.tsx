@@ -11,13 +11,13 @@ import { fetchUserAccount, signUpEmail } from '@/services/core/account.service';
 import { emailRule, requiredRule } from '@/config/yupRules';
 import { getUser } from '@/lib/firebase/authentication/login';
 import { User } from 'firebase/auth';
-import IUser from '@/domain/auth/IUser';
+import IUser from '@/domain/core/auth/IUser';
 import { useEntity } from '@/hooks/useEntity';
 import { useLayout } from '@/hooks/useLayout';
 import { fetchUserEntities } from '@/services/core/entity.service';
 import { useRouter } from 'nextjs-toploader/app';
 import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
-import IUserEntity from '@/domain/auth/IUserEntity';
+import IUserEntity from '@/domain/core/auth/IUserEntity';
 export interface UserFormValues {
     "uid": string
     "name": string

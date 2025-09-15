@@ -4,7 +4,7 @@ import { changePass, getUser, login, loginWithGoogle, loginWithToken } from "@/l
 import { logout } from "@/lib/firebase/authentication/logout";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import httpClientFetchInstance, { codeError, HttpClient } from "@/lib/http/httpClientFetchNext";
-import IUser from "@/domain/auth/IUser";
+import IUser from "@/domain/core/auth/IUser";
 import { EmailAuthProvider, reauthenticateWithCredential, updateProfile, User, UserCredential } from "firebase/auth";
 import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
  

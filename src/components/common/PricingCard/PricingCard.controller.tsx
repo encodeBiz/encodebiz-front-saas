@@ -4,7 +4,7 @@ import { useEntity } from '@/hooks/useEntity';
 import { useState } from 'react';
 
 import { useToast } from '@/hooks/useToast';
-import { ISubscription, IUnSubscription } from '@/domain/auth/ISubscription';
+import { ISubscription, IUnSubscription } from '@/domain/core/auth/ISubscription';
 import { useLayout } from '@/hooks/useLayout';
 import { useTranslations } from 'next-intl';
 import { CommonModalType } from '@/contexts/commonModalContext';
