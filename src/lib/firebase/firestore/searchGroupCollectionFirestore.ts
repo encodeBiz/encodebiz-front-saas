@@ -11,7 +11,7 @@
   getCountFromServer,
 } from "firebase/firestore";
 import { db } from "../initializeApp";
-import { SearchParams } from "@/domain/firebase/firestore";
+import { SearchParams } from "@/domain/core/firebase/firestore";
 
 
  

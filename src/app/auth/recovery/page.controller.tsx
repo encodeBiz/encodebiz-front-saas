@@ -5,7 +5,7 @@ import { emailRule } from '@/config/yupRules';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { useToast } from '@/hooks/useToast';
-import { recoveryPassword } from '@/services/common/account.service';
+import { recoveryPassword } from '@/services/core/account.service';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import * as Yup from 'yup';

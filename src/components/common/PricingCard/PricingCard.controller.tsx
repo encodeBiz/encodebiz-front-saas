@@ -1,4 +1,4 @@
-import { subscribeInSassProduct, unSubscribeInSassProduct } from '@/services/common/subscription.service';
+import { subscribeInSassProduct, unSubscribeInSassProduct } from '@/services/core/subscription.service';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useState } from 'react';

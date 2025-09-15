@@ -20,7 +20,7 @@ import { useEntity } from '@/hooks/useEntity';
 import { CancelOutlined, SendOutlined } from '@mui/icons-material';
 import { useFormStatus } from '@/hooks/useFormStatus';
 import useAddWebHookController from './AddWebHook.controller';
-import { IWebHook } from '@/domain/integration/IWebHook';
+import { IWebHook } from '@/domain/core/integration/IWebHook';
 
 
 const AddWebHook = (): React.JSX.Element => {

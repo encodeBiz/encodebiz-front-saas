@@ -16,7 +16,7 @@ import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import { SassButton } from '../buttons/GenericButton';
 import { CustomTypography } from '../Text/CustomTypography';
 import { useEntity } from '@/hooks/useEntity';
-import { updateAuth } from '@/services/common/entity.service';
+import { updateAuth } from '@/services/core/entity.service';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'nextjs-toploader/app';
 import { MAIN_ROUTE } from '@/config/routes';

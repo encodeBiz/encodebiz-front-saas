@@ -32,7 +32,7 @@ import { useLayout } from '@/hooks/useLayout';
 import { useAppTheme } from '@/hooks/useTheme';
 import { useTranslations } from 'next-intl';
 import LocaleSwitcher from '../../common/LocaleSwitcher';
-import { handleLogout } from '@/services/common/account.service';
+import { handleLogout } from '@/services/core/account.service';
 import { useHeader } from './Header.controller';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { useAuth } from '@/hooks/useAuth';

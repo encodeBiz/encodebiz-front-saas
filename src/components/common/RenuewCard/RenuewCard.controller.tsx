@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { fetchAvailablePlans, unSubscribeInSassProduct } from '@/services/common/subscription.service';
+import { fetchAvailablePlans, unSubscribeInSassProduct } from '@/services/core/subscription.service';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useEffect, useState } from 'react';

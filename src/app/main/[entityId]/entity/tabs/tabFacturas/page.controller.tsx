@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useEntity } from '@/hooks/useEntity';
 import { useTranslations } from 'next-intl';
-import { fetchInvoicesByEntity } from '@/services/common/subscription.service';
-import { buildSearch, Column, IRowAction } from '@/components/common/table/GenericTable';
+import { fetchInvoicesByEntity } from '@/services/core/subscription.service';
+import { Column, IRowAction } from '@/components/common/table/GenericTable';
 import { useToast } from '@/hooks/useToast';
-import { StripeInvoice } from '@/domain/auth/ISubscription';
-import { Download, DownloadOutlined } from '@mui/icons-material';
+ import { DownloadOutlined } from '@mui/icons-material';
+import { StripeInvoice } from '@/domain/core/auth/ISubscription';
 
 
 interface IFilterParams {
@@ -60,7 +60,7 @@ export const useFacturaController = () => {
             label: t('core.button.download'),
             allowItem: () => true,
             showBulk: false,
-            onPress: (item: StripeInvoice) => { },
+            onPress: () => { },
             bulk: false
         },
 
@@ -99,10 +99,7 @@ export const useFacturaController = () => {
     }
 
 
-    /** Filter Changed */
-    const onFilter = () => {
-
-    }
+    
 
 
     const columns: Column<StripeInvoice>[] = [

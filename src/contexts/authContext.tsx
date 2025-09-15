@@ -7,11 +7,11 @@ import { useRouter } from "nextjs-toploader/app";
 import IUser from "@/domain/auth/IUser";
 import { subscribeToAuthChanges } from "@/lib/firebase/authentication/stateChange";
 import { getUser } from "@/lib/firebase/authentication/login";
-import { fetchUserAccount, signInToken } from "@/services/common/account.service";
+import { fetchUserAccount, signInToken } from "@/services/core/account.service";
 import { MAIN_ROUTE, GENERAL_ROUTE, USER_ROUTE, PUBLIC_PATH } from "@/config/routes";
 import { useToast } from "@/hooks/useToast";
 import IUserEntity from "@/domain/auth/IUserEntity";
-import { fetchUserEntities } from "@/services/common/entity.service";
+import { fetchUserEntities } from "@/services/core/entity.service";
 interface AuthContextType {
     user: IUser | null;
     userAuth: User | null;

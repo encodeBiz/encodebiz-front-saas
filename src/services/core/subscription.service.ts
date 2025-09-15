@@ -4,7 +4,7 @@ import { IEntitySuscription, ISubscription, IUnSubscription, StripeInvoice } fro
 import { IPlan, IPlanData } from "@/domain/core/IPlan";
 import { getAll, getOne } from "@/lib/firebase/firestore/readDocument";
 import { IService } from "@/domain/core/IService";
-import { SearchParams } from "@/domain/firebase/firestore";
+import { SearchParams } from "@/domain/core/firebase/firestore";
 import { onSnapshotCollection, searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { Unsubscribe } from "firebase/firestore";
 

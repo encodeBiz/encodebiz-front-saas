@@ -1,7 +1,7 @@
 
 import IEntity from "@/domain/auth/IEntity";
 import IUserEntity from "@/domain/auth/IUserEntity";
-import { SearchParams } from "@/domain/firebase/firestore";
+import { SearchParams } from "@/domain/core/firebase/firestore";
 import { getOne, getAll, getAllWithLimit } from "@/lib/firebase/firestore/readDocument";
 import { onSnapshotFirestore, searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { updateDocument } from "@/lib/firebase/firestore/updateDocument";

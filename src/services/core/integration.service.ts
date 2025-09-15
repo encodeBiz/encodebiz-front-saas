@@ -1,6 +1,6 @@
 import { collection } from "@/config/collection";
-import { SearchParams } from "@/domain/firebase/firestore";
-import { IWebHook } from "@/domain/integration/IWebHook";
+import { SearchParams } from "@/domain/core/firebase/firestore";
+import { IWebHook } from "@/domain/core/integration/IWebHook";
 import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
 

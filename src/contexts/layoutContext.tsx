@@ -4,7 +4,7 @@ import PageLoader from "@/components/common/PageLoader";
 import { MAIN_ROUTE } from "@/config/routes";
 import IUserEntity from "@/domain/auth/IUserEntity";
 import { useAuth } from "@/hooks/useAuth";
-import { fetchUserEntities } from "@/services/common/entity.service";
+import { fetchUserEntities } from "@/services/core/entity.service";
 import { useParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import { createContext, useCallback, useState } from "react";

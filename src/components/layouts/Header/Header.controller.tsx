@@ -1,4 +1,4 @@
-import { handleLogout } from "@/services/common/account.service";
+import { handleLogout } from "@/services/core/account.service";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 

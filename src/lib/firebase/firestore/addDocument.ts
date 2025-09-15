@@ -6,7 +6,7 @@
   setDoc,
 } from "firebase/firestore";
 import { db } from "../initializeApp";
-import { AddDocumentParams } from "@/domain/firebase/firestore";
+import { AddDocumentParams } from "@/domain/core/firebase/firestore";
  
 export const addDocument = async <T>(
   params: AddDocumentParams

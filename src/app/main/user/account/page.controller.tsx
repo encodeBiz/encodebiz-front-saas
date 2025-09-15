@@ -7,7 +7,7 @@ import { Box, SxProps, Theme, Typography } from '@mui/material';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { useToast } from '@/hooks/useToast';
-import { recoveryPassword, updateAccout } from '@/services/common/account.service';
+import { recoveryPassword, updateAccout } from '@/services/core/account.service';
 import ImageUploadInput from '@/components/common/forms/fields/ImageUploadInput';
 import { uploadFile } from '@/lib/firebase/storage/fileManager';
 import { emailRule, fileImageRule, requiredRule } from '@/config/yupRules';

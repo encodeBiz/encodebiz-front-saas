@@ -5,7 +5,7 @@ import { country } from '@/config/country';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useToast } from '@/hooks/useToast';
-import { createEntity } from '@/services/common/entity.service';
+import { createEntity } from '@/services/core/entity.service';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'nextjs-toploader/app';
 import { useEffect, useState } from 'react';
