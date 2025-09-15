@@ -129,20 +129,7 @@ export default function useIEventListController() {
       items={options}
     />
 
-    {/** 
-    <TextFilter
-      label={t('core.label.name')}
-      value={filterParams.filter.name}
-      onChange={(value) => {
-        setFilterParams({ ...filterParams, filter: { ...filterParams.filter, name: value } });
-        if (resource) clearTimeout(resource);
-        resource = setTimeout(() => {
-          onFilter({ ...filterParams, filter: { ...filterParams.filter, name: value } })
-        }, 1500);
-      }}
-    />
-    */}
-
+     
     <SearchIndexFilter
       type="events"
       label={t('core.label.search')}
