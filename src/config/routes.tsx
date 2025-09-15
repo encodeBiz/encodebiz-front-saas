@@ -1,9 +1,7 @@
 import {
-
-    Home,
+ 
     MobiledataOffOutlined,
-    Person2TwoTone,
-
+   
 
 } from '@mui/icons-material';
 import BusinessIcon from '@mui/icons-material/Business';
@@ -38,14 +36,14 @@ const PASSINBIZ = [{
 
 
 const CHECKINBIZ: any = [{
-    name: 'home',
-    icon: <Home />,
-    link: `/${CHECKINBIZ_MODULE_ROUTE}/onboarding`,
+    name: 'Employee',
+  
+    link: `/${CHECKINBIZ_MODULE_ROUTE}/employee`,
     subMenu: []
 }, {
-    name: 'Employee',
-    icon: <Person2TwoTone />,
-    link: `/${PASSSINBIZ_MODULE_ROUTE}/employee`,
+    name: 'Sucursal',
+  
+    link: `/${CHECKINBIZ_MODULE_ROUTE}/sucursal`,
     subMenu: []
 }]
 
@@ -120,4 +118,4 @@ export const menuItemsGeneral = [
 ]
 
 
-export const PUBLIC_PATH=['/tools/scanner']
+export const PUBLIC_PATH = ['/tools/scanner']

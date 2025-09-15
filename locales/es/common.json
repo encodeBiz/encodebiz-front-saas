@@ -25,6 +25,7 @@
         "Services": "Servicios",
         "Events": "Eventos",
         "Media": "Media",
+        "Sucursal":"Sucursal",
         "home": "Inicio",
         "Integration": "Integraciones",
         "general": "General",
@@ -555,6 +556,16 @@
     "description": "Rellene los campos para registrar el empleado",
     "deleteConfirmModalTitle": "Eliminar empleado",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el empleado"
+  },
+   "sucursal": {
+    "title": "Sucursales",
+    "list": "Sucursales",
+    "add": "Adicionar",
+    "update": "Editar",
+    "import": "Importar",
+    "description": "Rellene los campos para registrar la sucursal",
+    "deleteConfirmModalTitle": "Eliminar sucursal",
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente la sucursal"
   },
   "media": {
     "title": "Multimedias",
