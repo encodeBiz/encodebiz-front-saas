@@ -1,4 +1,4 @@
-import { BizType } from "../core/IService";
+import { BizType } from "../../core/IService";
 
 export interface ISubscription {
     entityId: string

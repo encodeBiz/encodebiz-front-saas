@@ -14,7 +14,7 @@ import { fetchServiceList, fetchSuscriptionByEntity, watchSubscrptionEntityChang
 import { IEntitySuscription } from "@/domain/core/auth/ISubscription";
 import { useToast } from "@/hooks/useToast";
 import { Unsubscribe } from "firebase/firestore";
-import IEntity from "@/domain/auth/IEntity";
+import IEntity from "@/domain/core/auth/IEntity";
 import { useParams, usePathname } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import { useAppLocale } from "@/hooks/useAppLocale";

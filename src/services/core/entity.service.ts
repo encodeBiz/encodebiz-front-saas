@@ -1,5 +1,5 @@
 
-import IEntity from "@/domain/auth/IEntity";
+import IEntity from "@/domain/core/auth/IEntity";
 import IUserEntity from "@/domain/core/auth/IUserEntity";
 import { SearchParams } from "@/domain/core/firebase/firestore";
 import { getOne, getAll, getAllWithLimit } from "@/lib/firebase/firestore/readDocument";
