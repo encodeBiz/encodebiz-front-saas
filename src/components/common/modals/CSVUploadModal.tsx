@@ -179,7 +179,7 @@ const CSVUploadModal = ({ open, onClose, onConfirm }: ICSVUploadModal) => {
                   {t('holders.desc8')}
                 </Typography>
                 <SassButton
-                  startIcon={<DownloadOutlined />}
+            
                   variant='outlined'
                   color='inherit'
                   onClick={() => window.open(`${process.env.NEXT_PUBLIC_URI}${HOLDER_USUARIOS_TYPE_CREDENTIAL_URL}`, '_blank')}
@@ -239,7 +239,7 @@ const CSVUploadModal = ({ open, onClose, onConfirm }: ICSVUploadModal) => {
           disabled={!file}
           size='small'
           variant="contained"
-          startIcon={<CheckOutlined/>}
+        
         >
           {t('core.button.confirmSCV')}
         </SassButton>

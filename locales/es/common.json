@@ -123,6 +123,7 @@
       "passStatus": "Estado del pase",
       "pending": "Pendiente",
       "revoke": "Revocar",
+      "revoked": "Revocado",
       "reactive": "Reactivar",
       "archivedHolder": "Archivar",
       "cooming_soon": "Proximamente",

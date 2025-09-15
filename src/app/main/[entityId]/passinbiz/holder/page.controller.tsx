@@ -41,7 +41,7 @@ interface IFilterParams {
   startAfter: string | null,
 }
 
- 
+
 export default function useHolderListController() {
   const t = useTranslations();
   const { token, user } = useAuth()
@@ -112,8 +112,8 @@ export default function useHolderListController() {
       icon: <ArchiveOutlined color="warning" />,
       label: t('core.label.archivedHolder'),
       bulk: true,
-      showBulk: filterParams.filter.passStatus!=='archived',
-      allowItem: (item: Holder) => item.passStatus!=='archived',
+      showBulk: filterParams.filter.passStatus !== 'archived',
+      allowItem: (item: Holder) => item.passStatus !== 'archived',
       onPress: (item: Holder) => openModal(CommonModalType.ARCHIVED, { data: item })
     },
 
@@ -160,9 +160,9 @@ export default function useHolderListController() {
       items={holderState}
     />
 
-   <SearchIndexFilter
+    <SearchIndexFilter
       type="holder"
-      label={t('core.label.search')}     
+      label={t('core.label.search')}
       onChange={async (value: ISearchIndex) => {
         const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
         if (value?.id) {
@@ -297,7 +297,7 @@ export default function useHolderListController() {
 
   const inicializeFilter = (params: string) => {
     try {
-      const filters: IFilterParams = params!=='null'?filterParams:decodeFromBase64(params as string)
+      const filters: IFilterParams = params !== 'null' ? filterParams : decodeFromBase64(params as string)
       filters.params.startAfter = null
       setFilterParams(filters)
       setLoading(false)
@@ -370,24 +370,32 @@ export default function useHolderListController() {
         ids.push(item.id)
       }
 
-      ids.forEach(async id => {
-        const update: any = {}
-        if (passStatus) {
-          update['passStatus'] = passStatus
-        }
-        if (status) {
-          update['status'] = status
-        }
-        await updateHolder({
-          id: id,
-          entityId: currentEntity?.entity?.id,
-          ...update,
-        }, token)
-      });
+      await Promise.all(
+        ids.map(async (id) => {
+          const update: any = {}
+          if (passStatus) {
+            update['passStatus'] = passStatus
+          }
+          if (status) {
+            update['status'] = status
+          }
+          try {
+            await updateHolder({
+              id: id,
+              entityId: currentEntity?.entity?.id,
+              ...update,
+            }, token)
+
+          } catch (e: any) {
+            showToast(e?.message, 'error')
+          }
+        })
+      );
 
       setRevoking(false)
       closeModal(CommonModalType.DELETE)
-      fetchingData(filterParams)
+      const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
+      fetchingData(filterParamsUpdated)
     } catch (e: any) {
       showToast(e?.message, 'error')
       setRevoking(false)

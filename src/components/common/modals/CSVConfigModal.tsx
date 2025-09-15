@@ -23,8 +23,7 @@ import { useTranslations } from 'next-intl';
 import { IEvent } from '@/domain/features/passinbiz/IEvent';
 import { search } from '@/services/passinbiz/event.service';
 import { useEntity } from '@/hooks/useEntity';
-import { Article } from '@mui/icons-material';
-// Use public URL for static assets in Next.js
+ // Use public URL for static assets in Next.js
 interface ICSVConfigModal {
   open: boolean
   onClose: () => void
@@ -144,7 +143,7 @@ const CSVConfigModal = ({ open, onClose, onConfirm }: ICSVConfigModal) => {
           variant="contained"
           size='small'
           disabled={(type === 'credential') ? !type : (!type || !eventSelected)}
-          startIcon={<Article />}
+         
         >
           {t('core.button.importCSV')}
         </SassButton>
