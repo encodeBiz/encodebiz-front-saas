@@ -50,7 +50,26 @@ interface StatsResponse {
   meta?: any;
 }
 
-
+// ==========================================================
+// SAMPLE (fallback) – igual al ejemplo que compartiste
+// ==========================================================
+const SAMPLE_RESPONSE: StatsResponse = {
+  total: 1000,
+  hour: {
+    "9": [
+      { total: 0, event: "Masterclass GROUND" },
+      { total: 500, event: "Presentación de PassBiz" },
+    ],
+    "14": [
+      { total: 0, event: "Masterclass GROUND" },
+      { total: 500, event: "Presentación de PassBiz" },
+    ],
+  },
+  dateRange: {
+    start: "2025-09-12T09:00:00.000Z",
+    end: "2025-09-12T22:00:00.000Z",
+  },
+};
 
 // ==========================================================
 // HELPERS – normalización, construcción de series y ranking
@@ -137,10 +156,10 @@ const DEFAULT_PAYLOAD = {
   entityId: "z1YRV6s6ueqnJpIvInFL",
   stats: "PASSES_ISSUED",
   dateRange: {
-    start: "2025-09-12T00:00:00.000Z",
-    end: "2025-09-12T17:00:00.000Z",
+    start: "2025-09-12T09:00:00.000Z",
+    end: "2025-09-12T22:00:00.000Z",
   },
-  groupBy: "day",
+  groupBy: "hour",
   type: "event",
   passStatus: "active",
   events: [
@@ -153,14 +172,14 @@ export default function Page() {
   const [tab, setTab] = React.useState(0);
   const [endpoint, setEndpoint] = React.useState(DEFAULT_ENDPOINT);
   const [payload, setPayload] = React.useState(JSON.stringify(DEFAULT_PAYLOAD, null, 2));
-  const [groupBy, setGroupBy] = React.useState<GroupBy>("day");
+  const [groupBy, setGroupBy] = React.useState<GroupBy>("hour");
   const [useFallback, setUseFallback] = React.useState(true);
   const [showCumulative, setShowCumulative] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [raw, setRaw] = React.useState<any>(null);
 
-  const [data, setData] = React.useState<StatsResponse | null>(null);
+  const [data, setData] = React.useState<StatsResponse | null>(SAMPLE_RESPONSE);
 
   const parsedPayload = React.useMemo(() => {
     try { return JSON.parse(payload); } catch { return null; }
@@ -169,12 +188,10 @@ export default function Page() {
   async function fetchStats() {
     setLoading(true); setError(null); setRaw(null);
     try {
-      const body = { ...(parsedPayload ?? DEFAULT_PAYLOAD), groupBy }; // << fuerza groupBy actual
-
       const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+        body: JSON.stringify(parsedPayload ?? DEFAULT_PAYLOAD),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
@@ -186,16 +203,18 @@ export default function Page() {
       setData(normalized);
     } catch (e: any) {
       setError(e?.message || "Request failed");
+      if (useFallback) setData(SAMPLE_RESPONSE);
     } finally {
       setLoading(false);
     }
   }
 
-  const buckets = React.useMemo(() => getBuckets(data || ({} as StatsResponse), groupBy), [data, groupBy]);
+  const buckets = React.useMemo(() => getBuckets(data ?? SAMPLE_RESPONSE, groupBy), [data, groupBy]);
   const { rows, series } = React.useMemo(() => buildChartData(buckets, groupBy), [buckets, groupBy]);
   const ranking = React.useMemo(() => computeTotalsByEvent(buckets), [buckets]);
 
-  const dr = data?.dateRange; const empty = rows.length === 0 || series.length === 0;
+  const dr = data?.dateRange ?? SAMPLE_RESPONSE.dateRange;
+  const empty = rows.length === 0 || series.length === 0;
 
   // Para ocultar/mostrar series en la gráfica
   const SERIES_OPTIONS = series.map((s) => ({ id: s.field, name: s.name }));
@@ -213,7 +232,7 @@ export default function Page() {
           <Stack direction="row" spacing={2}>
             <FormControl size="small" sx={{ minWidth: 140 }}>
               <InputLabel id="gb-label">groupBy</InputLabel>
-              <Select labelId="gb-label" label="groupBy" value={groupBy} onChange={(e) => setGroupBy(e.target.value as GroupBy)}>
+              <Select labelId="gb-label" label="groupBy" value={groupBy} onChange={(e)=>setGroupBy(e.target.value as GroupBy)}>
                 <MenuItem value="hour">hour</MenuItem>
                 <MenuItem value="day">day</MenuItem>
                 <MenuItem value="month">month</MenuItem>
@@ -227,7 +246,7 @@ export default function Page() {
                 label="Series visibles"
                 value={visibleSeries}
                 onChange={(e) => setVisibleSeries(typeof e.target.value === 'string' ? (e.target.value as string).split(',') : (e.target.value as string[]))}
-                renderValue={(selected) => (selected as string[]).map(id => SERIES_OPTIONS.find(o => o.id === id)?.name ?? id).join(', ')}
+                renderValue={(selected) => (selected as string[]).map(id => SERIES_OPTIONS.find(o=>o.id===id)?.name ?? id).join(', ')}
               >
                 {SERIES_OPTIONS.map(o => (
                   <MenuItem key={o.id} value={o.id}>
@@ -241,7 +260,7 @@ export default function Page() {
         </Stack>
 
         <Card variant="outlined" sx={{ mb: 2 }}>
-          <Tabs value={tab} onChange={(_, v) => setTab(v)} aria-label="tabs-demo">
+          <Tabs value={tab} onChange={(_,v)=>setTab(v)} aria-label="tabs-demo">
             <Tab label="Gráfica" id="tab-0" aria-controls="tabpanel-0" />
             <Tab label="Ranking por evento" id="tab-1" aria-controls="tabpanel-1" />
             <Tab label="Endpoint" id="tab-2" aria-controls="tabpanel-2" />
@@ -274,7 +293,7 @@ export default function Page() {
               <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
                 <Chip size="small" label={`Date Range (UTC): ${dr?.start ?? '-'} → ${dr?.end ?? '-'}`} />
                 <Chip size="small" label={`Total: ${formatCompact(data?.total ?? 0)}`} />
-                <Chip size="small" label={showCumulative ? "Cumulative: ON" : "Cumulative: OFF"} onClick={() => setShowCumulative(v => !v)} />
+                <Chip size="small" label={showCumulative ? "Cumulative: ON" : "Cumulative: OFF"} onClick={()=>setShowCumulative(v=>!v)} />
               </Stack>
             </div>
 
@@ -282,13 +301,13 @@ export default function Page() {
             <div role="tabpanel" hidden={tab !== 1}>
               <Box sx={{ height: 380 }}>
                 <ResponsiveContainer width="100%" height="100%">
-                  <ComposedChart data={ranking.map(r => ({ evento: r.event, total: r.total }))} margin={{ top: 8, right: 16, left: 8, bottom: 24 }}>
+                  <ComposedChart data={ranking.map(r=>({ evento: r.event, total: r.total }))} margin={{ top: 8, right: 16, left: 8, bottom: 24 }}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="evento" angle={-10} height={60} />
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="total" name="Total por evento" radius={[6, 6, 0, 0]} />
+                    <Bar dataKey="total" name="Total por evento" radius={[6,6,0,0]} />
                   </ComposedChart>
                 </ResponsiveContainer>
               </Box>
@@ -297,12 +316,12 @@ export default function Page() {
             {/* TAB 2 – Endpoint & payload */}
             <div role="tabpanel" hidden={tab !== 2}>
               <Stack spacing={2}>
-                <TextField label="Endpoint" value={endpoint} onChange={(e) => setEndpoint(e.target.value)} size="small" fullWidth />
-                <TextField label="Payload (JSON)" value={payload} onChange={(e) => setPayload(e.target.value)} multiline minRows={10} maxRows={18} fullWidth />
+                <TextField label="Endpoint" value={endpoint} onChange={(e)=>setEndpoint(e.target.value)} size="small" fullWidth />
+                <TextField label="Payload (JSON)" value={payload} onChange={(e)=>setPayload(e.target.value)} multiline minRows={10} maxRows={18} fullWidth />
                 <Stack direction="row" spacing={2} alignItems="center">
                   <Button variant="contained" onClick={fetchStats} disabled={loading}>{loading ? "Cargando…" : "Fetch"}</Button>
                   <FormControl size="small" sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                    <Checkbox checked={useFallback} onChange={(e) => setUseFallback(e.target.checked)} />
+                    <Checkbox checked={useFallback} onChange={(e)=>setUseFallback(e.target.checked)} />
                     <ListItemText primary="Usar fallback si falla" />
                   </FormControl>
                 </Stack>
