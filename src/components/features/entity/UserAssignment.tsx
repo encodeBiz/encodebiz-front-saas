@@ -130,7 +130,6 @@ const UserAssignment = ({ project, onAssign, onRemove, proccesing = false }: Use
                                             {collaborator.status === 'invited' && <CustomChip
                                                 id={collaborator.user.id}
                                                 background={'gray'}
-                                                text={t('colaborators.pending')}
                                                 size="small"
                                                 label={t('colaborators.pending')}
 
@@ -139,7 +138,6 @@ const UserAssignment = ({ project, onAssign, onRemove, proccesing = false }: Use
                                                 ((collaborator.role === 'admin' && collaborator.status !== 'invited') || (collaborator.role === 'owner' && collaborator.status !== 'invited' && project.collaborators.filter(e => e.role === 'owner' && e.status === 'active').length > 1)) && (
                                                     <CustomIconBtn
                                                         onClick={() => openModal(CommonModalType.COLABORATOR, { data: collaborator.user.uid })}
-
                                                         icon={<TrashIcon />}
                                                         color={theme.palette.primary.main}
                                                     />
