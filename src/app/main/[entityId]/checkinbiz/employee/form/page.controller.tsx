@@ -3,40 +3,21 @@ import { useCallback, useEffect, useState } from 'react';
 import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
-import { requiredRule } from '@/config/yupRules';
+import { emailRule, requiredRule } from '@/config/yupRules';
 import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
-import { fetchEvent } from "@/services/passinbiz/event.service";
 import DateInput from "@/components/common/forms/fields/Datenput";
-import ImageUploadInput from "@/components/common/forms/fields/ImageUploadInput";
-import ColorPickerInput from "@/components/common/forms/fields/ColorPickerInput";
-import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { ArrayToObject, objectToArray } from "@/lib/common/String";
-import { createEmployee, updateEmployee } from "@/services/checkinbiz/employee.service";
+import { createEmployee, fetchEmployee, updateEmployee } from "@/services/checkinbiz/employee.service";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
+import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
+import SelectInput from "@/components/common/forms/fields/SelectInput";
 
-export interface EmployeeFormValues {
-  id?: string
-  uid?: string
-  createdBy?: string
-  entityId?: string
-  "name": string
-  "description": string
-  address?: string
-  "date": any
-  "location": string
-  "template": string
-  "logoUrl": string
-  "imageUrl": string
-  "colorPrimary": string
-  "colorAccent": string
-  metadata: any
-};
 
-export default function useHolderController() {
+export default function useEmployeeController() {
   const t = useTranslations();
   const { showToast } = useToast()
   const { navivateTo } = useLayout()
@@ -44,17 +25,13 @@ export default function useHolderController() {
   const { id } = useParams<{ id: string }>()
   const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
-  const [initialValues, setInitialValues] = useState<EmployeeFormValues>({
-    "name": '',
-    "description": '',
-    "date": new Date(),
-    "location": '',
-    "template": '',
-    "logoUrl": '',
-    "imageUrl": '',
-    "colorPrimary": '',
-    "colorAccent": '',
-    metadata: []
+  const [initialValues, setInitialValues] = useState<Partial<IEmployee>>({
+    "fullName": '',
+    email: '',
+    phone: '',
+    role: "internal",
+    status: 'active',
+    subEntity: '',
   });
 
   const validationSchema = Yup.object().shape({
@@ -66,35 +43,21 @@ export default function useHolderController() {
         })
       )
       .nullable(),
-    name: requiredRule(t),
-    description: requiredRule(t),
-    date: requiredRule(t),
-    location: requiredRule(t),
-    logoUrl: requiredRule(t),
-    imageUrl: requiredRule(t),
-    colorPrimary: requiredRule(t),
-    colorAccent: requiredRule(t),
+    fullName: requiredRule(t),
+    phone: requiredRule(t),
+    email: emailRule(t),
+
   });
 
-  const handleSubmit = async (values: EmployeeFormValues) => {
+  const handleSubmit = async (values: Partial<IEmployee>) => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const data = {
+        ...values,
         "uid": user?.id as string,
-        "createdBy": user?.id as string,
-        "name": values.name,
-        "description": values.description,
-        "location": values.location,
-        "address": values.location,
-        "entityId": currentEntity?.entity?.id as string,
-        "colorPrimary": values.colorPrimary,
-        "colorAccent": values.colorAccent,
-        "imageUrl": values.imageUrl,
-        "logoUrl": values.logoUrl,
-        "date": values.date,
-        template: 'vip',
-        "metadata": ArrayToObject(values.metadata),
+        "metadata": ArrayToObject(values.metadata as any),
         "id": id,
+        entityId: currentEntity?.entity.id
       }
       if (id)
         await updateEmployee(data, token)
@@ -112,7 +75,11 @@ export default function useHolderController() {
 
   const fields = [
     {
-      name: 'name',
+      isDivider: true,
+      label: t('core.label.personalData'),
+    },
+    {
+      name: 'fullName',
       label: t('core.label.name'),
       type: 'text',
       required: true,
@@ -120,63 +87,55 @@ export default function useHolderController() {
     },
 
     {
-      name: 'date',
-      label: t('core.label.date'),
+      name: 'email',
+      label: t('core.label.email'),
       type: 'text',
-      required: true,
-      component: DateInput,
-    },
-    {
-      name: 'location',
-      label: t('core.label.location'),
-      required: true,
-      type: 'textarea',
-      component: TextInput,
-    },
-    {
-      name: 'description',
-      label: t('core.label.description'),
-      type: 'textarea',
       required: true,
       component: TextInput,
     },
     {
-
-      isDivider: true,
-      label: t('core.label.designed'),
-    },
-    {
-      name: 'colorPrimary',
-      label: t('core.label.colorPrimary'),
+      name: 'phone',
+      label: t('core.label.phone'),
       type: 'text',
       required: true,
-      component: ColorPickerInput,
-    }, {
-      name: 'colorAccent',
-      label: t('core.label.colorAccent'),
+      component: TextInput,
+    },
+    {
+      name: 'role',
+      label: t('core.label.role'),
+      component: SelectInput,
+      required: true,
+      options: [
+        { value: 'internal', label: t('core.label.internal') },
+        { value: 'collaborator', label: t('core.label.collaborator') },
+
+      ],
+    },
+    {
+      name: 'status',
+      label: t('core.label.status'),
       type: 'text',
-      required: true,
+      required: false,
 
-      component: ColorPickerInput,
+      options: [
+        { value: 'active', label: t('core.label.active') },
+        { value: 'inactive', label: t('core.label.inactive') },
+      ],
+      component: SelectInput,
     },
     {
-      name: 'logoUrl',
-      label: t('core.label.logo'),
-      required: true,
-      type: 'custom',
-      component: ImageUploadInput,
+      name: 'subEntity',
+      label: t('core.label.subEntity'),
+      type: 'text',
+      required: false,
+      options: [],
+      component: SelectInput,
     },
     {
-      name: 'imageUrl',
-      label: t('core.label.imageUrl'),
-      required: true,
-      type: 'custom',
-      component: ImageUploadInput,
-    }, {
-
       isDivider: true,
-      label: t('core.label.setting'),
+      label: t('core.label.aditionalData'),
     },
+
     {
       name: 'metadata',
       label: t('core.label.setting'),
@@ -191,7 +150,7 @@ export default function useHolderController() {
 
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, id)
+      const event: IEmployee = await fetchEmployee(currentEntity?.entity.id as string, id)
       setInitialValues({
         ...event,
         metadata: objectToArray(event.metadata)

@@ -130,9 +130,9 @@ const UserAssignment = ({ project, onAssign, onRemove, proccesing = false }: Use
                                             {collaborator.status === 'invited' && <CustomChip
                                                 id={collaborator.user.id}
                                                 background={'gray'}
-                                                text={'Estado de la invitación: Pendiente a aceptar'}
+                                                text={t('colaborators.pending')}
                                                 size="small"
-                                                label={'Estado de la invitación: Pendiente a aceptar'}
+                                                label={t('colaborators.pending')}
 
                                             />}
                                             {

@@ -11,9 +11,5 @@ export interface IEmployee {
     twoFA?: any,
     createdAt: Date;
     subEntity?: string; // Proyecto asignado, sucursal , etc
-    metadata?: {
-        dni?: string;
-        address?: string;
-        position?: string;
-    };
+    metadata?: any
 }
