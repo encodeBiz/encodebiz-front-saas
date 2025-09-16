@@ -11,11 +11,12 @@ import { useUserAccountController } from './page.controller';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
+import InfoModal from '@/components/common/modals/InfoModal';
 
 const AccountPreferencesPage = () => {
     const t = useTranslations();
     const { tabsRender } = useUserAccountController();
-    const {open, closeModal} = useCommonModal()
+    const { open, closeModal } = useCommonModal()
     return (
         <Container maxWidth="xl">
             <HeaderPage
@@ -26,14 +27,11 @@ const AccountPreferencesPage = () => {
                 />
             </HeaderPage>
 
-            {open.open && open.type == CommonModalType.RECOVERY&& <ConfirmModal
+            {open.open && open.type == CommonModalType.INFO && <InfoModal
                 title={t('core.recovery.modalTitle')}
-                description={t('core.recovery.modalTitle2')}
-                textBtn={t('core.recovery.ok')}
-                cancelBtn={false}
-                onOKAction={() => {
-                    closeModal(CommonModalType.RECOVERY)
-                   
+                description={t('core.recovery.modalTitle2')}             
+                onClose={() => {
+                    closeModal(CommonModalType.INFO)
                 }}
             />}
         </Container>
