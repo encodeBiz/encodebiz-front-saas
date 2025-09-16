@@ -9,254 +9,311 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
-import { ResponsiveContainer, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend, LineChart, Line } from "recharts";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Alert from "@mui/material/Alert";
 import { Chip, Stack, Tab, Tabs, Typography } from "@mui/material";
+import {
+  ResponsiveContainer,
+  ComposedChart,
+  Bar,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 // ==========================================================
-// DATA CONTRACT – Pre-evento (createdAt → startAt)
+// DATA CONTRACT – Passes Issued (hour/day/month buckets)
 // ==========================================================
-// Medimos "emisiones" acumuladas por mes entre la creación del evento y su inicio.
-export interface EventPreWindow {
-  eventId: string;
-  eventName: string;
-  createdAt: string; // ISO date (YYYY-MM-DD)
-  startAt: string;   // ISO date (YYYY-MM-DD)
-  months: Array<{ year: number; month: number; emissions: number }>; // 1..12
+// Esperamos una respuesta con una de estas claves: hour | day | month
+// Cada clave es un objeto { bucketKey: Array<{ total: number; event: string; eventId?: string }> }
+// Ej.:
+// {
+//   total: 1000,
+//   hour: { "9": [{ total: 500, event: "Presentación de PassBiz" }, ...], ... },
+//   dateRange: { start: ISO, end: ISO }
+// }
+
+type GroupBy = "hour" | "day" | "month";
+
+type BucketItem = { total: number; event: string; eventId?: string };
+
+interface StatsResponse {
+  total: number;
+  hour?: Record<string, BucketItem[]>;
+  day?: Record<string, BucketItem[]>;
+  month?: Record<string, BucketItem[]>;
+  dateRange?: { start: string; end: string };
+  meta?: any;
+}
+
+
+
+// ==========================================================
+// HELPERS – normalización, construcción de series y ranking
+// ==========================================================
+
+function normalizeApiResponse(json: any): StatsResponse {
+  const root = json?.result ?? json?.output ?? json?.data ?? json ?? {};
+  const hour = root.hour ?? root.hours ?? root.hourly;
+  const day = root.day ?? root.days ?? root.daily;
+  const month = root.month ?? root.months ?? root.monthly;
+  const total = root.total ?? root.kpis?.total ?? root.kpis?.totalIssued ?? 0;
+  const dateRange = root.dateRange ?? root.meta?.dateRangeApplied ?? undefined;
+  return { total, hour, day, month, dateRange, meta: root.meta } as StatsResponse;
+}
+
+function getBuckets(resp: StatsResponse, gb: GroupBy) {
+  return (resp?.[gb] ?? {}) as Record<string, BucketItem[]>;
+}
+
+function sortKeys(gb: GroupBy, keys: string[]) {
+  if (gb === "hour") return keys.map(Number).sort((a, b) => a - b).map(String);
+  return keys.sort((a, b) => a.localeCompare(b)); // YYYY-MM(-DD)
+}
+
+function uniq<T>(arr: T[]): T[] { return Array.from(new Set(arr)); }
+
+function safeKey(s: string) {
+  return s
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^A-Za-z0-9_]/g, "_");
+}
+
+function buildChartData(buckets: Record<string, BucketItem[]>, gb: GroupBy) {
+  const keys = sortKeys(gb, Object.keys(buckets));
+  const eventNames = uniq(keys.flatMap((k) => (buckets[k] || []).map((i) => i.event)));
+  const series = eventNames.map((name) => ({ name, field: safeKey(name) }));
+
+  let cumulative = 0;
+  const rows = keys.map((k) => {
+    const row: any = { key: k };
+    let total = 0;
+    for (const s of series) {
+      const found = (buckets[k] || []).find((i) => i.event === s.name);
+      const v = found ? found.total : 0;
+      row[s.field] = v;
+      total += v;
+    }
+    cumulative += total;
+    row.total = total;
+    row.cumulative = cumulative;
+    row.label = gb === "hour" ? `${String(k).padStart(2, "0")}:00` : k;
+    return row;
+  });
+
+  return { rows, series };
+}
+
+function computeTotalsByEvent(buckets: Record<string, BucketItem[]>) {
+  const map = new Map<string, { event: string; total: number }>();
+  Object.keys(buckets).forEach((k) => {
+    (buckets[k] || []).forEach((item) => {
+      const key = item.event; // o item.eventId ?? item.event
+      const prev = map.get(key) ?? { event: item.event, total: 0 };
+      prev.total += item.total || 0;
+      map.set(key, prev);
+    });
+  });
+  return Array.from(map.values()).sort((a, b) => b.total - a.total);
+}
+
+function formatCompact(n: number) {
+  return new Intl.NumberFormat("en-US", { notation: "compact" }).format(n);
 }
 
 // ==========================================================
-// DEMO DATA – coherente con lo que podemos medir hoy
+// PAGE – Adaptada a tu estilo MUI, con fetch configurable
 // ==========================================================
-const DEMO_PREWINDOW: EventPreWindow[] = [
-  {
-    eventId: "ev-001",
-    eventName: "Concierto Primavera",
-    createdAt: "2025-02-01",
-    startAt: "2025-03-20",
-    months: [
-      { year: 2025, month: 2, emissions: 900 },
-      { year: 2025, month: 3, emissions: 2300 },
-    ],
-  },
-  {
-    eventId: "ev-003",
-    eventName: "Summit TechBiz",
-    createdAt: "2025-06-15",
-    startAt: "2025-08-20",
-    months: [
-      { year: 2025, month: 6, emissions: 400 },
-      { year: 2025, month: 7, emissions: 1500 },
-      { year: 2025, month: 8, emissions: 750 },
-    ],
-  },
-  {
-    eventId: "ev-002",
-    eventName: "Expo Arte Contemporáneo",
-    createdAt: "2025-04-01",
-    startAt: "2025-06-10",
-    months: [
-      { year: 2025, month: 4, emissions: 600 },
-      { year: 2025, month: 5, emissions: 900 },
-      { year: 2025, month: 6, emissions: 350 },
-    ],
-  },
-  {
-    eventId: "ev-004",
-    eventName: "Concierto Primavera 2",
-    createdAt: "2025-03-25",
-    startAt: "2025-04-20",
-    months: [
-      { year: 2025, month: 3, emissions: 50 },
-      { year: 2025, month: 4, emissions: 100 },
-    ],
-  },
-  {
-    eventId: "ev-005",
-    eventName: "DEMO 1",
-    createdAt: "2025-08-20",
-    startAt: "2025-10-15",
-    months: [
-      { year: 2025, month: 8, emissions: 200 },
-      { year: 2025, month: 9, emissions: 1500 },
-      { year: 2025, month: 10, emissions: 950 },
-    ],
-  },
-  {
-    eventId: "ev-006",
-    eventName: "DEMO 2",
-    createdAt: "2025-08-25",
-    startAt: "2025-11-05",
-    months: [
-      { year: 2025, month: 8, emissions: 150 },
-      { year: 2025, month: 9, emissions: 1200 },
-      { year: 2025, month: 10, emissions: 400 },
-      { year: 2025, month: 11, emissions: 100 },
-    ],
-  },
-  {
-    eventId: "ev-007",
-    eventName: "DEMO 3",
-    createdAt: "2025-07-20",
-    startAt: "2025-08-10",
-    months: [
-      { year: 2025, month: 7, emissions: 500 },
-      { year: 2025, month: 8, emissions: 150 },
-    ],
-  },
-  {
-    eventId: "ev-008",
-    eventName: "DEMO 4",
-    createdAt: "2025-09-01",
-    startAt: "2025-12-01",
-    months: [
-      { year: 2025, month: 9, emissions: 400 },
-      { year: 2025, month: 10, emissions: 350 },
-      { year: 2025, month: 11, emissions: 300 },
-    ],
-  },
-];
 
-// ==========================================================
-// HELPERS – ranking total y evolución mensual multi-evento
-// ==========================================================
-function monthKey(y: number, m: number) { return `${y}-${String(m).padStart(2, "0")}`; }
-function sortMonthKeyAsc(a: string, b: string) { return a.localeCompare(b); }
-function labelFromKey(key: string) {
-  const d = new Date(`${key}-01T00:00:00Z`);
-  return d.toLocaleDateString("es-ES", { month: "short", year: "2-digit" });
-}
+const DEFAULT_ENDPOINT =
+  "https://us-central1-encodebiz-services.cloudfunctions.net/apiV100-firebaseEntryHttp-passinbiz-statsGetdata";
 
-// Ranking total por evento en su ventana pre-evento
-interface DPRanking { evento: string; emisiones: number; }
-function mapRankingPreWindow(rows: EventPreWindow[]): DPRanking[] {
-  return [...rows]
-    .map(r => ({ evento: r.eventName, emisiones: r.months.reduce((s,x)=>s+x.emissions, 0) }))
-    .sort((a,b)=> b.emisiones - a.emisiones);
-}
+const DEFAULT_PAYLOAD = {
+  entityId: "z1YRV6s6ueqnJpIvInFL",
+  stats: "PASSES_ISSUED",
+  dateRange: {
+    start: "2025-09-12T00:00:00.000Z",
+    end: "2025-09-12T17:00:00.000Z",
+  },
+  groupBy: "day",
+  type: "event",
+  passStatus: "active",
+  events: [
+    { id: "DAhykI0IAJAWA9Ip9TGW", name: "Masterclass GROUND" },
+    { id: "ItjpMhJf4dJAkbZR5zkf", name: "Presentación de PassBiz" },
+  ],
+};
 
-// Eje global de meses (unión de todas las ventanas)
-function buildGlobalAxis(rows: EventPreWindow[]): string[] {
-  const set = new Set<string>();
-  for (const r of rows) for (const m of r.months) set.add(monthKey(m.year, m.month));
-  return Array.from(set).sort(sortMonthKeyAsc);
-}
-
-// Evolución mensual multi-evento (formato ancho)
-export type DPMultiLinea = { periodo: string; key: string; [serie: string]: number|string };
-function mapEvolutionMulti(rows: EventPreWindow[]): { data: DPMultiLinea[]; series: string[] } {
-  const axis = buildGlobalAxis(rows);
-  const data: DPMultiLinea[] = axis.map(k => ({ periodo: labelFromKey(k), key: k }));
-  const series: string[] = [];
-  for (const r of rows) {
-    const serieName = r.eventName; series.push(serieName);
-    const map = new Map(r.months.map(m => [monthKey(m.year, m.month), m.emissions] as const));
-    for (const row of data) { (row as any)[serieName] = map.get(row.key) ?? 0; }
-  }
-  return { data, series };
-}
-
-// Simple TabPanel para MUI
-interface TabPanelProps { children?: React.ReactNode; index: number; value: number; }
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-  return (
-    <div role="tabpanel" hidden={value !== index} id={`tabpanel-${index}`} aria-labelledby={`tab-${index}`} {...other}>
-      {value === index && <Box sx={{ pt: 2 }}>{children}</Box>}
-    </div>
-  );
-}
-
-// ==========================================================
-// PAGE (Next.js App Router) – CC/CV listo
-// ==========================================================
 export default function Page() {
   const [tab, setTab] = React.useState(0);
+  const [endpoint, setEndpoint] = React.useState(DEFAULT_ENDPOINT);
+  const [payload, setPayload] = React.useState(JSON.stringify(DEFAULT_PAYLOAD, null, 2));
+  const [groupBy, setGroupBy] = React.useState<GroupBy>("day");
+  const [useFallback, setUseFallback] = React.useState(true);
+  const [showCumulative, setShowCumulative] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+  const [raw, setRaw] = React.useState<any>(null);
 
-    // opciones de eventos y selección múltiple
-  const EVENT_OPTIONS = React.useMemo(() => DEMO_PREWINDOW.map(e => ({ id: e.eventId, name: e.eventName })), []);
-  const [selectedIds, setSelectedIds] = React.useState<string[]>(EVENT_OPTIONS.map(o => o.id));
+  const [data, setData] = React.useState<StatsResponse | null>(null);
 
-  const filteredRows = React.useMemo(() => DEMO_PREWINDOW.filter(r => selectedIds.includes(r.eventId)), [selectedIds]);
+  const parsedPayload = React.useMemo(() => {
+    try { return JSON.parse(payload); } catch { return null; }
+  }, [payload]);
 
-  const ranking = React.useMemo(() => mapRankingPreWindow(filteredRows), [filteredRows]);
-    const { data: evolucion, series } = React.useMemo(() => mapEvolutionMulti(filteredRows), [filteredRows]);
+  async function fetchStats() {
+    setLoading(true); setError(null); setRaw(null);
+    try {
+      const body = { ...(parsedPayload ?? DEFAULT_PAYLOAD), groupBy }; // << fuerza groupBy actual
+
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      setRaw(json);
+      const normalized = normalizeApiResponse(json);
+      // Detecta automáticamente el groupBy que viene del server
+      const gb: GroupBy | null = normalized.hour ? "hour" : normalized.day ? "day" : normalized.month ? "month" : null;
+      if (gb) setGroupBy(gb);
+      setData(normalized);
+    } catch (e: any) {
+      setError(e?.message || "Request failed");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const buckets = React.useMemo(() => getBuckets(data || ({} as StatsResponse), groupBy), [data, groupBy]);
+  const { rows, series } = React.useMemo(() => buildChartData(buckets, groupBy), [buckets, groupBy]);
+  const ranking = React.useMemo(() => computeTotalsByEvent(buckets), [buckets]);
+
+  const dr = data?.dateRange; const empty = rows.length === 0 || series.length === 0;
+
+  // Para ocultar/mostrar series en la gráfica
+  const SERIES_OPTIONS = series.map((s) => ({ id: s.field, name: s.name }));
+  const [visibleSeries, setVisibleSeries] = React.useState<string[]>(SERIES_OPTIONS.map(s => s.id));
+  React.useEffect(() => { setVisibleSeries(SERIES_OPTIONS.map(s => s.id)); }, [series.length]);
 
   return (
     <Box sx={{ p: 3, bgcolor: "#f8fafc", minHeight: "100vh" }}>
       <Box sx={{ maxWidth: 1200, mx: "auto" }}>
         <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems={{ md: "flex-end" }} justifyContent="space-between" sx={{ mb: 2 }}>
           <Box>
-            <Typography variant="h5" fontWeight={600}>Emisiones pre‑evento</Typography>
-            <Typography variant="body2" color="text.secondary">Ranking total y evolución mensual entre <strong>createdAt</strong> y <strong>startAt</strong>.</Typography>
+            <Typography variant="h5" fontWeight={600}>Passes Issued</Typography>
+            <Typography variant="body2" color="text.secondary">Barras apiladas por evento + línea acumulada. Rango UTC.</Typography>
           </Box>
-        </Stack>
-        <Stack direction="row" justifyContent="flex-end" sx={{ mb: 2 }}>
-          <FormControl size="small" sx={{ minWidth: 320 }}>
-            <InputLabel id="events-label">Comparar eventos</InputLabel>
-            <Select
-              labelId="events-label"
-              label="Comparar eventos"
-              multiple
-              value={selectedIds}
-              onChange={(e) => setSelectedIds(typeof e.target.value === 'string' ? (e.target.value as string).split(',') : (e.target.value as string[]))}
-              renderValue={(selected) => (selected as string[]).map(id => EVENT_OPTIONS.find(o=>o.id===id)?.name ?? id).join(', ')}
-            >
-              {EVENT_OPTIONS.map(o => (
-                <MenuItem key={o.id} value={o.id}>
-                  <Checkbox checked={selectedIds.indexOf(o.id) > -1} />
-                  <ListItemText primary={o.name} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <Stack direction="row" spacing={2}>
+            <FormControl size="small" sx={{ minWidth: 140 }}>
+              <InputLabel id="gb-label">groupBy</InputLabel>
+              <Select labelId="gb-label" label="groupBy" value={groupBy} onChange={(e) => setGroupBy(e.target.value as GroupBy)}>
+                <MenuItem value="hour">hour</MenuItem>
+                <MenuItem value="day">day</MenuItem>
+                <MenuItem value="month">month</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl size="small" sx={{ minWidth: 320 }}>
+              <InputLabel id="series-label">Series visibles</InputLabel>
+              <Select
+                multiple
+                labelId="series-label"
+                label="Series visibles"
+                value={visibleSeries}
+                onChange={(e) => setVisibleSeries(typeof e.target.value === 'string' ? (e.target.value as string).split(',') : (e.target.value as string[]))}
+                renderValue={(selected) => (selected as string[]).map(id => SERIES_OPTIONS.find(o => o.id === id)?.name ?? id).join(', ')}
+              >
+                {SERIES_OPTIONS.map(o => (
+                  <MenuItem key={o.id} value={o.id}>
+                    <Checkbox checked={visibleSeries.indexOf(o.id) > -1} />
+                    <ListItemText primary={o.name} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Stack>
         </Stack>
 
         <Card variant="outlined" sx={{ mb: 2 }}>
-          <Tabs value={tab} onChange={(_,v)=>setTab(v)} aria-label="tabs-demo">
-            <Tab label="Ranking total por evento" id="tab-0" aria-controls="tabpanel-0" />
-            <Tab label="Evolución mensual (multi‑evento)" id="tab-1" aria-controls="tabpanel-1" />
+          <Tabs value={tab} onChange={(_, v) => setTab(v)} aria-label="tabs-demo">
+            <Tab label="Gráfica" id="tab-0" aria-controls="tabpanel-0" />
+            <Tab label="Ranking por evento" id="tab-1" aria-controls="tabpanel-1" />
+            <Tab label="Endpoint" id="tab-2" aria-controls="tabpanel-2" />
           </Tabs>
 
           <CardContent>
-            {/* Ranking total (emisiones acumuladas en la ventana pre‑evento) */}
-            <TabPanel value={tab} index={0}>
-              <Box sx={{ height: 380 }}>
-                <ResponsiveContainer width="100%" height="100%"> 
-                  <BarChart data={ranking} margin={{ top: 8, right: 16, left: 8, bottom: 8 }}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="evento" tick={{ fontSize: 12 }} angle={-10} height={60} />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="emisiones" name="Emisiones (total pre‑evento)" radius={[6,6,0,0]} />
-                  </BarChart>
-                </ResponsiveContainer>
+            {/* TAB 0 – Chart */}
+            <div role="tabpanel" hidden={tab !== 0}>
+              <Box sx={{ height: 420 }}>
+                {empty ? (
+                  <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
+                    <Typography color="text.secondary" variant="body2">No hay datos para mostrar. Ajusta el rango o usa el fallback.</Typography>
+                  </Stack>
+                ) : (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <ComposedChart data={rows} margin={{ top: 8, right: 16, left: 8, bottom: 8 }}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="label" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      {series.filter(s => visibleSeries.includes(s.field)).map((s) => (
+                        <Bar key={s.field} dataKey={s.field} name={s.name} stackId="events" />
+                      ))}
+                      {showCumulative && <Line type="monotone" dataKey="cumulative" dot={false} />}
+                    </ComposedChart>
+                  </ResponsiveContainer>
+                )}
               </Box>
               <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-                <Chip size="small" label="Ventana de cálculo: createdAt → startAt" />
+                <Chip size="small" label={`Date Range (UTC): ${dr?.start ?? '-'} → ${dr?.end ?? '-'}`} />
+                <Chip size="small" label={`Total: ${formatCompact(data?.total ?? 0)}`} />
+                <Chip size="small" label={showCumulative ? "Cumulative: ON" : "Cumulative: OFF"} onClick={() => setShowCumulative(v => !v)} />
               </Stack>
-            </TabPanel>
+            </div>
 
-            {/* Evolución mensual multi‑evento (pre‑evento) */}
-            <TabPanel value={tab} index={1}>
+            {/* TAB 1 – Ranking */}
+            <div role="tabpanel" hidden={tab !== 1}>
               <Box sx={{ height: 380 }}>
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={evolucion} margin={{ top: 8, right: 16, left: 8, bottom: 8 }}>
+                  <ComposedChart data={ranking.map(r => ({ evento: r.event, total: r.total }))} margin={{ top: 8, right: 16, left: 8, bottom: 24 }}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="periodo" />
+                    <XAxis dataKey="evento" angle={-10} height={60} />
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    {series.map((name) => (
-                      <Line key={name} type="monotone" dataKey={name} dot={false} strokeWidth={2} />
-                    ))}
-                  </LineChart>
+                    <Bar dataKey="total" name="Total por evento" radius={[6, 6, 0, 0]} />
+                  </ComposedChart>
                 </ResponsiveContainer>
               </Box>
-              <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-                <Chip size="small" label="Cada serie solo tiene valores en su propio createdAt → startAt; el resto se rellena a 0" />
+            </div>
+
+            {/* TAB 2 – Endpoint & payload */}
+            <div role="tabpanel" hidden={tab !== 2}>
+              <Stack spacing={2}>
+                <TextField label="Endpoint" value={endpoint} onChange={(e) => setEndpoint(e.target.value)} size="small" fullWidth />
+                <TextField label="Payload (JSON)" value={payload} onChange={(e) => setPayload(e.target.value)} multiline minRows={10} maxRows={18} fullWidth />
+                <Stack direction="row" spacing={2} alignItems="center">
+                  <Button variant="contained" onClick={fetchStats} disabled={loading}>{loading ? "Cargando…" : "Fetch"}</Button>
+                  <FormControl size="small" sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                    <Checkbox checked={useFallback} onChange={(e) => setUseFallback(e.target.checked)} />
+                    <ListItemText primary="Usar fallback si falla" />
+                  </FormControl>
+                </Stack>
+                {error && <Alert severity="error">{error}</Alert>}
+                {raw && (
+                  <Box component="pre" sx={{ p: 2, bgcolor: "#f1f5f9", borderRadius: 2, fontSize: 12, overflow: "auto", maxHeight: 300 }}>
+                    {JSON.stringify(raw, null, 2)}
+                  </Box>
+                )}
               </Stack>
-            </TabPanel>
+            </div>
           </CardContent>
         </Card>
       </Box>
