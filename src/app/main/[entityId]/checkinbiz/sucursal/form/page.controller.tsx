@@ -1,42 +1,23 @@
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from 'react';
-import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { requiredRule } from '@/config/yupRules';
 import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
-import { fetchEvent } from "@/services/passinbiz/event.service";
-import DateInput from "@/components/common/forms/fields/Datenput";
-import ImageUploadInput from "@/components/common/forms/fields/ImageUploadInput";
-import ColorPickerInput from "@/components/common/forms/fields/ColorPickerInput";
-import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { ArrayToObject, objectToArray } from "@/lib/common/String";
-import { createEmployee, updateEmployee } from "@/services/checkinbiz/employee.service";
+import { createSucursal, fetchSucursal, updateSucursal } from "@/services/checkinbiz/sucursal.service";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
+import SelectInput from "@/components/common/forms/fields/SelectInput";
+import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
+import { country } from "@/config/country";
+import AddressInput from "@/components/common/forms/fields/AddressInput";
 
-export interface EmployeeFormValues {
-  id?: string
-  uid?: string
-  createdBy?: string
-  entityId?: string
-  "name": string
-  "description": string
-  address?: string
-  "date": any
-  "location": string
-  "template": string
-  "logoUrl": string
-  "imageUrl": string
-  "colorPrimary": string
-  "colorAccent": string
-  metadata: any
-};
 
-export default function useHolderController() {
+export default function useSucursalController() {
   const t = useTranslations();
   const { showToast } = useToast()
   const { navivateTo } = useLayout()
@@ -44,17 +25,15 @@ export default function useHolderController() {
   const { id } = useParams<{ id: string }>()
   const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
-  const [initialValues, setInitialValues] = useState<EmployeeFormValues>({
+  const [geo, setGeo] = useState<{ lat: number, lng: number }>({ lat: 0, lng: 0 })
+  const [cityList, setCityList] = useState<any>(country.find(e => e.name === 'España')?.states.map(e => ({ label: e.name, value: e.name })))
+  const [setCountrySelected] = useState<any>('España')
+  const [initialValues, setInitialValues] = useState<Partial<ISucursal>>({
     "name": '',
-    "description": '',
-    "date": new Date(),
-    "location": '',
-    "template": '',
-    "logoUrl": '',
-    "imageUrl": '',
-    "colorPrimary": '',
-    "colorAccent": '',
-    metadata: []
+    "country": 'España',
+    "city": 'Madrid',
+    address: ''
+
   });
 
   const validationSchema = Yup.object().shape({
@@ -66,43 +45,31 @@ export default function useHolderController() {
         })
       )
       .nullable(),
-    name: requiredRule(t),
-    description: requiredRule(t),
-    date: requiredRule(t),
-    location: requiredRule(t),
-    logoUrl: requiredRule(t),
-    imageUrl: requiredRule(t),
-    colorPrimary: requiredRule(t),
-    colorAccent: requiredRule(t),
+    address: requiredRule(t),
+    country: requiredRule(t),
+    city: requiredRule(t),
+
   });
 
-  const handleSubmit = async (values: EmployeeFormValues) => {
+  const handleSubmit = async (values: Partial<ISucursal>) => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const data = {
+        ...values,
         "uid": user?.id as string,
-        "createdBy": user?.id as string,
-        "name": values.name,
-        "description": values.description,
-        "location": values.location,
-        "address": values.location,
-        "entityId": currentEntity?.entity?.id as string,
-        "colorPrimary": values.colorPrimary,
-        "colorAccent": values.colorAccent,
-        "imageUrl": values.imageUrl,
-        "logoUrl": values.logoUrl,
-        "date": values.date,
-        template: 'vip',
-        "metadata": ArrayToObject(values.metadata),
+        "metadata": ArrayToObject(values.metadata as any),
         "id": id,
+        geo,
+
+        entityId: currentEntity?.entity.id
       }
       if (id)
-        await updateEmployee(data, token)
+        await updateSucursal(data, token)
       else
-        await createEmployee(data, token)
+        await createSucursal(data, token)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
-      navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)
+      navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/sucursal`)
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
@@ -112,78 +79,53 @@ export default function useHolderController() {
 
   const fields = [
     {
+      isDivider: true,
+      label: t('core.label.personalData'),
+    },
+    {
       name: 'name',
       label: t('core.label.name'),
       type: 'text',
+       fullWidth: true,
       required: true,
       component: TextInput,
     },
 
     {
-      name: 'date',
-      label: t('core.label.date'),
-      type: 'text',
-      required: true,
-      component: DateInput,
-    },
-    {
-      name: 'location',
-      label: t('core.label.location'),
-      required: true,
-      type: 'textarea',
-      component: TextInput,
-    },
-    {
-      name: 'description',
-      label: t('core.label.description'),
-      type: 'textarea',
-      required: true,
-      component: TextInput,
-    },
-    {
+      name: 'country',
+      label: t('core.label.country'),
+      extraProps: {
+        onHandleChange: (value: any) => {
+          setCityList(country.find((e: any) => e.name === value)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
+          setCountrySelected(value)
 
-      isDivider: true,
-      label: t('core.label.designed'),
+        },
+      },
+      component: SelectInput,
+      options: country.map(e => ({ label: e.name, value: e.name }))
     },
     {
-      name: 'colorPrimary',
-      label: t('core.label.colorPrimary'),
-      type: 'text',
-      required: true,
-      component: ColorPickerInput,
-    }, {
-      name: 'colorAccent',
-      label: t('core.label.colorAccent'),
-      type: 'text',
-      required: true,
+      name: 'city',
+      label: t('core.label.city'),
+      component: SelectInput,
+      options: cityList,
 
-      component: ColorPickerInput,
     },
     {
-      name: 'logoUrl',
-      label: t('core.label.logo'),
-      required: true,
-      type: 'custom',
-      component: ImageUploadInput,
-    },
-    {
-      name: 'imageUrl',
-      label: t('core.label.imageUrl'),
-      required: true,
-      type: 'custom',
-      component: ImageUploadInput,
-    }, {
-
-      isDivider: true,
-      label: t('core.label.setting'),
-    },
-    {
-      name: 'metadata',
-      label: t('core.label.setting'),
+      name: 'address',
+      label: t('core.label.address'),
       type: 'text',
       required: true,
-      component: DynamicKeyValueInput,
+      fullWidth: true,
+      component: AddressInput,
+      extraProps: {
+        onHandleChange: (data: { lat: number, lng: number }) => {
+          setGeo(data)
+        },
+      },
+
     },
+
 
   ];
 
@@ -191,7 +133,7 @@ export default function useHolderController() {
 
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, id)
+      const event: ISucursal = await fetchSucursal(currentEntity?.entity.id as string, id)
       setInitialValues({
         ...event,
         metadata: objectToArray(event.metadata)

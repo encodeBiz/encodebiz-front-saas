@@ -566,6 +566,7 @@
   },
   "sucursal": {
     "title": "Sucursales",
+    "formDesc": "Completa los campos a continuación para registrar la sucursal.",
     "list": "Sucursales",
     "add": "Adicionar",
     "update": "Editar",
