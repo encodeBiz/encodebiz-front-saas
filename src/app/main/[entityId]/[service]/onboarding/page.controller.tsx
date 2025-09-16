@@ -6,7 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useLayout } from "@/hooks/useLayout";
 import { useToast } from "@/hooks/useToast";
-import { fetchAvailablePlans, fetchService } from "@/services/common/subscription.service";
+import { fetchAvailablePlans, fetchService } from "@/services/core/subscription.service";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react"

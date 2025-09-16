@@ -3,13 +3,14 @@ import Image from "next/image"
 import logo from '../../../../../public/assets/images/logo.svg'
 import { SassButton } from "@/components/common/buttons/GenericButton"
 import { BorderBox } from "@/components/common/tabs/BorderBox"
-import { HealthAndSafetyOutlined, PaletteOutlined,  TextSnippetOutlined } from "@mui/icons-material"
- 
+import { HealthAndSafetyOutlined, PaletteOutlined, TextSnippetOutlined } from "@mui/icons-material"
+
 import { useLayout } from "@/hooks/useLayout"
 import { useCommonModal } from "@/hooks/useCommonModal"
 import { CommonModalType } from "@/contexts/commonModalContext"
 import { useTranslations } from "next-intl"
- 
+import { karla } from "@/config/fonts/google_fonts"
+
 export const Card2 = ({ handleNext }: any) => {
     const theme = useTheme()
     const { navivateTo } = useLayout()
@@ -31,19 +32,19 @@ export const Card2 = ({ handleNext }: any) => {
             <Box display={'flex'} flexDirection={"row"} gap={5} marginTop={3}>
                 <Box sx={{ position: 'relative' }}>
                     <PaletteOutlined sx={{ position: 'absolute', top: -20, left: -20, color: '#FFF', background: (theme) => theme.palette.primary.main, p: 1, fontSize: 40, borderRadius: '50%' }} />
-                    <BorderBox sx={{ p: 4 }}>
+                    <BorderBox sx={{ p: 4, fontFamily: karla.style.fontFamily }}>
                         <span style={{ color: theme.palette.primary.main }}> {t('cards.card2.text4')}</span> {t('cards.card2.text5')}
                     </BorderBox>
 
                 </Box>
-                <Box sx={{ position: 'relative' }}>
+                <Box sx={{ position: 'relative', fontFamily: karla.style.fontFamily }}>
                     <TextSnippetOutlined sx={{ position: 'absolute', top: -20, left: -20, color: '#FFF', background: (theme) => theme.palette.primary.main, p: 1, fontSize: 40, borderRadius: '50%' }} />
 
                     <BorderBox sx={{ p: 4 }}>
                         <span style={{ color: theme.palette.primary.main }}>{t('cards.card2.text6')}</span>{t('cards.card2.text7')}
                     </BorderBox>
                 </Box>
-                <Box sx={{ position: 'relative' }}>
+                <Box sx={{ position: 'relative', fontFamily: karla.style.fontFamily }}>
                     <HealthAndSafetyOutlined sx={{ position: 'absolute', top: -20, left: -20, color: '#FFF', background: (theme) => theme.palette.primary.main, p: 1, fontSize: 40, borderRadius: '50%' }} />
 
                     <BorderBox sx={{ p: 4 }}>
@@ -52,12 +53,12 @@ export const Card2 = ({ handleNext }: any) => {
                 </Box>
             </Box>
         </Box>
-        <Box    marginTop={10}  display={'flex'} flexDirection={"row"} justifyContent={'flex-end'} alignItems={'flex-end'} gap={4}>
+        <Box marginTop={10} display={'flex'} flexDirection={"row"} justifyContent={'flex-end'} alignItems={'flex-end'} gap={4}>
             <SassButton sx={{ width: '437px' }} size="small" onClick={() => {
                 navivateTo(`/entity?tab=company`)
                 closeModal(CommonModalType.ONBOARDING)
             }} variant="contained" color="primary">{t('cards.card3.text14')}</SassButton>
-            <SassButton sx={{ background:'#EBEEFB' }} size="small" onClick={handleNext} variant="outlined" color="primary">{t('cards.card2.continue')}</SassButton>
+            <SassButton sx={{ background: '#EBEEFB' }} size="small" onClick={handleNext} variant="outlined" color="primary">{t('cards.card2.continue')}</SassButton>
         </Box>
 
     </Box>

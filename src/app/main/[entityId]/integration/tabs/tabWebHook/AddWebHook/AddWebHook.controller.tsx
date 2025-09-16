@@ -9,8 +9,8 @@ import { useEntity } from "@/hooks/useEntity";
 import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import SelectMultipleInput from "@/components/common/forms/fields/SelectMultipleInput";
-import { createWebHook } from "@/services/common/integration.service";
-import { IWebHook } from "@/domain/integration/IWebHook";
+import { createWebHook } from "@/services/core/integration.service";
+import { IWebHook } from "@/domain/core/integration/IWebHook";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 

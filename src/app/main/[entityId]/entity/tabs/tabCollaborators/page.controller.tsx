@@ -6,11 +6,11 @@ import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useTranslations } from 'next-intl';
 import { useLayout } from '@/hooks/useLayout';
-import IUser from '@/domain/auth/IUser';
+import IUser from '@/domain/core/auth/IUser';
 import { EntityCollaboratorData } from '@/components/features/entity/UserAssignment';
 import { useToast } from '@/hooks/useToast';
-import { assignedUserToEntity, deleteOwnerOfEntity, fetchAllOwnerOfEntity } from '@/services/common/entity.service';
-import IUserEntity from '@/domain/auth/IUserEntity';
+import { assignedUserToEntity, deleteOwnerOfEntity, fetchAllOwnerOfEntity } from '@/services/core/entity.service';
+import IUserEntity from '@/domain/core/auth/IUserEntity';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 
@@ -93,8 +93,9 @@ export const useCollaboratorsController = () => {
 
 
 
-
+    const [pendFetch, setPendFetch] = useState(false)
     const updateColaborators = async () => {
+        setPendFetch(true)
         const data: Array<IUserEntity> = await fetchAllOwnerOfEntity(currentEntity?.entity.id as string)
         setCurrentProject({
             owner: {
@@ -105,6 +106,7 @@ export const useCollaboratorsController = () => {
             id: currentEntity?.entity.id as string,
             data
         })
+        setPendFetch(false)
     }
 
 
@@ -117,6 +119,6 @@ export const useCollaboratorsController = () => {
 
 
 
-    return { handleAssign, handleRemove, currentProject, loading }
+    return { handleAssign, handleRemove, currentProject, loading, pendFetch }
 }
 

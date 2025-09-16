@@ -9,7 +9,7 @@ import { SxProps, Theme } from '@mui/material';
 import ColorPickerInput from '@/components/common/forms/fields/ColorPickerInput';
 import { useToast } from '@/hooks/useToast';
 import { formatDate } from '@/lib/common/Date';
-import { updateEntityBranding } from '@/services/common/entity.service';
+import { updateEntityBranding } from '@/services/core/entity.service';
 import ImageUploadInput from '@/components/common/forms/fields/ImageUploadInput';
 import { requiredRule } from '@/config/yupRules';
 import { useLayout } from '@/hooks/useLayout';

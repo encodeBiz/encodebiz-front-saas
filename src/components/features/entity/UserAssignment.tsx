@@ -19,12 +19,13 @@ import {
     ListItemText,
     Divider,
     Card,
-    useTheme
+    useTheme,
+    CircularProgress
 } from '@mui/material';
 import { PersonAdd } from '@mui/icons-material';
-import IUser, { ICollaborator } from '@/domain/auth/IUser';
+import IUser, { ICollaborator } from '@/domain/core/auth/IUser';
 import { useTranslations } from 'next-intl';
-import IUserEntity from '@/domain/auth/IUserEntity';
+import IUserEntity from '@/domain/core/auth/IUserEntity';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
@@ -117,9 +118,10 @@ const UserAssignment = ({ project, onAssign, onRemove, proccesing = false }: Use
                     </SassButton>
                 </Box>
                 <BorderBox sx={{ p: 2 }}>
+                    {proccesing && <Box display={'flex'} justifyContent={'center'} alignItems={'center'}><CircularProgress /></Box>}
                     <List>
                         {project.collaborators.map((collaborator) => (
-                            <Card sx={{boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', mb:1}} elevation={0} key={collaborator.user.id}>
+                            <Card sx={{ boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', mb: 1 }} elevation={0} key={collaborator.user.id}>
 
                                 <ListItem
                                     secondaryAction={
@@ -128,16 +130,16 @@ const UserAssignment = ({ project, onAssign, onRemove, proccesing = false }: Use
                                             {collaborator.status === 'invited' && <CustomChip
                                                 id={collaborator.user.id}
                                                 background={'gray'}
-                                                text={'Estado de la invitación: Pendiente a aceptar'}
+                                                text={t('colaborators.pending')}
                                                 size="small"
-                                                label={'Estado de la invitación: Pendiente a aceptar'}
+                                                label={t('colaborators.pending')}
 
                                             />}
                                             {
-                                                (collaborator.role === 'owner' && collaborator.status !== 'invited' && project.collaborators.filter(e => e.role === 'owner' && e.status === 'active').length > 1) && (
+                                                ((collaborator.role === 'admin' && collaborator.status !== 'invited') || (collaborator.role === 'owner' && collaborator.status !== 'invited' && project.collaborators.filter(e => e.role === 'owner' && e.status === 'active').length > 1)) && (
                                                     <CustomIconBtn
                                                         onClick={() => openModal(CommonModalType.COLABORATOR, { data: collaborator.user.uid })}
-                                                         
+
                                                         icon={<TrashIcon />}
                                                         color={theme.palette.primary.main}
                                                     />

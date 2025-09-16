@@ -16,11 +16,11 @@ import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import { SassButton } from '../buttons/GenericButton';
 import { CustomTypography } from '../Text/CustomTypography';
 import { useEntity } from '@/hooks/useEntity';
-import { updateAuth } from '@/services/common/entity.service';
+import { updateAuth } from '@/services/core/entity.service';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'nextjs-toploader/app';
 import { MAIN_ROUTE } from '@/config/routes';
-import IUserEntity from '@/domain/auth/IUserEntity';
+import IUserEntity from '@/domain/core/auth/IUserEntity';
 
 
 const WelcomeInviteModal = (): React.JSX.Element => {
@@ -35,13 +35,13 @@ const WelcomeInviteModal = (): React.JSX.Element => {
     // Handler for closing the dialog
     const handleWelcomeInvite = async () => {
         await updateAuth(currentEntity?.id as string, user?.id as string)
-        setCurrentEntity({...currentEntity,status:'active'} as IUserEntity)
+        setCurrentEntity({ ...currentEntity, status: 'active' } as IUserEntity)
         if (isGuest) push(`/${MAIN_ROUTE}/user/account`)
         closeModal(CommonModalType.WELCOMEGUEST)
     }
     const handleClose = async () => {
         await updateAuth(currentEntity?.id as string, user?.id as string)
-        setCurrentEntity({...currentEntity,status:'active'} as IUserEntity)
+        setCurrentEntity({ ...currentEntity, status: 'active' } as IUserEntity)
         if (isGuest) push(`/${MAIN_ROUTE}/user/account`)
         closeModal(CommonModalType.WELCOMEGUEST)
     }

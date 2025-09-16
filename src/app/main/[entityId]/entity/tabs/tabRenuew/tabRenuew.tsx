@@ -22,9 +22,11 @@ const RenuewPreferencesPage = () => {
                 <Typography variant='body1'>{t('renew.text')}</Typography>
             </Box>
             <Box sx={{mt:4}}>
+                <Box sx={{mt:4}} display={'flex'} gap={2} flexWrap={'wrap'} >
                 {entitySuscription.map((plan, index) => (
                     <RenuewCard key={index} plan={plan} />
                 ))}
+                </Box>
                 {entitySuscription.length === 0 && <EmptyState />}
                 {entitySuscription.length === 0 && <Box sx={{display:'flex', justifyContent:'center'}} ><SassButton color='primary' variant='contained'>{t('core.button.upgradeSuscription')}</SassButton></Box>}
             </Box>

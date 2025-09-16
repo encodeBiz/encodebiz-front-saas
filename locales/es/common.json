@@ -25,6 +25,7 @@
         "Services": "Servicios",
         "Events": "Eventos",
         "Media": "Media",
+        "Sucursal": "Sucursal",
         "home": "Inicio",
         "Integration": "Integraciones",
         "general": "General",
@@ -69,8 +70,8 @@
       "next": "Adelante"
     },
     "title": {
-      "cropValidate1":"Las dimensiones minimas deben ser",
-      "cropValidate2":" y las máximas",
+      "cropValidate1": "Las dimensiones minimas deben ser",
+      "cropValidate2": " y las máximas",
       "loader": "Cargando sesión de usuario",
       "loaderChangeEntity": "Cambiando entidad",
       "loaderAction": "Procesando información",
@@ -78,8 +79,8 @@
       "loaderActionBilling": "Accediendo a la información de tu pasarela de pago"
     },
     "feedback": {
-      "userDeletedTitle":"Has abandonado la entidad",
-      "userDeletedText":"Te has dado de baja de la entidad exitosamente, por favor inicie sesión para comenzar de nuevo",
+      "userDeletedTitle": "Has abandonado la entidad",
+      "userDeletedText": "Te has dado de baja de la entidad exitosamente, por favor inicie sesión para comenzar de nuevo",
       "tokenExireTitle": "La sesión ha caducado",
       "tokenExireText": "La sesión ha caducado, por favor inicie sesión nuevamente para acceder al panel de encodeBiz SaaS",
       "success": "La operación se realizó exitosamente",
@@ -88,6 +89,12 @@
       "nocard": "No tienes métodos de pago asociado a la entidad, por favor configure al menos uno."
     },
     "label": {
+      "subEntity": "Sucursal",
+      "internal": "Interno",
+      "collaborator": "Colaborador",
+      "inactive": "Inactivo",
+      "personalData": "INFORMACIÓN PESONAL",
+      "aditionalData": "INFORMACIÓN ADICIONAL",
       "comercialEvent": "INFORMACIÓN DEL EVENTO",
       "brandEvent": "COLORES DE MARCA DEL EVENTO",
       "resourceEvent": "RECURSOS GRÁFICOS DEL EVENTO",
@@ -548,6 +555,7 @@
   },
   "employee": {
     "title": "Empleados",
+    "formDesc": "Completa los campos a continuación para registrar el empleado.",
     "list": "Empleados",
     "add": "Adicionar",
     "update": "Editar",
@@ -555,6 +563,17 @@
     "description": "Rellene los campos para registrar el empleado",
     "deleteConfirmModalTitle": "Eliminar empleado",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el empleado"
+  },
+  "sucursal": {
+    "title": "Sucursales",
+    "formDesc": "Completa los campos a continuación para registrar la sucursal.",
+    "list": "Sucursales",
+    "add": "Adicionar",
+    "update": "Editar",
+    "import": "Importar",
+    "description": "Rellene los campos para registrar la sucursal",
+    "deleteConfirmModalTitle": "Eliminar sucursal",
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente la sucursal"
   },
   "media": {
     "title": "Multimedias",
@@ -576,6 +595,7 @@
   },
   "colaborators": {
     "title": "Colaboradores",
+    "pending": "Estado de la invitación: Pendiente a aceptar",
     "text": "Puedes añadir o eliminar tus colaboradores en cualquier momento.",
     "titles": "Colaborador",
     "add": "Añadir nuevo colaborador",

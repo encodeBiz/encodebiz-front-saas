@@ -1,63 +1,126 @@
-import { buildSearch, Column, IRowAction } from "@/components/common/table/GenericTable";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Column, IRowAction } from "@/components/common/table/GenericTable";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useToast } from "@/hooks/useToast";
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect,   useState } from "react";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import { deleteEmployee, search } from "@/services/checkinbiz/employee.service";
 import { useLayout } from "@/hooks/useLayout";
+import { useSearchParams } from "next/navigation";
+import { DeleteOutline, Edit } from "@mui/icons-material";
+import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
+import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
+import { ISearchIndex } from "@/domain/core/SearchIndex";
+import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
+import { Box } from "@mui/material";
+
+
+interface IFilterParams {
+
+  params: {
+    orderBy: string,
+    orderDirection: 'desc' | 'asc',
+    startAfter: any,
+    limit: number,
+    filters: Array<{
+      field: string;
+      operator: | '<' | '<=' | '==' | '!=' | '>=' | '>' | 'array-contains' | 'in' | 'array-contains-any' | 'not-in'
+      value: any;
+    }>
+  }
+  total: number
+  currentPage: number
+  startAfter: string | null,
+}
 
 export default function useEmployeeListController() {
   const t = useTranslations();
-
-  const { token, user } = useAuth()
+  const searchParams = useSearchParams()
+  const { token } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
   const { navivateTo } = useLayout()
-  const [rowsPerPage, setRowsPerPage] = useState<number>(5); // Límite inicial
-  const [params, setParams] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(true);
-  const [atStart, setAtStart] = useState(true);
-  const [atEnd, setAtEnd] = useState(false)
-  const [last, setLast] = useState<any>()
-  const [pagination, setPagination] = useState(``);
   const [items, setItems] = useState<IEmployee[]>([]);
   const [itemsHistory, setItemsHistory] = useState<IEmployee[]>([]);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [total, setTotal] = useState(0);
+  const [filterParams, setFilterParams] = useState<IFilterParams>({
+    startAfter: null,
+    currentPage: 0,
+    total: 0,
+    params: {
+      filters: [],
+      startAfter: null,
+      limit: 5,
+      orderBy: 'createdAt',
+      orderDirection: 'desc',
+    }
+  })
 
-  const { closeModal } = useCommonModal()
+  const { closeModal, openModal } = useCommonModal()
+  const rowAction: Array<IRowAction> = [
+    {
+      actionBtn: true,
+      color: 'error',
+      icon: <DeleteOutline color="error" />,
+      label: t('core.button.delete'),
+      allowItem: () => true,
+      showBulk: true,
+      onPress: (item: IEmployee) => openModal(CommonModalType.DELETE, { data: item }),
+      bulk: true
+    },
 
-  const rowAction: Array<IRowAction> = []
+    {
+      actionBtn: true,
+      color: 'primary',
+      icon: <Edit color="primary" />,
+      label: t('core.button.edit'),
+      bulk: false,
+      allowItem: () => true,
+      onPress: (item: IEmployee) => onEdit(item)
+    },
+  ]
 
-  const onSearch = (term: string): void => {
-    setParams({ ...params, startAfter: null, filters: buildSearch(term) })
-  }
 
+
+  /** Paginated Changed */
   const onBack = (): void => {
     const backSize = items.length
     itemsHistory.splice(-backSize)
     setItemsHistory([...itemsHistory])
-    setItems([...itemsHistory.slice(-rowsPerPage)])
-    setAtEnd(false)
-    setCurrentPage(currentPage - 1)
-    setLast((itemsHistory[itemsHistory.length - 1] as any).last)
+    setItems([...itemsHistory.slice(-filterParams.params.limit)])
+    setFilterParams({ ...filterParams, currentPage: filterParams.currentPage - 1, params: { ...filterParams.params, startAfter: (itemsHistory[itemsHistory.length - 1] as any).last } })
+
   }
 
-
+  /** Paginated Changed */
   const onNext = async (): Promise<void> => {
     setLoading(true)
-    setParams({ ...params, startAfter: last })
-    setCurrentPage(currentPage + 1)
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: filterParams.currentPage + 1 }
+    fetchingData(filterParamsUpdated)
   }
 
-  useEffect(() => {
-    setAtStart(itemsHistory.length <= rowsPerPage)
-  }, [itemsHistory.length, rowsPerPage])
+
+
+  /** Sort Change */
+  const onSort = (sort: { orderBy: string, orderDirection: 'desc' | 'asc' }) => {
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, ...sort, startAfter: null, } }
+    setFilterParams(filterParamsUpdated)
+    fetchingData(filterParamsUpdated)
+  }
+
+
+  /** Limit Change */
+  const onRowsPerPageChange = (limit: number) => {
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null, limit } }
+    setFilterParams(filterParamsUpdated)
+    fetchingData(filterParamsUpdated)
+  }
+
 
 
 
@@ -74,7 +137,7 @@ export default function useEmployeeListController() {
       minWidth: 170,
     },
     {
-      id: 'phoneNumber',
+      id: 'phone',
       label: t("core.label.phone"),
       minWidth: 170,
     },
@@ -87,66 +150,96 @@ export default function useEmployeeListController() {
 
   ];
 
-  const fetchingData = useCallback(() => {
+  const fetchingData = (filterParams: IFilterParams) => {
+
     setLoading(true)
-    search(currentEntity?.entity.id as string, { ...params, limit: rowsPerPage }).then(async res => {
-
-      if (res.length < rowsPerPage || res.length === 0)
-        setAtEnd(true)
-      else
-        setAtEnd(false)
-
+    search(currentEntity?.entity.id as string, { ...(filterParams.params as any) }).then(async res => {
       if (res.length !== 0) {
+        setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
         setItems(res)
-        if (!params.startAfter)
+        if (!filterParams.params.startAfter) {
           setItemsHistory([...res])
-        else
+        } else {
           setItemsHistory(prev => [...prev, ...res])
-        setLoading(false)
+        }
       }
 
-      if (!params.startAfter && res.length === 0) {
+      if (!filterParams.params.startAfter && res.length === 0) {
         setItems([])
         setItemsHistory([])
       }
-
-      setLast(res.length > 0 ? (res[0] as any).last : null)
-      setPagination(`Total ${res.length > 0 ? (res[0] as any).totalItems : 0}`)
-      setTotal(res.length > 0 ? (res[0] as any).totalItems : 0)
 
     }).catch(e => {
       showToast(e?.message, 'error')
     }).finally(() => {
       setLoading(false)
     })
-  }, [currentEntity?.entity.id, params, rowsPerPage, showToast])
+  }
+
+
+  const inicializeFilter = (params: string) => {
+    try {
+      const filters: IFilterParams = params !== 'null' ? filterParams : decodeFromBase64(params as string)
+      filters.params.startAfter = null
+      setFilterParams(filters)
+      setLoading(false)
+      fetchingData(filters)
+    } catch (error) {
+      showToast(String(error as any), 'error')
+    }
+  }
+
 
   useEffect(() => {
-    if (params && currentEntity?.entity?.id && user?.id) {
-      fetchingData()
+    if (currentEntity?.entity?.id) {
       watchServiceAccess('checkinbiz')
     }
-  }, [params, currentEntity?.entity?.id, user?.id, fetchingData, watchServiceAccess])
+  }, [currentEntity?.entity?.id, watchServiceAccess])
 
   useEffect(() => {
-    setCurrentPage(0)
-    setParams({ limit: rowsPerPage })
-    setAtStart(true)
-  }, [rowsPerPage])
+    if (currentEntity?.entity?.id) {
+      if (searchParams.get('params') && localStorage.getItem('employeeIndex'))
+        inicializeFilter(searchParams.get('params') as string)
+      else
+        fetchingData(filterParams)
+    }
+  }, [currentEntity?.entity?.id, searchParams.get('params')])
 
-  const [deleting, setDeleting] = useState(false)
+
+
+
+
+
+
+
   const onEdit = async (item: any) => {
     navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${item.id}/edit`)
   }
 
 
-  const onDelete = async (item: any) => {
+  const [deleting, setDeleting] = useState(false)
+  const onDelete = async (item: IEmployee | Array<IEmployee>) => {
     try {
       setDeleting(true)
-      const id = item[0]
-      await deleteEmployee(currentEntity?.entity.id as string, id, token)
-      setItemsHistory(itemsHistory.filter(e => e.id !== id))
-      setItems(itemsHistory.filter(e => e.id !== id))
+      let ids = []
+      if (Array.isArray(item)) {
+        ids = (item as Array<IEmployee>).map(e => e.id)
+      } else {
+        ids.push(item.id)
+      }
+      await Promise.all(
+        ids.map(async (id) => {
+          try {
+            await deleteEmployee(currentEntity?.entity.id as string, id as string, token)
+          } catch (e: any) {
+            showToast(e?.message, 'error')
+            setDeleting(false)
+          }
+        })
+      );
+
+      const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
+      fetchingData(filterParamsUpdated)
       setDeleting(false)
       closeModal(CommonModalType.DELETE)
     } catch (e: any) {
@@ -157,14 +250,46 @@ export default function useEmployeeListController() {
 
 
 
+  const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
+
+
+    <SearchIndexFilter
+      type="staff"
+      label={t('core.label.search')}
+      onChange={async (value: ISearchIndex) => {
+        const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
+        if (value?.id) {
+          const item = await getRefByPathData(value.index)
+          if (item)
+            setItems([item])
+          else
+            fetchingData(filterParamsUpdated)
+        }
+        else {
+          setItems([])
+          fetchingData(filterParamsUpdated)
+        }
+      }}
+    />
+  </Box>
+
+  const buildState = () => {
+    const dataStatus = {
+      items,
+      itemsHistory,
+    }
+    localStorage.setItem('employeeIndex', JSON.stringify(dataStatus))
+    return encodeToBase64({ ...filterParams })
+  }
+
 
   return {
-    onDelete, items, total,
-    atEnd, onEdit, onSearch,
-    atStart, onBack, onNext,
-    pagination, currentPage,
-    columns, deleting, rowAction,
-    loading, rowsPerPage, setRowsPerPage
+    items, onSort, onRowsPerPageChange,
+    onEdit,
+    onNext, onBack, buildState,
+    columns, rowAction, onDelete, topFilter,
+    loading, deleting, filterParams,
+
   }
 
 

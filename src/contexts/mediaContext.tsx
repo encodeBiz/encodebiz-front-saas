@@ -4,7 +4,7 @@ import { createContext, useCallback, useEffect, useState } from "react";
 
 import { IUserMedia } from "@/domain/core/IUserMedia";
 import { useAuth } from "@/hooks/useAuth";
-import { fetchAllMedia } from "@/services/common/media.service";
+import { fetchAllMedia } from "@/services/core/media.service";
 import { useEntity } from "@/hooks/useEntity";
 
 interface MediaContextType {

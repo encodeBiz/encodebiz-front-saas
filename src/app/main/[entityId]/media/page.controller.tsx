@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
 import { useToast } from '@/hooks/useToast';
 import { Column, IRowAction } from '@/components/common/table/GenericTable';
 import { IUserMedia } from '@/domain/core/IUserMedia';
-import { deleteMedia, search, uploadMedia } from '@/services/common/media.service';
+import { deleteMedia, search, uploadMedia } from '@/services/core/media.service';
 import { useAuth } from '@/hooks/useAuth';
 import { Box, Avatar, Typography, Chip, useTheme } from '@mui/material';
 import { useStyles } from './page.styles';

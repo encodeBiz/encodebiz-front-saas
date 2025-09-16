@@ -24,15 +24,14 @@ import {
 
   BrightnessHigh,
   Menu as MenuIcon,
-  QuestionMarkOutlined,
-  BedtimeOutlined,
+ 
 } from '@mui/icons-material';
 import HelpIcon from '@mui/icons-material/Help';
 import { useLayout } from '@/hooks/useLayout';
 import { useAppTheme } from '@/hooks/useTheme';
 import { useTranslations } from 'next-intl';
 import LocaleSwitcher from '../../common/LocaleSwitcher';
-import { handleLogout } from '@/services/common/account.service';
+import { handleLogout } from '@/services/core/account.service';
 import { useHeader } from './Header.controller';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { useAuth } from '@/hooks/useAuth';
@@ -220,7 +219,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
                 width: 40
               }}
             >
-              {theme.palette.mode === 'dark' ? <BrightnessHigh /> : <MoonIcon sx={{color:'#1C1B1D' }} />}
+              {theme.palette.mode === 'dark' ? <BrightnessHigh /> : <MoonIcon   />}
             </IconButton>
 
 
@@ -241,7 +240,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
                 }}
                 onClick={() => openModal()}
               >
-                <QuestionIcon sx={{color:'#1C1B1D' }} />
+                <QuestionIcon  />
               </IconButton>
             </Tooltip>
 

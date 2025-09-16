@@ -1,4 +1,4 @@
-import { SearchParams } from "@/domain/firebase/firestore";
+import { SearchParams } from "@/domain/core/firebase/firestore";
 import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";

@@ -17,7 +17,7 @@ import {
 import { FieldProps, useField } from "formik";
 import { CheckCircleOutline, Error } from "@mui/icons-material";
 import { useAuth } from "@/hooks/useAuth";
-import { fetchLocation } from "@/services/common/helper.service";
+import { fetchLocation } from "@/services/core/helper.service";
 import { useFormStatus } from "@/hooks/useFormStatus";
 import { country } from "@/config/country";
 import { useTranslations } from "next-intl";

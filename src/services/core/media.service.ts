@@ -3,7 +3,7 @@ import { getAll, getAllWithLimit } from "@/lib/firebase/firestore/readDocument";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { IUserMedia } from "@/domain/core/IUserMedia";
-import { SearchParams } from "@/domain/firebase/firestore";
+import { SearchParams } from "@/domain/core/firebase/firestore";
 import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 
 

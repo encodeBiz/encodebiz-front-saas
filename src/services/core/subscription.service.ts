@@ -1,12 +1,13 @@
 import { collection } from "@/config/collection";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
-import { IEntitySuscription, ISubscription, IUnSubscription, StripeInvoice } from "@/domain/auth/ISubscription";
+import { IEntitySuscription, ISubscription, IUnSubscription, StripeInvoice } from "@/domain/core/auth/ISubscription";
 import { IPlan, IPlanData } from "@/domain/core/IPlan";
 import { getAll, getOne } from "@/lib/firebase/firestore/readDocument";
 import { IService } from "@/domain/core/IService";
-import { SearchParams } from "@/domain/firebase/firestore";
+import { SearchParams } from "@/domain/core/firebase/firestore";
 import { onSnapshotCollection, searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { Unsubscribe } from "firebase/firestore";
+import { createDocumentWithId } from "@/lib/firebase/firestore/addDocument";
 
 
 
@@ -32,6 +33,29 @@ export async function fetchServiceList(): Promise<Array<IService>> {
     try {
         const planDataList = await getAll<IService>(`service`);
         return planDataList;
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
+}
+
+
+export async function updateModulePlan() {
+    try {
+
+        const plans = await fetchAvailablePlans('passinbiz')
+
+        plans.forEach(async element => {
+            await createDocumentWithId<IPlan>({
+                collection: `/service/checkinbiz/plan`,
+                data: {
+                    ...element
+                },
+                id: element.id
+            });
+        });
+
+
+
     } catch (error: any) {
         throw new Error(error.message);
     }
@@ -118,13 +142,13 @@ export const fetchInvoicesByEntity = async (entityId: string, params: SearchPara
     const result: StripeInvoice[] = await searchFirestore({
         ...params,
         collection: `${collection.ENTITIES}/${entityId}/${collection.INVOICES}`,
-    });     
+    });
     return result;
 }
 
 
 
 
-export function watchSubscrptionEntityChange(entityId:string,callback: (type: 'added' | 'removed' | 'modified', doc: any) => void): Unsubscribe {
-  return onSnapshotCollection(`${collection.ENTITIES}/${entityId}/subscriptions`, callback)
+export function watchSubscrptionEntityChange(entityId: string, callback: (type: 'added' | 'removed' | 'modified', doc: any) => void): Unsubscribe {
+    return onSnapshotCollection(`${collection.ENTITIES}/${entityId}/subscriptions`, callback)
 }

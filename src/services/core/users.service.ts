@@ -1,6 +1,6 @@
 import { collection } from "@/config/collection";
 import { getAll, getOne } from "@/lib/firebase/firestore/readDocument";
-import IUser from "@/domain/auth/IUser";
+import IUser from "@/domain/core/auth/IUser";
 
 
 /**

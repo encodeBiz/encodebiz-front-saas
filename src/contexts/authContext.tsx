@@ -4,14 +4,14 @@ import { createContext, useCallback, useEffect, useState } from "react";
 import { User } from "firebase/auth";
 import { useParams, usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
-import IUser from "@/domain/auth/IUser";
+import IUser from "@/domain/core/auth/IUser";
 import { subscribeToAuthChanges } from "@/lib/firebase/authentication/stateChange";
 import { getUser } from "@/lib/firebase/authentication/login";
-import { fetchUserAccount, signInToken } from "@/services/common/account.service";
+import { fetchUserAccount, signInToken } from "@/services/core/account.service";
 import { MAIN_ROUTE, GENERAL_ROUTE, USER_ROUTE, PUBLIC_PATH } from "@/config/routes";
 import { useToast } from "@/hooks/useToast";
-import IUserEntity from "@/domain/auth/IUserEntity";
-import { fetchUserEntities } from "@/services/common/entity.service";
+import IUserEntity from "@/domain/core/auth/IUserEntity";
+import { fetchUserEntities } from "@/services/core/entity.service";
 interface AuthContextType {
     user: IUser | null;
     userAuth: User | null;

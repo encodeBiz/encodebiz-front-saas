@@ -27,7 +27,7 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useMedia } from '@/hooks/useMedia';
 import { useTranslations } from 'next-intl';
-import { uploadMedia } from '@/services/common/media.service';
+import { uploadMedia } from '@/services/core/media.service';
 import { useEntity } from '@/hooks/useEntity';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/useToast';

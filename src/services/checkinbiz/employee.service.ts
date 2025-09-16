@@ -1,4 +1,4 @@
-import { SearchParams } from "@/domain/firebase/firestore";
+import { SearchParams } from "@/domain/core/firebase/firestore";
 import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
@@ -7,11 +7,11 @@ import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
  
 
 /**
-   * Search trainer
+   * Search employee
    *
    * @async
    * @param {SearchParams} params
-   * @returns {Promise<ITrainer[]>}
+   * @returns {Promise<Iemployee[]>}
    */
 export const fetchEmployee = async (entityId: string, id: string): Promise<IEmployee> => {
   return await getOne(
@@ -19,48 +19,14 @@ export const fetchEmployee = async (entityId: string, id: string): Promise<IEmpl
     id);
 }
 
-/**
-   * Search trainer
-   *
-   * @async
-   * @param {SearchParams} params
-   * @returns {Promise<ITrainer[]>}
-   */
-export const deleteEmployee = async (entityId: string, id: string, token: string): Promise<void> => {
-  try {
-    if (!token) {
-      throw new Error("Error to fetch user auth token");
-    } else {
-      const httpClientFetchInstance: HttpClient = new HttpClient({
-        baseURL: "",
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      });
-      const response: any = await httpClientFetchInstance.post(
-        process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_DELETE_EMPLOYEE as string,
-        {
-          id, entityId
-        }
-      );
-      if (response.errCode && response.errCode !== 200) {
-        throw new Error(response.message);
-      }
-
-      return response;
-    }
-  } catch (error: any) {
-    throw new Error(error.message);
-  }
-}
 
 
 /**
-   * Search trainer
+   * Search employee
    *
    * @async
    * @param {SearchParams} params
-   * @returns {Promise<ITrainer[]>}
+   * @returns {Promise<Iemployee[]>}
    */
 export const search = async (entityId: string, params: SearchParams): Promise<IEmployee[]> => {
   const result: IEmployee[] = await searchFirestore({
@@ -70,7 +36,6 @@ export const search = async (entityId: string, params: SearchParams): Promise<IE
 
   return result;
 }
-
 
 export async function createEmployee(data: Partial<IEmployee>, token: string) {
   try {
@@ -115,6 +80,42 @@ export async function updateEmployee(data: Partial<IEmployee>, token: string) {
         process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_UPDATE_EMPLOYEE as string,
         {
           ...data,
+        }
+      );
+      if (response.errCode && response.errCode !== 200) {
+        throw new Error(response.message);
+      }
+
+      return response;
+    }
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+
+/**
+   * Search employee
+   *
+   * @async
+   * @param {SearchParams} params
+   * @returns {Promise<Iemployee[]>}
+   */
+export const deleteEmployee = async (entityId: string, id: string, token: string): Promise<void> => {
+  try {
+    if (!token) {
+      throw new Error("Error to fetch user auth token");
+    } else {
+      const httpClientFetchInstance: HttpClient = new HttpClient({
+        baseURL: "",
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      const response: any = await httpClientFetchInstance.delete(
+        process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_DELETE_EMPLOYEE as string,
+        {
+          id, entityId
         }
       );
       if (response.errCode && response.errCode !== 200) {

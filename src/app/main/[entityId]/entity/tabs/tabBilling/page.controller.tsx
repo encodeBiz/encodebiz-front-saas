@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useTranslations } from 'next-intl';
 import { SxProps, Theme } from '@mui/material';
-import { configBilling } from '@/services/common/subscription.service';
+import { configBilling } from '@/services/core/subscription.service';
 import { useLayout } from '@/hooks/useLayout';
 
 

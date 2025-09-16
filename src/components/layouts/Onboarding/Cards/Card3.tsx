@@ -7,6 +7,7 @@ import { useCommonModal } from "@/hooks/useCommonModal"
 import { CommonModalType } from "@/contexts/commonModalContext"
 import icono from '../../../../../public/assets/images/bgCard.svg'
 import { useTranslations } from "next-intl"
+import { karla } from "@/config/fonts/google_fonts"
 
 export const Card3 = ({ handleNext }: any) => {
     const { navivateTo } = useLayout()
@@ -58,14 +59,14 @@ export const Card3 = ({ handleNext }: any) => {
                         </Box>
                     </Box>
                     <Box p={4} display={'flex'} flexDirection={"column"} gap={2}   >
-                        <Typography variant="body1" fontSize={20}>
+                        <Typography variant="body1" fontSize={20} fontFamily={karla.style.fontFamily }>
                             {t('cards.card3.text8')}
                         </Typography>
-                        <Typography variant="body1" fontSize={20}>
+                        <Typography variant="body1" fontSize={20} fontFamily={karla.style.fontFamily }>
                             {t('cards.card3.text9')}
 
                         </Typography>
-                        <Typography variant="body1" fontSize={20}>
+                        <Typography variant="body1" fontSize={20} fontFamily={karla.style.fontFamily }>
                             {t('cards.card3.text10')}
 
                         </Typography>
@@ -89,7 +90,7 @@ export const Card3 = ({ handleNext }: any) => {
                             <Box>
 
                                 <Typography variant="body1" fontSize={24}>CheckBiz</Typography>
-                                <Typography variant="body1" fontSize={20}>
+                                <Typography variant="body1" fontSize={20} >
                                     {t('cards.card3.text11')}<span style={{ color: '#B7C4FF' }}>{t('cards.card3.text12')}</span>{t('cards.card3.text13')}                        </Typography>
                             </Box>
                         </Box>

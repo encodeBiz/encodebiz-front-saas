@@ -6,7 +6,7 @@ import { useCommonModal } from "@/hooks/useCommonModal";
 import { useEntity } from "@/hooks/useEntity";
 import { useLayout } from "@/hooks/useLayout";
 import { useToast } from "@/hooks/useToast";
-import { deleteEntity } from "@/services/common/entity.service";
+import { deleteEntity } from "@/services/core/entity.service";
 import { Theme } from "@emotion/react";
 import { SxProps } from "@mui/material";
 import { useTranslations } from "next-intl";

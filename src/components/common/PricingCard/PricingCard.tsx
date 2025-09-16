@@ -14,6 +14,7 @@ import { Cancel, CheckOutlined } from '@mui/icons-material';
 import { useAppLocale } from '@/hooks/useAppLocale';
 import ContactModalModal from '../modals/ContactModal/ContactModal';
 import { useLayout } from '@/hooks/useLayout';
+import { karla } from '@/config/fonts/google_fonts';
 
 
 const PlanCard = styled(Box)<{ highlighted?: string, current?: string }>(({ theme, highlighted, current }) => ({
@@ -73,7 +74,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
             <CardContent sx={{ display: "flex", padding: 4, flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
                 <Box>
                     <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'} pb={2}>
-                        <Typography variant="h6">
+                        <Typography variant="h6" fontFamily={karla.style.fontFamily }>
                             {t(`salesPlan.${name}`) || name}
                         </Typography>
                         <Typography variant="body1">

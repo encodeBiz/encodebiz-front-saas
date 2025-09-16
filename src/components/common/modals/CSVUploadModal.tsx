@@ -16,7 +16,7 @@ import {
   Typography,
   useTheme
 } from '@mui/material';
-import { CheckOutlined, CloudUploadOutlined, DownloadOutlined } from '@mui/icons-material';
+import { CloudUploadOutlined } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
 import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import { CustomTypography } from '../Text/CustomTypography';

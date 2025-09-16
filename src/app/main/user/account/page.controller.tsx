@@ -7,7 +7,7 @@ import { Box, SxProps, Theme, Typography } from '@mui/material';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { useToast } from '@/hooks/useToast';
-import { recoveryPassword, updateAccout } from '@/services/common/account.service';
+import { recoveryPassword, updateAccout } from '@/services/core/account.service';
 import ImageUploadInput from '@/components/common/forms/fields/ImageUploadInput';
 import { uploadFile } from '@/lib/firebase/storage/fileManager';
 import { emailRule, fileImageRule, requiredRule } from '@/config/yupRules';
@@ -57,8 +57,10 @@ export const useUserAccountController = () => {
     });
 
     const changePasswrod = async () => {
+        changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
         await recoveryPassword(user?.email as string)
-        openModal(CommonModalType.RECOVERY)
+        changeLoaderState({ show: false })
+        openModal(CommonModalType.INFO)
     }
 
     const validationSchema = Yup.object().shape({
@@ -102,7 +104,7 @@ export const useUserAccountController = () => {
         }
     ];
 
-    
+
 
 
     const setUserDataAction = async (values: UserFormValues) => {

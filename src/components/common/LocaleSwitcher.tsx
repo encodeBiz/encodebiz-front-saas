@@ -15,7 +15,7 @@ import {
 import { useAppLocale } from '@/hooks/useAppLocale';
 import { Language } from '@mui/icons-material';
 import { useEntity } from '@/hooks/useEntity';
-import { updateExtraEntity } from '@/services/common/entity.service';
+import { updateExtraEntity } from '@/services/core/entity.service';
 import { useToast } from '@/hooks/useToast';
 import { usePathname } from 'next/navigation';
 export const locales = ['en', 'es']; // Define your supported locales

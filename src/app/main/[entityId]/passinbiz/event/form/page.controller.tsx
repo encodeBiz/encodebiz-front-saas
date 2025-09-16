@@ -223,7 +223,7 @@ export default function useHolderController() {
       type: 'stripImage',
       component: ImageUploadInput,
     },
-     {
+    {
       isDivider: true,
       label: t('core.label.configEvent'),
     },
@@ -238,7 +238,7 @@ export default function useHolderController() {
 
       ],
     },
-      {
+    {
       name: 'status',
       label: t('core.label.status'),
       type: 'text',
@@ -250,7 +250,6 @@ export default function useHolderController() {
         { value: 'archived', label: t('core.label.archived') },
       ],
       component: SelectInput,
-
     },
     {
 
@@ -262,7 +261,7 @@ export default function useHolderController() {
     {
       name: 'metadata',
       label: t('core.label.setting'),
-      type: 'text',
+   
       required: false,
       fullWidth: true,
       component: DynamicKeyValueInput,

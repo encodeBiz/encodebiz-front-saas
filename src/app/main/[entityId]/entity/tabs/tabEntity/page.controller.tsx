@@ -13,10 +13,10 @@ import SelectInput from '@/components/common/forms/fields/SelectInput';
 import { country } from '@/config/country';
 import { formatDate } from '@/lib/common/Date';
 import { createSlug } from '@/lib/common/String';
-import { fetchEntity, updateEntity } from '@/services/common/entity.service';
+import { fetchEntity, updateEntity } from '@/services/core/entity.service';
 import { requiredRule } from '@/config/yupRules';
 import { useLayout } from '@/hooks/useLayout';
-import IEntity from '@/domain/auth/IEntity';
+import IEntity from '@/domain/core/auth/IEntity';
 import AddressInput from '@/components/common/forms/fields/AddressInput';
 
 

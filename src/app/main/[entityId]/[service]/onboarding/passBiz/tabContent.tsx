@@ -1,4 +1,5 @@
 'use client';
+import { karla } from '@/config/fonts/google_fonts';
 import { Box, Container, Divider, Typography } from '@mui/material';
 
 export default function TabContent({ title, subtitle, data }: { title: string, subtitle?: string, data: Array<{ title: string, description: string }> }) {
@@ -21,7 +22,7 @@ export default function TabContent({ title, subtitle, data }: { title: string, s
                     gap={4}
                     p={3}
                 >
-                    <Typography variant='h6' sx={{ minWidth: 300, maxWidth: 300, textAlign: 'left' }}>{e.title}</Typography>
+                    <Typography variant='h6' sx={{ minWidth: 300, maxWidth: 300, textAlign: 'left' }} fontFamily={karla.style.fontFamily }>{e.title}</Typography>
                     <Typography>{e.description}</Typography>
                 </Box>
 

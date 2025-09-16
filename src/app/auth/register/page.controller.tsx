@@ -9,7 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useLayout } from '@/hooks/useLayout';
 import { useToast } from '@/hooks/useToast';
 import { createUser } from '@/lib/firebase/authentication/create';
-import { signUpEmail } from '@/services/common/account.service';
+import { signUpEmail } from '@/services/core/account.service';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'nextjs-toploader/app';
 import { useState } from 'react';

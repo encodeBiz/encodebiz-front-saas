@@ -9,7 +9,7 @@ import { useEntity } from "@/hooks/useEntity";
 import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { ContactFromModel } from "@/domain/core/IContact";
-import { sendFormContact } from "@/services/common/helper.service";
+import { sendFormContact } from "@/services/core/helper.service";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 

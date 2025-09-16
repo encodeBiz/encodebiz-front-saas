@@ -2,6 +2,7 @@
 import React, { createContext, useMemo, useState } from 'react';
 import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { darkTheme, lightTheme } from '@/config/theme';
+import { karla, outfit } from '@/config/fonts/google_fonts';
 
 interface ThemeType {
     mode: 'light' | 'dark';
@@ -39,12 +40,42 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
                         }),
                 },
                 typography: {
-                    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+                    fontFamily: [
+                        outfit.style.fontFamily,
+                        karla.style.fontFamily,
+                    ].join(','),
 
+                    // Customize specific typography variants
+                    h1: {
+                        fontFamily: outfit.style.fontFamily,
+                    },
+                    h2: {
+                        fontFamily: outfit.style.fontFamily,
+                    },
 
+                    h3: {
+                        fontFamily: outfit.style.fontFamily,
+                    },
+                    h4: {
+                        fontFamily: outfit.style.fontFamily,
+                    },
+                    h5: {
+                        fontFamily: outfit.style.fontFamily,
+                    },
+                    h6: {
+                        fontFamily: outfit.style.fontFamily,
+                    },
+                    body1: {
+                        fontFamily: outfit.style.fontFamily
+                    },
+                    body2: {
+                        fontFamily: outfit.style.fontFamily
+                    },
+                    caption: {
+                        fontFamily: outfit.style.fontFamily
+                    },
                 },
                 components: {
-                    
                     MuiCard: {
                         styleOverrides: {
                             root: {
@@ -85,7 +116,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
                     MuiDrawer: {
                         styleOverrides: {
                             paper: () => ({
-                                 borderRight: 'none',
+                                borderRight: 'none',
                             }),
                         },
                     },

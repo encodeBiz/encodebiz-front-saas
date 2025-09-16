@@ -242,7 +242,6 @@ export default function useStaffListController() {
     } catch (error) {
       showToast(String(error as any), 'error')
     }
-
   }
 
   const buildState = () => {

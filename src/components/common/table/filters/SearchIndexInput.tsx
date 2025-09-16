@@ -11,7 +11,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { CheckCircleOutline, SearchOutlined } from "@mui/icons-material";
-import { fetchIndex } from "@/services/common/helper.service";
+import { fetchIndex } from "@/services/core/helper.service";
 import { useTranslations } from "next-intl";
 import { useEntity } from "@/hooks/useEntity";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
