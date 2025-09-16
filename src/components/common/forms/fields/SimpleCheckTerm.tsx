@@ -1,6 +1,6 @@
 // TextInput.tsx
 import React from 'react';
-import { Box, Checkbox, FormControlLabel, FormHelperText, TextFieldProps, Typography } from '@mui/material';
+import { Box, Checkbox, FormControlLabel, FormHelperText, TextFieldProps, Typography, useTheme } from '@mui/material';
 import { FieldProps, useField } from 'formik';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
@@ -12,6 +12,7 @@ const SimpleCheckTerm: React.FC<FieldProps & TextFieldProps> = ({
   const t = useTranslations()
   const { touched, error } = meta
   const helperText = touched && error;
+  const theme = useTheme()
   return (<Box display={'flex'} alignContent={'flex-start'} color={(theme)=>theme.palette.text.primary} textAlign={'left'}>
  
     <FormControlLabel
@@ -27,7 +28,7 @@ const SimpleCheckTerm: React.FC<FieldProps & TextFieldProps> = ({
       }
       label={
         <Typography variant="body2" sx={{textAlig:'left'}}>
-          {t('core.label.accepTerm1')} <Link style={{color:'#1C1D1B', textUnderlineOffset:4}}  href="#"> {t('core.label.accepTerm2')} </Link> {t('core.label.accepTerm3')}  <Link style={{color:'#1C1D1B', textUnderlineOffset:4}} href="#">{t('core.label.accepTerm4')} </Link>
+          {t('core.label.accepTerm1')} <Link style={{color: theme.palette.primary.main, textDecoration:'none'}}  href="#"> {t('core.label.accepTerm2')} </Link> {t('core.label.accepTerm3')}  <Link style={{color: theme.palette.primary.main, textDecoration:'none'}} href="#">{t('core.label.accepTerm4')} </Link>
         </Typography>
       }
 

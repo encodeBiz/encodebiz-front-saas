@@ -4,6 +4,7 @@ import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
+import { IStatsRequest } from "@/domain/features/passinbiz/IStats";
  
 
 /**
@@ -128,6 +129,36 @@ export async function importHolder(data: FormData, token: string) {
       const response: any = await httpClientFetchInstance.upload(
         process.env.NEXT_PUBLIC_BACKEND_URI_PASSINBIZ_IMPORT_HOLDER as string,
         data
+      );
+      if (response.errCode && response.errCode !== 200) {
+        throw new Error(response.message);
+      }
+
+      return response;
+    }
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+
+
+export async function fetchStats(data: IStatsRequest, token: string) {
+  try {
+    if (!token) {
+      throw new Error("Error to fetch user auth token");
+    } else {
+      const httpClientFetchInstance: HttpClient = new HttpClient({
+        baseURL: "",
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      const response: any = await httpClientFetchInstance.post(
+        process.env.NEXT_PUBLIC_BACKEND_URI_PASSINBIZ_STATS as string,
+        {
+          ...data,
+        }
       );
       if (response.errCode && response.errCode !== 200) {
         throw new Error(response.message);

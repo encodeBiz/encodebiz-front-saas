@@ -14,8 +14,9 @@ export const SelectFilter = ({ defaultValue, value, onChange, items, first = tru
 
         sx={{
             height: 46,
+            paddingRight:2,
             "& .MuiSelect-icon": {
-                marginLeft: '20px'
+               
             },
         }}
         value={value ?? 'none'}
