@@ -7,7 +7,7 @@ import { IService } from "@/domain/core/IService";
 import { SearchParams } from "@/domain/core/firebase/firestore";
 import { onSnapshotCollection, searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { Unsubscribe } from "firebase/firestore";
-import { addDocument, createDocumentWithId } from "@/lib/firebase/firestore/addDocument";
+import { createDocumentWithId } from "@/lib/firebase/firestore/addDocument";
 
 
 
