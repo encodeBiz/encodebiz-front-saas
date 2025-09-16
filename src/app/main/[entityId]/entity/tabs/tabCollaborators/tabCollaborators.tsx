@@ -15,7 +15,7 @@ import { logout } from '@/lib/firebase/authentication/logout';
 
 const CollaboratorsPreferencesPage = () => {
 
-    const { handleAssign, handleRemove, currentProject, loading } = useCollaboratorsController();
+    const { handleAssign, handleRemove, currentProject, loading, pendFetch } = useCollaboratorsController();
     const { user } = useAuth()
     const t = useTranslations();
     const {open} = useCommonModal()
@@ -31,7 +31,7 @@ const CollaboratorsPreferencesPage = () => {
 
                 onAssign={handleAssign}
                 onRemove={handleRemove}
-                proccesing={loading}
+                proccesing={loading || pendFetch}
                 currentUser={user as IUser} // from your auth context
             />
 

@@ -35,13 +35,13 @@ const WelcomeInviteModal = (): React.JSX.Element => {
     // Handler for closing the dialog
     const handleWelcomeInvite = async () => {
         await updateAuth(currentEntity?.id as string, user?.id as string)
-        setCurrentEntity({...currentEntity,status:'active'} as IUserEntity)
+        setCurrentEntity({ ...currentEntity, status: 'active' } as IUserEntity)
         if (isGuest) push(`/${MAIN_ROUTE}/user/account`)
         closeModal(CommonModalType.WELCOMEGUEST)
     }
     const handleClose = async () => {
         await updateAuth(currentEntity?.id as string, user?.id as string)
-        setCurrentEntity({...currentEntity,status:'active'} as IUserEntity)
+        setCurrentEntity({ ...currentEntity, status: 'active' } as IUserEntity)
         if (isGuest) push(`/${MAIN_ROUTE}/user/account`)
         closeModal(CommonModalType.WELCOMEGUEST)
     }

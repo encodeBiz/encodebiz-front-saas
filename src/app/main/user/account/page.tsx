@@ -8,7 +8,6 @@ import { useTranslations } from 'next-intl';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import GenericTabs from '@/components/common/tabs/GenericTabs';
 import { useUserAccountController } from './page.controller';
-import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import InfoModal from '@/components/common/modals/InfoModal';

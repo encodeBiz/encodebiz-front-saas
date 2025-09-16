@@ -19,7 +19,8 @@ import {
     ListItemText,
     Divider,
     Card,
-    useTheme
+    useTheme,
+    CircularProgress
 } from '@mui/material';
 import { PersonAdd } from '@mui/icons-material';
 import IUser, { ICollaborator } from '@/domain/core/auth/IUser';
@@ -117,9 +118,10 @@ const UserAssignment = ({ project, onAssign, onRemove, proccesing = false }: Use
                     </SassButton>
                 </Box>
                 <BorderBox sx={{ p: 2 }}>
+                    {proccesing && <Box display={'flex'} justifyContent={'center'} alignItems={'center'}><CircularProgress /></Box>}
                     <List>
                         {project.collaborators.map((collaborator) => (
-                            <Card sx={{boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', mb:1}} elevation={0} key={collaborator.user.id}>
+                            <Card sx={{ boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', mb: 1 }} elevation={0} key={collaborator.user.id}>
 
                                 <ListItem
                                     secondaryAction={
@@ -134,10 +136,10 @@ const UserAssignment = ({ project, onAssign, onRemove, proccesing = false }: Use
 
                                             />}
                                             {
-                                                (collaborator.role === 'owner' && collaborator.status !== 'invited' && project.collaborators.filter(e => e.role === 'owner' && e.status === 'active').length > 1) && (
+                                                ((collaborator.role === 'admin' && collaborator.status !== 'invited') || (collaborator.role === 'owner' && collaborator.status !== 'invited' && project.collaborators.filter(e => e.role === 'owner' && e.status === 'active').length > 1)) && (
                                                     <CustomIconBtn
                                                         onClick={() => openModal(CommonModalType.COLABORATOR, { data: collaborator.user.uid })}
-                                                         
+
                                                         icon={<TrashIcon />}
                                                         color={theme.palette.primary.main}
                                                     />

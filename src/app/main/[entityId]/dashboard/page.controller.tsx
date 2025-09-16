@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { CommonModalType } from "@/contexts/commonModalContext";
 import { useAuth } from "@/hooks/useAuth";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { useEntity } from "@/hooks/useEntity";
@@ -12,14 +14,11 @@ export default function useDashboardController() {
       const isViewOnboarding = localStorage.getItem('view-onboarding-' + user?.id)
       if (!isViewOnboarding) {
         setTimeout(() => {
-          openModal()
+          openModal(CommonModalType.ONBOARDING)
         }, 2000);
       }
-    }
-
-     
- 
-  }, [openModal, user?.id, currentEntity?.status])
+    }    
+ }, [openModal, user?.id])
 
   return {}
 }

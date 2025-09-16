@@ -93,8 +93,9 @@ export const useCollaboratorsController = () => {
 
 
 
-
+    const [pendFetch, setPendFetch] = useState(false)
     const updateColaborators = async () => {
+        setPendFetch(true)
         const data: Array<IUserEntity> = await fetchAllOwnerOfEntity(currentEntity?.entity.id as string)
         setCurrentProject({
             owner: {
@@ -105,6 +106,7 @@ export const useCollaboratorsController = () => {
             id: currentEntity?.entity.id as string,
             data
         })
+        setPendFetch(false)
     }
 
 
@@ -117,6 +119,6 @@ export const useCollaboratorsController = () => {
 
 
 
-    return { handleAssign, handleRemove, currentProject, loading }
+    return { handleAssign, handleRemove, currentProject, loading, pendFetch }
 }
 
