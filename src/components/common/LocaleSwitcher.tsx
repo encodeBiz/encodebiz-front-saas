@@ -13,7 +13,6 @@ import {
 
 // Import your defined locales from i18n.ts
 import { useAppLocale } from '@/hooks/useAppLocale';
-import { Language } from '@mui/icons-material';
 import { useEntity } from '@/hooks/useEntity';
 import { updateExtraEntity } from '@/services/core/entity.service';
 import { useToast } from '@/hooks/useToast';
