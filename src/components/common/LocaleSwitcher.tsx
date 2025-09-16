@@ -19,7 +19,29 @@ import { updateExtraEntity } from '@/services/core/entity.service';
 import { useToast } from '@/hooks/useToast';
 import { usePathname } from 'next/navigation';
 export const locales = ['en', 'es']; // Define your supported locales
-
+const flags = {
+  'es': <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 5" width="30" height="25">
+    <rect width="8" height="5" fill="#AA151B" />
+    <rect width="8" height="2" y="1.5" fill="#F1BF00" />
+    <rect width="8" height="0.5" y="1" fill="#AA151B" />
+    <rect width="8" height="0.5" y="3.5" fill="#AA151B" />
+  </svg>,
+  'en': <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="30" height="40">
+    <clipPath id="s">
+      <path d="M0,0 v30 h60 v-30 z" />
+    </clipPath>
+    <clipPath id="t">
+      <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z" />
+    </clipPath>
+    <g clip-path="url(#s)">
+      <path d="M0,0 v30 h60 v-30 z" fill="#012169" />
+      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6" />
+      <path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#t)" stroke="#C8102E" stroke-width="4" />
+      <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10" />
+      <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6" />
+    </g>
+  </svg>
+}
 const LocaleSwitcher: React.FC = () => {
   const t = useTranslations(); // 'LocaleSwitcher' refers to the key in your message files
   const { changeLocale, currentLocale } = useAppLocale()
@@ -36,8 +58,8 @@ const LocaleSwitcher: React.FC = () => {
     const newLocale = event.target.value as string;
     setSelectedLocale(newLocale);
     changeLocale(newLocale); // Inform parent about the locale change
-    if(currentEntity || pathname.includes('/main')) 
-    updateEntityLang(newLocale.toUpperCase() as 'ES' | 'EN')
+    if (currentEntity || pathname.includes('/main'))
+      updateEntityLang(newLocale.toUpperCase() as 'ES' | 'EN')
 
   };
 
@@ -86,11 +108,10 @@ const LocaleSwitcher: React.FC = () => {
 
                 gap: 1
               }}>
-                <Language />
-                {locale === 'en' && <Typography textTransform={'uppercase'}>{t('layout.header.english')}</Typography>}
-                {locale === 'es' && <Typography textTransform={'uppercase'}>{t('layout.header.spanish')}</Typography>}
-                {locale === 'fr' && <Typography textTransform={'uppercase'}>{t('layout.header.french')}</Typography>}
-                {locale === 'de' && <Typography textTransform={'uppercase'}>{t('layout.header.germany')}</Typography>}
+              
+                {locale === 'en' && <>{flags[locale]} <Typography textTransform={'uppercase'}>{t('layout.header.english')}</Typography></>}
+                {locale === 'es' && <>{flags[locale]}<Typography textTransform={'uppercase'}>{t('layout.header.spanish')}</Typography></>}
+
 
               </Box>
             </MenuItem>
