@@ -19,7 +19,7 @@ export const CHECKINBIZ_MODULE_ROUTE = 'checkinbiz'
 
 const PASSINBIZ = [{
     name: 'Holders',
-
+    
     link: `/${PASSSINBIZ_MODULE_ROUTE}/holder`,
     subMenu: []
 }, {

@@ -8,7 +8,6 @@ import { PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
 import { useParams, useSearchParams } from 'next/navigation';
 import { IEvent } from '@/domain/features/passinbiz/IEvent';
 import { SassButton } from '@/components/common/buttons/GenericButton';
-import { ArrowLeftOutlined, SaveOutlined } from '@mui/icons-material';
 import { useRef } from 'react';
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { useLayout } from '@/hooks/useLayout';
@@ -42,13 +41,13 @@ export default function EventForm() {
               disabled={formStatus?.isSubmitting}
               onClick={() => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event?params=${searchParams.get('params')}`)}
               variant='outlined'
-              startIcon={<ArrowLeftOutlined />}
+              
             > {t('core.button.cancel')}</SassButton>
             <SassButton
               disabled={!formStatus?.isValid || formStatus?.isSubmitting}
               onClick={handleExternalSubmit}
               variant='contained'
-              startIcon={<SaveOutlined />}
+         
             > {t('core.button.saveChanges')}</SassButton>
           </Box>
         }

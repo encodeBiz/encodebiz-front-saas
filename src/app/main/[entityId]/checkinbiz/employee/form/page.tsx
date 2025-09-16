@@ -1,7 +1,7 @@
 'use client';
 import { Box, Container } from '@mui/material';
 import { useTranslations } from "next-intl";
-import useEmployeeController  from './page.controller';
+import useEmployeeController from './page.controller';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { CHECKINBIZ_MODULE_ROUTE } from '@/config/routes';
@@ -10,7 +10,6 @@ import { useLayout } from '@/hooks/useLayout';
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { useRef } from 'react';
 import { SassButton } from '@/components/common/buttons/GenericButton';
-import { ArrowLeftOutlined, SaveOutlined } from '@mui/icons-material';
 import { IEmployee } from '@/domain/features/checkinbiz/IEmployee';
 
 
@@ -34,7 +33,7 @@ export default function EmployeeForm() {
 
   return (
     <Container maxWidth="xl">
-     <HeaderPage
+      <HeaderPage
         title={id ? t('employee.edit') : t('employee.add')}
         description={t('employee.formDesc')}
         isForm
@@ -44,13 +43,11 @@ export default function EmployeeForm() {
               disabled={formStatus?.isSubmitting}
               onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee?params=${searchParams.get('params')}`)}
               variant='outlined'
-              startIcon={<ArrowLeftOutlined />}
             > {t('core.button.cancel')}</SassButton>
             <SassButton
               disabled={!formStatus?.isValid || formStatus?.isSubmitting}
               onClick={handleExternalSubmit}
               variant='contained'
-              startIcon={<SaveOutlined />}
             > {t('core.button.saveChanges')}</SassButton>
           </Box>
         }

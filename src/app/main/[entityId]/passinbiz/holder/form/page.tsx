@@ -10,7 +10,6 @@ import { Holder } from '@/domain/features/passinbiz/IHolder';
 import { useRef } from 'react';
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { SassButton } from '@/components/common/buttons/GenericButton';
-import { ArrowLeftOutlined, SaveOutlined } from '@mui/icons-material';
 import { useLayout } from '@/hooks/useLayout';
 
 
@@ -39,13 +38,13 @@ export default function HolderForm() {
               disabled={formStatus?.isSubmitting}
               onClick={() => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/holder?params=${searchParams.get('params')}`)}
               variant='outlined'
-              startIcon={<ArrowLeftOutlined />}
+          
             > {t('core.button.cancel')}</SassButton>
             <SassButton
               disabled={!formStatus?.isValid || formStatus?.isSubmitting}
               onClick={handleExternalSubmit}
               variant='contained'
-              startIcon={<SaveOutlined />}
+              
             > {t('core.button.saveChanges')}</SassButton>
           </Box>
         }

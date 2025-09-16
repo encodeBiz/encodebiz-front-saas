@@ -76,8 +76,8 @@ const CustomListItemButton = ({ children, item, subItem = false, handleSubMenuTo
         navivateTo(item.link, true)
       }
     }}
-    selected={pathname.endsWith(item.link?.replace('?tab=company',''))}>
-    {!item.header && item.icon && <ListItemIcon sx={{ minWidth: 30, color: pathname.endsWith(item.link?.replace('?tab=company','')) ? '#FFF' : theme.palette.text.primary }}>
+    selected={pathname.includes(item.link)}>
+    {!item.header && item.icon && <ListItemIcon sx={{ minWidth: 30, color: pathname.includes(item.link) ? '#FFF' : theme.palette.text.primary }}>
       {item.icon}
     </ListItemIcon>}
     <ListItemText color={theme.palette.text.primary} primary={t(`layout.side.menu.${item.name}`)} />

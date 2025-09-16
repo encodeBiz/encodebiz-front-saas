@@ -90,6 +90,8 @@
     },
     "label": {
       "subEntity": "Sucursal",
+      "subEntityName": "Nombre de la sucursal",
+      "subEntityData": "DATOS DE LA SUCURSAL",
       "internal": "Interno",
       "collaborator": "Colaborador",
       "inactive": "Inactivo",
@@ -105,7 +107,7 @@
       "default": "Por defecto",
       "state": "Estado",
       "vip": "VIP",
-      "search": "Buscar...",
+      "search": "Buscar",
       "template": "Plantilla",
       "expo": "Expositivo",
       "festival": "Festival",
@@ -578,7 +580,7 @@
   "media": {
     "title": "Multimedias",
     "text1": "Archicos seleccionados",
-    "labelType": "Seleccione el tipo de archivo a subir",
+    "labelType": "Tipo de archivo",
     "deleteConfirmModalTitle": "Eliminar archivo",
     "deleteConfirmModalTitle2": "¡Tenga cuidaddo!. Esta acción no se puede deshacer. Si elimina un archivo que este asociado a algún servicio o entidad, podría atentar con el correcto funcionamiento de estos elementos en la plataforma."
   },

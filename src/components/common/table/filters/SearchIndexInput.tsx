@@ -44,7 +44,7 @@ const getDataLabel = (data: ISearchIndex, type: "entities" | "users" | "events" 
 }
 
 
-const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, label, type }) => {
+const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type }) => {
   const t = useTranslations();
   const { currentEntity } = useEntity()
 
@@ -128,7 +128,7 @@ const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, label, t
         renderInput={(params) => (
           <TextField
             {...params}
-            label={label}
+           
             placeholder={t("core.label.search")}
             sx={{
 
@@ -149,7 +149,7 @@ const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, label, t
                 startAdornment: <SearchOutlined sx={{ mr: 1 }} />,
                 endAdornment: <React.Fragment>
                   {pending ? <CircularProgress color="inherit" size={20} /> : null}
-                  {params.InputProps.endAdornment}
+                  
                 </React.Fragment>
               },
             }}
