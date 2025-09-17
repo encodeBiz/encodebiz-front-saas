@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/useToast";
 import { buildChartData, computeTotalsByEvent, formatCompact, getBuckets, normalizeApiResponse } from "@/lib/common/stats";
 import { fetchStats } from "@/services/passinbiz/holder.service";
-import { Box, Stack, Typography, FormControl, InputLabel, Select, MenuItem, Checkbox, ListItemText, Card, Tabs, Tab, CardContent, Chip, TextField, Button, Alert } from "@mui/material";
+import { Box, Stack, Typography, FormControl, InputLabel, Select, MenuItem, Checkbox, ListItemText, Card, Tabs, Tab, CardContent, Chip} from "@mui/material";
 import React from "react";
 import { useState } from "react";
 import {
@@ -19,6 +19,7 @@ import {
     Tooltip,
     Legend,
 } from "recharts";
+ 
 export const PassesIssuedComponentChart = () => {
     const [tab, setTab] = React.useState(0);
     const [showCumulative, setShowCumulative] = React.useState(true);
