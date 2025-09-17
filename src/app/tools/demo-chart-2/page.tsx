@@ -26,23 +26,21 @@ import {
 } from "recharts";
 
 // ==========================================================
-// DATA CONTRACT – Passes Issued (hour/day/month buckets)
+// DATA CONTRACT – Validation (hour/day/month buckets)
 // ==========================================================
-// Esperamos una respuesta con una de estas claves: hour | day | month
-// Cada clave es un objeto { bucketKey: Array<{ total: number; event: string; eventId?: string }> }
-// Ej.:
-// {
-//   total: 1000,
-//   hour: { "9": [{ total: 500, event: "Presentación de PassBiz" }, ...], ... },
-//   dateRange: { start: ISO, end: ISO }
-// }
+// Esperamos una respuesta con claves: hour | day | month
+// Cada clave: { bucketKey: Array<{ total: {valid,failed,revoked} | number, event: string }> }
+// - Si total es number, se interpreta como "valid" (retrocompatibilidad).
+// - KPIs: Validation% (valid/attempts), RetryFactor (attempts/valid), Peak attempts por bucket.
 
 type GroupBy = "hour" | "day" | "month";
 
-type BucketItem = { total: number; event: string; eventId?: string };
+type ValidationTotals = { failed: number; valid: number; revoked: number };
+type BucketTotals = number | ValidationTotals;
+type BucketItem = { total: BucketTotals; event: string; eventId?: string };
 
 interface StatsResponse {
-  total: number;
+  total?: number | ValidationTotals; // no se usa; recalculamos
   hour?: Record<string, BucketItem[]>;
   day?: Record<string, BucketItem[]>;
   month?: Record<string, BucketItem[]>;
@@ -51,28 +49,7 @@ interface StatsResponse {
 }
 
 // ==========================================================
-// SAMPLE (fallback) – igual al ejemplo que compartiste
-// ==========================================================
-const SAMPLE_RESPONSE: StatsResponse = {
-  total: 1000,
-  hour: {
-    "9": [
-      { total: 0, event: "Masterclass GROUND" },
-      { total: 500, event: "Presentación de PassBiz" },
-    ],
-    "14": [
-      { total: 0, event: "Masterclass GROUND" },
-      { total: 500, event: "Presentación de PassBiz" },
-    ],
-  },
-  dateRange: {
-    start: "2025-09-12T09:00:00.000Z",
-    end: "2025-09-12T22:00:00.000Z",
-  },
-};
-
-// ==========================================================
-// HELPERS – normalización, construcción de series y ranking
+// HELPERS – normalización, claves, colores, KPIs
 // ==========================================================
 
 function normalizeApiResponse(json: any): StatsResponse {
@@ -80,9 +57,8 @@ function normalizeApiResponse(json: any): StatsResponse {
   const hour = root.hour ?? root.hours ?? root.hourly;
   const day = root.day ?? root.days ?? root.daily;
   const month = root.month ?? root.months ?? root.monthly;
-  const total = root.total ?? root.kpis?.total ?? root.kpis?.totalIssued ?? 0;
   const dateRange = root.dateRange ?? root.meta?.dateRangeApplied ?? undefined;
-  return { total, hour, day, month, dateRange, meta: root.meta } as StatsResponse;
+  return { hour, day, month, dateRange, meta: root.meta } as StatsResponse;
 }
 
 function getBuckets(resp: StatsResponse, gb: GroupBy) {
@@ -99,73 +75,129 @@ function uniq<T>(arr: T[]): T[] { return Array.from(new Set(arr)); }
 function safeKey(s: string) {
   return s
     .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
+    .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^A-Za-z0-9_]/g, "_");
 }
-
-// Color aleatorio determinista por serie (alto contraste)
-const PALETTE = [
-  "#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd",
-  "#8c564b","#e377c2","#7f7f7f","#bcbd22","#17becf",
-  "#023047","#fb8500","#219ebc","#8ecae6","#ffb703",
-  "#6a994e","#e76f51","#8338ec","#3a86ff","#ff006e"
-];
-function hashString(str: string) {
-  let h = 2166136261 >>> 0; // FNV-1a
-  for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
-  return h >>> 0;
-}
-function colorFor(key: string) {
-  return PALETTE[hashString(key) % PALETTE.length];
+function initialsFromName(name: string) {
+  const clean = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^A-Za-z0-9 ]/g, " ").trim();
+  const stop = new Set(["de","del","la","las","el","los","y","en","para","por","con","a","al","the","of","and"]);
+  const words = clean.split(/\s+/).filter(w => !stop.has(w.toLowerCase()));
+  if (!words.length) return "NA";
+  if (words.length === 1) return words[0].slice(0,2).toUpperCase();
+  return words.map(w => w[0].toUpperCase()).join("").slice(0,6);
 }
 
+// Colores fijos por MÉTRICA (consistentes entre eventos)
+const METRIC_COLORS: Record<keyof ValidationTotals, string> = {
+  valid:   "#16a34a", // verde
+  failed:  "#dc2626", // rojo
+  revoked: "#f59e0b", // ámbar
+};
+const METRIC_ABBR: Record<keyof ValidationTotals, string> = { valid: "V", failed: "F", revoked: "R" };
+
+function formatCompact(n: number) {
+  return new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 }).format(n);
+}
+function labelFromKey(gb: GroupBy, key: string) {
+  return gb === "hour" ? `${String(key).padStart(2, "0")}:00` : key;
+}
+
+// Mapea buckets -> filas + series (evento x métrica) apiladas por evento
 function buildChartData(buckets: Record<string, BucketItem[]>, gb: GroupBy) {
   const keys = sortKeys(gb, Object.keys(buckets));
-  const eventNames = uniq(keys.flatMap((k) => (buckets[k] || []).map((i) => i.event)));
-  const series = eventNames.map((name) => {
-    const field = safeKey(name);
-    return { name, field, color: colorFor(field) };
+  const events = uniq(keys.flatMap(k => (buckets[k] || []).map(i => i.event)));
+
+  const series = events.flatMap((ev) => {
+    const evField = safeKey(ev);
+    const short = initialsFromName(ev);
+    return (["valid","failed","revoked"] as (keyof ValidationTotals)[]).map((m) => ({
+      name: `${short}-${METRIC_ABBR[m]}`,
+      fullName: `${ev} (${m})`,
+      field: `${evField}__${m}`,
+      metric: m,
+      stackId: evField,              // apila V/F/R por evento
+      color: METRIC_COLORS[m],
+    }));
   });
 
   let cumulative = 0;
   const rows = keys.map((k) => {
     const row: any = { key: k };
-    let total = 0;
-    for (const s of series) {
-      const found = (buckets[k] || []).find((i) => i.event === s.name);
-      const v = found ? found.total : 0;
-      row[s.field] = v;
-      total += v;
+    let totalAll = 0;
+    let validSum = 0, attemptsSum = 0;
+
+    for (const ev of events) {
+      const item = (buckets[k] || []).find(i => i.event === ev);
+      const totals = (item?.total ?? 0) as BucketTotals;
+
+      const vt: ValidationTotals = typeof totals === "number"
+        ? { valid: totals, failed: 0, revoked: 0 }
+        : { valid: totals.valid || 0, failed: totals.failed || 0, revoked: totals.revoked || 0 };
+
+      const evField = safeKey(ev);
+      row[`${evField}__valid`]   = vt.valid;
+      row[`${evField}__failed`]  = vt.failed;
+      row[`${evField}__revoked`] = vt.revoked;
+
+      validSum    += vt.valid;
+      attemptsSum += vt.valid + vt.failed + vt.revoked;
+      totalAll    += vt.valid + vt.failed + vt.revoked;
     }
-    cumulative += total;
-    row.total = total;
+
+    cumulative += totalAll;
+    row.total = totalAll;
     row.cumulative = cumulative;
-    row.label = gb === "hour" ? `${String(k).padStart(2, "0")}:00` : k;
+    row.validationRate = attemptsSum > 0 ? +(validSum / attemptsSum * 100).toFixed(2) : 0;
+    row.label = labelFromKey(gb, k);
+
     return row;
   });
 
   return { rows, series };
 }
 
+// Ranking por evento (ordena por "valid") + agregados
 function computeTotalsByEvent(buckets: Record<string, BucketItem[]>) {
-  const map = new Map<string, { event: string; total: number }>();
+  const map = new Map<string, { event: string; valid: number; failed: number; revoked: number; attempts: number }>();
   Object.keys(buckets).forEach((k) => {
     (buckets[k] || []).forEach((item) => {
-      const key = item.event; // o item.eventId ?? item.event
-      const prev = map.get(key) ?? { event: item.event, total: 0 };
-      prev.total += item.total || 0;
+      const key = item.event;
+      const totals = (item?.total ?? 0) as BucketTotals;
+      const vt: ValidationTotals = typeof totals === "number"
+        ? { valid: totals, failed: 0, revoked: 0 }
+        : { valid: totals.valid || 0, failed: totals.failed || 0, revoked: totals.revoked || 0 };
+      const prev = map.get(key) ?? { event: key, valid: 0, failed: 0, revoked: 0, attempts: 0 };
+      prev.valid += vt.valid; prev.failed += vt.failed; prev.revoked += vt.revoked; prev.attempts += vt.valid + vt.failed + vt.revoked;
       map.set(key, prev);
     });
   });
-  return Array.from(map.values()).sort((a, b) => b.total - a.total);
+  return Array.from(map.values()).sort((a, b) => b.valid - a.valid);
 }
 
-function formatCompact(n: number) {
-  return new Intl.NumberFormat("en-US", { notation: "compact" }).format(n);
+function computeKPIs(buckets: Record<string, BucketItem[]>, gb: GroupBy) {
+  let valid = 0, failed = 0, revoked = 0;
+  let peakAttempts = 0; let peakKey: string | null = null;
+  const keys = sortKeys(gb, Object.keys(buckets));
+  for (const k of keys) {
+    let bucketAttempts = 0;
+    for (const item of (buckets[k] || [])) {
+      const totals = (item?.total ?? 0) as BucketTotals;
+      const vt: ValidationTotals = typeof totals === "number"
+        ? { valid: totals, failed: 0, revoked: 0 }
+        : { valid: totals.valid || 0, failed: totals.failed || 0, revoked: totals.revoked || 0 };
+      valid += vt.valid; failed += vt.failed; revoked += vt.revoked;
+      bucketAttempts += vt.valid + vt.failed + vt.revoked;
+    }
+    if (bucketAttempts > peakAttempts) { peakAttempts = bucketAttempts; peakKey = k; }
+  }
+  const attempts = valid + failed + revoked;
+  const validationRate = attempts > 0 ? +(valid / attempts * 100).toFixed(2) : 0;
+  const retryFactor = valid > 0 ? +((attempts / valid)).toFixed(2) : 0;
+  return { attempts, valid, failed, revoked, validationRate, retryFactor, peak: { key: peakKey, attempts: peakAttempts } };
 }
 
 // ==========================================================
-// PAGE – Adaptada a tu estilo MUI, con fetch configurable
+// PAGE – con fetch configurable y KPIs
 // ==========================================================
 
 const DEFAULT_ENDPOINT =
@@ -173,10 +205,10 @@ const DEFAULT_ENDPOINT =
 
 const DEFAULT_PAYLOAD = {
   entityId: "z1YRV6s6ueqnJpIvInFL",
-  stats: "PASSES_ISSUED",
+  stats: "PASSES_VALIDATION", // <-- importante
   dateRange: {
-    start: "2025-09-12T09:00:00.000Z",
-    end: "2025-09-12T22:00:00.000Z",
+    start: "2025-09-16T09:00:00.000Z",
+    end: "2025-09-16T22:00:00.000Z",
   },
   groupBy: "hour",
   type: "event",
@@ -192,13 +224,12 @@ export default function Page() {
   const [endpoint, setEndpoint] = React.useState(DEFAULT_ENDPOINT);
   const [payload, setPayload] = React.useState(JSON.stringify(DEFAULT_PAYLOAD, null, 2));
   const [groupBy, setGroupBy] = React.useState<GroupBy>("hour");
-  const [useFallback, setUseFallback] = React.useState(true);
-  const [showCumulative, setShowCumulative] = React.useState(true);
+  const [showCumulative, setShowCumulative] = React.useState(false); // acumulado no es tan útil aquí
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [raw, setRaw] = React.useState<any>(null);
 
-  const [data, setData] = React.useState<StatsResponse | null>(SAMPLE_RESPONSE);
+  const [data, setData] = React.useState<StatsResponse | null>(null);
 
   const parsedPayload = React.useMemo(() => {
     try { return JSON.parse(payload); } catch { return null; }
@@ -207,35 +238,31 @@ export default function Page() {
   async function fetchStats() {
     setLoading(true); setError(null); setRaw(null);
     try {
+      const body = { ...parsedPayload }; // fuerza groupBy actual
       const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(parsedPayload ?? DEFAULT_PAYLOAD),
+        body: JSON.stringify(body),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       setRaw(json);
-      const normalized = normalizeApiResponse(json);
-      // Detecta automáticamente el groupBy que viene del server
-      const gb: GroupBy | null = normalized.hour ? "hour" : normalized.day ? "day" : normalized.month ? "month" : null;
-      if (gb) setGroupBy(gb);
-      setData(normalized);
+      setData(normalizeApiResponse(json));
     } catch (e: any) {
       setError(e?.message || "Request failed");
-      if (useFallback) setData(SAMPLE_RESPONSE);
+      setData(null);
     } finally {
       setLoading(false);
     }
   }
 
-  const buckets = React.useMemo(() => getBuckets(data ?? SAMPLE_RESPONSE, groupBy), [data, groupBy]);
+  const buckets = React.useMemo(() => getBuckets(data || ({} as StatsResponse), groupBy), [data, groupBy]);
   const { rows, series } = React.useMemo(() => buildChartData(buckets, groupBy), [buckets, groupBy]);
   const ranking = React.useMemo(() => computeTotalsByEvent(buckets), [buckets]);
+  const kpis = React.useMemo(() => computeKPIs(buckets, groupBy), [buckets, groupBy]);
 
-  const dr = data?.dateRange ?? SAMPLE_RESPONSE.dateRange;
-  const empty = rows.length === 0 || series.length === 0;
+  const dr = data?.dateRange; const empty = rows.length === 0 || series.length === 0;
 
-  // Para ocultar/mostrar series en la gráfica
   const SERIES_OPTIONS = series.map((s) => ({ id: s.field, name: s.name }));
   const [visibleSeries, setVisibleSeries] = React.useState<string[]>(SERIES_OPTIONS.map(s => s.id));
   React.useEffect(() => { setVisibleSeries(SERIES_OPTIONS.map(s => s.id)); }, [series.length]);
@@ -245,8 +272,8 @@ export default function Page() {
       <Box sx={{ maxWidth: 1200, mx: "auto" }}>
         <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems={{ md: "flex-end" }} justifyContent="space-between" sx={{ mb: 2 }}>
           <Box>
-            <Typography variant="h5" fontWeight={600}>Passes Issued</Typography>
-            <Typography variant="body2" color="text.secondary">Barras apiladas por evento + línea acumulada. Rango UTC.</Typography>
+            <Typography variant="h5" fontWeight={600}>Validación: Intentos vs Éxitos vs Revocados</Typography>
+            <Typography variant="body2" color="text.secondary">Apilado por evento (V/F/R) + línea de % validación global por bucket.</Typography>
           </Box>
           <Stack direction="row" spacing={2}>
             <FormControl size="small" sx={{ minWidth: 140 }}>
@@ -278,6 +305,18 @@ export default function Page() {
           </Stack>
         </Stack>
 
+        {/* KPIs */}
+        <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mb: 1 }}>
+          <Chip size="small" label={`Attempts: ${formatCompact(kpis.attempts || 0)}`} />
+          <Chip size="small" label={`Valid: ${formatCompact(kpis.valid || 0)}`} />
+          <Chip size="small" label={`Failed: ${formatCompact(kpis.failed || 0)}`} />
+          <Chip size="small" label={`Revoked: ${formatCompact(kpis.revoked || 0)}`} />
+          <Chip size="small" label={`Validation: ${(kpis.validationRate || 0).toFixed(2)}%`} />
+          <Chip size="small" label={`Retry: ${(kpis.retryFactor || 0).toFixed(2)}x`} />
+          {kpis.peak?.key && <Chip size="small" label={`Peak: ${formatCompact(kpis.peak.attempts)} @ ${labelFromKey(groupBy, kpis.peak.key)}`} />}
+          {dr?.start && <Chip size="small" label={`UTC: ${dr.start} → ${dr.end}`} />}
+        </Stack>
+
         <Card variant="outlined" sx={{ mb: 2 }}>
           <Tabs value={tab} onChange={(_,v)=>setTab(v)} aria-label="tabs-demo">
             <Tab label="Gráfica" id="tab-0" aria-controls="tabpanel-0" />
@@ -288,10 +327,10 @@ export default function Page() {
           <CardContent>
             {/* TAB 0 – Chart */}
             <div role="tabpanel" hidden={tab !== 0}>
-              <Box sx={{ height: 420 }}>
+              <Box sx={{ height: 440 }}>
                 {empty ? (
                   <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
-                    <Typography color="text.secondary" variant="body2">No hay datos para mostrar. Ajusta el rango o usa el fallback.</Typography>
+                    <Typography color="text.secondary" variant="body2">No hay datos para mostrar. Ajusta el rango o revisa el error del fetch.</Typography>
                   </Stack>
                 ) : (
                   <ResponsiveContainer width="100%" height="100%">
@@ -299,34 +338,33 @@ export default function Page() {
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="label" />
                       <YAxis />
+                      <YAxis yAxisId="right" orientation="right" domain={[0,100]} tickFormatter={(v)=>`${v}%`} />
                       <Tooltip />
                       <Legend />
                       {series.filter(s => visibleSeries.includes(s.field)).map((s) => (
-                        <Bar key={s.field} dataKey={s.field} name={s.name} stackId="events" fill={s.color} />
+                        <Bar key={s.field} dataKey={s.field} name={s.name} stackId={s.stackId} fill={s.color} />
                       ))}
-                      {showCumulative && <Line type="monotone" dataKey="cumulative" dot={false} />}
+                      <Line yAxisId="right" type="monotone" dataKey="validationRate" name="Validation %" dot={false} strokeWidth={2} />
+                      {showCumulative && <Line type="monotone" dataKey="cumulative" name="Cumulative" dot={false} />}
                     </ComposedChart>
                   </ResponsiveContainer>
                 )}
               </Box>
-              <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-                <Chip size="small" label={`Date Range (UTC): ${dr?.start ?? '-'} → ${dr?.end ?? '-'}`} />
-                <Chip size="small" label={`Total: ${formatCompact(data?.total ?? 0)}`} />
-                <Chip size="small" label={showCumulative ? "Cumulative: ON" : "Cumulative: OFF"} onClick={()=>setShowCumulative(v=>!v)} />
-              </Stack>
             </div>
 
             {/* TAB 1 – Ranking */}
             <div role="tabpanel" hidden={tab !== 1}>
               <Box sx={{ height: 380 }}>
                 <ResponsiveContainer width="100%" height="100%">
-                  <ComposedChart data={ranking.map(r=>({ evento: r.event, total: r.total }))} margin={{ top: 8, right: 16, left: 8, bottom: 24 }}>
+                  <ComposedChart data={ranking.map(r=>({ evento: r.event, Valid: r.valid, Failed: r.failed, Revoked: r.revoked }))} margin={{ top: 8, right: 16, left: 8, bottom: 24 }}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="evento" angle={-10} height={60} />
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="total" name="Total por evento" radius={[6,6,0,0]} />
+                    <Bar dataKey="Valid" name="Valid" fill={METRIC_COLORS.valid} radius={[6,6,0,0]} />
+                    <Bar dataKey="Failed" name="Failed" fill={METRIC_COLORS.failed} radius={[6,6,0,0]} />
+                    <Bar dataKey="Revoked" name="Revoked" fill={METRIC_COLORS.revoked} radius={[6,6,0,0]} />
                   </ComposedChart>
                 </ResponsiveContainer>
               </Box>
@@ -339,10 +377,6 @@ export default function Page() {
                 <TextField label="Payload (JSON)" value={payload} onChange={(e)=>setPayload(e.target.value)} multiline minRows={10} maxRows={18} fullWidth />
                 <Stack direction="row" spacing={2} alignItems="center">
                   <Button variant="contained" onClick={fetchStats} disabled={loading}>{loading ? "Cargando…" : "Fetch"}</Button>
-                  <FormControl size="small" sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                    <Checkbox checked={useFallback} onChange={(e)=>setUseFallback(e.target.checked)} />
-                    <ListItemText primary="Usar fallback si falla" />
-                  </FormControl>
                 </Stack>
                 {error && <Alert severity="error">{error}</Alert>}
                 {raw && (
