@@ -4,8 +4,8 @@ import { useTranslations } from "next-intl";
 import useHolderListController from './page.controller';
 
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
-import { PassesIssuedRankingChart } from './components/charts/passesIssuedRanking';
-import { PassesIssuedChart } from './components/charts/passesIssued';
+import { PassesIssuedRankingChart } from './components/charts/passesIssuedRanking/passesIssuedRanking';
+import { PassesIssuedChart } from './components/charts/passesIssued/passesIssued';
 import { EventFilter } from './components/filters/EventFilter';
 import { GroupByFilter } from './components/filters/GroupByFilter';
 import { TypeFilter } from './components/filters/TypeFilter';
@@ -16,11 +16,8 @@ export default function HolderList() {
   const t = useTranslations();
   const {
     setPayload, payload,
-    type, setType,
-    groupBy, setGroupBy,
-    eventList, evenDataList, setEventDataList, setEventList,
-    handleFetchStats, loading, graphData,
-    dateRange, setDateRange
+
+
 
   } = useHolderListController();
 
@@ -35,26 +32,20 @@ export default function HolderList() {
             <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems={{ md: "flex-end" }} justifyContent="space-between" sx={{ mb: 2 }}>
               <Typography>Filtros:</Typography>
               <Stack direction="row" spacing={2}>
-                <TypeFilter value={type} onChange={(type) => {
-                  setPayload({ ...payload, type })
-                  setType(type)
-                  handleFetchStats({ ...payload, type })
+                <TypeFilter value={payload.type} onChange={(type) => {
+                  setPayload({ ...payload, type, events: type === 'credential' ? [] : payload.events })
+
                 }} />
-                {/*<DateRangePicker value={dateRange} onChange={setDateRange} />*/}
+                <DateRangePicker value={payload.dateRange} onChange={(dateRange) => setPayload({ ...payload, dateRange })} />
                 <GroupByFilter
-                  value={groupBy}
+                  value={payload.groupBy}
                   onChange={(groupBy) => {
                     setPayload({ ...payload, groupBy })
-                    setGroupBy(groupBy)
-                    handleFetchStats({ ...payload, groupBy })
                   }} />
-                {type === 'event' && <EventFilter
-                  value={eventList}
-                  onChange={setEventList}
+                {payload.type === 'event' && <EventFilter
+                  value={payload.events?.map(e => e.id) ?? []}
                   onChangeData={(events) => {
                     setPayload({ ...payload, events })
-                    setEventDataList(events)
-                    handleFetchStats({ ...payload, events })
                   }} />}
 
               </Stack>
@@ -62,9 +53,9 @@ export default function HolderList() {
 
             <Box display={'flex'} flexWrap={'wrap'} flexDirection={{ xs: "column", md: "row" }} gap={4}>
               <BorderBox sx={{ p: 1, width: '100%' }}>
-                <PassesIssuedChart graphData={graphData} pending={loading} evenDataList={evenDataList} />
+                <PassesIssuedChart payload={payload} />
               </BorderBox>
-              {type === 'event' && <BorderBox sx={{ p: 1, width: '100%' }}><PassesIssuedRankingChart graphData={graphData} pending={loading} /></BorderBox>}
+              {payload.type === 'event' && <BorderBox sx={{ p: 1, width: '100%' }}><PassesIssuedRankingChart payload={payload} /></BorderBox>}
             </Box>
 
 

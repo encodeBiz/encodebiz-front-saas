@@ -1,19 +1,11 @@
-import { FormControl, InputLabel } from "@mui/material";
-import { useTranslations } from "next-intl";
+import { FormControl } from "@mui/material";
 import { useState } from "react"; import {
-    Box,
-    Paper,
-    Typography,
-    TextField,
-    IconButton
+    Box
 } from '@mui/material';
+
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import {
-    CalendarToday,
-    Clear
-} from '@mui/icons-material';
 import dayjs from 'dayjs';
 export const DateRangePicker = ({
     value = { start: null, end: null },
@@ -23,11 +15,9 @@ export const DateRangePicker = ({
     onChange: (value: { start: any, end: any }) => void,
 
 }) => {
-    console.log(value);
 
     const [startDate, setStartDate] = useState(value?.start);
     const [endDate, setEndDate] = useState(value?.end);
-    const t = useTranslations()
 
     const handleStartDateChange = (newDate: any) => {
         const updatedStartDate = newDate;
@@ -54,43 +44,24 @@ export const DateRangePicker = ({
         onChange?.({ start: null, end: null });
     };
     return <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <FormControl size="small" sx={{ minWidth: 140 }}>
-        <InputLabel id="gb-label">{t('stats.type')}</InputLabel>
 
-        <Paper
-            elevation={0}
-            sx={{
-                p: 2,
-                border: 1,
-                borderColor: 'divider',
-                borderRadius: 1,
-
-            }}
-        >
-            <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
-                <Typography variant="h6" component="h3">
-                    Date Range
-                </Typography>
-                <IconButton
-                    onClick={clearDates}
-                    size="small"
-
-                    title="Clear dates"
-                >
-                    <Clear />
-                </IconButton>
-            </Box>
+        <FormControl sx={{ minWidth: 140 }}>
 
             <Box display="flex" gap={2} flexDirection={{ xs: 'column', sm: 'row' }}>
                 <DateTimePicker
                     label={'Inicio'}
-                 
 
-                          defaultValue={dayjs(startDate ?? new Date())}
-                              value={dayjs(startDate ?? new Date())}
+                    defaultValue={dayjs(startDate ?? new Date())}
+                    value={dayjs(startDate ?? new Date())}
                     onChange={handleStartDateChange}
-                    maxDate={endDate || undefined}
+                    maxDate={dayjs(endDate) || undefined}
                     sx={{ flex: 1 }}
+
+                    slotProps={{
+                        textField: {
+                            size: 'small'
+                        },
+                    }}
                 />
 
                 <DateTimePicker
@@ -99,13 +70,18 @@ export const DateRangePicker = ({
                     value={dayjs(new Date(endDate))}
                     onChange={handleEndDateChange}
                     minDateTime={dayjs(startDate)}
-
                     disabled={!startDate}
                     sx={{ flex: 1 }}
+
+                    slotProps={{
+                        textField: {
+                            size: 'small'
+                        },
+                    }}
                 />
             </Box>
-        </Paper>
 
-    </FormControl>
+
+        </FormControl>
     </LocalizationProvider>
 }

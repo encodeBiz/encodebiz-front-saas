@@ -11,10 +11,13 @@ import { RenuewCard } from '@/components/common/RenuewCard/RenuewCard';
 import EmptyState from '@/components/common/EmptyState/EmptyState';
 import { useTranslations } from 'next-intl';
 import { SassButton } from '@/components/common/buttons/GenericButton';
+import { useLayout } from '@/hooks/useLayout';
+import { PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
 
 const RenuewPreferencesPage = () => {
     const { entitySuscription } = useEntity()
     const t = useTranslations();
+    const {navivateTo} = useLayout()
     return (
         <Grid container spacing={1} display={'flex'} flexDirection={'column'} justifyContent="flex-start" pb={10}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
@@ -28,7 +31,7 @@ const RenuewPreferencesPage = () => {
                 ))}
                 </Box>
                 {entitySuscription.length === 0 && <EmptyState />}
-                {entitySuscription.length === 0 && <Box sx={{display:'flex', justifyContent:'center'}} ><SassButton color='primary' variant='contained'>{t('core.button.upgradeSuscription')}</SassButton></Box>}
+                {entitySuscription.length === 0 && <Box sx={{display:'flex', justifyContent:'center'}} ><SassButton onClick={()=>navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/onboarding?to=plans`)} color='primary' variant='contained'>{t('core.button.upgradeSuscription')}</SassButton></Box>}
             </Box>
         </Grid>
     );

@@ -1,7 +1,6 @@
 import { GroupBy } from "@/domain/features/passinbiz/IStats";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-import { groupBy } from "lodash";
-import { useTranslations } from "next-intl";
+ import { useTranslations } from "next-intl";
 
 export const GroupByFilter = ({ value, onChange }: { value: "hour" | "day" | "month", onChange: (value: "hour" | "day" | "month") => void }) => {
     const t = useTranslations()

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Box, CircularProgress, Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import {
     ResponsiveContainer,
     ComposedChart,
@@ -11,16 +11,23 @@ import {
     Tooltip,
     Legend,
 } from "recharts";
-
-import { ChartData } from "../../page.controller";
 import { useTranslations } from "next-intl";
 import EmptyState from "@/components/common/EmptyState/EmptyState";
-export const PassesIssuedRankingChart = ({ graphData, pending }: { graphData: ChartData | undefined, pending: boolean }) => {
+import { IStatsRequest } from "@/domain/features/passinbiz/IStats";
+import { useEntity } from "@/hooks/useEntity";
+import usePassesIssuedRankingController from "./passesIssuedRanking.controller";
+export const PassesIssuedRankingChart = ({ payload, }: { payload: IStatsRequest}) => {
     const t = useTranslations()
+    const { currentEntity } = useEntity()
+    const { handleFetchStats, loading, graphData } = usePassesIssuedRankingController()
+    useEffect(() => {
+        if (currentEntity?.entity.id)
+            handleFetchStats({ ...payload, entityId: currentEntity?.entity.id })
+    }, [currentEntity?.entity.id])
 
     return (<>
         <Box>
-            <Typography variant="h5" fontWeight={600}>{t('stats.passesIssuedRank')} {pending && <CircularProgress    />}</Typography>
+            <Typography variant="h5" fontWeight={600}>{t('stats.passesIssuedRank')} {loading && <CircularProgress    />}</Typography>
            
         </Box>
         <Box sx={{ height: 380 }}>
