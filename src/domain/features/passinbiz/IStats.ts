@@ -14,7 +14,7 @@ export interface IStatsResponse {
 export interface IStatsRequest {
 
     entityId?: string,
-    stats: "PASSES_ISSUED",
+    stats: "PASSES_ISSUED" | "PASSES_VALIDATION",
     dateRange: {
         start: Date,
         end: Date

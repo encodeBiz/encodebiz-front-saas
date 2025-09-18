@@ -38,14 +38,10 @@ export const DateRangePicker = ({
         onChange?.({ start: startDate, end: updatedEndDate });
     };
 
-    const clearDates = () => {
-        setStartDate(null);
-        setEndDate(null);
-        onChange?.({ start: null, end: null });
-    };
+    
     return <LocalizationProvider dateAdapter={AdapterDayjs}>
 
-        <FormControl sx={{ minWidth: 140 }}>
+        <FormControl sx={{ minWidth: 140 ,mb:1}}>
 
             <Box display="flex" gap={2} flexDirection={{ xs: 'column', sm: 'row' }}>
                 <DateTimePicker

@@ -703,6 +703,8 @@
     "event": "Eventos",
     "passesIssued": "Passes Emitidos",
     "passesIssuedRank": "Ranking de Passes Emitidos",
+    "passesValidation": "Passes Validados",
+    "passesValidationRank": "Ranking de Passes Validados",
     "passesIssuedText": "Barras apiladas por evento + línea acumulada. Rango UTC.",
     "cumulativo": "Acumulativo",
     "dateRange": "Rango de Fechas"

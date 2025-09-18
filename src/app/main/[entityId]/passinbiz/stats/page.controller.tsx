@@ -12,9 +12,9 @@ export interface ChartData {
   empty: boolean
   data: IStatsResponse
 }
-function addDays(date: Date, days: number) {
+function rmDays(date: Date, days: number) {
   const result = new Date(date);
-  result.setDate(result.getDate() + days);
+  result.setDate(result.getDate() - days);
   return result;
 }
 
@@ -25,8 +25,8 @@ export default function useStaffListController() {
     stats: "PASSES_ISSUED",
     type: 'credential',
     dateRange: {
-      start: new Date(),
-      end: addDays(new Date(), 5)
+      start: rmDays(new Date(), 5),
+      end: new Date()
     },
     groupBy: 'day',
     events:[]
@@ -36,8 +36,8 @@ export default function useStaffListController() {
     stats: "PASSES_ISSUED",
     type: 'credential',
     dateRange: {
-      start: new Date(),
-      end: addDays(new Date(), 5)
+       start: rmDays(new Date(), 5),
+      end: new Date()
     },
     groupBy: 'day',
     events:[]

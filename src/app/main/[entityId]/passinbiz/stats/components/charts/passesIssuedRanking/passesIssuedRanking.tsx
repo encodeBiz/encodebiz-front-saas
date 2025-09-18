@@ -16,20 +16,17 @@ import EmptyState from "@/components/common/EmptyState/EmptyState";
 import { IStatsRequest } from "@/domain/features/passinbiz/IStats";
 import { useEntity } from "@/hooks/useEntity";
 import usePassesIssuedRankingController from "./passesIssuedRanking.controller";
-export const PassesIssuedRankingChart = ({ payload, }: { payload: IStatsRequest}) => {
+export const PassesIssuedRankingChart = ({ payload, type = "PASSES_ISSUED" }: { payload: IStatsRequest, type?: "PASSES_ISSUED" | "PASSES_VALIDATION" }) => {
     const t = useTranslations()
     const { currentEntity } = useEntity()
     const { handleFetchStats, loading, graphData } = usePassesIssuedRankingController()
     useEffect(() => {
         if (currentEntity?.entity.id)
-            handleFetchStats({ ...payload, entityId: currentEntity?.entity.id })
+            handleFetchStats({ ...payload, stats: type, entityId: currentEntity?.entity.id })
     }, [currentEntity?.entity.id])
 
     return (<>
-        <Box>
-            <Typography variant="h5" fontWeight={600}>{t('stats.passesIssuedRank')} {loading && <CircularProgress    />}</Typography>
-           
-        </Box>
+        
         <Box sx={{ height: 380 }}>
             <ResponsiveContainer width="100%" height="100%">
                 {graphData?.ranking?.length === 0 ? (

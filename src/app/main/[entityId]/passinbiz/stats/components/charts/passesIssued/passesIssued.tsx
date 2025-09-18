@@ -20,30 +20,28 @@ import { IStatsRequest } from "@/domain/features/passinbiz/IStats";
 import { useEntity } from "@/hooks/useEntity";
 
 
-export const PassesIssuedChart = ({ payload }: { payload: IStatsRequest }) => {
+export const PassesIssuedChart = ({ payload, type = "PASSES_ISSUED" }: { payload: IStatsRequest, type?: "PASSES_ISSUED" | "PASSES_VALIDATION" }) => {
     const [showCumulative, setShowCumulative] = React.useState(true);
     const t = useTranslations()
     const { currentEntity } = useEntity()
     const { handleFetchStats, loading, graphData } = usePassesIssuedController()
     useEffect(() => {
         if (currentEntity?.entity.id)
-            handleFetchStats({ ...payload, entityId: currentEntity?.entity.id })
+            handleFetchStats({ ...payload, stats: type, entityId: currentEntity?.entity.id })
     }, [currentEntity?.entity.id, payload])
 
     return (<>
- 
-        <Box>
-            <Typography variant="h5" fontWeight={600}>{t('stats.passesIssued')} {loading && <CircularProgress />}</Typography>
-            <Typography variant="body2" color="text.secondary">{t('stats.passesIssuedText')}</Typography>
-        </Box>
+
+       
         <Box sx={{ height: 420 }}>
+            {loading && <CircularProgress />}
             {graphData?.empty ? (
                 <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
                     <EmptyState />
                 </Stack>
             ) : (
                 <ResponsiveContainer width="100%" height="100%">
-                    <ComposedChart data={graphData?.rows} margin={{ top: 8, right: 16, left: 8, bottom: 8 }}>
+                    <ComposedChart data={graphData?.rows} margin={{ top: 8, right: 8, left: 8, bottom: 8 }}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="label" />
                         <YAxis />

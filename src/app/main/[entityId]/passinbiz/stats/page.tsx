@@ -1,5 +1,5 @@
 'use client';
-import { Box, Container, Stack, Typography } from '@mui/material';
+import { Box, Container, Stack } from '@mui/material';
 import { useTranslations } from "next-intl";
 import useHolderListController from './page.controller';
 
@@ -12,6 +12,7 @@ import { TypeFilter } from './components/filters/TypeFilter';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import { DateRangePicker } from './components/filters/DateRangeFilter';
 import { SassButton } from '@/components/common/buttons/GenericButton';
+import HelpTabs from '@/components/features/dashboard/HelpTabs/HelpTabs';
 
 export default function HolderList() {
   const t = useTranslations();
@@ -31,9 +32,9 @@ export default function HolderList() {
       >
         <Box sx={{ p: 3, bgcolor: "#f8fafc", minHeight: "100vh" }}>
           <Box sx={{ maxWidth: 1200, mx: "auto" }}>
-            <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems={{ md: "flex-end" }} justifyContent="flex-end" sx={{ mb: 2 }}>
+            <Stack direction={{ xs: "column", md: "row" }} gap={2} spacing={2} alignItems={{ md: "flex-end" }} justifyContent="flex-end" sx={{ mb: 2 }}>
 
-              <Stack flexWrap={'wrap'} direction={{ xs: "column", md: "row" }} spacing={2}>
+              <Stack  flexWrap={'wrap'} direction={{ xs: "column", md: "row" }} spacing={2} >
                 <TypeFilter value={payload.type} onChange={(type) => {
                   setPayload({ ...payload, type, events: type === 'credential' ? [] : payload.events })
 
@@ -55,10 +56,44 @@ export default function HolderList() {
             </Stack>
 
             <Box display={'flex'} flexWrap={'wrap'} flexDirection={{ xs: "column", md: "row" }} gap={4}>
-              <BorderBox sx={{ p: 1, width: '100%' }}>
-                <PassesIssuedChart payload={filter} />
+              <BorderBox sx={{ width: "100%" }}>
+                <HelpTabs tabs={[
+                  {
+                    id: '1',
+                    title: t('stats.passesIssued'),
+                    description: t('stats.passesIssuedText'),
+                    tabContent: <PassesIssuedChart payload={filter} type='PASSES_ISSUED' />
+                  },
+                  ...payload.type === 'event' ? [
+                    {
+                      id: '2',
+                      title: t('stats.passesIssuedRank'),
+                      tabContent: <PassesIssuedRankingChart payload={filter} type='PASSES_ISSUED' />
+                    }
+                  ] : []
+
+                ]} />
               </BorderBox>
-              {payload.type === 'event' && <BorderBox sx={{ p: 1, width: '100%' }}><PassesIssuedRankingChart payload={filter} /></BorderBox>}
+
+              <BorderBox sx={{ p: 1, width: "100%" }}>
+
+                <HelpTabs tabs={[
+                  {
+                    id: '1',
+                    title: t('stats.passesValidation'),
+                    description: t('stats.passesIssuedText'),
+                    tabContent: <PassesIssuedChart payload={filter} type='PASSES_VALIDATION' />
+                  },
+                  ...payload.type === 'event' ? [
+                    {
+                      id: '2',
+                      title: t('stats.passesValidationRank'),
+                      tabContent: <PassesIssuedRankingChart payload={filter} type='PASSES_VALIDATION' />
+                    }
+                  ] : []
+
+                ]} />
+                 </BorderBox>
             </Box>
 
 
