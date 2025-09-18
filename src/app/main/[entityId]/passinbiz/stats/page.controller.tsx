@@ -32,6 +32,16 @@ export default function useStaffListController() {
     events:[]
   });
 
+  const [filter, setFilter] = useState<IStatsRequest>({
+    stats: "PASSES_ISSUED",
+    type: 'credential',
+    dateRange: {
+      start: new Date(),
+      end: addDays(new Date(), 5)
+    },
+    groupBy: 'day',
+    events:[]
+  });
 
   //Filter
 
@@ -40,7 +50,7 @@ export default function useStaffListController() {
 
 
   return {
-    setPayload, payload,
+    setPayload, payload,filter, setFilter
  
 
   }

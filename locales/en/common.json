@@ -233,6 +233,7 @@
     },
     "button": {
       "revoke": "Revoke",
+       "applyFilter":"Apply",
       "configure": "Configure",
       "close": "Close",
       "contactUs": "Contact encodeBiz",

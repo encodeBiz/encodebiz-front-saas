@@ -11,11 +11,13 @@ import { GroupByFilter } from './components/filters/GroupByFilter';
 import { TypeFilter } from './components/filters/TypeFilter';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import { DateRangePicker } from './components/filters/DateRangeFilter';
+import { SassButton } from '@/components/common/buttons/GenericButton';
 
 export default function HolderList() {
   const t = useTranslations();
   const {
     setPayload, payload,
+    setFilter, filter,
 
 
 
@@ -29,9 +31,9 @@ export default function HolderList() {
       >
         <Box sx={{ p: 3, bgcolor: "#f8fafc", minHeight: "100vh" }}>
           <Box sx={{ maxWidth: 1200, mx: "auto" }}>
-            <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems={{ md: "flex-end" }} justifyContent="space-between" sx={{ mb: 2 }}>
-              <Typography>Filtros:</Typography>
-              <Stack direction="row" spacing={2}>
+            <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems={{ md: "flex-end" }} justifyContent="flex-end" sx={{ mb: 2 }}>
+
+              <Stack flexWrap={'wrap'} direction={{ xs: "column", md: "row" }} spacing={2}>
                 <TypeFilter value={payload.type} onChange={(type) => {
                   setPayload({ ...payload, type, events: type === 'credential' ? [] : payload.events })
 
@@ -48,14 +50,15 @@ export default function HolderList() {
                     setPayload({ ...payload, events })
                   }} />}
 
+                <SassButton variant='contained' color='primary' size='small' onClick={() => setFilter({ ...payload })}>{t('core.button.applyFilter')}</SassButton>
               </Stack>
             </Stack>
 
             <Box display={'flex'} flexWrap={'wrap'} flexDirection={{ xs: "column", md: "row" }} gap={4}>
               <BorderBox sx={{ p: 1, width: '100%' }}>
-                <PassesIssuedChart payload={payload} />
+                <PassesIssuedChart payload={filter} />
               </BorderBox>
-              {payload.type === 'event' && <BorderBox sx={{ p: 1, width: '100%' }}><PassesIssuedRankingChart payload={payload} /></BorderBox>}
+              {payload.type === 'event' && <BorderBox sx={{ p: 1, width: '100%' }}><PassesIssuedRankingChart payload={filter} /></BorderBox>}
             </Box>
 
 

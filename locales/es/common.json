@@ -233,6 +233,7 @@
     },
     "button": {
       "revoke": "Revocar",
+      "applyFilter": "Aplicar",
       "configure": "Configurar",
       "close": "Cerrar",
       "contactUs": "Contactar con encodeBiz",
@@ -700,10 +701,10 @@
     "month": "Mes",
     "type": "Tipo",
     "event": "Eventos",
-    "passesIssued":"Passes Emitidos",
-    "passesIssuedRank":"Ranking de Passes Emitidos",
-    "passesIssuedText":"Barras apiladas por evento + línea acumulada. Rango UTC.",
-    "cumulativo":"Acumulativo",
-    "dateRange":"Rango de Fechas"
+    "passesIssued": "Passes Emitidos",
+    "passesIssuedRank": "Ranking de Passes Emitidos",
+    "passesIssuedText": "Barras apiladas por evento + línea acumulada. Rango UTC.",
+    "cumulativo": "Acumulativo",
+    "dateRange": "Rango de Fechas"
   }
 }
