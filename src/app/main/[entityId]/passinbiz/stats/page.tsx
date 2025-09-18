@@ -34,7 +34,7 @@ export default function HolderList() {
           <Box sx={{ maxWidth: 1200, mx: "auto" }}>
             <Stack direction={{ xs: "column", md: "row" }} gap={2} spacing={2} alignItems={{ md: "flex-end" }} justifyContent="flex-end" sx={{ mb: 2 }}>
 
-              <Stack  flexWrap={'wrap'} direction={{ xs: "column", md: "row" }} spacing={2} >
+              <Stack flexWrap={'wrap'} direction={{ xs: "column", md: "row" }} spacing={2} >
                 <TypeFilter value={payload.type} onChange={(type) => {
                   setPayload({ ...payload, type, events: type === 'credential' ? [] : payload.events })
 
@@ -70,30 +70,25 @@ export default function HolderList() {
                       title: t('stats.passesIssuedRank'),
                       tabContent: <PassesIssuedRankingChart payload={filter} type='PASSES_ISSUED' />
                     }
-                  ] : []
-
-                ]} />
-              </BorderBox>
-
-              <BorderBox sx={{ p: 1, width: "100%" }}>
-
-                <HelpTabs tabs={[
+                  ] : [],
                   {
-                    id: '1',
+                    id: '3',
                     title: t('stats.passesValidation'),
                     description: t('stats.passesIssuedText'),
                     tabContent: <PassesIssuedChart payload={filter} type='PASSES_VALIDATION' />
                   },
                   ...payload.type === 'event' ? [
                     {
-                      id: '2',
+                      id: '4',
                       title: t('stats.passesValidationRank'),
                       tabContent: <PassesIssuedRankingChart payload={filter} type='PASSES_VALIDATION' />
                     }
                   ] : []
 
                 ]} />
-                 </BorderBox>
+              </BorderBox>
+
+
             </Box>
 
 
