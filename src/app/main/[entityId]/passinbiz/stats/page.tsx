@@ -1,68 +1,79 @@
 'use client';
-import { Container, Box } from '@mui/material';
+import { Box, Container, Stack, Typography } from '@mui/material';
 import { useTranslations } from "next-intl";
 import useHolderListController from './page.controller';
 
-import { GenericTable } from "@/components/common/table/GenericTable";
 import { useCommonModal } from '@/hooks/useCommonModal';
-import { CommonModalType } from '@/contexts/commonModalContext';
-import { Add } from '@mui/icons-material';
-import ConfirmModal from '@/components/common/modals/ConfirmModal';
-import { SassButton } from '@/components/common/buttons/GenericButton';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import { useLayout } from '@/hooks/useLayout';
+import { PassesIssuedRankingChart } from './components/charts/passesIssuedRanking';
+import { PassesIssuedChart } from './components/charts/passesIssued';
+import { EventFilter } from './components/filters/EventFilter';
+import { GroupByFilter } from './components/filters/GroupByFilter';
+import { TypeFilter } from './components/filters/TypeFilter';
+import { BorderBox } from '@/components/common/tabs/BorderBox';
 
 export default function HolderList() {
   const t = useTranslations();
   const {
-    items, rowAction, onRowsPerPageChange, onSort,
-    onNext, onBack, onDelete, deleting,
-    filterParams, topFilter,
-    columns, buildState,
-    loading } = useHolderListController();
+    setPayload, payload,
+    type, setType,
+    groupBy, setGroupBy,
+    eventList, evenDataList, setEventDataList, setEventList,
+    handleFetchStats, loading, graphData,
+    tab, setTab,
+
+  } = useHolderListController();
   const { open } = useCommonModal()
   const { navivateTo } = useLayout()
   return (
     <Container maxWidth="lg">
       <HeaderPage
-        title={t("staff.list")}
-        actions={
-          <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
-            <SassButton
-              onClick={() => navivateTo(`/passinbiz/staff/add?params=${buildState()}`)}
-              variant='contained'
-              startIcon={<Add />}
-            >{t('staff.add')}</SassButton>
-          </Box>
-        }
+        title={t("layout.side.menu.Stats")}
+
       >
+        <Box sx={{ p: 3, bgcolor: "#f8fafc", minHeight: "100vh" }}>
+          <Box sx={{ maxWidth: 1200, mx: "auto" }}>
+            <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems={{ md: "flex-end" }} justifyContent="space-between" sx={{ mb: 2 }}>
+              <Typography>Filtros:</Typography>
+              <Stack direction="row" spacing={2}>
+                <TypeFilter value={type} onChange={(type) => {
+                  setPayload({ ...payload, type })
+                  setType(type)
+                  handleFetchStats({ ...payload, type })
+                }} />
+                {/** <DateRangePicker value={dateRange} onChange={setDateRange} />*/}
+                <GroupByFilter
+                  value={groupBy}
+                  onChange={(groupBy) => {
+                    setPayload({ ...payload, groupBy })
+                    setGroupBy(groupBy)
+                    handleFetchStats({ ...payload, groupBy })
+                  }} />
+                {type === 'event' && <EventFilter
+                  value={eventList}
+                  onChange={setEventList}
+                  onChangeData={(events) => {
+                    setPayload({ ...payload, events })
+                    setEventDataList(events)
+                    handleFetchStats({ ...payload, events })
+                  }} />}
+
+              </Stack>
+            </Stack>
+
+            <Box display={'flex'} flexWrap={'wrap'} flexDirection={{ xs: "column", md: "row" }} gap={4}>
+              <BorderBox sx={{ p: 1, width: '100%' }}>
+                <PassesIssuedChart graphData={graphData} pending={loading} evenDataList={evenDataList} />
+              </BorderBox>
+              {type === 'event' && <BorderBox sx={{ p: 1, width: '100%' }}><PassesIssuedRankingChart graphData={graphData} pending={loading} /></BorderBox>}
+            </Box>
 
 
-        <GenericTable
-          data={items}
-          rowAction={rowAction}
-          columns={columns}
-          title={''}
-          keyField="id"
-          loading={loading}
-          page={filterParams.currentPage}
-          rowsPerPage={filterParams.params.limit}
-          onRowsPerPageChange={onRowsPerPageChange}
-          onSorteable={onSort}
-          sort={{ orderBy: filterParams.params.orderBy, orderDirection: filterParams.params.orderDirection }}
-          onBack={onBack}
-          onNext={onNext}
-          topFilter={topFilter}
-          selectable
+          </Box>
+        </Box>
 
-        />
       </HeaderPage>
-      {open.type === CommonModalType.DELETE && <ConfirmModal
-        isLoading={deleting}
-        title={t('staff.deleteConfirmModalTitle')}
-        description={t('staff.deleteConfirmModalTitle2')}
-        onOKAction={(args: { data: any }) => onDelete(args.data)}
-      />}
     </Container>
   );
 }

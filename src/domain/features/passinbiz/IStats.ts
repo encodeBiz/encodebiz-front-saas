@@ -13,14 +13,14 @@ export interface IStatsResponse {
 
 export interface IStatsRequest {
 
-    entityId: string,
+    entityId?: string,
     stats: "PASSES_ISSUED",
     dateRange: {
         start: Date,
         end: Date
     },
     groupBy: GroupBy,
-    type: "event",
-    passStatus: 'not_generated' | 'pending' | 'active' | 'revoked' | 'failed' | 'archived';
-    events: Array<{ id: string, name: string }>
+    type: "event" | "credential",
+    passStatus?: 'not_generated' | 'pending' | 'active' | 'revoked' | 'failed' | 'archived';
+    events?: Array<{ id: string, name: string }>
 }

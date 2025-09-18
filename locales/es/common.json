@@ -21,6 +21,7 @@
     "side": {
       "menu": {
         "Dashboard": "Panel",
+        "Stats": "Estadísticas",
         "Staff": "Personal",
         "Services": "Servicios",
         "Events": "Eventos",
@@ -691,5 +692,16 @@
       "text14": "Ir a Configurar Entidad",
       "text15": "Configurar mas tarde"
     }
+  },
+  "stats": {
+    "groupBy": "Agrupar por",
+    "hour": "Hora",
+    "day": "Día",
+    "month": "Mes",
+    "type": "Tipo",
+    "event": "Eventos",
+    "passesIssued":"Passes Emitidos",
+    "passesIssuedRank":"Ranking de Passes Emitidos",
+    "passesIssuedText":"Barras apiladas por evento + línea acumulada. Rango UTC."
   }
 }
