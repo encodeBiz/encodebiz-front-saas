@@ -702,6 +702,8 @@
     "event": "Eventos",
     "passesIssued":"Passes Emitidos",
     "passesIssuedRank":"Ranking de Passes Emitidos",
-    "passesIssuedText":"Barras apiladas por evento + línea acumulada. Rango UTC."
+    "passesIssuedText":"Barras apiladas por evento + línea acumulada. Rango UTC.",
+    "cumulativo":"Acumulativo",
+    "dateRange":"Rango de Fechas"
   }
 }

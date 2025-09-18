@@ -90,7 +90,7 @@ export default function useStaffListController() {
     groupBy, setGroupBy,
     eventList, evenDataList, setEventDataList, setEventList,
     handleFetchStats, loading, graphData,
-    tab, setTab,
+    tab, setTab,dateRange, setDateRange
   }
 
 }

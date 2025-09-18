@@ -3,15 +3,14 @@ import { Box, Container, Stack, Typography } from '@mui/material';
 import { useTranslations } from "next-intl";
 import useHolderListController from './page.controller';
 
-import { useCommonModal } from '@/hooks/useCommonModal';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
-import { useLayout } from '@/hooks/useLayout';
 import { PassesIssuedRankingChart } from './components/charts/passesIssuedRanking';
 import { PassesIssuedChart } from './components/charts/passesIssued';
 import { EventFilter } from './components/filters/EventFilter';
 import { GroupByFilter } from './components/filters/GroupByFilter';
 import { TypeFilter } from './components/filters/TypeFilter';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
+import { DateRangePicker } from './components/filters/DateRangeFilter';
 
 export default function HolderList() {
   const t = useTranslations();
@@ -21,11 +20,10 @@ export default function HolderList() {
     groupBy, setGroupBy,
     eventList, evenDataList, setEventDataList, setEventList,
     handleFetchStats, loading, graphData,
-    tab, setTab,
+    dateRange, setDateRange
 
   } = useHolderListController();
-  const { open } = useCommonModal()
-  const { navivateTo } = useLayout()
+
   return (
     <Container maxWidth="lg">
       <HeaderPage
@@ -42,7 +40,7 @@ export default function HolderList() {
                   setType(type)
                   handleFetchStats({ ...payload, type })
                 }} />
-                {/** <DateRangePicker value={dateRange} onChange={setDateRange} />*/}
+                {/*<DateRangePicker value={dateRange} onChange={setDateRange} />*/}
                 <GroupByFilter
                   value={groupBy}
                   onChange={(groupBy) => {

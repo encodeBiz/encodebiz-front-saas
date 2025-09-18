@@ -55,57 +55,57 @@ export const DateRangePicker = ({
     };
     return <LocalizationProvider dateAdapter={AdapterDayjs}>
         <FormControl size="small" sx={{ minWidth: 140 }}>
-            <InputLabel id="gb-label">{t('stats.type')}</InputLabel>
+        <InputLabel id="gb-label">{t('stats.type')}</InputLabel>
 
-            <Paper
-                elevation={0}
-                sx={{
-                    p: 2,
-                    border: 1,
-                    borderColor: 'divider',
-                    borderRadius: 1,
+        <Paper
+            elevation={0}
+            sx={{
+                p: 2,
+                border: 1,
+                borderColor: 'divider',
+                borderRadius: 1,
 
-                }}
-            >
-                <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
-                    <Typography variant="h6" component="h3">
-                        Date Range
-                    </Typography>
-                    <IconButton
-                        onClick={clearDates}
-                        size="small"
+            }}
+        >
+            <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
+                <Typography variant="h6" component="h3">
+                    Date Range
+                </Typography>
+                <IconButton
+                    onClick={clearDates}
+                    size="small"
 
-                        title="Clear dates"
-                    >
-                        <Clear />
-                    </IconButton>
-                </Box>
+                    title="Clear dates"
+                >
+                    <Clear />
+                </IconButton>
+            </Box>
 
-                <Box display="flex" gap={2} flexDirection={{ xs: 'column', sm: 'row' }}>
-                    <DateTimePicker
-                        label={'Inicio'}
+            <Box display="flex" gap={2} flexDirection={{ xs: 'column', sm: 'row' }}>
+                <DateTimePicker
+                    label={'Inicio'}
+                 
 
-
-                        defaultValue={dayjs(startDate ?? new Date())}
-                        value={dayjs(startDate ?? new Date())}
-                        onChange={handleStartDateChange}
-                        maxDate={endDate || undefined}
-                        sx={{ flex: 1 }}
-                    />
-
-                    <DateTimePicker
-                        label={'Fin'}
                           defaultValue={dayjs(startDate ?? new Date())}
-                        value={dayjs(startDate ?? new Date())}
-                        //onChange={handleStartDateChange}
-                        minDateTime={dayjs(startDate)}
+                              value={dayjs(startDate ?? new Date())}
+                    onChange={handleStartDateChange}
+                    maxDate={endDate || undefined}
+                    sx={{ flex: 1 }}
+                />
 
-                        disabled={!startDate}
-                        sx={{ flex: 1 }}
-                    />
-                </Box>
-            </Paper>
+                <DateTimePicker
+                    label={'Fin'}
+                    defaultValue={dayjs(new Date(endDate))}
+                    value={dayjs(new Date(endDate))}
+                    onChange={handleEndDateChange}
+                    minDateTime={dayjs(startDate)}
 
-        </FormControl>
+                    disabled={!startDate}
+                    sx={{ flex: 1 }}
+                />
+            </Box>
+        </Paper>
+
+    </FormControl>
     </LocalizationProvider>
 }

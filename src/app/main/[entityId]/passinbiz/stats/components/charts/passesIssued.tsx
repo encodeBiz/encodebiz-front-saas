@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { formatCompact } from "@/lib/common/stats";
-import { Box, Stack, Typography, Chip } from "@mui/material";
+import { Box, Stack, Typography, Chip, CircularProgress } from "@mui/material";
 import React from "react";
 import {
     ResponsiveContainer,
@@ -24,7 +24,7 @@ export const PassesIssuedChart = ({ graphData, evenDataList, pending }: { graphD
 
     return (<>
         <Box>
-            <Typography variant="h5" fontWeight={600}>{t('stats.passesIssued')}</Typography>
+            <Typography variant="h5" fontWeight={600}>{t('stats.passesIssued')} {pending && <CircularProgress  />}</Typography>
             <Typography variant="body2" color="text.secondary">{t('stats.passesIssuedText')}</Typography>
         </Box>
         <Box sx={{ height: 420 }}>
@@ -49,9 +49,9 @@ export const PassesIssuedChart = ({ graphData, evenDataList, pending }: { graphD
             )}
         </Box>
         <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-            <Chip size="small" label={`Date Range (UTC): ${graphData?.dr?.start ?? '-'} → ${graphData?.dr?.end ?? '-'}`} />
+            <Chip size="small" label={`${t('stats.dateRange')} (UTC): ${graphData?.dr?.start ?? '-'} → ${graphData?.dr?.end ?? '-'}`} />
             <Chip size="small" label={`Total: ${formatCompact(graphData?.data?.total ?? 0)}`} />
-            <Chip size="small" label={showCumulative ? "Cumulative: ON" : "Cumulative: OFF"} onClick={() => setShowCumulative(v => !v)} />
+            <Chip size="small" label={showCumulative ? t('stats.cumulativo')+": ON" : t('stats.cumulativo')+": OFF"} onClick={() => setShowCumulative(v => !v)} />
         </Stack>
     </>
     );

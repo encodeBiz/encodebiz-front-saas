@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import React from "react";
 import {
     ResponsiveContainer,
@@ -20,7 +20,7 @@ export const PassesIssuedRankingChart = ({ graphData, pending }: { graphData: Ch
 
     return (<>
         <Box>
-            <Typography variant="h5" fontWeight={600}>{t('stats.passesIssuedRank')}</Typography>
+            <Typography variant="h5" fontWeight={600}>{t('stats.passesIssuedRank')} {pending && <CircularProgress    />}</Typography>
            
         </Box>
         <Box sx={{ height: 380 }}>
