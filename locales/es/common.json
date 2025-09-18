@@ -707,6 +707,7 @@
     "passesValidationRank": "Ranking de Passes Validados",
     "passesIssuedText": "Barras apiladas por evento + línea acumulada. Rango UTC.",
     "cumulativo": "Acumulativo",
-    "dateRange": "Rango de Fechas"
+    "dateRange": "Rango de Fechas",
+    "passes":"Pases"
   }
 }
