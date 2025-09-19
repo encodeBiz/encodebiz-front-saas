@@ -120,4 +120,4 @@ export const menuItemsGeneral = [
 ]
 
 
-export const PUBLIC_PATH = ['/tools/scanner','/tools/demo-chart','/tools/demo-chart-1','/tools/demo-chart-2']
+export const PUBLIC_PATH = ['/tools/scanner','/tools/demo-chart','/tools/demo-chart-2','/tools/demo-chart-3']

@@ -1,78 +1,96 @@
 'use client';
-import { SassButton } from '@/components/common/buttons/GenericButton';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
-import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import HelpTabs from '@/components/features/dashboard/HelpTabs/HelpTabs';
-import { Box, Container, Stack, Typography } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import { useTranslations } from "next-intl";
 import { PassesIssuedChart } from '../../charts/passesIssued/passesIssued';
 import { PassesIssuedRankingChart } from '../../charts/passesIssued/passesIssuedRanking';
-import { DateRangePicker } from '../../filters/DateRangeFilter';
-import { EventFilter } from '../../filters/EventFilter';
-import { GroupByFilter } from '../../filters/GroupByFilter';
-import { TypeFilter } from '../../filters/TypeFilter';
-import PassesStatsController from './passes.controller';
+import { PassIssuedFilter } from '../../filters/PassIssuedFilter';
+import { usePassinBizStats } from '../../../context/passBizStatsContext';
 import { PassesValidationChart } from '../../charts/passesValidation/passesValidation';
+import { PassValidatorFilter } from '../../filters/PassValidatorFilter';
+import { PassesValidationRankingChart } from '../../charts/passesValidation/passesValidationRanking';
 
 
 export default function PassesStats() {
   const t = useTranslations();
-  const {
-    setPayload, payload,
-    setFilter, filter,
-  } = PassesStatsController();
-
+  const { payloadPassIssued } = usePassinBizStats()
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" >
 
+
+      <BorderBox sx={{ width: "100%", height: 200, p: 2, mt: 2, mb: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
+        Grafica de tendencia aqui
+      </BorderBox>
+
+      <HelpTabs tabs={[
+        {
+          id: '1',
+          title: 'Pases emitidos',
+          tabContent: <Box sx={{ width: "100%", p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+
+            <PassIssuedFilter />
+
+            <BorderBox sx={{ width: "100%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
+              <PassesIssuedChart />
+            </BorderBox>
+
+
+            {payloadPassIssued.type === 'event' && <BorderBox sx={{ width: "100%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
+              <PassesIssuedRankingChart />
+            </BorderBox>}
+
+
+          </Box>
+        },
+
+        {
+          id: '2',
+          title: 'Pases validados',
+          tabContent: <Box sx={{ width: "100%", p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <PassValidatorFilter />
+            <BorderBox sx={{ width: "100%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
+              <PassesValidationChart />
+            </BorderBox>
+            {payloadPassIssued.type === 'event' && <BorderBox sx={{ width: "100%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
+              <PassesValidationRankingChart />
+            </BorderBox>}
+
+
+          </Box>
+        },
+
+
+      ]} />
+
+      {/** 
       <Box sx={{ p: 3, bgcolor: "#f8fafc", minHeight: "100vh" }}>
         <Box sx={{ maxWidth: 1200, mx: "auto" }}>
-          <BorderBox sx={{ width: "100%", p: 1, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
-            <Stack direction={{ xs: "column", md: "row" }} gap={2} spacing={2} alignItems={{ md: "flex-end" }} justifyContent="flex-end" >
 
-              <Stack flexWrap={'wrap'} direction={{ xs: "column", md: "row" }} spacing={2} >
-                <TypeFilter value={payload.type} onChange={(type) => {
-                  setPayload({ ...payload, type, events: type === 'credential' ? [] : payload.events })
-
-                }} />
-                <DateRangePicker value={payload.dateRange} onChange={(dateRange) => setPayload({ ...payload, dateRange })} />
-                <GroupByFilter
-                  value={payload.groupBy}
-                  onChange={(groupBy) => {
-                    setPayload({ ...payload, groupBy })
-                  }} />
-                {payload.type === 'event' && <EventFilter
-                  value={payload.events?.map(e => e.id) ?? []}
-                  onChangeData={(events) => {
-                    setPayload({ ...payload, events })
-                  }} />}
-
-                <SassButton variant='contained' color='primary' size='small' onClick={() => setFilter({ ...payload })}>{t('core.button.applyFilter')}</SassButton>
-              </Stack>
-            </Stack>
-          </BorderBox>
           <Box mt={2} display={'flex'} flexWrap={'wrap'} flexDirection={{ xs: "column", md: "row" }} gap={4}>
             <BorderBox sx={{ width: "45%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
               <PassesIssuedChart payload={filter} type='PASSES_ISSUED' />
             </BorderBox>
 
-             {payload.type === 'event' && <BorderBox sx={{ width: "45%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
-               <PassesIssuedRankingChart payload={filter} type='PASSES_ISSUED' />
+            {payload.type === 'event' && <BorderBox sx={{ width: "45%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
+              <PassesIssuedRankingChart payload={filter} type='PASSES_ISSUED' />
             </BorderBox>}
 
             <BorderBox sx={{ width: "45%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
               <PassesValidationChart payload={filter} type='PASSES_VALIDATION' />
             </BorderBox>
 
-           
+
 
             {payload.type === 'event' && <BorderBox sx={{ width: "45%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
               <PassesIssuedRankingChart payload={filter} type='PASSES_VALIDATION' />
-            </BorderBox>}           
+            </BorderBox>}
 
           </Box>
         </Box>
       </Box>
+      */}
+
 
     </Container>
   );

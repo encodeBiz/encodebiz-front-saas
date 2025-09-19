@@ -86,11 +86,14 @@ const DEFAULT_ENDPOINT =
   "https://us-central1-encodebiz-services.cloudfunctions.net/apiV100-firebaseEntryHttp-passinbiz-statsGetdata";
 
 const DEFAULT_TREND_PAYLOAD = {
-  entityId: "z1YRV6s6ueqnJpIvInFL",
-  stats: "CRED_VS_PASS_TREND",   // tu función que devuelve 'month'
-  groupBy: "month",
-  type: "entity",
-  dateRange: { start: "2025-01-01T00:00:00.000Z", end: "2025-12-31T23:59:59.000Z" }
+  "entityId": "k24rpxzY7aUTAmSXjNyT",
+  "stats": "PASSES_ISSUED_GENERAL",
+  "groupBy": "month",
+  "type": "entity",
+  "dateRange": {
+    "start": "2025-01-01T00:00:00.000Z",
+    "end": "2025-12-31T23:59:59.000Z"
+  }
 };
 
 export default function Page() {
@@ -115,6 +118,8 @@ export default function Page() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(parsedTrend ?? DEFAULT_TREND_PAYLOAD),
       });
+      console.log(res);
+      
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       setRaw(json);

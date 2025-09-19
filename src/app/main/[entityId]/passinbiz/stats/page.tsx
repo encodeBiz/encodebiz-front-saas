@@ -4,19 +4,22 @@ import { useTranslations } from "next-intl";
 
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import PassesStats from './components/stats/passes/passes';
+import { PassinBizStatsProvider } from './context/passBizStatsContext';
 
 export default function HolderList() {
   const t = useTranslations();
- 
+
 
   return (
-    <Container maxWidth="lg">
-      <HeaderPage
-        title={t("layout.side.menu.Stats")}
-      >
-        <PassesStats />
+    <PassinBizStatsProvider>
+      <Container maxWidth="lg">
+        <HeaderPage
+          title={t("layout.side.menu.Stats")}
+        >
+          <PassesStats />
 
-      </HeaderPage>
-    </Container>
+        </HeaderPage>
+      </Container>
+    </PassinBizStatsProvider>
   );
 }

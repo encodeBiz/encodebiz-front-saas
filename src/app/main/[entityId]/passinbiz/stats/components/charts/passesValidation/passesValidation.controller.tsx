@@ -1,11 +1,11 @@
-import { IStatsRequest } from "@/domain/features/passinbiz/IStats";
 import { useAuth } from "@/hooks/useAuth";
 
 import { useToast } from "@/hooks/useToast";
 
 import { fetchStats } from "@/services/passinbiz/holder.service";
 import { useState } from "react";
-import { IStatsResponse } from "../passesIssued/passesIssued.controller";
+import { IPassValidatorStatsRequest, IPassValidatorStatsResponse } from "../../../model/PassValidator";
+import { usePassinBizStats } from "../../../context/passBizStatsContext";
 
 
 
@@ -61,7 +61,7 @@ function initialsFromName(name: string) {
 }
 
 // Colores fijos por MÉTRICA (consistentes entre eventos)
-const METRIC_COLORS: Record<keyof ValidationTotals, string> = {
+export const METRIC_COLORS: Record<keyof ValidationTotals, string> = {
   valid: "#16a34a", // verde
   failed: "#dc2626", // rojo
   revoked: "#f59e0b", // ámbar
@@ -184,7 +184,7 @@ export interface ChartData {
 
 export default function usePassesValidationController() {
 
-
+  const { setSeriesChart2 } = usePassinBizStats()
   const [loading, setLoading] = useState(false);
 
 
@@ -194,19 +194,22 @@ export default function usePassesValidationController() {
   const [graphData, setGraphData] = useState<ChartData>()
   const { token } = useAuth()
   const { showToast } = useToast()
-  async function handleFetchStats(payload: IStatsRequest) {
+  async function handleFetchStats(payload: IPassValidatorStatsRequest) {
     setLoading(true);
 
-    fetchStats({ ...payload } as IStatsRequest, token).then(res => {
+    fetchStats({ ...payload } as IPassValidatorStatsRequest, token).then(res => {
       const normalized = normalizeApiResponse(res);
 
-      const buckets = getBuckets(normalized as IStatsResponse, payload.groupBy)
+      const buckets = getBuckets(normalized as IPassValidatorStatsResponse, payload.groupBy)
       const { rows, series } = buildChartData(buckets, payload.groupBy)
       const ranking = computeTotalsByEvent(buckets)
-      const dr = normalized?.dateRange ?? (normalized as IStatsResponse)?.dateRange;
+      const dr = normalized?.dateRange ?? (normalized as IPassValidatorStatsResponse)?.dateRange;
       const empty = rows.length === 0 || series.length === 0;
       const kpis = computeKPIs(buckets, payload.groupBy)
 
+      console.log(series);
+      
+      setSeriesChart2(series.map((s) => ({ id: s.field, name: s.name })))
       setGraphData({
         buckets, rows, series, ranking, dr, empty, kpis, data: normalized
       })

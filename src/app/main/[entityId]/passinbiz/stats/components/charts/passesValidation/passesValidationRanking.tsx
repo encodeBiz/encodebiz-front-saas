@@ -14,39 +14,43 @@ import {
 import { useTranslations } from "next-intl";
 import EmptyState from "@/components/common/EmptyState/EmptyState";
 import { useEntity } from "@/hooks/useEntity";
-import usePassesIssuedController from "./passesIssued.controller";
 import { usePassinBizStats } from "../../../context/passBizStatsContext";
-export const PassesIssuedRankingChart = () => {
+import usePassesValidationController, { METRIC_COLORS } from "./passesValidation.controller";
+export const PassesValidationRankingChart = () => {
     const t = useTranslations()
     const { currentEntity } = useEntity()
-    const {payloadPassIssued } = usePassinBizStats()
-    const { handleFetchStats, graphData } = usePassesIssuedController()
+    const { payloadPassValidator } = usePassinBizStats()
+    const { handleFetchStats, graphData } = usePassesValidationController()
     useEffect(() => {
         if (currentEntity?.entity.id)
-            handleFetchStats({ ...payloadPassIssued, stats: 'PASSES_ISSUED' })
+            handleFetchStats({ ...payloadPassValidator })
     }, [currentEntity?.entity.id])
 
     return (<>
 
-        <Box  sx={{ height: 420 }}>
-            <Typography variant="body1">{t('stats.passesIssuedRank')}</Typography>
+        <Box sx={{ height: 420 }}>
+            <Typography variant="body1">{t('stats.passesValidationRank')}</Typography>
             <ResponsiveContainer width="100%" height="100%">
                 {graphData?.ranking?.length === 0 ? (
                     <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
                         <EmptyState />
                     </Stack>
                 ) : (
-                    <ComposedChart data={graphData?.ranking.map((r: any) => ({ evento: r.event, total: r.total }))} margin={{ top: 8, right: 16, left: 8, bottom: 24 }}>
+                    <ComposedChart data={graphData?.ranking.map((r: any) => ({ evento: r.event, Valid: r.valid, Failed: r.failed, Revoked: r.revoked }))} margin={{ top: 8, right: 16, left: 8, bottom: 24 }}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="evento" angle={-10} height={60} />
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Bar barSize={25} dataKey="total" name="Total por evento" radius={[6, 6, 0, 0]} />
+                        <Bar barSize={25} dataKey="Valid" name="Valid" fill={METRIC_COLORS.valid} radius={[6, 6, 0, 0]} />
+                        <Bar barSize={25} dataKey="Failed" name="Failed11" fill={METRIC_COLORS.failed} radius={[6, 6, 0, 0]} />
+                        <Bar barSize={25}  dataKey="Revoked" name="Revoked" fill={METRIC_COLORS.revoked} radius={[6, 6, 0, 0]} />
                     </ComposedChart>)}
             </ResponsiveContainer>
         </Box>
     </>
     );
+
+
 
 }

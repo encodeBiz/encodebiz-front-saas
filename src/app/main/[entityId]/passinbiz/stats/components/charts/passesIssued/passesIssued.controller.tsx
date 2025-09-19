@@ -1,31 +1,24 @@
-import { IStatsRequest, GroupBy, BucketItem } from "@/domain/features/passinbiz/IStats";
-import { useAuth } from "@/hooks/useAuth";
+ import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/useToast";
 
 import { fetchStats } from "@/services/passinbiz/holder.service";
 import  { useState } from "react";
+import { BucketItem, GroupBy, IPassIssuedStatsRequest, IPassIssuedStatsResponse } from "../../../model/PassIssued";
 
 
-export interface IStatsResponse {
-    total: number;
-    hour?: Record<string, BucketItem[]>;
-    day?: Record<string, BucketItem[]>;
-    month?: Record<string, BucketItem[]>;
-    dateRange?: { start: string; end: string };
-    meta?: any;
-}
 
-function normalizeApiResponse(json: any): IStatsResponse {
+
+function normalizeApiResponse(json: any): IPassIssuedStatsResponse {
     const root = json?.result ?? json?.output ?? json?.data ?? json ?? {};
     const hour = root.hour ?? root.hours ?? root.hourly;
     const day = root.day ?? root.days ?? root.daily;
     const month = root.month ?? root.months ?? root.monthly;
     const total = root.total ?? root.kpis?.total ?? root.kpis?.totalIssued ?? 0;
     const dateRange = root.dateRange ?? root.meta?.dateRangeApplied ?? undefined;
-    return { total, hour, day, month, dateRange, meta: root.meta } as IStatsResponse;
+    return { total, hour, day, month, dateRange, meta: root.meta } as IPassIssuedStatsResponse;
 }
 
-function getBuckets(resp: IStatsResponse, gb: GroupBy) {
+function getBuckets(resp: IPassIssuedStatsResponse, gb: GroupBy) {
     return (resp?.[gb] ?? {}) as Record<string, BucketItem[]>;
 }
 
@@ -110,30 +103,25 @@ export interface ChartData {
     ranking: any,
     dr: { start: string, end: string } | undefined,
     empty: boolean
-    data: IStatsResponse
+    data: IPassIssuedStatsResponse
 }
 
 export default function usePassesIssuedController() {
 
-
     const [loading, setLoading] = useState(false);
-
-
-
-
     //Graph Data
     const [graphData, setGraphData] = useState<ChartData>()
     const { token } = useAuth()
     const { showToast } = useToast()
-    async function handleFetchStats(payload: IStatsRequest) {
+    async function handleFetchStats(payload: IPassIssuedStatsRequest) {
         setLoading(true);
 
-        fetchStats({ ...payload } as IStatsRequest, token).then(res => {
+        fetchStats({ ...payload } as IPassIssuedStatsRequest, token).then(res => {
             const normalized = normalizeApiResponse(res);
-            const buckets = getBuckets(normalized as IStatsResponse, payload.groupBy)
+            const buckets = getBuckets(normalized as IPassIssuedStatsResponse, payload.groupBy)
             const { rows, series } = buildChartData(buckets, payload.groupBy)
             const ranking = computeTotalsByEvent(buckets)
-            const dr = normalized?.dateRange ?? (normalized as IStatsResponse)?.dateRange;
+            const dr = normalized?.dateRange ?? (normalized as IPassIssuedStatsResponse)?.dateRange;
             const empty = rows.length === 0 || series.length === 0;
             setGraphData({
                 buckets, rows, series, ranking, dr, empty, data: normalized

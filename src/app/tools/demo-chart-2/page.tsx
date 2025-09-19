@@ -267,6 +267,8 @@ export default function Page() {
   const [visibleSeries, setVisibleSeries] = React.useState<string[]>(SERIES_OPTIONS.map(s => s.id));
   React.useEffect(() => { setVisibleSeries(SERIES_OPTIONS.map(s => s.id)); }, [series.length]);
 
+  console.log(SERIES_OPTIONS);
+  
   return (
     <Box sx={{ p: 3, bgcolor: "#f8fafc", minHeight: "100vh" }}>
       <Box sx={{ maxWidth: 1200, mx: "auto" }}>
