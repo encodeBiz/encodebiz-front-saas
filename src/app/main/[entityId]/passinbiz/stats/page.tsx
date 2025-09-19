@@ -3,7 +3,6 @@ import { Container } from '@mui/material';
 import { useTranslations } from "next-intl";
 
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
-import HelpTabs from '@/components/features/dashboard/HelpTabs/HelpTabs';
 import PassesStats from './components/stats/passes/passes';
 
 export default function HolderList() {
@@ -15,12 +14,7 @@ export default function HolderList() {
       <HeaderPage
         title={t("layout.side.menu.Stats")}
       >
-        <HelpTabs tabs={[
-          {
-            id: '1',
-            title: t('stats.passes'),
-            tabContent: <PassesStats />
-          }]} />
+        <PassesStats />
 
       </HeaderPage>
     </Container>

@@ -31,9 +31,8 @@ export const PassesIssuedChart = ({ payload, type = "PASSES_ISSUED" }: { payload
     }, [currentEntity?.entity.id, payload])
 
     return (<>
-
-       
         <Box sx={{ height: 420 }}>
+            <Typography variant="body1">{t('stats.passesIssued')}</Typography>
             {loading && <CircularProgress />}
             {graphData?.empty ? (
                 <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
@@ -47,8 +46,8 @@ export const PassesIssuedChart = ({ payload, type = "PASSES_ISSUED" }: { payload
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        {payload.events?.map((s) => (
-                            <Bar key={s.id} dataKey={s.id} name={s.name} stackId="events" />
+                        {graphData?.series?.map((s: any) => (
+                            <Bar key={s.stackId} dataKey={s.stackId} name={s.name} stackId="events" />
                         ))}
                         {showCumulative && <Line type="monotone" dataKey="cumulative" dot={false} />}
                     </ComposedChart>
@@ -56,7 +55,7 @@ export const PassesIssuedChart = ({ payload, type = "PASSES_ISSUED" }: { payload
             )}
         </Box>
         <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-            <Chip size="small" label={`${t('stats.dateRange')} (UTC): ${graphData?.dr?.start ?? '-'} → ${graphData?.dr?.end ?? '-'}`} />
+            {/**<Chip size="small" label={`${t('stats.dateRange')} (UTC): ${graphData?.dr?.start ?? '-'} → ${graphData?.dr?.end ?? '-'}`} /> */}
             <Chip size="small" label={`Total: ${formatCompact(graphData?.data?.total ?? 0)}`} />
             <Chip size="small" label={showCumulative ? t('stats.cumulativo') + ": ON" : t('stats.cumulativo') + ": OFF"} onClick={() => setShowCumulative(v => !v)} />
         </Stack>

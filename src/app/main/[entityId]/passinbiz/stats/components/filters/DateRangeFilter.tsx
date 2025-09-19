@@ -41,7 +41,7 @@ export const DateRangePicker = ({
     
     return <LocalizationProvider dateAdapter={AdapterDayjs}>
 
-        <FormControl sx={{ minWidth: 140 ,mb:1}}>
+        <FormControl sx={{width: 450,mb:1}}>
 
             <Box display="flex" gap={2} flexDirection={{ xs: 'column', sm: 'row' }}>
                 <DateTimePicker
