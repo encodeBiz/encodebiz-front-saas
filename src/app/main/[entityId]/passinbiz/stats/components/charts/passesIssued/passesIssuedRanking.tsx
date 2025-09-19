@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Box, CircularProgress, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import {
     ResponsiveContainer,
@@ -15,19 +15,20 @@ import { useTranslations } from "next-intl";
 import EmptyState from "@/components/common/EmptyState/EmptyState";
 import { IStatsRequest } from "@/domain/features/passinbiz/IStats";
 import { useEntity } from "@/hooks/useEntity";
-import usePassesIssuedRankingController from "./passesIssuedRanking.controller";
+import usePassesIssuedController from "./passesIssued.controller";
 export const PassesIssuedRankingChart = ({ payload, type = "PASSES_ISSUED" }: { payload: IStatsRequest, type?: "PASSES_ISSUED" | "PASSES_VALIDATION" }) => {
     const t = useTranslations()
     const { currentEntity } = useEntity()
-    const { handleFetchStats, loading, graphData } = usePassesIssuedRankingController()
+    const { handleFetchStats, graphData } = usePassesIssuedController()
     useEffect(() => {
         if (currentEntity?.entity.id)
-            handleFetchStats({ ...payload, stats: type, entityId: currentEntity?.entity.id })
+            handleFetchStats({ ...payload, stats: type })
     }, [currentEntity?.entity.id])
 
     return (<>
-        
-        <Box sx={{ height: 380 }}>
+
+        <Box  sx={{ height: 420 }}>
+            <Typography variant="body1">{t('stats.passesIssuedRank')}</Typography>
             <ResponsiveContainer width="100%" height="100%">
                 {graphData?.ranking?.length === 0 ? (
                     <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>

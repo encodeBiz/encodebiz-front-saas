@@ -1,10 +1,11 @@
-import { IStatsRequest, IStatsResponse  } from "@/domain/features/passinbiz/IStats";
+import { IStatsRequest } from "@/domain/features/passinbiz/IStats";
 import { useAuth } from "@/hooks/useAuth";
-import { useEntity } from "@/hooks/useEntity";
+
 import { useToast } from "@/hooks/useToast";
- 
+
 import { fetchStats } from "@/services/passinbiz/holder.service";
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
+import { IStatsResponse } from "../passesIssued/passesIssued.controller";
 
 
 
@@ -52,17 +53,17 @@ function safeKey(s: string) {
 }
 function initialsFromName(name: string) {
   const clean = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^A-Za-z0-9 ]/g, " ").trim();
-  const stop = new Set(["de","del","la","las","el","los","y","en","para","por","con","a","al","the","of","and"]);
+  const stop = new Set(["de", "del", "la", "las", "el", "los", "y", "en", "para", "por", "con", "a", "al", "the", "of", "and"]);
   const words = clean.split(/\s+/).filter(w => !stop.has(w.toLowerCase()));
   if (!words.length) return "NA";
-  if (words.length === 1) return words[0].slice(0,2).toUpperCase();
-  return words.map(w => w[0].toUpperCase()).join("").slice(0,6);
+  if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+  return words.map(w => w[0].toUpperCase()).join("").slice(0, 6);
 }
 
 // Colores fijos por MÉTRICA (consistentes entre eventos)
 const METRIC_COLORS: Record<keyof ValidationTotals, string> = {
-  valid:   "#16a34a", // verde
-  failed:  "#dc2626", // rojo
+  valid: "#16a34a", // verde
+  failed: "#dc2626", // rojo
   revoked: "#f59e0b", // ámbar
 };
 const METRIC_ABBR: Record<keyof ValidationTotals, string> = { valid: "V", failed: "F", revoked: "R" };
@@ -82,7 +83,7 @@ function buildChartData(buckets: Record<string, BucketItem[]>, gb: GroupBy) {
   const series = events.flatMap((ev) => {
     const evField = safeKey(ev);
     const short = initialsFromName(ev);
-    return (["valid","failed","revoked"] as (keyof ValidationTotals)[]).map((m) => ({
+    return (["valid", "failed", "revoked"] as (keyof ValidationTotals)[]).map((m) => ({
       name: `${short}-${METRIC_ABBR[m]}`,
       fullName: `${ev} (${m})`,
       field: `${evField}__${m}`,
@@ -107,13 +108,13 @@ function buildChartData(buckets: Record<string, BucketItem[]>, gb: GroupBy) {
         : { valid: totals.valid || 0, failed: totals.failed || 0, revoked: totals.revoked || 0 };
 
       const evField = safeKey(ev);
-      row[`${evField}__valid`]   = vt.valid;
-      row[`${evField}__failed`]  = vt.failed;
+      row[`${evField}__valid`] = vt.valid;
+      row[`${evField}__failed`] = vt.failed;
       row[`${evField}__revoked`] = vt.revoked;
 
-      validSum    += vt.valid;
+      validSum += vt.valid;
       attemptsSum += vt.valid + vt.failed + vt.revoked;
-      totalAll    += vt.valid + vt.failed + vt.revoked;
+      totalAll += vt.valid + vt.failed + vt.revoked;
     }
 
     cumulative += totalAll;
@@ -170,60 +171,60 @@ function computeKPIs(buckets: Record<string, BucketItem[]>, gb: GroupBy) {
 
 
 export interface ChartData {
-    buckets: Record<string, BucketItem[]>,
-    rows: any,
-    series: any,
-    ranking: any,
-    dr: { start: string, end: string } | undefined,
-    empty: boolean
-    data: StatsResponse
-    kpis:any
+  buckets: Record<string, BucketItem[]>,
+  rows: any,
+  series: any,
+  ranking: any,
+  dr: { start: string, end: string } | undefined,
+  empty: boolean
+  data: StatsResponse
+  kpis: any
 }
- 
+
 
 export default function usePassesValidationController() {
 
 
-    const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 
 
 
-    //Graph Data
-    const [graphData, setGraphData] = useState<ChartData>()
-    const { token } = useAuth()
-    const { showToast } = useToast()
-    async function handleFetchStats(payload: IStatsRequest) {
-        setLoading(true);
-       
-        fetchStats({ ...payload } as IStatsRequest, token).then(res => {
-            const normalized = normalizeApiResponse(res);
+  //Graph Data
+  const [graphData, setGraphData] = useState<ChartData>()
+  const { token } = useAuth()
+  const { showToast } = useToast()
+  async function handleFetchStats(payload: IStatsRequest) {
+    setLoading(true);
 
-            const buckets = getBuckets(normalized as IStatsResponse, payload.groupBy)
-            const { rows, series } = buildChartData(buckets, payload.groupBy)
-            const ranking = computeTotalsByEvent(buckets)
-            const dr = normalized?.dateRange ?? (normalized as IStatsResponse)?.dateRange;
-            const empty = rows.length === 0 || series.length === 0;
-            const kpis =  computeKPIs(buckets, payload.groupBy)
+    fetchStats({ ...payload } as IStatsRequest, token).then(res => {
+      const normalized = normalizeApiResponse(res);
 
-            setGraphData({
-                buckets, rows, series, ranking, dr, empty,kpis, data: normalized
-            })
+      const buckets = getBuckets(normalized as IStatsResponse, payload.groupBy)
+      const { rows, series } = buildChartData(buckets, payload.groupBy)
+      const ranking = computeTotalsByEvent(buckets)
+      const dr = normalized?.dateRange ?? (normalized as IStatsResponse)?.dateRange;
+      const empty = rows.length === 0 || series.length === 0;
+      const kpis = computeKPIs(buckets, payload.groupBy)
 
- 
-        }).catch(e => {
-            showToast(e?.message, 'error')
-        }).finally(() => {
-            setLoading(false)
-        })
-    }
+      setGraphData({
+        buckets, rows, series, ranking, dr, empty, kpis, data: normalized
+      })
 
 
-   
+    }).catch(e => {
+      showToast(e?.message, 'error')
+    }).finally(() => {
+      setLoading(false)
+    })
+  }
 
 
-    return {
-        handleFetchStats, loading, graphData
-    }
+
+
+
+  return {
+    handleFetchStats, loading, graphData
+  }
 
 }

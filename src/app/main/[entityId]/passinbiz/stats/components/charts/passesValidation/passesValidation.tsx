@@ -30,7 +30,7 @@ export const PassesValidationChart = ({ payload, type = "PASSES_ISSUED" }: { pay
     const { handleFetchStats, loading, graphData } = usePassesValidationController()
     useEffect(() => {
         if (currentEntity?.entity.id)
-            handleFetchStats({ ...payload, stats: type, entityId: currentEntity?.entity.id })
+            handleFetchStats({ ...payload, stats: type })
     }, [currentEntity?.entity.id, payload])
 
     return (<>

@@ -6,7 +6,7 @@ import HelpTabs from '@/components/features/dashboard/HelpTabs/HelpTabs';
 import { Box, Container, Stack, Typography } from '@mui/material';
 import { useTranslations } from "next-intl";
 import { PassesIssuedChart } from '../../charts/passesIssued/passesIssued';
-import { PassesIssuedRankingChart } from '../../charts/passesIssuedRanking/passesIssuedRanking';
+import { PassesIssuedRankingChart } from '../../charts/passesIssued/passesIssuedRanking';
 import { DateRangePicker } from '../../filters/DateRangeFilter';
 import { EventFilter } from '../../filters/EventFilter';
 import { GroupByFilter } from '../../filters/GroupByFilter';

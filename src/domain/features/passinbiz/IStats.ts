@@ -2,14 +2,6 @@ export type GroupBy = "hour" | "day" | "month";
 
 export type BucketItem = { total: number; event: string; eventId?: string };
 
-export interface IStatsResponse {
-    total: number;
-    hour?: Record<string, BucketItem[]>;
-    day?: Record<string, BucketItem[]>;
-    month?: Record<string, BucketItem[]>;
-    dateRange?: { start: string; end: string };
-    meta?: any;
-}
 
 export interface IStatsRequest {
 
