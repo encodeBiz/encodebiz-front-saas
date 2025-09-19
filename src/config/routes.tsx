@@ -124,4 +124,5 @@ export const PUBLIC_PATH=[
     '/tools/scanner',
     '/tools/demo-chart',
     '/tools/demo-chart-2',
+    '/tools/demo-chart-3',
 ]
