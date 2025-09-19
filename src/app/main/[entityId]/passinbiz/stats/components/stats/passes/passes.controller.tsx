@@ -22,36 +22,58 @@ export default function PassesStatsController() {
 
 
   const [payload, setPayload] = useState<IStatsRequest>({
-    stats: "PASSES_ISSUED",
-    type: 'credential',
-    dateRange: {
-      start: rmDays(new Date(), 5),
-      end: new Date()
+    "entityId": "z1YRV6s6ueqnJpIvInFL",
+    "stats": "PASSES_ISSUED",
+    "dateRange": {
+      "start": "2025-09-12T09:00:00.000Z",
+      "end": "2025-09-12T22:00:00.000Z"
     },
-    groupBy: 'day',
-    events:[]
+    "groupBy": "hour",
+    "type": "event",
+    "passStatus": "active",
+    "events": [
+      {
+        "id": "DAhykI0IAJAWA9Ip9TGW",
+        "name": "Masterclass GROUND"
+      },
+      {
+        "id": "ItjpMhJf4dJAkbZR5zkf",
+        "name": "Presentación de PassBiz"
+      }
+    ]
   });
 
   const [filter, setFilter] = useState<IStatsRequest>({
-    stats: "PASSES_ISSUED",
-    type: 'credential',
-    dateRange: {
-       start: rmDays(new Date(), 5),
-      end: new Date()
+    "entityId": "z1YRV6s6ueqnJpIvInFL",
+    "stats": "PASSES_ISSUED",
+    "dateRange": {
+      "start": "2025-09-12T09:00:00.000Z",
+      "end": "2025-09-12T22:00:00.000Z"
     },
-    groupBy: 'day',
-    events:[]
+    "groupBy": "hour",
+    "type": "event",
+    "passStatus": "active",
+    "events": [
+      {
+        "id": "DAhykI0IAJAWA9Ip9TGW",
+        "name": "Masterclass GROUND"
+      },
+      {
+        "id": "ItjpMhJf4dJAkbZR5zkf",
+        "name": "Presentación de PassBiz"
+      }
+    ]
   });
 
   //Filter
 
-  
+
 
 
 
   return {
-    setPayload, payload,filter, setFilter
- 
+    setPayload, payload, filter, setFilter
+
 
   }
 

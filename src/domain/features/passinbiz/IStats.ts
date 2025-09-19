@@ -16,8 +16,8 @@ export interface IStatsRequest {
     entityId?: string,
     stats: "PASSES_ISSUED" | "PASSES_VALIDATION",
     dateRange: {
-        start: Date,
-        end: Date
+        start: any,
+        end: any
     },
     groupBy: GroupBy,
     type: "event" | "credential",
