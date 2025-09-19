@@ -31,9 +31,9 @@ export const PassesValidationChart = () => {
     const { currentEntity } = useEntity()
     const { payloadPassValidator } = usePassinBizStats()
     const { handleFetchStats, loading, graphData } = usePassesValidationController()
- 
+
     console.log(payloadPassValidator);
-    
+
 
     useEffect(() => {
         if (currentEntity?.entity.id)
@@ -41,10 +41,15 @@ export const PassesValidationChart = () => {
     }, [currentEntity?.entity.id, payloadPassValidator])
 
     return (<>
-        <Typography>Validación: Intentos vs Éxitos vs Revocados</Typography>
+        <Box display={'flex'} flexDirection={'row'} gap={2} mb={2}>
+            <Box display={'flex'} flexDirection={'column'} >
+                <Typography>Validación: Intentos vs Éxitos vs Revocados</Typography>
+            </Box>
+            {loading && <CircularProgress size={24} />}
+        </Box>
         <Box display={'flex'} flexDirection={'row'} gap={2}>
             <Box width={'80%'} sx={{ height: 400 }}>
-                {loading && <CircularProgress />}
+
                 {graphData?.empty ? (
                     <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
                         <EmptyState />

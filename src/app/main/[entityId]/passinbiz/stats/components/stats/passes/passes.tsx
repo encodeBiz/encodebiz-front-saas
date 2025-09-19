@@ -10,6 +10,7 @@ import { usePassinBizStats } from '../../../context/passBizStatsContext';
 import { PassesValidationChart } from '../../charts/passesValidation/passesValidation';
 import { PassValidatorFilter } from '../../filters/PassValidatorFilter';
 import { PassesValidationRankingChart } from '../../charts/passesValidation/passesValidationRanking';
+import { PassesTrendChart } from '../../charts/passesTrend/passesTrend';
 
 
 export default function PassesStats() {
@@ -19,8 +20,8 @@ export default function PassesStats() {
     <Container maxWidth="lg" >
 
 
-      <BorderBox sx={{ width: "100%", height: 200, p: 2, mt: 2, mb: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
-        Grafica de tendencia aqui
+      <BorderBox sx={{ width: "100%", p: 2, mt: 2, mb: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
+        <PassesTrendChart/>
       </BorderBox>
 
       <HelpTabs tabs={[

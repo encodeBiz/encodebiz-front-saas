@@ -702,12 +702,15 @@
     "type": "Tipo",
     "event": "Eventos",
     "passesIssued": "Passes Emitidos",
+    "passesIssuedText":"Barras apiladas por evento y línea de acumulado. Rango UTC.",
     "passesIssuedRank": "Ranking de Passes Emitidos",
     "passesValidation": "Passes Validados",
     "passesValidationRank": "Ranking de Passes Validados",
-    "passesIssuedText": "Barras apiladas por evento + línea acumulada. Rango UTC.",
-    "cumulativo": "Acumulativo",
+     "cumulativo": "Acumulativo",
     "dateRange": "Rango de Fechas",
-    "passes":"Pases"
+    "passes":"Pases",
+
+    "passesTrend":"Tendencia mensual · Credenciales vs Pases",
+    "passesTrendText":"Dos líneas para proyectar inversión (credenciales) frente a emisión/uso (pases)."
   }
 }

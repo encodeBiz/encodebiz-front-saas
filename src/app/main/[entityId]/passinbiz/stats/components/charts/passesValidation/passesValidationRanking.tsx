@@ -42,9 +42,9 @@ export const PassesValidationRankingChart = () => {
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Bar barSize={25} dataKey="Valid" name="Valid" fill={METRIC_COLORS.valid} radius={[6, 6, 0, 0]} />
-                        <Bar barSize={25} dataKey="Failed" name="Failed11" fill={METRIC_COLORS.failed} radius={[6, 6, 0, 0]} />
-                        <Bar barSize={25}  dataKey="Revoked" name="Revoked" fill={METRIC_COLORS.revoked} radius={[6, 6, 0, 0]} />
+                        <Bar maxBarSize={25} dataKey="Valid" name="Valid" fill={METRIC_COLORS.valid} radius={[6, 6, 0, 0]} />
+                        <Bar maxBarSize={25} dataKey="Failed" name="Failed11" fill={METRIC_COLORS.failed} radius={[6, 6, 0, 0]} />
+                        <Bar maxBarSize={25}  dataKey="Revoked" name="Revoked" fill={METRIC_COLORS.revoked} radius={[6, 6, 0, 0]} />
                     </ComposedChart>)}
             </ResponsiveContainer>
         </Box>

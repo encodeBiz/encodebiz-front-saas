@@ -129,7 +129,7 @@ export default function Page() {
       setData(null);
     } finally { setLoading(false); }
   }
-
+ 
   const trend = React.useMemo(() => buildMonthlyRows(data?.month), [data?.month]);
   const dr = data?.dateRange;
   const empty = (trend.rows?.length ?? 0) === 0 || trend.rows.every(r => (r.passes||0)+(r.credentials||0)===0);

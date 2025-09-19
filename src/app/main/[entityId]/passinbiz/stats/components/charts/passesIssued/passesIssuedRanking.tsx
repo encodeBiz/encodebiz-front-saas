@@ -42,7 +42,7 @@ export const PassesIssuedRankingChart = () => {
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Bar barSize={25} dataKey="total" name="Total por evento" radius={[6, 6, 0, 0]} />
+                        <Bar maxBarSize={25} dataKey="total" name="Total por evento" radius={[6, 6, 0, 0]} />
                     </ComposedChart>)}
             </ResponsiveContainer>
         </Box>

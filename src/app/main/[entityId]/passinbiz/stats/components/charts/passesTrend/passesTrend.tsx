@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 import {
     ResponsiveContainer,
     ComposedChart,
-    Bar,
+
     Line,
     CartesianGrid,
     XAxis,
@@ -15,30 +15,29 @@ import {
 } from "recharts";
 import { useTranslations } from "next-intl";
 import EmptyState from "@/components/common/EmptyState/EmptyState";
-import usePassesIssuedController, { formatCompact } from "./passesIssued.controller";
 import { useEntity } from "@/hooks/useEntity";
 import { usePassinBizStats } from "../../../context/passBizStatsContext";
 import { CustomChip } from "@/components/common/table/CustomChip";
+import usePassesTrendController from "./passesTrend.controller";
 
 
-export const PassesIssuedChart = () => {
+export const PassesTrendChart = () => {
     const t = useTranslations()
     const { currentEntity } = useEntity()
-    const { payloadPassIssued } = usePassinBizStats()
-    const [showCumulative, setShowCumulative] = React.useState(true);
+    const { payloadPassTrend } = usePassinBizStats()
 
-    const { handleFetchStats, loading, graphData } = usePassesIssuedController()
+    const { handleFetchStats, loading, graphData } = usePassesTrendController()
     useEffect(() => {
         if (currentEntity?.entity.id)
-            handleFetchStats({ ...payloadPassIssued, stats: 'PASSES_ISSUED', })
-    }, [currentEntity?.entity.id, payloadPassIssued])
+            handleFetchStats({ ...payloadPassTrend })
+    }, [currentEntity?.entity.id, payloadPassTrend])
 
     return (<>
-        <Box sx={{ height: 460 }}>
+        <Box sx={{ height: 400 }}>
             <Box display={'flex'} flexDirection={'row'} gap={2} mb={2}>
                 <Box display={'flex'} flexDirection={'column'} >
-                    <Typography variant="body1">{t('stats.passesIssued')}</Typography>
-                    <Typography variant="caption">{t('stats.passesIssuedText')}</Typography>
+                    <Typography variant="body1">{t('stats.passesTrend')}</Typography>
+                    <Typography variant="caption">{t('stats.passesTrendText')}</Typography>
                 </Box>
                 {loading && <CircularProgress size={24} />}
             </Box>
@@ -50,28 +49,26 @@ export const PassesIssuedChart = () => {
                         </Stack>
                     ) : (
                         <ResponsiveContainer width="100%" height="100%">
-                            <ComposedChart data={graphData?.rows} margin={{ top: 8, right: 16, left: 8, bottom: 8 }}>
+                            <ComposedChart data={graphData?.trend.rows} margin={{ top: 8, right: 16, left: 8, bottom: 8 }}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="label" />
                                 <YAxis />
                                 <Tooltip />
                                 <Legend />
-                                {graphData?.series.map((s: any) => (
-                                    <Bar maxBarSize={25} key={s.field} dataKey={s.field} name={s.name} stackId="events" fill={s.color} />
-                                ))}
-                                {showCumulative && <Line type="monotone" dataKey="cumulative" name="Cumulative" dot={false} />}
+                                <Line type="monotone" dataKey="credentials" name="Credenciales" dot={false} stroke="#1f77b4" strokeWidth={2} />
+                                <Line type="monotone" dataKey="passes" name="Pases" dot={false} stroke="#16a34a" strokeWidth={2} />
                             </ComposedChart>
                         </ResponsiveContainer>
                     )}
                 </Box>
 
                 <Box >
-                    <Stack direction="column" spacing={1} sx={{ mt: 1 }}>
-                        <CustomChip size="small" label={`Total: ${formatCompact(graphData?.data?.total ?? 0)}`} />
-                        <CustomChip size="small" label={`Series: ${graphData?.series.length}`} />
-                        <CustomChip size="small" label={`Buckets: ${graphData?.rows.length}`} />
-                        <CustomChip size="small" label={showCumulative ? t('stats.cumulativo') + ": ON" : t('stats.cumulativo') + ": OFF"} onClick={() => setShowCumulative(v => !v)} />
-
+                    <Stack direction="column" spacing={1} flexWrap="wrap" sx={{ mb: 1 }}>
+                        <CustomChip size="small" label={`Pases (Σ): ${new Intl.NumberFormat("en-US", { notation: "compact" }).format(graphData?.trend.kpis.totalPasses || 0)}`} />
+                        <CustomChip size="small" label={`Credenciales (Σ): ${new Intl.NumberFormat("en-US", { notation: "compact" }).format(graphData?.trend.kpis.totalCredentials || 0)}`} />
+                        {graphData?.trend.kpis.passPerCredential != null && (
+                            <CustomChip size="small" label={`Pases/Cred: ${graphData?.trend.kpis.passPerCredential}x`} />
+                        )}
                     </Stack>
                 </Box>
             </Box>
