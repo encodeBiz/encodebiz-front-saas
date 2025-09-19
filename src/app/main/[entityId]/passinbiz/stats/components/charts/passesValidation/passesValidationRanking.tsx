@@ -29,7 +29,9 @@ export const PassesValidationRankingChart = () => {
     return (<>
 
         <Box sx={{ height: 420 }}>
-            <Typography variant="body1">{t('stats.passesValidationRank')}</Typography>
+             <Box display={'flex'} flexDirection={'column'} >
+                <Typography variant="body1">{t('stats.passesValidationRank')}</Typography>
+            </Box>
             <ResponsiveContainer width="100%" height="100%">
                 {graphData?.ranking?.length === 0 ? (
                     <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
@@ -42,9 +44,9 @@ export const PassesValidationRankingChart = () => {
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Bar maxBarSize={25} dataKey="Valid" name="Valid" fill={METRIC_COLORS.valid} radius={[6, 6, 0, 0]} />
-                        <Bar maxBarSize={25} dataKey="Failed" name="Failed11" fill={METRIC_COLORS.failed} radius={[6, 6, 0, 0]} />
-                        <Bar maxBarSize={25}  dataKey="Revoked" name="Revoked" fill={METRIC_COLORS.revoked} radius={[6, 6, 0, 0]} />
+                        <Bar maxBarSize={25} dataKey="Valid" name={t('stats.valid')} fill={METRIC_COLORS.valid} radius={[6, 6, 0, 0]} />
+                        <Bar maxBarSize={25} dataKey="Failed"  name={t('stats.failed')} fill={METRIC_COLORS.failed} radius={[6, 6, 0, 0]} />
+                        <Bar maxBarSize={25} dataKey="Revoked" name={t('stats.revoked')} fill={METRIC_COLORS.revoked} radius={[6, 6, 0, 0]} />
                     </ComposedChart>)}
             </ResponsiveContainer>
         </Box>

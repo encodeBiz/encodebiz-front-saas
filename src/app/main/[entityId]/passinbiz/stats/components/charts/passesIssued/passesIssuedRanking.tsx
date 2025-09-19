@@ -19,7 +19,7 @@ import { usePassinBizStats } from "../../../context/passBizStatsContext";
 export const PassesIssuedRankingChart = () => {
     const t = useTranslations()
     const { currentEntity } = useEntity()
-    const {payloadPassIssued } = usePassinBizStats()
+    const { payloadPassIssued } = usePassinBizStats()
     const { handleFetchStats, graphData } = usePassesIssuedController()
     useEffect(() => {
         if (currentEntity?.entity.id)
@@ -28,8 +28,11 @@ export const PassesIssuedRankingChart = () => {
 
     return (<>
 
-        <Box  sx={{ height: 420 }}>
-            <Typography variant="body1">{t('stats.passesIssuedRank')}</Typography>
+        <Box sx={{ height: 420 }}>
+
+            <Box display={'flex'} flexDirection={'column'} >
+                <Typography variant="body1">{t('stats.passesIssuedRank')}</Typography>
+            </Box>
             <ResponsiveContainer width="100%" height="100%">
                 {graphData?.ranking?.length === 0 ? (
                     <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
@@ -42,7 +45,7 @@ export const PassesIssuedRankingChart = () => {
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Bar maxBarSize={25} dataKey="total" name="Total por evento" radius={[6, 6, 0, 0]} />
+                        <Bar maxBarSize={25} dataKey="total" name={t('stats.totalByEvent')} radius={[6, 6, 0, 0]} />
                     </ComposedChart>)}
             </ResponsiveContainer>
         </Box>

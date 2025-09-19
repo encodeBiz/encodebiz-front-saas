@@ -43,7 +43,8 @@ export const PassesValidationChart = () => {
     return (<>
         <Box display={'flex'} flexDirection={'row'} gap={2} mb={2}>
             <Box display={'flex'} flexDirection={'column'} >
-                <Typography>Validación: Intentos vs Éxitos vs Revocados</Typography>
+                <Typography variant="body1">{t('stats.passesValidation')}</Typography>
+                <Typography variant="caption">{t('stats.passesValidationText')}</Typography>
             </Box>
             {loading && <CircularProgress size={24} />}
         </Box>
@@ -66,8 +67,8 @@ export const PassesValidationChart = () => {
                             {graphData?.series?.filter((s: any) => payloadPassValidator.series?.includes(s.field)).map((s: any) => (
                                 <Bar key={s.field} dataKey={s.field} name={s.name} stackId={s.stackId} fill={s.color} />
                             ))}
-                            <Line yAxisId="right" type="monotone" dataKey="validationRate" name="Validation %" dot={false} strokeWidth={2} />
-                            {showCumulative && <Line type="monotone" dataKey="cumulative" name="Cumulative" dot={false} />}
+                            <Line yAxisId="right" type="monotone" dataKey="validationRate" name={t('stats.validation%')}  dot={false} strokeWidth={2} />
+                            {showCumulative && <Line type="monotone" dataKey="cumulative" name={t('stats.cumulativo')}  dot={false} />}
                         </ComposedChart>
                     </ResponsiveContainer>
                 )}
@@ -78,13 +79,13 @@ export const PassesValidationChart = () => {
                     <Stack direction="column" spacing={1} flexWrap="wrap" sx={{ mb: 1 }}>
                         <CustomChip size="small" label={`Total: ${formatCompact(graphData?.data?.total as number ?? 0)}`} />
                         <CustomChip size="small" label={showCumulative ? t('stats.cumulativo') + ": ON" : t('stats.cumulativo') + ": OFF"} onClick={() => setShowCumulative(v => !v)} />
-                        <CustomChip size="small" label={`Attempts: ${formatCompact(graphData?.kpis.attempts || 0)}`} />
-                        <CustomChip size="small" label={`Valid: ${formatCompact(graphData?.kpis.valid || 0)}`} />
-                        <CustomChip size="small" label={`Failed: ${formatCompact(graphData?.kpis.failed || 0)}`} />
-                        <CustomChip size="small" label={`Revoked: ${formatCompact(graphData?.kpis.revoked || 0)}`} />
-                        <CustomChip size="small" label={`Validation: ${(graphData?.kpis.validationRate || 0).toFixed(2)}%`} />
-                        <CustomChip size="small" label={`Retry: ${(graphData?.kpis.retryFactor || 0).toFixed(2)}x`} />
-                        {graphData?.kpis.peak?.key && <CustomChip size="small" label={`Peak: ${formatCompact(graphData?.kpis.peak.attempts)} @ ${labelFromKey(payloadPassValidator?.groupBy, graphData?.kpis.peak.key)}`} />}
+                        <CustomChip size="small" label={`${t('stats.attempts')}: ${formatCompact(graphData?.kpis.attempts || 0)}`} />
+                        <CustomChip size="small" label={`${t('stats.valid')}: ${formatCompact(graphData?.kpis.valid || 0)}`} />
+                        <CustomChip size="small" label={`${t('stats.failed')}: ${formatCompact(graphData?.kpis.failed || 0)}`} />
+                        <CustomChip size="small" label={`${t('stats.revoked')}: ${formatCompact(graphData?.kpis.revoked || 0)}`} />
+                        <CustomChip size="small" label={`${t('stats.validation')}: ${(graphData?.kpis.validationRate || 0).toFixed(2)}%`} />
+                        <CustomChip size="small" label={`${t('stats.retry')}: ${(graphData?.kpis.retryFactor || 0).toFixed(2)}x`} />
+                        {graphData?.kpis.peak?.key && <CustomChip size="small" label={`${t('stats.peak')}: ${formatCompact(graphData?.kpis.peak.attempts)} @ ${labelFromKey(payloadPassValidator?.groupBy, graphData?.kpis.peak.key)}`} />}
                         {/*payload?.dateRange?.start && <CustomChip size="small" label={`UTC: ${payload?.dateRange.start} → ${payload?.dateRange.end}`} />*/}
                     </Stack>
 

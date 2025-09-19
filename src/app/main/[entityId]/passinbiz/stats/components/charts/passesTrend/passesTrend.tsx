@@ -33,7 +33,7 @@ export const PassesTrendChart = () => {
     }, [currentEntity?.entity.id, payloadPassTrend])
 
     return (<>
-        <Box sx={{ height: 400 }}>
+        <Box sx={{ height: 460 }}>
             <Box display={'flex'} flexDirection={'row'} gap={2} mb={2}>
                 <Box display={'flex'} flexDirection={'column'} >
                     <Typography variant="body1">{t('stats.passesTrend')}</Typography>

@@ -59,7 +59,7 @@ export const PassesIssuedChart = () => {
                                 {graphData?.series.map((s: any) => (
                                     <Bar maxBarSize={25} key={s.field} dataKey={s.field} name={s.name} stackId="events" fill={s.color} />
                                 ))}
-                                {showCumulative && <Line type="monotone" dataKey="cumulative" name="Cumulative" dot={false} />}
+                                {showCumulative && <Line type="monotone" dataKey="cumulative" name={t('stats.cumulativo')} dot={false} />}
                             </ComposedChart>
                         </ResponsiveContainer>
                     )}

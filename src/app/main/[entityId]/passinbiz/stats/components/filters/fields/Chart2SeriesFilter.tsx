@@ -6,7 +6,7 @@ export const Chart2SeriesFilter = ({ value, onChange }: { value: Array<{id:strin
     const t = useTranslations()
     const { seriesChart2 } = usePassinBizStats()
     return <FormControl size="small" sx={{ minWidth: 140, mb: 1, }}>
-        <InputLabel id="gb-label">{t('stats.type')}</InputLabel>
+        <InputLabel id="gb-label">{t('stats.statusPass')}</InputLabel>
         <Select
             multiple
             labelId="series-label"
