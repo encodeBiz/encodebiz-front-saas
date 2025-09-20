@@ -24,14 +24,14 @@ import { CustomChip } from "@/components/common/table/CustomChip";
 export const PassesIssuedChart = () => {
     const t = useTranslations()
     const { currentEntity } = useEntity()
-    const { payloadPassIssued } = usePassinBizStats()
+    const { payloadPassIssuedFilter } = usePassinBizStats()
     const [showCumulative, setShowCumulative] = React.useState(true);
 
     const { handleFetchStats, loading, graphData } = usePassesIssuedController()
     useEffect(() => {
         if (currentEntity?.entity.id)
-            handleFetchStats({ ...payloadPassIssued, stats: 'PASSES_ISSUED', })
-    }, [currentEntity?.entity.id, payloadPassIssued])
+            handleFetchStats({ ...payloadPassIssuedFilter, stats: 'PASSES_ISSUED', })
+    }, [currentEntity?.entity.id, payloadPassIssuedFilter])
 
     return (<>
         <Box sx={{ height: 460 }}>

@@ -29,16 +29,15 @@ export const PassesValidationChart = () => {
     const [showCumulative, setShowCumulative] = React.useState(true);
     const t = useTranslations()
     const { currentEntity } = useEntity()
-    const { payloadPassValidator } = usePassinBizStats()
+    const { payloadPassValidatorFilter, payloadPassValidator } = usePassinBizStats()
     const { handleFetchStats, loading, graphData } = usePassesValidationController()
 
-    console.log(payloadPassValidator);
-
+ 
 
     useEffect(() => {
         if (currentEntity?.entity.id)
-            handleFetchStats({ ...payloadPassValidator })
-    }, [currentEntity?.entity.id, payloadPassValidator])
+            handleFetchStats({ ...payloadPassValidatorFilter })
+    }, [currentEntity?.entity.id, payloadPassValidatorFilter])
 
     return (<>
         <Box display={'flex'} flexDirection={'row'} gap={2} mb={2}>

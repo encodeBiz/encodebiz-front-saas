@@ -11,17 +11,18 @@ import { PassesValidationChart } from '../../charts/passesValidation/passesValid
 import { PassValidatorFilter } from '../../filters/PassValidatorFilter';
 import { PassesValidationRankingChart } from '../../charts/passesValidation/passesValidationRanking';
 import { PassesTrendChart } from '../../charts/passesTrend/passesTrend';
+import EmptyState from '@/components/common/EmptyState/EmptyState';
 
 
 export default function PassesStats() {
   const t = useTranslations();
-  const { payloadPassIssued } = usePassinBizStats()
+  const { payloadPassIssued, payloadPassValidatorFilter, payloadPassIssuedFilter } = usePassinBizStats()
   return (
     <Container maxWidth="lg" >
 
 
       <BorderBox sx={{ width: "100%", p: 2, mt: 2, mb: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
-        <PassesTrendChart/>
+        <PassesTrendChart />
       </BorderBox>
 
       <HelpTabs tabs={[
@@ -31,15 +32,19 @@ export default function PassesStats() {
           tabContent: <Box sx={{ width: "100%", p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
 
             <PassIssuedFilter />
+            {payloadPassIssuedFilter ? <>
+              <BorderBox sx={{ width: "100%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
+                <PassesIssuedChart />
+              </BorderBox>
 
-            <BorderBox sx={{ width: "100%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
-              <PassesIssuedChart />
-            </BorderBox>
 
+              {payloadPassIssued.type === 'event' && <BorderBox sx={{ width: "100%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
+                <PassesIssuedRankingChart />
+              </BorderBox>}
+            </> : <>
+              <EmptyState />
+            </>}
 
-            {payloadPassIssued.type === 'event' && <BorderBox sx={{ width: "100%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
-              <PassesIssuedRankingChart />
-            </BorderBox>}
 
 
           </Box>
@@ -50,13 +55,16 @@ export default function PassesStats() {
           title: 'Pases validados',
           tabContent: <Box sx={{ width: "100%", p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
             <PassValidatorFilter />
-            <BorderBox sx={{ width: "100%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
-              <PassesValidationChart />
-            </BorderBox>
-            {payloadPassIssued.type === 'event' && <BorderBox sx={{ width: "100%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
-              <PassesValidationRankingChart />
-            </BorderBox>}
-
+            {payloadPassIssuedFilter ? <>
+              <BorderBox sx={{ width: "100%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
+                <PassesValidationChart />
+              </BorderBox>
+              {payloadPassIssued.type === 'event' && <BorderBox sx={{ width: "100%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
+                <PassesValidationRankingChart />
+              </BorderBox>}
+            </> : <>
+              <EmptyState />
+            </>}
 
           </Box>
         },

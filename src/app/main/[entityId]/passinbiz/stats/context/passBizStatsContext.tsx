@@ -56,17 +56,23 @@ const defaultValuePASSES_TREND = {
 }
 interface IPassinBizStatsProps {
     payloadPassIssued: IPassIssuedStatsRequest,
+    payloadPassIssuedFilter: IPassIssuedStatsRequest,
     setPayloadPassIssued: (payloadPassIssued: IPassIssuedStatsRequest) => void
 
     payloadPassValidator: IPassValidatorStatsRequest,
+    payloadPassValidatorFilter: IPassValidatorStatsRequest,
     setPayloadPassValidator: (payloadPassIssued: IPassValidatorStatsRequest) => void
 
     payloadPassTrend: IPassTrendStatsRequest,
+    payloadPassTrendFilter: IPassTrendStatsRequest,
+
     setPayloadPassTrend: (payloadPassIssued: IPassTrendStatsRequest) => void
 
 
     seriesChart2: Array<{ id: string, name: string }>,
     setSeriesChart2: (payloadPassIssued: Array<{ id: string, name: string }>) => void
+
+    applyFilter: (type: "issued" | "validator" | "trend") => void
 }
 
 export const PassinBizStatsContext = createContext<IPassinBizStatsProps | undefined>(undefined);
@@ -80,8 +86,33 @@ export function PassinBizStatsProvider({ children }: { children: React.ReactNode
 
     const [seriesChart2, setSeriesChart2] = useState<Array<{ id: string, name: string }>>([])
 
+    const [payloadPassIssuedFilter, setPayloadPassIssuedFilter] = useState<IPassIssuedStatsRequest>(defaultValuePASSES_ISSUED as IPassIssuedStatsRequest)
+    const [payloadPassValidatorFilter, setPayloadPassValidatorFilter] = useState<IPassValidatorStatsRequest>(defaultValuePASSES_VALIDATION as IPassValidatorStatsRequest)
+    const [payloadPassTrendFilter, setPayloadPassTrendFilter] = useState<IPassTrendStatsRequest>(defaultValuePASSES_TREND as IPassTrendStatsRequest)
+
+
+
+    const applyFilter = (type: "issued" | "validator" | "trend") => {
+        switch (type) {
+            case "issued":
+                setPayloadPassIssuedFilter(payloadPassIssued)
+                break;
+
+            case "validator":
+                setPayloadPassValidatorFilter(payloadPassValidator)
+
+                break;
+            case "trend":
+                setPayloadPassTrendFilter(payloadPassTrend)
+
+                break;
+
+            default:
+                break;
+        }
+    }
     return (
-        <PassinBizStatsContext.Provider value={{ seriesChart2, payloadPassTrend, setPayloadPassTrend, setSeriesChart2, payloadPassIssued, setPayloadPassIssued, payloadPassValidator, setPayloadPassValidator }}>
+        <PassinBizStatsContext.Provider value={{ applyFilter, payloadPassIssuedFilter, payloadPassTrendFilter, payloadPassValidatorFilter, seriesChart2, payloadPassTrend, setPayloadPassTrend, setSeriesChart2, payloadPassIssued, setPayloadPassIssued, payloadPassValidator, setPayloadPassValidator }}>
             {children}
         </PassinBizStatsContext.Provider>
     );

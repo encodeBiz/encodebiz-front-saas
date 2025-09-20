@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl"
 import { Chart2SeriesFilter } from "./fields/Chart2SeriesFilter"
 
 export const PassValidatorFilter = () => {
-  const { payloadPassValidator, setPayloadPassValidator, seriesChart2 } = usePassinBizStats()
+  const { payloadPassValidator, setPayloadPassValidator, seriesChart2 , applyFilter} = usePassinBizStats()
   const t = useTranslations()
   return <BorderBox sx={{ width: "100%", p: 1, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
     <Box display={'flex'} justifyContent={'flex-end'} alignItems={'flex-end'} flexDirection={"row"}   >
@@ -37,7 +37,7 @@ export const PassValidatorFilter = () => {
         }} />}
       </Box>
       <Box display={'flex'} flexWrap={'wrap'} flexDirection={{ xs: "column", md: "row" }} pb={1}  >
-        <SassButton variant='contained' color='primary' size='small' onClick={() => { }}>{t('core.button.applyFilter')}</SassButton>
+        <SassButton variant='contained' color='primary' size='small' onClick={() => applyFilter('validator')}>{t('core.button.applyFilter')}</SassButton>
       </Box>
     </Box>
 
