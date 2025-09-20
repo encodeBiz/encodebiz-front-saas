@@ -29,7 +29,7 @@ export const PassesValidationRankingChart = () => {
 
     return (<>
 
-        <Box sx={{ height: 250 }}>
+        <Box sx={{ height: 350 }}>
             <Box display={'flex'} flexDirection={'column'} >
                 <Typography variant="body1">{t('stats.passesValidationRank')}</Typography>
             </Box>

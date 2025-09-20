@@ -17,7 +17,7 @@ import { useTranslations } from "next-intl";
 import EmptyState from "@/components/common/EmptyState/EmptyState";
 import { useEntity } from "@/hooks/useEntity";
 import usePassesValidationController from "./passesValidation.controller";
-import { GroupBy, IPassValidatorStatsRequest } from "../../../model/PassValidator";
+import { GroupBy } from "../../../model/PassValidator";
 import { usePassinBizStats } from "../../../context/passBizStatsContext";
 import { CustomChip } from "@/components/common/table/CustomChip";
 

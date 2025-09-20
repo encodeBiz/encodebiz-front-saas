@@ -29,7 +29,7 @@ export default function PassesStats() {
         {
           id: '1',
           title: 'Pases emitidos',
-          tabContent: <Box sx={{ width: "100%", p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+          tabContent: <Box sx={{ width: "100%", p: 2, display: 'flex', flexDirection: 'column', gap: 2,pb:4 }}>
 
             <PassIssuedFilter />
             {payloadPassIssuedFilter ? <>
@@ -56,7 +56,7 @@ export default function PassesStats() {
         {
           id: '2',
           title: 'Pases validados',
-          tabContent: <Box sx={{ width: "100%", p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+          tabContent: <Box sx={{ width: "100%", p: 2, display: 'flex', flexDirection: 'column', gap: 2 ,pb:4}}>
             <PassValidatorFilter />
             {payloadPassValidatorFilter ? <>
               <BorderBox sx={{ width: "100%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
