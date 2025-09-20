@@ -20,12 +20,12 @@ import { CustomChip } from "@/components/common/table/CustomChip";
 export const PassesIssuedRankingChart = () => {
     const t = useTranslations()
     const { currentEntity } = useEntity()
-    const { payloadPassIssued } = usePassinBizStats()
+    const { payloadPassIssuedFilter } = usePassinBizStats()
     const { handleFetchStats, graphData } = usePassesIssuedController()
     useEffect(() => {
-        if (currentEntity?.entity.id)
-            handleFetchStats({ ...payloadPassIssued, stats: 'PASSES_ISSUED' })
-    }, [currentEntity?.entity.id])
+        if (currentEntity?.entity.id && payloadPassIssuedFilter)
+            handleFetchStats({ ...payloadPassIssuedFilter, stats: 'PASSES_ISSUED' })
+    }, [currentEntity?.entity.id, payloadPassIssuedFilter])
 
     return (<>
 
@@ -36,11 +36,14 @@ export const PassesIssuedRankingChart = () => {
             </Box>
 
             <Box display={'flex'} flexDirection={'row'} gap={2}>
-                <Box width={'80%'} sx={{ height: 250 }}>
+                <Box sx={{ height: 350, width:'80%'}}>
                     <ResponsiveContainer width="100%" height="100%">
                         {graphData?.ranking?.length === 0 ? (
                             <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
-                                <EmptyState />
+                                <EmptyState showIcon={false}
+                                    title={t('stats.empthy')}
+                                    description={t('stats.empthytext')}
+                                />
                             </Stack>
                         ) : (
                             <ComposedChart data={graphData?.ranking.map((r: any) => ({ evento: r.event, total: r.total }))} margin={{ top: 8, right: 16, left: 8, bottom: 24 }}>

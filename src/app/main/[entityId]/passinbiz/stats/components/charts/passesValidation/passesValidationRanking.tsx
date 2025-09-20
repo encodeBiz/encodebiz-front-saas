@@ -20,11 +20,11 @@ import { CustomChip } from "@/components/common/table/CustomChip";
 export const PassesValidationRankingChart = () => {
     const t = useTranslations()
     const { currentEntity } = useEntity()
-    const { payloadPassValidator } = usePassinBizStats()
+    const { payloadPassValidatorFilter } = usePassinBizStats()
     const { handleFetchStats, graphData } = usePassesValidationController()
     useEffect(() => {
-        if (currentEntity?.entity.id)
-            handleFetchStats({ ...payloadPassValidator })
+        if (currentEntity?.entity.id && payloadPassValidatorFilter)
+            handleFetchStats({ ...payloadPassValidatorFilter })
     }, [currentEntity?.entity.id])
 
     return (<>
@@ -34,11 +34,14 @@ export const PassesValidationRankingChart = () => {
                 <Typography variant="body1">{t('stats.passesValidationRank')}</Typography>
             </Box>
             <Box display={'flex'} flexDirection={'row'} gap={2}>
-                <Box width={'80%'} sx={{ height: 250 }}>
+                <Box  sx={{ height: 350, width:'80%'}} >
                     <ResponsiveContainer width="100%" height="100%">
                         {graphData?.ranking?.length === 0 ? (
                             <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
-                                <EmptyState />
+                                <EmptyState showIcon={false}
+                                    title={t('stats.empthy')}
+                                    description={t('stats.empthytext')}
+                                />
                             </Stack>
                         ) : (
                             <ComposedChart data={graphData?.ranking.map((r: any) => ({ evento: r.event, Valid: r.valid, Failed: r.failed, Revoked: r.revoked }))} margin={{ top: 8, right: 16, left: 8, bottom: 24 }}>
@@ -57,7 +60,13 @@ export const PassesValidationRankingChart = () => {
                 <Box >
                     <Stack direction="column" spacing={1} flexWrap="wrap" sx={{ mb: 1 }}>
                         {graphData?.ranking.map((r: any) => ({ evento: r.event, Valid: r.valid, Failed: r.failed, Revoked: r.revoked })).map((e: any, i: any) =>
-                            <CustomChip key={i} size="small" label={`${e.evento}: ${t('stats.valid')}:${e.Valid}, ${t('stats.failed')}:${e.Failed}, ${t('stats.revoked')}:${e.Revoked}`} />
+                            <Box key={i}  flexDirection="column" display={'flex'} sx={{ mb: 1 }} gap={1}>
+                                <Typography variant="body2">{e.evento}</Typography>
+                                <CustomChip key={i} size="small" label={`${t('stats.valid')}:${e.Valid}`} />
+                                <CustomChip key={i} size="small" label={`${t('stats.failed')}:${e.Failed}`} />
+                                <CustomChip key={i} size="small" label={`${t('stats.revoked')}:${e.Revoked}`} />
+
+                            </Box>
                         )}
                     </Stack>
                 </Box>

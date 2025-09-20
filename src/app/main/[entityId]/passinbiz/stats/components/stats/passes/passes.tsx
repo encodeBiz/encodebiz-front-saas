@@ -42,7 +42,10 @@ export default function PassesStats() {
                 <PassesIssuedRankingChart />
               </BorderBox>}
             </> : <>
-              <EmptyState />
+              <EmptyState showIcon={false}
+                title={t('stats.empthy')}
+                description={t('stats.empthytext')}
+              />
             </>}
 
 
@@ -55,7 +58,7 @@ export default function PassesStats() {
           title: 'Pases validados',
           tabContent: <Box sx={{ width: "100%", p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
             <PassValidatorFilter />
-            {payloadPassIssuedFilter ? <>
+            {payloadPassValidatorFilter ? <>
               <BorderBox sx={{ width: "100%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
                 <PassesValidationChart />
               </BorderBox>
@@ -63,7 +66,10 @@ export default function PassesStats() {
                 <PassesValidationRankingChart />
               </BorderBox>}
             </> : <>
-              <EmptyState />
+              <EmptyState showIcon={false}
+                title={t('stats.empthy')}
+                description={t('stats.empthytext')}
+              />
             </>}
 
           </Box>

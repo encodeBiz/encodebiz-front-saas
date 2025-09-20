@@ -721,6 +721,8 @@
     "totalByEvent":"Total por evento",
     "validation%":"Validation %",
     "passesTrend":"Tendencia mensual · Credenciales vs Pases",
-    "passesTrendText":"Dos líneas para proyectar inversión (credenciales) frente a emisión/uso (pases)."
+    "passesTrendText":"Dos líneas para proyectar inversión (credenciales) frente a emisión/uso (pases).",
+    "empthy":"Nada que mostrar",
+    "empthytext":"No existen elementos para mostrar en este momento, ajusta los filtros para graficar información"
   }
 }

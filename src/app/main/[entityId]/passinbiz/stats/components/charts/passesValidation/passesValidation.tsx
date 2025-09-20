@@ -32,10 +32,11 @@ export const PassesValidationChart = () => {
     const { payloadPassValidatorFilter, payloadPassValidator } = usePassinBizStats()
     const { handleFetchStats, loading, graphData } = usePassesValidationController()
 
- 
+
 
     useEffect(() => {
-        if (currentEntity?.entity.id)
+         
+        if (currentEntity?.entity.id && payloadPassValidatorFilter)
             handleFetchStats({ ...payloadPassValidatorFilter })
     }, [currentEntity?.entity.id, payloadPassValidatorFilter])
 
@@ -48,11 +49,14 @@ export const PassesValidationChart = () => {
             {loading && <CircularProgress size={24} />}
         </Box>
         <Box display={'flex'} flexDirection={'row'} gap={2}>
-            <Box width={'80%'} sx={{ height: 400 }}>
+            <Box sx={{ height: 400, width:'80%'}}>
 
                 {graphData?.empty ? (
                     <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
-                        <EmptyState />
+                        <EmptyState showIcon={false}
+                            title={t('stats.empthy')}
+                            description={t('stats.empthytext')}
+                        />
                     </Stack>
                 ) : (
                     <ResponsiveContainer width="100%" height="100%">
@@ -66,8 +70,8 @@ export const PassesValidationChart = () => {
                             {graphData?.series?.filter((s: any) => payloadPassValidator.series?.includes(s.field)).map((s: any) => (
                                 <Bar key={s.field} dataKey={s.field} name={s.name} stackId={s.stackId} fill={s.color} />
                             ))}
-                            <Line yAxisId="right" type="monotone" dataKey="validationRate" name={t('stats.validation%')}  dot={false} strokeWidth={2} />
-                            {showCumulative && <Line type="monotone" dataKey="cumulative" name={t('stats.cumulativo')}  dot={false} />}
+                            <Line yAxisId="right" type="monotone" dataKey="validationRate" name={t('stats.validation%')} dot={false} strokeWidth={2} />
+                            {showCumulative && <Line type="monotone" dataKey="cumulative" name={t('stats.cumulativo')} dot={false} />}
                         </ComposedChart>
                     </ResponsiveContainer>
                 )}

@@ -38,18 +38,19 @@ const IconContainer = styled(Box)(({ theme }) => ({
 }));
 
 const EmptyState = ({
-    title='',
-    description='',
+    title = '',
+    description = '',
     icon = 'search',
     action,
     actionText = 'Add new item',
     onAction,
     onRefresh,
+    showIcon = true,
     fullHeight = false,
     sx = {}
 }: any) => {
     const t = useTranslations();
-    
+
 
     const getIcon = () => {
         switch (icon) {
@@ -74,17 +75,18 @@ const EmptyState = ({
                 ...sx
             }}
         >
+            
             <StyledPaper elevation={0}>
-                <IconContainer>
+                {showIcon && <IconContainer>
                     {typeof icon === 'string' ? (
                         getIcon()
                     ) : (
                         <SvgIcon component={icon} fontSize="large" />
                     )}
-                </IconContainer>
+                </IconContainer>}
 
                 <Typography variant="h6" >
-                    {title?title:t('core.feedback.empthy')}
+                    {title ? title : t('core.feedback.empthy')}
                 </Typography>
 
                 <Typography
@@ -92,7 +94,7 @@ const EmptyState = ({
                     color="text.secondary"
                     sx={{ mb: 3, maxWidth: 400 }}
                 >
-                    {description?description:t('core.feedback.empthytext')}
+                    {description ? description : t('core.feedback.empthytext')}
                 </Typography>
 
                 {(action || onAction || onRefresh) && (
