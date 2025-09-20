@@ -1,11 +1,10 @@
 import { FormControl, InputLabel, Select, MenuItem, Checkbox, ListItemText } from "@mui/material";
 import { useTranslations } from "next-intl";
-import { usePassinBizStats } from "../../../context/passBizStatsContext";
 
-export const Chart2SeriesFilter = ({ value, onChange }: { value: Array<string>, onChange: (value: Array<string>) => void }) => {
+export const SeriesFilter = ({ value, onChange, seriesChart2 }: { seriesChart2: Array<{ id: string, name: string }>, value: Array<string>, onChange: (value: Array<string>) => void }) => {
     const t = useTranslations()
-    const { seriesChart2 } = usePassinBizStats()
-    return <FormControl size="small" sx={{ minWidth: 140, mb: 1, }}>
+
+    return <FormControl size="small" sx={{ minWidth: 140,maxWidth:160, mb: 1, }}>
         <InputLabel id="gb-label">{t('stats.statusPass')}</InputLabel>
         <Select
             multiple

@@ -29,7 +29,16 @@ export const PassesTrendChart = () => {
     const { handleFetchStats, loading, graphData } = usePassesTrendController()
     useEffect(() => {
         if (currentEntity?.entity.id)
-            handleFetchStats({ ...payloadPassTrend })
+            handleFetchStats({
+                entityId: currentEntity?.entity.id,
+                groupBy: 'month',
+                stats: 'PASSES_ISSUED_GENERAL',
+                type: 'entity',
+                dateRange: {
+                    start: new Date(new Date().getFullYear(), 0, 1),
+                    end: new Date()
+                }
+            })
     }, [currentEntity?.entity.id, payloadPassTrend])
 
     return (<>

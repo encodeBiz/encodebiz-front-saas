@@ -24,8 +24,12 @@ export const PassesValidationRankingChart = () => {
     const { handleFetchStats, graphData } = usePassesValidationController()
     useEffect(() => {
         if (currentEntity?.entity.id && payloadPassValidatorFilter)
-            handleFetchStats({ ...payloadPassValidatorFilter })
-    }, [currentEntity?.entity.id])
+            handleFetchStats({
+                ...payloadPassValidatorFilter,
+                stats: 'PASSES_VALIDATION',
+                entityId: currentEntity?.entity.id
+            })
+    }, [currentEntity?.entity.id, payloadPassValidatorFilter])
 
     return (<>
 
@@ -34,7 +38,7 @@ export const PassesValidationRankingChart = () => {
                 <Typography variant="body1">{t('stats.passesValidationRank')}</Typography>
             </Box>
             <Box display={'flex'} flexDirection={'row'} gap={2}>
-                <Box  sx={{ height: 350, width:'80%'}} >
+                <Box sx={{ height: 350, width: '80%' }} >
                     <ResponsiveContainer width="100%" height="100%">
                         {graphData?.ranking?.length === 0 ? (
                             <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
@@ -55,17 +59,15 @@ export const PassesValidationRankingChart = () => {
                                 <Bar maxBarSize={25} dataKey="Revoked" name={t('stats.revoked')} fill={METRIC_COLORS.revoked} radius={[6, 6, 0, 0]} />
                             </ComposedChart>)}
                     </ResponsiveContainer>
-
                 </Box>
                 <Box >
                     <Stack direction="column" spacing={1} flexWrap="wrap" sx={{ mb: 1 }}>
                         {graphData?.ranking.map((r: any) => ({ evento: r.event, Valid: r.valid, Failed: r.failed, Revoked: r.revoked })).map((e: any, i: any) =>
-                            <Box key={i}  flexDirection="column" display={'flex'} sx={{ mb: 1 }} gap={1}>
+                            <Box key={i} flexDirection="column" display={'flex'} sx={{ mb: 1 }} gap={1}>
                                 <Typography variant="body2">{e.evento}</Typography>
                                 <CustomChip key={i} size="small" label={`${t('stats.valid')}:${e.Valid}`} />
                                 <CustomChip key={i} size="small" label={`${t('stats.failed')}:${e.Failed}`} />
                                 <CustomChip key={i} size="small" label={`${t('stats.revoked')}:${e.Revoked}`} />
-
                             </Box>
                         )}
                     </Stack>

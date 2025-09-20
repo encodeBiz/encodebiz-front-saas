@@ -38,7 +38,7 @@ export default function PassesStats() {
               </BorderBox>
 
 
-              {payloadPassIssued.type === 'event' && <BorderBox sx={{ width: "100%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
+              {payloadPassIssued?.type === 'event' && <BorderBox sx={{ width: "100%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
                 <PassesIssuedRankingChart />
               </BorderBox>}
             </> : <>
@@ -62,7 +62,7 @@ export default function PassesStats() {
               <BorderBox sx={{ width: "100%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
                 <PassesValidationChart />
               </BorderBox>
-              {payloadPassIssued.type === 'event' && <BorderBox sx={{ width: "100%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
+              {payloadPassIssued?.type === 'event' && <BorderBox sx={{ width: "100%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
                 <PassesValidationRankingChart />
               </BorderBox>}
             </> : <>

@@ -30,7 +30,11 @@ export const PassesIssuedChart = () => {
     const { handleFetchStats, loading, graphData } = usePassesIssuedController()
     useEffect(() => {
         if (currentEntity?.entity.id && payloadPassIssuedFilter)
-            handleFetchStats({ ...payloadPassIssuedFilter, stats: 'PASSES_ISSUED', })
+            handleFetchStats({
+                ...payloadPassIssuedFilter,
+                stats: 'PASSES_ISSUED',
+                entityId: currentEntity?.entity.id
+            })
     }, [currentEntity?.entity.id, payloadPassIssuedFilter])
 
     return (<>
@@ -43,13 +47,13 @@ export const PassesIssuedChart = () => {
                 {loading && <CircularProgress size={24} />}
             </Box>
             <Box display={'flex'} flexDirection={'row'} gap={2}>
-                <Box sx={{ height: 400, width:'80%'}}>
+                <Box sx={{ height: 400, width: '80%' }}>
                     {graphData?.empty ? (
                         <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
-                             <EmptyState showIcon={false}
-                title={t('stats.empthy')}
-                description={t('stats.empthytext')}
-              />
+                            <EmptyState showIcon={false}
+                                title={t('stats.empthy')}
+                                description={t('stats.empthytext')}
+                            />
                         </Stack>
                     ) : (
                         <ResponsiveContainer width="100%" height="100%">

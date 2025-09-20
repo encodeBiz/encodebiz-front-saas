@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography, useTheme } from "@mui/material";
 import React, { useEffect } from "react";
 import {
     ResponsiveContainer,
@@ -19,24 +19,26 @@ import { usePassinBizStats } from "../../../context/passBizStatsContext";
 import { CustomChip } from "@/components/common/table/CustomChip";
 export const PassesIssuedRankingChart = () => {
     const t = useTranslations()
+    const theme = useTheme()
     const { currentEntity } = useEntity()
     const { payloadPassIssuedFilter } = usePassinBizStats()
     const { handleFetchStats, graphData } = usePassesIssuedController()
     useEffect(() => {
         if (currentEntity?.entity.id && payloadPassIssuedFilter)
-            handleFetchStats({ ...payloadPassIssuedFilter, stats: 'PASSES_ISSUED' })
+            handleFetchStats({
+                ...payloadPassIssuedFilter,
+                stats: 'PASSES_ISSUED',
+                entityId: currentEntity?.entity.id
+            })
     }, [currentEntity?.entity.id, payloadPassIssuedFilter])
 
     return (<>
-
-        <Box  >
-
+        <Box>
             <Box display={'flex'} flexDirection={'column'} >
                 <Typography variant="body1">{t('stats.passesIssuedRank')}</Typography>
             </Box>
-
             <Box display={'flex'} flexDirection={'row'} gap={2}>
-                <Box sx={{ height: 350, width:'80%'}}>
+                <Box sx={{ height: 350, width: '80%' }}>
                     <ResponsiveContainer width="100%" height="100%">
                         {graphData?.ranking?.length === 0 ? (
                             <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
@@ -52,7 +54,7 @@ export const PassesIssuedRankingChart = () => {
                                 <YAxis />
                                 <Tooltip />
                                 <Legend />
-                                <Bar maxBarSize={25} dataKey="total" name={t('stats.totalByEvent')} radius={[6, 6, 0, 0]} />
+                                <Bar fill={theme.palette.primary.main} maxBarSize={25} dataKey="total" name={t('stats.totalByEvent')} radius={[6, 6, 0, 0]} />
                             </ComposedChart>)}
                     </ResponsiveContainer>
                 </Box>

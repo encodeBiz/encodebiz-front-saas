@@ -3,8 +3,10 @@ import React, { createContext, useContext, useState } from 'react';
 import { IPassIssuedStatsRequest } from '../model/PassIssued';
 import { IPassValidatorStatsRequest } from '../model/PassValidator';
 import { IPassTrendStatsRequest } from '../model/PassTrend';
+import { rmNDay } from '@/lib/common/Date';
 
 
+ 
 const defaultValuePASSES_ISSUED = {
     "entityId": "z1YRV6s6ueqnJpIvInFL",
     "stats": "PASSES_ISSUED",
@@ -44,26 +46,16 @@ const defaultValuePASSES_VALIDATION = {
     ],
 }
 
-const defaultValuePASSES_TREND = {
-    "entityId": "k24rpxzY7aUTAmSXjNyT",
-    "stats": "PASSES_ISSUED_GENERAL",
-    "groupBy": "month",
-    "type": "entity",
-    "dateRange": {
-        "start": "2025-01-01T00:00:00.000Z",
-        "end": "2025-12-31T23:59:59.000Z"
-    }
-}
 interface IPassinBizStatsProps {
-    payloadPassIssued: IPassIssuedStatsRequest,
+    payloadPassIssued: IPassIssuedStatsRequest | undefined,
     payloadPassIssuedFilter: IPassIssuedStatsRequest | undefined,
     setPayloadPassIssued: (payloadPassIssued: IPassIssuedStatsRequest) => void
 
-    payloadPassValidator: IPassValidatorStatsRequest,
+    payloadPassValidator: IPassValidatorStatsRequest | undefined,
     payloadPassValidatorFilter: IPassValidatorStatsRequest | undefined,
     setPayloadPassValidator: (payloadPassIssued: IPassValidatorStatsRequest) => void
 
-    payloadPassTrend: IPassTrendStatsRequest, 
+    payloadPassTrend: IPassTrendStatsRequest | undefined,
     setPayloadPassTrend: (payloadPassIssued: IPassTrendStatsRequest) => void
 
 
@@ -78,13 +70,33 @@ export const PassinBizStatsContext = createContext<IPassinBizStatsProps | undefi
 
 
 export function PassinBizStatsProvider({ children }: { children: React.ReactNode }) {
-    const [payloadPassIssued, setPayloadPassIssued] = useState<IPassIssuedStatsRequest>(defaultValuePASSES_ISSUED as IPassIssuedStatsRequest)
-    const [payloadPassValidator, setPayloadPassValidator] = useState<IPassValidatorStatsRequest>(defaultValuePASSES_VALIDATION as IPassValidatorStatsRequest)
-    const [payloadPassTrend, setPayloadPassTrend] = useState<IPassTrendStatsRequest>(defaultValuePASSES_TREND as IPassTrendStatsRequest)
+
+    const [payloadPassIssued, setPayloadPassIssued] = useState<IPassIssuedStatsRequest>({
+        "dateRange": {
+            "start": rmNDay(new Date(), 5),
+            "end": new Date()
+        },
+        "groupBy": "day",
+        "type": "credential",
+        "passStatus": "active",
+    } as IPassIssuedStatsRequest)
+    const [payloadPassValidator, setPayloadPassValidator] = useState<IPassValidatorStatsRequest>({
+        /*
+        "dateRange": {
+            "start": rmNDay(new Date(), 5),
+            "end": new Date()
+        },
+        "groupBy": "day",
+        "type": "credential",
+        "passStatus": "active",
+        */
+        ...defaultValuePASSES_VALIDATION
+    } as IPassValidatorStatsRequest)
+    const [payloadPassTrend, setPayloadPassTrend] = useState<IPassTrendStatsRequest>()
 
     const [seriesChart2, setSeriesChart2] = useState<Array<{ id: string, name: string }>>([])
 
-    const [payloadPassIssuedFilter, setPayloadPassIssuedFilter] = useState<IPassIssuedStatsRequest>( )
+    const [payloadPassIssuedFilter, setPayloadPassIssuedFilter] = useState<IPassIssuedStatsRequest>()
     const [payloadPassValidatorFilter, setPayloadPassValidatorFilter] = useState<IPassValidatorStatsRequest>()
 
 
@@ -96,7 +108,7 @@ export function PassinBizStatsProvider({ children }: { children: React.ReactNode
                 break;
             case "validator":
                 setPayloadPassValidatorFilter(payloadPassValidator)
-                break;           
+                break;
             default:
                 break;
         }

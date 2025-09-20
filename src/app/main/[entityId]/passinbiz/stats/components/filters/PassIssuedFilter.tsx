@@ -7,6 +7,7 @@ import { GroupByFilter } from "./fields/GroupByFilter"
 import { TypeFilter } from "./fields/TypeFilter"
 import { usePassinBizStats } from "../../context/passBizStatsContext"
 import { useTranslations } from "next-intl"
+import { IPassIssuedStatsRequest } from "../../model/PassIssued"
 
 export const PassIssuedFilter = () => {
   const { payloadPassIssued, setPayloadPassIssued, applyFilter } = usePassinBizStats()
@@ -15,18 +16,18 @@ export const PassIssuedFilter = () => {
     <Box display={'flex'} justifyContent={'flex-end'} alignItems={'flex-end'} flexDirection={"row"}   >
       <Box display={'flex'} flexWrap={'wrap'} flexDirection={{ xs: "column", md: "row" }} gap={2} >
 
-        <TypeFilter value={payloadPassIssued.type} onChange={(type) => {
-          setPayloadPassIssued({ ...payloadPassIssued, type, events: type === 'credential' ? [] : payloadPassIssued.events })
+        <TypeFilter value={payloadPassIssued?.type as "event" | "credential"} onChange={(type: "event" | "credential") => {
+          setPayloadPassIssued({ ...payloadPassIssued as IPassIssuedStatsRequest, type, events: type === 'credential' ? [] : payloadPassIssued?.events })
 
         }} />
-        <DateRangePicker value={payloadPassIssued.dateRange} onChange={(dateRange) => setPayloadPassIssued({ ...payloadPassIssued, dateRange })} />
+        <DateRangePicker value={payloadPassIssued?.dateRange as any} onChange={(dateRange) => setPayloadPassIssued({ ...payloadPassIssued as IPassIssuedStatsRequest, dateRange })} />
         <GroupByFilter
-          value={payloadPassIssued.groupBy}
+          value={payloadPassIssued?.groupBy as any}
           onChange={(groupBy) => {
-            setPayloadPassIssued({ ...payloadPassIssued, groupBy })
+            setPayloadPassIssued({ ...payloadPassIssued as IPassIssuedStatsRequest, groupBy })
           }} />
-        {payloadPassIssued.type === 'event' && <EventFilter
-          value={payloadPassIssued.events?.map(e => e.id) ?? []}
+        {payloadPassIssued?.type === 'event' && <EventFilter
+          value={payloadPassIssued?.events?.map(e => e.id) ?? []}
           onChangeData={(events) => {
             setPayloadPassIssued({ ...payloadPassIssued, events })
           }} />}

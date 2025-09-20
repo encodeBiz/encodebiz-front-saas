@@ -722,7 +722,9 @@
     "validation%":"Validation %",
     "passesTrend":"Tendencia mensual · Credenciales vs Pases",
     "passesTrendText":"Dos líneas para proyectar inversión (credenciales) frente a emisión/uso (pases).",
-    "empthy":"Nada que mostrar",
-    "empthytext":"No existen elementos para mostrar en este momento, ajusta los filtros para graficar información"
+    "empthy":"Realiza tu primera consulta",
+    "summary":"Resumen",
+    "series":"Series visibles",
+    "empthytext":"Ajusta los filtros con los parámetros que requieras para gráficar información"
   }
 }
