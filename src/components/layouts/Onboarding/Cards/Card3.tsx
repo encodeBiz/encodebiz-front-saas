@@ -84,7 +84,7 @@ export const Card3 = ({ handleNext }: any) => {
                                     <path d="M62.5 63L36.5 88.5L10.5 63C10.5 54.1226 18 47 36.5 47C55 47 62.5 54.1226 62.5 63Z" fill="#FFFBFF" />
                                     <path d="M38 43C43.5228 43 48 38.5228 48 33C48 27.4772 43.5228 23 38 23C32.4771 23 28 27.4772 28 33C28 38.5228 32.4771 43 38 43Z" stroke="#FFFBFF" strokeWidth="4" strokeMiterlimit="10" />
                                     <path d="M68 37.9629C68 55.0601 60.2785 71.0997 36.5 86.2581C14.6518 72.9798 5 55.0601 5 37.9629C5 20.8658 19.0975 7 36.5 7C53.9025 7 68 20.8658 68 37.9629Z" stroke="#FFFBFF" strokeWidth="7" strokeMiterlimit="10" />
-                                    <path d="M37 30V33.6L42 36" stroke="#FFFBFF" strokeWidth="2" stroke-linecap="round" strokeLinejoin="round" />
+                                    <path d="M37 30V33.6L42 36" stroke="#FFFBFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
                             </Box>
                             <Box>
