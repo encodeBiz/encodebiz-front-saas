@@ -4,8 +4,7 @@ import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
-import { IStatsRequest } from "@/domain/features/passinbiz/IStats";
- 
+  
 
 /**
    * Search trainer
@@ -143,7 +142,7 @@ export async function importHolder(data: FormData, token: string) {
 
 
 
-export async function fetchStats(data: IStatsRequest, token: string) {
+export async function fetchStats(data: any, token: string) {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");

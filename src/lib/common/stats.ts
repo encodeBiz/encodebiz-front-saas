@@ -1,20 +1,19 @@
-import { GroupBy, BucketItem, IStatsResponse } from "@/domain/features/passinbiz/IStats";
-
-export function normalizeApiResponse(json: any): IStatsResponse {
+ 
+export function normalizeApiResponse(json: any): any {
   const root = json?.result ?? json?.output ?? json?.data ?? json ?? {};
   const hour = root.hour ?? root.hours ?? root.hourly;
   const day = root.day ?? root.days ?? root.daily;
   const month = root.month ?? root.months ?? root.monthly;
   const total = root.total ?? root.kpis?.total ?? root.kpis?.totalIssued ?? 0;
   const dateRange = root.dateRange ?? root.meta?.dateRangeApplied ?? undefined;
-  return { total, hour, day, month, dateRange, meta: root.meta } as IStatsResponse;
+  return { total, hour, day, month, dateRange, meta: root.meta } as any;
 }
 
-export function getBuckets(resp: IStatsResponse, gb: GroupBy) {
-  return (resp?.[gb] ?? {}) as Record<string, BucketItem[]>;
+export function getBuckets(resp: any, gb: any) {
+  return (resp?.[gb] ?? {}) as Record<string, any[]>;
 }
 
-export function sortKeys(gb: GroupBy, keys: string[]) {
+export function sortKeys(gb: any, keys: string[]) {
   if (gb === "hour") return keys.map(Number).sort((a, b) => a - b).map(String);
   return keys.sort((a, b) => a.localeCompare(b)); // YYYY-MM(-DD)
 }
@@ -28,7 +27,7 @@ export function safeKey(s: string) {
     .replace(/[^A-Za-z0-9_]/g, "_");
 }
 
-export function buildChartData(buckets: Record<string, BucketItem[]>, gb: GroupBy) {
+export function buildChartData(buckets: Record<string, any[]>, gb: any) {
   const keys = sortKeys(gb, Object.keys(buckets));
   const eventNames = uniq(keys.flatMap((k) => (buckets[k] || []).map((i) => i.event)));
   const series = eventNames.map((name) => ({ name, field: safeKey(name) }));
@@ -53,7 +52,7 @@ export function buildChartData(buckets: Record<string, BucketItem[]>, gb: GroupB
   return { rows, series };
 }
 
-export function computeTotalsByEvent(buckets: Record<string, BucketItem[]>) {
+export function computeTotalsByEvent(buckets: Record<string, any[]>) {
   const map = new Map<string, { event: string; total: number }>();
   Object.keys(buckets).forEach((k) => {
     (buckets[k] || []).forEach((item) => {
