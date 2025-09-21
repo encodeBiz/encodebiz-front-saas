@@ -16,7 +16,7 @@ import EmptyState from '@/components/common/EmptyState/EmptyState';
 
 export default function PassesStats() {
   const t = useTranslations();
-  const { payloadPassIssued, payloadPassValidatorFilter, payloadPassIssuedFilter } = usePassinBizStats()
+  const { payloadPassValidatorFilter, payloadPassIssuedFilter } = usePassinBizStats()
   return (
     <Container maxWidth="lg" >
 
@@ -76,35 +76,7 @@ export default function PassesStats() {
         },
 
 
-      ]} />
-
-      {/** 
-      <Box sx={{ p: 3, bgcolor: "#f8fafc", minHeight: "100vh" }}>
-        <Box sx={{ maxWidth: 1200, mx: "auto" }}>
-
-          <Box mt={2} display={'flex'} flexWrap={'wrap'} flexDirection={{ xs: "column", md: "row" }} gap={4}>
-            <BorderBox sx={{ width: "45%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
-              <PassesIssuedChart payload={filter} type='PASSES_ISSUED' />
-            </BorderBox>
-
-            {payload.type === 'event' && <BorderBox sx={{ width: "45%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
-              <PassesIssuedRankingChart payload={filter} type='PASSES_ISSUED' />
-            </BorderBox>}
-
-            <BorderBox sx={{ width: "45%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
-              <PassesValidationChart payload={filter} type='PASSES_VALIDATION' />
-            </BorderBox>
-
-
-
-            {payload.type === 'event' && <BorderBox sx={{ width: "45%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
-              <PassesIssuedRankingChart payload={filter} type='PASSES_VALIDATION' />
-            </BorderBox>}
-
-          </Box>
-        </Box>
-      </Box>
-      */}
+      ]} />      
 
 
     </Container>

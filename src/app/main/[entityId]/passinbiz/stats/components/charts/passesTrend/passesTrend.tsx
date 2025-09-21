@@ -64,8 +64,9 @@ export const PassesTrendChart = () => {
                                 <YAxis />
                                 <Tooltip />
                                 <Legend />
-                                <Line type="monotone" dataKey="credentials" name="Credenciales" dot={false} stroke="#1f77b4" strokeWidth={2} />
-                                <Line type="monotone" dataKey="passes" name="Pases" dot={false} stroke="#16a34a" strokeWidth={2} />
+                          
+                                <Line type="monotone" dataKey="credentials" name={t('core.label.credencial')} dot={false} stroke="#1f77b4" strokeWidth={2} />
+                                <Line type="monotone" dataKey="passes" name={t('core.label.pass')}  dot={false} stroke="#16a34a" strokeWidth={2} />
                             </ComposedChart>
                         </ResponsiveContainer>
                     )}
@@ -73,10 +74,10 @@ export const PassesTrendChart = () => {
 
                 <Box >
                     <Stack direction="column" spacing={1} flexWrap="wrap" sx={{ mb: 1 }}>
-                        <CustomChip size="small" label={`Pases (Σ): ${new Intl.NumberFormat("en-US", { notation: "compact" }).format(graphData?.trend.kpis.totalPasses || 0)}`} />
-                        <CustomChip size="small" label={`Credenciales (Σ): ${new Intl.NumberFormat("en-US", { notation: "compact" }).format(graphData?.trend.kpis.totalCredentials || 0)}`} />
+                        <CustomChip size="small" label={`${t('core.label.pass')} (Σ): ${new Intl.NumberFormat("en-US", { notation: "compact" }).format(graphData?.trend.kpis.totalPasses || 0)}`} />
+                        <CustomChip size="small" label={`${t('core.label.credencial')} (Σ): ${new Intl.NumberFormat("en-US", { notation: "compact" }).format(graphData?.trend.kpis.totalCredentials || 0)}`} />
                         {graphData?.trend.kpis.passPerCredential != null && (
-                            <CustomChip size="small" label={`Pases/Cred: ${graphData?.trend.kpis.passPerCredential}x`} />
+                            <CustomChip size="small" label={`${t('core.label.credpass')}: ${graphData?.trend.kpis.passPerCredential}x`} />
                         )}
                     </Stack>
                 </Box>
