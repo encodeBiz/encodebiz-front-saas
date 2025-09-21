@@ -183,8 +183,13 @@ export function addNDay(targetDate: Date, n: number) {
     targetDate.setDate(targetDate.getDate() + n)
     targetDate.setHours(23)
     targetDate.setMinutes(59)
+    return targetDate
+}
 
-
+export function rmNDay(targetDate: Date, n: number) {
+    targetDate.setDate(targetDate.getDate() - n)
+    targetDate.setHours(23)
+    targetDate.setMinutes(59)
     return targetDate
 }
 

@@ -80,11 +80,11 @@ export default function useSucursalController() {
   const fields = [
     {
       isDivider: true,
-      label: t('core.label.personalData'),
+      label: t('core.label.subEntityData'),
     },
     {
       name: 'name',
-      label: t('core.label.name'),
+      label: t('core.label.subEntityName'),
       type: 'text',
        fullWidth: true,
       required: true,

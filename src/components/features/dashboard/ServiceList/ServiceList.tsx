@@ -21,7 +21,7 @@ const icons = {
 const ServiceList = () => {
     const theme = useTheme()
     const { navivateTo } = useLayout()
-    const { entityServiceList } = useEntity()
+    const { entityServiceList, entitySuscription } = useEntity()
     const styles = useStyles()
     const t = useTranslations()
     const { currentLocale } = useAppLocale()
@@ -30,7 +30,7 @@ const ServiceList = () => {
     };
 
 
-    if (entityServiceList.filter(e => e.active).length > 0)
+    if (entityServiceList.filter(e => e.active && entitySuscription.filter((es) => es.serviceId === e.id).length === 0).length> 0)
         return (
             <Grid container spacing={4} display={'flex'} flexDirection={{
                 sx: 'column',
@@ -39,7 +39,7 @@ const ServiceList = () => {
                 lg: 'row',
                 xl: 'row',
             }} justifyContent="space-between" marginTop={10}>
-                {entityServiceList.filter(e => e.active).map((card) => (
+                {entityServiceList.filter(e => e.active && entitySuscription.filter((es) => es.serviceId === e.id).length === 0).map((card) => (
                     <Card key={card.id} sx={styles.card} style={{ cursor: card.id != 'checkinbiz' ? 'pointer' : 'default' }} onClick={() => card.id != 'checkinbiz' ? handleActionClick(card.id) : null} elevation={0} >
                         <CardContent sx={styles.card}>
                             <Box sx={styles.iconContainer} >

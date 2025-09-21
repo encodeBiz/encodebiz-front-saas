@@ -8,7 +8,7 @@ import { ToastProvider } from "@/contexts/toastContext";
 import { Suspense } from "react";   // ✅ Importar Suspense
 import PageLoader from "@/components/common/PageLoader";
 import { AuthProvider } from "@/contexts/authContext";
-
+ 
 const geistSans = Geist({
     variable: "--font-geist-sans",
     subsets: ["latin"],
@@ -38,6 +38,7 @@ export default async function RootLayout({
                             <ThemeProvider>
                                 <AuthProvider>
                                     <NextTopLoader showSpinner={false} color="#456456" />
+                                   
                                     {children}
                                 </AuthProvider>
                             </ThemeProvider>

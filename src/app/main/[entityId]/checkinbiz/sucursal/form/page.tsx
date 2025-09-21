@@ -11,8 +11,7 @@ import { useFormStatus } from '@/hooks/useFormStatus';
 import { useRef } from 'react';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
-import { ArrowLeftOutlined, SaveOutlined } from '@mui/icons-material';
-
+ 
 
 
 export default function SucursalForm() {
@@ -42,13 +41,13 @@ export default function SucursalForm() {
               disabled={formStatus?.isSubmitting}
               onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/sucursal?params=${searchParams.get('params')}`)}
               variant='outlined'
-              startIcon={<ArrowLeftOutlined />}
+            
             > {t('core.button.cancel')}</SassButton>
             <SassButton
               disabled={!formStatus?.isValid || formStatus?.isSubmitting}
               onClick={handleExternalSubmit}
               variant='contained'
-              startIcon={<SaveOutlined />}
+            
             > {t('core.button.saveChanges')}</SassButton>
           </Box>
         }

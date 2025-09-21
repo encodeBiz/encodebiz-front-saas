@@ -11,7 +11,7 @@ import { karla } from '@/config/fonts/google_fonts';
 
 export interface HelpTab {
   id: string,
-  icon: (props: any) => React.ReactNode,
+  icon?: (props: any) => React.ReactNode,
   title: string,
   description?: string,
   tabContent: React.ReactNode,
@@ -35,7 +35,7 @@ const HelpTabs = ({ tabs, ref }: HelpTabsProps) => {
   const CustomTab = (props: any) => (
     <Tab
       {...props}
-      icon={props.icon(props)}
+      icon={props.icon ? props.icon(props) : null}
       iconPosition="start"
       label={
         <Box sx={{
@@ -74,7 +74,7 @@ const HelpTabs = ({ tabs, ref }: HelpTabsProps) => {
     <Paper ref={ref} elevation={0} sx={{
       boxShadow: 'none',
       borderRadius: 1,
-      marginTop: 10
+   
     }}>
       <Tabs
         orientation='horizontal'

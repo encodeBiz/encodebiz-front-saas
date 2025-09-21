@@ -6,7 +6,8 @@ import {
     Box,
     Typography,
 
-    Link
+    Link,
+    useTheme
 } from '@mui/material';
 import { LoginFormValues, useRegisterController } from './page.controller';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
@@ -26,6 +27,7 @@ const SignInPage = () => {
     const t = useTranslations()
     const classes = useStyles();
     const { open } = useCommonModal()
+    const theme = useTheme()
     return (
         <Container sx={{ display: 'flex', justifyItems: 'center', flexDirection: 'column', alignItems: 'center' }} maxWidth="sm">
             <Box sx={classes.locale}>
@@ -63,7 +65,7 @@ const SignInPage = () => {
                     <Box sx={{ textAlign: 'center' }}>
 
                         <Typography variant="body2">
-                            {t('core.signin.noAccount')} <Link style={{ color: '#1C1D1B', textUnderlineOffset: 4 }} href="/auth/register">{t('core.signup.signup')}</Link>
+                            {t('core.signin.noAccount')} <Link style={{ color: theme.palette.primary.main, textDecoration:'none' }} href="/auth/register">{t('core.signup.signup')}</Link>
                         </Typography>
                     </Box>
                 </Box>

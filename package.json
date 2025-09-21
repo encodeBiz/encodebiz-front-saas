@@ -42,6 +42,7 @@
     "react-color": "^2.19.3",
     "react-dom": "^19.0.0",
     "react-image-crop": "^11.0.10",
+    "recharts": "^3.2.0",
     "sharp": "^0.34.3",
     "stripe": "^18.2.0",
     "swiper": "^11.2.8",

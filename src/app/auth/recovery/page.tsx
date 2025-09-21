@@ -5,7 +5,8 @@ import {
     Container,
     Box,
     Typography,
-    Link
+    Link,
+    useTheme
 } from '@mui/material';
 import { RecoveryFormValues, useRegisterController } from './page.controller';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
@@ -26,6 +27,7 @@ const RecoveryPage = () => {
     const classes = useStyles();
     const { open, closeModal } = useCommonModal();
     const { push } = useRouter();
+    const theme = useTheme()
 
     return (
         <Container maxWidth="sm">
@@ -61,10 +63,10 @@ const RecoveryPage = () => {
 
                     <Box sx={{ textAlign: 'center' }}>
                         <Typography variant="body2">
-                            {t('core.recovery.noAccount')} <Link style={{color:'#1C1D1B', textUnderlineOffset:4}} href="/auth/register">{t('core.recovery.signup')}</Link>
+                            {t('core.recovery.noAccount')} <Link style={{color: theme.palette.primary.main, textDecoration:'none'}} href="/auth/register">{t('core.recovery.signup')}</Link>
                         </Typography>
                         <Typography variant="body2">
-                            {t('core.recovery.existAccount')} <Link style={{color:'#1C1D1B', textUnderlineOffset:4}} href="/auth/login">{t('core.recovery.signin')}</Link>
+                            {t('core.recovery.existAccount')} <Link style={{color: theme.palette.primary.main, textDecoration:'none'}} href="/auth/login">{t('core.recovery.signin')}</Link>
                         </Typography>
                     </Box>
                 </Box>

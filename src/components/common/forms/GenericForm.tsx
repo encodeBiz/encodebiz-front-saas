@@ -9,6 +9,7 @@ import {
   Grid,
   Paper,
   Typography,
+  useTheme,
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { IUserMedia } from '@/domain/core/IUserMedia';
@@ -143,7 +144,7 @@ const GenericForm = <T extends Record<string, any>>({
   formRef
 }: GenericFormProps<T>) => {
   const t = useTranslations()
-
+  const theme = useTheme()
 
   return (
     <Paper
@@ -198,7 +199,7 @@ const GenericForm = <T extends Record<string, any>>({
                 }
               })}
               {linkForm && <Typography variant="body2">
-                <Link href="/auth/recovery">{t('core.signup.recovery')}</Link>
+                <Link style={{color: theme.palette.primary.main, textDecoration:'none'}} href="/auth/recovery">{t('core.signup.recovery')}</Link>
               </Typography>}
 
               <Grid sx={{ width: '100%' }}>

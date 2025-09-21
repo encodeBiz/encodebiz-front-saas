@@ -3,6 +3,7 @@
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import WelcomeInviteModal from '@/components/common/modals/WelcomeInvite';
 import PageLoader from '@/components/common/PageLoader';
+import ScrollToTop from '@/components/common/ScrollToTop';
 import Footer from '@/components/layouts/Footer';
 import Header from '@/components/layouts/Header/Header';
 import Onboarding from '@/components/layouts/Onboarding/Onboarding';
@@ -68,6 +69,7 @@ function Admin({
             paddingTop: "100px",
             paddingBottom: "24px", px: 4
           }}>
+             <ScrollToTop />
             {pendAuth && <PageLoader backdrop type={'circular'} fullScreen />}
             {enableAdvise && <Alert
               action={

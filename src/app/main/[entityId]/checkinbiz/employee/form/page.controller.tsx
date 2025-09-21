@@ -31,6 +31,7 @@ export default function useEmployeeController() {
     role: "internal",
     status: 'active',
     subEntity: '',
+    metadata: []
   });
 
   const validationSchema = Yup.object().shape({
@@ -140,6 +141,7 @@ export default function useEmployeeController() {
       label: t('core.label.setting'),
       type: 'text',
       required: true,
+      fullWidth: true,
       component: DynamicKeyValueInput,
     },
 

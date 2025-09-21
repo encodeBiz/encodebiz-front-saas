@@ -30,7 +30,7 @@ export const CustomChip = ({ label, background = "default", id = '', text = '', 
             sx={{
                 background: colorRepository[background],
                 borderColor: (theme) => background == "default" ? theme.palette.primary.main : colorRepository[background],
-                px: 1, py: 2,
+                px: props.size == 'small' ? 0 : 1, py: props.size == 'small' ? 0 : 2,
                 width: 'fit-content',
                 cursor: text ? 'pointer' : 'default',
                 ...props.sx

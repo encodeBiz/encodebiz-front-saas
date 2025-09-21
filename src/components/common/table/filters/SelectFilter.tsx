@@ -9,7 +9,16 @@ export interface SelectFilterProps {
 }
 export const SelectFilter = ({ defaultValue, value, onChange, items, first = true }: SelectFilterProps) => {
     const t = useTranslations()
-    return <Select sx={{ height: 46 }}
+    return <Select
+
+
+        sx={{
+            height: 46,
+            paddingRight:2,
+            "& .MuiSelect-icon": {
+               
+            },
+        }}
         value={value ?? 'none'}
         defaultValue={defaultValue ?? 'none'}
         onChange={(e: any) => onChange(e.target.value)}  >

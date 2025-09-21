@@ -5,7 +5,8 @@ import {
     Container,
     Box,
     Typography,
-    Link
+    Link,
+    useTheme
 } from '@mui/material';
 import { RegisterFormValues, useRegisterController } from './page.controller';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
@@ -21,6 +22,7 @@ const SignUpPage = () => {
     const { initialValues, validationSchema, fields, signInWithEmail } = useRegisterController()
     const t = useTranslations()
     const classes = useStyles();
+    const theme = useTheme()
 
     return (
         <Container style={{ minWidth: 600, maxWidth: 700, width: '100%' }}>
@@ -56,7 +58,7 @@ const SignUpPage = () => {
 
                     <Box sx={{ textAlign: 'center' }}>
                         <Typography variant="body2">
-                            {t('core.signup.existAccount')} <Link style={{color:'#1C1D1B', textUnderlineOffset:4}} href="/auth/login">{t('core.signup.signIn')}</Link>
+                            {t('core.signup.existAccount')} <Link style={{color: theme.palette.primary.main, textDecoration:'none'}} href="/auth/login">{t('core.signup.signIn')}</Link>
                         </Typography>
                     </Box>
                 </Box>
