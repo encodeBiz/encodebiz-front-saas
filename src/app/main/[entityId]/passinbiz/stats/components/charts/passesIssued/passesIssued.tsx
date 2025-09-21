@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import { Box, Stack, Typography, CircularProgress } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
     ResponsiveContainer,
     ComposedChart,
@@ -19,6 +19,7 @@ import usePassesIssuedController, { formatCompact } from "./passesIssued.control
 import { useEntity } from "@/hooks/useEntity";
 import { usePassinBizStats } from "../../../context/passBizStatsContext";
 import { CustomChip } from "@/components/common/table/CustomChip";
+import { SeriesFilter } from "../../filters/fields/SeriesFilter";
 
 
 export const PassesIssuedChart = () => {
@@ -26,6 +27,7 @@ export const PassesIssuedChart = () => {
     const { currentEntity } = useEntity()
     const { payloadPassIssuedFilter } = usePassinBizStats()
     const [showCumulative, setShowCumulative] = React.useState(true);
+    const [seriesEventVisibles, setSeriesEventVisibles] = useState<Array<string>>([])
 
     const { handleFetchStats, loading, graphData } = usePassesIssuedController()
     useEffect(() => {
@@ -36,6 +38,17 @@ export const PassesIssuedChart = () => {
                 entityId: currentEntity?.entity.id
             })
     }, [currentEntity?.entity.id, payloadPassIssuedFilter])
+
+    useEffect(() => {
+        if (graphData?.series?.length)
+            setSeriesEventVisibles(graphData?.series.map((e: any) => e.field))
+    }, [graphData])
+
+
+    console.log(graphData);
+
+
+
 
     return (<>
         <Box sx={{ height: 460 }}>
@@ -63,7 +76,7 @@ export const PassesIssuedChart = () => {
                                 <YAxis />
                                 <Tooltip />
                                 <Legend />
-                                {graphData?.series.map((s: any) => (
+                                {graphData?.series.filter((s: any) => seriesEventVisibles?.includes(s.field)).map((s: any) => (
                                     <Bar maxBarSize={25} key={s.field} dataKey={s.field} name={s.name} stackId="events" fill={s.color} />
                                 ))}
                                 {showCumulative && <Line type="monotone" dataKey="cumulative" name={t('stats.cumulativo')} dot={false} />}
@@ -74,6 +87,10 @@ export const PassesIssuedChart = () => {
 
                 <Box >
                     <Stack direction="column" spacing={1} sx={{ mt: 1 }}>
+                        {Array.isArray(graphData?.series) && graphData?.series?.length > 0 && <Typography variant="body2">{t('stats.series')}</Typography>}
+                        {Array.isArray(graphData?.series) && graphData?.series?.length > 0 && <SeriesFilter seriesChart2={graphData?.series.map(e => ({ id: e.field, name: e.name }))} value={seriesEventVisibles ?? []} onChange={(series: any) => setSeriesEventVisibles(series)} />}
+
+                        <Typography variant="body2">{t('stats.summary')}</Typography>
                         <CustomChip size="small" label={`Total: ${formatCompact(graphData?.data?.total ?? 0)}`} />
                         <CustomChip size="small" label={`Series: ${graphData?.series.length}`} />
                         <CustomChip size="small" label={`Buckets: ${graphData?.rows.length}`} />

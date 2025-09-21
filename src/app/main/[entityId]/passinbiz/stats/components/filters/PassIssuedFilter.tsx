@@ -32,7 +32,7 @@ export const PassIssuedFilter = () => {
             setPayloadPassIssued({ ...payloadPassIssued, events })
           }} />}
       </Box>
-      <Box display={'flex'} flexWrap={'wrap'} flexDirection={{ xs: "column", md: "row" }} pb={1}  >
+      <Box display={'flex'} flexWrap={'wrap'} flexDirection={{ xs: "column", md: "row" }} pb={1} pl={2} >
         <SassButton variant='contained' color='primary' size='small' onClick={() => applyFilter('issued')}>{t('core.button.applyFilter')}</SassButton>
       </Box>
     </Box>

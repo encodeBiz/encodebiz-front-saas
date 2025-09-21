@@ -33,8 +33,7 @@ export const PassesValidationChart = () => {
     const { payloadPassValidatorFilter, seriesChart2 } = usePassinBizStats()
     const { handleFetchStats, loading, graphData } = usePassesValidationController()
     const [seriesStateVisibles, setSeriesStateVisibles] = useState<Array<string>>([...seriesChart2.map(e => e.id)])
-    const [seriesEventVisibles, setEventStateVisibles] = useState<Array<string>>([...seriesChart2.map(e => e.id)])
-
+ 
 
     useEffect(() => {
 
@@ -45,13 +44,17 @@ export const PassesValidationChart = () => {
                 // entityId: currentEntity?.entity.id
 
             })
-            if (Array.isArray(payloadPassValidatorFilter?.events) && payloadPassValidatorFilter?.events?.length > 0)
-                setEventStateVisibles([...payloadPassValidatorFilter?.events?.map(e => e.id)])
+        
         }
     }, [currentEntity?.entity.id, payloadPassValidatorFilter])
 
-    console.log(seriesChart2);
 
+     useEffect(() => {
+        if (currentEntity?.entity.id && seriesChart2?.length) 
+            setSeriesStateVisibles(seriesChart2.map(e=>e.id))        
+        
+    }, [seriesChart2?.length])
+ 
     return (<>
         <Box display={'flex'} flexDirection={'row'} gap={2} mb={2}>
             <Box display={'flex'} flexDirection={'column'} >
@@ -92,7 +95,7 @@ export const PassesValidationChart = () => {
             <Box   >
                 <Stack direction="column" spacing={1} sx={{ mt: 1 }}>
                     {/** <CustomChip size="small" label={`${t('stats.dateRange')} (UTC): ${graphData?.dr?.start ?? '-'} → ${graphData?.dr?.end ?? '-'}`} />*/}
-                    <Typography variant="body2">{t('stats.series')}</Typography>
+                    {seriesChart2.length > 0 &&<Typography variant="body2">{t('stats.series')}</Typography>}
                     {seriesChart2.length > 0 && <SeriesFilter seriesChart2={seriesChart2} value={seriesStateVisibles ?? []} onChange={(series: any) => setSeriesStateVisibles(series)} />}
 
                     <Typography variant="body2">{t('stats.summary')}</Typography>

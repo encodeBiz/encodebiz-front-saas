@@ -7,14 +7,13 @@ import { GroupByFilter } from "./fields/GroupByFilter"
 import { TypeFilter } from "./fields/TypeFilter"
 import { usePassinBizStats } from "../../context/passBizStatsContext"
 import { useTranslations } from "next-intl"
-import { Chart2SeriesFilter } from "./fields/Chart2SeriesFilter"
 import { IPassValidatorStatsRequest } from "../../model/PassValidator"
 
 export const PassValidatorFilter = () => {
-  const { payloadPassValidator, setPayloadPassValidator, seriesChart2, applyFilter } = usePassinBizStats()
+  const { payloadPassValidator, setPayloadPassValidator,  applyFilter } = usePassinBizStats()
   const t = useTranslations()
   return <BorderBox sx={{ width: "100%", p: 1, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
-    <Box display={'flex'} justifyContent={'flex-end'} alignItems={'flex-end'} flexDirection={"row"}   >
+    <Box display={'flex'} justifyContent={'flex-end'} alignItems={'flex-end'} flexDirection={"row"}  pl={2}  >
       <Box display={'flex'} flexWrap={'wrap'} flexDirection={{ xs: "column", md: "row" }} gap={2} >
         <TypeFilter value={payloadPassValidator?.type as any} onChange={(type) => {
           setPayloadPassValidator({ ...payloadPassValidator as IPassValidatorStatsRequest, type, events: type === 'credential' ? [] : payloadPassValidator?.events })
