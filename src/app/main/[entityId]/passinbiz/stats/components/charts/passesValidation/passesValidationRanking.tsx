@@ -1,6 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Stack, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 import {
     ResponsiveContainer,
     ComposedChart,
