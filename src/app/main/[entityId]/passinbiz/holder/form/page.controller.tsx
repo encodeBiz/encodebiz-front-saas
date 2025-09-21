@@ -14,8 +14,7 @@ import { useLayout } from "@/hooks/useLayout";
 import { useParams, useSearchParams } from "next/navigation";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
 import ImageUploadInput from "@/components/common/forms/fields/ImageUploadInput";
-import { IEvent } from "@/domain/features/passinbiz/IEvent";
-
+ 
 
 export default function useHolderController() {
   const t = useTranslations();
@@ -85,19 +84,15 @@ export default function useHolderController() {
   ]
   const [loadForm, setLoadForm] = useState(false)
   const [fields, setFields] = useState<any[]>([...fieldList])
-  const [eventData, setEventData] = useState<{ loaded: boolean, eventList: Array<IEvent> }>({ loaded: false, eventList: [] })
 
   const inicializeField = async () => {
     setFields(fieldList)
     setLoadForm(true)
   }
-  const inicializeEvent = async () => {
-    const eventList = await search(currentEntity?.entity.id as string, { ...{} as any, limit: 100 })
-    setEventData({ loaded: true, eventList })
-  }
 
-  if (currentEntity?.entity.id && !eventData.loaded) inicializeEvent()
-  if (currentEntity?.entity.id && !loadForm && eventData.loaded) inicializeField()
+
+
+  if (currentEntity?.entity.id && !loadForm) inicializeField()
 
 
 
@@ -162,6 +157,9 @@ export default function useHolderController() {
 
   const onChangeType = async (typeValue: any) => {
     if (typeValue === 'event') {
+      const eventList = await search(currentEntity?.entity.id as string, { ...{} as any, limit: 100 })
+      console.log(eventList);
+      
       const fieldList = fields.filter(e => e.name !== 'thumbnail')
       fieldList.splice(4, 0, {
         name: 'parentId',
@@ -169,7 +167,7 @@ export default function useHolderController() {
         type: 'text',
         required: true,
         fullWidth: true,
-        options: [...eventData.eventList.map((e) => ({ value: e.id, label: e.name }))],
+        options: [...eventList.map((e) => ({ value: e.id, label: e.name }))],
         component: SelectInput,
       })
       setFields(fieldList.filter(e => e.name !== 'thumbnail'))
