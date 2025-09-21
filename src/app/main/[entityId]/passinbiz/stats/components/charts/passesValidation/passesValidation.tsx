@@ -30,31 +30,32 @@ export const PassesValidationChart = () => {
     const [showCumulative, setShowCumulative] = React.useState(true);
     const t = useTranslations()
     const { currentEntity } = useEntity()
-    const { payloadPassValidatorFilter, seriesChart2 } = usePassinBizStats()
-    const { handleFetchStats, loading, graphData } = usePassesValidationController()
+    const { payloadPassValidatorFilter, seriesChart2, lastUseFilter, setLastUseFilter,graphData } = usePassinBizStats()
+    const { handleFetchStats, loading } = usePassesValidationController()
     const [seriesStateVisibles, setSeriesStateVisibles] = useState<Array<string>>([...seriesChart2.map(e => e.id)])
- 
+
 
     useEffect(() => {
 
-        if (currentEntity?.entity.id && payloadPassValidatorFilter) {
+        if (currentEntity?.entity.id && payloadPassValidatorFilter && payloadPassValidatorFilter !== lastUseFilter['validator']) {
             handleFetchStats({
                 ...payloadPassValidatorFilter,
-                 stats: 'PASSES_VALIDATION',
-                 entityId: currentEntity?.entity.id
+                stats: 'PASSES_VALIDATION',
+                entityId: currentEntity?.entity.id
 
             })
-        
+            setLastUseFilter({ ...lastUseFilter, ['validator']: payloadPassValidatorFilter })
+
         }
     }, [currentEntity?.entity.id, payloadPassValidatorFilter])
 
 
-     useEffect(() => {
-        if (currentEntity?.entity.id && seriesChart2?.length) 
-            setSeriesStateVisibles(seriesChart2.map(e=>e.id))        
-        
+    useEffect(() => {
+        if (currentEntity?.entity.id && seriesChart2?.length)
+            setSeriesStateVisibles(seriesChart2.map(e => e.id))
+
     }, [seriesChart2?.length])
- 
+
     return (<>
         <Box display={'flex'} flexDirection={'row'} gap={2} mb={2}>
             <Box display={'flex'} flexDirection={'column'} >
@@ -66,7 +67,7 @@ export const PassesValidationChart = () => {
         <Box display={'flex'} flexDirection={'row'} gap={2}>
             <Box sx={{ height: 400, width: '80%' }}>
 
-                {graphData?.empty ? (
+                {graphData['validator']?.empty ? (
                     <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
                         <EmptyState showIcon={false}
                             title={t('stats.empthy')}
@@ -75,7 +76,7 @@ export const PassesValidationChart = () => {
                     </Stack>
                 ) : (
                     <ResponsiveContainer width="100%" height="100%">
-                        <ComposedChart data={graphData?.rows} margin={{ top: 8, right: 16, left: 8, bottom: 8 }}>
+                        <ComposedChart data={graphData['validator']?.rows} margin={{ top: 8, right: 16, left: 8, bottom: 8 }}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="label" />
                             <YAxis />
@@ -94,22 +95,21 @@ export const PassesValidationChart = () => {
             </Box>
             <Box   >
                 <Stack direction="column" spacing={1} sx={{ mt: 1 }}>
-                    {/** <CustomChip size="small" label={`${t('stats.dateRange')} (UTC): ${graphData?.dr?.start ?? '-'} → ${graphData?.dr?.end ?? '-'}`} />*/}
-                    {seriesChart2.length > 0 &&<Typography variant="body2">{t('stats.series')}</Typography>}
+                    {/** <CustomChip size="small" label={`${t('stats.dateRange')} (UTC): ${graphData['validator']?.dr?.start ?? '-'} → ${graphData['validator']?.dr?.end ?? '-'}`} />*/}
+                    {seriesChart2.length > 0 && <Typography variant="body2">{t('stats.series')}</Typography>}
                     {seriesChart2.length > 0 && <SeriesFilter seriesChart2={seriesChart2} value={seriesStateVisibles ?? []} onChange={(series: any) => setSeriesStateVisibles(series)} />}
 
                     <Typography variant="body2">{t('stats.summary')}</Typography>
                     <Stack direction="column" spacing={1} flexWrap="wrap" sx={{ mb: 1 }}>
-                        <CustomChip size="small" label={`Total: ${formatCompact(graphData?.data?.total as number ?? 0)}`} />
+                        <CustomChip size="small" label={`Total: ${formatCompact(graphData['validator']?.data?.total as number ?? 0)}`} />
                         <CustomChip size="small" label={showCumulative ? t('stats.cumulativo') + ": ON" : t('stats.cumulativo') + ": OFF"} onClick={() => setShowCumulative(v => !v)} />
-                        <CustomChip size="small" label={`${t('stats.attempts')}: ${formatCompact(graphData?.kpis.attempts || 0)}`} />
-                        <CustomChip size="small" label={`${t('stats.valid')}: ${formatCompact(graphData?.kpis.valid || 0)}`} />
-                        <CustomChip size="small" label={`${t('stats.failed')}: ${formatCompact(graphData?.kpis.failed || 0)}`} />
-                        <CustomChip size="small" label={`${t('stats.revoked')}: ${formatCompact(graphData?.kpis.revoked || 0)}`} />
-                        <CustomChip size="small" label={`${t('stats.validation')}: ${(graphData?.kpis.validationRate || 0).toFixed(2)}%`} />
-                        <CustomChip size="small" label={`${t('stats.retry')}: ${(graphData?.kpis.retryFactor || 0).toFixed(2)}x`} />
-                        {graphData?.kpis.peak?.key && <CustomChip size="small" label={`${t('stats.peak')}: ${formatCompact(graphData?.kpis.peak.attempts)} @ ${labelFromKey(payloadPassValidatorFilter?.groupBy as GroupBy, graphData?.kpis.peak.key)}`} />}
-                        {/*payload?.dateRange?.start && <CustomChip size="small" label={`UTC: ${payload?.dateRange.start} → ${payload?.dateRange.end}`} />*/}
+                        <CustomChip size="small" label={`${t('stats.attempts')}: ${formatCompact(graphData['validator']?.kpis?.attempts || 0)}`} />
+                        <CustomChip size="small" label={`${t('stats.valid')}: ${formatCompact(graphData['validator']?.kpis?.valid || 0)}`} />
+                        <CustomChip size="small" label={`${t('stats.failed')}: ${formatCompact(graphData['validator']?.kpis?.failed || 0)}`} />
+                        <CustomChip size="small" label={`${t('stats.revoked')}: ${formatCompact(graphData['validator']?.kpis?.revoked || 0)}`} />
+                        <CustomChip size="small" label={`${t('stats.validation')}: ${(graphData['validator']?.kpis?.validationRate || 0).toFixed(2)}%`} />
+                        <CustomChip size="small" label={`${t('stats.retry')}: ${(graphData['validator']?.kpis?.retryFactor || 0).toFixed(2)}x`} />
+                        {graphData['validator']?.kpis?.peak?.key && <CustomChip size="small" label={`${t('stats.peak')}: ${formatCompact(graphData['validator']?.kpis?.peak?.attempts)} @ ${labelFromKey(payloadPassValidatorFilter?.groupBy as GroupBy, graphData['validator']?.kpis?.peak?.key)}`} />}
                     </Stack>
 
                 </Stack>

@@ -24,7 +24,7 @@ export const EventFilter = ({ value, onChangeData }: { value: Array<string>, onC
                 operator: '<=',
                 value: new Date(),
             }
-        ]
+        ]         
         const eventList = await search(currentEntity?.entity.id as string, { ...{filters} as any, limit: 100 })
         setEventData(eventList)
     }
@@ -52,7 +52,7 @@ export const EventFilter = ({ value, onChangeData }: { value: Array<string>, onC
                     });
                 onChangeData(data)
             }}>
-            {eventData.map((o, i) => <MenuItem key={i} value={o.id}>
+            {eventData.map((o, i) => <MenuItem disabled={value?.length==5 && value?.indexOf(o.id) == -1} key={i} value={o.id}>
                 <Checkbox checked={value.indexOf(o.id) > -1} />
                 <ListItemText primary={o.name} />
             </MenuItem>)}
