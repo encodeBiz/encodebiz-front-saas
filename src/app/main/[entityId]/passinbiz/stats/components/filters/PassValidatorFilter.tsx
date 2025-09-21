@@ -31,7 +31,7 @@ export const PassValidatorFilter = () => {
           }} />}
       </Box>
       <Box display={'flex'} flexWrap={'wrap'} flexDirection={{ xs: "column", md: "row" }} pb={1}  >
-        <SassButton variant='contained' color='primary' size='small' onClick={() => applyFilter('validator')}>{t('core.button.applyFilter')}</SassButton>
+        <SassButton disabled={!payloadPassValidator?.type} variant='contained' color='primary' size='small' onClick={() => applyFilter('validator')}>{t('core.button.applyFilter')}</SassButton>
       </Box>
     </Box>
 

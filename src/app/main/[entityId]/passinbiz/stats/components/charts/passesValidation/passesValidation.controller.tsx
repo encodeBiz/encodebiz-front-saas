@@ -68,9 +68,7 @@ export const METRIC_COLORS: Record<keyof ValidationTotals, string> = {
 };
 const METRIC_ABBR: Record<keyof ValidationTotals, string> = { valid: "V", failed: "F", revoked: "R" };
 
-function formatCompact(n: number) {
-  return new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 }).format(n);
-}
+ 
 function labelFromKey(gb: GroupBy, key: string) {
   return gb === "hour" ? `${String(key).padStart(2, "0")}:00` : key;
 }
@@ -207,8 +205,7 @@ export default function usePassesValidationController() {
       const empty = rows.length === 0 || series.length === 0;
       const kpis = computeKPIs(buckets, payload.groupBy)
 
-      console.log(series);
-      
+       
       setSeriesChart2(series.map((s) => ({ id: s.field, name: s.name })))
       setGraphData({
         buckets, rows, series, ranking, dr, empty, kpis, data: normalized

@@ -44,12 +44,6 @@ export const PassesIssuedChart = () => {
             setSeriesEventVisibles(graphData?.series.map((e: any) => e.field))
     }, [graphData])
 
-
-    console.log(graphData);
-
-
-
-
     return (<>
         <Box sx={{ height: 460 }}>
             <Box display={'flex'} flexDirection={'row'} gap={2} mb={2}>

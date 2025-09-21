@@ -6,45 +6,7 @@ import { IPassTrendStatsRequest } from '../model/PassTrend';
 import { rmNDay } from '@/lib/common/Date';
 
 
- 
-const defaultValuePASSES_ISSUED = {
-    "entityId": "z1YRV6s6ueqnJpIvInFL",
-    "stats": "PASSES_ISSUED",
-    "dateRange": {
-        "start": "2025-09-12T09:00:00.000Z",
-        "end": "2025-09-12T22:00:00.000Z"
-    },
-    "groupBy": "hour",
-    "type": "event",
-    "passStatus": "active",
-    "events": [
-        {
-            "id": "DAhykI0IAJAWA9Ip9TGW",
-            "name": "Masterclass GROUND"
-        },
-        {
-            "id": "ItjpMhJf4dJAkbZR5zkf",
-            "name": "Presentación de PassBiz"
-        }
-    ]
-}
 
-
-const defaultValuePASSES_VALIDATION = {
-    entityId: "z1YRV6s6ueqnJpIvInFL",
-    stats: "PASSES_VALIDATION", // <-- importante
-    dateRange: {
-        start: "2025-09-16T09:00:00.000Z",
-        end: "2025-09-16T22:00:00.000Z",
-    },
-    groupBy: "hour",
-    type: "event",
-    passStatus: "active",
-    events: [
-        { id: "DAhykI0IAJAWA9Ip9TGW", name: "Masterclass GROUND" },
-        { id: "ItjpMhJf4dJAkbZR5zkf", name: "Presentación de PassBiz" },
-    ],
-}
 
 interface IPassinBizStatsProps {
     payloadPassIssued: IPassIssuedStatsRequest | undefined,
@@ -77,20 +39,20 @@ export function PassinBizStatsProvider({ children }: { children: React.ReactNode
             "end": new Date()
         },
         "groupBy": "day",
-        "type": "credential",
+        "type": "",
         "passStatus": "active",
     } as IPassIssuedStatsRequest)
     const [payloadPassValidator, setPayloadPassValidator] = useState<IPassValidatorStatsRequest>({
-        /*
+
         "dateRange": {
             "start": rmNDay(new Date(), 5),
             "end": new Date()
         },
         "groupBy": "day",
-        "type": "credential",
+        "type": "",
         "passStatus": "active",
-        */
-        ...defaultValuePASSES_VALIDATION
+
+
     } as IPassValidatorStatsRequest)
     const [payloadPassTrend, setPayloadPassTrend] = useState<IPassTrendStatsRequest>()
 

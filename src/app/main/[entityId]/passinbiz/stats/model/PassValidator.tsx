@@ -8,7 +8,7 @@ export interface IPassValidatorStatsRequest {
         end: any
     },
     groupBy: GroupBy,
-    type: "event" | "credential",
+    type: "event" | "credential" | "" ,
     passStatus?: 'not_generated' | 'pending' | 'active' | 'revoked' | 'failed' | 'archived';
     events?: Array<{ id: string, name: string }>
     series?: Array<{ id: string, name: string }>

@@ -52,7 +52,7 @@ export const EventFilter = ({ value, onChangeData }: { value: Array<string>, onC
                     });
                 onChangeData(data)
             }}>
-            {eventData.map((o, i) => <MenuItem key={o.id} value={o.id}>
+            {eventData.map((o, i) => <MenuItem key={i} value={o.id}>
                 <Checkbox checked={value.indexOf(o.id) > -1} />
                 <ListItemText primary={o.name} />
             </MenuItem>)}

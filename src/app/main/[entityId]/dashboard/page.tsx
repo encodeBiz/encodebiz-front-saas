@@ -10,8 +10,7 @@ import { BorderBox } from '@/components/common/tabs/BorderBox';
 import { PassesTrendChart } from '../passinbiz/stats/components/charts/passesTrend/passesTrend';
 import { PassinBizStatsProvider } from '../passinbiz/stats/context/passBizStatsContext';
 import { useEntity } from '@/hooks/useEntity';
-import { Subscription } from '@/domain/features/passinbiz/ISubscription';
-
+ 
 export default function Dashboard() {
   const t = useTranslations()
   const { } = useDashboardController()
@@ -27,9 +26,10 @@ export default function Dashboard() {
           image={image}
         />
 
-        {entitySuscription.filter((e) => e.serviceId === "passinbiz").length > 0 && <BorderBox sx={{ width: "100%", p: 2, mt: 2, mb: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
+        {entitySuscription.filter((e) => e.serviceId === "passinbiz").length > 0 && <BorderBox sx={{ width: "100%", p: 2, mt: 10, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
           <PassesTrendChart />
         </BorderBox>}
+
         <ServiceList />
 
         <DescriptionCard

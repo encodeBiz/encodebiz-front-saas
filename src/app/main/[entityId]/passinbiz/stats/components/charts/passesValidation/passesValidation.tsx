@@ -17,7 +17,7 @@ import { useTranslations } from "next-intl";
 import EmptyState from "@/components/common/EmptyState/EmptyState";
 import { useEntity } from "@/hooks/useEntity";
 import usePassesValidationController, { METRIC_COLORS } from "./passesValidation.controller";
-import { GroupBy, IPassValidatorStatsRequest } from "../../../model/PassValidator";
+import { GroupBy } from "../../../model/PassValidator";
 import { usePassinBizStats } from "../../../context/passBizStatsContext";
 import { CustomChip } from "@/components/common/table/CustomChip";
 import { SeriesFilter } from "../../filters/fields/SeriesFilter";
@@ -40,8 +40,8 @@ export const PassesValidationChart = () => {
         if (currentEntity?.entity.id && payloadPassValidatorFilter) {
             handleFetchStats({
                 ...payloadPassValidatorFilter,
-                // stats: 'PASSES_VALIDATION',
-                // entityId: currentEntity?.entity.id
+                 stats: 'PASSES_VALIDATION',
+                 entityId: currentEntity?.entity.id
 
             })
         
