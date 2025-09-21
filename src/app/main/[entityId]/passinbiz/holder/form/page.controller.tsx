@@ -157,9 +157,7 @@ export default function useHolderController() {
 
   const onChangeType = async (typeValue: any) => {
     if (typeValue === 'event') {
-      const eventList = await search(currentEntity?.entity.id as string, { ...{} as any, limit: 100 })
-      console.log(eventList);
-      
+      const eventList = await search(currentEntity?.entity.id as string, { ...{} as any, limit: 100 })       
       const fieldList = fields.filter(e => e.name !== 'thumbnail')
       fieldList.splice(4, 0, {
         name: 'parentId',
