@@ -83,7 +83,7 @@ export const PassesValidationChart = () => {
                             <Tooltip />
                             <Legend />
                             {seriesChart2?.filter((s: any) => seriesStateVisibles?.includes(s.id)).map((s: any) => (
-                                <Bar key={s.id} dataKey={s.id} name={s.name} stackId={s.id}
+                                <Bar maxBarSize={25} key={s.id} dataKey={s.id} name={s.name} stackId={s.id}
                                     fill={(s.id.includes('valid') ? METRIC_COLORS.valid : s.id.includes('revoked') ? METRIC_COLORS.revoked : METRIC_COLORS.failed)} />
                             ))}
                             <Line yAxisId="right" type="monotone" dataKey="validationRate" name={t('stats.validation%')} dot={false} strokeWidth={2} />
