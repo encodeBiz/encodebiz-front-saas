@@ -86,7 +86,7 @@
       "tokenExireText": "The session has expired, please log in again to access the encodeBiz SaaS panel",
       "success": "Operation completed successfully",
       "empthy": "Nothing to show",
-      "empthytext": "There are no items to show at this time",
+      "empthytext": "There are no items to display at this time",
       "nocard": "You have no payment methods associated with the entity, please configure at least one."
     },
     "label": {
@@ -103,6 +103,8 @@
       "resourceEvent": "EVENT GRAPHIC RESOURCES",
       "configEvent": "EVENT CONFIGURATION",
       "text": "Texts",
+      "pass": "Passes",
+      "credpass": "Passes/Cred",
       "language": "Language",
       "filename": "File Name",
       "default": "Default",
@@ -233,7 +235,7 @@
     },
     "button": {
       "revoke": "Revoke",
-       "applyFilter":"Apply",
+      "applyFilter": "Apply",
       "configure": "Configure",
       "close": "Close",
       "contactUs": "Contact encodeBiz",
@@ -285,7 +287,7 @@
       "signIn": "Sign in",
       "recovery": "Forgot your password?",
       "complete_profile": "Complete profile",
-      "complete_profile_desc": "Before you start, you must complete your data on the platform and create your first entity, this data can then be modified from the preferences"
+      "complete_profile_desc": "Before you start, you must complete your data on the platform and create your first entity, this data can later be modified from the preferences"
     },
     "signin": {
       "title": "Sign in",
@@ -309,7 +311,7 @@
       "recovery": "Recover password",
       "signin": "Sign in",
       "modalTitle": "Request sent",
-      "modalTitle2": "We will shortly send instructions to your email to reset your password",
+      "modalTitle2": "We will shortly send you instructions to reset your password to your email",
       "ok": "Okay"
     },
     "upload": {
@@ -328,7 +330,7 @@
       "stats": "Statistics",
       "card": {
         "title": "Welcome to encodeBiz SaaS",
-        "subtitle": "Register, control and manage access in one place, PassBiz ready for you and soon CheckBiz."
+        "subtitle": "Register, control and manage access in one place, PassBiz ready for you and very soon CheckBiz."
       },
       "cardDesc": {
         "title1": "More than software,",
@@ -355,7 +357,7 @@
       },
       "tab2": {
         "title": "Change Password",
-        "text": "Tap the following button to send you instructions to change the password"
+        "text": "Tap the following button to send you the instructions to change the password"
       }
     },
     "sessionLastTime": "Last login"
@@ -381,7 +383,7 @@
         "title": "Configure Billing",
         "btn": "Configure Billing",
         "pendingLegal": "To configure payment methods you must first configure the company's legal data",
-        "advise": "To configure payment methods, a pop-up window needs to be opened. If your browser blocks the action, you must unblock it and try again."
+        "advise": "To configure payment methods it is necessary to open a pop-up window, if the browser blocks the action you must unblock and try again."
       },
       "tab4": {
         "title": "Subscriptions",
@@ -423,8 +425,8 @@
   "salesPlan": {
     "title": "AVAILABLE PLANS",
     "emissionLimit": "Emission limit:",
-    "sinLimit": "Unlimited",
-    "subTitle": "Choose between the Free, Bronze, or Enterprise version based on the features you need. Upgrade or change your plan at any time to enhance your experience with PassBiz.",
+    "sinLimit": "No limits",
+    "subTitle": "Choose between the Free, Bronze or Enterprise version depending on the functionalities you need. Upgrade or change your plan at any time to enhance your experience with PassBiz.",
     "free": "Free",
     "configureLegal": "Company Data",
     "configureBranding": "Visual Identity",
@@ -434,9 +436,9 @@
     "month": "month",
     "bronze": "Bronze",
     "freemium": "Free",
-    "branding": "Branding: Default EncodeBiz logo and design",
+    "branding": "Branding: EncodeBiz default logo and design",
     "brandingCustom": "Branding: Full pass customization",
-    "cost": "Estimated cost per pass: ~€0.01",
+    "cost": "Estimated cost per pass: ~0.01 €",
     "costEstimated": "Estimated cost: Variable based on usage",
     "selectPlan": "Select Plan",
     "custom": "Custom",
@@ -446,7 +448,7 @@
     "emailSuport": "Email support",
     "emailPrioritySuport": "Priority email support",
     "emailAndPhoneSuport": "Phone and email support",
-    "estimateRange": "Estimated margin per pass: ~€0.49",
+    "estimateRange": "Estimated margin per pass: ~0.49 €",
     "estimateRangeCustom": "Estimated margin: Variable, but with potential to be significant",
     "enterprise": "Enterprise",
     "customerTime": "24/7 customer support",
@@ -455,8 +457,8 @@
     "unlimitedProducts": "Unlimited products",
     "premium": "Premium",
     "price": "Customer price: Free",
-    "priceEmited": "Price per issued pass: €0.50",
-    "priceMonthly": "Monthly price: To be agreed (recommended between €99 and €499)",
+    "priceEmited": "Price per issued pass: 0.50 €",
+    "priceMonthly": "Monthly price: To be agreed (recommended between 99 € and 499 €)",
     "popular": "Most Popular",
     "limit": "Limit: No restrictions",
     "model": "Model: Pay per use",
@@ -473,9 +475,9 @@
     "feedText1": "The subscription to the plan",
     "feedText2": "of the service",
     "feedText3": "has been completed successfully",
-    "feedText4": "has been successfully removed",
+    "feedText4": "has been successfully deleted",
     "imageConfirmModalTitle": "Configure your Entity to continue",
-    "imageConfirmModalTitle2": "Before purchasing a plan, complete the pending information in the Entity section of your account:",
+    "imageConfirmModalTitle2": "Before contracting a plan, complete the pending information in the Entity section of your account:",
     "notAllowedPlan": "You must update the legal data of the selected entity before obtaining a plan."
   },
   "terms": {
@@ -584,7 +586,7 @@
     "text1": "Selected files",
     "labelType": "File type",
     "deleteConfirmModalTitle": "Delete file",
-    "deleteConfirmModalTitle2": "Be careful!. This action cannot be undone. If you delete a file that is associated with any service or entity, it could affect the proper functioning of these elements on the platform."
+    "deleteConfirmModalTitle2": "Be careful!. This action cannot be undone. If you delete a file that is associated with any service or entity, it could affect the correct functioning of these elements on the platform."
   },
   "renew": {
     "title": "Your subscriptions",
@@ -622,7 +624,7 @@
     "camaraFocus": "Point your camera at a QR code",
     "resultTitle": "Pass confirmed",
     "scanOther": "Scan another code",
-    "lastValidatedAt": "Last validated",
+    "lastValidatedAt": "Last validation",
     "failed": "Code reading failed",
     "failedStaff": "You do not have permissions to validate the pass",
     "tryagain": "Try again",
@@ -633,8 +635,8 @@
   "contact": {
     "title": "Contact Us",
     "title2": "Payment Methods",
-    "test1": "I request to test an event",
-    "test2": "I request an enterprise plan"
+    "test1": "I request to perform an event test",
+    "test2": "I request enterprise plan"
   },
   "integration": {
     "title": "Integrations",
@@ -654,23 +656,23 @@
     "title": "You have been invited as a collaborator ",
     "text1": " As a collaborator you will be able to manage projects, access administrative tools and work together with the assigned team.",
     "text2": " Please configure the account information and add a password",
-    "btn": "Set up account"
+    "btn": "Configure account"
   },
   "cards": {
     "card1": {
       "text1": "Welcome to encodeBiz SaaS",
       "text2": "A platform created to centralize all your digital services in one place.",
-      "text3": "At encodeBiz we turn your ideas into digital solutions. When our services don't cover all your needs, we create what your business requires, tailored to you.",
+      "text3": "At encodeBiz we turn your ideas into digital solutions. When our services do not cover all your needs, we create what your business requires tailored to you.",
       "start": "Start"
     },
     "card2": {
       "text1": "First, configure your entity",
-      "text2": "Before choosing a service and plan, we recommend completing the configuration of your entity.",
+      "text2": "Before choosing a service and plan we recommend completing the configuration of your entity.",
       "text3": "This allows us to,",
       "text4": "Personalize the experience",
       "text5": "with the corporate identity of your organization in any service.",
       "text6": "Centralize information",
-      "text7": " of your entity so that your data is available in all documents and processes on the platform.",
+      "text7": " of your entity so that your data is available in all documents and processes of the platform.",
       "text8": "Ensure legitimate and transparent use",
       "text9": "of the services, complying with legal and protection requirements",
       "continue": "Continue"
@@ -680,16 +682,16 @@
       "text1": "Today with encodeBiz SaaS",
       "text2": "Your first service,",
       "text3": "SaaS service for",
-      "text4": "issuing and managing credentials",
+      "text4": "issue and manage credentials",
       "text5": "and",
       "text6": "event passes",
       "text7": "digital from a single panel.",
-      "text8": "Issue digital credentials for employees, students, or clients.",
+      "text8": "Issue digital credentials for employees, students or clients.",
       "text9": "Create and manage events with passes for attendees and staff.",
       "text10": " Control access securely and in real time.",
       "text11": "Attendance control and management service.",
       "text12": " Record entries and exits with geolocation",
-      "text13": ", organize teams and projects, and generate real-time reports.",
+      "text13": ", organize teams and projects, and generate reports in real time.",
       "text14": "Go to Configure Entity",
       "text15": "Configure later"
     }
@@ -702,9 +704,29 @@
     "type": "Type",
     "event": "Events",
     "passesIssued": "Passes Issued",
+    "passesIssuedText": "Stacked bars by event and cumulative line. UTC range.",
     "passesIssuedRank": "Passes Issued Ranking",
-    "passesIssuedText": "Stacked bars by event + cumulative line. UTC Range.",
+    "passesValidation": "Validation: Attempts vs Successes vs Revoked Validated Passes",
+    "passesValidationText": "Stacked by event (V/F/R) + line of % global validation per bucket.",
+    "passesValidationRank": "Validated Passes Ranking",
     "cumulativo": "Cumulative",
-    "dateRange": "Date Range"
+    "dateRange": "Date Range",
+    "passes": "Passes",
+    "valid": "Valid",
+    "validation": "Validations",
+    "retry": "Retries",
+    "attempts": "Attempts",
+    "peak": "Peaks",
+    "failed": "Failures",
+    "statusPass": "Statuses",
+    "revoked": "Revoked",
+    "totalByEvent": "Total by event",
+    "validation%": "Validation %",
+    "passesTrend": "Monthly trend · Credentials vs Passes",
+    "passesTrendText": "Two lines to project investment (credentials) versus issuance/use (passes).",
+    "empthy": "Perform your first query",
+    "summary": "Summary",
+    "series": "Visible series",
+    "empthytext": "Adjust the filters with the parameters you require to graph information"
   }
 }
