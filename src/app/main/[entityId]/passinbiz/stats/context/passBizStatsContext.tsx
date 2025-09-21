@@ -40,20 +40,20 @@ export function PassinBizStatsProvider({ children }: { children: React.ReactNode
 
     const [payloadPassIssued, setPayloadPassIssued] = useState<IPassIssuedStatsRequest>({
         "dateRange": {
-            "start": rmNDay(new Date(), 5),
-            "end": new Date()
+            start: new Date(new Date().getFullYear(), 0, 1),
+            end: new Date()
         },
-        "groupBy": "day",
+        "groupBy": "month",
         "type": "",
         "passStatus": "active",
     } as IPassIssuedStatsRequest)
     const [payloadPassValidator, setPayloadPassValidator] = useState<IPassValidatorStatsRequest>({
 
         "dateRange": {
-            "start": rmNDay(new Date(), 5),
-            "end": new Date()
+            start: new Date(new Date().getFullYear(), 0, 1),
+            end: new Date()
         },
-        "groupBy": "day",
+        "groupBy": "month",
         "type": "",
         "passStatus": "active",
 
@@ -83,7 +83,7 @@ export function PassinBizStatsProvider({ children }: { children: React.ReactNode
         }
     }
     return (
-        <PassinBizStatsContext.Provider value={{ graphData, setGraphData,lastUseFilter, setLastUseFilter, applyFilter, payloadPassIssuedFilter, payloadPassValidatorFilter, seriesChart2, payloadPassTrend, setPayloadPassTrend, setSeriesChart2, payloadPassIssued, setPayloadPassIssued, payloadPassValidator, setPayloadPassValidator }}>
+        <PassinBizStatsContext.Provider value={{ graphData, setGraphData, lastUseFilter, setLastUseFilter, applyFilter, payloadPassIssuedFilter, payloadPassValidatorFilter, seriesChart2, payloadPassTrend, setPayloadPassTrend, setSeriesChart2, payloadPassIssued, setPayloadPassIssued, payloadPassValidator, setPayloadPassValidator }}>
             {children}
         </PassinBizStatsContext.Provider>
     );
