@@ -1,9 +1,10 @@
- import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/useToast";
 
 import { fetchStats } from "@/services/passinbiz/holder.service";
-import  { useState } from "react";
+import { useState } from "react";
 import { BucketItem, GroupBy, IPassIssuedStatsRequest, IPassIssuedStatsResponse } from "../../../model/PassIssued";
+import { usePassinBizStats } from "../../../context/passBizStatsContext";
 
 
 
@@ -110,7 +111,7 @@ export default function usePassesIssuedController() {
 
     const [loading, setLoading] = useState(false);
     //Graph Data
-    const [graphData, setGraphData] = useState<ChartData>()
+    const { setGraphData, graphData } = usePassinBizStats()
     const { token } = useAuth()
     const { showToast } = useToast()
     async function handleFetchStats(payload: IPassIssuedStatsRequest) {
@@ -124,7 +125,10 @@ export default function usePassesIssuedController() {
             const dr = normalized?.dateRange ?? (normalized as IPassIssuedStatsResponse)?.dateRange;
             const empty = rows.length === 0 || series.length === 0;
             setGraphData({
-                buckets, rows, series, ranking, dr, empty, data: normalized
+                ...graphData,
+                ['issued']:{
+                    buckets, rows, series, ranking, dr, empty, data: normalized
+                }
             })
 
         }).catch(e => {

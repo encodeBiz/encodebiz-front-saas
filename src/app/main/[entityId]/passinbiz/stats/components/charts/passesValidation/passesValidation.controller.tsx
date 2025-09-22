@@ -68,7 +68,7 @@ export const METRIC_COLORS: Record<keyof ValidationTotals, string> = {
 };
 const METRIC_ABBR: Record<keyof ValidationTotals, string> = { valid: "V", failed: "F", revoked: "R" };
 
- 
+
 function labelFromKey(gb: GroupBy, key: string) {
   return gb === "hour" ? `${String(key).padStart(2, "0")}:00` : key;
 }
@@ -189,7 +189,8 @@ export default function usePassesValidationController() {
 
 
   //Graph Data
-  const [graphData, setGraphData] = useState<ChartData>()
+  const { setGraphData, graphData } = usePassinBizStats()
+
   const { token } = useAuth()
   const { showToast } = useToast()
   async function handleFetchStats(payload: IPassValidatorStatsRequest) {
@@ -205,12 +206,15 @@ export default function usePassesValidationController() {
       const empty = rows.length === 0 || series.length === 0;
       const kpis = computeKPIs(buckets, payload.groupBy)
 
-       
-      setSeriesChart2(series.map((s) => ({ id: s.field, name: s.name })))
-      setGraphData({
-        buckets, rows, series, ranking, dr, empty, kpis, data: normalized
-      })
 
+      setSeriesChart2(series.map((s) => ({ id: s.field, name: s.name })))
+
+      setGraphData({
+        ...graphData,
+        ['validator']: {
+          buckets, rows, series, ranking, dr, empty, kpis, data: normalized
+        }
+      })
 
     }).catch(e => {
       showToast(e?.message, 'error')

@@ -25,24 +25,27 @@ import { SeriesFilter } from "../../filters/fields/SeriesFilter";
 export const PassesIssuedChart = () => {
     const t = useTranslations()
     const { currentEntity } = useEntity()
-    const { payloadPassIssuedFilter } = usePassinBizStats()
+    const { payloadPassIssuedFilter,  lastUseFilter, setLastUseFilter, graphData } = usePassinBizStats()
     const [showCumulative, setShowCumulative] = React.useState(true);
     const [seriesEventVisibles, setSeriesEventVisibles] = useState<Array<string>>([])
-
-    const { handleFetchStats, loading, graphData } = usePassesIssuedController()
+    const { handleFetchStats, loading } = usePassesIssuedController()
     useEffect(() => {
-        if (currentEntity?.entity.id && payloadPassIssuedFilter)
+         
+        if (currentEntity?.entity.id && payloadPassIssuedFilter && payloadPassIssuedFilter !== lastUseFilter['issued']) {
             handleFetchStats({
                 ...payloadPassIssuedFilter,
                 stats: 'PASSES_ISSUED',
                 entityId: currentEntity?.entity.id
             })
+            setLastUseFilter({...lastUseFilter,['issued']:payloadPassIssuedFilter})
+        }
     }, [currentEntity?.entity.id, payloadPassIssuedFilter])
 
     useEffect(() => {
-        if (graphData?.series?.length)
-            setSeriesEventVisibles(graphData?.series.map((e: any) => e.field))
-    }, [graphData])
+         
+        if (graphData['issued']?.series?.length)
+            setSeriesEventVisibles(graphData['issued']?.series?.map((e: any) => e.field))
+    }, [graphData['issued']])
 
     return (<>
         <Box sx={{ height: 460 }}>
@@ -55,7 +58,7 @@ export const PassesIssuedChart = () => {
             </Box>
             <Box display={'flex'} flexDirection={'row'} gap={2}>
                 <Box sx={{ height: 400, width: '80%' }}>
-                    {graphData?.empty ? (
+                    {graphData['issued']?.empty ? (
                         <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
                             <EmptyState showIcon={false}
                                 title={t('stats.empthy')}
@@ -64,13 +67,13 @@ export const PassesIssuedChart = () => {
                         </Stack>
                     ) : (
                         <ResponsiveContainer width="100%" height="100%">
-                            <ComposedChart data={graphData?.rows} margin={{ top: 8, right: 16, left: 8, bottom: 8 }}>
+                            <ComposedChart data={graphData['issued']?.rows} margin={{ top: 8, right: 16, left: 8, bottom: 8 }}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="label" />
                                 <YAxis />
                                 <Tooltip />
                                 <Legend />
-                                {graphData?.series.filter((s: any) => seriesEventVisibles?.includes(s.field)).map((s: any) => (
+                                {graphData['issued']?.series?.filter((s: any) => seriesEventVisibles?.includes(s.field)).map((s: any) => (
                                     <Bar maxBarSize={25} key={s.field} dataKey={s.field} name={s.name} stackId="events" fill={s.color} />
                                 ))}
                                 {showCumulative && <Line type="monotone" dataKey="cumulative" name={t('stats.cumulativo')} dot={false} />}
@@ -81,13 +84,13 @@ export const PassesIssuedChart = () => {
 
                 <Box >
                     <Stack direction="column" spacing={1} sx={{ mt: 1 }}>
-                        {Array.isArray(graphData?.series) && graphData?.series?.length > 0 && <Typography variant="body2">{t('stats.series')}</Typography>}
-                        {Array.isArray(graphData?.series) && graphData?.series?.length > 0 && <SeriesFilter seriesChart2={graphData?.series.map(e => ({ id: e.field, name: e.name }))} value={seriesEventVisibles ?? []} onChange={(series: any) => setSeriesEventVisibles(series)} />}
+                        {Array.isArray(graphData['issued']?.series) && graphData['issued']?.series?.length > 0 && <Typography variant="body2">{t('stats.series')}</Typography>}
+                        {Array.isArray(graphData['issued']?.series) && graphData['issued']?.series?.length > 0 && <SeriesFilter seriesChart2={graphData['issued']?.series.map((e:any) => ({ id: e.field, name: e.name }))} value={seriesEventVisibles ?? []} onChange={(series: any) => setSeriesEventVisibles(series)} />}
 
                         <Typography variant="body2">{t('stats.summary')}</Typography>
-                        <CustomChip size="small" label={`Total: ${formatCompact(graphData?.data?.total ?? 0)}`} />
-                        <CustomChip size="small" label={`Series: ${graphData?.series.length}`} />
-                        <CustomChip size="small" label={`Buckets: ${graphData?.rows.length}`} />
+                        <CustomChip size="small" label={`Total: ${formatCompact(graphData['issued']?.data?.total ?? 0)}`} />
+                        <CustomChip size="small" label={`Series: ${graphData['issued']?.series?.length}`} />
+                        <CustomChip size="small" label={`Buckets: ${graphData['issued']?.rows?.length}`} />
                         <CustomChip size="small" label={showCumulative ? t('stats.cumulativo') + ": ON" : t('stats.cumulativo') + ": OFF"} onClick={() => setShowCumulative(v => !v)} />
 
                     </Stack>

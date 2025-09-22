@@ -1,6 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Stack, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 import {
     ResponsiveContainer,
     ComposedChart,
@@ -13,23 +12,12 @@ import {
 } from "recharts";
 import { useTranslations } from "next-intl";
 import EmptyState from "@/components/common/EmptyState/EmptyState";
-import { useEntity } from "@/hooks/useEntity";
 import { usePassinBizStats } from "../../../context/passBizStatsContext";
-import usePassesValidationController, { METRIC_COLORS } from "./passesValidation.controller";
+import { METRIC_COLORS } from "./passesValidation.controller";
 import { CustomChip } from "@/components/common/table/CustomChip";
 export const PassesValidationRankingChart = () => {
     const t = useTranslations()
-    const { currentEntity } = useEntity()
-    const { payloadPassValidatorFilter } = usePassinBizStats()
-    const { handleFetchStats, graphData } = usePassesValidationController()
-    useEffect(() => {
-        if (currentEntity?.entity.id && payloadPassValidatorFilter)
-            handleFetchStats({
-                ...payloadPassValidatorFilter,
-                stats: 'PASSES_VALIDATION',
-                entityId: currentEntity?.entity.id
-            })
-    }, [currentEntity?.entity.id, payloadPassValidatorFilter])
+    const { graphData } = usePassinBizStats()
 
     return (<>
 
@@ -40,7 +28,7 @@ export const PassesValidationRankingChart = () => {
             <Box display={'flex'} flexDirection={'row'} gap={2}>
                 <Box sx={{ height: 350, width: '80%' }} >
                     <ResponsiveContainer width="100%" height="100%">
-                        {graphData?.ranking?.length === 0 ? (
+                        {graphData['validator']?.ranking?.length === 0 ? (
                             <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
                                 <EmptyState showIcon={false}
                                     title={t('stats.empthy')}
@@ -48,7 +36,7 @@ export const PassesValidationRankingChart = () => {
                                 />
                             </Stack>
                         ) : (
-                            <ComposedChart data={graphData?.ranking.map((r: any) => ({ evento: r.event, Valid: r.valid, Failed: r.failed, Revoked: r.revoked }))} margin={{ top: 8, right: 16, left: 8, bottom: 24 }}>
+                            <ComposedChart data={graphData['validator']?.ranking?.map((r: any) => ({ evento: r.event, Valid: r.valid, Failed: r.failed, Revoked: r.revoked }))} margin={{ top: 8, right: 16, left: 8, bottom: 24 }}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="evento" angle={-10} height={60} />
                                 <YAxis />
@@ -62,7 +50,7 @@ export const PassesValidationRankingChart = () => {
                 </Box>
                 <Box >
                     <Stack direction="column" spacing={1} flexWrap="wrap" sx={{ mb: 1 }}>
-                        {graphData?.ranking.map((r: any) => ({ evento: r.event, Valid: r.valid, Failed: r.failed, Revoked: r.revoked })).map((e: any, i: any) =>
+                        {graphData['validator']?.ranking?.map((r: any) => ({ evento: r.event, Valid: r.valid, Failed: r.failed, Revoked: r.revoked })).map((e: any, i: any) =>
                             <Box key={i} flexDirection="column" display={'flex'} sx={{ mb: 1 }} gap={1}>
                                 <Typography variant="body2">{e.evento}</Typography>
                                 <CustomChip key={i} size="small" label={`${t('stats.valid')}:${e.Valid}`} />
