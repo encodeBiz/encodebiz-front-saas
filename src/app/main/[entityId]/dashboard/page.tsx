@@ -26,7 +26,7 @@ export default function Dashboard() {
           image={image}
         />
 
-        {entitySuscription.filter((e) => e.serviceId === "passinbiz").length > 0 && <BorderBox sx={{ width: "100%", p: 2, mt: 10, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
+        {entitySuscription.filter((e) => e.serviceId === "passinbiz").length > 0 && <BorderBox sx={{ width: "100%", p: 2, mt: 10, background: 'white'}}>
           <PassesTrendChart />
         </BorderBox>}
 

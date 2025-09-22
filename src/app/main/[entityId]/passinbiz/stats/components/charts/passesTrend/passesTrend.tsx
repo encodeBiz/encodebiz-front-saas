@@ -42,7 +42,7 @@ export const PassesTrendChart = () => {
     }, [currentEntity?.entity.id, payloadPassTrend])
 
     return (<>
-        <Box sx={{ height: 260 }}>
+        <Box sx={{ height: 360 }}>
             <Box display={'flex'} flexDirection={'row'} gap={2} mb={2}>
                 <Box display={'flex'} flexDirection={'column'} >
                     <Typography variant="body1">{t('stats.passesTrend')}</Typography>
@@ -51,7 +51,7 @@ export const PassesTrendChart = () => {
                 {loading && <CircularProgress size={24} />}
             </Box>
             <Box display={'flex'} flexDirection={'row'} gap={2}>
-                <Box width={'80%'} sx={{ height: 200 }}>
+                <Box width={'80%'} sx={{ height: 300 }}>
                     {graphData?.empty ? (
                         <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
                             <EmptyState />
