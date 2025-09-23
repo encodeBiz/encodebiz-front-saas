@@ -14,7 +14,6 @@ import { useTranslations } from "next-intl";
 import EmptyState from "@/components/common/EmptyState/EmptyState";
 import { usePassinBizStats } from "../../../context/passBizStatsContext";
 import { CustomChip } from "@/components/common/table/CustomChip";
-import usePassesIssuedController from "./passesIssued.controller";
 export const PassesIssuedRankingChart = () => {
     const t = useTranslations()
     const theme = useTheme()

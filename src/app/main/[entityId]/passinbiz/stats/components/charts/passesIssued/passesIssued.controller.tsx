@@ -2,7 +2,6 @@ import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/useToast";
 
 import { fetchStats } from "@/services/passinbiz/holder.service";
-import { useState } from "react";
 import { BucketItem, GroupBy, IPassIssuedStatsRequest, IPassIssuedStatsResponse } from "../../../model/PassIssued";
 import { usePassinBizStats } from "../../../context/passBizStatsContext";
 

@@ -3,7 +3,6 @@ import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/useToast";
 
 import { fetchStats } from "@/services/passinbiz/holder.service";
-import { useState } from "react";
 import { IPassValidatorStatsRequest, IPassValidatorStatsResponse } from "../../../model/PassValidator";
 import { usePassinBizStats } from "../../../context/passBizStatsContext";
 
