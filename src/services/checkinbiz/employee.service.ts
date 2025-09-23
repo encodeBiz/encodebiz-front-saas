@@ -115,7 +115,7 @@ export const deleteEmployee = async (entityId: string, id: string, token: string
       const response: any = await httpClientFetchInstance.delete(
         process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_DELETE_EMPLOYEE as string,
         {
-          id, entityId
+          employeeId:id, entityId
         }
       );
       if (response.errCode && response.errCode !== 200) {
