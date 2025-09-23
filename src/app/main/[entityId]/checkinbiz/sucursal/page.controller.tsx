@@ -132,9 +132,15 @@ export default function useEmployeeListController() {
       minWidth: 170,
     },
     {
+      id: 'name',
+      label: t("core.label.name"),
+      minWidth: 170,
+    },
+    {
       id: 'address',
       label: t("core.label.address"),
       minWidth: 170,
+       format: (value, row) => row.address.street,
     },
      
 
@@ -195,11 +201,6 @@ export default function useEmployeeListController() {
         fetchingData(filterParams)
     }
   }, [currentEntity?.entity?.id, searchParams.get('params')])
-
-
-
-
-
 
 
 

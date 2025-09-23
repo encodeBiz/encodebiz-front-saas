@@ -115,7 +115,7 @@ export const deleteSucursal = async (entityId: string, id: string, token: string
       const response: any = await httpClientFetchInstance.delete(
         process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_DELETE_SUCURSAL as string,
         {
-          id, entityId
+          branchId:id, entityId
         }
       );
       if (response.errCode && response.errCode !== 200) {

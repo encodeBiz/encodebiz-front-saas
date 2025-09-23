@@ -95,6 +95,7 @@
       "subEntityData": "DATOS DE LA SUCURSAL",
       "internal": "Interno",
       "collaborator": "Colaborador",
+      "ratioChecklog":"Radio de chequeo",
       "inactive": "Inactivo",
       "personalData": "INFORMACIÓN PESONAL",
       "aditionalData": "INFORMACIÓN ADICIONAL",
