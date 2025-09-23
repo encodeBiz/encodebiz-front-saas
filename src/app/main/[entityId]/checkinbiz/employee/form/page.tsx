@@ -34,7 +34,7 @@ export default function EmployeeForm() {
   return (
     <Container maxWidth="xl">
       <HeaderPage
-        title={id ? t('employee.edit') : t('employee.add')}
+        title={id ? t('employee.update') : t('employee.add')}
         description={t('employee.formDesc')}
         isForm
         actions={

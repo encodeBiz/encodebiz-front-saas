@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useToast } from "@/hooks/useToast";
 import { useTranslations } from "next-intl";
-import { useEffect,   useState } from "react";
+import { useEffect, useState } from "react";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
@@ -12,7 +12,7 @@ import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import { deleteEmployee, search } from "@/services/checkinbiz/employee.service";
 import { useLayout } from "@/hooks/useLayout";
 import { useSearchParams } from "next/navigation";
-import { DeleteOutline, Edit } from "@mui/icons-material";
+import { DeleteOutline, Edit, PhoneOutlined } from "@mui/icons-material";
 import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
@@ -83,7 +83,20 @@ export default function useEmployeeListController() {
       allowItem: () => true,
       onPress: (item: IEmployee) => onEdit(item)
     },
+ 
+
+    {
+      actionBtn: true,
+      color: 'primary',
+      icon: <PhoneOutlined color="primary" />,
+      label: t('employee.configureDevice'),
+      bulk: false,
+      allowItem: () => true,
+      onPress: (item: IEmployee) => onEdit(item)
+    },
   ]
+
+
 
 
 

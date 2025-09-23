@@ -7,9 +7,9 @@ export interface IEmployee {
     phone?: string;
     email: string;
     trustedDevicesId?: string[]; // Para control en checkin
-    status: "active" | "inactive";
+    status: "active" | "inactive" | "vacation" | "sick_leave" | "leave_of_absence" | "paternity_leave" | "maternity_leave";
     twoFA?: any,
     createdAt: Date;
-    subEntity?: string; // Proyecto asignado, sucursal , etc
+    branchId: string[];// Proyecto asignado, sucursal , etc
     metadata?: any
 }

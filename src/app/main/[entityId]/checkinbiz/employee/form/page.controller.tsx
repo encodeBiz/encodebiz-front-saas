@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
@@ -14,6 +15,8 @@ import { createEmployee, fetchEmployee, updateEmployee } from "@/services/checki
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
+import { search } from "@/services/checkinbiz/sucursal.service";
+import SelectMultipleInput from "@/components/common/forms/fields/SelectMultipleInput";
 
 
 export default function useEmployeeController() {
@@ -24,13 +27,14 @@ export default function useEmployeeController() {
   const { id } = useParams<{ id: string }>()
   const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
+  const [fields, setFields] = useState<Array<any>>([])
   const [initialValues, setInitialValues] = useState<Partial<IEmployee>>({
     "fullName": '',
     email: '',
     phone: '',
     role: "internal",
     status: 'active',
-    subEntity: '',
+    branchId: [],
     metadata: []
   });
 
@@ -73,81 +77,8 @@ export default function useEmployeeController() {
   };
 
 
-  const fields = [
-    {
-      isDivider: true,
-      label: t('core.label.personalData'),
-    },
-    {
-      name: 'fullName',
-      label: t('core.label.name'),
-      type: 'text',
-      required: true,
-      component: TextInput,
-    },
 
-    {
-      name: 'email',
-      label: t('core.label.email'),
-      type: 'text',
-      required: true,
-      component: TextInput,
-    },
-    {
-      name: 'phone',
-      label: t('core.label.phone'),
-      type: 'text',
-      required: true,
-      component: TextInput,
-    },
-    {
-      name: 'role',
-      label: t('core.label.role'),
-      component: SelectInput,
-      required: true,
-      options: [
-        { value: 'internal', label: t('core.label.internal') },
-        { value: 'collaborator', label: t('core.label.collaborator') },
-
-      ],
-    },
-    {
-      name: 'status',
-      label: t('core.label.status'),
-      type: 'text',
-      required: false,
-
-      options: [
-        { value: 'active', label: t('core.label.active') },
-        { value: 'inactive', label: t('core.label.inactive') },
-      ],
-      component: SelectInput,
-    },
-    {
-      name: 'subEntity',
-      label: t('core.label.subEntity'),
-      type: 'text',
-      required: false,
-      options: [],
-      component: SelectInput,
-    },
-    {
-      isDivider: true,
-      label: t('core.label.aditionalData'),
-    },
-
-    {
-      name: 'metadata',
-      label: t('core.label.setting'),
-      type: 'text',
-      required: true,
-      fullWidth: true,
-      component: DynamicKeyValueInput,
-    },
-
-  ];
-
-  const fetchData = useCallback(async () => {
+  const fetchData = async () => {
 
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
@@ -161,12 +92,112 @@ export default function useEmployeeController() {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
     }
-  }, [changeLoaderState, currentEntity?.entity.id, id, showToast, t])
+  }
+
+  const inicialize = async () => {
+    changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+    const branckList = (await search(currentEntity?.entity.id as string, {
+      limit: 100,
+      filters: [
+        {
+          field: 'status', operator: '==', value: 'active'
+        }
+      ]
+    } as any)).map(e => ({ value: e.id, label: e.name }))
+
+    if (!id) {
+      setInitialValues({
+        "fullName": '',
+        email: '',
+        phone: '',
+        role: "internal",
+        status: 'active',
+        branchId: branckList.length == 1 ? branckList.map(e => e.value as string) : [],
+        metadata: []
+      })
+    }
+    setFields([
+      {
+        isDivider: true,
+        label: t('core.label.personalData'),
+      },
+      {
+        name: 'fullName',
+        label: t('core.label.name'),
+        type: 'text',
+        required: true,
+        component: TextInput,
+      },
+
+      {
+        name: 'email',
+        label: t('core.label.email'),
+        type: 'text',
+        required: true,
+        component: TextInput,
+      },
+      {
+        name: 'phone',
+        label: t('core.label.phone'),
+        type: 'text',
+        required: true,
+        component: TextInput,
+      },
+      {
+        name: 'role',
+        label: t('core.label.role'),
+        component: SelectInput,
+        required: true,
+        options: [
+          { value: 'internal', label: t('core.label.internal') },
+          { value: 'collaborator', label: t('core.label.collaborator') },
+
+        ],
+      },
+      {
+        name: 'status',
+        label: t('core.label.status'),
+        type: 'text',
+        required: false,
+
+        options: [
+          { value: 'active', label: t('core.label.active') },
+          { value: 'inactive', label: t('core.label.inactive') },
+        ],
+        component: SelectInput,
+      },
+      {
+        name: 'branchId',
+        label: t('core.label.subEntity'),
+        type: 'text',
+        required: false,
+        options: branckList,
+        component: SelectMultipleInput,
+      },
+      {
+        isDivider: true,
+        label: t('core.label.aditionalData'),
+      },
+      {
+        name: 'metadata',
+        label: t('core.label.setting'),
+        type: 'text',
+        required: true,
+        fullWidth: true,
+        component: DynamicKeyValueInput,
+      },
+    ])
+
+    changeLoaderState({ show: false })
+  }
 
   useEffect(() => {
+    if (currentEntity?.entity.id) {
+      inicialize()
+    }
     if (currentEntity?.entity.id && user?.id && id)
       fetchData()
-  }, [currentEntity?.entity.id, user?.id, id, fetchData])
+  }, [currentEntity?.entity.id, user?.id, id])
 
 
   return { fields, initialValues, validationSchema, handleSubmit }

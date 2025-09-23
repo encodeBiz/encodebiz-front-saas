@@ -16,7 +16,7 @@ export const collection = {
     STAFF: 'staff',
 
     //CheckBiz
-    EMPLOYEE: 'employee',
+    EMPLOYEE: 'employees',
     SUCURSAL: 'branches',
     CHECKLOG: 'checklog',
 
