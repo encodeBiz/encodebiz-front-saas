@@ -35,7 +35,7 @@ export default function BranchDetail() {
                     onBack={onBack}
                     onNext={onNext}
                     topFilter={topFilter}
-                    selectable
+                     
 
                 />
             </Detail>}

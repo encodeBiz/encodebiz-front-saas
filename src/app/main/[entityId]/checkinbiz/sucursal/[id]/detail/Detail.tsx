@@ -13,10 +13,10 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
             <Grid container spacing={2} alignItems="center">
 
                 <Grid >
-                    <Typography variant="h4" fontWeight="bold"  >
+                    <Typography variant="h4"   >
                         {branch?.name}
                     </Typography>
-                    <Typography variant="h6" sx={{ opacity: 0.9 }}>
+                    <Typography variant="h6"  >
 
                         {t('sucursal.detailSucursal')}
                     </Typography>
