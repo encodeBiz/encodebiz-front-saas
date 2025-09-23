@@ -11,7 +11,7 @@ import { CommonModalType } from "@/contexts/commonModalContext";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import { deleteEmployee, search } from "@/services/checkinbiz/employee.service";
 import { useLayout } from "@/hooks/useLayout";
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { DeleteOutline, Edit, PhoneOutlined } from "@mui/icons-material";
 import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
@@ -40,6 +40,8 @@ interface IFilterParams {
 
 export default function useEmployeeListController() {
   const t = useTranslations();
+  const { id } = useParams<{ id: string }>()
+
   const searchParams = useSearchParams()
   const { token } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
@@ -62,7 +64,7 @@ export default function useEmployeeListController() {
   })
 
   const { closeModal, openModal } = useCommonModal()
-  const rowAction: Array<IRowAction> = [
+  const rowAction: Array<IRowAction> = id?[]:[
     {
       actionBtn: true,
       color: 'error',
@@ -83,7 +85,7 @@ export default function useEmployeeListController() {
       allowItem: () => true,
       onPress: (item: IEmployee) => onEdit(item)
     },
- 
+
 
     {
       actionBtn: true,
@@ -94,7 +96,8 @@ export default function useEmployeeListController() {
       allowItem: () => true,
       onPress: (item: IEmployee) => onEdit(item)
     },
-  ]
+    ]
+  
 
 
 
@@ -164,9 +167,16 @@ export default function useEmployeeListController() {
   ];
 
   const fetchingData = (filterParams: IFilterParams) => {
-
+    const filters = []
+    if (id) {
+      filters.push({
+        field: 'branchId',
+        operator: 'array-contains',
+        value: id
+      })
+    }
     setLoading(true)
-    search(currentEntity?.entity.id as string, { ...(filterParams.params as any) }).then(async res => {
+    search(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters: [...filterParams.params.filters, ...filters] }).then(async res => {
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
         setItems(res)
