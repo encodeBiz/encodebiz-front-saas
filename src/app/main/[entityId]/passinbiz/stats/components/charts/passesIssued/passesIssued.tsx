@@ -26,10 +26,10 @@ import BoxLoader from "@/components/common/BoxLoader";
 export const PassesIssuedChart = () => {
     const t = useTranslations()
     const { currentEntity } = useEntity()
-    const { payloadPassIssuedFilter, lastUseFilter, setLastUseFilter, graphData } = usePassinBizStats()
+    const { payloadPassIssuedFilter, lastUseFilter, setLastUseFilter, graphData, pending } = usePassinBizStats()
     const [showCumulative, setShowCumulative] = React.useState(true);
     const [seriesEventVisibles, setSeriesEventVisibles] = useState<Array<string>>([])
-    const { handleFetchStats, loading } = usePassesIssuedController()
+    const { handleFetchStats } = usePassesIssuedController()
     useEffect(() => {
 
         if (currentEntity?.entity.id && payloadPassIssuedFilter && payloadPassIssuedFilter !== lastUseFilter['issued']) {
@@ -57,8 +57,8 @@ export const PassesIssuedChart = () => {
                 </Box>
              </Box>
 
-            {loading && <BoxLoader message={t('core.title.loaderAction') } />}
-            {!loading && <Box display={'flex'} flexDirection={'row'} gap={2}>
+            {pending['issued']  && <BoxLoader message={t('core.title.loaderAction') } />}
+            {!pending['issued']  && <Box display={'flex'} flexDirection={'row'} gap={2}>
 
                 <Box sx={{ height: 400, width: '80%' }}>
                     {graphData['issued']?.empty ? (

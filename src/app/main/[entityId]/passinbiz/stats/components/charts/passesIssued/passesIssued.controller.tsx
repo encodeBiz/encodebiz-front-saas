@@ -109,13 +109,13 @@ export interface ChartData {
 
 export default function usePassesIssuedController() {
 
-    const [loading, setLoading] = useState(false);
+   
     //Graph Data
-    const { setGraphData, graphData } = usePassinBizStats()
+    const { setGraphData, graphData, pending, setPending } = usePassinBizStats()
     const { token } = useAuth()
     const { showToast } = useToast()
     async function handleFetchStats(payload: IPassIssuedStatsRequest) {
-        setLoading(true);
+        setPending({...pending,'issued':true});
 
         fetchStats({ ...payload } as IPassIssuedStatsRequest, token).then(res => {
             const normalized = normalizeApiResponse(res);
@@ -134,7 +134,7 @@ export default function usePassesIssuedController() {
         }).catch(e => {
             showToast(e?.message, 'error')
         }).finally(() => {
-            setLoading(false)
+          setPending({...pending,'issued':false});
         })
     }
 
@@ -143,7 +143,7 @@ export default function usePassesIssuedController() {
 
 
     return {
-        handleFetchStats, loading, graphData
+        handleFetchStats,   graphData
     }
 
 }

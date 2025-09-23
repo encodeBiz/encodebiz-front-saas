@@ -18,11 +18,10 @@ import usePassesIssuedController from "./passesIssued.controller";
 export const PassesIssuedRankingChart = () => {
     const t = useTranslations()
     const theme = useTheme()
-    const { graphData } = usePassinBizStats()
-    const { loading } = usePassesIssuedController()
-
-    return (<>
-        {!loading && <Box>
+    const { graphData, pending } = usePassinBizStats()
+ 
+    return (<> 
+        {!pending['issued']  && <Box>
             <Box display={'flex'} flexDirection={'column'} >
                 <Typography variant="body1">{t('stats.passesIssuedRank')}</Typography>
             </Box>

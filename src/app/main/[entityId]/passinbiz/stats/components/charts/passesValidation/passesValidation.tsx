@@ -31,8 +31,8 @@ export const PassesValidationChart = () => {
     const [showCumulative, setShowCumulative] = React.useState(true);
     const t = useTranslations()
     const { currentEntity } = useEntity()
-    const { payloadPassValidatorFilter, seriesChart2, lastUseFilter, setLastUseFilter, graphData } = usePassinBizStats()
-    const { handleFetchStats, loading } = usePassesValidationController()
+    const { payloadPassValidatorFilter, seriesChart2, lastUseFilter, setLastUseFilter, graphData, pending } = usePassinBizStats()
+    const { handleFetchStats } = usePassesValidationController()
     const [seriesStateVisibles, setSeriesStateVisibles] = useState<Array<string>>([...seriesChart2.map(e => e.id)])
 
 
@@ -65,8 +65,8 @@ export const PassesValidationChart = () => {
             </Box>
         </Box>
 
-        {loading && <BoxLoader message={t('core.title.loaderAction') } />}
-        {!loading && <Box display={'flex'} flexDirection={'row'} gap={2}>
+        {pending['validator'] && <BoxLoader message={t('core.title.loaderAction') } />}
+        {!pending['validator']  && <Box display={'flex'} flexDirection={'row'} gap={2}>
             <Box sx={{ height: 400, width: '80%' }}>
 
                 {graphData['validator']?.empty ? (

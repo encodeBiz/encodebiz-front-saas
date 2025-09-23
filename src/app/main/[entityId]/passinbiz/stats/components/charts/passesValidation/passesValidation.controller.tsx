@@ -182,9 +182,8 @@ export interface ChartData {
 
 export default function usePassesValidationController() {
 
-  const { setSeriesChart2 } = usePassinBizStats()
-  const [loading, setLoading] = useState(false);
-
+  const { setSeriesChart2 , pending, setPending} = usePassinBizStats()
+ 
 
 
 
@@ -194,7 +193,7 @@ export default function usePassesValidationController() {
   const { token } = useAuth()
   const { showToast } = useToast()
   async function handleFetchStats(payload: IPassValidatorStatsRequest) {
-    setLoading(true);
+      setPending({...pending,'validator':true});
 
     fetchStats({ ...payload } as IPassValidatorStatsRequest, token).then(res => {
       const normalized = normalizeApiResponse(res);
@@ -219,7 +218,7 @@ export default function usePassesValidationController() {
     }).catch(e => {
       showToast(e?.message, 'error')
     }).finally(() => {
-      setLoading(false)
+      setPending({...pending,'validator':false});
     })
   }
 
@@ -228,7 +227,7 @@ export default function usePassesValidationController() {
 
 
   return {
-    handleFetchStats, loading, graphData
+    handleFetchStats, graphData
   }
 
 }

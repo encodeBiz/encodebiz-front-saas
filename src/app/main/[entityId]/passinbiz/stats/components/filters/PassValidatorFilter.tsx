@@ -15,12 +15,18 @@ export const PassValidatorFilter = () => {
   return <BorderBox sx={{ width: "100%", p: 1, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
     <Box display={'flex'} justifyContent={'flex-end'} alignItems={'flex-end'} flexDirection={"row"} pl={2}  >
       <Box display={'flex'} flexWrap={'wrap'} flexDirection={'column'} gap={2} >
-        <Box display={'flex'} flexWrap={'wrap'} justifyContent={'center'} alignItems={'center'} flexDirection={{ xs: "column", md: "row" }} gap={2} >
+        <Box display={'flex'} flexWrap={'wrap'} justifyContent={'flex-end'} alignItems={'center'} flexDirection={{ xs: "column", md: "row" }} gap={2} >
           <TypeFilter value={payloadPassValidator?.type as "event" | "credential"} onChange={(type: "event" | "credential") => {
             setPayloadPassValidator({ ...payloadPassValidator as IPassValidatorStatsRequest, type, events: type === 'credential' ? [] : payloadPassValidator?.events })
 
           }} />
 
+          {payloadPassValidator?.type === 'event' && <EventFilter
+            value={payloadPassValidator?.events?.map(e => e.id) ?? []}
+            onChangeData={(events) => {
+              setPayloadPassValidator({ ...payloadPassValidator, events })
+            }} />
+          }
           <GroupByFilter
             value={payloadPassValidator?.groupBy as any}
             onChange={(groupBy) => {
@@ -29,13 +35,7 @@ export const PassValidatorFilter = () => {
           <DateRangePicker value={payloadPassValidator?.dateRange as any} onChange={(dateRange) => setPayloadPassValidator({ ...payloadPassValidator as IPassValidatorStatsRequest, dateRange })} />
 
         </Box>
-        {payloadPassValidator?.type === 'event' && <Box display={'flex'} flexWrap={'wrap'} flexDirection={{ xs: "column", md: "row" }} gap={2} >
-          <EventFilter
-            value={payloadPassValidator?.events?.map(e => e.id) ?? []}
-            onChangeData={(events) => {
-              setPayloadPassValidator({ ...payloadPassValidator, events })
-            }} />
-        </Box>}
+
 
 
 
