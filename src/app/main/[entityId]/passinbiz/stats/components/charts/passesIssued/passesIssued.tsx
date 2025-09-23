@@ -20,29 +20,30 @@ import { useEntity } from "@/hooks/useEntity";
 import { usePassinBizStats } from "../../../context/passBizStatsContext";
 import { CustomChip } from "@/components/common/table/CustomChip";
 import { SeriesFilter } from "../../filters/fields/SeriesFilter";
+import BoxLoader from "@/components/common/BoxLoader";
 
 
 export const PassesIssuedChart = () => {
     const t = useTranslations()
     const { currentEntity } = useEntity()
-    const { payloadPassIssuedFilter,  lastUseFilter, setLastUseFilter, graphData } = usePassinBizStats()
+    const { payloadPassIssuedFilter, lastUseFilter, setLastUseFilter, graphData } = usePassinBizStats()
     const [showCumulative, setShowCumulative] = React.useState(true);
     const [seriesEventVisibles, setSeriesEventVisibles] = useState<Array<string>>([])
     const { handleFetchStats, loading } = usePassesIssuedController()
     useEffect(() => {
-         
+
         if (currentEntity?.entity.id && payloadPassIssuedFilter && payloadPassIssuedFilter !== lastUseFilter['issued']) {
             handleFetchStats({
                 ...payloadPassIssuedFilter,
                 stats: 'PASSES_ISSUED',
                 entityId: currentEntity?.entity.id
             })
-            setLastUseFilter({...lastUseFilter,['issued']:payloadPassIssuedFilter})
+            setLastUseFilter({ ...lastUseFilter, ['issued']: payloadPassIssuedFilter })
         }
     }, [currentEntity?.entity.id, payloadPassIssuedFilter])
 
     useEffect(() => {
-         
+
         if (graphData['issued']?.series?.length)
             setSeriesEventVisibles(graphData['issued']?.series?.map((e: any) => e.field))
     }, [graphData['issued']])
@@ -54,9 +55,11 @@ export const PassesIssuedChart = () => {
                     <Typography variant="body1">{t('stats.passesIssued')}</Typography>
                     <Typography variant="caption">{t('stats.passesIssuedText')}</Typography>
                 </Box>
-                {loading && <CircularProgress size={24} />}
-            </Box>
-            <Box display={'flex'} flexDirection={'row'} gap={2}>
+             </Box>
+
+            {loading && <BoxLoader message={t('core.title.loaderAction') } />}
+            {!loading && <Box display={'flex'} flexDirection={'row'} gap={2}>
+
                 <Box sx={{ height: 400, width: '80%' }}>
                     {graphData['issued']?.empty ? (
                         <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
@@ -85,7 +88,7 @@ export const PassesIssuedChart = () => {
                 <Box >
                     <Stack direction="column" spacing={1} sx={{ mt: 1 }}>
                         {Array.isArray(graphData['issued']?.series) && graphData['issued']?.series?.length > 0 && <Typography variant="body2">{t('stats.series')}</Typography>}
-                        {Array.isArray(graphData['issued']?.series) && graphData['issued']?.series?.length > 0 && <SeriesFilter seriesChart2={graphData['issued']?.series.map((e:any) => ({ id: e.field, name: e.name }))} value={seriesEventVisibles ?? []} onChange={(series: any) => setSeriesEventVisibles(series)} />}
+                        {Array.isArray(graphData['issued']?.series) && graphData['issued']?.series?.length > 0 && <SeriesFilter seriesChart2={graphData['issued']?.series.map((e: any) => ({ id: e.field, name: e.name }))} value={seriesEventVisibles ?? []} onChange={(series: any) => setSeriesEventVisibles(series)} />}
 
                         <Typography variant="body2">{t('stats.summary')}</Typography>
                         <CustomChip size="small" label={`Total: ${formatCompact(graphData['issued']?.data?.total ?? 0)}`} />
@@ -95,7 +98,7 @@ export const PassesIssuedChart = () => {
 
                     </Stack>
                 </Box>
-            </Box>
+            </Box>}
 
 
 

@@ -15,8 +15,8 @@ export const EventFilter = ({ value, onChangeData }: { value: Array<string>, onC
         const filters = [
             {
                 field: 'status',
-                operator: '==',
-                value: 'published',
+                operator: '!=',
+                value: 'draft',
             },
 
             {
@@ -24,8 +24,13 @@ export const EventFilter = ({ value, onChangeData }: { value: Array<string>, onC
                 operator: '<=',
                 value: new Date(),
             }
-        ]         
-        const eventList = await search(currentEntity?.entity.id as string, { ...{filters} as any, limit: 100 })
+        ]
+        const eventList = await search(currentEntity?.entity.id as string, {
+            ...{ filters } as any,
+            limit: 100,
+            orderBy: 'status',
+            orderDirection: 'desc',
+        })
         setEventData(eventList)
     }
 
@@ -35,7 +40,7 @@ export const EventFilter = ({ value, onChangeData }: { value: Array<string>, onC
         }
     }, [currentEntity?.entity.id])
 
-    return <FormControl size="small" sx={{ minWidth: 140 ,mb:1}}>
+    return <FormControl size="small" sx={{ minWidth: 140, mb: 1 }}>
         <InputLabel id="gb-label">{t('stats.event')}</InputLabel>
         <Select
             multiple
@@ -52,10 +57,13 @@ export const EventFilter = ({ value, onChangeData }: { value: Array<string>, onC
                     });
                 onChangeData(data)
             }}>
-            {eventData.map((o, i) => <MenuItem disabled={value?.length==5 && value?.indexOf(o.id) == -1} key={i} value={o.id}>
+            {eventData.map((o, i) => <MenuItem disabled={value?.length == 5 && value?.indexOf(o.id) == -1} key={i} value={o.id}>
                 <Checkbox checked={value.indexOf(o.id) > -1} />
                 <ListItemText primary={o.name} />
             </MenuItem>)}
         </Select>
     </FormControl>
 }
+
+//arriba tipo evento y agrupar
+//abajo fecha

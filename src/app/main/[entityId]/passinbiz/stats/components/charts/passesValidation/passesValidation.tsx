@@ -21,6 +21,7 @@ import { GroupBy } from "../../../model/PassValidator";
 import { usePassinBizStats } from "../../../context/passBizStatsContext";
 import { CustomChip } from "@/components/common/table/CustomChip";
 import { SeriesFilter } from "../../filters/fields/SeriesFilter";
+import BoxLoader from "@/components/common/BoxLoader";
 
 function labelFromKey(gb: GroupBy, key: string) {
     return gb === "hour" ? `${String(key).padStart(2, "0")}:00` : key;
@@ -30,7 +31,7 @@ export const PassesValidationChart = () => {
     const [showCumulative, setShowCumulative] = React.useState(true);
     const t = useTranslations()
     const { currentEntity } = useEntity()
-    const { payloadPassValidatorFilter, seriesChart2, lastUseFilter, setLastUseFilter,graphData } = usePassinBizStats()
+    const { payloadPassValidatorFilter, seriesChart2, lastUseFilter, setLastUseFilter, graphData } = usePassinBizStats()
     const { handleFetchStats, loading } = usePassesValidationController()
     const [seriesStateVisibles, setSeriesStateVisibles] = useState<Array<string>>([...seriesChart2.map(e => e.id)])
 
@@ -62,9 +63,10 @@ export const PassesValidationChart = () => {
                 <Typography variant="body1">{t('stats.passesValidation')}</Typography>
                 <Typography variant="caption">{t('stats.passesValidationText')}</Typography>
             </Box>
-            {loading && <CircularProgress size={24} />}
         </Box>
-        <Box display={'flex'} flexDirection={'row'} gap={2}>
+
+        {loading && <BoxLoader message={t('core.title.loaderAction') } />}
+        {!loading && <Box display={'flex'} flexDirection={'row'} gap={2}>
             <Box sx={{ height: 400, width: '80%' }}>
 
                 {graphData['validator']?.empty ? (
@@ -114,7 +116,7 @@ export const PassesValidationChart = () => {
 
                 </Stack>
             </Box>
-        </Box>
+        </Box>}
 
     </>
     );

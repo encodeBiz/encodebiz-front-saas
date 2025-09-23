@@ -8,10 +8,10 @@ import { PassesIssuedRankingChart } from '../../charts/passesIssued/passesIssued
 import { PassIssuedFilter } from '../../filters/PassIssuedFilter';
 import { usePassinBizStats } from '../../../context/passBizStatsContext';
 import { PassesValidationChart } from '../../charts/passesValidation/passesValidation';
-import { PassValidatorFilter } from '../../filters/PassValidatorFilter';
 import { PassesValidationRankingChart } from '../../charts/passesValidation/passesValidationRanking';
 import { PassesTrendChart } from '../../charts/passesTrend/passesTrend';
 import EmptyState from '@/components/common/EmptyState/EmptyState';
+import { PassValidatorFilter } from '../../filters/PassValidatorFilter';
 
 
 export default function PassesStats() {
@@ -31,7 +31,7 @@ export default function PassesStats() {
           title: 'Pases emitidos',
           tabContent: <Box sx={{ width: "100%", p: 2, display: 'flex', flexDirection: 'column', gap: 2,pb:4 }}>
 
-            <PassIssuedFilter />
+            <PassIssuedFilter   />
             {payloadPassIssuedFilter ? <>
               <BorderBox sx={{ width: "100%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
                 <PassesIssuedChart />
@@ -57,7 +57,7 @@ export default function PassesStats() {
           id: '2',
           title: 'Pases validados',
           tabContent: <Box sx={{ width: "100%", p: 2, display: 'flex', flexDirection: 'column', gap: 2 ,pb:4}}>
-            <PassValidatorFilter />
+            <PassValidatorFilter  />
             {payloadPassValidatorFilter ? <>
               <BorderBox sx={{ width: "100%", p: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
                 <PassesValidationChart />

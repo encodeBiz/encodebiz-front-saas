@@ -14,14 +14,15 @@ import { useTranslations } from "next-intl";
 import EmptyState from "@/components/common/EmptyState/EmptyState";
 import { usePassinBizStats } from "../../../context/passBizStatsContext";
 import { CustomChip } from "@/components/common/table/CustomChip";
+import usePassesIssuedController from "./passesIssued.controller";
 export const PassesIssuedRankingChart = () => {
     const t = useTranslations()
     const theme = useTheme()
     const { graphData } = usePassinBizStats()
-
+    const { loading } = usePassesIssuedController()
 
     return (<>
-        <Box>
+        {!loading && <Box>
             <Box display={'flex'} flexDirection={'column'} >
                 <Typography variant="body1">{t('stats.passesIssuedRank')}</Typography>
             </Box>
@@ -54,7 +55,7 @@ export const PassesIssuedRankingChart = () => {
                     </Stack>
                 </Box>
             </Box>
-        </Box >
+        </Box >}
     </>
     );
 

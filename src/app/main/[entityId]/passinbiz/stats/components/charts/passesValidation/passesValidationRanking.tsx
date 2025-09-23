@@ -13,15 +13,15 @@ import {
 import { useTranslations } from "next-intl";
 import EmptyState from "@/components/common/EmptyState/EmptyState";
 import { usePassinBizStats } from "../../../context/passBizStatsContext";
-import { METRIC_COLORS } from "./passesValidation.controller";
+import usePassesValidationController, { METRIC_COLORS } from "./passesValidation.controller";
 import { CustomChip } from "@/components/common/table/CustomChip";
 export const PassesValidationRankingChart = () => {
     const t = useTranslations()
     const { graphData } = usePassinBizStats()
-
+    const {loading} = usePassesValidationController()
     return (<>
 
-        <Box sx={{ height: 350 }}>
+        {!loading && <Box sx={{ height: 350 }}>
             <Box display={'flex'} flexDirection={'column'} >
                 <Typography variant="body1">{t('stats.passesValidationRank')}</Typography>
             </Box>
@@ -61,7 +61,7 @@ export const PassesValidationRankingChart = () => {
                     </Stack>
                 </Box>
             </Box>
-        </Box>
+        </Box>}
     </>
     );
 
