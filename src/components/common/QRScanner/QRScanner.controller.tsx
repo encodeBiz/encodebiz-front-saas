@@ -8,16 +8,7 @@ import { validateHolder, validateStaff } from "@/services/passinbiz/holder.servi
 import { useTranslations } from "next-intl"
 import { useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
-interface IQRResult {
-    "holderId": string
-    "companyName": string
-    "entityId": string
-    "productId": string
-    entityType: string
-    message?: string
-    fullName?: string
-    lastValidatedAt?: string
-}
+ 
 
 interface StaffResponse {
     "message": string
@@ -27,7 +18,42 @@ interface StaffResponse {
     },
     "sessionToken": string
     "expiresAt": any
-    "events": Array<{name: string, eventId: string}>
+    "events": Array<{ name: string, eventId: string }>
+}
+
+interface IScanResult {
+    "message": string,
+    "success": boolean,
+    "holder": {
+        "isLinkedToUser": boolean,
+        "type": "event" | "credential",
+        "fullName": string,
+        "entityId": string,
+        "createdAt": string,
+        "parentId": string,
+        "thumbnail": string,
+        "id": string,
+        "metadata": {
+            "auxiliaryFields": []
+        },
+        "payPerUse": boolean,
+        "status": "pending" | "made";
+        "isValidated": boolean,
+        "validatedResult": "valid" | "revoked" | "expired" | "not_found" | "failed"
+        "lastValidatedAt": string,
+        "parent": {
+            "logo": string,
+            "name": string,
+            "image": string,
+            "dateLabel": string,
+            "location": string
+        }
+    },
+    "lastValidatedAt": string,
+    "isValidated": true,
+    "ref": string,
+    "suggestedDirection": "ENTERING" | "EXITING";
+
 }
 
 export const useQRScanner = () => {
@@ -35,7 +61,7 @@ export const useQRScanner = () => {
     const { changeLoaderState } = useLayout()
     const { showToast } = useToast()
     const [scanning, setScanning] = useState<boolean>(false);
-    const [scanRessult, setScanRessult] = useState<IQRResult | null>();
+    const [scanRessult, setScanRessult] = useState<IScanResult | null>();
     const [error, setError] = useState<any>(null);
     const searchParams = useSearchParams()
     const tokenBase64 = searchParams.get('token') || null;
@@ -44,11 +70,11 @@ export const useQRScanner = () => {
     const [staffValid, setStaffValid] = useState(false)
     const { openModal } = useCommonModal()
 
-    const [eventList, setEventList] = useState<Array<{name: string, eventId: string}>>([])
-    const [eventSelected, setEventSelected] = useState<{name: string, eventId: string}>()
+    const [eventList, setEventList] = useState<Array<{ name: string, eventId: string }>>([])
+    const [eventSelected, setEventSelected] = useState<{ name: string, eventId: string }>()
 
     const handleValidateStaff = useCallback(async () => {
-         
+
         try {
             setStaffValidating(true)
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
@@ -72,7 +98,7 @@ export const useQRScanner = () => {
 
     const validateData = async (data: any) => {
         try {
-             
+
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             const response = await validateHolder({
                 ...data,
@@ -115,6 +141,6 @@ export const useQRScanner = () => {
 
 
 
-    return {eventSelected, handleScan, handleError, resetScanner, scanRessult, scanning, error, staffValidating, staffValid, eventList, setEventSelected }
+    return { eventSelected, handleScan, handleError, resetScanner, scanRessult, scanning, error, staffValidating, staffValid, eventList, setEventSelected }
 }
 

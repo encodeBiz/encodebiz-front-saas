@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import { Box, Stack, Typography, CircularProgress } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import {
     ResponsiveContainer,
@@ -19,6 +19,7 @@ import { useEntity } from "@/hooks/useEntity";
 import { usePassinBizStats } from "../../../context/passBizStatsContext";
 import { CustomChip } from "@/components/common/table/CustomChip";
 import usePassesTrendController from "./passesTrend.controller";
+import BoxLoader from "@/components/common/BoxLoader";
 
 
 export const PassesTrendChart = () => {
@@ -50,7 +51,8 @@ export const PassesTrendChart = () => {
                 </Box>
                  
             </Box>
-            <Box display={'flex'} flexDirection={'row'} gap={2}>
+            {loading  && <BoxLoader message={t('core.title.loaderAction') } />}
+            {!loading  && <Box display={'flex'} flexDirection={'row'} gap={2}>
                 <Box width={'80%'} sx={{ height: 300 }}>
                     {graphData?.empty ? (
                         <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
@@ -81,10 +83,7 @@ export const PassesTrendChart = () => {
                         )}
                     </Stack>
                 </Box>
-            </Box>
-
-
-
+            </Box>}
         </Box>
 
     </>

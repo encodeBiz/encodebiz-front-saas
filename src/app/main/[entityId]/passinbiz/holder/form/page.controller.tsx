@@ -126,7 +126,7 @@ export default function useHolderController() {
   const submitForm = async (values: Partial<Holder>) => {
     try {
       const dataForm: Partial<Holder> = {
-        "uid": user?.id as string,
+
         "fullName": values.fullName,
         "email": values.email,
         "phoneNumber": values.phoneNumber,

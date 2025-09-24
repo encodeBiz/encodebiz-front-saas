@@ -95,7 +95,7 @@
       "subEntityData": "DATOS DE LA SUCURSAL",
       "internal": "Interno",
       "collaborator": "Colaborador",
-      "ratioChecklog":"Radio de chequeo",
+      "ratioChecklog": "Radio de chequeo",
       "inactive": "Inactivo",
       "personalData": "INFORMACIÓN PESONAL",
       "aditionalData": "INFORMACIÓN ADICIONAL",
@@ -239,6 +239,8 @@
       "applyFilter": "Aplicar",
       "configure": "Configurar",
       "close": "Cerrar",
+      "deny":"Denegar",
+      "disabled": "DENEGAR ACCESO",
       "contactUs": "Contactar con encodeBiz",
       "upgrade": "Actualizar plan",
       "upgradeSuscription": "Actualizar suscripción",
@@ -528,7 +530,6 @@
     "scvError2": "Algunos campos opcionales no tienen la estructura adecuada, debe empezar por auxiliaryFields-",
     "scvError1": "Faltan campos requeridos",
     "scvErrorTitle": "El archivo contiene los siguientes errores:"
- 
   },
   "event": {
     "title": "Eventos",
@@ -571,7 +572,7 @@
     "add": "Crear empleado",
     "update": "Editar",
     "detail": "Detalles",
-     "configureDevice": "Configurar dispositivo de confianza",
+    "configureDevice": "Configurar dispositivo de confianza",
     "import": "Importar",
     "description": "Rellene los campos para registrar el empleado",
     "deleteConfirmModalTitle": "Eliminar empleado",
@@ -583,8 +584,8 @@
     "list": "Sucursales",
     "add": "Agregar sucursal",
     "map": "Ir al mapa",
-    "report":"Emitir reporte",
-    "detailSucursal":"Detalles de la sucursal",
+    "report": "Emitir reporte",
+    "detailSucursal": "Detalles de la sucursal",
     "update": "Editar",
     "import": "Importar",
     "description": "Rellene los campos para registrar la sucursal",
@@ -640,7 +641,11 @@
     "tryagain": "Intentar de nuevo",
     "validatingStaff": "Validando personal de apoyo",
     "titleEvent": "Seleccione el evento",
-    "selected": "Seleccionar evento"
+    "selected": "Seleccionar evento",
+    "ENTERING": "DEBE ENTRAR",
+    "EXITING": "DEBE SALIR",
+    "deleteConfirmModalTitle": "Denegar pase",
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Denegará el acceso de este pase de forma permanente"
   },
   "contact": {
     "title": "Contáctenos",
