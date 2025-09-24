@@ -1,12 +1,14 @@
 import React, { useRef, useState } from 'react';
 import {
+  Alert,
   Box,
- 
+
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -34,6 +36,7 @@ const CSVUploadModal = ({ open, onClose, onConfirm }: ICSVUploadModal) => {
   const [file, setFile] = useState<File | null>(null);
   const [previewData, setPreviewData] = useState<any>([]);
   const [headers, setHeaders] = useState([]);
+  const [errors, setErrors] = useState<Array<string>>([]);
   const t = useTranslations()
   const theme = useTheme()
   const uploadRef = useRef(null)
@@ -52,10 +55,31 @@ const CSVUploadModal = ({ open, onClose, onConfirm }: ICSVUploadModal) => {
     reader.readAsText(selectedFile);
   };
 
+  const validateSCV = (headers: Array<string>) => {
+    const requiredFields = ["fullName", "email", "phoneNumber", "createdAt"]
+
+    let foundRequired = 0
+    let foundOptional = 0
+    headers.forEach(header => {
+      if (requiredFields.includes(header)) foundRequired++
+      if (header.startsWith("auxiliaryFields-")) foundOptional++
+    });
+    const error: Array<string> = []
+    if (foundRequired !== requiredFields.length) error.push('holders.scvError1')
+    if ((foundRequired + foundOptional) !== headers.length) error.push('holders.scvError2')
+
+    setErrors(error)
+
+  }
+
   const parseCSV = (csvString: string) => {
+
     const lines: any = csvString.split('\n');
     const headers: any = lines[0].split(',').map((header: string) => header.trim());
     const data: any = [];
+
+
+    validateSCV(headers)
 
     // Process up to 5 rows for preview
     const previewRowCount = Math.min(5, lines.length - 1);
@@ -93,7 +117,7 @@ const CSVUploadModal = ({ open, onClose, onConfirm }: ICSVUploadModal) => {
           <Typography variant='h5'>{t('holders.importSCVTitle')}</Typography>
           <Typography variant='body1'>
             {t('holders.desc1')} <br />
-            {t('holders.desc2')} <span style={{ color: theme.palette.primary.main }}>(fullName, email, phoneNumber)</span>
+            {t('holders.desc2')} <span style={{ color: theme.palette.primary.main }}>(fullName, email, phoneNumber, createdAt)</span>
             {t('holders.desc3')} <span style={{ color: theme.palette.primary.main }}>auxiliaryFields-[{t('holders.desc4')}].</span>
           </Typography>
           <Typography sx={{ mt: 1 }} variant='body1'> {t('holders.desc5')}</Typography>
@@ -179,7 +203,7 @@ const CSVUploadModal = ({ open, onClose, onConfirm }: ICSVUploadModal) => {
                   {t('holders.desc8')}
                 </Typography>
                 <SassButton
-            
+
                   variant='outlined'
                   color='inherit'
                   onClick={() => window.open(`${process.env.NEXT_PUBLIC_URI}${HOLDER_USUARIOS_TYPE_CREDENTIAL_URL}`, '_blank')}
@@ -203,6 +227,14 @@ const CSVUploadModal = ({ open, onClose, onConfirm }: ICSVUploadModal) => {
             <Typography variant="subtitle1" >
               {t('core.upload.file')}: {file.name}
             </Typography>
+
+            <Stack direction={'column'} gap={1} my={2}>
+              <Typography variant="body2" >
+                {t('holders.scvErrorTitle')}
+              </Typography>
+              {errors.map((e, i) => <Alert variant="outlined" severity="warning" key={i} >{t(e)}</Alert>)}
+            </Stack>
+
             <Typography variant="body2" >
               {t('core.upload.preview')}:
             </Typography>
@@ -236,10 +268,10 @@ const CSVUploadModal = ({ open, onClose, onConfirm }: ICSVUploadModal) => {
         <SassButton
           onClick={handleConfirm}
           color="primary"
-          disabled={!file}
+          disabled={!file || errors.length !== 0}
           size='small'
           variant="contained"
-        
+
         >
           {t('core.button.confirmSCV')}
         </SassButton>

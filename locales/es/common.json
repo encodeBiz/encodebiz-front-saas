@@ -524,7 +524,11 @@
     "desc7": "Tamaño máximo 10 MB.",
     "desc8": "Usa esta plantilla como referencia",
     "desc9": "Vista previa del CSV esperado",
-    "btn": "Descargar Plantilla"
+    "btn": "Descargar Plantilla",
+    "scvError2": "Algunos campos opcionales no tienen la estructura adecuada, debe empezar por auxiliaryFields-",
+    "scvError1": "Faltan campos requeridos",
+    "scvErrorTitle": "El archivo contiene los siguientes errores:"
+ 
   },
   "event": {
     "title": "Eventos",
