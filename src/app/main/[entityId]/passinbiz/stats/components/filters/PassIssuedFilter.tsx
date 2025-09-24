@@ -13,6 +13,7 @@ export const PassIssuedFilter = () => {
   const { payloadPassIssued, setPayloadPassIssued, applyFilter } = usePassinBizStats()
   const t = useTranslations()
   return <BorderBox sx={{ width: "100%", p: 1, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
+    
     <Box display={'flex'} justifyContent={'flex-end'} alignItems={'flex-end'} flexDirection={"row"}   >
       <Box display={'flex'} flexWrap={'wrap'} flexDirection={'column'} gap={2} >
         <Box display={'flex'} flexWrap={'wrap'} justifyContent={'flex-end'} alignItems={'center'} flexDirection={{ xs: "column", md: "row" }} gap={2} >
@@ -41,8 +42,9 @@ export const PassIssuedFilter = () => {
 
 
       </Box>
+      
       <Box display={'flex'} flexWrap={'wrap'} flexDirection={{ xs: "column", md: "row" }} pb={1} pl={2} >
-        <SassButton disabled={!payloadPassIssued?.type || (payloadPassIssued?.type === 'event' && payloadPassIssued?.events?.length === 0)} variant='contained' color='primary' size='small' onClick={() => applyFilter("issued")}>{t('core.button.applyFilter')}</SassButton>
+        <SassButton disabled={!payloadPassIssued?.type || (payloadPassIssued?.type === 'event' && !Array.isArray(payloadPassIssued?.events)) || (payloadPassIssued?.type === 'event' && payloadPassIssued?.events?.length === 0)} variant='contained' color='primary' size='small' onClick={() => applyFilter("issued")}>{t('core.button.applyFilter')}</SassButton>
       </Box>
     </Box>
 

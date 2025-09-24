@@ -536,8 +536,8 @@
     "import": "Importar",
     "description": "Rellene los campos para registrar el evento",
     "description2": "Asocie o retire el personal de apoyo al evento",
-    "deleteConfirmModalTitle": "Eliminar Evento",
-    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el evento y todas sus configuraciones",
+    "deleteConfirmModalTitle": "Archivar Evento",
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Archivará permanentemente el evento",
     "fremiunContact": {
       "title": "Solicitar evento de prueba",
       "description": "Describa las caractericticas del evento que desea crear, y nos pondremos en contacto con usted"

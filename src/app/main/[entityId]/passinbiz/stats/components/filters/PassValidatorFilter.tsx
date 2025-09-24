@@ -41,7 +41,7 @@ export const PassValidatorFilter = () => {
 
       </Box>
       <Box display={'flex'} flexWrap={'wrap'} flexDirection={{ xs: "column", md: "row" }} pb={1} pl={2} >
-        <SassButton disabled={!payloadPassValidator?.type || (payloadPassValidator?.type === 'event' && payloadPassValidator?.events?.length === 0)} variant='contained' color='primary' size='small' onClick={() => applyFilter('validator')}>{t('core.button.applyFilter')}</SassButton>
+        <SassButton disabled={!payloadPassValidator?.type || (payloadPassValidator?.type === 'event' && !Array.isArray(payloadPassValidator?.events)) || (payloadPassValidator?.type === 'event' && payloadPassValidator?.events?.length === 0)} variant='contained' color='primary' size='small' onClick={() => applyFilter('validator')}>{t('core.button.applyFilter')}</SassButton>
       </Box>
     </Box>
 
