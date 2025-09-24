@@ -16,7 +16,7 @@ type PageLoaderProps = {
   thickness?: number;
   message?: string;
   textColor?: string;
-
+  iconColor?: 'blue' | 'white';
   fullScreen?: boolean;
   progress?: number; // For determinate mode
   width?: number;
@@ -27,7 +27,8 @@ const PageLoader: React.FC<PageLoaderProps> = ({
   fullScreen = true,
   backdrop = false,
   width = 0,
-  textColor='#FFF'
+  textColor = '#FFF',
+  iconColor = 'white'
 
 }) => {
   const theme = useTheme();
@@ -55,7 +56,7 @@ const PageLoader: React.FC<PageLoaderProps> = ({
       height: 'calc(100vh)',
       position: 'absolute',
       zIndex: theme.zIndex.modal - 1,
-    
+
       backgroundColor: backdrop ? 'rgba(0,0,0,0.1)' : theme.palette.background.default,
       // zIndex: theme.zIndex.modal + 1
     })
@@ -65,11 +66,11 @@ const PageLoader: React.FC<PageLoaderProps> = ({
 
   return (
     <Box sx={loaderStyle}>
-      <AnimatedLogo />      
-        <Typography style={{ color: textColor }} variant="body1"  >
-          {message?message:t('core.title.loader')}
-        </Typography>
-      
+      <AnimatedLogo color={iconColor} />
+      <Typography style={{ color: textColor }} variant="body1"  >
+        {message ? message : t('core.title.loader')}
+      </Typography>
+
     </Box>
   );
 };

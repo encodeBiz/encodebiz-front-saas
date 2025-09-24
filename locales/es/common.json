@@ -517,7 +517,7 @@
     "importSCVText": "Debes seleccionar el tipo de pase digital al que vincularas los datos importados en el archivo.",
     "desc1": "Asegúrate de que tu archivo siga esta estructura: ",
     "desc2": "Incluya las 3 columnas obligatorias",
-    "desc3": "y que las columnas opcionales sigan el formato",
+    "desc3": " y que las columnas opcionales sigan el formato",
     "desc4": "nombre del campo opcional",
     "desc5": "Solo así podremos importar tus datos correctamente.",
     "desc6": "Arrastra y suelta o sube un archivo CSV",

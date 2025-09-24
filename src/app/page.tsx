@@ -2,6 +2,6 @@ import PageLoader from "@/components/common/PageLoader";
 
 export default function Home() {
   return (
-     <PageLoader backdrop />
+     <PageLoader iconColor='blue' textColor="#000" />
   );
 }

@@ -23,9 +23,8 @@ type PageLoaderProps = {
 
 const BoxLoader: React.FC<PageLoaderProps> = ({
   message,
-  backdrop = false,
-  width = 0,
-  textColor = '#FFF'
+ 
+  textColor = '#000'
 
 }) => {
   const theme = useTheme();
@@ -43,7 +42,7 @@ const BoxLoader: React.FC<PageLoaderProps> = ({
     left: 0,
     width: '100%',
     height: '80%',
-    backgroundColor: 'rgba(0,0,0,0.3)' ,
+    backgroundColor: 'rgba(255, 255, 255, 0.08)' ,
     zIndex: theme.zIndex.modal + 1,
     color: theme.palette.text.secondary
 
@@ -53,7 +52,7 @@ const BoxLoader: React.FC<PageLoaderProps> = ({
 
   return (
     <Box sx={loaderStyle}>
-      <AnimatedLogo />
+      <AnimatedLogo color='blue'  />
       <Typography style={{ color: textColor }} variant="body1"  >
         {message ? message : t('core.title.loader')}
       </Typography>

@@ -48,7 +48,7 @@ export const PassesTrendChart = () => {
                     <Typography variant="body1">{t('stats.passesTrend')}</Typography>
                     <Typography variant="caption">{t('stats.passesTrendText')}</Typography>
                 </Box>
-                {loading && <CircularProgress size={24} />}
+                 
             </Box>
             <Box display={'flex'} flexDirection={'row'} gap={2}>
                 <Box width={'80%'} sx={{ height: 300 }}>
