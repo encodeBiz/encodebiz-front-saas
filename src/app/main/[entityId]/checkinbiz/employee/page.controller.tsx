@@ -12,7 +12,7 @@ import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import { deleteEmployee, search } from "@/services/checkinbiz/employee.service";
 import { useLayout } from "@/hooks/useLayout";
 import { useParams, useSearchParams } from "next/navigation";
-import { DeleteOutline, Edit, PhoneOutlined } from "@mui/icons-material";
+import { DeleteOutline, Edit, ListAltOutlined } from "@mui/icons-material";
 import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
@@ -64,7 +64,7 @@ export default function useEmployeeListController() {
   })
 
   const { closeModal, openModal } = useCommonModal()
-  const rowAction: Array<IRowAction> = id?[]:[
+  const rowAction: Array<IRowAction> = id ? [] : [
     {
       actionBtn: true,
       color: 'error',
@@ -90,17 +90,19 @@ export default function useEmployeeListController() {
     {
       actionBtn: true,
       color: 'primary',
-      icon: <PhoneOutlined color="primary" />,
-      label: t('employee.configureDevice'),
+      icon: <ListAltOutlined color="primary" />,
+      label: t('employee.detail'),
       bulk: false,
       allowItem: () => true,
-      onPress: (item: IEmployee) => onEdit(item)
+      onPress: (item: IEmployee) => onDetail(item)
     },
-    ]
-  
+  ]
 
 
 
+  const onDetail = async (item: any) => {
+    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${item.id}/detail`)
+  }
 
 
   /** Paginated Changed */

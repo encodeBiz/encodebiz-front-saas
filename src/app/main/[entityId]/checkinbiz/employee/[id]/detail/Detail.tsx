@@ -1,16 +1,13 @@
 import { SassButton } from "@/components/common/buttons/GenericButton"
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes"
-import { ISucursal } from "@/domain/features/checkinbiz/ISucursal"
+import { IEmployee } from "@/domain/features/checkinbiz/IEmployee"
 import { useLayout } from "@/hooks/useLayout"
-import { CheckBoxOutlined } from "@mui/icons-material"
-import { Card, Box, Grid, Typography, CardContent, Paper, Divider, List, ListItem, ListItemIcon, ListItemText } from "@mui/material"
+import { Card, Box, Grid, Typography, CardContent, Paper, Divider, List, ListItem, ListItemText } from "@mui/material"
 import { useTranslations } from "next-intl"
-import { useRouter } from "nextjs-toploader/app"
 
-export const Detail = ({ branch, children }: { branch: ISucursal, children: React.ReactNode }) => {
+export const Detail = ({ employee, children }: { employee: IEmployee, children: React.ReactNode }) => {
     const t = useTranslations()
     const { navivateTo } = useLayout()
-    const onGoMap = (lat: number, lng: number) => window.open(`http://www.google.com/maps?q=${lat},${lng}`, '_blank')
     return <Card elevation={3} sx={{ width: '100%', margin: 'auto' }}>
         {/* Header Section */}
         <Box sx={{ p: 3, bgcolor: (theme) => theme.palette.secondary.main }}>
@@ -18,15 +15,15 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
 
                 <Grid >
                     <Typography variant="h4"   >
-                        {branch?.name}
+                        {employee?.fullName}
                     </Typography>
                     <Typography variant="h6"  >
 
-                        {t('sucursal.detailSucursal')}
+                        {t('employee.detailSucursal')}
                     </Typography>
                 </Grid>
 
-                <SassButton variant="contained" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/sucursal`)}>
+                <SassButton variant="contained" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)}>
                     {t('core.button.back')}
                 </SassButton>
 
@@ -38,16 +35,24 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
         <CardContent sx={{ p: 0 }}>
 
             <Paper elevation={0} sx={{ p: 3 }}>
-                <Box display={'flex'} justifyContent={'space-between'} alignItems={'flex-start'}>
+                <Box display={'flex'} flexDirection={'column'} justifyContent={'space-between'} alignItems={'flex-start'}>
                     <Box sx={{ mt: 2 }}>
                         <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
-                            {t('core.label.address')}
+                            {t('core.label.email')}
                         </Typography>
                         <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
-                            {branch?.address?.street}
+                            {employee?.email}
                         </Typography>
                     </Box>
-                    <SassButton variant="outlined" onClick={() => onGoMap(branch.address.geo.lat, branch.address.geo.lng)}> {t('sucursal.map')}</SassButton>
+
+                    <Box sx={{ mt: 2 }}>
+                        <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
+                            {t('core.label.phone')}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
+                            {employee?.phone}
+                        </Typography>
+                    </Box>
                 </Box>
             </Paper>
             <Divider />
@@ -58,9 +63,9 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
                     {t('core.label.aditionalData')}
                 </Typography>
 
-                {Array.isArray(branch.metadata) && <List>
-                    {branch.metadata.map((e: any, i: number) => <ListItem key={i}>
-                        
+                {Array.isArray(employee.metadata) && <List>
+                    {employee.metadata.map((e: any, i: number) => <ListItem key={i}>
+
                         <ListItemText
                             primary={e.label}
                             secondary={e.value}
@@ -72,10 +77,13 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
 
             <Paper elevation={0} sx={{ p: 3 }}>
                 <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
-                    {t("employee.list")}
+                    {t("checklog.list")}
                 </Typography>
 
                 {children}
+
+
+
 
             </Paper>
         </CardContent>

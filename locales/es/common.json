@@ -26,6 +26,7 @@
         "Services": "Servicios",
         "Events": "Eventos",
         "Media": "Media",
+        "Report": "Reporte",
         "Sucursal": "Sucursal",
         "home": "Inicio",
         "Integration": "Integraciones",
@@ -247,6 +248,7 @@
       "upgrade": "Actualizar plan",
       "upgradeSuscription": "Actualizar suscripción",
       "resend": "Reenviar",
+      "back":"Atrás",
       "reactive": "Reactivar",
       "submitting": "Enviando...",
       "submit": "Enviar",
@@ -576,9 +578,15 @@
     "detail": "Detalles",
     "configureDevice": "Configurar dispositivo de confianza",
     "import": "Importar",
+     "detailSucursal": "Detalles de empleado",
+
     "description": "Rellene los campos para registrar el empleado",
     "deleteConfirmModalTitle": "Eliminar empleado",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el empleado"
+  },
+  "checklog":{
+     "title": "Registros de asistencia",
+    "formDesc": "Completa los campos a continuación para registrar el empleado."
   },
   "sucursal": {
     "title": "Sucursales",

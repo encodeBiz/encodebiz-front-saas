@@ -30,11 +30,7 @@ const PASSINBIZ = [{
     name: 'Staff',
     link: `/${PASSSINBIZ_MODULE_ROUTE}/staff`,
     subMenu: []
-},, {
-    name: 'Stats',
-    link: `/${PASSSINBIZ_MODULE_ROUTE}/stats`,
-    subMenu: []
-}]
+}, ]
 
 
 const CHECKINBIZ: any = [{
@@ -43,9 +39,12 @@ const CHECKINBIZ: any = [{
     link: `/${CHECKINBIZ_MODULE_ROUTE}/employee`,
     subMenu: []
 }, {
-    name: 'Sucursal',
-  
+    name: 'Sucursal',  
     link: `/${CHECKINBIZ_MODULE_ROUTE}/sucursal`,
+    subMenu: []
+}, {
+    name: 'Report',  
+    link: `/${CHECKINBIZ_MODULE_ROUTE}/report`,
     subMenu: []
 }]
 
