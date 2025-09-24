@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { } from 'react';
 import {
     Box,
@@ -8,14 +9,14 @@ import {
     Alert,
     List,
     ListItem,
-    ListItemIcon,
+ 
     ListItemText,
 
 } from '@mui/material';
 import { Scanner } from '@yudiel/react-qr-scanner';
 
 import {
-    CheckBoxOutlined,
+ 
     CheckCircle,
     CreditCardOff,
     Error
@@ -46,7 +47,7 @@ const QRScanner = () => {
             });
             closeModal(CommonModalType.DELETE)
             resetScanner()
-        } catch (e: any) { }
+        } catch (_: any) { }
     }
     return (
         <Box sx={{ p: 0, maxWidth: 600, margin: '0 auto' }}>
