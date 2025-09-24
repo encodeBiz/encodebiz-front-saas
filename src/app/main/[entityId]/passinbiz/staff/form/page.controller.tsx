@@ -187,8 +187,7 @@ export default function useStaffController() {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const staff: IStaff = await fetchStaff(currentEntity?.entity.id as string, id)
       const eventStaffList: Array<IEvent> = await searchEventsByStaff(id)
-      console.log(eventStaffList);
-
+ 
       setInitialValues({
         fullName: staff.fullName ?? "",
         email: staff.email ?? "",

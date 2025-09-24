@@ -12,10 +12,10 @@ import { IPassValidatorStatsRequest } from "../../model/PassValidator"
 export const PassValidatorFilter = () => {
   const { payloadPassValidator, setPayloadPassValidator, applyFilter } = usePassinBizStats()
   const t = useTranslations()
-  return <BorderBox sx={{ width: "100%", p: 1, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
-    <Box display={'flex'} justifyContent={'flex-end'} alignItems={'flex-end'} flexDirection={"row"} pl={2}  >
-      <Box display={'flex'} flexWrap={'wrap'} flexDirection={'column'} gap={2} >
-        <Box display={'flex'} flexWrap={'wrap'} justifyContent={'flex-end'} alignItems={'center'} flexDirection={{ xs: "column", md: "row" }} gap={2} >
+  return <BorderBox sx={{ width: "100%", p: 3, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
+    <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} flexDirection={"row"}   >
+      <Box display={'flex'} flexWrap={'wrap'} justifyContent={'flex-start'} flexDirection={'column'} gap={2} >
+        <Box display={'flex'} flexWrap={'wrap'} justifyContent={'flex-start'} alignItems={'center'} flexDirection={{ xs: "column", md: "row" }} gap={2} >
           <TypeFilter value={payloadPassValidator?.type as "event" | "credential"} onChange={(type: "event" | "credential") => {
             setPayloadPassValidator({ ...payloadPassValidator as IPassValidatorStatsRequest, type, events: type === 'credential' ? [] : payloadPassValidator?.events })
 
