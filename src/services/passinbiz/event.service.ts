@@ -149,6 +149,11 @@ export const searchEventsByStaff = async (staffId: string): Promise<IEvent[]> =>
         field: 'assignedStaff',
         value: staffId,
         operator: 'array-contains'
+      },
+      {
+        field: 'status',
+        value: 'published',
+        operator: '=='
       }
     ],
     limit: 1000, // Adjust the limit as needed

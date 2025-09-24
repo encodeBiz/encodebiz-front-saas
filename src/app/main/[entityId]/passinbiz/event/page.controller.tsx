@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Column, IRowAction } from "@/components/common/table/GenericTable";
-import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useToast } from "@/hooks/useToast";
 import { useTranslations } from "next-intl";
@@ -41,7 +40,6 @@ interface IFilterParams {
 }
 export default function useIEventListController() {
   const t = useTranslations();
-  const { token } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
   const { navivateTo } = useLayout()
