@@ -2,11 +2,9 @@ import { SassButton } from "@/components/common/buttons/GenericButton"
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes"
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal"
 import { useLayout } from "@/hooks/useLayout"
-import { CheckBoxOutlined } from "@mui/icons-material"
-import { Card, Box, Grid, Typography, CardContent, Paper, Divider, List, ListItem, ListItemIcon, ListItemText } from "@mui/material"
+ import { Card, Box, Grid, Typography, CardContent, Paper, Divider, List, ListItem, ListItemText } from "@mui/material"
 import { useTranslations } from "next-intl"
-import { useRouter } from "nextjs-toploader/app"
-
+ 
 export const Detail = ({ branch, children }: { branch: ISucursal, children: React.ReactNode }) => {
     const t = useTranslations()
     const { navivateTo } = useLayout()
