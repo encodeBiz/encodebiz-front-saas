@@ -115,7 +115,7 @@ const QRScanner = () => {
                             <Typography variant="body1">{scanRessult?.holder?.fullName}</Typography>
 
 
-                            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', gap: 2 }}>
+                            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', gap: 2, width: '100%' }}>
                                 <Image style={{ borderRadius: 4, background: '#E9E8F5' }} src={scanRessult?.holder?.parent?.logo} width={80} height={80} alt='' />
                                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0 }}>
                                     <Typography variant="body1">{scanRessult?.holder?.parent?.name}</Typography>
@@ -123,20 +123,6 @@ const QRScanner = () => {
                                 </Box>
                             </Box>
                         </Box>
-                        {Array.isArray(scanRessult?.holder?.metadata?.auxiliaryFields) && scanRessult?.holder?.metadata?.auxiliaryFields?.length > 0 && <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 2 }}>
-                            <Typography variant="body1" fontWeight={'bold'}>{t('core.label.aditionalData')}: </Typography>
-                            <List>
-                                {scanRessult?.holder?.metadata?.auxiliaryFields?.map((e: any, i: number) => <ListItem key={i}>
-                                    <ListItemIcon>
-                                        <CheckBoxOutlined color="primary" />
-                                    </ListItemIcon>
-                                    <ListItemText
-                                        primary={e.label}
-                                        secondary={e.value}
-                                    />
-                                </ListItem>)}
-                            </List>
-                        </Box>}
 
 
 
@@ -159,10 +145,24 @@ const QRScanner = () => {
                             variant="contained"
                             color="primary"
                             onClick={resetScanner}
-                            sx={{ mt: 2, textTransform:'inherit' }}
+                            sx={{ mt: 2, textTransform: 'inherit' }}
                         >
                             {t('scan.scanOther')}
                         </SassButton>
+
+                        {Array.isArray(scanRessult?.holder?.metadata?.auxiliaryFields) && scanRessult?.holder?.metadata?.auxiliaryFields?.length > 0 && <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', width: '100%' }}>
+                            <Typography variant="body1" fontWeight={'bold'}>{t('core.label.aditionalData2')}: </Typography>
+                            <List>
+                                {scanRessult?.holder?.metadata?.auxiliaryFields?.map((e: any, i: number) => <ListItem key={i}>
+
+                                    <ListItemText
+                                        primary={e.label}
+                                        secondary={e.value}
+                                    />
+                                </ListItem>)}
+                            </List>
+                        </Box>}
+
                     </Box>
                 </CardContent>
 
@@ -206,7 +206,7 @@ const QRScanner = () => {
                                 variant="contained"
                                 color="primary"
                                 onClick={resetScanner}
-                                sx={{ mt: 2, textTransform:'inherit' }}
+                                sx={{ mt: 2, textTransform: 'inherit' }}
                             >
                                 {t('scan.tryagain')}
                             </SassButton>

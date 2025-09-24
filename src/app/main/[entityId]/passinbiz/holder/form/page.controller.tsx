@@ -107,7 +107,7 @@ export default function useHolderController() {
     entityId: currentEntity?.entity.id as string
   });
 
-  const validationSchema = Yup.object().shape({
+  const validationSchema: any = Yup.object().shape({
     customFields: Yup.array()
       .of(
         Yup.object().shape({

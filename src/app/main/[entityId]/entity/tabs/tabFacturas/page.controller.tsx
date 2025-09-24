@@ -7,8 +7,10 @@ import { useTranslations } from 'next-intl';
 import { fetchInvoicesByEntity } from '@/services/core/subscription.service';
 import { Column, IRowAction } from '@/components/common/table/GenericTable';
 import { useToast } from '@/hooks/useToast';
- import { DownloadOutlined } from '@mui/icons-material';
+import { DownloadOutlined } from '@mui/icons-material';
 import { StripeInvoice } from '@/domain/core/auth/ISubscription';
+import { Typography } from '@mui/material';
+import { formatDateInSpanish } from '@/lib/common/Date';
 
 
 interface IFilterParams {
@@ -60,7 +62,7 @@ export const useFacturaController = () => {
             label: t('core.button.download'),
             allowItem: () => true,
             showBulk: false,
-            onPress: () => { },
+            onPress: (item:StripeInvoice) => window.open(item.inviceData.invoice_pdf,'_blank'),
             bulk: false
         },
 
@@ -99,24 +101,27 @@ export const useFacturaController = () => {
     }
 
 
-    
+
 
 
     const columns: Column<StripeInvoice>[] = [
         {
-            id: 'service',
-            label: t("core.label.service"),
-            minWidth: 170
+            id: 'id',
+            label: t("core.label.number"),
+            minWidth: 170,
+           format: (value, row) => <Typography sx={{ textTransform: 'uppercase' }}>{row.inviceData.number}</Typography>,
         },
         {
-            id: 'date',
+            id: 'id',
             label: t("core.label.date"),
-            minWidth: 170
+            minWidth: 170,
+            format: (value, row) => <Typography sx={{ textTransform: 'capitalize' }}>{formatDateInSpanish(row.createdAt)}</Typography>,
         },
         {
-            id: 'price',
+            id: 'id',
             label: t("core.label.price"),
-            minWidth: 170
+            minWidth: 170,
+            format: (value, row) => <Typography sx={{ textTransform: 'capitalize' }}>{row.inviceData.total}€</Typography>,
         },
         {
             id: 'status',

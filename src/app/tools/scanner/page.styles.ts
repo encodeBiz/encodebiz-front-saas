@@ -4,6 +4,7 @@ export const useStyles = (): Record<string, SxProps<Theme>> => ({
   root: {
     p: 1,
     mt: 8,
+    mb: 8,
     borderRadius: 2,
     
   },
