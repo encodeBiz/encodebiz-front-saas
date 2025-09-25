@@ -3,14 +3,15 @@ import { useTranslations } from "next-intl";
 export interface SelectFilterProps {
     value: any,
     first?: boolean
+    label?:string
     defaultValue?: any,
     onChange: (value: any) => void,
     items: Array<{ label: string, value: any }>
 }
-export const SelectFilter = ({ defaultValue, value, onChange, items, first = true }: SelectFilterProps) => {
+export const SelectFilter = ({ defaultValue, value,label, onChange, items, first = true }: SelectFilterProps) => {
     const t = useTranslations()
     return <Select
-
+    label={label}
 
         sx={{
             height: 46,

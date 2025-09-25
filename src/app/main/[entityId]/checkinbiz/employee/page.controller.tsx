@@ -9,7 +9,8 @@ import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
-import { deleteEmployee, search } from "@/services/checkinbiz/employee.service";
+import { deleteEmployee, search, updateEmployee } from "@/services/checkinbiz/employee.service";
+import { search as searchBranch } from "@/services/checkinbiz/sucursal.service";
 import { useLayout } from "@/hooks/useLayout";
 import { useParams, useSearchParams } from "next/navigation";
 import { DeleteOutline, Edit, ListAltOutlined } from "@mui/icons-material";
@@ -18,9 +19,12 @@ import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInpu
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
 import { Box } from "@mui/material";
+import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
+import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 
 
 interface IFilterParams {
+  filter: { status: string, branchId: string }
 
   params: {
     orderBy: string,
@@ -41,9 +45,9 @@ interface IFilterParams {
 export default function useEmployeeListController() {
   const t = useTranslations();
   const { id } = useParams<{ id: string }>()
-
+  const { changeLoaderState } = useLayout()
   const searchParams = useSearchParams()
-  const { token } = useAuth()
+  const { token, user } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
   const { navivateTo } = useLayout()
@@ -51,6 +55,7 @@ export default function useEmployeeListController() {
   const [items, setItems] = useState<IEmployee[]>([]);
   const [itemsHistory, setItemsHistory] = useState<IEmployee[]>([]);
   const [filterParams, setFilterParams] = useState<IFilterParams>({
+    filter: { status: 'active', branchId: 'none' },
     startAfter: null,
     currentPage: 0,
     total: 0,
@@ -63,18 +68,10 @@ export default function useEmployeeListController() {
     }
   })
 
-  const { closeModal, openModal } = useCommonModal()
+  const [branchList, setBranchList] = useState<Array<ISucursal>>([])
+
   const rowAction: Array<IRowAction> = id ? [] : [
-    {
-      actionBtn: true,
-      color: 'error',
-      icon: <DeleteOutline color="error" />,
-      label: t('core.button.delete'),
-      allowItem: () => true,
-      showBulk: true,
-      onPress: (item: IEmployee) => openModal(CommonModalType.DELETE, { data: item }),
-      bulk: true
-    },
+   
 
     {
       actionBtn: true,
@@ -139,8 +136,15 @@ export default function useEmployeeListController() {
     fetchingData(filterParamsUpdated)
   }
 
-
-
+  const options = [
+    { label: t('core.label.active'), value: 'active' },
+    { label: t('core.label.inactive'), value: 'inactive' },
+    { label: t('core.label.vacation'), value: 'vacation' },
+    { label: t('core.label.sick_leave'), value: 'sick_leave' },
+    { label: t('core.label.leave_of_absence'), value: 'leave_of_absence' },
+    { label: t('core.label.paternity_leave'), value: 'paternity_leave' },
+    { label: t('core.label.maternity_leave'), value: 'maternity_leave' },
+  ]
 
 
   const columns: Column<IEmployee>[] = [
@@ -148,21 +152,35 @@ export default function useEmployeeListController() {
       id: 'fullName',
       label: t("core.label.name"),
       minWidth: 170,
+     
     },
-    {
+
+     {
       id: 'email',
       label: t("core.label.email"),
       minWidth: 170,
     },
+
     {
       id: 'phone',
       label: t("core.label.phone"),
       minWidth: 170,
     },
+
+
     {
-      id: 'role',
-      label: t("core.label.role"),
+      id: 'status',
+      label: t("core.label.status"),
       minWidth: 170,
+      format: (value, row) => <SelectFilter first={false}
+        defaultValue={row.status}
+        value={row.status}
+        onChange={(value: any) => {
+          row.status = value
+          updateStatus(row)
+        }}
+        items={options}
+      />
     },
 
 
@@ -178,6 +196,14 @@ export default function useEmployeeListController() {
       })
     }
     setLoading(true)
+
+    
+     if (filterParams.params.filters.find((e: any) => e.field === 'branchId' && e.value === 'none'))
+      filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "branchId")
+
+
+         console.log({ ...(filterParams.params as any), filters: [...filterParams.params.filters, ...filters] });
+
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters: [...filterParams.params.filters, ...filters] }).then(async res => {
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
@@ -214,6 +240,10 @@ export default function useEmployeeListController() {
     }
   }
 
+  const fetchSucursal = async () => {
+    setBranchList(await searchBranch(currentEntity?.entity.id as string, { ...{} as any, limit: 100 }))
+  }
+
 
   useEffect(() => {
     if (currentEntity?.entity?.id) {
@@ -223,6 +253,7 @@ export default function useEmployeeListController() {
 
   useEffect(() => {
     if (currentEntity?.entity?.id) {
+      fetchSucursal()
       if (searchParams.get('params') && localStorage.getItem('employeeIndex'))
         inicializeFilter(searchParams.get('params') as string)
       else
@@ -241,43 +272,46 @@ export default function useEmployeeListController() {
     navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${item.id}/edit`)
   }
 
+  
 
-  const [deleting, setDeleting] = useState(false)
-  const onDelete = async (item: IEmployee | Array<IEmployee>) => {
+
+  const updateStatus = async (employee: IEmployee) => {
     try {
-      setDeleting(true)
-      let ids = []
-      if (Array.isArray(item)) {
-        ids = (item as Array<IEmployee>).map(e => e.id)
-      } else {
-        ids.push(item.id)
+      changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+      const data: IEmployee = {
+        ...employee,
+        "uid": user?.id as string,
+        "id": employee.id,
+        entityId: currentEntity?.entity.id as string,
+        status: employee.status
       }
-      await Promise.all(
-        ids.map(async (id) => {
-          try {
-            await deleteEmployee(currentEntity?.entity.id as string, id as string, token)
-          } catch (e: any) {
-            showToast(e?.message, 'error')
-            setDeleting(false)
-          }
-        })
-      );
-
-      const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
-      fetchingData(filterParamsUpdated)
-      setDeleting(false)
-      closeModal(CommonModalType.DELETE)
-    } catch (e: any) {
-      showToast(e?.message, 'error')
-      setDeleting(false)
+      await updateEmployee(data, token)
+      changeLoaderState({ show: false })
+      showToast(t('core.feedback.success'), 'success');
+      navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)
+    } catch (error: any) {
+      changeLoaderState({ show: false })
+      showToast(error.message, 'error')
     }
-  }
-
-
+  };
 
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
 
+    {branchList.length > 0 && <SelectFilter 
+      first
+      label={t('core.label.subEntity')}
+      defaultValue={'none'}
+      value={filterParams.filter.branchId}
+      onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, branchId: value } })}
+      items={branchList.map(e => ({ value: e.id, label: e.name }))}
+    />}
+    <SelectFilter first={false}
+      defaultValue={'active'}
+      value={filterParams.filter.status}
+      onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, status: value } })}
 
+      items={options}
+    />
     <SearchIndexFilter
       type="staff"
       label={t('core.label.search')}
@@ -308,12 +342,31 @@ export default function useEmployeeListController() {
   }
 
 
+  const onFilter = (filterParamsData: any) => {
+
+    const filterData: Array<{ field: string, operator: any, value: any }> = []
+    const filter = filterParamsData.filter
+    Object.keys(filter).forEach((key) => {
+      if (key === 'branchId' && filter[key] !== 'none')
+        filterData.push({
+          field: 'branchId',
+          operator: 'array-contains',
+          value: filter[key]
+        })
+      else
+        filterData.push({ field: key, operator: '==', value: filter[key] })
+    })
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null, filters: filterData }, filter: filter }
+    setFilterParams(filterParamsUpdated)
+    fetchingData(filterParamsUpdated)
+  }
+
   return {
     items, onSort, onRowsPerPageChange,
     onEdit,
     onNext, onBack, buildState,
-    columns, rowAction, onDelete, topFilter,
-    loading, deleting, filterParams,
+    columns, rowAction, topFilter,
+    loading,   filterParams,
 
   }
 

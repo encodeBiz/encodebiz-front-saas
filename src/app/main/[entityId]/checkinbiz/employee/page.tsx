@@ -3,25 +3,21 @@ import { Container, Box } from '@mui/material';
 import { useTranslations } from "next-intl";
 import useEmployeeListController from './page.controller';
 import { GenericTable } from "@/components/common/table/GenericTable";
-import { CommonModalType } from '@/contexts/commonModalContext';
 import { Add } from '@mui/icons-material';
-import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import { useLayout } from '@/hooks/useLayout';
-import { useCommonModal } from '@/hooks/useCommonModal';
 
 export default function EmployeeList() {
   const t = useTranslations();
   const {
     items, rowAction, onRowsPerPageChange, onSort,
-    onNext, onBack, onDelete, deleting,
+    onNext, onBack,  
     filterParams, topFilter,
     columns, buildState,
     loading } = useEmployeeListController();
   const { navivateTo } = useLayout()
-  const { open } = useCommonModal()
-  return (
+   return (
     <Container maxWidth="lg">
       <HeaderPage
         title={t("employee.list")}
@@ -54,12 +50,7 @@ export default function EmployeeList() {
 
         />
       </HeaderPage>
-      {open.type === CommonModalType.DELETE && <ConfirmModal
-        isLoading={deleting}
-        title={t('employee.deleteConfirmModalTitle')}
-        description={t('employee.deleteConfirmModalTitle2')}
-        onOKAction={(args: { data: any }) => onDelete(args.data)}
-      />}
+     
     </Container>
   );
 }

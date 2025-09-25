@@ -91,6 +91,12 @@
       "nocard": "No tienes métodos de pago asociado a la entidad, por favor configure al menos uno."
     },
     "label": {
+      "vacation": "Vacaciones",
+      "sick_leave": "Baja por enfermedad",
+      "leave_of_absence": "Licencia por ausencia",
+      "paternity_leave": "Permiso de paternidad",
+      "maternity_leave": "Permiso de maternidad",
+
       "subEntity": "Sucursal",
       "subEntityName": "Nombre de la sucursal",
       "subEntityData": "DATOS DE LA SUCURSAL",

@@ -8,18 +8,21 @@ import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { objectToArray } from "@/lib/common/String";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
-import { fetchEmployee } from "@/services/checkinbiz/employee.service";
+import { deleteEmployee, fetchEmployee } from "@/services/checkinbiz/employee.service";
 import { IChecklog } from "@/domain/features/checkinbiz/IChecklog";
 import { Column } from "@/components/common/table/GenericTable";
+import { CommonModalType } from "@/contexts/commonModalContext";
+import { useCommonModal } from "@/hooks/useCommonModal";
+import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 
 
 export default function useEmployeeDetailController() {
   const t = useTranslations();
   const { showToast } = useToast()
-  const { user } = useAuth()
+  const { user, token } = useAuth()
   const { id } = useParams<{ id: string }>()
   const { currentEntity } = useEntity()
-  const { changeLoaderState } = useLayout()
+  const { changeLoaderState, navivateTo } = useLayout()
   const [initialValues, setInitialValues] = useState<Partial<IEmployee>>({
     "fullName": '',
     email: '',
@@ -69,73 +72,108 @@ export default function useEmployeeDetailController() {
   })
 
   /** Paginated Changed */
-    const onBack = (): void => {
-      const backSize = items.length
-      itemsHistory.splice(-backSize)
-      setItemsHistory([...itemsHistory])
-      setItems([...itemsHistory.slice(-filterParams.params.limit)])
-      setFilterParams({ ...filterParams, currentPage: filterParams.currentPage - 1, params: { ...filterParams.params, startAfter: (itemsHistory[itemsHistory.length - 1] as any).last } })
-  
-    }
-  
-    /** Paginated Changed */
-    const onNext = async (): Promise<void> => {
-      setLoading(true)
-      const filterParamsUpdated: any = { ...filterParams, currentPage: filterParams.currentPage + 1 }
-      fetchingData(filterParamsUpdated)
-    }
-  
-  
-  
-    /** Sort Change */
-    const onSort = (sort: { orderBy: string, orderDirection: 'desc' | 'asc' }) => {
-      const filterParamsUpdated: any = { ...filterParams, currentPage: 0, params: { ...filterParams.params, ...sort, startAfter: null, } }
-      setFilterParams(filterParamsUpdated)
-      fetchingData(filterParamsUpdated)
-    }
-  
-  
-    /** Limit Change */
-    const onRowsPerPageChange = (limit: number) => {
-      const filterParamsUpdated: any = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null, limit } }
-      setFilterParams(filterParamsUpdated)
-      fetchingData(filterParamsUpdated)
-    }
-  
-  
-    const fetchingData = (filterParams: any) => {}
-  
-  
-    const columns: Column<IChecklog>[] = [
-      {
-        id: 'id',
-        label: t("core.label.name"),
-        minWidth: 170,
-      },
-      {
-        id: 'id',
-        label: t("core.label.email"),
-        minWidth: 170,
-      },
-      {
-        id: 'id',
-        label: t("core.label.phone"),
-        minWidth: 170,
-      },
-      {
-        id: 'id',
-        label: t("core.label.role"),
-        minWidth: 170,
-      },
-  
-  
-    ];
+  const onBack = (): void => {
+    const backSize = items.length
+    itemsHistory.splice(-backSize)
+    setItemsHistory([...itemsHistory])
+    setItems([...itemsHistory.slice(-filterParams.params.limit)])
+    setFilterParams({ ...filterParams, currentPage: filterParams.currentPage - 1, params: { ...filterParams.params, startAfter: (itemsHistory[itemsHistory.length - 1] as any).last } })
 
-  return { 
-      items, onSort, onRowsPerPageChange,
-    
-    onNext, onBack,  
-    columns, 
+  }
+
+  /** Paginated Changed */
+  const onNext = async (): Promise<void> => {
+    setLoading(true)
+    const filterParamsUpdated: any = { ...filterParams, currentPage: filterParams.currentPage + 1 }
+    fetchingData(filterParamsUpdated)
+  }
+
+
+
+  /** Sort Change */
+  const onSort = (sort: { orderBy: string, orderDirection: 'desc' | 'asc' }) => {
+    const filterParamsUpdated: any = { ...filterParams, currentPage: 0, params: { ...filterParams.params, ...sort, startAfter: null, } }
+    setFilterParams(filterParamsUpdated)
+    fetchingData(filterParamsUpdated)
+  }
+
+
+  /** Limit Change */
+  const onRowsPerPageChange = (limit: number) => {
+    const filterParamsUpdated: any = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null, limit } }
+    setFilterParams(filterParamsUpdated)
+    fetchingData(filterParamsUpdated)
+  }
+
+
+  const fetchingData = (filterParams: any) => { }
+
+
+  const columns: Column<IChecklog>[] = [
+    {
+      id: 'id',
+      label: t("core.label.name"),
+      minWidth: 170,
+    },
+    {
+      id: 'id',
+      label: t("core.label.email"),
+      minWidth: 170,
+    },
+    {
+      id: 'id',
+      label: t("core.label.phone"),
+      minWidth: 170,
+    },
+    {
+      id: 'id',
+      label: t("core.label.role"),
+      minWidth: 170,
+    },
+
+
+  ];
+
+
+
+  const { closeModal } = useCommonModal()
+  const [deleting, setDeleting] = useState(false)
+  const onDelete = async (item: IEmployee | Array<IEmployee>) => {
+    try {
+      setDeleting(true)
+      let ids = []
+      if (Array.isArray(item)) {
+        ids = (item as Array<IEmployee>).map(e => e.id)
+      } else {
+        ids.push(item.id)
+      }
+      await Promise.all(
+        ids.map(async (id) => {
+          try {
+            await deleteEmployee(currentEntity?.entity.id as string, id as string, token)
+          } catch (e: any) {
+            showToast(e?.message, 'error')
+            setDeleting(false)
+          }
+        })
+      );
+
+
+      setDeleting(false)
+      closeModal(CommonModalType.DELETE)
+       navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)
+    } catch (e: any) {
+      showToast(e?.message, 'error')
+      setDeleting(false)
+    }
+  }
+
+  return {
+    items, onSort, onRowsPerPageChange,
+    onDelete, deleting,
+    onNext, onBack,
+    columns,
     loading, filterParams,
-    initialValues }
+    initialValues
+  }
 }
