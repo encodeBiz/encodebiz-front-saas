@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import {
     Box,
-    CardContent,
     Paper,
     Table,
     TableBody,
@@ -10,35 +9,31 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Typography
+    Typography,
+    useTheme
     ,
 
 } from '@mui/material';
 
-import {
-
-    CheckCircle,
-    PlayCircleOutline,
-    StopCircleOutlined
-} from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
-import { useCommonModal } from '@/hooks/useCommonModal';
-import Image from 'next/image';
-import { SassButton } from '@/components/common/buttons/GenericButton';
-import image from '../../../../../public/assets/images/checkex.png'
-import { BorderBox } from '@/components/common/tabs/BorderBox';
-import { karla } from '@/config/fonts/google_fonts';
 import { useCheck } from '../page.controller';
 import { DateRangePicker } from '@/app/main/[entityId]/passinbiz/stats/components/filters/fields/DateRangeFilter';
+import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
+import EmptyState from '@/components/common/EmptyState/EmptyState';
 const CheckLog = () => {
-    const {   } = useCheck()
+    const { setOpenLogs } = useCheck()
     const t = useTranslations()
     const rows: Array<any> = []
-    const [range, setRange] = useState<{start: any, end: any}>({start: new Date(), end: new Date()})
-
+    const [range, setRange] = useState<{ start: any, end: any }>({ start: new Date(), end: new Date() })
+    const theme = useTheme()
     return (
-        <Box sx={{ p: 2, maxWidth: 600, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 6 }}>
-
+        <Box sx={{ p: 2, pt: 4, position: 'relative', maxWidth: 600, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 6 }}>
+            <Typography variant="body1" fontWeight={'bold'} fontSize={22} > {t('checking.title')} </Typography>
+            <CustomIconBtn
+                sx={{ position: 'absolute', top: 16, right: 16 }}
+                onClick={() => setOpenLogs(false)}
+                color={theme.palette.primary.main}
+            />
             <DateRangePicker width='100%' value={range} onChange={setRange} />
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -51,6 +46,7 @@ const CheckLog = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
+                       
                         {rows.map((row) => (
                             <TableRow
                                 key={row.name}
@@ -67,6 +63,7 @@ const CheckLog = () => {
                         ))}
                     </TableBody>
                 </Table>
+                 {rows.length === 0 && <EmptyState/>}
             </TableContainer>
 
 
