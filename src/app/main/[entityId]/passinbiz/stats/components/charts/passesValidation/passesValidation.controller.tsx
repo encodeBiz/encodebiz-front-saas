@@ -1,6 +1,5 @@
 import { useAuth } from "@/hooks/useAuth";
 
-import { useToast } from "@/hooks/useToast";
 
 import { fetchStats } from "@/services/passinbiz/holder.service";
 import { IPassValidatorStatsRequest, IPassValidatorStatsResponse } from "../../../model/PassValidator";
@@ -181,8 +180,8 @@ export interface ChartData {
 
 export default function usePassesValidationController() {
 
-  const { setSeriesChart2 , pending, setPending} = usePassinBizStats()
- 
+  const { setSeriesChart2, pending, setPending, setError, error } = usePassinBizStats()
+
 
 
 
@@ -190,10 +189,13 @@ export default function usePassesValidationController() {
   const { setGraphData, graphData } = usePassinBizStats()
 
   const { token } = useAuth()
-  const { showToast } = useToast()
-  async function handleFetchStats(payload: IPassValidatorStatsRequest) {
-      setPending({...pending,'validator':true});
 
+  async function handleFetchStats(payload: IPassValidatorStatsRequest) {
+    setPending({ ...pending, 'validator': true });
+    setError({
+      ...error,
+      ['validator']: ''
+    })
     fetchStats({ ...payload } as IPassValidatorStatsRequest, token).then(res => {
       const normalized = normalizeApiResponse(res);
 
@@ -214,10 +216,14 @@ export default function usePassesValidationController() {
         }
       })
 
+
     }).catch(e => {
-      showToast(e?.message, 'error')
+      setError({
+        ...error,
+        ['validator']: e?.message
+      })
     }).finally(() => {
-      setPending({...pending,'validator':false});
+      setPending({ ...pending, 'validator': false });
     })
   }
 

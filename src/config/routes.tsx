@@ -30,6 +30,10 @@ const PASSINBIZ = [{
     name: 'Staff',
     link: `/${PASSSINBIZ_MODULE_ROUTE}/staff`,
     subMenu: []
+},  {
+    name: 'Stats',
+    link: `/${PASSSINBIZ_MODULE_ROUTE}/stats`,
+    subMenu: []
 }, ]
 
 

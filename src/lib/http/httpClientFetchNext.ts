@@ -44,7 +44,7 @@ export const codeError: any = {
   "media/not_found": "Archivo no encontrado",
   "staff/not_found": "Personal de apoyo no encontrado",
   'twofactor/invalid_token':"La sesión ha expirado",
-  "stats/range_and_groupBy_tolong":"Los datos para graficar son demasiadox extensox, intenta seleccionar un rango menor de fechas o otro tipo de agrupación"
+  "stats/range_and_groupBy_tolong":"Los datos para graficar son demasiadox extensos, intenta seleccionar un rango menor de fechas o otro tipo de agrupación"
 };
 
 /**

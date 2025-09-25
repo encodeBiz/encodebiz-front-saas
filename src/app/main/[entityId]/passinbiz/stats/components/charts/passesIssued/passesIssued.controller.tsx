@@ -1,6 +1,5 @@
 import { useAuth } from "@/hooks/useAuth";
-import { useToast } from "@/hooks/useToast";
-
+ 
 import { fetchStats } from "@/services/passinbiz/holder.service";
 import { BucketItem, GroupBy, IPassIssuedStatsRequest, IPassIssuedStatsResponse } from "../../../model/PassIssued";
 import { usePassinBizStats } from "../../../context/passBizStatsContext";
@@ -108,14 +107,17 @@ export interface ChartData {
 
 export default function usePassesIssuedController() {
 
-   
-    //Graph Data
-    const { setGraphData, graphData, pending, setPending } = usePassinBizStats()
-    const { token } = useAuth()
-    const { showToast } = useToast()
-    async function handleFetchStats(payload: IPassIssuedStatsRequest) {
-        setPending({...pending,'issued':true});
 
+    //Graph Data
+    const { setGraphData, graphData, pending, setPending, setError, error } = usePassinBizStats()
+    const { token } = useAuth()
+  
+    async function handleFetchStats(payload: IPassIssuedStatsRequest) {
+        setPending({ ...pending, 'issued': true });
+ setError({
+                ...error,
+                ['issued']: ''
+            })
         fetchStats({ ...payload } as IPassIssuedStatsRequest, token).then(res => {
             const normalized = normalizeApiResponse(res);
             const buckets = getBuckets(normalized as IPassIssuedStatsResponse, payload.groupBy)
@@ -125,15 +127,20 @@ export default function usePassesIssuedController() {
             const empty = rows.length === 0 || series.length === 0;
             setGraphData({
                 ...graphData,
-                ['issued']:{
+                ['issued']: {
                     buckets, rows, series, ranking, dr, empty, data: normalized
                 }
             })
 
+           
         }).catch(e => {
-            showToast(e?.message, 'error')
+            setError({
+                ...error,
+                ['issued']: e?.message
+            })
+            // showToast(e?.message, 'error')
         }).finally(() => {
-          setPending({...pending,'issued':false});
+            setPending({ ...pending, 'issued': false });
         })
     }
 
@@ -142,7 +149,7 @@ export default function usePassesIssuedController() {
 
 
     return {
-        handleFetchStats,   graphData
+        handleFetchStats, graphData
     }
 
 }
