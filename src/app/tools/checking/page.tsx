@@ -8,21 +8,24 @@ import {
 import Check from './Check/Check';
 import { useTranslations } from 'next-intl';
 import { NorthEastOutlined } from '@mui/icons-material';
+import { useCheck } from './page.controller';
+import CheckLog from './CheckLog/CheckLog';
 
 
 const CheckingPage = () => {
     const t = useTranslations()
-
+    const { setOpenLogs, openLogs } = useCheck()
     return (
-        <Container maxWidth="sm" sx={{backgroundColor:'#FFFFFF', height:'100vh', position:'relative', paddingBottom:10}}>
+        <Container maxWidth="sm" sx={{ backgroundColor: '#FFFFFF', height: '100vh', position: 'relative', paddingBottom: 10 }}>
             {/** 
             <Box sx={classes.locale}>
                 <LocaleSwitcher />
             </Box>
             */}
-            <Check />
+            {!openLogs && <Check />}
+            {openLogs && <CheckLog />}
 
-            <Box
+            {!openLogs && <Box onClick={() => setOpenLogs(true)}
                 sx={{
 
                     position: 'absolute',
@@ -32,18 +35,18 @@ const CheckingPage = () => {
                     bottom: 0,
                     /* E-SAAS/sys/light/on-primary-fixed */
                     background: '#001946',
-                    display:'flex',
-                    flexDirection:'row',
-                    justifyContent:'center',
-                    alignItems:'center',
-                    gap:1,
-                    cursor:'pointer',    
-                    color:'#FFFFFF',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: 1,
+                    cursor: 'pointer',
+                    color: '#FFFFFF',
                 }}
             >
                 {t('checking.history')}
                 <NorthEastOutlined />
-            </Box>
+            </Box>}
         </Container>
     );
 };

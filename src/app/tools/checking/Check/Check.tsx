@@ -15,14 +15,13 @@ import {
     StopCircleOutlined
 } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
-import { useCheck } from './Check.controller';
+import { useCheck } from '../page.controller';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import Image from 'next/image';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import image from '../../../../../public/assets/images/checkex.png'
 import { BorderBox } from '@/components/common/tabs/BorderBox';
-import { karla } from '@/config/fonts/google_fonts';
-const Check = () => {
+ const Check = () => {
     const { startJornada, setStartJornada, startDescanso, setStartDescanso, disabledJornada } = useCheck()
     const t = useTranslations()
     const { open, openModal, closeModal } = useCommonModal()
@@ -31,7 +30,7 @@ const Check = () => {
     return (
         <Box sx={{ p: 2, maxWidth: 600, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 6 }}>
             <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', gap: 2, width: '100%' }}>
-                <Image style={{ borderRadius: 4, background: '#E9E8F5' }} src={image} width={80} height={80} alt='' />
+                <Image style={{ borderRadius: 4, background: '#E9E8F5' }} src={image} width={160} height={80} alt='' />
             </Box>
 
             <Typography variant="body1" fontWeight={'bold'} fontSize={22} > {t('checking.title')} </Typography>

@@ -14,10 +14,10 @@ export const useCheck = () => {
     const [startJornada, setStartJornada] = useState(false)
     const [startDescanso, setStartDescanso] = useState(false)
     const [disabledJornada, setDisabledJornada] = useState(false)
-      
+    const [openLogs, setOpenLogs] = useState(false) 
+    
 
 
-
-    return { startJornada, setStartJornada, startDescanso, setStartDescanso, disabledJornada}
+    return { startJornada, setStartJornada, startDescanso, setStartDescanso, disabledJornada, setOpenLogs, openLogs}
 }
 

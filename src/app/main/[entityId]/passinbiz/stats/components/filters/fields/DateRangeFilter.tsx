@@ -9,10 +9,12 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 export const DateRangePicker = ({
     value = { start: null, end: null },
-    onChange
+    onChange,
+    width='450px'
 }: {
     value: { start: any, end: any },
     onChange: (value: { start: any, end: any }) => void,
+    width?: string
 
 }) => {
 
@@ -41,7 +43,7 @@ export const DateRangePicker = ({
     
     return <LocalizationProvider dateAdapter={AdapterDayjs}>
 
-        <FormControl sx={{width: 450,mb:1}}>
+        <FormControl sx={{width: width,mb:1}}>
 
             <Box display="flex" gap={2} flexDirection={{ xs: 'column', sm: 'row' }}>
                 <DateTimePicker
