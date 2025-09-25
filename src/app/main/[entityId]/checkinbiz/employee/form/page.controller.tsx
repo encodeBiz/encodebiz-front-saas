@@ -161,8 +161,13 @@ export default function useEmployeeController() {
         required: false,
 
         options: [
-          { value: 'active', label: t('core.label.active') },
-          { value: 'inactive', label: t('core.label.inactive') },
+          { label: t('core.label.active'), value: 'active' },
+          { label: t('core.label.inactive'), value: 'inactive' },
+          { label: t('core.label.vacation'), value: 'vacation' },
+          { label: t('core.label.sick_leave'), value: 'sick_leave' },
+          { label: t('core.label.leave_of_absence'), value: 'leave_of_absence' },
+          { label: t('core.label.paternity_leave'), value: 'paternity_leave' },
+          { label: t('core.label.maternity_leave'), value: 'maternity_leave' },
         ],
         component: SelectInput,
       },

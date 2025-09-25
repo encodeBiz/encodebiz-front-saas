@@ -759,5 +759,17 @@
     "summary": "Resumen",
     "series": "Series visibles",
     "empthytext": "Ajusta los filtros con los parámetros que requieras para gráficar información"
+  },
+  "checking":{
+    "title":"Control de Asistencia",
+    "logDay":"Registro de Jornada",
+    "controlDay":"Control de Descanso",
+
+    "startJornada":"Iniciar Jornada",
+    "endJornada":"Finalizar Jornada",
+    "startDescanso":"Iniciar Descanso",
+    "endDescanso":"Finalizar Descanso",
+
+    "history":"Historial de Asistencia"
   }
 }
