@@ -4,6 +4,7 @@ import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
+import { ICreateLog } from "@/domain/features/checkinbiz/IChecklog";
  
 
 /**
@@ -131,3 +132,30 @@ export const deleteEmployee = async (entityId: string, id: string, token: string
 
 
 
+export async function createLog(data: ICreateLog, token: string) {
+  try {
+    if (!token) {
+      throw new Error("Error to fetch user auth token");
+    } else {
+      const httpClientFetchInstance: HttpClient = new HttpClient({
+        baseURL: "",
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      const response: any = await httpClientFetchInstance.post(
+        process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_CREATE_LOG as string,
+        {
+          ...data,
+        }
+      );
+      if (response.errCode && response.errCode !== 200) {
+        throw new Error(response.message);
+      }
+
+      return response;
+    }
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
