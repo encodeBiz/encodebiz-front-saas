@@ -14,7 +14,7 @@ import { useLayout } from "@/hooks/useLayout";
 import { useParams, useSearchParams } from "next/navigation";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
 import ImageUploadInput from "@/components/common/forms/fields/ImageUploadInput";
- 
+
 
 export default function useHolderController() {
   const t = useTranslations();
@@ -107,7 +107,7 @@ export default function useHolderController() {
     entityId: currentEntity?.entity.id as string
   });
 
-  const validationSchema = Yup.object().shape({
+  const validationSchema: any = Yup.object().shape({
     customFields: Yup.array()
       .of(
         Yup.object().shape({
@@ -126,7 +126,7 @@ export default function useHolderController() {
   const submitForm = async (values: Partial<Holder>) => {
     try {
       const dataForm: Partial<Holder> = {
-        "uid": user?.id as string,
+
         "fullName": values.fullName,
         "email": values.email,
         "phoneNumber": values.phoneNumber,
@@ -157,7 +157,17 @@ export default function useHolderController() {
 
   const onChangeType = async (typeValue: any) => {
     if (typeValue === 'event') {
-      const eventList = await search(currentEntity?.entity.id as string, { ...{} as any, limit: 100 })       
+      const eventList = await search(currentEntity?.entity.id as string, {
+        ...{
+          filters: [
+            {
+              field: 'status',
+              value: 'published',
+              operator: '=='
+            }
+          ]
+        } as any, limit: 100
+      })
       const fieldList = fields.filter(e => e.name !== 'thumbnail')
       fieldList.splice(4, 0, {
         name: 'parentId',

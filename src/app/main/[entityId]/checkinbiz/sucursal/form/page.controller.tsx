@@ -15,6 +15,7 @@ import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 import { country } from "@/config/country";
 import AddressInput from "@/components/common/forms/fields/AddressInput";
+import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 
 
 export default function useSucursalController() {
@@ -27,12 +28,17 @@ export default function useSucursalController() {
   const { changeLoaderState } = useLayout()
   const [geo, setGeo] = useState<{ lat: number, lng: number }>({ lat: 0, lng: 0 })
   const [cityList, setCityList] = useState<any>(country.find(e => e.name === 'España')?.states.map(e => ({ label: e.name, value: e.name })))
-  const [setCountrySelected] = useState<any>('España')
-  const [initialValues, setInitialValues] = useState<Partial<ISucursal>>({
+
+  const [initialValues, setInitialValues] = useState<Partial<any>>({
     "name": '',
+    metadata: [],
     "country": 'España',
     "city": 'Madrid',
-    address: ''
+    geo: { lat: 0, lng: 0 },
+    postalCode: '',
+    region: '',
+    street: '',
+
 
   });
 
@@ -45,23 +51,32 @@ export default function useSucursalController() {
         })
       )
       .nullable(),
-    address: requiredRule(t),
+    street: requiredRule(t),
     country: requiredRule(t),
     city: requiredRule(t),
-
+    name: requiredRule(t),
+    postalCode: requiredRule(t),
+    status: requiredRule(t),
   });
 
-  const handleSubmit = async (values: Partial<ISucursal>) => {
+  const handleSubmit = async (values: Partial<any>) => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const data = {
-        ...values,
-        "uid": user?.id as string,
+      const data: ISucursal = {
+        name: values.name,
+        ratioChecklog: values.ratioChecklog ?? 0,
+        status: values.status,
         "metadata": ArrayToObject(values.metadata as any),
         "id": id,
-        geo,
-
-        entityId: currentEntity?.entity.id
+        address: {
+          "country": values.country,
+          "city": values.city,
+          geo,
+          postalCode: values.postalCode,
+          region: values.region,
+          street: values.street
+        },
+        entityId: currentEntity?.entity.id as string
       }
       if (id)
         await updateSucursal(data, token)
@@ -86,7 +101,7 @@ export default function useSucursalController() {
       name: 'name',
       label: t('core.label.subEntityName'),
       type: 'text',
-       fullWidth: true,
+      fullWidth: true,
       required: true,
       component: TextInput,
     },
@@ -97,8 +112,6 @@ export default function useSucursalController() {
       extraProps: {
         onHandleChange: (value: any) => {
           setCityList(country.find((e: any) => e.name === value)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
-          setCountrySelected(value)
-
         },
       },
       component: SelectInput,
@@ -108,14 +121,21 @@ export default function useSucursalController() {
       name: 'city',
       label: t('core.label.city'),
       component: SelectInput,
-      options: cityList,
-
+      options: cityList
     },
+
     {
-      name: 'address',
-      label: t('core.label.address'),
-      type: 'text',
-      required: true,
+      name: 'postalCode',
+      label: t('core.label.postalCode'),
+      component: TextInput,
+      fullWidth: true,
+      options: cityList
+    },
+
+    {
+      name: 'street',
+      label: t('core.label.street'),
+      type: 'textarea',
       fullWidth: true,
       component: AddressInput,
       extraProps: {
@@ -123,20 +143,68 @@ export default function useSucursalController() {
           setGeo(data)
         },
       },
+    },
+
+    {
+      name: 'region',
+      label: t('core.label.region'),
+      component: TextInput,
+
 
     },
 
+    {
+      name: 'ratioChecklog',
+      label: t('core.label.ratioChecklog'),
+      component: TextInput,
+      type: 'number'
 
+
+    },
+
+    {
+      name: 'status',
+      label: t('core.label.status'),
+      component: SelectInput,
+      required: true,
+      fullWidth: true,
+      options: [
+        { value: 'active', label: t('core.label.active') },
+        { value: 'inactive', label: t('core.label.inactive') },
+      ],
+    },
+
+    {
+      isDivider: true,
+      label: t('core.label.aditionalData'),
+    },
+
+    {
+      name: 'metadata',
+      label: t('core.label.setting'),
+      type: 'text',
+      required: true,
+      fullWidth: true,
+      component: DynamicKeyValueInput,
+    },
   ];
 
   const fetchData = useCallback(async () => {
 
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const event: ISucursal = await fetchSucursal(currentEntity?.entity.id as string, id)
+      const sucursal: ISucursal = await fetchSucursal(currentEntity?.entity.id as string, id)
       setInitialValues({
-        ...event,
-        metadata: objectToArray(event.metadata)
+        "country": sucursal.address.country,
+        "city": sucursal.address.city,
+        geo: { lat: sucursal.address.geo.lat, lng: sucursal.address.geo.lng },
+        postalCode: sucursal.address.postalCode,
+        region: sucursal.address.region,
+        street: sucursal.address.street,
+        status:sucursal.status,
+        ratioChecklog:sucursal.ratioChecklog,
+        name:sucursal.name,
+        metadata: objectToArray(sucursal.metadata)
       })
       changeLoaderState({ show: false })
     } catch (error: any) {

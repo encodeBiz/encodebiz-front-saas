@@ -3,7 +3,7 @@ import { Container, Box } from '@mui/material';
 import { useTranslations } from "next-intl";
 import useHolderListController from './page.controller';
 import { GenericTable } from "@/components/common/table/GenericTable";
-import { Add, ArrowUpward } from '@mui/icons-material';
+import { Add, ArchiveOutlined, ArrowUpward } from '@mui/icons-material';
 import { PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { useEntity } from '@/hooks/useEntity';
@@ -17,7 +17,7 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 export default function HolderList() {
   const t = useTranslations();
   const {
-    items, rowAction, onDelete, deleting,
+    items, rowAction, onArchived, deleting,
     onNext, onBack, onSort, onRowsPerPageChange,
     topFilter, buildState, filterParams,
     columns, loading, } = useHolderListController();
@@ -73,9 +73,10 @@ export default function HolderList() {
 
       {open.type === CommonModalType.DELETE && <ConfirmModal
         isLoading={deleting}
+        icon={<ArchiveOutlined />}
         title={t('event.deleteConfirmModalTitle')}
         description={t('event.deleteConfirmModalTitle2')}
-        onOKAction={(args: { data: Array<string> }) => onDelete(args.data as any)}
+        onOKAction={(args: { data: Array<string> }) => onArchived(args.data as any)}
       />}
     </Container>
   );

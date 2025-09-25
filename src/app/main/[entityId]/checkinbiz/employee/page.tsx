@@ -35,8 +35,6 @@ export default function EmployeeList() {
           </Box>
         }
       >
-
-
         <GenericTable
           data={items}
           rowAction={rowAction}

@@ -1,6 +1,6 @@
 //SelectMultipleInput.tsx
 import React from 'react';
-import { TextFieldProps, MenuItem, Select, FormHelperText, FormControl, InputLabel } from '@mui/material';
+import { TextFieldProps, MenuItem, Select, FormHelperText, FormControl, InputLabel, Box } from '@mui/material';
 import { FieldProps, useField } from 'formik';
 
 type SelectMultipleInputProps = FieldProps & TextFieldProps & {
@@ -35,9 +35,11 @@ const SelectMultipleInput: React.FC<SelectMultipleInputProps> = ({
         if (typeof onHandleChange === 'function') onHandleChange(value)
 
       }}
+      renderValue={(selected) => <Box sx={{textAlign:'start'}}>{(selected as string[]).map(id => options.find((o: any) => o.value === id)?.label ?? id).join(', ')}</Box>}
+
     >
       {options.map((option) => (
-        <MenuItem  key={option.value} value={option.value}>
+        <MenuItem key={option.value} value={option.value}>
           {option.label}
         </MenuItem>
       ))}

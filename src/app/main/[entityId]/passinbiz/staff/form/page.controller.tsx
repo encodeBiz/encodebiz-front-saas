@@ -187,7 +187,7 @@ export default function useStaffController() {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const staff: IStaff = await fetchStaff(currentEntity?.entity.id as string, id)
       const eventStaffList: Array<IEvent> = await searchEventsByStaff(id)
-
+ 
       setInitialValues({
         fullName: staff.fullName ?? "",
         email: staff.email ?? "",
@@ -221,7 +221,17 @@ export default function useStaffController() {
       fetchData()
   }
   const inicializeEvent = async () => {
-    const eventList = await search(currentEntity?.entity.id as string, { ...{} as any, limit: 100 })
+    const eventList = await search(currentEntity?.entity.id as string, {
+      ...{
+        filters: [
+          {
+            field: 'status',
+            value: 'published',
+            operator: '=='
+          }
+        ]
+      } as any, limit: 100
+    })
     setEventData({ loaded: true, eventList })
   }
 

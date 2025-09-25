@@ -1,16 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Column, IRowAction } from "@/components/common/table/GenericTable";
-import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useToast } from "@/hooks/useToast";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
-import { deleteEvent, search } from "@/services/passinbiz/event.service";
+import { archivedEvent, search } from "@/services/passinbiz/event.service";
 import { PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
-import { DeleteOutline, Edit, Person2 } from "@mui/icons-material";
+import { ArchiveOutlined, Edit, Person2 } from "@mui/icons-material";
 import { Box, Chip, Typography } from "@mui/material";
 import { formatDateInSpanish } from "@/lib/common/Date";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
@@ -41,7 +40,6 @@ interface IFilterParams {
 }
 export default function useIEventListController() {
   const t = useTranslations();
-  const { token } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
   const { navivateTo } = useLayout()
@@ -246,7 +244,7 @@ export default function useIEventListController() {
   }
 
 
-  const onDelete = async (item: IEvent | Array<IEvent>) => {
+  const onArchived = async (item: IEvent | Array<IEvent>) => {
     try {
       setDeleting(true)
       let ids = []
@@ -258,7 +256,7 @@ export default function useIEventListController() {
       await Promise.all(
         ids.map(async (id) => {
           try {
-            await deleteEvent(currentEntity?.entity.id as string, id, token)
+            await archivedEvent(currentEntity?.entity.id as string, id)
           } catch (e: any) {
             showToast(e?.message, 'error')
             setDeleting(false)
@@ -303,8 +301,8 @@ export default function useIEventListController() {
       bulk: true,
       showBulk: true,
       color: 'error',
-      icon: <DeleteOutline color="error" />,
-      label: t('core.button.delete'),
+      icon: <ArchiveOutlined color="error" />,
+      label: t('core.label.archivedHolder'),
       allowItem: () => true,
       onPress: (item: IEvent) => openModal(CommonModalType.DELETE, { data: item })
     },
@@ -329,7 +327,7 @@ export default function useIEventListController() {
 
 
   return {
-    onDelete, items, onSort, onRowsPerPageChange, topFilter,
+    onArchived, items, onSort, onRowsPerPageChange, topFilter,
     onEdit,
     onBack, onNext, buildState,
     columns, deleting, rowAction,

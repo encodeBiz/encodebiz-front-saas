@@ -16,19 +16,15 @@ type PageLoaderProps = {
   thickness?: number;
   message?: string;
   textColor?: string;
-  iconColor?: 'blue' | 'white';
-  fullScreen?: boolean;
+
   progress?: number; // For determinate mode
   width?: number;
 };
 
-const PageLoader: React.FC<PageLoaderProps> = ({
+const BoxLoader: React.FC<PageLoaderProps> = ({
   message,
-  fullScreen = true,
-  backdrop = false,
-  width = 0,
-  textColor = '#FFF',
-  iconColor = 'white'
+ 
+  textColor = '#000'
 
 }) => {
   const theme = useTheme();
@@ -41,32 +37,22 @@ const PageLoader: React.FC<PageLoaderProps> = ({
     alignItems: 'center',
     justifyContent: 'center',
     gap: theme.spacing(2),
-    ...(fullScreen && {
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100vw',
-      height: '100vh',
-      backgroundColor: backdrop ? 'rgba(0,0,0,0.7)' : theme.palette.background.default,
-      zIndex: theme.zIndex.modal + 1,
-      color: theme.palette.text.secondary
-    }),
-    ...(!fullScreen && {
-      width: `calc(100vw - ${width ? width : 200}px)`,
-      height: 'calc(100vh)',
-      position: 'absolute',
-      zIndex: theme.zIndex.modal - 1,
 
-      backgroundColor: backdrop ? 'rgba(0,0,0,0.1)' : theme.palette.background.default,
-      // zIndex: theme.zIndex.modal + 1
-    })
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '80%',
+    backgroundColor: 'rgba(255, 255, 255, 0.08)' ,
+    zIndex: theme.zIndex.modal + 1,
+    color: theme.palette.text.secondary
+
   };
 
 
 
   return (
     <Box sx={loaderStyle}>
-      <AnimatedLogo color={iconColor} />
+      <AnimatedLogo color='blue'  />
       <Typography style={{ color: textColor }} variant="body1"  >
         {message ? message : t('core.title.loader')}
       </Typography>
@@ -75,4 +61,4 @@ const PageLoader: React.FC<PageLoaderProps> = ({
   );
 };
 
-export default PageLoader;
+export default BoxLoader;

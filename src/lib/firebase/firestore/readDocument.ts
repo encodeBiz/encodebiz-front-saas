@@ -71,6 +71,12 @@ export const getIndex = async <T>(
 };
 
 
+export const getDocRefByPath = async (
+  path: string,
+): Promise<any> => {
+  return doc(db, `${path}`);
+};
+
 export const getRefByPath = async <T>(
   path: string,
 ): Promise<T> => {

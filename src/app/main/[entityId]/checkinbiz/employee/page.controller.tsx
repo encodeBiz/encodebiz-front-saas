@@ -4,15 +4,15 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useToast } from "@/hooks/useToast";
 import { useTranslations } from "next-intl";
-import { useEffect,   useState } from "react";
+import { useEffect, useState } from "react";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import { deleteEmployee, search } from "@/services/checkinbiz/employee.service";
 import { useLayout } from "@/hooks/useLayout";
-import { useSearchParams } from "next/navigation";
-import { DeleteOutline, Edit } from "@mui/icons-material";
+import { useParams, useSearchParams } from "next/navigation";
+import { DeleteOutline, Edit, ListAltOutlined } from "@mui/icons-material";
 import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
@@ -40,6 +40,8 @@ interface IFilterParams {
 
 export default function useEmployeeListController() {
   const t = useTranslations();
+  const { id } = useParams<{ id: string }>()
+
   const searchParams = useSearchParams()
   const { token } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
@@ -62,7 +64,7 @@ export default function useEmployeeListController() {
   })
 
   const { closeModal, openModal } = useCommonModal()
-  const rowAction: Array<IRowAction> = [
+  const rowAction: Array<IRowAction> = id ? [] : [
     {
       actionBtn: true,
       color: 'error',
@@ -83,8 +85,24 @@ export default function useEmployeeListController() {
       allowItem: () => true,
       onPress: (item: IEmployee) => onEdit(item)
     },
+
+
+    {
+      actionBtn: true,
+      color: 'primary',
+      icon: <ListAltOutlined color="primary" />,
+      label: t('employee.detail'),
+      bulk: false,
+      allowItem: () => true,
+      onPress: (item: IEmployee) => onDetail(item)
+    },
   ]
 
+
+
+  const onDetail = async (item: any) => {
+    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${item.id}/detail`)
+  }
 
 
   /** Paginated Changed */
@@ -151,9 +169,16 @@ export default function useEmployeeListController() {
   ];
 
   const fetchingData = (filterParams: IFilterParams) => {
-
+    const filters = []
+    if (id) {
+      filters.push({
+        field: 'branchId',
+        operator: 'array-contains',
+        value: id
+      })
+    }
     setLoading(true)
-    search(currentEntity?.entity.id as string, { ...(filterParams.params as any) }).then(async res => {
+    search(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters: [...filterParams.params.filters, ...filters] }).then(async res => {
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
         setItems(res)

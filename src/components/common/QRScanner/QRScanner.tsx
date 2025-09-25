@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { } from 'react';
 import {
     Box,
@@ -6,12 +7,18 @@ import {
     Typography,
     LinearProgress,
     Alert,
+    List,
+    ListItem,
+ 
+    ListItemText,
 
 } from '@mui/material';
 import { Scanner } from '@yudiel/react-qr-scanner';
 
 import {
+ 
     CheckCircle,
+    CreditCardOff,
     Error
 } from '@mui/icons-material';
 import { PreviewContainer, ScannerContainer, StyledCard } from './QRScanner.style';
@@ -21,14 +28,30 @@ import { formatDateInSpanish } from '@/lib/common/Date';
 import EventSelectorModal from '../modals/EventSelector';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
+import Image from 'next/image';
+import { SassButton } from '../buttons/GenericButton';
+import { updateDoc } from 'firebase/firestore';
+import { getDocRefByPath } from '@/lib/firebase/firestore/readDocument';
+import ConfirmModal from '../modals/ConfirmModal';
 
 const QRScanner = () => {
-    const {eventSelected,  handleScan, handleError, resetScanner, scanRessult, staffValidating, staffValid, error, eventList, setEventSelected } = useQRScanner()
+    const { eventSelected, handleScan, handleError, resetScanner, scanRessult, staffValidating, staffValid, error, eventList, setEventSelected } = useQRScanner()
     const t = useTranslations()
-    const { open } = useCommonModal()
+    const { open, openModal, closeModal } = useCommonModal()
+
+    const disabledPass = async (docRef: string) => {
+
+        try {
+            await updateDoc(await getDocRefByPath(docRef), {
+                result: 'failed'
+            });
+            closeModal(CommonModalType.DELETE)
+            resetScanner()
+        } catch (_: any) { }
+    }
     return (
-        <Box sx={{ p: 1, maxWidth: 600, margin: '0 auto' }}>
-            
+        <Box sx={{ p: 0, maxWidth: 600, margin: '0 auto' }}>
+
             {staffValidating && (
                 <Box sx={{ textAlign: 'center', mb: 4 }}>
                     <Typography variant="h6" component="h2" >
@@ -46,7 +69,7 @@ const QRScanner = () => {
                 </Typography>
             </Box>}
 
-            {!scanRessult && !staffValidating && staffValid && !error && (eventList.length>0 && !!eventSelected || eventList.length==0 ) && (
+            {!scanRessult && !staffValidating && staffValid && !error && (eventList.length > 0 && !!eventSelected || eventList.length == 0) && (
                 <StyledCard>
                     <ScannerContainer elevation={0}>
                         <PreviewContainer>
@@ -60,6 +83,9 @@ const QRScanner = () => {
                                         width: '100%',
                                         height: '100%',
                                         objectFit: 'cover'
+                                    },
+                                    container: {
+                                        borderColor: 'blue'
                                     }
                                 }}
                             />
@@ -76,33 +102,71 @@ const QRScanner = () => {
             )}
 
             {scanRessult && !staffValidating && staffValid && !error && (
-                <StyledCard>
-                    <CardContent>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-                            <CheckCircle color="success" sx={{ fontSize: 100 }} />
+
+                <CardContent>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+                        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
+                            <CheckCircle color="success" sx={{ fontSize: 30 }} />
                             <Typography variant="h5" >
                                 {t('scan.resultTitle')}
                             </Typography>
-                            <Typography variant="body1">{scanRessult?.fullName}</Typography>
-                            <Typography variant="body1">{scanRessult?.companyName}</Typography>
-                            {scanRessult?.lastValidatedAt && <Typography variant="body1">
-                                {t('scan.lastValidatedAt')}:
-                                {formatDateInSpanish(new Date(scanRessult?.lastValidatedAt as string))}</Typography>
-                            }
-
-
-
-                            <Button
-                                variant="outlined"
-                                color="primary"
-                                onClick={resetScanner}
-                                sx={{ mt: 2 }}
-                            >
-                                {t('scan.scanOther')}
-                            </Button>
                         </Box>
-                    </CardContent>
-                </StyledCard>
+
+                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 2 }}>
+                            <Typography variant="body1">{scanRessult?.holder?.fullName}</Typography>
+
+
+                            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', gap: 2, width: '100%' }}>
+                                <Image style={{ borderRadius: 4, background: '#E9E8F5' }} src={scanRessult?.holder?.parent?.logo} width={80} height={80} alt='' />
+                                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0 }}>
+                                    <Typography variant="body1">{scanRessult?.holder?.parent?.name}</Typography>
+                                    <Typography variant="body1">{scanRessult?.holder?.parent?.dateLabel}</Typography>
+                                </Box>
+                            </Box>
+                        </Box>
+
+
+
+                        {scanRessult?.lastValidatedAt && <Typography variant="body1">
+                            {t('scan.lastValidatedAt')}:
+                            {formatDateInSpanish(new Date(scanRessult?.lastValidatedAt as string))}</Typography>
+                        }
+
+                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                            <Alert severity='warning' style={{ fontSize: 14, paddingTop: 8, paddingBottom: 10, width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                action={
+                                    <SassButton variant='contained' style={{ fontSize: 10 }} onClick={() => openModal(CommonModalType.DELETE)} color="warning" size="small">
+                                        {t('core.button.disabled')}
+                                    </SassButton>
+                                }
+                                variant='outlined'>{t('scan.' + scanRessult.suggestedDirection)}</Alert>
+                        </Box>
+
+                        <SassButton
+                            variant="contained"
+                            color="primary"
+                            onClick={resetScanner}
+                            sx={{ mt: 2, textTransform: 'inherit' }}
+                        >
+                            {t('scan.scanOther')}
+                        </SassButton>
+
+                        {Array.isArray(scanRessult?.holder?.metadata?.auxiliaryFields) && scanRessult?.holder?.metadata?.auxiliaryFields?.length > 0 && <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', width: '100%' }}>
+                            <Typography variant="body1" fontWeight={'bold'}>{t('core.label.aditionalData2')}: </Typography>
+                            <List>
+                                {scanRessult?.holder?.metadata?.auxiliaryFields?.map((e: any, i: number) => <ListItem key={i}>
+
+                                    <ListItemText
+                                        primary={e.label}
+                                        secondary={e.value}
+                                    />
+                                </ListItem>)}
+                            </List>
+                        </Box>}
+
+                    </Box>
+                </CardContent>
+
             )}
 
             {!!error && (
@@ -139,14 +203,14 @@ const QRScanner = () => {
                                 {t('scan.failedStaff')}
                             </Typography>
 
-                            <Button
+                            <SassButton
                                 variant="contained"
                                 color="primary"
                                 onClick={resetScanner}
-                                sx={{ mt: 2 }}
+                                sx={{ mt: 2, textTransform: 'inherit' }}
                             >
                                 {t('scan.tryagain')}
-                            </Button>
+                            </SassButton>
                         </Box>
                     </CardContent>
                 </StyledCard>
@@ -156,6 +220,14 @@ const QRScanner = () => {
             {open.type === CommonModalType.EVENT_SELECTED && <EventSelectorModal
                 eventList={eventList}
                 onOKAction={(event) => setEventSelected(event)}
+            />}
+
+            {open.type === CommonModalType.DELETE && <ConfirmModal
+                icon={<CreditCardOff />}
+                title={t('scan.deleteConfirmModalTitle')}
+                textBtn={t('core.button.deny')}
+                description={t('scan.deleteConfirmModalTitle2')}
+                onOKAction={() => disabledPass(scanRessult?.ref as string)}
             />}
 
         </Box>

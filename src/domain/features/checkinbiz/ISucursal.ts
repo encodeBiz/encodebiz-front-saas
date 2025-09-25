@@ -1,12 +1,20 @@
  
 export interface ISucursal {
     id?: string; // uid
-    name: string
-    address: string
-    geo?: { lat: number, lng: number }
-    city?: string
-    country?: string
-    entityId: string;
-    ratioChecklog?: number
-    metadata?: any
+    "name": string
+    "entityId": string,
+    "address": {
+      "street": string,
+      "city": string,
+      "country": string,
+      "postalCode": string,
+      "region": string,
+      "geo": {
+        "lat": number
+        "lng": number
+      }
+    },
+    "ratioChecklog": number
+    "metadata": any,
+    "status": 'active' | 'inactive'
 }

@@ -26,7 +26,7 @@ const WebHookTab = () => {
         <Grid container spacing={1} display={'flex'} flexDirection={'column'} justifyContent="flex-start" pb={10}>
 
             <HeaderPage
-                isForm
+                 
                 title={t("webhook.title")}
                 description={t("webhook.text")}
                 actions={

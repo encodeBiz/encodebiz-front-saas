@@ -33,7 +33,7 @@ export default async function RootLayout({
         <html lang="en">
             <body className={`${geistSans.variable} ${geistMono.variable}`}>
                 <LocaleProvider>
-                    <Suspense fallback={<PageLoader backdrop />}>  {/* ✅ Suspense envuelve AuthProvider */}
+                    <Suspense fallback={<PageLoader  backdrop />}>  {/* ✅ Suspense envuelve AuthProvider */}
                         <ToastProvider>
                             <ThemeProvider>
                                 <AuthProvider>

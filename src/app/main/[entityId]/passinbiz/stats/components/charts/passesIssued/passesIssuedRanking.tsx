@@ -17,11 +17,10 @@ import { CustomChip } from "@/components/common/table/CustomChip";
 export const PassesIssuedRankingChart = () => {
     const t = useTranslations()
     const theme = useTheme()
-    const { graphData } = usePassinBizStats()
-
-
-    return (<>
-        <Box>
+    const { graphData, pending } = usePassinBizStats()
+ 
+    return (<> 
+        {!pending['issued']  && <Box>
             <Box display={'flex'} flexDirection={'column'} >
                 <Typography variant="body1">{t('stats.passesIssuedRank')}</Typography>
             </Box>
@@ -54,7 +53,7 @@ export const PassesIssuedRankingChart = () => {
                     </Stack>
                 </Box>
             </Box>
-        </Box >
+        </Box >}
     </>
     );
 

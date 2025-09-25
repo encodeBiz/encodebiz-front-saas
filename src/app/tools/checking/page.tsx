@@ -1,0 +1,27 @@
+
+'use client'
+import React from 'react';
+import {
+    Container,
+    Box,
+    Paper} from '@mui/material';
+import { useStyles } from './page.styles';
+import LocaleSwitcher from '@/components/common/LocaleSwitcher';
+ 
+
+const CheckingPage = () => {
+    const classes = useStyles();
+
+    return (
+        <Container maxWidth="sm">
+            <Box sx={classes.locale}>
+                <LocaleSwitcher />
+            </Box>
+            <Paper elevation={3} sx={classes.root}>               
+                 
+            </Paper>
+        </Container>
+    );
+};
+
+export default CheckingPage;
