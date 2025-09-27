@@ -608,6 +608,21 @@
     "deleteConfirmModalTitle": "Eliminar sucursal",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente la sucursal"
   },
+  
+  "report": {
+    "title": "Reportes",
+    "formDesc": "Completa los campos a continuación para crear un reporte.",
+    "list": "Reportes",
+    "add": "Crear reporte",
+    "map": "Ir al mapa",
+    "report": "Emitir reporte",
+    "detailSucursal": "Detalles del reporte",
+    "update": "Editar",
+    "import": "Importar",
+    "description": "Rellene los campos para registrar el reporte",
+    "deleteConfirmModalTitle": "Eliminar reporte",
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el reporte"
+  },
   "media": {
     "title": "Multimedias",
     "text1": "Archicos seleccionados",

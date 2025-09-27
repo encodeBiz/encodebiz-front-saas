@@ -19,6 +19,7 @@ export const collection = {
     EMPLOYEE: 'employees',
     SUCURSAL: 'branches',
     CHECKLOG: 'checklog',
+    CHECKBIZ_REPORT: 'report',
 
 
 }
