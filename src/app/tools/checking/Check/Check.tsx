@@ -21,8 +21,8 @@ import Image from 'next/image';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import image from '../../../../../public/assets/images/checkex.png'
 import { BorderBox } from '@/components/common/tabs/BorderBox';
- const Check = () => {
-    const { startJornada, setStartJornada, startDescanso, setStartDescanso, disabledJornada } = useCheck()
+const Check = () => {
+    const { checkAction, setCheckAction, restAction, setRestAction } = useCheck()
     const t = useTranslations()
     const { open, openModal, closeModal } = useCommonModal()
 
@@ -38,34 +38,34 @@ import { BorderBox } from '@/components/common/tabs/BorderBox';
             <Box>
                 <Typography variant="body1" fontSize={18} > {t('checking.logDay')} </Typography>
                 <SassButton
-                 sx={{
-                    borderRadius:4,textTransform:'uppercase',
-                    px:2, height:73
-                }}
-                disabled={disabledJornada} variant='contained' color='primary'
-                    onClick={() => setStartJornada(!startJornada)} fullWidth
-                    startIcon={startJornada ? <StopCircleOutlined  style={{fontSize:50}} sx={{fontSize:50, width:50}} color='error' /> : <PlayCircleOutline style={{fontSize:50}} sx={{fontSize:50, color:"#7ADF7F"}} />}
-                >{!startJornada ? t('checking.startJornada') : t('checking.endJornada')}</SassButton>
+                    sx={{
+                        borderRadius: 4, textTransform: 'uppercase',
+                        px: 2, height: 73
+                    }}
+                    disabled={restAction == 'restin'} variant='contained' color='primary'
+                    onClick={() => setCheckAction(checkAction === 'checkin' ? 'checkout' : 'checkin')} fullWidth
+                    startIcon={checkAction === 'checkin' ? <StopCircleOutlined style={{ fontSize: 50 }} sx={{ fontSize: 50, width: 50 }} color='error' /> : <PlayCircleOutline style={{ fontSize: 50 }} sx={{ fontSize: 50, color: "#7ADF7F" }} />}
+                >{checkAction === 'checkout' ? t('checking.startJornada') : t('checking.endJornada')}</SassButton>
             </Box>
 
 
             <Box>
                 <Typography variant="body1" fontSize={18} > {t('checking.logDay')} </Typography>
                 <SassButton
-                sx={{
-                    borderRadius:4,textTransform:'uppercase',
-                    px:2, height:73
-                }}
-                disabled={!startJornada} variant='outlined' color='primary'
-                    onClick={() => setStartDescanso(!startDescanso)} fullWidth
-                    startIcon={startDescanso ? <StopCircleOutlined  style={{fontSize:50}} sx={{fontSize:50}} color='error' /> : <PlayCircleOutline  style={{fontSize:50}} sx={{fontSize:50 ,color:"#7ADF7F"}} />}
-                >{startJornada ? t('checking.startDescanso') : t('checking.endDescanso')}</SassButton>
+                    sx={{
+                        borderRadius: 4, textTransform: 'uppercase',
+                        px: 2, height: 73
+                    }}
+                    disabled={checkAction === 'checkout'} variant='outlined' color='primary'
+                    onClick={() => setRestAction(restAction === 'restin' ? 'restout' : 'restin')} fullWidth
+                    startIcon={restAction === 'restin' ? <StopCircleOutlined style={{ fontSize: 50 }} sx={{ fontSize: 50 }} color='error' /> : <PlayCircleOutline style={{ fontSize: 50 }} sx={{ fontSize: 50, color: "#7ADF7F" }} />}
+                >{restAction === 'restout' ? t('checking.startDescanso') : t('checking.endDescanso')}</SassButton>
             </Box>
 
 
             <BorderBox sx={{ width: "100%", p: 2, mt: 2, mb: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
                 <Typography variant="body1" fontSize={18}  > Yasiel Perez Villazon </Typography>
-                                <Typography variant="body1" color='textSecondary' fontSize={18}  >AO Smith - Carabanchel Alto</Typography>
+                <Typography variant="body1" color='textSecondary' fontSize={18}  >AO Smith - Carabanchel Alto</Typography>
 
             </BorderBox>
 

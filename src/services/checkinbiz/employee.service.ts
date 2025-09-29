@@ -4,7 +4,7 @@ import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
-import { ICreateLog } from "@/domain/features/checkinbiz/IChecklog";
+import { IChecklog, ICreateLog } from "@/domain/features/checkinbiz/IChecklog";
  
 
 /**
@@ -158,4 +158,13 @@ export async function createLog(data: ICreateLog, token: string) {
   } catch (error: any) {
     throw new Error(error.message);
   }
+}
+
+export const getEmplyeeLogs = async (entityId: string,employeeId: string, params: SearchParams): Promise<IChecklog[]> => {
+  const result: IChecklog[] = await searchFirestore({
+    ...params,
+    collection: `${collection.ENTITIES}/${entityId}/${collection.EMPLOYEE}/${employeeId}/checklog`,
+  });
+
+  return result;
 }
