@@ -17,6 +17,7 @@ import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { search } from "@/services/checkinbiz/sucursal.service";
 import SelectMultipleInput from "@/components/common/forms/fields/SelectMultipleInput";
+import { country } from "@/config/country";
 
 
 export default function useEmployeeController() {
@@ -182,6 +183,24 @@ export default function useEmployeeController() {
       {
         isDivider: true,
         label: t('core.label.aditionalData'),
+      },
+
+      {
+        name: 'jobTitle',
+        label: t('core.label.jobTitle'),
+        type: 'text',
+        required: false,
+        component: TextInput,
+
+      },
+
+      {
+        name: 'nationalId',
+        label: t('core.label.nationalId'),
+        type: 'text',
+        required: false,
+        component: SelectInput,
+        options: country.map(e => ({ label: e.name, value: e.name }))
       },
       {
         name: 'metadata',

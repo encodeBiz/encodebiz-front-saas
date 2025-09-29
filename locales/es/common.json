@@ -134,6 +134,8 @@
       "availableEvent": "Eventos disponibles",
       "selectedEvent": "Eventos seleccionados",
       "events": "Eventos",
+      "jobTitle":"Ocupación actual",
+      "nationalId":"Nacionalidad",
       "credential": "Credencial",
       "admin": "Administrador",
       "guest": "Invitado",
@@ -592,6 +594,8 @@
   },
   "checklog":{
      "title": "Registros de asistencia",
+    "list": "Registros de asistencia",
+      
     "formDesc": "Completa los campos a continuación para registrar el empleado."
   },
   "sucursal": {

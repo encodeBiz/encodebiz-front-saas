@@ -5,7 +5,7 @@ import { collection } from "@/config/collection";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import { IChecklog, ICreateLog } from "@/domain/features/checkinbiz/IChecklog";
- 
+
 
 /**
    * Search employee
@@ -116,7 +116,7 @@ export const deleteEmployee = async (entityId: string, id: string, token: string
       const response: any = await httpClientFetchInstance.delete(
         process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_DELETE_EMPLOYEE as string,
         {
-          employeeId:id, entityId
+          employeeId: id, entityId
         }
       );
       if (response.errCode && response.errCode !== 200) {
@@ -160,10 +160,15 @@ export async function createLog(data: ICreateLog, token: string) {
   }
 }
 
-export const getEmplyeeLogs = async (entityId: string,employeeId: string, params: SearchParams): Promise<IChecklog[]> => {
+export const getEmplyeeLogs = async (entityId: string, employeeId: string, branchId: string, params: SearchParams): Promise<IChecklog[]> => {
   const result: IChecklog[] = await searchFirestore({
     ...params,
-    collection: `${collection.ENTITIES}/${entityId}/${collection.EMPLOYEE}/${employeeId}/checklog`,
+    filters: [
+      ...params.filters ? params.filters : [],
+      { field: 'employeeId', operator: '==', value: employeeId },
+      { field: 'branchId', operator: '==', value: branchId },
+    ],
+    collection: `${collection.ENTITIES}/${entityId}/checklogs`,
   });
 
   return result;
