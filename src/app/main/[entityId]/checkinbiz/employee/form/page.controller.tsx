@@ -199,8 +199,8 @@ export default function useEmployeeController() {
         label: t('core.label.nationalId'),
         type: 'text',
         required: false,
-        component: SelectInput,
-        options: country.map(e => ({ label: e.name, value: e.name }))
+        component: TextInput,
+        
       },
       {
         name: 'metadata',

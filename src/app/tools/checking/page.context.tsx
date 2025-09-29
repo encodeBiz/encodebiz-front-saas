@@ -1,0 +1,218 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+'use client'
+import { CommonModalType } from '@/contexts/commonModalContext';
+import IEntity from '@/domain/core/auth/IEntity';
+import { IChecklog, ICreateLog } from '@/domain/features/checkinbiz/IChecklog';
+import { IEmployee } from '@/domain/features/checkinbiz/IEmployee';
+import { useCommonModal } from '@/hooks/useCommonModal';
+import { useLayout } from '@/hooks/useLayout';
+import { useToast } from '@/hooks/useToast';
+import { rmNDay } from '@/lib/common/Date';
+import { getEmplyeeLogs, createLog, fetchEmployee, validateEmployee } from '@/services/checkinbiz/employee.service';
+import { fetchSucursal } from '@/services/checkinbiz/sucursal.service';
+import { fetchEntity } from '@/services/core/entity.service';
+import { useTranslations } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+
+interface IValidateEmployeData {
+    "message": string
+    "payload": {
+        "name": string
+        "twoFa": boolean
+        "trustedDevicesId": boolean
+        "entityId": string
+    },
+    "sessionToken": string
+    "expiresAt": any,
+    "branchId": [
+        string
+    ]
+}
+
+interface CheckType {
+
+    pending: boolean
+    checkAction: "checkout" | "checkin"
+    setCheckAction: (checkAction: "checkout" | "checkin") => void
+    restAction: "restout" | "restin",
+    setRestAction: (restAction: "restout" | "restin") => void
+    openLogs: boolean
+    setOpenLogs: (openLogs: boolean) => void
+    createLogAction: (type: "checkout" | "checkin" | "restin" | "restout") => void
+    employeeLogs: Array<IChecklog>
+    range: { start: any, end: any }
+    setRange: (range: { start: any, end: any }) => void,
+    entity: IEntity | undefined
+    employee: IEmployee | undefined
+    getEmplyeeLogsData: (range: { start: any, end: any }) => void
+    branchList: Array<{ name: string, branchId: string }>
+    sessionData: { employeeId: string, entityId: string, branchId: string, }
+    setSessionData: (data: { employeeId: string, entityId: string, branchId: string, }) => void
+
+}
+
+
+export const CheckContext = createContext<CheckType | undefined>(undefined);
+
+export function CheckProvider({ children }: { children: React.ReactNode }) {
+    const t = useTranslations()
+    const { changeLoaderState } = useLayout()
+    const { showToast } = useToast()
+
+
+    const [checkAction, setCheckAction] = useState<"checkout" | "checkin">('checkout')
+    const [restAction, setRestAction] = useState<"restout" | "restin">('restout')
+    const [openLogs, setOpenLogs] = useState(false)
+    const [token, setToken] = useState('')
+    const [pending, setPending] = useState(false)
+    const [entity, setEntity] = useState<IEntity>()
+    const [employee, setEmployee] = useState<IEmployee>()
+    const [geo, setGeo] = useState<{ latitude: number, longitude: number }>({ latitude: 0, longitude: 0 })
+    const [employeeLogs, setEmployeeLogs] = useState<Array<IChecklog>>([])
+    const searchParams = useSearchParams()
+    const customToken = searchParams.get('customToken') || token;
+    const [range, setRange] = useState<{ start: any, end: any }>({ start: rmNDay(new Date(), 1), end: new Date() })
+    const { openModal } = useCommonModal()
+
+    const [branchList, setBranchList] = useState<Array<{ name: string, branchId: string }>>([])
+    const [sessionData, setSessionData] = useState<{ employeeId: string, entityId: string, branchId: string, }>({
+        employeeId: 'RyajARnKnfTwQphiQXvR',
+        entityId: 'k24rpxzY7aUTAmSXjNyT',
+        branchId: 'C3p3ivKG73iU5C9dh5r5'
+    })
+
+    const getCurrenGeo = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    setGeo(position.coords as { latitude: number, longitude: number })
+                },
+                (error) => showToast('Error getting user location: ' + error, 'error')
+            );
+        }
+        else showToast('Geolocation is not supported by this browser.', 'error');
+    }
+
+
+    const handleValidateEmployee = async () => {
+        try {
+            changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+            const response: IValidateEmployeData = await validateEmployee(customToken as string)
+            setSessionData({
+                ...sessionData,
+                entityId: response.payload.entityId
+            })
+            const data = await Promise.all(
+                response?.branchId.map(async (item) => {
+                    const branchId = (await fetchSucursal(response.payload.entityId, item))?.name
+                    return { name: branchId || '', branchId: item };
+                })
+            );
+            setBranchList(data)
+            if (data.length > 0) {
+                openModal(CommonModalType.BRANCH_SELECTED)
+            }
+            setToken(response.sessionToken)
+            changeLoaderState({ show: false })
+
+        } catch (error: any) {
+            changeLoaderState({ show: false })
+            showToast(error.message, 'error')
+
+        }
+    }
+
+    const getEmplyeeLogsData = async (range: { start: any, end: any }) => {
+        try {
+            const filters = [
+                { field: 'timestamp', operator: '>=', value: new Date(range.start) },
+                { field: 'timestamp', operator: '<=', value: new Date(range.end) },
+            ]
+
+            const resultList: Array<IChecklog> = await getEmplyeeLogs(sessionData?.entityId || '', sessionData?.employeeId || '', sessionData?.branchId || '', { limit: 50, orderBy: 'timestamp', orderDirection: 'desc', filters } as any) as Array<IChecklog>
+
+
+            const data = await Promise.all(
+                resultList.map(async (item) => {
+                    const branchId = (await fetchSucursal(item.entityId, item.branchId))?.name
+                    return {
+                        ...item,
+                        branchId
+                    };
+                })
+            );
+
+            setEmployeeLogs(data)
+        } catch (error) {
+            showToast('Error fetchind logs data: ' + error, 'error')
+        }
+
+    }
+
+    const createLogAction = (type: "checkout" | "checkin" | "restin" | "restout") => {
+
+        const data: ICreateLog = {
+            "employeeId": sessionData?.employeeId as string,
+            "entityId": sessionData?.entityId as string,
+            "branchId": sessionData?.branchId as string,
+            type,
+            "geo": {
+                "lat": geo.latitude,
+                "lng": geo.longitude
+            }
+        }
+        setPending(true);
+        changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+
+        createLog(data, token).then(() => {
+            getEmplyeeLogsData(range)
+        }).catch(e => {
+            showToast(e?.message, 'error')
+        }).finally(() => {
+            changeLoaderState({ show: false })
+        })
+    }
+
+    const fetchEntityData = async () => {
+        setEntity(await fetchEntity(sessionData.entityId))
+    }
+
+    const fetchEmployeeData = async () => {
+        setEmployee(await fetchEmployee(sessionData.entityId, sessionData.employeeId))
+    }
+
+    useEffect(() => {
+        getCurrenGeo()
+        fetchEntityData()
+        fetchEmployeeData()
+        getEmplyeeLogsData(range)
+    }, [sessionData?.entityId])
+
+    useEffect(() => {
+        if (customToken) handleValidateEmployee()
+    }, [customToken])
+
+
+
+
+
+    return (
+        <CheckContext.Provider value={{
+            setSessionData, sessionData,
+            entity, employee, branchList,
+            pending, checkAction, setCheckAction, restAction, setRestAction, setOpenLogs, openLogs, createLogAction, employeeLogs, range, setRange, getEmplyeeLogsData
+        }}>
+            {children}
+        </CheckContext.Provider>
+    );
+}
+
+
+export const useCheck = () => {
+    const context = useContext(CheckContext);
+    if (!context) {
+        throw new Error("useAuth must be used within an AuthProvider");
+    }
+    return context;
+};

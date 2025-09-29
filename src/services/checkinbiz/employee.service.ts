@@ -161,6 +161,7 @@ export async function createLog(data: ICreateLog, token: string) {
 }
 
 export const getEmplyeeLogs = async (entityId: string, employeeId: string, branchId: string, params: SearchParams): Promise<IChecklog[]> => {
+
   const result: IChecklog[] = await searchFirestore({
     ...params,
     filters: [
@@ -172,4 +173,31 @@ export const getEmplyeeLogs = async (entityId: string, employeeId: string, branc
   });
 
   return result;
+}
+
+
+export async function validateEmployee(token: string) {
+  try {
+
+    const httpClientFetchInstance: HttpClient = new HttpClient({
+      baseURL: "",
+      headers: {
+        'authorization': `Bearer ${token}`,
+      },
+    });
+    const response: any = await httpClientFetchInstance.post(
+      process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_VALIDATE_EMPLOYEE as string,
+      {
+        token
+      }
+    );
+    if (response.errCode && response.errCode !== 200) {
+      throw new Error(response.message);
+    }
+
+    return response;
+
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
 }
