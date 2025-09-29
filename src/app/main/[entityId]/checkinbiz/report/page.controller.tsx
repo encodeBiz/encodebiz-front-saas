@@ -6,8 +6,8 @@ import { useToast } from "@/hooks/useToast";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
-import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
-import { search, updateEmployee } from "@/services/checkinbiz/employee.service";
+import { IReport } from "@/domain/features/checkinbiz/IReport";
+import { search } from "@/services/checkinbiz/report.service";
 import { search as searchBranch } from "@/services/checkinbiz/sucursal.service";
 import { useLayout } from "@/hooks/useLayout";
 import { useParams, useSearchParams } from "next/navigation";
@@ -40,7 +40,7 @@ interface IFilterParams {
   startAfter: string | null,
 }
 
-export default function useEmployeeListController() {
+export default function useReportListController() {
   const t = useTranslations();
   const { id } = useParams<{ id: string }>()
   const { changeLoaderState } = useLayout()
@@ -50,8 +50,8 @@ export default function useEmployeeListController() {
   const { showToast } = useToast()
   const { navivateTo } = useLayout()
   const [loading, setLoading] = useState<boolean>(true);
-  const [items, setItems] = useState<IEmployee[]>([]);
-  const [itemsHistory, setItemsHistory] = useState<IEmployee[]>([]);
+  const [items, setItems] = useState<IReport[]>([]);
+  const [itemsHistory, setItemsHistory] = useState<IReport[]>([]);
   const [filterParams, setFilterParams] = useState<IFilterParams>({
     filter: { status: 'active', branchId: 'none' },
     startAfter: null,
@@ -71,32 +71,24 @@ export default function useEmployeeListController() {
   const rowAction: Array<IRowAction> = id ? [] : [
    
 
-    {
-      actionBtn: true,
-      color: 'primary',
-      icon: <Edit color="primary" />,
-      label: t('core.button.edit'),
-      bulk: false,
-      allowItem: () => true,
-      onPress: (item: IEmployee) => onEdit(item)
-    },
+    
 
 
     {
       actionBtn: true,
       color: 'primary',
       icon: <ListAltOutlined color="primary" />,
-      label: t('employee.detail'),
+      label: t('report.detail'),
       bulk: false,
       allowItem: () => true,
-      onPress: (item: IEmployee) => onDetail(item)
+      onPress: (item: IReport) => onDetail(item)
     },
   ]
 
 
 
   const onDetail = async (item: any) => {
-    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${item.id}/detail`)
+    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/report/${item.id}/detail`)
   }
 
 
@@ -145,41 +137,15 @@ export default function useEmployeeListController() {
   ]
 
 
-  const columns: Column<IEmployee>[] = [
+  const columns: Column<IReport>[] = [
     {
-      id: 'fullName',
+      id: 'id',
       label: t("core.label.name"),
       minWidth: 170,
      
     },
 
-     {
-      id: 'email',
-      label: t("core.label.email"),
-      minWidth: 170,
-    },
-
-    {
-      id: 'phone',
-      label: t("core.label.phone"),
-      minWidth: 170,
-    },
-
-
-    {
-      id: 'status',
-      label: t("core.label.status"),
-      minWidth: 170,
-      format: (value, row) => <SelectFilter first={false}
-        defaultValue={row.status}
-        value={row.status}
-        onChange={(value: any) => {
-          row.status = value
-          updateStatus(row)
-        }}
-        items={options}
-      />
-    },
+   
 
 
   ];
@@ -200,8 +166,7 @@ export default function useEmployeeListController() {
       filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "branchId")
 
 
-         console.log({ ...(filterParams.params as any), filters: [...filterParams.params.filters, ...filters] });
-
+ 
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters: [...filterParams.params.filters, ...filters] }).then(async res => {
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
@@ -252,7 +217,7 @@ export default function useEmployeeListController() {
   useEffect(() => {
     if (currentEntity?.entity?.id) {
       fetchSucursal()
-      if (searchParams.get('params') && localStorage.getItem('employeeIndex'))
+      if (searchParams.get('params') && localStorage.getItem('reportIndex'))
         inicializeFilter(searchParams.get('params') as string)
       else
         fetchingData(filterParams)
@@ -264,70 +229,13 @@ export default function useEmployeeListController() {
 
 
 
-
-
-  const onEdit = async (item: any) => {
-    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${item.id}/edit`)
-  }
-
+ 
   
 
-
-  const updateStatus = async (employee: IEmployee) => {
-    try {
-      changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const data: IEmployee = {
-        ...employee,
-        "uid": user?.id as string,
-        "id": employee.id,
-        entityId: currentEntity?.entity.id as string,
-        status: employee.status
-      }
-      await updateEmployee(data, token)
-      changeLoaderState({ show: false })
-      showToast(t('core.feedback.success'), 'success');
-      navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)
-    } catch (error: any) {
-      changeLoaderState({ show: false })
-      showToast(error.message, 'error')
-    }
-  };
-
+ 
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
 
-    {branchList.length > 0 && <SelectFilter 
-      first
-      label={t('core.label.subEntity')}
-      defaultValue={'none'}
-      value={filterParams.filter.branchId}
-      onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, branchId: value } })}
-      items={branchList.map(e => ({ value: e.id, label: e.name }))}
-    />}
-    <SelectFilter first={false}
-      defaultValue={'active'}
-      value={filterParams.filter.status}
-      onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, status: value } })}
-
-      items={options}
-    />
-    <SearchIndexFilter
-      type="staff"
-      label={t('core.label.search')}
-      onChange={async (value: ISearchIndex) => {
-        const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
-        if (value?.id) {
-          const item = await getRefByPathData(value.index)
-          if (item)
-            setItems([item])
-          else
-            fetchingData(filterParamsUpdated)
-        }
-        else {
-          setItems([])
-          fetchingData(filterParamsUpdated)
-        }
-      }}
-    />
+    
   </Box>
 
   const buildState = () => {
@@ -335,33 +243,15 @@ export default function useEmployeeListController() {
       items,
       itemsHistory,
     }
-    localStorage.setItem('employeeIndex', JSON.stringify(dataStatus))
+    localStorage.setItem('reportIndex', JSON.stringify(dataStatus))
     return encodeToBase64({ ...filterParams })
   }
 
-
-  const onFilter = (filterParamsData: any) => {
-
-    const filterData: Array<{ field: string, operator: any, value: any }> = []
-    const filter = filterParamsData.filter
-    Object.keys(filter).forEach((key) => {
-      if (key === 'branchId' && filter[key] !== 'none')
-        filterData.push({
-          field: 'branchId',
-          operator: 'array-contains',
-          value: filter[key]
-        })
-      else
-        filterData.push({ field: key, operator: '==', value: filter[key] })
-    })
-    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null, filters: filterData }, filter: filter }
-    setFilterParams(filterParamsUpdated)
-    fetchingData(filterParamsUpdated)
-  }
+ 
 
   return {
     items, onSort, onRowsPerPageChange,
-    onEdit,
+ 
     onNext, onBack, buildState,
     columns, rowAction, topFilter,
     loading,   filterParams,

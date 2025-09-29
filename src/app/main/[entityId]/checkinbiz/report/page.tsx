@@ -6,28 +6,27 @@ import { GenericTable } from "@/components/common/table/GenericTable";
 import { Add } from '@mui/icons-material';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
-import { useLayout } from '@/hooks/useLayout';
-
-export default function EmployeeList() {
+ 
+export default function ReportList() {
   const t = useTranslations();
   const {
     items, rowAction, onRowsPerPageChange, onSort,
     onNext, onBack,  
     filterParams, topFilter,
-    columns, buildState,
+    columns,  
     loading } = useEmployeeListController();
-  const { navivateTo } = useLayout()
+   
    return (
     <Container maxWidth="lg">
       <HeaderPage
-        title={t("employee.list")}
+        title={t("report.list")}
         actions={
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
             <SassButton
-              onClick={() => navivateTo(`/checkinbiz/employee/add?params=${buildState()}`)}
+              onClick={() => {}}
               variant='contained'
               startIcon={<Add />}
-            >{t('employee.add')}</SassButton>
+            >{t('report.add')}</SassButton>
           </Box>
         }
       >

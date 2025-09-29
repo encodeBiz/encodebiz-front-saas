@@ -12,4 +12,7 @@ export interface IEmployee {
     createdAt: Date;
     branchId: string[];// Proyecto asignado, sucursal , etc
     metadata?: any
+
+    nationalId: string;
+    jobTitle?: string
 }

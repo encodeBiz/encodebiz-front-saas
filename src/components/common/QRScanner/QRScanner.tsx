@@ -9,14 +9,14 @@ import {
     Alert,
     List,
     ListItem,
- 
+
     ListItemText,
 
 } from '@mui/material';
 import { Scanner } from '@yudiel/react-qr-scanner';
 
 import {
- 
+
     CheckCircle,
     CreditCardOff,
     Error
@@ -24,7 +24,7 @@ import {
 import { PreviewContainer, ScannerContainer, StyledCard } from './QRScanner.style';
 import { useTranslations } from 'next-intl';
 import { useQRScanner } from './QRScanner.controller';
-import { formatDateInSpanish } from '@/lib/common/Date';
+import { format_date, formatDateInSpanish } from '@/lib/common/Date';
 import EventSelectorModal from '../modals/EventSelector';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
@@ -113,12 +113,10 @@ const QRScanner = () => {
                         </Box>
 
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 2 }}>
-                            <Typography variant="body1">{scanRessult?.holder?.fullName}</Typography>
-
-
                             <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', gap: 2, width: '100%' }}>
                                 <Image style={{ borderRadius: 4, background: '#E9E8F5' }} src={scanRessult?.holder?.parent?.logo} width={80} height={80} alt='' />
                                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0 }}>
+                                    <Typography variant="body1">{scanRessult?.holder?.fullName}</Typography>
                                     <Typography variant="body1">{scanRessult?.holder?.parent?.name}</Typography>
                                     <Typography variant="body1">{scanRessult?.holder?.parent?.dateLabel}</Typography>
                                 </Box>
@@ -129,7 +127,7 @@ const QRScanner = () => {
 
                         {scanRessult?.lastValidatedAt && <Typography variant="body1">
                             {t('scan.lastValidatedAt')}:
-                            {formatDateInSpanish(new Date(scanRessult?.lastValidatedAt as string))}</Typography>
+                            {format_date(new Date(scanRessult?.lastValidatedAt as string), 'DD/MM/YY hh:mm')}</Typography>
                         }
 
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>

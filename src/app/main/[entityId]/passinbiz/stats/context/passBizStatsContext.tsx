@@ -22,6 +22,10 @@ interface IPassinBizStatsProps {
     lastUseFilter: any,
     setLastUseFilter: (lastUseFilter: any) => void
 
+    error: any,
+    setError: (error: any) => void
+
+
     graphData: any,
     setGraphData: (graphData: any) => void
 
@@ -68,10 +72,12 @@ export function PassinBizStatsProvider({ children }: { children: React.ReactNode
     const [payloadPassIssuedFilter, setPayloadPassIssuedFilter] = useState<IPassIssuedStatsRequest>()
     const [payloadPassValidatorFilter, setPayloadPassValidatorFilter] = useState<IPassValidatorStatsRequest>()
 
+    const [error, setError] = useState<any>({ 'issued': '', 'validator': '' })
+
     const [lastUseFilter, setLastUseFilter] = useState<any>({ 'issued': {}, 'validator': {} })
     const [graphData, setGraphData] = useState<any>({ 'issued': {}, 'validator': {} })
 
-     const [pending, setPending] = useState<any>({ 'issued': false, 'validator': false})
+    const [pending, setPending] = useState<any>({ 'issued': false, 'validator': false })
 
 
     const applyFilter = (type: "issued" | "validator" | "trend") => {
@@ -87,7 +93,7 @@ export function PassinBizStatsProvider({ children }: { children: React.ReactNode
         }
     }
     return (
-        <PassinBizStatsContext.Provider value={{ graphData,pending, setPending, setGraphData, lastUseFilter, setLastUseFilter, applyFilter, payloadPassIssuedFilter, payloadPassValidatorFilter, seriesChart2, payloadPassTrend, setPayloadPassTrend, setSeriesChart2, payloadPassIssued, setPayloadPassIssued, payloadPassValidator, setPayloadPassValidator }}>
+        <PassinBizStatsContext.Provider value={{ error, setError, graphData, pending, setPending, setGraphData, lastUseFilter, setLastUseFilter, applyFilter, payloadPassIssuedFilter, payloadPassValidatorFilter, seriesChart2, payloadPassTrend, setPayloadPassTrend, setSeriesChart2, payloadPassIssued, setPayloadPassIssued, payloadPassValidator, setPayloadPassValidator }}>
             {children}
         </PassinBizStatsContext.Provider>
     );

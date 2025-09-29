@@ -17,6 +17,7 @@ import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { search } from "@/services/checkinbiz/sucursal.service";
 import SelectMultipleInput from "@/components/common/forms/fields/SelectMultipleInput";
+import { country } from "@/config/country";
 
 
 export default function useEmployeeController() {
@@ -161,8 +162,13 @@ export default function useEmployeeController() {
         required: false,
 
         options: [
-          { value: 'active', label: t('core.label.active') },
-          { value: 'inactive', label: t('core.label.inactive') },
+          { label: t('core.label.active'), value: 'active' },
+          { label: t('core.label.inactive'), value: 'inactive' },
+          { label: t('core.label.vacation'), value: 'vacation' },
+          { label: t('core.label.sick_leave'), value: 'sick_leave' },
+          { label: t('core.label.leave_of_absence'), value: 'leave_of_absence' },
+          { label: t('core.label.paternity_leave'), value: 'paternity_leave' },
+          { label: t('core.label.maternity_leave'), value: 'maternity_leave' },
         ],
         component: SelectInput,
       },
@@ -177,6 +183,24 @@ export default function useEmployeeController() {
       {
         isDivider: true,
         label: t('core.label.aditionalData'),
+      },
+
+      {
+        name: 'jobTitle',
+        label: t('core.label.jobTitle'),
+        type: 'text',
+        required: false,
+        component: TextInput,
+
+      },
+
+      {
+        name: 'nationalId',
+        label: t('core.label.nationalId'),
+        type: 'text',
+        required: false,
+        component: SelectInput,
+        options: country.map(e => ({ label: e.name, value: e.name }))
       },
       {
         name: 'metadata',

@@ -2,11 +2,18 @@ import { SassButton } from "@/components/common/buttons/GenericButton"
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes"
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee"
 import { useLayout } from "@/hooks/useLayout"
-import { Card, Box, Grid, Typography, CardContent, Paper, Divider, List, ListItem, ListItemText } from "@mui/material"
+import { Card, Box, Grid, Typography, CardContent, Paper, Divider, List, ListItem, ListItemText, Stack } from "@mui/material"
 import { useTranslations } from "next-intl"
+import useEmployeeDetailController from "./page.controller"
+import { useCommonModal } from "@/hooks/useCommonModal"
+import ConfirmModal from "@/components/common/modals/ConfirmModal"
+import { CommonModalType } from "@/contexts/commonModalContext"
 
 export const Detail = ({ employee, children }: { employee: IEmployee, children: React.ReactNode }) => {
     const t = useTranslations()
+    const { onDelete, deleting } = useEmployeeDetailController()
+    const { openModal, open } = useCommonModal()
+
     const { navivateTo } = useLayout()
     return <Card elevation={3} sx={{ width: '100%', margin: 'auto' }}>
         {/* Header Section */}
@@ -22,10 +29,15 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                         {t('employee.detailSucursal')}
                     </Typography>
                 </Grid>
-
+                <Stack direction={'row'} gap={2}>
                 <SassButton variant="contained" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)}>
                     {t('core.button.back')}
                 </SassButton>
+
+                <SassButton loading={deleting} color="error" variant="contained" onClick={() => openModal(CommonModalType.DELETE)}>
+                    {t('core.button.delete')}
+                </SassButton>
+                </Stack>
 
             </Grid>
 
@@ -87,6 +99,13 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
 
             </Paper>
         </CardContent>
+
+        {open.type === CommonModalType.DELETE && <ConfirmModal
+            isLoading={deleting}
+            title={t('employee.deleteConfirmModalTitle')}
+            description={t('employee.deleteConfirmModalTitle2')}
+            onOKAction={(args: { data: any }) => onDelete(employee)}
+        />}
     </Card>
 
 }

@@ -4,7 +4,8 @@ import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
- 
+import { IChecklog, ICreateLog } from "@/domain/features/checkinbiz/IChecklog";
+
 
 /**
    * Search employee
@@ -115,7 +116,7 @@ export const deleteEmployee = async (entityId: string, id: string, token: string
       const response: any = await httpClientFetchInstance.delete(
         process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_DELETE_EMPLOYEE as string,
         {
-          employeeId:id, entityId
+          employeeId: id, entityId
         }
       );
       if (response.errCode && response.errCode !== 200) {
@@ -131,3 +132,44 @@ export const deleteEmployee = async (entityId: string, id: string, token: string
 
 
 
+export async function createLog(data: ICreateLog, token: string) {
+  try {
+    if (!token) {
+      throw new Error("Error to fetch user auth token");
+    } else {
+      const httpClientFetchInstance: HttpClient = new HttpClient({
+        baseURL: "",
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      const response: any = await httpClientFetchInstance.post(
+        process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_CREATE_LOG as string,
+        {
+          ...data,
+        }
+      );
+      if (response.errCode && response.errCode !== 200) {
+        throw new Error(response.message);
+      }
+
+      return response;
+    }
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+export const getEmplyeeLogs = async (entityId: string, employeeId: string, branchId: string, params: SearchParams): Promise<IChecklog[]> => {
+  const result: IChecklog[] = await searchFirestore({
+    ...params,
+    filters: [
+      ...params.filters ? params.filters : [],
+      { field: 'employeeId', operator: '==', value: employeeId },
+      { field: 'branchId', operator: '==', value: branchId },
+    ],
+    collection: `${collection.ENTITIES}/${entityId}/checklogs`,
+  });
+
+  return result;
+}
