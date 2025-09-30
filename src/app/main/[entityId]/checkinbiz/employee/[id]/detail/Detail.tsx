@@ -104,7 +104,7 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
             isLoading={deleting}
             title={t('employee.deleteConfirmModalTitle')}
             description={t('employee.deleteConfirmModalTitle2')}
-            onOKAction={(args: { data: any }) => onDelete(employee)}
+            onOKAction={( ) => onDelete(employee)}
         />}
     </Card>
 

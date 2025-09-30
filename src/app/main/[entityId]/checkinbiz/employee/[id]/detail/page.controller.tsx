@@ -14,6 +14,7 @@ import { Column } from "@/components/common/table/GenericTable";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
+import { format_date } from "@/lib/common/Date";
 
 
 export default function useEmployeeDetailController() {
@@ -112,23 +113,27 @@ export default function useEmployeeDetailController() {
   const columns: Column<IChecklog>[] = [
     {
       id: 'id',
-      label: t("core.label.name"),
+      label: t("core.label.branch"),
       minWidth: 170,
+       format: (value, row) => row.branchId
     },
     {
       id: 'id',
-      label: t("core.label.email"),
+      label: t("core.label.register"),
       minWidth: 170,
+       format: (value, row) => t('core.label.' + row.type)
     },
     {
       id: 'id',
-      label: t("core.label.phone"),
+      label:t("core.label.date"),
       minWidth: 170,
+       format: (value, row) => format_date(row.timestamp, 'DD/MM/YYYY')
     },
     {
       id: 'id',
-      label: t("core.label.role"),
+      label: t("core.label.time"),
       minWidth: 170,
+       format: (value, row) => format_date(row.timestamp, 'hh:mm')
     },
 
 

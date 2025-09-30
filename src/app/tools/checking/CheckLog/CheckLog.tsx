@@ -45,10 +45,10 @@ const CheckLog = () => {
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Sucursal</TableCell>
-                            <TableCell align="right">Registro</TableCell>
-                            <TableCell align="right">Fecha</TableCell>
-                            <TableCell align="right">Hora</TableCell>
+                            <TableCell>{t("core.label.branch")}</TableCell>
+                            <TableCell align="right">{t("core.label.register")}</TableCell>
+                            <TableCell align="right">{t("core.label.hora")}</TableCell>
+                            <TableCell align="right">{t("core.label.time")}</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

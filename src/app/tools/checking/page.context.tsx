@@ -3,12 +3,11 @@
 import { CommonModalType } from '@/contexts/commonModalContext';
 import IEntity from '@/domain/core/auth/IEntity';
 import { IChecklog, ICreateLog } from '@/domain/features/checkinbiz/IChecklog';
-import { IEmployee } from '@/domain/features/checkinbiz/IEmployee';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { useLayout } from '@/hooks/useLayout';
 import { useToast } from '@/hooks/useToast';
 import { rmNDay } from '@/lib/common/Date';
-import { getEmplyeeLogs, createLog, fetchEmployee, validateEmployee } from '@/services/checkinbiz/employee.service';
+import { getEmplyeeLogs, createLog, validateEmployee } from '@/services/checkinbiz/employee.service';
 import { fetchSucursal } from '@/services/checkinbiz/sucursal.service';
 import { fetchEntity } from '@/services/core/entity.service';
 import { useTranslations } from 'next-intl';
@@ -39,7 +38,7 @@ interface CheckType {
     setRestAction: (restAction: "restout" | "restin") => void
     openLogs: boolean
     setOpenLogs: (openLogs: boolean) => void
-    createLogAction: (type: "checkout" | "checkin" | "restin" | "restout", callback?:()=>void) => void
+    createLogAction: (type: "checkout" | "checkin" | "restin" | "restout", callback?: () => void) => void
     employeeLogs: Array<IChecklog>
     range: { start: any, end: any }
     setRange: (range: { start: any, end: any }) => void,
@@ -107,7 +106,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
                 })
             );
             setBranchList(data)
-        setEmployee(response.payload.name as string)
+            setEmployee(response.payload.name as string)
 
             if (!response.payload.twoFa) {
                 openModal(CommonModalType.CONFIG2AF)
@@ -157,7 +156,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
     }
 
-    const createLogAction = (type: "checkout" | "checkin" | "restin" | "restout", callback?:()=>void) => {
+    const createLogAction = (type: "checkout" | "checkin" | "restin" | "restout", callback?: () => void) => {
         if (!sessionData?.branchId && branchList.length > 0)
             openModal(CommonModalType.BRANCH_SELECTED)
         else {
@@ -177,7 +176,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
             createLog(data, token).then(() => {
                 getEmplyeeLogsData(range)
 
-                if(typeof callback === 'function') callback()
+                if (typeof callback === 'function') callback()
             }).catch(e => {
                 showToast(e?.message, 'error')
             }).finally(() => {
@@ -190,12 +189,12 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
         setEntity(await fetchEntity(sessionData?.entityId as string))
     }
 
-   
+
 
     useEffect(() => {
         getCurrenGeo()
         fetchEntityData()
-    
+
         getEmplyeeLogsData(range)
     }, [sessionData?.entityId])
 
