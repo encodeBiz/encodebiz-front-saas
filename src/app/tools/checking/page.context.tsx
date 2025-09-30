@@ -39,12 +39,12 @@ interface CheckType {
     setRestAction: (restAction: "restout" | "restin") => void
     openLogs: boolean
     setOpenLogs: (openLogs: boolean) => void
-    createLogAction: (type: "checkout" | "checkin" | "restin" | "restout") => void
+    createLogAction: (type: "checkout" | "checkin" | "restin" | "restout", callback?:()=>void) => void
     employeeLogs: Array<IChecklog>
     range: { start: any, end: any }
     setRange: (range: { start: any, end: any }) => void,
     entity: IEntity | undefined
-    employee: IEmployee | undefined
+    employee: string | undefined
     getEmplyeeLogsData: (range: { start: any, end: any }) => void
     branchList: Array<{ name: string, branchId: string }>
     sessionData: { employeeId: string, entityId: string, branchId: string, } | undefined
@@ -68,7 +68,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     const [token, setToken] = useState('')
     const [pending, setPending] = useState(false)
     const [entity, setEntity] = useState<IEntity>()
-    const [employee, setEmployee] = useState<IEmployee>()
+    const [employee, setEmployee] = useState<string>()
     const [geo, setGeo] = useState<{ latitude: number, longitude: number }>({ latitude: 0, longitude: 0 })
     const [employeeLogs, setEmployeeLogs] = useState<Array<IChecklog>>([])
     const searchParams = useSearchParams()
@@ -107,6 +107,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
                 })
             );
             setBranchList(data)
+        setEmployee(response.payload.name as string)
 
             if (!response.payload.twoFa) {
                 openModal(CommonModalType.CONFIG2AF)
@@ -156,7 +157,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
     }
 
-    const createLogAction = (type: "checkout" | "checkin" | "restin" | "restout") => {
+    const createLogAction = (type: "checkout" | "checkin" | "restin" | "restout", callback?:()=>void) => {
         if (!sessionData?.branchId && branchList.length > 0)
             openModal(CommonModalType.BRANCH_SELECTED)
         else {
@@ -175,6 +176,8 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
             createLog(data, token).then(() => {
                 getEmplyeeLogsData(range)
+
+                if(typeof callback === 'function') callback()
             }).catch(e => {
                 showToast(e?.message, 'error')
             }).finally(() => {
@@ -187,14 +190,12 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
         setEntity(await fetchEntity(sessionData?.entityId as string))
     }
 
-    const fetchEmployeeData = async () => {
-        setEmployee(await fetchEmployee(sessionData?.entityId as string, sessionData?.employeeId as string))
-    }
+   
 
     useEffect(() => {
         getCurrenGeo()
         fetchEntityData()
-        fetchEmployeeData()
+    
         getEmplyeeLogsData(range)
     }, [sessionData?.entityId])
 

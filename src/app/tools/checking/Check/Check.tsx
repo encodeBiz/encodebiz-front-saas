@@ -44,8 +44,10 @@ const Check = () => {
                     }}
                     disabled={restAction == 'restin'} variant='contained' color='primary'
                     onClick={() => {
-                        setCheckAction(checkAction === 'checkin' ? 'checkout' : 'checkin')
-                        createLogAction(checkAction === 'checkin' ? 'checkout' : 'checkin')
+
+                        createLogAction(checkAction === 'checkin' ? 'checkout' : 'checkin', () => {
+                            setCheckAction(checkAction === 'checkin' ? 'checkout' : 'checkin')
+                        })
                     }} fullWidth
                     startIcon={checkAction === 'checkin' ? <StopCircleOutlined style={{ fontSize: 50 }} sx={{ fontSize: 50, width: 50 }} color='error' /> : <PlayCircleOutline style={{ fontSize: 50 }} sx={{ fontSize: 50, color: "#7ADF7F" }} />}
                 >{checkAction === 'checkout' ? t('checking.startJornada') : t('checking.endJornada')}</SassButton>
@@ -61,8 +63,10 @@ const Check = () => {
                     }}
                     disabled={checkAction === 'checkout'} variant='outlined' color='primary'
                     onClick={() => {
-                        setRestAction(restAction === 'restin' ? 'restout' : 'restin')
-                        createLogAction(restAction === 'restin' ? 'restout' : 'restin')
+
+                        createLogAction(restAction === 'restin' ? 'restout' : 'restin', () => {
+                            setRestAction(restAction === 'restin' ? 'restout' : 'restin')
+                        })
                     }} fullWidth
                     startIcon={restAction === 'restin' ? <StopCircleOutlined style={{ fontSize: 50 }} sx={{ fontSize: 50 }} color='error' /> : <PlayCircleOutline style={{ fontSize: 50 }} sx={{ fontSize: 50, color: "#7ADF7F" }} />}
                 >{restAction === 'restout' ? t('checking.startDescanso') : t('checking.endDescanso')}</SassButton>
@@ -70,8 +74,8 @@ const Check = () => {
 
 
             {employee && <BorderBox sx={{ width: "100%", p: 2, mt: 2, mb: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
-                <Typography variant="body1" fontSize={18}  > {employee?.fullName}</Typography>
-                {employee?.jobTitle && <Typography variant="body1" color='textSecondary' fontSize={18}  >{employee?.jobTitle}</Typography>}
+                <Typography variant="body1" fontSize={18}  > {employee}</Typography>
+                {/*employee?.jobTitle && <Typography variant="body1" color='textSecondary' fontSize={18}  >{employee?.jobTitle}</Typography>*/}
             </BorderBox>}
 
 
