@@ -19,7 +19,10 @@ export enum CommonModalType {
     COLABORATOR = 'COLABORATOR',
     INFO = 'INFO',
     WEBHOOK = 'WEBHOOK',
-}
+
+    ADDDEVICE2AF = 'ADDDEVICE2AF',
+    CONFIG2AF = 'CONFIG2AF',
+ }
 interface CommonModalContextType {
     open: { type: CommonModalType, open: boolean, args?: any }
     closeModal: (type?: CommonModalType) => void

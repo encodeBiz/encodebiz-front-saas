@@ -8,64 +8,73 @@ import {
 import Check from './Check/Check';
 import { useTranslations } from 'next-intl';
 import { NorthEastOutlined } from '@mui/icons-material';
- 
+
 import CheckLog from './CheckLog/CheckLog';
 import { CheckProvider, useCheck } from './page.context';
 import BranchSelectorModal from '@/components/common/modals/BranchSelector';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import ConfigTwoFA from './ConfigTwoFA/ConfigTwoFA';
+import InfoModal from '@/components/common/modals/InfoModal';
+import VerifyTwoFA from './VerifyTwoFA/VerifyTwoFA';
 
 
 const Checking = () => {
     const t = useTranslations()
     const { setOpenLogs, openLogs, branchList, setSessionData, sessionData } = useCheck()
-    const {open} = useCommonModal()
+    const { open } = useCommonModal()
     return (
-        
-            <Container maxWidth="sm" sx={{ backgroundColor: '#FFFFFF', height: '100vh', position: 'relative', paddingBottom: 10 }}>
-                {/** 
+
+        <Container maxWidth="sm" sx={{ backgroundColor: '#FFFFFF', height: '100vh', position: 'relative', paddingBottom: 10 }}>
+            {/** 
             <Box sx={classes.locale}>
                 <LocaleSwitcher />
             </Box>
             */}
 
-                {!openLogs && <ConfigTwoFA />}
-                {openLogs && <Check />}
-                {openLogs && <CheckLog />}
 
-                {openLogs && <Box onClick={() => setOpenLogs(true)}
-                    sx={{
+            {!openLogs && <Check />}
+            {openLogs && <CheckLog />}
 
-                        position: 'absolute',
-                        width: '100%',
-                        height: 89,
-                        left: 0,
-                        bottom: 0,
-                        /* E-SAAS/sys/light/on-primary-fixed */
-                        background: '#001946',
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        gap: 1,
-                        cursor: 'pointer',
-                        color: '#FFFFFF',
-                    }}
-                >
-                    {t('checking.history')}
-                    <NorthEastOutlined />
-                </Box>}
+            {!openLogs && <Box onClick={() => setOpenLogs(true)}
+                sx={{
 
-                {open.type === CommonModalType.BRANCH_SELECTED && <BranchSelectorModal
-                                branchList={branchList}
-                                onOKAction={(branchId) => setSessionData({...sessionData,branchId:branchId.branchId})}
-                            />}
-            </Container>
-     
+                    position: 'absolute',
+                    width: '100%',
+                    height: 89,
+                    left: 0,
+                    bottom: 0,
+                    /* E-SAAS/sys/light/on-primary-fixed */
+                    background: '#001946',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: 1,
+                    cursor: 'pointer',
+                    color: '#FFFFFF',
+                }}
+            >
+                {t('checking.history')}
+                <NorthEastOutlined />
+            </Box>}
+
+            {open.type === CommonModalType.BRANCH_SELECTED && <BranchSelectorModal
+                branchList={branchList}
+                onOKAction={(branchId) => setSessionData({ ...sessionData as { employeeId: string, entityId: string, branchId: string, }, branchId: branchId.branchId })}
+            />}
+
+            {open.type === CommonModalType.CONFIG2AF && <ConfigTwoFA />}
+            {open.type === CommonModalType.ADDDEVICE2AF && <VerifyTwoFA />}
+            {open.type === CommonModalType.INFO && <InfoModal
+                title={t('twoFactor.newDeviceMessage')}
+                description={t('twoFactor.newDeviceMessageText')}
+            />}
+        </Container>
+
     );
 };
 
 
-const CheckingPage = () => <CheckProvider><Checking/></CheckProvider>
+const CheckingPage = () => <CheckProvider><Checking /></CheckProvider>
 export default CheckingPage;

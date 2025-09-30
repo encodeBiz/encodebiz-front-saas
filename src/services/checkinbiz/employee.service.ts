@@ -203,10 +203,7 @@ export async function validateEmployee(token: string) {
 }
 
 
-export async function enable2AF(data: {
-
-  "entityId": string
-}, token: string) {
+export async function enable2AF(token: string) {
   try {
 
     const httpClientFetchInstance: HttpClient = new HttpClient({
@@ -216,9 +213,9 @@ export async function enable2AF(data: {
       },
     });
     const response: any = await httpClientFetchInstance.post(
-      process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_VALIDATE_EMPLOYEE as string,
+      process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_ENABLE2AF_EMPLOYEE as string,
       {
-        ...data,
+        token
       }
     );
     if (response.errCode && response.errCode !== 200) {
@@ -233,11 +230,7 @@ export async function enable2AF(data: {
 }
 
 
-export async function verify2AF(data: {
-  "code": string,
-
-  "entityId": string
-}, token: string) {
+export async function verify2AF(code: string, token: string) {
   try {
 
     const httpClientFetchInstance: HttpClient = new HttpClient({
@@ -247,9 +240,9 @@ export async function verify2AF(data: {
       },
     });
     const response: any = await httpClientFetchInstance.post(
-      process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_VALIDATE_EMPLOYEE as string,
+      process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_VERIFY2AF_EMPLOYEE as string,
       {
-        ...data
+        code
       }
     );
     if (response.errCode && response.errCode !== 200) {

@@ -47,9 +47,10 @@ interface CheckType {
     employee: IEmployee | undefined
     getEmplyeeLogsData: (range: { start: any, end: any }) => void
     branchList: Array<{ name: string, branchId: string }>
-    sessionData: { employeeId: string, entityId: string, branchId: string, }
+    sessionData: { employeeId: string, entityId: string, branchId: string, } | undefined
     setSessionData: (data: { employeeId: string, entityId: string, branchId: string, }) => void
-
+    token: string
+    setToken: (token: string) => void
 }
 
 
@@ -76,11 +77,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     const { openModal } = useCommonModal()
 
     const [branchList, setBranchList] = useState<Array<{ name: string, branchId: string }>>([])
-    const [sessionData, setSessionData] = useState<{ employeeId: string, entityId: string, branchId: string, }>({
-        employeeId: 'RyajARnKnfTwQphiQXvR',
-        entityId: 'k24rpxzY7aUTAmSXjNyT',
-        branchId: 'C3p3ivKG73iU5C9dh5r5'
-    })
+    const [sessionData, setSessionData] = useState<{ employeeId: string, entityId: string, branchId: string, }>()
 
     const getCurrenGeo = () => {
         if (navigator.geolocation) {
@@ -100,8 +97,8 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             const response: IValidateEmployeData = await validateEmployee(customToken as string)
             setSessionData({
-                ...sessionData,
-                entityId: response.payload.entityId
+                ...sessionData as { employeeId: string, entityId: string, branchId: string, },
+                entityId: response.payload.entityId as string
             })
             const data = await Promise.all(
                 response?.branchId.map(async (item) => {
@@ -110,8 +107,17 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
                 })
             );
             setBranchList(data)
-            if (data.length > 0) {
-                openModal(CommonModalType.BRANCH_SELECTED)
+
+            if (!response.payload.twoFa) {
+                openModal(CommonModalType.CONFIG2AF)
+            } else {
+                if (!response.payload.trustedDevicesId) {
+                    openModal(CommonModalType.ADDDEVICE2AF)
+                } else {
+                    if (data.length > 0) {
+                        openModal(CommonModalType.BRANCH_SELECTED)
+                    }
+                }
             }
             setToken(response.sessionToken)
             changeLoaderState({ show: false })
@@ -151,35 +157,38 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     }
 
     const createLogAction = (type: "checkout" | "checkin" | "restin" | "restout") => {
-
-        const data: ICreateLog = {
-            "employeeId": sessionData?.employeeId as string,
-            "entityId": sessionData?.entityId as string,
-            "branchId": sessionData?.branchId as string,
-            type,
-            "geo": {
-                "lat": geo.latitude,
-                "lng": geo.longitude
+        if (!sessionData?.branchId && branchList.length > 0)
+            openModal(CommonModalType.BRANCH_SELECTED)
+        else {
+            const data: ICreateLog = {
+                "employeeId": sessionData?.employeeId as string,
+                "entityId": sessionData?.entityId as string,
+                "branchId": sessionData?.branchId as string,
+                type,
+                "geo": {
+                    "lat": geo.latitude,
+                    "lng": geo.longitude
+                }
             }
-        }
-        setPending(true);
-        changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+            setPending(true);
+            changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
 
-        createLog(data, token).then(() => {
-            getEmplyeeLogsData(range)
-        }).catch(e => {
-            showToast(e?.message, 'error')
-        }).finally(() => {
-            changeLoaderState({ show: false })
-        })
+            createLog(data, token).then(() => {
+                getEmplyeeLogsData(range)
+            }).catch(e => {
+                showToast(e?.message, 'error')
+            }).finally(() => {
+                changeLoaderState({ show: false })
+            })
+        }
     }
 
     const fetchEntityData = async () => {
-        setEntity(await fetchEntity(sessionData.entityId))
+        setEntity(await fetchEntity(sessionData?.entityId as string))
     }
 
     const fetchEmployeeData = async () => {
-        setEmployee(await fetchEmployee(sessionData.entityId, sessionData.employeeId))
+        setEmployee(await fetchEmployee(sessionData?.entityId as string, sessionData?.employeeId as string))
     }
 
     useEffect(() => {
@@ -199,8 +208,8 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
     return (
         <CheckContext.Provider value={{
-            setSessionData, sessionData,
-            entity, employee, branchList,
+            setSessionData, sessionData, setToken,
+            entity, employee, branchList, token,
             pending, checkAction, setCheckAction, restAction, setRestAction, setOpenLogs, openLogs, createLogAction, employeeLogs, range, setRange, getEmplyeeLogsData
         }}>
             {children}
@@ -216,3 +225,12 @@ export const useCheck = () => {
     }
     return context;
 };
+
+/**
+ * 
+ * {
+    "message": "Código 2FA verificado correctamente",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZUlkIjoiZTFveXFFV1ZzZVhNc3BraGZuYloiLCJlbnRpdHlJZCI6ImsyNHJweHpZN2FVVEFtU1hqTnlUIiwicHVycG9zZSI6IjJmYS1hdXRob3JpemF0aW9uIiwiaWF0IjoxNzU5MjU2NDQ3LCJleHAiOjE3NTkyNTY3NDd9.K2VvoDPR9RBLnsnQ4ZSg-_knWpqmcSfjIp9DqyCl_yc",
+    "expiresIn": 300
+}
+ */

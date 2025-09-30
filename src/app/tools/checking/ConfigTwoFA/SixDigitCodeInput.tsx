@@ -6,7 +6,7 @@ import {
 
 
 
-const SixDigitCodeInput = () => {
+const SixDigitCodeInput = ({ onCompleted }: { onCompleted: (completed: string) => void }) => {
     const [digits, setDigits] = useState(['', '', '', '', '', '']);
     const inputRefs = useRef([]);
 
@@ -23,7 +23,7 @@ const SixDigitCodeInput = () => {
             const newDigits = [...digits];
             newDigits[index] = value;
             setDigits(newDigits);
-
+             onCompleted(newDigits.join(''));
             // Auto-focus next input if a digit was entered
             if (value !== '' && index < 5) {
                 (inputRefs.current as any)[index + 1]?.focus();
@@ -42,6 +42,7 @@ const SixDigitCodeInput = () => {
                 const newDigits = [...digits];
                 newDigits[index] = '';
                 setDigits(newDigits);
+                onCompleted(newDigits.join(''));
             }
         }
 
@@ -63,14 +64,14 @@ const SixDigitCodeInput = () => {
             const newDigits = numbers.split('');
             setDigits(newDigits);
 
+             onCompleted(newDigits.join(''));
+
             // Focus the last input after paste
             (inputRefs.current as any)[5]?.focus();
         }
     };
 
-    const getCode = () => {
-        return digits.join('');
-    };
+   
 
 
     return (
