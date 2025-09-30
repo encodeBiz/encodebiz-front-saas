@@ -14,6 +14,7 @@ import { CheckProvider, useCheck } from './page.context';
 import BranchSelectorModal from '@/components/common/modals/BranchSelector';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useCommonModal } from '@/hooks/useCommonModal';
+import ConfigTwoFA from './ConfigTwoFA/ConfigTwoFA';
 
 
 const Checking = () => {
@@ -28,10 +29,12 @@ const Checking = () => {
                 <LocaleSwitcher />
             </Box>
             */}
-                {!openLogs && <Check />}
+
+                {!openLogs && <ConfigTwoFA />}
+                {openLogs && <Check />}
                 {openLogs && <CheckLog />}
 
-                {!openLogs && <Box onClick={() => setOpenLogs(true)}
+                {openLogs && <Box onClick={() => setOpenLogs(true)}
                     sx={{
 
                         position: 'absolute',

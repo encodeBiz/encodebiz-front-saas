@@ -201,3 +201,64 @@ export async function validateEmployee(token: string) {
     throw new Error(error.message);
   }
 }
+
+
+export async function enable2AF(data: {
+
+  "entityId": string
+}, token: string) {
+  try {
+
+    const httpClientFetchInstance: HttpClient = new HttpClient({
+      baseURL: "",
+      headers: {
+        'authorization': `Bearer ${token}`,
+      },
+    });
+    const response: any = await httpClientFetchInstance.post(
+      process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_VALIDATE_EMPLOYEE as string,
+      {
+        ...data,
+      }
+    );
+    if (response.errCode && response.errCode !== 200) {
+      throw new Error(response.message);
+    }
+
+    return response;
+
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+
+export async function verify2AF(data: {
+  "code": string,
+
+  "entityId": string
+}, token: string) {
+  try {
+
+    const httpClientFetchInstance: HttpClient = new HttpClient({
+      baseURL: "",
+      headers: {
+        'authorization': `Bearer ${token}`,
+      },
+    });
+    const response: any = await httpClientFetchInstance.post(
+      process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_VALIDATE_EMPLOYEE as string,
+      {
+        ...data
+      }
+    );
+    if (response.errCode && response.errCode !== 200) {
+      throw new Error(response.message);
+    }
+
+    return response;
+
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
