@@ -166,8 +166,8 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
                 "branchId": sessionData?.branchId as string,
                 type,
                 "geo": {
-                    "lat": geo.latitude,
-                    "lng": geo.longitude
+                    "lat": 22.716027,//geo.latitude,
+                    "lng": -80.906996//geo.longitude
                 }
             }
             setPending(true);
@@ -195,7 +195,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
         getCurrenGeo()
         fetchEntityData()
 
-        getEmplyeeLogsData(range)
+        //getEmplyeeLogsData(range)
     }, [sessionData?.entityId])
 
     useEffect(() => {

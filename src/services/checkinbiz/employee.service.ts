@@ -255,3 +255,13 @@ export async function verify2AF(code: string, token: string) {
     throw new Error(error.message);
   }
 }
+
+
+export const searchLogs = async (entityId: string, params: SearchParams): Promise<IChecklog[]> => {
+  const result: IChecklog[] = await searchFirestore({
+    ...params,
+    collection: `${collection.ENTITIES}/${entityId}/${collection.CHECKLOG}`,
+  });
+
+  return result;
+}

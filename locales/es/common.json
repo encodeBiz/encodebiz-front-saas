@@ -94,6 +94,8 @@
       "branch": "Sucursal",
       "register": "Registro",
      
+      "disable2AF": "No tiene habilitado 2AF",
+      "enable2AF": "Tiene habilitado 2AF",
 
       "vacation": "Vacaciones",
       "sick_leave": "Baja por enfermedad",
