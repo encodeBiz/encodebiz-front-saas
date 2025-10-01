@@ -24,7 +24,7 @@ import { IChecklog } from '@/domain/features/checkinbiz/IChecklog';
 import { format_date } from '@/lib/common/Date';
 import { useCheck } from '../page.context';
 const CheckLog = () => {
-    const { setOpenLogs, employeeLogs, range, setRange, getEmplyeeLogsData } = useCheck()
+    const { setOpenLogs, employeeLogs, range,   getEmplyeeLogsData } = useCheck()
     const t = useTranslations()
     const theme = useTheme()
 
