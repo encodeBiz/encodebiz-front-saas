@@ -1,22 +1,26 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Column, IRowAction } from "@/components/common/table/GenericTable";
-import { useEntity } from "@/hooks/useEntity";
-import { useToast } from "@/hooks/useToast";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
-import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
-import { IReport } from "@/domain/features/checkinbiz/IReport";
-import { search } from "@/services/checkinbiz/report.service";
-import { useLayout } from "@/hooks/useLayout";
-import { useParams, useSearchParams } from "next/navigation";
-import { ListAltOutlined } from "@mui/icons-material";
-import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
+import { useEffect, useState } from 'react';
+import { useToast } from "@/hooks/useToast";
+import { useEntity } from "@/hooks/useEntity";
+import { useParams } from "next/navigation";
+import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
+import { searchLogs, search as searchEmployee, fetchEmployee as fetchEmployeeData } from "@/services/checkinbiz/employee.service";
+import { IChecklog } from "@/domain/features/checkinbiz/IChecklog";
+import { Column } from "@/components/common/table/GenericTable";
+import { format_date, rmNDay } from "@/lib/common/Date";
+import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
+import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
+import { search as searchBranch, fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucursal.service";
+
 import { Box } from "@mui/material";
 
+import { DateRangePicker } from "@/app/main/[entityId]/passinbiz/stats/components/filters/fields/DateRangeFilter";
+import { useLayout } from "@/hooks/useLayout";
+import SearchFilter from "@/components/common/table/filters/SearchFilter";
 
 interface IFilterParams {
-  filter: { status: string, branchId: string }
-
+  filter: { branchId: 'none', employeeId: 'none', range: { start: any, end: any } | null },
   params: {
     orderBy: string,
     orderDirection: 'desc' | 'asc',
@@ -32,19 +36,18 @@ interface IFilterParams {
   currentPage: number
   startAfter: string | null,
 }
-
-export default function useReportListController() {
+export default function useReportController() {
   const t = useTranslations();
-  const { id } = useParams<{ id: string }>()
-  const searchParams = useSearchParams()
-  const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
-  const { navivateTo } = useLayout()
+  const { id } = useParams<{ id: string }>()
+  const { currentEntity } = useEntity()
+  const { changeLoaderState } = useLayout()
+
   const [loading, setLoading] = useState<boolean>(true);
-  const [items, setItems] = useState<IReport[]>([]);
-  const [itemsHistory, setItemsHistory] = useState<IReport[]>([]);
-  const [filterParams, setFilterParams] = useState<IFilterParams>({
-    filter: { status: 'active', branchId: 'none' },
+  const [items, setItems] = useState<IChecklog[]>([]);
+  const [itemsHistory, setItemsHistory] = useState<IChecklog[]>([]);
+  const [filterParams, setFilterParams] = useState<any>({
+    filter: { branchId: 'none', employeeId: 'none', range: { start: rmNDay(new Date(), 1), end: new Date() } },
     startAfter: null,
     currentPage: 0,
     total: 0,
@@ -52,35 +55,10 @@ export default function useReportListController() {
       filters: [],
       startAfter: null,
       limit: 5,
-      orderBy: 'createdAt',
+      orderBy: 'timestamp',
       orderDirection: 'desc',
     }
   })
-
-
-  const rowAction: Array<IRowAction> = id ? [] : [
-
-
-
-
-
-    {
-      actionBtn: true,
-      color: 'primary',
-      icon: <ListAltOutlined color="primary" />,
-      label: t('report.detail'),
-      bulk: false,
-      allowItem: () => true,
-      onPress: (item: IReport) => onDetail(item)
-    },
-  ]
-
-
-
-  const onDetail = async (item: any) => {
-    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/report/${item.id}/detail`)
-  }
-
 
   /** Paginated Changed */
   const onBack = (): void => {
@@ -95,7 +73,7 @@ export default function useReportListController() {
   /** Paginated Changed */
   const onNext = async (): Promise<void> => {
     setLoading(true)
-    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: filterParams.currentPage + 1 }
+    const filterParamsUpdated: any = { ...filterParams, currentPage: filterParams.currentPage + 1 }
     fetchingData(filterParamsUpdated)
   }
 
@@ -103,7 +81,7 @@ export default function useReportListController() {
 
   /** Sort Change */
   const onSort = (sort: { orderBy: string, orderDirection: 'desc' | 'asc' }) => {
-    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, ...sort, startAfter: null, } }
+    const filterParamsUpdated: any = { ...filterParams, currentPage: 0, params: { ...filterParams.params, ...sort, startAfter: null, } }
     setFilterParams(filterParamsUpdated)
     fetchingData(filterParamsUpdated)
   }
@@ -111,50 +89,44 @@ export default function useReportListController() {
 
   /** Limit Change */
   const onRowsPerPageChange = (limit: number) => {
-    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null, limit } }
+    const filterParamsUpdated: any = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null, limit } }
     setFilterParams(filterParamsUpdated)
     fetchingData(filterParamsUpdated)
   }
 
 
-  const columns: Column<IReport>[] = [
-    {
-      id: 'id',
-      label: t("core.label.name"),
-      minWidth: 170,
-
-    },
-
-
-
-
-  ];
 
   const fetchingData = (filterParams: IFilterParams) => {
-    const filters = []
-    if (id) {
-      filters.push({
-        field: 'branchId',
-        operator: 'array-contains',
-        value: id
-      })
-    }
-    setLoading(true)
-
 
     if (filterParams.params.filters.find((e: any) => e.field === 'branchId' && e.value === 'none'))
       filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "branchId")
 
+    if (filterParams.params.filters.find((e: any) => e.field === "employeeId" && !e.value))
+      filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "employeeId")
+    const filters = [
+      ...filterParams.params.filters,
+    ]
+    setLoading(true)
 
 
-    search(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters: [...filterParams.params.filters, ...filters] }).then(async res => {
+    searchLogs(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async res => {
+
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
-        setItems(res)
+
+        const data: Array<IChecklog> = await Promise.all(
+          res.map(async (item) => {
+            const branchId = (await fetchSucursalData(currentEntity?.entity.id as string, item.branchId as string))?.name
+            const employeeId = (await fetchEmployeeData(currentEntity?.entity.id as string, item.employeeId as string))?.fullName
+            return { ...item, branchId, employeeId };
+          })
+        );
+
+        setItems(data)
         if (!filterParams.params.startAfter) {
-          setItemsHistory([...res])
+          setItemsHistory([...data])
         } else {
-          setItemsHistory(prev => [...prev, ...res])
+          setItemsHistory(prev => [...prev, ...data])
         }
       }
 
@@ -171,69 +143,199 @@ export default function useReportListController() {
   }
 
 
-  const inicializeFilter = (params: string) => {
-    try {
-      const filters: IFilterParams = params !== 'null' ? filterParams : decodeFromBase64(params as string)
-      filters.params.startAfter = null
-      setFilterParams(filters)
-      setLoading(false)
-      fetchingData(filters)
-    } catch (error) {
-      showToast(String(error as any), 'error')
+  const columns: Column<IChecklog>[] = [
+    {
+      id: 'branchId',
+      label: t("core.label.branch"),
+      minWidth: 170,
+      format: (value, row) => row.branchId
+    },
+    {
+      id: 'employeeId',
+      label: t("core.label.employee"),
+      minWidth: 170,
+      format: (value, row) => row.employeeId
+    },
+    {
+      id: 'type',
+      label: t("core.label.register"),
+      minWidth: 170,
+      format: (value, row) => t('core.label.' + row.type)
+    },
+    {
+      id: 'timestamp',
+      label: t("core.label.date"),
+      minWidth: 170,
+      format: (value, row) => format_date(row.timestamp, 'DD/MM/YYYY')
+    },
+    {
+      id: 'id',
+      label: t("core.label.time"),
+      minWidth: 170,
+      format: (value, row) => format_date(row.timestamp, 'hh:mm')
+    },
+
+
+  ];
+
+
+
+
+
+  useEffect(() => {
+    if (currentEntity?.entity?.id) {
+      fetchingData(filterParams)
+      fetchSucursal()
+      fetchEmployee()
     }
+  }, [currentEntity?.entity?.id])
+
+
+
+
+  const [branchList, setBranchList] = useState<Array<ISucursal>>([])
+  const fetchSucursal = async () => {
+    setBranchList(await searchBranch(currentEntity?.entity.id as string, { ...{} as any, limit: 100 }))
   }
 
-
-
-  useEffect(() => {
-    if (currentEntity?.entity?.id) {
-      watchServiceAccess('checkinbiz')
-    }
-  }, [currentEntity?.entity?.id, watchServiceAccess])
-
-  useEffect(() => {
-    if (currentEntity?.entity?.id) {
-
-      if (searchParams.get('params') && localStorage.getItem('reportIndex'))
-        inicializeFilter(searchParams.get('params') as string)
-      else
-        fetchingData(filterParams)
-    }
-  }, [currentEntity?.entity?.id, searchParams.get('params')])
-
-
-
-
-
-
-
+  const [employeeList, setEmployeeList] = useState<Array<IEmployee>>([])
+  const fetchEmployee = async () => {
+    setEmployeeList(await searchEmployee(currentEntity?.entity.id as string, { ...{} as any, limit: 100 }))
+  }
 
 
 
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
+    <DateRangePicker filter width='100%' value={filterParams.filter.range} onChange={(rg: { start: any, end: any }) => {
+      onFilter({ ...filterParams, filter: { ...filterParams.filter, range: rg } })
+    }} />
+
+    {employeeList.length > 0 && <SearchFilter
+      label={t('core.label.subEntity')}
+      value={filterParams.filter.branchId}
+      onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, branchId: value } })}
+      options={branchList.map(e => ({ value: e.id as string, label: e.name as string }))}
+    />}
+
+    {employeeList.length > 0 && <SearchFilter
+      label={t('core.label.employee')}
+      value={filterParams.filter.employeeId}
+      onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, employeeId: value } })}
+      options={employeeList.map(e => ({ value: e.id as string, label: e.fullName as string }))}
+    />}
 
 
   </Box>
 
-  const buildState = () => {
-    const dataStatus = {
-      items,
-      itemsHistory,
-    }
-    localStorage.setItem('reportIndex', JSON.stringify(dataStatus))
-    return encodeToBase64({ ...filterParams })
+
+  const onFilter = (filterParamsData: any) => {
+
+    const filterData: Array<{ field: string, operator: any, value: any }> = []
+    const filter = filterParamsData.filter
+    Object.keys(filter).forEach((key) => {
+      if (key === 'range')
+        filterData.push(
+          { field: 'timestamp', operator: '>=', value: filter[key].start },
+          { field: 'timestamp', operator: '<=', value: filter[key].end }
+        )
+      else
+        filterData.push({ field: key, operator: '==', value: filter[key] })
+    })
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null, filters: filterData }, filter: filter }
+    setFilterParams(filterParamsUpdated)
+    fetchingData(filterParamsUpdated)
   }
 
 
+  function exportToCSV(data: Array<IChecklog>, headersMap = null, filename = 'data.csv') {
+    if (!data.length) return;
+
+    // Use custom headers or object keys
+    const headers = headersMap ? Object.keys(headersMap) : Object.keys(data[0]);
+    const headerLabels = headersMap ? Object.values(headersMap) : headers;
+
+    let csvContent = headerLabels.join(',') + '\n';
+
+    data.forEach((row: any) => {
+      const values = headers.map(header => {
+        let value = row[header] !== undefined ? row[header] : '';
+        value = String(value);
+
+        if (value.includes(',') || value.includes('"') || value.includes('\n')) {
+          value = `"${value.replace(/"/g, '""')}"`;
+        }
+
+        return value;
+      });
+
+      csvContent += values.join(',') + '\n';
+    });
+
+    // Download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+
+  const handleExport = () => {
+    if (filterParams.params.filters.find((e: any) => e.field === 'branchId' && e.value === 'none'))
+      filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "branchId")
+
+    if (filterParams.params.filters.find((e: any) => e.field === "employeeId" && !e.value))
+      filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "employeeId")
+
+    const filters = [
+      ...filterParams.params.filters,
+    ]
+    changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+
+
+    searchLogs(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters, limit: 10000 }).then(async res => {
+
+      const data: Array<any> = await Promise.all(
+        res.map(async (item) => {
+          const branchId = (await fetchSucursalData(currentEntity?.entity.id as string, item.branchId as string))?.name
+          const employeeId = (await fetchEmployeeData(currentEntity?.entity.id as string, item.employeeId as string))?.fullName
+          return {
+
+            date: format_date(item.timestamp, 'DD/MM/YYYY'),
+            time: format_date(item.timestamp, 'hh:mm'),
+            type: t('core.label.' + item.type),
+            branchId,
+            employeeId
+          };
+        })
+      );
+
+      const headersMap: any = {
+        branchId: t('core.label.sucursal'),
+        employeeId: t('core.label.employee'),
+        type: t('core.label.register'),
+        date: t('core.label.date'),
+        time: t('core.label.time'),
+      };
+
+      exportToCSV(data, headersMap)
+
+    }).catch(e => {
+      showToast(e?.message, 'error')
+    }).finally(() => {
+      changeLoaderState({ show: false })
+    })
+  }
 
   return {
     items, onSort, onRowsPerPageChange,
-
-    onNext, onBack, buildState,
-    columns, rowAction, topFilter,
-    loading, filterParams,
-
+    topFilter, handleExport,
+    onNext, onBack,
+    columns,
+    loading, filterParams
   }
-
-
 }

@@ -97,12 +97,13 @@
       "thisMonth": "Este mes",
       "thisYear": "Este año",
 
+      
       "branch": "Sucursal",
       "register": "Registro",
      
       "disable2AF": "No tiene habilitado 2AF",
       "enable2AF": "Tiene habilitado 2AF",
-
+      "employee": "Empleado",
       "vacation": "Vacaciones",
       "sick_leave": "Baja por enfermedad",
       "leave_of_absence": "Licencia por ausencia",
@@ -635,7 +636,8 @@
     "formDesc": "Completa los campos a continuación para crear un reporte.",
     "list": "Reportes",
     "add": "Crear reporte",
-    "map": "Ir al mapa",
+    
+    "export":"Exportar reporte",
     "report": "Emitir reporte",
     "detailSucursal": "Detalles del reporte",
     "update": "Editar",
@@ -833,5 +835,5 @@
     "step4Text1":"Escribe el código de 6 dígitos que te muestra la app de autenticación.",
     "copyClave":"Copiar clave"
  
-  }
+  } 
 }

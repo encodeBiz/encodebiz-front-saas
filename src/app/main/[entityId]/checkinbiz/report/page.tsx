@@ -10,10 +10,10 @@ import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 export default function ReportList() {
   const t = useTranslations();
   const {
-    items, rowAction, onRowsPerPageChange, onSort,
+    items,   onRowsPerPageChange, onSort,
     onNext, onBack,  
     filterParams, topFilter,
-    columns,  
+    columns, handleExport ,
     loading } = useEmployeeListController();
    
    return (
@@ -23,16 +23,16 @@ export default function ReportList() {
         actions={
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
             <SassButton
-              onClick={() => {}}
+              onClick={handleExport}
               variant='contained'
               startIcon={<Add />}
-            >{t('report.add')}</SassButton>
+            >{t('report.export')}</SassButton>
           </Box>
         }
       >
         <GenericTable
           data={items}
-          rowAction={rowAction}
+          rowAction={[]}
           columns={columns}
           title={''}
           keyField="id"
