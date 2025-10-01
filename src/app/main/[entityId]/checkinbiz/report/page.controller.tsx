@@ -3,13 +3,11 @@ import { useTranslations } from "next-intl";
 import { useEffect, useState } from 'react';
 import { useToast } from "@/hooks/useToast";
 import { useEntity } from "@/hooks/useEntity";
-import { useParams } from "next/navigation";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import { searchLogs, search as searchEmployee, fetchEmployee as fetchEmployeeData } from "@/services/checkinbiz/employee.service";
 import { IChecklog } from "@/domain/features/checkinbiz/IChecklog";
 import { Column } from "@/components/common/table/GenericTable";
 import { format_date, rmNDay } from "@/lib/common/Date";
-import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 import { search as searchBranch, fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucursal.service";
 
@@ -39,7 +37,6 @@ interface IFilterParams {
 export default function useReportController() {
   const t = useTranslations();
   const { showToast } = useToast()
-  const { id } = useParams<{ id: string }>()
   const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
 

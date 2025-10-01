@@ -10,8 +10,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import { CheckCircleOutline, SearchOutlined } from "@mui/icons-material";
-import { useTranslations } from "next-intl";
-
+ 
 type Option = { label: string, value: string }
 
 interface SearchIndexInputProps {
@@ -23,8 +22,7 @@ interface SearchIndexInputProps {
 
 
 const SearchFilter: React.FC<SearchIndexInputProps> = ({ onChange, options, value, label }) => {
-  const t = useTranslations();
-
+ 
   const [inputValue, setInputValue] = useState<string>("");
   const [open, setOpen] = useState(false)
 
