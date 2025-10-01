@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Column, IRowAction } from "@/components/common/table/GenericTable";
-import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useToast } from "@/hooks/useToast";
 import { useTranslations } from "next-intl";
@@ -8,17 +7,11 @@ import { useEffect, useState } from "react";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { IReport } from "@/domain/features/checkinbiz/IReport";
 import { search } from "@/services/checkinbiz/report.service";
-import { search as searchBranch } from "@/services/checkinbiz/sucursal.service";
 import { useLayout } from "@/hooks/useLayout";
 import { useParams, useSearchParams } from "next/navigation";
-import { Edit, ListAltOutlined } from "@mui/icons-material";
+import { ListAltOutlined } from "@mui/icons-material";
 import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
-import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
-import { ISearchIndex } from "@/domain/core/SearchIndex";
-import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
 import { Box } from "@mui/material";
-import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
-import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 
 
 interface IFilterParams {
@@ -43,9 +36,7 @@ interface IFilterParams {
 export default function useReportListController() {
   const t = useTranslations();
   const { id } = useParams<{ id: string }>()
-  const { changeLoaderState } = useLayout()
   const searchParams = useSearchParams()
-  const { token, user } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
   const { navivateTo } = useLayout()
@@ -66,12 +57,11 @@ export default function useReportListController() {
     }
   })
 
-  const [branchList, setBranchList] = useState<Array<ISucursal>>([])
 
   const rowAction: Array<IRowAction> = id ? [] : [
-   
 
-    
+
+
 
 
     {
@@ -126,26 +116,16 @@ export default function useReportListController() {
     fetchingData(filterParamsUpdated)
   }
 
-  const options = [
-    { label: t('core.label.active'), value: 'active' },
-    { label: t('core.label.inactive'), value: 'inactive' },
-    { label: t('core.label.vacation'), value: 'vacation' },
-    { label: t('core.label.sick_leave'), value: 'sick_leave' },
-    { label: t('core.label.leave_of_absence'), value: 'leave_of_absence' },
-    { label: t('core.label.paternity_leave'), value: 'paternity_leave' },
-    { label: t('core.label.maternity_leave'), value: 'maternity_leave' },
-  ]
-
 
   const columns: Column<IReport>[] = [
     {
       id: 'id',
       label: t("core.label.name"),
       minWidth: 170,
-     
+
     },
 
-   
+
 
 
   ];
@@ -161,12 +141,12 @@ export default function useReportListController() {
     }
     setLoading(true)
 
-    
-     if (filterParams.params.filters.find((e: any) => e.field === 'branchId' && e.value === 'none'))
+
+    if (filterParams.params.filters.find((e: any) => e.field === 'branchId' && e.value === 'none'))
       filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "branchId")
 
 
- 
+
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters: [...filterParams.params.filters, ...filters] }).then(async res => {
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
@@ -203,9 +183,6 @@ export default function useReportListController() {
     }
   }
 
-  const fetchSucursal = async () => {
-    setBranchList(await searchBranch(currentEntity?.entity.id as string, { ...{} as any, limit: 100 }))
-  }
 
 
   useEffect(() => {
@@ -216,7 +193,7 @@ export default function useReportListController() {
 
   useEffect(() => {
     if (currentEntity?.entity?.id) {
-      fetchSucursal()
+
       if (searchParams.get('params') && localStorage.getItem('reportIndex'))
         inicializeFilter(searchParams.get('params') as string)
       else
@@ -229,13 +206,13 @@ export default function useReportListController() {
 
 
 
- 
-  
 
- 
+
+
+
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
 
-    
+
   </Box>
 
   const buildState = () => {
@@ -247,14 +224,14 @@ export default function useReportListController() {
     return encodeToBase64({ ...filterParams })
   }
 
- 
+
 
   return {
     items, onSort, onRowsPerPageChange,
- 
+
     onNext, onBack, buildState,
     columns, rowAction, topFilter,
-    loading,   filterParams,
+    loading, filterParams,
 
   }
 

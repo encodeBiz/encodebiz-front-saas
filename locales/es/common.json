@@ -91,6 +91,12 @@
       "nocard": "No tienes métodos de pago asociado a la entidad, por favor configure al menos uno."
     },
     "label": {
+
+      "today": "Hoy",
+      "thisWeek": "Esta semana",
+      "thisMonth": "Este mes",
+      "thisYear": "Este año",
+
       "branch": "Sucursal",
       "register": "Registro",
      

@@ -14,14 +14,16 @@ import { Column } from "@/components/common/table/GenericTable";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
-import { format_date } from "@/lib/common/Date";
+import { format_date, rmNDay } from "@/lib/common/Date";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 import { search as searchBranch, fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucursal.service";
 import { Box } from "@mui/material";
+ 
+import { DateRangePicker } from "@/app/main/[entityId]/passinbiz/stats/components/filters/fields/DateRangeFilter";
 
 interface IFilterParams {
-  filter: { branchId: '' }
+  filter: { branchId: '', range: { start: any, end: any } | null },
   params: {
     orderBy: string,
     orderDirection: 'desc' | 'asc',
@@ -80,7 +82,7 @@ export default function useEmployeeDetailController() {
   const [items, setItems] = useState<IChecklog[]>([]);
   const [itemsHistory, setItemsHistory] = useState<IChecklog[]>([]);
   const [filterParams, setFilterParams] = useState<any>({
-    filter: { branchId: 'none' },
+    filter: { branchId: 'none', range: { start: rmNDay(new Date(), 1), end: new Date() } },
     startAfter: null,
     currentPage: 0,
     total: 0,
@@ -130,7 +132,9 @@ export default function useEmployeeDetailController() {
 
 
   const fetchingData = (filterParams: IFilterParams) => {
-     
+
+    if (filterParams.params.filters.find((e: any) => e.field === 'branchId' && e.value === 'none'))
+      filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "branchId")
     const filters = [
       ...filterParams.params.filters,
       {
@@ -139,6 +143,7 @@ export default function useEmployeeDetailController() {
         value: id
       }]
     setLoading(true)
+
     searchLogs(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async res => {
 
       if (res.length !== 0) {
@@ -252,7 +257,9 @@ export default function useEmployeeDetailController() {
 
 
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
-
+    <DateRangePicker filter width='100%' value={filterParams.filter.range} onChange={(rg: { start: any, end: any }) => {
+      onFilter({ ...filterParams, filter: { ...filterParams.filter, range: rg } })
+    }} />
     {branchList.length > 0 && <SelectFilter
       first
       label={t('core.label.subEntity')}
@@ -271,7 +278,13 @@ export default function useEmployeeDetailController() {
     const filterData: Array<{ field: string, operator: any, value: any }> = []
     const filter = filterParamsData.filter
     Object.keys(filter).forEach((key) => {
-      filterData.push({ field: key, operator: '==', value: filter[key] })
+      if (key === 'range')
+        filterData.push(
+          { field: 'timestamp', operator: '>=', value: filter[key].start },
+          { field: 'timestamp', operator: '<=', value: filter[key].end }
+        )
+      else
+        filterData.push({ field: key, operator: '==', value: filter[key] })
     })
     const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null, filters: filterData }, filter: filter }
     setFilterParams(filterParamsUpdated)

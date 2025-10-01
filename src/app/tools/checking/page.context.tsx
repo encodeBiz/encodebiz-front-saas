@@ -166,8 +166,8 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
                 "branchId": sessionData?.branchId as string,
                 type,
                 "geo": {
-                    "lat": 22.716027,//geo.latitude,
-                    "lng": -80.906996//geo.longitude
+                    "lat": geo.latitude,
+                    "lng": geo.longitude
                 }
             }
             setPending(true);
