@@ -93,16 +93,7 @@ export default function useEmployeeListController() {
       allowItem: () => true,
       onPress: (item: ISucursal) => onDetail(item)
     },
-
-    {
-      actionBtn: true,
-      color: 'primary',
-      icon: <DownloadOutlined color="primary" />,
-      label: t('sucursal.report'),
-      bulk: false,
-      allowItem: () => true,
-      onPress: ( ) => {}
-    },
+ 
   ]
 
  

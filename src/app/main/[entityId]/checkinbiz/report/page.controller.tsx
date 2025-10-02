@@ -98,6 +98,9 @@ export default function useReportController() {
     if (filterParams.params.filters.find((e: any) => e.field === 'branchId' && e.value === 'none'))
       filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "branchId")
 
+    if (filterParams.params.filters.find((e: any) => e.field === "employeeId" && e.value === 'none'))
+      filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "employeeId")
+
     if (filterParams.params.filters.find((e: any) => e.field === "employeeId" && !e.value))
       filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "employeeId")
     const filters = [
@@ -105,6 +108,7 @@ export default function useReportController() {
     ]
     setLoading(true)
 
+    console.log({ ...(filterParams.params as any), filters });
 
     searchLogs(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async res => {
 

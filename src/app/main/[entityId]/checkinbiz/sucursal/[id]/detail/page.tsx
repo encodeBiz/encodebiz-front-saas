@@ -9,13 +9,13 @@ import { Detail } from './Detail';
 export default function BranchDetail() {
     
     const {
-        items, rowAction, onRowsPerPageChange, onSort,
+        items, onRowsPerPageChange, onSort,
         onNext, onBack,
         filterParams, topFilter,
         columns,
         loading } = useEmployeeListController();
 
-    const { initialValues } = useEmployeeDetailController()
+    const { initialValues, rowAction } = useEmployeeDetailController()
     return (
         <Container maxWidth="lg">
 
