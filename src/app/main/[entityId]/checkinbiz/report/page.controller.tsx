@@ -37,7 +37,7 @@ interface IFilterParams {
 export default function useReportController() {
   const t = useTranslations();
   const { showToast } = useToast()
-  const { currentEntity } = useEntity()
+  const { currentEntity, watchServiceAccess } = useEntity()
   const { changeLoaderState } = useLayout()
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -108,8 +108,7 @@ export default function useReportController() {
     ]
     setLoading(true)
 
-    console.log({ ...(filterParams.params as any), filters });
-
+ 
     searchLogs(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async res => {
 
       if (res.length !== 0) {
@@ -331,6 +330,13 @@ export default function useReportController() {
       changeLoaderState({ show: false })
     })
   }
+
+
+   useEffect(() => {
+    if (currentEntity?.entity?.id) {
+      watchServiceAccess('checkinbiz')
+    }
+  }, [currentEntity?.entity?.id])
 
   return {
     items, onSort, onRowsPerPageChange,

@@ -246,7 +246,7 @@ export default function useEmployeeListController() {
     if (currentEntity?.entity?.id) {
       watchServiceAccess('checkinbiz')
     }
-  }, [currentEntity?.entity?.id, watchServiceAccess])
+  }, [currentEntity?.entity?.id])
 
   useEffect(() => {
     if (currentEntity?.entity?.id) {
