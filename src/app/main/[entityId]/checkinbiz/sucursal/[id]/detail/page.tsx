@@ -11,7 +11,7 @@ export default function BranchDetail() {
     const {
         items, onRowsPerPageChange, onSort,
         onNext, onBack,
-        filterParams, topFilter,
+        filterParams,  
         columns,
         loading } = useEmployeeListController();
 
@@ -34,7 +34,7 @@ export default function BranchDetail() {
                     sort={{ orderBy: filterParams.params.orderBy, orderDirection: filterParams.params.orderDirection }}
                     onBack={onBack}
                     onNext={onNext}
-                    topFilter={topFilter}
+                  
                      
 
                 />
