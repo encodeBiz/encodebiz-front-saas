@@ -10,6 +10,8 @@ export interface IChecklog {
     }
     timestamp?: any
     userAgent?: any
+    status: 'valid' | "failed"    
+    failedCode?: string
 
 }
 

@@ -22,7 +22,7 @@ import image from '../../../../../public/assets/images/checkex.png'
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import { useCheck } from '../page.context';
 const Check = () => {
-    const { checkAction, setCheckAction, restAction, setRestAction, createLogAction, entity, employee } = useCheck()
+    const { checkAction, setCheckAction, restAction, setRestAction, createLogAction, entity, employee, pendingStatus } = useCheck()
     const t = useTranslations()
     const { open, openModal, closeModal } = useCommonModal()
 
@@ -42,7 +42,7 @@ const Check = () => {
                         borderRadius: 4, textTransform: 'uppercase',
                         px: 2, height: 73
                     }}
-                    disabled={restAction == 'restin'} variant='contained' color='primary'
+                    disabled={restAction == 'restin' || pendingStatus} variant='contained' color='primary'
                     onClick={() => {
 
                         createLogAction(checkAction === 'checkin' ? 'checkout' : 'checkin', () => {
@@ -61,9 +61,8 @@ const Check = () => {
                         borderRadius: 4, textTransform: 'uppercase',
                         px: 2, height: 73
                     }}
-                    disabled={checkAction === 'checkout'} variant='outlined' color='primary'
+                    disabled={checkAction === 'checkout' || pendingStatus} variant='outlined' color='primary'
                     onClick={() => {
-
                         createLogAction(restAction === 'restin' ? 'restout' : 'restin', () => {
                             setRestAction(restAction === 'restin' ? 'restout' : 'restin')
                         })

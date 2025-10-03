@@ -175,6 +175,20 @@ export const getEmplyeeLogs = async (entityId: string, employeeId: string, branc
   return result;
 }
 
+export const getEmplyeeLogsState = async (entityId: string, employeeId: string, params: SearchParams): Promise<IChecklog[]> => {
+
+  const result: IChecklog[] = await searchFirestore({
+    ...params,
+    filters: [
+      ...params.filters ? params.filters : [],
+      { field: 'employeeId', operator: '==', value: employeeId },    
+    ],
+    collection: `${collection.ENTITIES}/${entityId}/checklogs`,
+  });
+
+  return result;
+}
+
 
 export async function validateEmployee(token: string) {
   try {

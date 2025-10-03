@@ -134,10 +134,10 @@ export const DateRangePicker = ({
 
             </FormControl>
             {filter && <Box display={'flex'} flexDirection={'row'} gap={1} >
-                <Typography variant="caption" onClick={() => onChange?.({ start: getDateRange('today')?.start, end: getDateRange('today')?.end })} color="primary">{t('core.label.today')}</Typography>
-                <Typography variant="caption" onClick={() => onChange?.({ start: getDateRange('week')?.start, end: getDateRange('week')?.end })} color="primary">{t('core.label.thisWeek')}</Typography>
-                <Typography variant="caption" onClick={() => onChange?.({ start: getDateRange('month')?.start, end: getDateRange('month')?.end })} color="primary">{t('core.label.thisMonth')}</Typography>
-                <Typography variant="caption" onClick={() => onChange?.({ start: getDateRange('year')?.start, end: getDateRange('year')?.end })} color="primary">{t('core.label.thisYear')}</Typography>
+                <Typography sx={{cursor:'pointer'}} variant="caption" onClick={() => onChange?.({ start: getDateRange('today')?.start, end: getDateRange('today')?.end })} color="primary">{t('core.label.today')}</Typography>
+                <Typography sx={{cursor:'pointer'}} variant="caption" onClick={() => onChange?.({ start: getDateRange('week')?.start, end: getDateRange('week')?.end })} color="primary">{t('core.label.thisWeek')}</Typography>
+                <Typography sx={{cursor:'pointer'}} variant="caption" onClick={() => onChange?.({ start: getDateRange('month')?.start, end: getDateRange('month')?.end })} color="primary">{t('core.label.thisMonth')}</Typography>
+                <Typography sx={{cursor:'pointer'}} variant="caption" onClick={() => onChange?.({ start: getDateRange('year')?.start, end: getDateRange('year')?.end })} color="primary">{t('core.label.thisYear')}</Typography>
             </Box>}
         </Box>
     </LocalizationProvider>

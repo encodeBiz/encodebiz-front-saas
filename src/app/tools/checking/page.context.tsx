@@ -7,7 +7,7 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import { useLayout } from '@/hooks/useLayout';
 import { useToast } from '@/hooks/useToast';
 import { rmNDay } from '@/lib/common/Date';
-import { getEmplyeeLogs, createLog, validateEmployee } from '@/services/checkinbiz/employee.service';
+import { getEmplyeeLogs, createLog, validateEmployee, getEmplyeeLogsState } from '@/services/checkinbiz/employee.service';
 import { fetchSucursal } from '@/services/checkinbiz/sucursal.service';
 import { fetchEntity } from '@/services/core/entity.service';
 import { useTranslations } from 'next-intl';
@@ -18,6 +18,7 @@ interface IValidateEmployeData {
     "message": string
     "payload": {
         "name": string
+        "employeeId": string
         "twoFa": boolean
         "trustedDevicesId": boolean
         "entityId": string
@@ -30,7 +31,7 @@ interface IValidateEmployeData {
 }
 
 interface CheckType {
-
+    pendingStatus: boolean
     pending: boolean
     checkAction: "checkout" | "checkin"
     setCheckAction: (checkAction: "checkout" | "checkin") => void
@@ -66,6 +67,8 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     const [openLogs, setOpenLogs] = useState(false)
     const [token, setToken] = useState('')
     const [pending, setPending] = useState(false)
+    const [pendingStatus, setPendingStatus] = useState(false)
+
     const [entity, setEntity] = useState<IEntity>()
     const [employee, setEmployee] = useState<string>()
     const [geo, setGeo] = useState<{ latitude: number, longitude: number }>({ latitude: 0, longitude: 0 })
@@ -93,11 +96,13 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
     const handleValidateEmployee = async () => {
         try {
+            setPendingStatus(true)
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             const response: IValidateEmployeData = await validateEmployee(customToken as string)
             setSessionData({
                 ...sessionData as { employeeId: string, entityId: string, branchId: string, },
-                entityId: response.payload.entityId as string
+                entityId: response.payload.entityId as string,
+                employeeId: response.payload.employeeId as string
             })
             const data = await Promise.all(
                 response?.branchId.map(async (item) => {
@@ -111,14 +116,12 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
             if (!response.payload.twoFa) {
                 openModal(CommonModalType.CONFIG2AF)
             } else {
-                if (!response.payload.trustedDevicesId) {
-                    openModal(CommonModalType.ADDDEVICE2AF)
-                } else {
-                    if (data.length > 0) {
-                        openModal(CommonModalType.BRANCH_SELECTED)
-                    }
+                if (data.length > 0) {
+                    openModal(CommonModalType.BRANCH_SELECTED)
+                    getLastState(response.payload.entityId, response.payload.employeeId)
                 }
             }
+
             setToken(response.sessionToken)
             changeLoaderState({ show: false })
 
@@ -130,6 +133,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     }
 
     const getEmplyeeLogsData = async (range: { start: any, end: any }) => {
+
         try {
             const filters = [
                 { field: 'timestamp', operator: '>=', value: new Date(range.start) },
@@ -156,6 +160,32 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
     }
 
+    const getLastState = async (entityId: string, employeeId: string) => {
+        try {
+            const resultList: Array<IChecklog> = await getEmplyeeLogsState(entityId, employeeId, { limit: 10, orderBy: 'timestamp', orderDirection: 'desc' } as any) as Array<IChecklog>
+            if (resultList.length > 0) {
+                const last = resultList[0]
+
+                if (last.type === 'checkin' || last.type === 'checkout') {
+                    setCheckAction(last.type)
+                    if (last.type === 'checkout') {
+                        setRestAction('restout')
+                    }
+                }
+
+                if (last.type === 'restin' || last.type === 'restout') {
+                    setRestAction(last.type)
+                    setCheckAction('checkin')
+                }
+                setPendingStatus(false)
+
+            }
+        } catch (error) {
+            showToast('Error fetchind logs data: ' + error, 'error')
+        }
+
+    }
+
     const createLogAction = (type: "checkout" | "checkin" | "restin" | "restout", callback?: () => void) => {
         if (!sessionData?.branchId && branchList.length > 0)
             openModal(CommonModalType.BRANCH_SELECTED)
@@ -175,9 +205,14 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
             createLog(data, token).then(() => {
                 getEmplyeeLogsData(range)
-
                 if (typeof callback === 'function') callback()
+
             }).catch(e => {
+                
+                if (e?.message?.includes('Dispositivo no confiable')) {
+                    openModal(CommonModalType.ADDDEVICE2AF)
+                }
+
                 showToast(e?.message, 'error')
             }).finally(() => {
                 changeLoaderState({ show: false })
@@ -194,8 +229,6 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         getCurrenGeo()
         fetchEntityData()
-
-        //getEmplyeeLogsData(range)
     }, [sessionData?.entityId])
 
     useEffect(() => {
@@ -207,7 +240,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
 
     return (
-        <CheckContext.Provider value={{
+        <CheckContext.Provider value={{pendingStatus,
             setSessionData, sessionData, setToken,
             entity, employee, branchList, token,
             pending, checkAction, setCheckAction, restAction, setRestAction, setOpenLogs, openLogs, createLogAction, employeeLogs, range, setRange, getEmplyeeLogsData

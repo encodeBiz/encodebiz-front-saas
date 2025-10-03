@@ -29,7 +29,7 @@ interface ConfigTwoFAType {
     secret: string
 }
 
-export interface VerifyTwoFAType{
+export interface VerifyTwoFAType {
     "message": string
     "token": string,
     "expiresIn": number
@@ -46,12 +46,14 @@ const ConfigTwoFA = () => {
     const [code, setCode] = useState('')
     const [pending, setPending] = useState(false)
     const [data, setData] = useState<ConfigTwoFAType>()
+    const [launch, setLaunch] = useState(false)
     const fetchQRandCode = async () => {
         setPending(true)
+        setLaunch(true)
         try {
             const enable2AFData: ConfigTwoFAType = await enable2AF(token)
             setData(enable2AFData)
- 
+
 
             setPending(false)
         } catch (error) {
@@ -63,8 +65,8 @@ const ConfigTwoFA = () => {
         changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
 
         try {
-           const data: VerifyTwoFAType = await verify2AF(code, token)
-           //setToken(data.token)
+            const data: VerifyTwoFAType = await verify2AF(code, token)
+            //setToken(data.token)
             closeModal(CommonModalType.CONFIG2AF)
             openModal(CommonModalType.INFO)
             changeLoaderState({ show: false })
@@ -75,7 +77,7 @@ const ConfigTwoFA = () => {
     }
 
     useEffect(() => {
-        if (token)
+        if (token && !launch)
             fetchQRandCode()
     }, [token])
 

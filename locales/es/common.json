@@ -833,7 +833,10 @@
     "scannerQR":"¿Prefieres escanear un QR?",
     "step4Title1":"Paso 2: Introduce el código de un solo uso",
     "step4Text1":"Escribe el código de 6 dígitos que te muestra la app de autenticación.",
-    "copyClave":"Copiar clave"
+    "copyClave":"Copiar clave",
+
+    "titleValidate":"Tu navegador no es de confianza",
+    "text1Validate":"Para poner agregar tu navegador como dispositivo de confianza escribe el código de 6 dígitos que te muestra la app de autenticación."
  
   } 
 }
