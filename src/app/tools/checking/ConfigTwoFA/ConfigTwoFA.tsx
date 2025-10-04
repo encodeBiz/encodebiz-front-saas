@@ -113,7 +113,7 @@ const ConfigTwoFA = () => {
                             {pending && !data?.qrImage && <BoxLoader message=' ' />}
                             {!pending && data?.qrImage && <Image width={200} height={200} alt='' src={data?.qrImage as string} />}
                         </Box>
-                        <Typography onClick={() => setQr(false)} variant="body1" fontSize={16} fontWeight={'bold'} color='primary' > {t('twoFactor.noScanner')} </Typography>
+                        <Typography sx={{cursor:'pointer'}} onClick={() => setQr(false)} variant="body1" fontSize={16} fontWeight={'bold'} color='primary' > {t('twoFactor.noScanner')} </Typography>
                     </Box>}
 
                     {!qr && data?.secret && !pending && <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} gap={3}>
@@ -126,7 +126,7 @@ const ConfigTwoFA = () => {
                         }} boxShadow={'0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)'} width={'100%'} height={40} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
                             <Typography variant="body1" fontSize={16}   > {t('twoFactor.copyClave')} </Typography>
                         </Box>
-                        <Typography onClick={() => setQr(true)} variant="body1" fontSize={16} fontWeight={'bold'} color='primary' > {t('twoFactor.scannerQR')} </Typography>
+                        <Typography sx={{cursor:'pointer'}}  onClick={() => setQr(true)} variant="body1" fontSize={16} fontWeight={'bold'} color='primary' > {t('twoFactor.scannerQR')} </Typography>
                     </Box>}
                     <Divider />
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
