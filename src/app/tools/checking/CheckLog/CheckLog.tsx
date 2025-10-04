@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     Box,
+    CircularProgress,
     Paper,
     Table,
     TableBody,
@@ -43,10 +44,7 @@ const CheckLog = () => {
                 { field: 'timestamp', operator: '>=', value: new Date(range.start) },
                 { field: 'timestamp', operator: '<=', value: new Date(range.end) },
             ]
-
             const resultList: Array<IChecklog> = await getEmplyeeLogs(sessionData?.entityId || '', sessionData?.employeeId || '', sessionData?.branchId || '', { limit: 50, orderBy: 'timestamp', orderDirection: 'desc', filters } as any) as Array<IChecklog>
-
-
             const data = await Promise.all(
                 resultList.map(async (item) => {
                     const branchId = (await fetchSucursal(item.entityId, item.branchId))?.name
@@ -59,10 +57,8 @@ const CheckLog = () => {
 
             setEmployeeLogs(data)
             setPending(false)
-
         } catch (error) {
             setPending(false)
-
             showToast('Error fetchind logs data: ' + error, 'error')
         }
 
@@ -76,7 +72,10 @@ const CheckLog = () => {
 
     return (
         <Box sx={{ p: 2, pt: 4, position: 'relative', maxWidth: 600, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <Typography variant="body1" fontWeight={'bold'} fontSize={22} > {t('checking.title')} </Typography>
+            <Box sx={{ display: 'flex', gap:4, justifyContent:'flex-start', alignItems:'center' }}>
+                <Typography variant="body1" fontWeight={'bold'} fontSize={22} > {t('checking.title')} </Typography>
+                {pending && <CircularProgress color="inherit" size={20} />}
+            </Box>
             <CustomIconBtn
                 sx={{ position: 'absolute', top: 16, right: 16 }}
                 onClick={() => setOpenLogs(false)}
@@ -84,7 +83,7 @@ const CheckLog = () => {
             />
             <DateRangePicker width='100%' value={range} onChange={(rg: { start: any, end: any }) => {
                 getEmplyeeLogsData(rg)
-                setRange(rg)
+               setRange(rg)
             }} />
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -92,13 +91,12 @@ const CheckLog = () => {
                         <TableRow>
                             <TableCell>{t("core.label.branch")}</TableCell>
                             <TableCell align="right">{t("core.label.register")}</TableCell>
-                            <TableCell align="right">{t("core.label.hora")}</TableCell>
+                            <TableCell align="right">{t("core.label.date")}</TableCell>
                             <TableCell align="right">{t("core.label.time")}</TableCell>
                         </TableRow>
                     </TableHead>
-                    <TableBody>
-
-                        {employeeLogs.map(async (row: IChecklog, index: number) => (
+                    <TableBody >
+                        {employeeLogs.map((row: IChecklog, index: number) => (
                             <TableRow
                                 key={index}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
