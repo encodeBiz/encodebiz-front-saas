@@ -162,7 +162,7 @@ export async function createLog(data: ICreateLog, token: string) {
 
 export const getEmplyeeLogs = async (entityId: string, employeeId: string, branchId: string, params: SearchParams): Promise<IChecklog[]> => {
 
-  const result: IChecklog[] = await searchFirestore({
+  console.log({
     ...params,
     filters: [
       ...params.filters ? params.filters : [],
@@ -171,6 +171,18 @@ export const getEmplyeeLogs = async (entityId: string, employeeId: string, branc
     ],
     collection: `${collection.ENTITIES}/${entityId}/checklogs`,
   });
+  let result: IChecklog[] = []
+  if (entityId) {
+    result = await searchFirestore({
+      ...params,
+      filters: [
+        ...params.filters ? params.filters : [],
+        { field: 'employeeId', operator: '==', value: employeeId },
+        { field: 'branchId', operator: '==', value: branchId },
+      ],
+      collection: `${collection.ENTITIES}/${entityId}/checklogs`,
+    });
+  }
 
   return result;
 }
@@ -181,7 +193,7 @@ export const getEmplyeeLogsState = async (entityId: string, employeeId: string, 
     ...params,
     filters: [
       ...params.filters ? params.filters : [],
-      { field: 'employeeId', operator: '==', value: employeeId },    
+      { field: 'employeeId', operator: '==', value: employeeId },
     ],
     collection: `${collection.ENTITIES}/${entityId}/checklogs`,
   });

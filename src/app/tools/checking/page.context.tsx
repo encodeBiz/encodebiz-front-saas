@@ -40,12 +40,9 @@ interface CheckType {
     openLogs: boolean
     setOpenLogs: (openLogs: boolean) => void
     createLogAction: (type: "checkout" | "checkin" | "restin" | "restout", callback?: () => void) => void
-    employeeLogs: Array<IChecklog>
-    range: { start: any, end: any }
-    setRange: (range: { start: any, end: any }) => void,
+
     entity: IEntity | undefined
     employee: string | undefined
-    getEmplyeeLogsData: (range: { start: any, end: any }) => void
     branchList: Array<{ name: string, branchId: string }>
     sessionData: { employeeId: string, entityId: string, branchId: string, } | undefined
     setSessionData: (data: { employeeId: string, entityId: string, branchId: string, }) => void
@@ -67,15 +64,13 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     const [openLogs, setOpenLogs] = useState(false)
     const [token, setToken] = useState('')
     const [pending, setPending] = useState(false)
-    const [pendingStatus, setPendingStatus] = useState(false)
+    const [pendingStatus, setPendingStatus] = useState(true)
 
     const [entity, setEntity] = useState<IEntity>()
     const [employee, setEmployee] = useState<string>()
     const [geo, setGeo] = useState<{ latitude: number, longitude: number }>({ latitude: 0, longitude: 0 })
-    const [employeeLogs, setEmployeeLogs] = useState<Array<IChecklog>>([])
     const searchParams = useSearchParams()
     const customToken = searchParams.get('customToken') || token;
-    const [range, setRange] = useState<{ start: any, end: any }>({ start: rmNDay(new Date(), 1), end: new Date() })
     const { openModal } = useCommonModal()
 
     const [branchList, setBranchList] = useState<Array<{ name: string, branchId: string }>>([])
@@ -132,33 +127,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
         }
     }
 
-    const getEmplyeeLogsData = async (range: { start: any, end: any }) => {
 
-        try {
-            const filters = [
-                { field: 'timestamp', operator: '>=', value: new Date(range.start) },
-                { field: 'timestamp', operator: '<=', value: new Date(range.end) },
-            ]
-
-            const resultList: Array<IChecklog> = await getEmplyeeLogs(sessionData?.entityId || '', sessionData?.employeeId || '', sessionData?.branchId || '', { limit: 50, orderBy: 'timestamp', orderDirection: 'desc', filters } as any) as Array<IChecklog>
-
-
-            const data = await Promise.all(
-                resultList.map(async (item) => {
-                    const branchId = (await fetchSucursal(item.entityId, item.branchId))?.name
-                    return {
-                        ...item,
-                        branchId
-                    };
-                })
-            );
-
-            setEmployeeLogs(data)
-        } catch (error) {
-            showToast('Error fetchind logs data: ' + error, 'error')
-        }
-
-    }
 
     const getLastState = async (entityId: string, employeeId: string) => {
         try {
@@ -204,11 +173,11 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
 
             createLog(data, token).then(() => {
-                getEmplyeeLogsData(range)
+
                 if (typeof callback === 'function') callback()
 
             }).catch(e => {
-                
+
                 if (e?.message?.includes('Dispositivo no confiable')) {
                     openModal(CommonModalType.ADDDEVICE2AF)
                 }
@@ -227,8 +196,10 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
 
     useEffect(() => {
-        getCurrenGeo()
-        fetchEntityData()
+        if (sessionData?.entityId) {
+            getCurrenGeo()
+            fetchEntityData()
+        }
     }, [sessionData?.entityId])
 
     useEffect(() => {
@@ -240,10 +211,11 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
 
     return (
-        <CheckContext.Provider value={{pendingStatus,
+        <CheckContext.Provider value={{
+            pendingStatus,
             setSessionData, sessionData, setToken,
             entity, employee, branchList, token,
-            pending, checkAction, setCheckAction, restAction, setRestAction, setOpenLogs, openLogs, createLogAction, employeeLogs, range, setRange, getEmplyeeLogsData
+            pending, checkAction, setCheckAction, restAction, setRestAction, setOpenLogs, openLogs, createLogAction
         }}>
             {children}
         </CheckContext.Provider>

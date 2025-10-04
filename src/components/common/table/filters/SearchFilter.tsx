@@ -15,13 +15,14 @@ type Option = { label: string, value: string }
 
 interface SearchIndexInputProps {
   label?: any,
+  width?: string,
   value: any
   onChange: (value: any) => void,
   options: Array<{ label: string, value: string }>
 }
 
 
-const SearchFilter: React.FC<SearchIndexInputProps> = ({ onChange, options, value, label }) => {
+const SearchFilter: React.FC<SearchIndexInputProps> = ({ onChange, options, value, label, width= "200px" }) => {
  
   const [inputValue, setInputValue] = useState<string>("");
   const [open, setOpen] = useState(false)
@@ -44,7 +45,7 @@ const SearchFilter: React.FC<SearchIndexInputProps> = ({ onChange, options, valu
     setInputValue(newInput ?? "");
   };
   return (
-    <FormControl sx={{ width: "100%", textAlign: "left" }}>
+    <FormControl sx={{ width, textAlign: "left" }}>
 
       <Autocomplete
         options={options}

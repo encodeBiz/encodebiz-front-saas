@@ -100,16 +100,17 @@ export const DateRangePicker = ({
                 <Box display="flex" gap={2} flexDirection={{ xs: 'column', sm: 'row' }}>
                     <DateTimePicker
                         label={'Inicio'}
-
+            
                         defaultValue={dayjs(startDate ?? new Date())}
                         value={dayjs(startDate ?? new Date())}
                         onChange={handleStartDateChange}
                         maxDate={dayjs(endDate) || undefined}
-                        sx={{ flex: 1 }}
+                        sx={{ flex: 1, height:46 }}
 
                         slotProps={{
                             textField: {
-                                size: 'small'
+                                size: 'small',
+                                
                             },
                         }}
                     />

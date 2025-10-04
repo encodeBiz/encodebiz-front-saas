@@ -18,7 +18,7 @@ import { useLayout } from "@/hooks/useLayout";
 import SearchFilter from "@/components/common/table/filters/SearchFilter";
 
 interface IFilterParams {
-  filter: { branchId: 'none', employeeId: 'none', range: { start: any, end: any } | null },
+  filter: { branchId: 'none', employeeId: 'none', status: 'valid', range: { start: any, end: any } | null },
   params: {
     orderBy: string,
     orderDirection: 'desc' | 'asc',
@@ -44,7 +44,7 @@ export default function useReportController() {
   const [items, setItems] = useState<IChecklog[]>([]);
   const [itemsHistory, setItemsHistory] = useState<IChecklog[]>([]);
   const [filterParams, setFilterParams] = useState<any>({
-    filter: { branchId: 'none', employeeId: 'none', range: { start: rmNDay(new Date(), 1), end: new Date() } },
+    filter: { branchId: 'none', employeeId: 'none', status: 'valid', range: { start: rmNDay(new Date(), 1), end: new Date() } },
     startAfter: null,
     currentPage: 0,
     total: 0,
@@ -108,7 +108,7 @@ export default function useReportController() {
     ]
     setLoading(true)
 
- 
+
     searchLogs(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async res => {
 
       if (res.length !== 0) {
@@ -205,10 +205,15 @@ export default function useReportController() {
 
 
 
-  const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
-    <DateRangePicker filter width='100%' value={filterParams.filter.range} onChange={(rg: { start: any, end: any }) => {
-      onFilter({ ...filterParams, filter: { ...filterParams.filter, range: rg } })
-    }} />
+  const topFilter = <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap', width: '100%', justifyContent: 'flex-end' }}>
+
+
+    <SearchFilter
+      label={t('core.label.status')}
+      value={filterParams.filter.status}
+      onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, status: value } })}
+      options={[{ value: 'valid' as string, label: t('core.label.valid') }, { value: 'failed' as string, label: t('core.label.failed') }]}
+    />
 
     {employeeList.length > 0 && <SearchFilter
       label={t('core.label.subEntity')}
@@ -223,7 +228,9 @@ export default function useReportController() {
       onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, employeeId: value } })}
       options={employeeList.map(e => ({ value: e.id as string, label: e.fullName as string }))}
     />}
-
+    <DateRangePicker filter width='100%' value={filterParams.filter.range} onChange={(rg: { start: any, end: any }) => {
+      onFilter({ ...filterParams, filter: { ...filterParams.filter, range: rg } })
+    }} />
 
   </Box>
 
@@ -332,7 +339,7 @@ export default function useReportController() {
   }
 
 
-   useEffect(() => {
+  useEffect(() => {
     if (currentEntity?.entity?.id) {
       watchServiceAccess('checkinbiz')
     }

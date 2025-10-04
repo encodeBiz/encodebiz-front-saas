@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Box,
     Paper,
@@ -21,12 +22,56 @@ import { DateRangePicker } from '@/app/main/[entityId]/passinbiz/stats/component
 import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import EmptyState from '@/components/common/EmptyState/EmptyState';
 import { IChecklog } from '@/domain/features/checkinbiz/IChecklog';
-import { format_date } from '@/lib/common/Date';
+import { format_date, rmNDay } from '@/lib/common/Date';
 import { useCheck } from '../page.context';
+import { getEmplyeeLogs } from '@/services/checkinbiz/employee.service';
+import { useToast } from '@/hooks/useToast';
+import { fetchSucursal } from '@/services/checkinbiz/sucursal.service';
 const CheckLog = () => {
-    const { setOpenLogs, employeeLogs, range,   getEmplyeeLogsData } = useCheck()
+    const { setOpenLogs, sessionData } = useCheck()
     const t = useTranslations()
     const theme = useTheme()
+    const [pending, setPending] = useState(false)
+    const [range, setRange] = useState<{ start: any, end: any }>({ start: rmNDay(new Date(), 1), end: new Date() })
+    const [employeeLogs, setEmployeeLogs] = useState<Array<IChecklog>>([])
+    const { showToast } = useToast()
+
+    const getEmplyeeLogsData = async (range: { start: any, end: any }) => {
+        setPending(true)
+        try {
+            const filters = [
+                { field: 'timestamp', operator: '>=', value: new Date(range.start) },
+                { field: 'timestamp', operator: '<=', value: new Date(range.end) },
+            ]
+
+            const resultList: Array<IChecklog> = await getEmplyeeLogs(sessionData?.entityId || '', sessionData?.employeeId || '', sessionData?.branchId || '', { limit: 50, orderBy: 'timestamp', orderDirection: 'desc', filters } as any) as Array<IChecklog>
+
+
+            const data = await Promise.all(
+                resultList.map(async (item) => {
+                    const branchId = (await fetchSucursal(item.entityId, item.branchId))?.name
+                    return {
+                        ...item,
+                        branchId
+                    };
+                })
+            );
+
+            setEmployeeLogs(data)
+            setPending(false)
+
+        } catch (error) {
+            setPending(false)
+
+            showToast('Error fetchind logs data: ' + error, 'error')
+        }
+
+    }
+
+    useEffect(() => {
+        if (sessionData?.entityId)
+            getEmplyeeLogsData(range)
+    }, [sessionData?.entityId])
 
 
     return (
@@ -38,8 +83,8 @@ const CheckLog = () => {
                 color={theme.palette.primary.main}
             />
             <DateRangePicker width='100%' value={range} onChange={(rg: { start: any, end: any }) => {
-                getEmplyeeLogsData(rg   )
-               // setRange(rg)
+                getEmplyeeLogsData(rg)
+                setRange(rg)
             }} />
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
