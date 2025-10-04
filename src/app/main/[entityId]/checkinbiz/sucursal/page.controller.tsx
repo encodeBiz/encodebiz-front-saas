@@ -12,7 +12,7 @@ import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 import { deleteSucursal, search } from "@/services/checkinbiz/sucursal.service";
 import { useLayout } from "@/hooks/useLayout";
 import { useSearchParams } from "next/navigation";
-import { DeleteOutline, DownloadOutlined, Edit, ListAltOutlined } from "@mui/icons-material";
+import { DeleteOutline, Edit, ListAltOutlined } from "@mui/icons-material";
 import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
@@ -93,16 +93,7 @@ export default function useEmployeeListController() {
       allowItem: () => true,
       onPress: (item: ISucursal) => onDetail(item)
     },
-
-    {
-      actionBtn: true,
-      color: 'primary',
-      icon: <DownloadOutlined color="primary" />,
-      label: t('sucursal.report'),
-      bulk: false,
-      allowItem: () => true,
-      onPress: ( ) => {}
-    },
+ 
   ]
 
  
@@ -299,6 +290,7 @@ export default function useEmployeeListController() {
     localStorage.setItem('sucursalIndex', JSON.stringify(dataStatus))
     return encodeToBase64({ ...filterParams })
   }
+ 
 
 
   return {

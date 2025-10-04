@@ -2,7 +2,6 @@
 import { Container } from '@mui/material';
 
 import { GenericTable } from "@/components/common/table/GenericTable";
-import useEmployeeListController from '../../../employee/page.controller';
 import useEmployeeDetailController from './page.controller';
 import { Detail } from './Detail';
 
@@ -10,7 +9,7 @@ export default function BranchDetail() {
 
 
 
-    const { initialValues, items, onRowsPerPageChange, onSort,
+    const { initialValues, items, topFilter, onRowsPerPageChange, onSort,
         onNext, onBack,
         filterParams,
         columns,
@@ -20,8 +19,8 @@ export default function BranchDetail() {
 
             {initialValues?.id && <Detail employee={initialValues as any} >
                 <GenericTable
-                    data={[]}
-
+                    data={items}
+                    topFilter={topFilter}
                     columns={columns}
                     title={''}
                     keyField="id"

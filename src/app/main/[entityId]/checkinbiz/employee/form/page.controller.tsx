@@ -17,8 +17,7 @@ import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { search } from "@/services/checkinbiz/sucursal.service";
 import SelectMultipleInput from "@/components/common/forms/fields/SelectMultipleInput";
-import { country } from "@/config/country";
-
+ 
 
 export default function useEmployeeController() {
   const t = useTranslations();
@@ -199,8 +198,8 @@ export default function useEmployeeController() {
         label: t('core.label.nationalId'),
         type: 'text',
         required: false,
-        component: SelectInput,
-        options: country.map(e => ({ label: e.name, value: e.name }))
+        component: TextInput,
+        
       },
       {
         name: 'metadata',

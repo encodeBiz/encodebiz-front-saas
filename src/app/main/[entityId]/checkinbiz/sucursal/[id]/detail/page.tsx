@@ -9,13 +9,13 @@ import { Detail } from './Detail';
 export default function BranchDetail() {
     
     const {
-        items, rowAction, onRowsPerPageChange, onSort,
+        items, onRowsPerPageChange, onSort,
         onNext, onBack,
-        filterParams, topFilter,
+        filterParams,  
         columns,
         loading } = useEmployeeListController();
 
-    const { initialValues } = useEmployeeDetailController()
+    const { initialValues, rowAction } = useEmployeeDetailController()
     return (
         <Container maxWidth="lg">
 
@@ -34,7 +34,7 @@ export default function BranchDetail() {
                     sort={{ orderBy: filterParams.params.orderBy, orderDirection: filterParams.params.orderDirection }}
                     onBack={onBack}
                     onNext={onNext}
-                    topFilter={topFilter}
+                  
                      
 
                 />

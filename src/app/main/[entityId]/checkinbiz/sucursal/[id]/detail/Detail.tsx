@@ -2,9 +2,9 @@ import { SassButton } from "@/components/common/buttons/GenericButton"
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes"
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal"
 import { useLayout } from "@/hooks/useLayout"
- import { Card, Box, Grid, Typography, CardContent, Paper, Divider, List, ListItem, ListItemText } from "@mui/material"
+import { Card, Box, Grid, Typography, CardContent, Paper, Divider, List, ListItem, ListItemText } from "@mui/material"
 import { useTranslations } from "next-intl"
- 
+
 export const Detail = ({ branch, children }: { branch: ISucursal, children: React.ReactNode }) => {
     const t = useTranslations()
     const { navivateTo } = useLayout()
@@ -51,22 +51,23 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
             <Divider />
 
             {/* Additional Details */}
-            <Paper elevation={0} sx={{ p: 3 }}>
+            {Array.isArray(branch.metadata) && branch.metadata.length > 0 && <><Divider /> <Paper elevation={0} sx={{ p: 3 }}>
                 <Typography variant="subtitle1" gutterBottom  >
                     {t('core.label.aditionalData')}
                 </Typography>
 
-                {Array.isArray(branch.metadata) && <List>
+                <List>
                     {branch.metadata.map((e: any, i: number) => <ListItem key={i}>
-                        
                         <ListItemText
                             primary={e.label}
                             secondary={e.value}
                         />
                     </ListItem>)}
-                </List>}
+                </List>
 
-            </Paper>
+            </Paper></>}
+
+            <Divider />
 
             <Paper elevation={0} sx={{ p: 3 }}>
                 <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>

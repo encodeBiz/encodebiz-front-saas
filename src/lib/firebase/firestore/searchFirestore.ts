@@ -99,7 +99,7 @@ export const searchFirestore = async <T>(
     totalItems: count,
     last: lastDocument.ref.path,
   })) as T[];
- 
+  
   return results;
 };
 

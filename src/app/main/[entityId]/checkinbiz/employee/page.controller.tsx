@@ -200,8 +200,7 @@ export default function useEmployeeListController() {
       filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "branchId")
 
 
-         console.log({ ...(filterParams.params as any), filters: [...filterParams.params.filters, ...filters] });
-
+ 
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters: [...filterParams.params.filters, ...filters] }).then(async res => {
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
@@ -247,7 +246,7 @@ export default function useEmployeeListController() {
     if (currentEntity?.entity?.id) {
       watchServiceAccess('checkinbiz')
     }
-  }, [currentEntity?.entity?.id, watchServiceAccess])
+  }, [currentEntity?.entity?.id])
 
   useEffect(() => {
     if (currentEntity?.entity?.id) {

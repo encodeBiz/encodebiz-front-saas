@@ -91,6 +91,21 @@
       "nocard": "No tienes métodos de pago asociado a la entidad, por favor configure al menos uno."
     },
     "label": {
+
+      "today": "Hoy",
+      "thisWeek": "Esta semana",
+      "thisMonth": "Este mes",
+      "thisYear": "Este año",
+
+      "valid": "Valido",
+ 
+      
+      "branch": "Sucursal",
+      "register": "Registro",
+     
+      "disable2AF": "No tiene habilitado 2AF",
+      "enable2AF": "Tiene habilitado 2AF",
+      "employee": "Empleado",
       "vacation": "Vacaciones",
       "sick_leave": "Baja por enfermedad",
       "leave_of_absence": "Licencia por ausencia",
@@ -135,7 +150,7 @@
       "selectedEvent": "Eventos seleccionados",
       "events": "Eventos",
       "jobTitle":"Ocupación actual",
-      "nationalId":"Nacionalidad",
+      "nationalId":"NIT/DNI/CI/ID",
       "credential": "Credencial",
       "admin": "Administrador",
       "guest": "Invitado",
@@ -243,7 +258,12 @@
       "typeStaff": "Tipo de pase",
       "validator_event": "Verificador de eventos",
       "validator_credential": "Verificador de credenciales",
-      "service": "Servicio"
+      "service": "Servicio",
+
+      "checkout": "Terminando jornada",
+      "checkin": "Comenzando jornada",
+      "restin": "Comenzando descanso",
+      "restout": "Terminando descanso"
     },
     "button": {
       "revoke": "Revocar",
@@ -618,7 +638,8 @@
     "formDesc": "Completa los campos a continuación para crear un reporte.",
     "list": "Reportes",
     "add": "Crear reporte",
-    "map": "Ir al mapa",
+    
+    "export":"Exportar reporte",
     "report": "Emitir reporte",
     "detailSucursal": "Detalles del reporte",
     "update": "Editar",
@@ -753,12 +774,12 @@
     "month": "Mes",
     "type": "Tipo",
     "event": "Eventos",
-    "passesIssued": "Passes Emitidos",
-    "passesIssuedText": "Barras apiladas por evento y línea de acumulado. Rango UTC.",
-    "passesIssuedRank": "Ranking de Passes Emitidos",
-    "passesValidation": "Validación: Intentos vs Éxitos vs Revocados Passes Validados",
-    "passesValidationText": "Apilado por evento (V/F/R) + línea de % validación global por bucket.",
-    "passesValidationRank": "Ranking de Passes Validados",
+    "passesIssued": "Pases Emitidos",
+    "passesIssuedText": "Distribución de pases emitidos en barras apiladas por eventos o credencial",
+    "passesIssuedRank": "Ranking de Pases Emitidos",
+    "passesValidation": "Validación: Intentos vs Éxitos vs Revocados Pases Validados",
+    "passesValidationText": "Distribución de pases válidos, fallidos y revovados en barras apiladas por eventos o credencial",
+    "passesValidationRank": "Ranking de Pases Validados",
     "cumulativo": "Acumulativo",
     "dateRange": "Rango de Fechas",
     "passes": "Pases",
@@ -788,7 +809,36 @@
     "endJornada":"Finalizar Jornada",
     "startDescanso":"Iniciar Descanso",
     "endDescanso":"Finalizar Descanso",
-
+ "titleBranch": "Seleccione la sucursal",
+    "selected": "Seleccionar  sucursal",
     "history":"Historial de Asistencia"
-  }
+  },
+  "twoFactor":{
+     "copyCode":"Código copiado",
+    "newDevice":"Nuevo dispositivo de seguridad",
+    "addCode":"Introduce el código de un solo uso",
+    "writeCode":"Escribe el código de 6 dígitos que te muestra la app de autenticación.",
+    "verifyAndContinue":"Verificar y continuar",
+    "newDeviceMessage":"Dispositivo de confianza confirmado",
+    "newDeviceMessageText":"Este equipo queda registrado como tu dispositivo de confianza.",
+    "configDevice":"Configurar dispositivo de seguridad",
+    "step1":"Paso 1: Escanea este código QR",
+    "step1Text1":"Añade una app de autenticación para proteger tus registros configuraciones en CheckBiz. ",
+    "step1Text2":"Puedes usar GoogleAuthenticator, Microsoft Authenticator, Duo, Authy u otra compatible.",
+    "step1Title1":"Abre tu app de autenticación y elige ",
+    "step1Title2":"“Añadir cuenta” → “Escanear código QR”.",
+    "noScanner":"¿No puedes escanear el código?",
+    "step2Title1":"Paso 2: Introduce el código de un solo uso",
+    "step2Text1":"Escribe el código de 6 dígitos que te muestra la app de autenticación.",
+    "step3Title1":"Paso 1: Copia y pega esta clave",
+    "step3Text1":"Pegue la clave a continuación en su aplicación de autenticación, Como GoogleAuthenticator, Microsoft Authenticator, Duo, Authy u otra compatible.",
+    "scannerQR":"¿Prefieres escanear un QR?",
+    "step4Title1":"Paso 2: Introduce el código de un solo uso",
+    "step4Text1":"Escribe el código de 6 dígitos que te muestra la app de autenticación.",
+    "copyClave":"Copiar clave",
+
+    "titleValidate":"Tu navegador no es de confianza",
+    "text1Validate":"Para poner agregar tu navegador como dispositivo de confianza escribe el código de 6 dígitos que te muestra la app de autenticación."
+ 
+  } 
 }

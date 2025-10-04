@@ -8,6 +8,7 @@ import useEmployeeDetailController from "./page.controller"
 import { useCommonModal } from "@/hooks/useCommonModal"
 import ConfirmModal from "@/components/common/modals/ConfirmModal"
 import { CommonModalType } from "@/contexts/commonModalContext"
+import { CustomChip } from "@/components/common/table/CustomChip"
 
 export const Detail = ({ employee, children }: { employee: IEmployee, children: React.ReactNode }) => {
     const t = useTranslations()
@@ -19,7 +20,6 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
         {/* Header Section */}
         <Box sx={{ p: 3, bgcolor: (theme) => theme.palette.secondary.main }}>
             <Grid container spacing={2} alignItems="center" justifyContent={'space-between'}>
-
                 <Grid >
                     <Typography variant="h4"   >
                         {employee?.fullName}
@@ -28,15 +28,17 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
 
                         {t('employee.detailSucursal')}
                     </Typography>
+                    <CustomChip size='small' background={employee?.twoFA ? 'active' : 'revoked'} label={employee?.twoFA ? t('core.label.enable2AF') : t('core.label.disable2AF')} />
+
                 </Grid>
                 <Stack direction={'row'} gap={2}>
-                <SassButton variant="contained" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)}>
-                    {t('core.button.back')}
-                </SassButton>
+                    <SassButton variant="contained" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)}>
+                        {t('core.button.back')}
+                    </SassButton>
 
-                <SassButton loading={deleting} color="error" variant="contained" onClick={() => openModal(CommonModalType.DELETE)}>
-                    {t('core.button.delete')}
-                </SassButton>
+                    <SassButton loading={deleting} color="error" variant="contained" onClick={() => openModal(CommonModalType.DELETE)}>
+                        {t('core.button.delete')}
+                    </SassButton>
                 </Stack>
 
             </Grid>
@@ -47,7 +49,7 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
         <CardContent sx={{ p: 0 }}>
 
             <Paper elevation={0} sx={{ p: 3 }}>
-                <Box display={'flex'} flexDirection={'column'} justifyContent={'space-between'} alignItems={'flex-start'}>
+                <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'space-between'} alignItems={'flex-start'}>
                     <Box sx={{ mt: 2 }}>
                         <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
                             {t('core.label.email')}
@@ -57,6 +59,7 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                         </Typography>
                     </Box>
 
+
                     <Box sx={{ mt: 2 }}>
                         <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
                             {t('core.label.phone')}
@@ -65,12 +68,30 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                             {employee?.phone}
                         </Typography>
                     </Box>
+
+                    {employee?.nationalId && <Box sx={{ mt: 2 }}>
+                        <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
+                            {t('core.label.nationalId')}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
+                            {employee?.nationalId}
+                        </Typography>
+                    </Box>}
+
+                    {employee?.jobTitle && <Box sx={{ mt: 2 }}>
+                        <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
+                            {t('core.label.jobTitle')}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
+                            {employee?.jobTitle}
+                        </Typography>
+                    </Box>}
                 </Box>
             </Paper>
             <Divider />
 
             {/* Additional Details */}
-            <Paper elevation={0} sx={{ p: 3 }}>
+            {Array.isArray(employee.metadata) && employee.metadata.length > 0 && <> <Divider /><Paper elevation={0} sx={{ p: 3 }}>
                 <Typography variant="subtitle1" gutterBottom  >
                     {t('core.label.aditionalData')}
                 </Typography>
@@ -85,7 +106,9 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                     </ListItem>)}
                 </List>}
 
-            </Paper>
+            </Paper></>}
+
+            <Divider />
 
             <Paper elevation={0} sx={{ p: 3 }}>
                 <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
@@ -104,7 +127,7 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
             isLoading={deleting}
             title={t('employee.deleteConfirmModalTitle')}
             description={t('employee.deleteConfirmModalTitle2')}
-            onOKAction={(args: { data: any }) => onDelete(employee)}
+            onOKAction={() => onDelete(employee)}
         />}
     </Card>
 

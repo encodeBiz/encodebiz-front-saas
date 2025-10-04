@@ -14,11 +14,15 @@ export enum CommonModalType {
     REACTIVE = 'REACTIVE',
     ARCHIVED = 'ARCHIVED',
     EVENT_SELECTED = 'EVENT_SELECTED',
+     BRANCH_SELECTED = 'BRANCH_SELECTED',
     CONTACT = 'CONTACT',
     COLABORATOR = 'COLABORATOR',
     INFO = 'INFO',
     WEBHOOK = 'WEBHOOK',
-}
+
+    ADDDEVICE2AF = 'ADDDEVICE2AF',
+    CONFIG2AF = 'CONFIG2AF',
+ }
 interface CommonModalContextType {
     open: { type: CommonModalType, open: boolean, args?: any }
     closeModal: (type?: CommonModalType) => void

@@ -51,10 +51,10 @@ export const PassesValidationRankingChart = () => {
                     <Stack direction="column" spacing={1} flexWrap="wrap" sx={{ mb: 1 }}>
                         {graphData['validator']?.ranking?.map((r: any) => ({ evento: r.event, Valid: r.valid, Failed: r.failed, Revoked: r.revoked })).map((e: any, i: any) =>
                             <Box key={i} flexDirection="column" display={'flex'} sx={{ mb: 1 }} gap={1}>
-                                <Typography variant="body2">{e.evento}</Typography>
-                                <CustomChip key={i} size="small" label={`${t('stats.valid')}:${e.Valid}`} />
-                                <CustomChip key={i} size="small" label={`${t('stats.failed')}:${e.Failed}`} />
-                                <CustomChip key={i} size="small" label={`${t('stats.revoked')}:${e.Revoked}`} />
+                                <Typography key={i+'l'} variant="body2">{e.evento}</Typography>
+                                <CustomChip key={i+'a'} size="small" label={`${t('stats.valid')}:${e.Valid}`} />
+                                <CustomChip key={i+'b'} size="small" label={`${t('stats.failed')}:${e.Failed}`} />
+                                <CustomChip key={i+'c'} size="small" label={`${t('stats.revoked')}:${e.Revoked}`} />
                             </Box>
                         )}
                     </Stack>

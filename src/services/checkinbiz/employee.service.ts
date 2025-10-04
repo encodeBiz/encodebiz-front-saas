@@ -161,14 +161,124 @@ export async function createLog(data: ICreateLog, token: string) {
 }
 
 export const getEmplyeeLogs = async (entityId: string, employeeId: string, branchId: string, params: SearchParams): Promise<IChecklog[]> => {
+
+  
+  let result: IChecklog[] = []
+  if (entityId) {
+    result = await searchFirestore({
+      ...params,
+      filters: [
+        ...params.filters ? params.filters : [],
+        { field: 'employeeId', operator: '==', value: employeeId },
+        { field: 'branchId', operator: '==', value: branchId },
+      ],
+      collection: `${collection.ENTITIES}/${entityId}/checklogs`,
+    });
+  }
+
+  return result;
+}
+
+export const getEmplyeeLogsState = async (entityId: string, employeeId: string, params: SearchParams): Promise<IChecklog[]> => {
+
   const result: IChecklog[] = await searchFirestore({
     ...params,
     filters: [
       ...params.filters ? params.filters : [],
       { field: 'employeeId', operator: '==', value: employeeId },
-      { field: 'branchId', operator: '==', value: branchId },
     ],
     collection: `${collection.ENTITIES}/${entityId}/checklogs`,
+  });
+
+  return result;
+}
+
+
+export async function validateEmployee(token: string) {
+  try {
+
+    const httpClientFetchInstance: HttpClient = new HttpClient({
+      baseURL: "",
+      headers: {
+        'authorization': `Bearer ${token}`,
+      },
+    });
+    const response: any = await httpClientFetchInstance.post(
+      process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_VALIDATE_EMPLOYEE as string,
+      {
+        token
+      }
+    );
+    if (response.errCode && response.errCode !== 200) {
+      throw new Error(response.message);
+    }
+
+    return response;
+
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+
+export async function enable2AF(token: string) {
+  try {
+
+    const httpClientFetchInstance: HttpClient = new HttpClient({
+      baseURL: "",
+      headers: {
+        'authorization': `Bearer ${token}`,
+      },
+    });
+    const response: any = await httpClientFetchInstance.post(
+      process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_ENABLE2AF_EMPLOYEE as string,
+      {
+        token
+      }
+    );
+    if (response.errCode && response.errCode !== 200) {
+      throw new Error(response.message);
+    }
+
+    return response;
+
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+
+export async function verify2AF(code: string, token: string) {
+  try {
+
+    const httpClientFetchInstance: HttpClient = new HttpClient({
+      baseURL: "",
+      headers: {
+        'authorization': `Bearer ${token}`,
+      },
+    });
+    const response: any = await httpClientFetchInstance.post(
+      process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_VERIFY2AF_EMPLOYEE as string,
+      {
+        code
+      }
+    );
+    if (response.errCode && response.errCode !== 200) {
+      throw new Error(response.message);
+    }
+
+    return response;
+
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+
+export const searchLogs = async (entityId: string, params: SearchParams): Promise<IChecklog[]> => {
+  const result: IChecklog[] = await searchFirestore({
+    ...params,
+    collection: `${collection.ENTITIES}/${entityId}/${collection.CHECKLOG}`,
   });
 
   return result;

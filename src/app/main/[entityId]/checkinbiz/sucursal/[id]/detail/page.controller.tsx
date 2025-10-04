@@ -7,9 +7,12 @@ import { useEntity } from "@/hooks/useEntity";
 import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { objectToArray } from "@/lib/common/String";
- import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
+import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import { fetchSucursal } from "@/services/checkinbiz/sucursal.service";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
+import { IRowAction } from "@/components/common/table/GenericTable";
+import { ListAltOutlined } from "@mui/icons-material";
+import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 
 
 export default function useEmployeeDetailController() {
@@ -41,7 +44,7 @@ export default function useEmployeeDetailController() {
       const event: ISucursal = await fetchSucursal(currentEntity?.entity.id as string, id)
       setInitialValues({
         ...event,
-        metadata: objectToArray(event.metadata??{})
+        metadata: objectToArray(event.metadata ?? {})
       })
       changeLoaderState({ show: false })
     } catch (error: any) {
@@ -57,6 +60,24 @@ export default function useEmployeeDetailController() {
       fetchData()
   }, [currentEntity?.entity.id, user?.id, id])
 
+  const { navivateTo } = useLayout()
+  const onDetail = async (item: any) => {
+    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${item.id}/detail`)
+  }
 
-  return { initialValues }
+  const rowAction: Array<IRowAction> = [
+
+    {
+      actionBtn: true,
+      color: 'primary',
+      icon: <ListAltOutlined color="primary" />,
+      label: t('employee.detail'),
+      bulk: false,
+      allowItem: () => true,
+      onPress: (item: ISucursal) => onDetail(item)
+    },
+
+  ]
+
+  return { initialValues , rowAction}
 }

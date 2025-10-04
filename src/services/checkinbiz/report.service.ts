@@ -4,7 +4,6 @@ import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
-import { ICreateLog } from "@/domain/features/checkinbiz/IChecklog";
 import { IReport } from "@/domain/features/checkinbiz/IReport";
  
 
