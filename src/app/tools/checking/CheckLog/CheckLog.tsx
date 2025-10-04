@@ -72,7 +72,7 @@ const CheckLog = () => {
 
     return (
         <Box sx={{ p: 2, pt: 4, position: 'relative', maxWidth: 600, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <Box sx={{ display: 'flex', gap:4, justifyContent:'flex-start', alignItems:'center' }}>
+            <Box sx={{ display: 'flex', gap:2, justifyContent:'flex-start', alignItems:'center' }}>
                 <Typography variant="body1" fontWeight={'bold'} fontSize={22} > {t('checking.title')} </Typography>
                 {pending && <CircularProgress color="inherit" size={20} />}
             </Box>

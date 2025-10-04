@@ -8,7 +8,7 @@ import { validateHolder, validateStaff } from "@/services/passinbiz/holder.servi
 import { useTranslations } from "next-intl"
 import { useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
- 
+
 
 interface StaffResponse {
     "message": string
@@ -80,7 +80,10 @@ export const useQRScanner = () => {
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             const response: StaffResponse = await validateStaff(tokenBase64 as string)
             setEventList(response.events)
-            if (response.events.length > 0) {
+            if (response.events.length == 1) {
+                setEventSelected(response.events[0])
+            }
+            if (response.events.length > 1) {
                 openModal(CommonModalType.EVENT_SELECTED)
             }
             setTokenValidateStaff(response.sessionToken)
