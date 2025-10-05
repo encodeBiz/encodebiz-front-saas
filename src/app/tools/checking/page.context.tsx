@@ -36,7 +36,7 @@ interface CheckType {
     setCheckAction: (checkAction: "checkout" | "checkin") => void
     restAction: "restout" | "restin",
     setRestAction: (restAction: "restout" | "restin") => void
-  
+
     createLogAction: (type: "checkout" | "checkin" | "restin" | "restout", callback?: () => void) => void
 
     entity: IEntity | undefined
@@ -59,7 +59,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
     const [checkAction, setCheckAction] = useState<"checkout" | "checkin">('checkout')
     const [restAction, setRestAction] = useState<"restout" | "restin">('restout')
-    
+
     const [token, setToken] = useState('')
     const [pending, setPending] = useState(false)
     const [pendingStatus, setPendingStatus] = useState(true)
@@ -111,10 +111,9 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
             } else {
                 if (data.length > 0) {
                     openModal(CommonModalType.BRANCH_SELECTED)
-                    getLastState(response.payload.entityId, response.payload.employeeId)
                 }
             }
-
+            getLastState(response.payload.entityId, response.payload.employeeId)
             setToken(response.sessionToken)
             changeLoaderState({ show: false })
 
@@ -130,6 +129,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     const getLastState = async (entityId: string, employeeId: string) => {
         try {
             const resultList: Array<IChecklog> = await getEmplyeeLogsState(entityId, employeeId, { limit: 10, orderBy: 'timestamp', orderDirection: 'desc' } as any) as Array<IChecklog>
+ 
             if (resultList.length > 0) {
                 const last = resultList[0]
 
@@ -144,11 +144,13 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
                     setRestAction(last.type)
                     setCheckAction('checkin')
                 }
-                setPendingStatus(false)
-            }else{
+
+            } else {
                 setCheckAction('checkout')
                 setRestAction('restout')
             }
+
+            setPendingStatus(false)
         } catch (error) {
             showToast('Error fetchind logs data: ' + error, 'error')
         }

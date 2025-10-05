@@ -34,7 +34,7 @@ const Check = () => {
             </Box>
 
             <Typography variant="body1" fontWeight={'bold'} fontSize={22} > {t('checking.title')} </Typography>
-
+     
             <Box>
                 <Typography variant="body1" fontSize={18} > {t('checking.logDay')} </Typography>
                 <SassButton
