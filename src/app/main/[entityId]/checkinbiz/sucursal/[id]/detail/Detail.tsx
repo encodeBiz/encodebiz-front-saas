@@ -66,7 +66,6 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
                 <Typography variant="subtitle1" gutterBottom  >
                     {t('core.label.aditionalData')}
                 </Typography>
-
                 <List>
                     {branch.metadata.map((e: any, i: number) => <ListItem key={i}>
                         <ListItemText

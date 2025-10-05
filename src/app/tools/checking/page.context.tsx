@@ -129,7 +129,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     const getLastState = async (entityId: string, employeeId: string) => {
         try {
             const resultList: Array<IChecklog> = await getEmplyeeLogsState(entityId, employeeId, { limit: 10, orderBy: 'timestamp', orderDirection: 'desc' } as any) as Array<IChecklog>
- 
+             
             if (resultList.length > 0) {
                 const last = resultList[0]
 

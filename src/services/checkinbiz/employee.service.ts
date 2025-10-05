@@ -20,6 +20,24 @@ export const fetchEmployee = async (entityId: string, id: string): Promise<IEmpl
     id);
 }
 
+export const fetch2FAData = async (entityId: string, id: string): Promise<{ twoFA: boolean, trustedDevicesId: Array<string>}> => {
+
+
+  const result: any[] = await searchFirestore(
+    {
+      limit: 2,
+      collection: `${collection.ENTITIES}/${entityId}/${collection.EMPLOYEE}/${id}/security`,
+    });
+
+
+  return {
+    twoFA: result.find(e => e.id === "twoFA"),
+    trustedDevicesId: result.find(e => e.id === "trustedDevicesId")?.ids,
+  }
+
+}
+
+
 
 
 /**
@@ -162,7 +180,7 @@ export async function createLog(data: ICreateLog, token: string) {
 
 export const getEmplyeeLogs = async (entityId: string, employeeId: string, branchId: string, params: SearchParams): Promise<IChecklog[]> => {
 
-  
+
   let result: IChecklog[] = []
   if (entityId) {
     result = await searchFirestore({

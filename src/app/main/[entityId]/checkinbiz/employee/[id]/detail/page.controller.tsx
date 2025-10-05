@@ -8,7 +8,7 @@ import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { objectToArray } from "@/lib/common/String";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
-import { deleteEmployee, fetchEmployee, searchLogs } from "@/services/checkinbiz/employee.service";
+import { deleteEmployee, fetch2FAData, fetchEmployee, searchLogs } from "@/services/checkinbiz/employee.service";
 import { IChecklog } from "@/domain/features/checkinbiz/IChecklog";
 import { Column } from "@/components/common/table/GenericTable";
 import { CommonModalType } from "@/contexts/commonModalContext";
@@ -19,7 +19,7 @@ import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 import { search as searchBranch, fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucursal.service";
 import { Box } from "@mui/material";
- 
+
 import { DateRangePicker } from "@/app/main/[entityId]/passinbiz/stats/components/filters/fields/DateRangeFilter";
 
 interface IFilterParams {
@@ -60,8 +60,11 @@ export default function useEmployeeDetailController() {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const employee: IEmployee = await fetchEmployee(currentEntity?.entity.id as string, id)
+      const data: { twoFA: boolean, trustedDevicesId: Array<string> } = await fetch2FAData(currentEntity?.entity.id as string, id)
       setInitialValues({
         ...employee,
+        twoFA: data.twoFA,
+        trustedDevicesId: data.trustedDevicesId,
         metadata: objectToArray(employee.metadata ?? {})
       })
       changeLoaderState({ show: false })
