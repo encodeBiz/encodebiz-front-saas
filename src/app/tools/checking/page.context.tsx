@@ -36,8 +36,7 @@ interface CheckType {
     setCheckAction: (checkAction: "checkout" | "checkin") => void
     restAction: "restout" | "restin",
     setRestAction: (restAction: "restout" | "restin") => void
-    openLogs: boolean
-    setOpenLogs: (openLogs: boolean) => void
+  
     createLogAction: (type: "checkout" | "checkin" | "restin" | "restout", callback?: () => void) => void
 
     entity: IEntity | undefined
@@ -60,7 +59,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
     const [checkAction, setCheckAction] = useState<"checkout" | "checkin">('checkout')
     const [restAction, setRestAction] = useState<"restout" | "restin">('restout')
-    const [openLogs, setOpenLogs] = useState(false)
+    
     const [token, setToken] = useState('')
     const [pending, setPending] = useState(false)
     const [pendingStatus, setPendingStatus] = useState(true)
@@ -146,7 +145,9 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
                     setCheckAction('checkin')
                 }
                 setPendingStatus(false)
-
+            }else{
+                setCheckAction('checkout')
+                setRestAction('restout')
             }
         } catch (error) {
             showToast('Error fetchind logs data: ' + error, 'error')
@@ -214,7 +215,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
             pendingStatus,
             setSessionData, sessionData, setToken,
             entity, employee, branchList, token,
-            pending, checkAction, setCheckAction, restAction, setRestAction, setOpenLogs, openLogs, createLogAction
+            pending, checkAction, setCheckAction, restAction, setRestAction, createLogAction
         }}>
             {children}
         </CheckContext.Provider>

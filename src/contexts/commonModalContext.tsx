@@ -22,6 +22,7 @@ export enum CommonModalType {
 
     ADDDEVICE2AF = 'ADDDEVICE2AF',
     CONFIG2AF = 'CONFIG2AF',
+    LOGS = 'LOGS',
  }
 interface CommonModalContextType {
     open: { type: CommonModalType, open: boolean, args?: any }
