@@ -37,13 +37,24 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
 
             <Paper elevation={0} sx={{ p: 3 }}>
                 <Box display={'flex'} justifyContent={'space-between'} alignItems={'flex-start'}>
-                    <Box sx={{ mt: 2 }}>
-                        <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
-                            {t('core.label.address')}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
-                            {branch?.address?.street}
-                        </Typography>
+                    <Box>
+                        <Box sx={{ mt: 2 }}>
+                            <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
+                                {t('core.label.address')}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
+                                {branch?.address?.street}
+                            </Typography>
+                        </Box>
+
+                        <Box sx={{ mt: 2 }}>
+                            <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
+                                {t('core.label.ratioChecklog2')}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
+                                {branch?.ratioChecklog}
+                            </Typography>
+                        </Box>
                     </Box>
                     <SassButton variant="outlined" onClick={() => onGoMap(branch.address.geo.lat, branch.address.geo.lng)}> {t('sucursal.map')}</SassButton>
                 </Box>
@@ -55,7 +66,6 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
                 <Typography variant="subtitle1" gutterBottom  >
                     {t('core.label.aditionalData')}
                 </Typography>
-
                 <List>
                     {branch.metadata.map((e: any, i: number) => <ListItem key={i}>
                         <ListItemText

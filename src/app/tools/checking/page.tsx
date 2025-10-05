@@ -21,8 +21,8 @@ import VerifyTwoFA from './VerifyTwoFA/VerifyTwoFA';
 
 const Checking = () => {
     const t = useTranslations()
-    const { setOpenLogs, openLogs, branchList, setSessionData, sessionData } = useCheck()
-    const { open } = useCommonModal()
+    const { branchList, setSessionData, sessionData } = useCheck()
+    const { open, openModal } = useCommonModal()
     return (
 
         <Container maxWidth="sm" sx={{ backgroundColor: '#FFFFFF', height: '100vh', position: 'relative', paddingBottom: 10 }}>
@@ -33,10 +33,10 @@ const Checking = () => {
             */}
 
 
-            {!openLogs && <Check />}
-            {openLogs && <CheckLog />}
+            <Check />
 
-            {!openLogs && <Box onClick={() => setOpenLogs(true)}
+
+            <Box onClick={() => openModal(CommonModalType.LOGS)}
                 sx={{
 
                     position: 'absolute',
@@ -57,13 +57,13 @@ const Checking = () => {
             >
                 {t('checking.history')}
                 <NorthEastOutlined />
-            </Box>}
+            </Box>
 
             {open.type === CommonModalType.BRANCH_SELECTED && <BranchSelectorModal
                 branchList={branchList}
                 onOKAction={(branchId) => setSessionData({ ...sessionData as { employeeId: string, entityId: string, branchId: string, }, branchId: branchId.branchId })}
             />}
-
+            {open.type === CommonModalType.LOGS && <CheckLog />}
             {open.type === CommonModalType.CONFIG2AF && <ConfigTwoFA />}
             {open.type === CommonModalType.ADDDEVICE2AF && <VerifyTwoFA />}
             {open.type === CommonModalType.INFO && <InfoModal

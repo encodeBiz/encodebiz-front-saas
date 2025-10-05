@@ -4,6 +4,9 @@ import React, { useEffect, useState } from 'react';
 import {
     Box,
     CircularProgress,
+    Dialog,
+    DialogContent,
+    DialogTitle,
     Paper,
     Table,
     TableBody,
@@ -28,14 +31,17 @@ import { useCheck } from '../page.context';
 import { getEmplyeeLogs } from '@/services/checkinbiz/employee.service';
 import { useToast } from '@/hooks/useToast';
 import { fetchSucursal } from '@/services/checkinbiz/sucursal.service';
+import { useCommonModal } from '@/hooks/useCommonModal';
+import { CommonModalType } from '@/contexts/commonModalContext';
 const CheckLog = () => {
-    const { setOpenLogs, sessionData } = useCheck()
+    const {  sessionData } = useCheck()
     const t = useTranslations()
     const theme = useTheme()
     const [pending, setPending] = useState(false)
     const [range, setRange] = useState<{ start: any, end: any }>({ start: rmNDay(new Date(), 1), end: new Date() })
     const [employeeLogs, setEmployeeLogs] = useState<Array<IChecklog>>([])
     const { showToast } = useToast()
+    const { open,   closeModal } = useCommonModal()
 
     const getEmplyeeLogsData = async (range: { start: any, end: any }) => {
         setPending(true)
@@ -71,51 +77,66 @@ const CheckLog = () => {
 
 
     return (
-        <Box sx={{ p: 2, pt: 4, position: 'relative', maxWidth: 600, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <Box sx={{ display: 'flex', gap:2, justifyContent:'flex-start', alignItems:'center' }}>
-                <Typography variant="body1" fontWeight={'bold'} fontSize={22} > {t('checking.title')} </Typography>
-                {pending && <CircularProgress color="inherit" size={20} />}
-            </Box>
-            <CustomIconBtn
-                sx={{ position: 'absolute', top: 16, right: 16 }}
-                onClick={() => setOpenLogs(false)}
-                color={theme.palette.primary.main}
-            />
-            <DateRangePicker width='100%' value={range} onChange={(rg: { start: any, end: any }) => {
-                getEmplyeeLogsData(rg)
-               setRange(rg)
-            }} />
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>{t("core.label.branch")}</TableCell>
-                            <TableCell align="right">{t("core.label.register")}</TableCell>
-                            <TableCell align="right">{t("core.label.date")}</TableCell>
-                            <TableCell align="right">{t("core.label.time")}</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody >
-                        {employeeLogs.map((row: IChecklog, index: number) => (
-                            <TableRow
-                                key={index}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
+        <Dialog
+            open={open.open}
+            onClose={() => closeModal(CommonModalType.LOGS)}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            maxWidth="lg"
+            fullScreen
+            slotProps={{ paper: { sx: { p: 0, borderRadius: 2, width: '100%' } } }}
+        >
+            <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', p: 2 }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
+                    <Typography variant="body1" fontWeight={'bold'} fontSize={22} > {t('checking.title')} </Typography>
+                    {pending && <CircularProgress color="inherit" size={20} />}                </Box>
+                     <CustomIconBtn
+                        sx={{ position: 'absolute', top: 16, right: 16 }}
+                        onClick={() => closeModal(CommonModalType.LOGS)}
+                        color={theme.palette.primary.main}
+                    />
+            </DialogTitle>
+            <DialogContent  >
+                <Box sx={{ p: 2, pt: 4, position: 'relative', maxWidth: 600, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 6 }}>
 
-                                <TableCell align="right">{row.branchId}</TableCell>
-                                <TableCell align="right">{t('core.label.' + row.type)}</TableCell>
-                                <TableCell align="right">{format_date(row.timestamp, 'DD/MM/YYYY')}</TableCell>
-                                <TableCell align="right">{format_date(row.timestamp, 'hh:mm')}</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-                {employeeLogs.length === 0 && <EmptyState />}
-            </TableContainer>
+                   
+                    <DateRangePicker width='100%' value={range} onChange={(rg: { start: any, end: any }) => {
+                        getEmplyeeLogsData(rg)
+                        setRange(rg)
+                    }} />
+                    <TableContainer component={Paper}>
+                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>{t("core.label.branch")}</TableCell>
+                                    <TableCell align="right">{t("core.label.register")}</TableCell>
+                                    <TableCell align="right">{t("core.label.date")}</TableCell>
+                                    <TableCell align="right">{t("core.label.time")}</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody >
+                                {employeeLogs.map((row: IChecklog, index: number) => (
+                                    <TableRow
+                                        key={index}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    >
+
+                                        <TableCell align="right">{row.branchId}</TableCell>
+                                        <TableCell align="right">{t('core.label.' + row.type)}</TableCell>
+                                        <TableCell align="right">{format_date(row.timestamp, 'DD/MM/YYYY')}</TableCell>
+                                        <TableCell align="right">{format_date(row.timestamp, 'hh:mm')}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                        {employeeLogs.length === 0 && <EmptyState />}
+                    </TableContainer>
 
 
 
-        </Box>
+                </Box>
+            </DialogContent>
+        </Dialog>
     );
 };
 

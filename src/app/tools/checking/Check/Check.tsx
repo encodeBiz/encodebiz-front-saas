@@ -34,7 +34,7 @@ const Check = () => {
             </Box>
 
             <Typography variant="body1" fontWeight={'bold'} fontSize={22} > {t('checking.title')} </Typography>
-
+     
             <Box>
                 <Typography variant="body1" fontSize={18} > {t('checking.logDay')} </Typography>
                 <SassButton
@@ -49,7 +49,7 @@ const Check = () => {
                             setCheckAction(checkAction === 'checkin' ? 'checkout' : 'checkin')
                         })
                     }} fullWidth
-                    startIcon={checkAction === 'checkin' ? <StopCircleOutlined style={{ fontSize: 50 }} sx={{ fontSize: 50, width: 50 }} color='error' /> : <PlayCircleOutline style={{ fontSize: 50 }} sx={{ fontSize: 50, color: "#7ADF7F" }} />}
+                    startIcon={checkAction === 'checkin' ? <StopCircleOutlined style={{ fontSize: 50 }} sx={{ fontSize: 50, width: 50 }} color={restAction == 'restin' || pendingStatus?'disabled':'error'} /> : <PlayCircleOutline style={{ fontSize: 50 }} sx={{ fontSize: 50, color: restAction == 'restin' || pendingStatus?'disabled':"#7ADF7F" }} />}
                 >{checkAction === 'checkout' ? t('checking.startJornada') : t('checking.endJornada')}</SassButton>
             </Box>
 
@@ -67,7 +67,7 @@ const Check = () => {
                             setRestAction(restAction === 'restin' ? 'restout' : 'restin')
                         })
                     }} fullWidth
-                    startIcon={restAction === 'restin' ? <StopCircleOutlined style={{ fontSize: 50 }} sx={{ fontSize: 50 }} color='error' /> : <PlayCircleOutline style={{ fontSize: 50 }} sx={{ fontSize: 50, color: "#7ADF7F" }} />}
+                    startIcon={restAction === 'restin' ? <StopCircleOutlined style={{ fontSize: 50 }} sx={{ fontSize: 50 }} color={checkAction === 'checkout' || pendingStatus?'disabled':'error'} /> : <PlayCircleOutline style={{ fontSize: 50 }} sx={{ fontSize: 50, color: checkAction === 'checkout' || pendingStatus?'disabled':"#7ADF7F" }} />}
                 >{restAction === 'restout' ? t('checking.startDescanso') : t('checking.endDescanso')}</SassButton>
             </Box>
 
