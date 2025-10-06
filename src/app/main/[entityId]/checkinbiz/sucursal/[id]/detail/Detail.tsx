@@ -18,10 +18,7 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
                     <Typography variant="h4"   >
                         {branch?.name}
                     </Typography>
-                    <Typography variant="h6"  >
-
-                        {t('sucursal.detailSucursal')}
-                    </Typography>
+                    
                 </Grid>
 
                 <SassButton variant="contained" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/sucursal`)}>

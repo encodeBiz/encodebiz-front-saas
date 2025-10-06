@@ -24,10 +24,7 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                     <Typography variant="h4"   >
                         {employee?.fullName}
                     </Typography>
-                    <Typography variant="h6"  >
-
-                        {t('employee.detailSucursal')}
-                    </Typography>
+                    
                     <CustomChip size='small' background={employee?.twoFA ? 'active' : 'revoked'} label={employee?.twoFA ? t('core.label.enable2AF') : t('core.label.disable2AF')} />
 
                 </Grid>
