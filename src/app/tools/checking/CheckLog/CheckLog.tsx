@@ -34,14 +34,14 @@ import { fetchSucursal } from '@/services/checkinbiz/sucursal.service';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 const CheckLog = () => {
-    const {  sessionData } = useCheck()
+    const { sessionData } = useCheck()
     const t = useTranslations()
     const theme = useTheme()
     const [pending, setPending] = useState(false)
     const [range, setRange] = useState<{ start: any, end: any }>({ start: rmNDay(new Date(), 1), end: new Date() })
     const [employeeLogs, setEmployeeLogs] = useState<Array<IChecklog>>([])
     const { showToast } = useToast()
-    const { open,   closeModal } = useCommonModal()
+    const { open, closeModal } = useCommonModal()
 
     const getEmplyeeLogsData = async (range: { start: any, end: any }) => {
         setPending(true)
@@ -90,28 +90,27 @@ const CheckLog = () => {
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
                     <Typography variant="body1" fontWeight={'bold'} fontSize={22} > {t('checking.title')} </Typography>
                     {pending && <CircularProgress color="inherit" size={20} />}                </Box>
-                     <CustomIconBtn
-                        sx={{ position: 'absolute', top: 16, right: 16 }}
-                        onClick={() => closeModal(CommonModalType.LOGS)}
-                        color={theme.palette.primary.main}
-                    />
+                <CustomIconBtn
+                    sx={{ position: 'absolute', top: 16, right: 16 }}
+                    onClick={() => closeModal(CommonModalType.LOGS)}
+                    color={theme.palette.primary.main}
+                />
             </DialogTitle>
             <DialogContent  >
-                <Box sx={{ p: 2, pt: 4, position: 'relative', maxWidth: 600, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 6 }}>
+                <Box sx={{ p: 2, pt: 4, position: 'relative', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 6 }}>
 
-                   
                     <DateRangePicker width='100%' value={range} onChange={(rg: { start: any, end: any }) => {
                         getEmplyeeLogsData(rg)
                         setRange(rg)
                     }} />
                     <TableContainer component={Paper}>
-                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                        <Table aria-label="simple table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>{t("core.label.branch")}</TableCell>
-                                    <TableCell align="right">{t("core.label.register")}</TableCell>
-                                    <TableCell align="right">{t("core.label.date")}</TableCell>
-                                    <TableCell align="right">{t("core.label.time")}</TableCell>
+                                    <TableCell align="left">{t("core.label.branch")}</TableCell>
+                                    <TableCell align="left">{t("core.label.register")}</TableCell>
+                                    <TableCell align="left">{t("core.label.date")}</TableCell>
+                                    <TableCell align="left">{t("core.label.time")}</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody >
@@ -121,10 +120,10 @@ const CheckLog = () => {
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     >
 
-                                        <TableCell align="right">{row.branchId}</TableCell>
-                                        <TableCell align="right">{t('core.label.' + row.type)}</TableCell>
-                                        <TableCell align="right">{format_date(row.timestamp, 'DD/MM/YYYY')}</TableCell>
-                                        <TableCell align="right">{format_date(row.timestamp, 'hh:mm')}</TableCell>
+                                        <TableCell align="left">{row.branchId}</TableCell>
+                                        <TableCell align="left">{t('core.label.' + row.type)}</TableCell>
+                                        <TableCell align="left">{format_date(row.timestamp, 'DD/MM/YYYY')}</TableCell>
+                                        <TableCell align="left">{format_date(row.timestamp, 'hh:mm')}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -141,3 +140,6 @@ const CheckLog = () => {
 };
 
 export default CheckLog;
+
+
+ 

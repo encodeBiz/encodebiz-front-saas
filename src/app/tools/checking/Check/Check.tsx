@@ -34,13 +34,14 @@ const Check = () => {
             </Box>
 
             <Typography variant="body1" fontWeight={'bold'} fontSize={22} > {t('checking.title')} </Typography>
-     
+
             <Box>
+                
                 <Typography variant="body1" fontSize={18} > {t('checking.logDay')} </Typography>
                 <SassButton
                     sx={{
                         borderRadius: 4, textTransform: 'uppercase',
-                        px: 2, height: 73
+                        px: 2, height: 73, maxWidth:335, fontSize:20
                     }}
                     disabled={restAction == 'restin' || pendingStatus} variant='contained' color='primary'
                     onClick={() => {
@@ -49,7 +50,7 @@ const Check = () => {
                             setCheckAction(checkAction === 'checkin' ? 'checkout' : 'checkin')
                         })
                     }} fullWidth
-                    startIcon={checkAction === 'checkin' ? <StopCircleOutlined style={{ fontSize: 50 }} sx={{ fontSize: 50, width: 50 }} color={restAction == 'restin' || pendingStatus?'disabled':'error'} /> : <PlayCircleOutline style={{ fontSize: 50 }} sx={{ fontSize: 50, color: restAction == 'restin' || pendingStatus?'disabled':"#7ADF7F" }} />}
+                    startIcon={checkAction === 'checkin' ? <StopCircleOutlined style={{ fontSize: 50 }} sx={{ fontSize: 50, width: 50 }} color={restAction == 'restin' || pendingStatus ? 'disabled' : 'error'} /> : <PlayCircleOutline style={{ fontSize: 50 }} sx={{ fontSize: 50, color: restAction == 'restin' || pendingStatus ? 'disabled' : "#7ADF7F" }} />}
                 >{checkAction === 'checkout' ? t('checking.startJornada') : t('checking.endJornada')}</SassButton>
             </Box>
 
@@ -59,7 +60,7 @@ const Check = () => {
                 <SassButton
                     sx={{
                         borderRadius: 4, textTransform: 'uppercase',
-                        px: 2, height: 73
+                        px: 2, height: 73, maxWidth:335, fontSize:20, color:"#1C1B1D"
                     }}
                     disabled={checkAction === 'checkout' || pendingStatus} variant='outlined' color='primary'
                     onClick={() => {
@@ -67,19 +68,16 @@ const Check = () => {
                             setRestAction(restAction === 'restin' ? 'restout' : 'restin')
                         })
                     }} fullWidth
-                    startIcon={restAction === 'restin' ? <StopCircleOutlined style={{ fontSize: 50 }} sx={{ fontSize: 50 }} color={checkAction === 'checkout' || pendingStatus?'disabled':'error'} /> : <PlayCircleOutline style={{ fontSize: 50 }} sx={{ fontSize: 50, color: checkAction === 'checkout' || pendingStatus?'disabled':"#7ADF7F" }} />}
+                    startIcon={restAction === 'restin' ? <StopCircleOutlined style={{ fontSize: 50 }} sx={{ fontSize: 50 }} color={checkAction === 'checkout' || pendingStatus ? 'disabled' : 'error'} /> : <PlayCircleOutline style={{ fontSize: 50 }} sx={{ fontSize: 50, color: checkAction === 'checkout' || pendingStatus ? 'disabled' : "#7ADF7F" }} />}
                 >{restAction === 'restout' ? t('checking.startDescanso') : t('checking.endDescanso')}</SassButton>
             </Box>
 
 
             {employee && <BorderBox sx={{ width: "100%", p: 2, mt: 2, mb: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
-                <Typography variant="body1" fontSize={18}  > {employee}</Typography>
-                {/*employee?.jobTitle && <Typography variant="body1" color='textSecondary' fontSize={18}  >{employee?.jobTitle}</Typography>*/}
+                <Typography variant="body1" fontSize={18}  > {employee.fullName}</Typography>
+                {employee?.jobTitle && <Typography variant="body1" color='textSecondary' fontSize={18}  >{employee?.jobTitle}</Typography>}
+                <Typography variant="body1" fontSize={18}  > {entity?.name}, {entity?.legal?.address.street}</Typography>
             </BorderBox>}
-
-
-
-
 
         </Box>
     );
