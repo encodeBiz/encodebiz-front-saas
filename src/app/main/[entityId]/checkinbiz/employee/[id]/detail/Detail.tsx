@@ -33,6 +33,10 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                         {t('core.button.back')}
                     </SassButton>
 
+                    <SassButton  color="primary" variant="contained" onClick={() =>  navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${employee.id}/edit`)}>
+                        {t('core.button.edit')}
+                    </SassButton>
+
                     <SassButton loading={deleting} color="error" variant="contained" onClick={() => openModal(CommonModalType.DELETE)}>
                         {t('core.button.delete')}
                     </SassButton>
