@@ -83,6 +83,15 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                             {employee?.jobTitle}
                         </Typography>
                     </Box>}
+
+                    <Box sx={{ mt: 2 }}>
+                        <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
+                            {t('core.label.status')}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
+                            {t('core.label.'+employee?.status)}
+                        </Typography>
+                    </Box>
                 </Box>
             </Paper>
             <Divider />
