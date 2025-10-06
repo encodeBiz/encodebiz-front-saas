@@ -310,7 +310,7 @@ export default function useEmployeeListController() {
       items={options}
     />
     <SearchIndexFilter
-      type="staff"
+      type="employee"
       label={t('core.label.search')}
       onChange={async (value: ISearchIndex) => {
         const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }

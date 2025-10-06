@@ -24,16 +24,17 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                     <Typography variant="h4"   >
                         {employee?.fullName}
                     </Typography>
-                    <Typography variant="h6"  >
-
-                        {t('employee.detailSucursal')}
-                    </Typography>
+                    
                     <CustomChip size='small' background={employee?.twoFA ? 'active' : 'revoked'} label={employee?.twoFA ? t('core.label.enable2AF') : t('core.label.disable2AF')} />
 
                 </Grid>
                 <Stack direction={'row'} gap={2}>
-                    <SassButton variant="contained" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)}>
+                    <SassButton variant="outlined" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)}>
                         {t('core.button.back')}
+                    </SassButton>
+
+                    <SassButton  color="primary" variant="contained" onClick={() =>  navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${employee.id}/edit`)}>
+                        {t('core.button.edit')}
                     </SassButton>
 
                     <SassButton loading={deleting} color="error" variant="contained" onClick={() => openModal(CommonModalType.DELETE)}>
@@ -86,6 +87,15 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                             {employee?.jobTitle}
                         </Typography>
                     </Box>}
+
+                    <Box sx={{ mt: 2 }}>
+                        <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
+                            {t('core.label.status')}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
+                            {t('core.label.'+employee?.status)}
+                        </Typography>
+                    </Box>
                 </Box>
             </Paper>
             <Divider />

@@ -47,7 +47,7 @@ export async function fetchLocation(data: {
 export async function fetchIndex(data: {
   "entityId": string,
   "keyword"?: string,
-  type?: "entities" | "users" | "events" | "staff" | "holder",
+  type?: "entities" | "users" | "events" | "staff" | "holder" | "employee"| "branch",
 
 }): Promise<Array<ISearchIndex>> {
   const filters = []

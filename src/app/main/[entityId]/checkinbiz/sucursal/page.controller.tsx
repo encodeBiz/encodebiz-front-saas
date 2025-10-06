@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useToast } from "@/hooks/useToast";
 import { useTranslations } from "next-intl";
-import { useEffect,   useState } from "react";
+import { useEffect, useState } from "react";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
@@ -83,7 +83,7 @@ export default function useEmployeeListController() {
       allowItem: () => true,
       onPress: (item: ISucursal) => onEdit(item)
     },
-    
+
     {
       actionBtn: true,
       color: 'primary',
@@ -93,10 +93,10 @@ export default function useEmployeeListController() {
       allowItem: () => true,
       onPress: (item: ISucursal) => onDetail(item)
     },
- 
+
   ]
 
- 
+
 
 
   /** Paginated Changed */
@@ -152,9 +152,9 @@ export default function useEmployeeListController() {
       id: 'address',
       label: t("core.label.address"),
       minWidth: 170,
-       format: (value, row) => row.address.street,
+      format: (value, row) => row.address.street,
     },
-     
+
 
 
   ];
@@ -220,9 +220,9 @@ export default function useEmployeeListController() {
     navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/sucursal/${item.id}/edit`)
   }
 
-   
 
-   const onDetail = async (item: any) => {
+
+  const onDetail = async (item: any) => {
     navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/sucursal/${item.id}/detail`)
   }
 
@@ -263,7 +263,7 @@ export default function useEmployeeListController() {
 
 
     <SearchIndexFilter
-      type="staff"
+      type="branch"
       label={t('core.label.search')}
       onChange={async (value: ISearchIndex) => {
         const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
@@ -290,7 +290,7 @@ export default function useEmployeeListController() {
     localStorage.setItem('sucursalIndex', JSON.stringify(dataStatus))
     return encodeToBase64({ ...filterParams })
   }
- 
+
 
 
   return {

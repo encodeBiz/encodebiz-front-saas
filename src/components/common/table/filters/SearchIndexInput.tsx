@@ -20,12 +20,12 @@ import { useDebouncedCallback } from "../../forms/customHooks/useDebounce";
 type Option = { id: string; label: string; data: ISearchIndex };
 
 interface SearchIndexInputProps {
-  type: "entities" | "users" | "events" | "staff" | "holder",
+  type: "entities" | "users" | "events" | "staff" | "holder"| "employee"| "branch",
   label?: any,
   onChange: (value: any) => void,
 }
 
-const getDataLabel = (data: ISearchIndex, type: "entities" | "users" | "events" | "staff" | "holder") => {
+const getDataLabel = (data: ISearchIndex, type: "entities" | "users" | "events" | "staff" | "holder"| "employee"| "branch") => {
   switch (type) {
     case "events":
       return data.fields['name']
@@ -34,6 +34,9 @@ const getDataLabel = (data: ISearchIndex, type: "entities" | "users" | "events" 
       return data.fields['fullName']
       break;
     case "staff":
+      return data.fields['fullName']
+      break;
+    case "employee":
       return data.fields['fullName']
       break;
 

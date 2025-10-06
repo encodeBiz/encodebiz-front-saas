@@ -3,10 +3,11 @@
 import { CommonModalType } from '@/contexts/commonModalContext';
 import IEntity from '@/domain/core/auth/IEntity';
 import { IChecklog, ICreateLog } from '@/domain/features/checkinbiz/IChecklog';
+import { IEmployee } from '@/domain/features/checkinbiz/IEmployee';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { useLayout } from '@/hooks/useLayout';
 import { useToast } from '@/hooks/useToast';
-import { createLog, validateEmployee, getEmplyeeLogsState } from '@/services/checkinbiz/employee.service';
+import { createLog, validateEmployee, getEmplyeeLogsState, fetchEmployee } from '@/services/checkinbiz/employee.service';
 import { fetchSucursal } from '@/services/checkinbiz/sucursal.service';
 import { fetchEntity } from '@/services/core/entity.service';
 import { useTranslations } from 'next-intl';
@@ -40,7 +41,7 @@ interface CheckType {
     createLogAction: (type: "checkout" | "checkin" | "restin" | "restout", callback?: () => void) => void
 
     entity: IEntity | undefined
-    employee: string | undefined
+    employee: IEmployee | undefined
     branchList: Array<{ name: string, branchId: string }>
     sessionData: { employeeId: string, entityId: string, branchId: string, } | undefined
     setSessionData: (data: { employeeId: string, entityId: string, branchId: string, }) => void
@@ -65,7 +66,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     const [pendingStatus, setPendingStatus] = useState(true)
 
     const [entity, setEntity] = useState<IEntity>()
-    const [employee, setEmployee] = useState<string>()
+    const [employee, setEmployee] = useState<IEmployee>()
     const [geo, setGeo] = useState<{ latitude: number, longitude: number }>({ latitude: 0, longitude: 0 })
     const searchParams = useSearchParams()
     const customToken = searchParams.get('customToken') || token;
@@ -104,15 +105,11 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
                 })
             );
             setBranchList(data)
-            setEmployee(response.payload.name as string)
+
 
             if (!response.payload.twoFa) {
                 openModal(CommonModalType.CONFIG2AF)
-            } else {
-                if (data.length > 0) {
-                    openModal(CommonModalType.BRANCH_SELECTED)
-                }
-            }
+            }  
             getLastState(response.payload.entityId, response.payload.employeeId)
             setToken(response.sessionToken)
             changeLoaderState({ show: false })
@@ -129,7 +126,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     const getLastState = async (entityId: string, employeeId: string) => {
         try {
             const resultList: Array<IChecklog> = await getEmplyeeLogsState(entityId, employeeId, { limit: 10, orderBy: 'timestamp', orderDirection: 'desc' } as any) as Array<IChecklog>
-             
+
             if (resultList.length > 0) {
                 const last = resultList[0]
 
@@ -195,12 +192,17 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
         setEntity(await fetchEntity(sessionData?.entityId as string))
     }
 
+    const fetchEmployeeData = async () => {
+        setEmployee(await fetchEmployee(sessionData?.entityId as string, sessionData?.employeeId as string))
+    }
+
 
 
     useEffect(() => {
         if (sessionData?.entityId) {
             getCurrenGeo()
             fetchEntityData()
+            fetchEmployeeData()
         }
     }, [sessionData?.entityId])
 

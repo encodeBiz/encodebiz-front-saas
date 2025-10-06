@@ -46,7 +46,7 @@ export default function EmployeeList() {
           onBack={onBack}
           onNext={onNext}
           topFilter={topFilter}
-          selectable
+           
 
         />
       </HeaderPage>
