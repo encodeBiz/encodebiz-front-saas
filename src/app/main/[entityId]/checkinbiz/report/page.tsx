@@ -45,7 +45,7 @@ export default function ReportList() {
           onBack={onBack}
           onNext={onNext}
           topFilter={topFilter}
-          selectable
+           
 
         />
       </HeaderPage>
