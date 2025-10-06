@@ -29,7 +29,7 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
 
                 </Grid>
                 <Stack direction={'row'} gap={2}>
-                    <SassButton variant="contained" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)}>
+                    <SassButton variant="outlined" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)}>
                         {t('core.button.back')}
                     </SassButton>
 
