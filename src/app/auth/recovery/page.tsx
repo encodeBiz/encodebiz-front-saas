@@ -62,9 +62,7 @@ const RecoveryPage = () => {
                     />
 
                     <Box sx={{ textAlign: 'center' }}>
-                        <Typography variant="body2">
-                            {t('core.recovery.noAccount')} <Link style={{color: theme.palette.primary.main, textDecoration:'none'}} href="/auth/register">{t('core.recovery.signup')}</Link>
-                        </Typography>
+                       
                         <Typography variant="body2">
                             {t('core.recovery.existAccount')} <Link style={{color: theme.palette.primary.main, textDecoration:'none'}} href="/auth/login">{t('core.recovery.signin')}</Link>
                         </Typography>

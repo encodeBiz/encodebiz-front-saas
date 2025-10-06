@@ -50,8 +50,6 @@ const SignInPage = () => {
                             {t('core.signin.subtitle')}
                         </Typography>
                     </Box>
-
-
                     <GenericForm<LoginFormValues>
                         initialValues={initialValues}
                         validationSchema={validationSchema}

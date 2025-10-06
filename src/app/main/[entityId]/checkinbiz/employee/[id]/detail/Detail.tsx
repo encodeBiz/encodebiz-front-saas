@@ -9,10 +9,11 @@ import { useCommonModal } from "@/hooks/useCommonModal"
 import ConfirmModal from "@/components/common/modals/ConfirmModal"
 import { CommonModalType } from "@/contexts/commonModalContext"
 import { CustomChip } from "@/components/common/table/CustomChip"
+import { ISucursal } from "@/domain/features/checkinbiz/ISucursal"
 
 export const Detail = ({ employee, children }: { employee: IEmployee, children: React.ReactNode }) => {
     const t = useTranslations()
-    const { onDelete, deleting } = useEmployeeDetailController()
+    const { onDelete, deleting, branchListEmployee } = useEmployeeDetailController()
     const { openModal, open } = useCommonModal()
 
     const { navivateTo } = useLayout()
@@ -24,7 +25,7 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                     <Typography variant="h4"   >
                         {employee?.fullName}
                     </Typography>
-                    
+
                     <CustomChip size='small' background={employee?.twoFA ? 'active' : 'revoked'} label={employee?.twoFA ? t('core.label.enable2AF') : t('core.label.disable2AF')} />
 
                 </Grid>
@@ -33,7 +34,7 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                         {t('core.button.back')}
                     </SassButton>
 
-                    <SassButton  color="primary" variant="contained" onClick={() =>  navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${employee.id}/edit`)}>
+                    <SassButton color="primary" variant="contained" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${employee.id}/edit`)}>
                         {t('core.button.edit')}
                     </SassButton>
 
@@ -93,8 +94,21 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                             {t('core.label.status')}
                         </Typography>
                         <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
-                            {t('core.label.'+employee?.status)}
+                            {t('core.label.' + employee?.status)}
                         </Typography>
+                    </Box>
+                    <Box sx={{ mt: 2 }}>
+                        <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
+                            {t('core.label.sucursal')}
+                        </Typography>
+                        {Array.isArray(branchListEmployee) && <List>
+                            {branchListEmployee.map((e: ISucursal, i: number) => <ListItem key={i}>
+                                <ListItemText
+                                    primary={e.name}
+                                    secondary={e.address.street}
+                                />
+                            </ListItem>)}
+                        </List>}
                     </Box>
                 </Box>
             </Paper>
@@ -126,9 +140,6 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                 </Typography>
 
                 {children}
-
-
-
 
             </Paper>
         </CardContent>

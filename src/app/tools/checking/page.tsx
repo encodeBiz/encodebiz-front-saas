@@ -17,6 +17,7 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import ConfigTwoFA from './ConfigTwoFA/ConfigTwoFA';
 import InfoModal from '@/components/common/modals/InfoModal';
 import VerifyTwoFA from './VerifyTwoFA/VerifyTwoFA';
+import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 
 
 const Checking = () => {
@@ -31,6 +32,7 @@ const Checking = () => {
                 <LocaleSwitcher />
             </Box>
             */}
+          
 
 
             <Check />

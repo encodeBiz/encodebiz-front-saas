@@ -74,9 +74,7 @@ export const Card3 = ({ handleNext }: any) => {
                 </Box>
                 <Box width={'100%'} display={'flex'} flexDirection={"column"} gap={2}  >
                     <Box borderRadius={2} p={2} display={'flex'} flexDirection={"column"}   gap={1} sx={{ background: (theme) => theme.palette.primary.dark, color: "#FFF" }}>
-                        <Box  display={'flex'} flexDirection={"column"} alignItems={'center'} justifyContent={'center'}   >
-                            <Typography textAlign={'center'} fontSize={36} fontWeight={400} variant="body1">{t('cards.card3.comminsoom')}</Typography>
-                        </Box>
+                        
                         <Box borderRadius={2} p={2} display={'flex'} flexDirection={"row"} alignItems={'flex-start'} gap={2}  >
 
                             <Box>

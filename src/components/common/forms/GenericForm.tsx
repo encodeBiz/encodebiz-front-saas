@@ -150,7 +150,6 @@ const GenericForm = <T extends Record<string, any>>({
     <Paper
       elevation={0}
       sx={{
-
         width: '100%',
         ...formContainerProps?.sx,
       }}
@@ -175,6 +174,7 @@ const GenericForm = <T extends Record<string, any>>({
         {(formikProps: FormikProps<T>) => (
           <Form noValidate>
             {/*JSON.stringify(formikProps.errors)*/}
+            
             {activateWatchStatus && <FormStatusWatcher />}
             <Grid container spacing={3}>
               {fields.map((field, i) => {

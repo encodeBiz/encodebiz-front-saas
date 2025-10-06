@@ -30,7 +30,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
     <Select
       disabled={props.disabled || (props.name ==='city' && !formStatus?.values?.country)}
       label={props.label}
-      error={!!error}
+      error={!!helperText}
       value={field.value}
       key={createSlug(field?.value ?? '')}
       onChange={(e: any) => {

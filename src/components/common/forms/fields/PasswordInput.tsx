@@ -2,15 +2,14 @@
 import React, { useState } from 'react';
 import { IconButton, InputAdornment, TextField, TextFieldProps } from '@mui/material';
 import { FieldProps, useField } from 'formik';
-import { VisibilityOff, Visibility } from '@mui/icons-material';
+import { VisibilityOff, Visibility, Error } from '@mui/icons-material';
 
 const PasswordInput: React.FC<FieldProps & TextFieldProps> = ({
   ...props
 }) => {
   const [field, meta] = useField(props.name);
   const { touched, error } = meta
-  const helperText = touched && error;
-
+ 
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => {
@@ -20,12 +19,13 @@ const PasswordInput: React.FC<FieldProps & TextFieldProps> = ({
     <TextField
       {...field}
       {...props}
-      error={!!error}
-      helperText={helperText as string}
+        error={!!(touched && error)}
+      helperText={touched && error as string}
       type={showPassword ? 'text' : 'password'}
       slotProps={{
         input: {
-          endAdornment: <InputAdornment position="end">
+          endAdornment:  <InputAdornment position="end">
+            {(touched && error) && <Error color='error' />}
             <IconButton
               aria-label="toggle password visibility"
               onClick={handleClickShowPassword}

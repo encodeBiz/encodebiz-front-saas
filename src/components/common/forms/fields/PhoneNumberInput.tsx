@@ -46,7 +46,7 @@ const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
         <TextField
             {...field}
             {...props}
-            error={!!error}
+            error={!!helperText}
             helperText={helperText as string}
 
             value={formatPhoneNumber(phoneNumber)}
