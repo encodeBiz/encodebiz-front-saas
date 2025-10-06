@@ -26,18 +26,25 @@ const SignUpPage = () => {
 
     return (
         <Container style={{ minWidth: 600, maxWidth: 700, width: '100%' }}>
-            <Box sx={classes.locale}>
-                <LocaleSwitcher />
-            </Box>
+
             <BorderBox sx={classes.root}>
-                <Image
-                    width={150}
-                    height={44}
-                    src={logo}
-                    alt="Company Logo"
-                    style={{ position: 'relative', left: -15 }}
-                />
-                <Box sx={{ ...classes.containerTop, px: 6 }}>
+                <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'}>
+                    <Image
+                        width={150}
+                        height={44}
+                        src={logo}
+                        alt="Company Logo"
+                        style={{ position: 'relative', left: -15 }}
+                    />
+                    <LocaleSwitcher />
+                </Box>
+                <Box sx={{ ...classes.containerTop, px: {
+                        xs: 0,
+                        sm: 0,
+                        md: 6,
+                        xl: 6,
+                        lg: 6,
+                    } }}>
                     <Box sx={classes.containerTop}>
                         <Typography variant="h4" component="h1" >
                             {t('core.signup.title')}
@@ -58,7 +65,7 @@ const SignUpPage = () => {
 
                     <Box sx={{ textAlign: 'center' }}>
                         <Typography variant="body2">
-                            {t('core.signup.existAccount')} <Link style={{color: theme.palette.primary.main, textDecoration:'none'}} href="/auth/login">{t('core.signup.signIn')}</Link>
+                            {t('core.signup.existAccount')} <Link style={{ color: theme.palette.primary.main, textDecoration: 'none' }} href="/auth/login">{t('core.signup.signIn')}</Link>
                         </Typography>
                     </Box>
                 </Box>

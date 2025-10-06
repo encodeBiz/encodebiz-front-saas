@@ -1,6 +1,7 @@
 'use client'
 
 import PasswordInput from '@/components/common/forms/fields/PasswordInput';
+import PhoneNumberInput from '@/components/common/forms/fields/PhoneNumberInput';
 import SimpleCheckTerm from '@/components/common/forms/fields/SimpleCheckTerm';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { GENERAL_ROUTE, MAIN_ROUTE } from '@/config/routes';
@@ -104,7 +105,7 @@ export const useRegisterController = () => {
             label: t('core.label.phone'),
             type: 'number',
             required: true,
-            component: TextInput,
+            component: PhoneNumberInput,
         },
 
 
