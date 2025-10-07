@@ -155,9 +155,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     }
 
     const createLogAction = (type: "checkout" | "checkin" | "restin" | "restout", callback?: () => void) => {
-        if (!sessionData?.branchId && branchList.length > 0)
-            openModal(CommonModalType.BRANCH_SELECTED)
-        else {
+      
             const data: ICreateLog = {
                 "employeeId": sessionData?.employeeId as string,
                 "entityId": sessionData?.entityId as string,
@@ -185,7 +183,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
             }).finally(() => {
                 changeLoaderState({ show: false })
             })
-        }
+        
     }
 
     const fetchEntityData = async () => {

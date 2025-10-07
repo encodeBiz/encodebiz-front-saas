@@ -22,7 +22,7 @@ const TextInput: React.FC<FieldProps & TextFieldProps & { afterTextField: string
       rows={2}
       disabled={props.disabled || (props.name === 'postalCode' && (!formStatus?.values?.country || !formStatus?.values?.city))}
       helperText={touched && error as string}
-
+      
       slotProps={{
         input: touched && error ? {
           endAdornment: <InputAdornment position="end"><Error color='error' /></InputAdornment>,

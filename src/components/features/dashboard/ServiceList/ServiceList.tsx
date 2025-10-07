@@ -47,7 +47,7 @@ const ServiceList = () => {
                             </Box>
                             <Box sx={styles.textContainer} >
                                 <Typography textTransform={'uppercase'} variant="h5" component="div">
-                                    {card.name} {card.id === 'checkinbiz' && <span style={{ color: theme.palette.primary.main }}>{t('core.label.comminsoom')}</span>}
+                                    {card.name}
                                 </Typography>
                                 <Typography variant="body2" color="text.primary" fontSize={16}>
                                     {card?.description ? (card?.description as any)[currentLocale] : ''}

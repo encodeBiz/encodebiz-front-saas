@@ -304,6 +304,8 @@
     },
     "formValidatorMessages": {
       "required": "Este campo es requerido",
+      "min":"EL valor del campo debe ser mayor a ",
+       "max":"EL valor del campo debe ser menor a ",
       "minArray": "Debe seleccionar al menos 1 elemento",
       "email": "Este campo es debe ser un correo electrónico válido",
       "password": "La contraseña es demasiado corta: debe tener un mínimo de 8 caracteres.",

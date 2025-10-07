@@ -134,14 +134,14 @@ const AddressInput: React.FC<AutoCompletedInputProps> = ({ onHandleChange, ...pr
             {...params}
             label={props.label}
             placeholder={t("core.label.typingAddress")}
-            error={!!error}
+            error={!!helperText}
             helperText={helperText as string}
             slotProps={{
               input: {
                 ...params.InputProps,
                 endAdornment: <React.Fragment>
                   {pending ? <CircularProgress color="inherit" size={20} /> : null}
-                  {error ? <InputAdornment position="end"><Error color='error' /></InputAdornment> : null}
+                  {helperText ? <InputAdornment position="end"><Error color='error' /></InputAdornment> : null}
                   {params.InputProps.endAdornment}
                 </React.Fragment>
 

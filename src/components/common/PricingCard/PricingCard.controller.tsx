@@ -42,6 +42,10 @@ export default function usePricingCardController(id: string, name: string, fromS
                 if(fromService === 'passinbiz'){
                     navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/holder`)
                 }
+
+                if(fromService === 'checkinbiz'){
+                    navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/employee`)
+                }
             } catch (error: unknown) {
                 setLoadingGetPlan(false);
                 if (error instanceof Error) {

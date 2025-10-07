@@ -28,7 +28,7 @@ const SimpleCheckTerm: React.FC<FieldProps & TextFieldProps> = ({
       }
       label={
         <Typography variant="body2" sx={{textAlig:'left'}}>
-          {t('core.label.accepTerm1')} <Link style={{color: theme.palette.primary.main, textDecoration:'none'}}  href="#"> {t('core.label.accepTerm2')} </Link> {t('core.label.accepTerm3')}  <Link style={{color: theme.palette.primary.main, textDecoration:'none'}} href="#">{t('core.label.accepTerm4')} </Link>
+          {t('core.label.accepTerm1')} <Link style={{color: theme.palette.primary.main, textDecoration:'none'}}  href="/legal/politica-de-privacidad"> {t('core.label.accepTerm2')} </Link> {t('core.label.accepTerm3')}  <Link style={{color: theme.palette.primary.main, textDecoration:'none'}} href="/legal/terminos-y-condiciones">{t('core.label.accepTerm4')} </Link>
         </Typography>
       }
 

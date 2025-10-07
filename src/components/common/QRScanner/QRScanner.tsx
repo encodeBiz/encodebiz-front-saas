@@ -130,7 +130,7 @@ const QRScanner = () => {
                             {format_date(new Date(scanRessult?.lastValidatedAt as string), 'DD/MM/YY hh:mm')}</Typography>
                         }
 
-                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                        {scanRessult?.holder?.type !== 'credential' && <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                             <Alert severity='warning' style={{ fontSize: 14, paddingTop: 8, paddingBottom: 10, width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                                 action={
                                     <SassButton variant='contained' style={{ fontSize: 10 }} onClick={() => openModal(CommonModalType.DELETE)} color="warning" size="small">
@@ -138,7 +138,7 @@ const QRScanner = () => {
                                     </SassButton>
                                 }
                                 variant='outlined'>{t('scan.' + scanRessult.suggestedDirection)}</Alert>
-                        </Box>
+                        </Box>}
 
                         <SassButton
                             variant="contained"

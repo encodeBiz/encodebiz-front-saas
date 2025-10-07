@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
-import { requiredRule } from '@/config/yupRules';
+import { ratioLogRule, requiredRule } from '@/config/yupRules';
 import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
@@ -38,7 +38,7 @@ export default function useSucursalController() {
     postalCode: '',
     region: '',
     street: '',
-
+    ratioChecklog:100
 
   });
 
@@ -57,6 +57,7 @@ export default function useSucursalController() {
     name: requiredRule(t),
     postalCode: requiredRule(t),
     status: requiredRule(t),
+    ratioChecklog:ratioLogRule(t)
   });
 
   const handleSubmit = async (values: Partial<any>) => {

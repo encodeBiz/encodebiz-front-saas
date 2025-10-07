@@ -10,7 +10,6 @@ import {
 
 import {
 
-    CheckCircle,
     PlayCircleOutline,
     StopCircleOutlined
 } from '@mui/icons-material';
@@ -21,8 +20,9 @@ import { SassButton } from '@/components/common/buttons/GenericButton';
 import image from '../../../../../public/assets/images/checkex.png'
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import { useCheck } from '../page.context';
+import { CommonModalType } from '@/contexts/commonModalContext';
 const Check = () => {
-    const { checkAction, setCheckAction, restAction, setRestAction, createLogAction, entity, employee, pendingStatus } = useCheck()
+    const { checkAction, setCheckAction, restAction, setRestAction, createLogAction, entity, employee, pendingStatus, sessionData, branchList } = useCheck()
     const t = useTranslations()
     const { open, openModal, closeModal } = useCommonModal()
 
@@ -33,15 +33,15 @@ const Check = () => {
                 {entity?.branding?.logo && <Image style={{ borderRadius: 4, background: '#E9E8F5' }} src={entity?.branding?.logo} width={160} height={80} alt='' />}
             </Box>
 
-            <Typography variant="body1" fontWeight={'bold'} fontSize={22} > {t('checking.title')} </Typography>
 
             <Box>
-                
+                <Typography variant="body1" fontWeight={'bold'} fontSize={22} > {t('checking.title')} </Typography>
+
                 <Typography variant="body1" fontSize={18} > {t('checking.logDay')} </Typography>
                 <SassButton
                     sx={{
                         borderRadius: 4, textTransform: 'uppercase',
-                        px: 2, height: 73, maxWidth:335, fontSize:20
+                        px: 2, height: 73, maxWidth: 335, fontSize: 20
                     }}
                     disabled={restAction == 'restin' || pendingStatus} variant='contained' color='primary'
                     onClick={() => {
@@ -56,17 +56,22 @@ const Check = () => {
 
 
             <Box>
-                <Typography variant="body1" fontSize={18} > {t('checking.logDay')} </Typography>
+                <Typography variant="body1" fontSize={18} > {t('checking.controlDay')} </Typography>
                 <SassButton
                     sx={{
                         borderRadius: 4, textTransform: 'uppercase',
-                        px: 2, height: 73, maxWidth:335, fontSize:20, color:"#1C1B1D"
+                        px: 2, height: 73, maxWidth: 335, fontSize: 20, color: "#1C1B1D"
                     }}
                     disabled={checkAction === 'checkout' || pendingStatus} variant='outlined' color='primary'
                     onClick={() => {
-                        createLogAction(restAction === 'restin' ? 'restout' : 'restin', () => {
-                            setRestAction(restAction === 'restin' ? 'restout' : 'restin')
-                        })
+
+                        if (!sessionData?.branchId && branchList.length > 0)
+                            openModal(CommonModalType.BRANCH_SELECTED)
+                        else {
+                            createLogAction(restAction === 'restin' ? 'restout' : 'restin', () => {
+                                setRestAction(restAction === 'restin' ? 'restout' : 'restin')
+                            })
+                        }
                     }} fullWidth
                     startIcon={restAction === 'restin' ? <StopCircleOutlined style={{ fontSize: 50 }} sx={{ fontSize: 50 }} color={checkAction === 'checkout' || pendingStatus ? 'disabled' : 'error'} /> : <PlayCircleOutline style={{ fontSize: 50 }} sx={{ fontSize: 50, color: checkAction === 'checkout' || pendingStatus ? 'disabled' : "#7ADF7F" }} />}
                 >{restAction === 'restout' ? t('checking.startDescanso') : t('checking.endDescanso')}</SassButton>
