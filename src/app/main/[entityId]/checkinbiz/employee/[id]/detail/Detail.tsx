@@ -97,22 +97,27 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                             {t('core.label.' + employee?.status)}
                         </Typography>
                     </Box>
-                    <Box sx={{ mt: 2 }}>
-                        <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
-                            {t('core.label.sucursal')}
-                        </Typography>
-                        {Array.isArray(branchListEmployee) && <List>
-                            {branchListEmployee.map((e: ISucursal, i: number) => <ListItem key={i}>
-                                <ListItemText
-                                    primary={e.name}
-                                    secondary={e.address.street}
-                                />
-                            </ListItem>)}
-                        </List>}
-                    </Box>
+
                 </Box>
             </Paper>
             <Divider />
+
+            <Box sx={{ mt: 2 }}>
+                <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
+                    {t('core.label.sucursal')}
+                </Typography>
+                {Array.isArray(branchListEmployee) && <List>
+                    {branchListEmployee.map((e: ISucursal, i: number) => <ListItem key={i}>
+                        <ListItemText
+                            primary={e.name}
+                            secondary={e.address.street}
+                        />
+                    </ListItem>)}
+                </List>}
+            </Box>
+
+            <Divider />
+
 
             {/* Additional Details */}
             {Array.isArray(employee.metadata) && employee.metadata.length > 0 && <> <Divider /><Paper elevation={0} sx={{ p: 3 }}>

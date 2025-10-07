@@ -73,6 +73,8 @@ export default function useEmployeeDetailController() {
       employee.branchId.forEach(async branchId => {
         dataSucursalList.push((await fetchSucursalData(currentEntity?.entity.id as string, branchId as string)))
       });
+      console.log(dataSucursalList);
+      
       setBranchListEmployee(dataSucursalList)
       changeLoaderState({ show: false })
     } catch (error: any) {
