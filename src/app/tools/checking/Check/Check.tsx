@@ -34,44 +34,47 @@ const Check = () => {
             </Box>
 
             <Typography variant="body1" fontWeight={'bold'} fontSize={22} > {t('checking.title')} </Typography>
-            <Box>
-                <Typography variant="body1" fontSize={18} > {t('checking.logDay')} </Typography>
-                <SassButton
-                    sx={{
-                        borderRadius: 4, textTransform: 'uppercase',mt:1,
-                        px: 2, height: 73, maxWidth: 335, fontSize: 20
-                    }}
-                    disabled={restAction == 'restin' || pendingStatus} variant='contained' color='primary'
-                    onClick={() => {
-                        if (!sessionData?.branchId && branchList.length > 0)
-                            openModal(CommonModalType.BRANCH_SELECTED)
-                        else {
-                            createLogAction(checkAction === 'checkin' ? 'checkout' : 'checkin', () => {
-                                setCheckAction(checkAction === 'checkin' ? 'checkout' : 'checkin')
+
+            <Box sx={{ p: 2, maxWidth: 600, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 4 }}>
+                <Box>
+                    <Typography variant="body1" fontSize={18} > {t('checking.logDay')} </Typography>
+                    <SassButton
+                        sx={{
+                            borderRadius: 4, textTransform: 'uppercase', mt: 1,
+                            px: 2, height: 73, maxWidth: 335, fontSize: 20
+                        }}
+                        disabled={restAction == 'restin' || pendingStatus} variant='contained' color='primary'
+                        onClick={() => {
+                            if (!sessionData?.branchId && branchList.length > 0)
+                                openModal(CommonModalType.BRANCH_SELECTED)
+                            else {
+                                createLogAction(checkAction === 'checkin' ? 'checkout' : 'checkin', () => {
+                                    setCheckAction(checkAction === 'checkin' ? 'checkout' : 'checkin')
+                                })
+                            }
+
+                        }} fullWidth
+                        startIcon={checkAction === 'checkin' ? <StopCircleOutlined style={{ fontSize: 50 }} sx={{ fontSize: 50, width: 50 }} color={restAction == 'restin' || pendingStatus ? 'disabled' : 'error'} /> : <PlayCircleOutline style={{ fontSize: 50 }} sx={{ fontSize: 50, color: restAction == 'restin' || pendingStatus ? 'disabled' : "#7ADF7F" }} />}
+                    >{checkAction === 'checkout' ? t('checking.startJornada') : t('checking.endJornada')}</SassButton>
+                </Box>
+
+
+                <Box>
+                    <Typography variant="body1" fontSize={18} > {t('checking.controlDay')} </Typography>
+                    <SassButton
+                        sx={{
+                            borderRadius: 4, textTransform: 'uppercase', mt: 1,
+                            px: 2, height: 73, maxWidth: 335, fontSize: 20, color: "#1C1B1D"
+                        }}
+                        disabled={checkAction === 'checkout' || pendingStatus} variant='outlined' color='primary'
+                        onClick={() => {
+                            createLogAction(restAction === 'restin' ? 'restout' : 'restin', () => {
+                                setRestAction(restAction === 'restin' ? 'restout' : 'restin')
                             })
-                        }
-
-                    }} fullWidth
-                    startIcon={checkAction === 'checkin' ? <StopCircleOutlined style={{ fontSize: 50 }} sx={{ fontSize: 50, width: 50 }} color={restAction == 'restin' || pendingStatus ? 'disabled' : 'error'} /> : <PlayCircleOutline style={{ fontSize: 50 }} sx={{ fontSize: 50, color: restAction == 'restin' || pendingStatus ? 'disabled' : "#7ADF7F" }} />}
-                >{checkAction === 'checkout' ? t('checking.startJornada') : t('checking.endJornada')}</SassButton>
-            </Box>
-
-
-            <Box>
-                <Typography variant="body1" fontSize={18} > {t('checking.controlDay')} </Typography>
-                <SassButton
-                    sx={{
-                        borderRadius: 4, textTransform: 'uppercase',mt:1,
-                        px: 2, height: 73, maxWidth: 335, fontSize: 20, color: "#1C1B1D"
-                    }}
-                    disabled={checkAction === 'checkout' || pendingStatus} variant='outlined' color='primary'
-                    onClick={() => {
-                        createLogAction(restAction === 'restin' ? 'restout' : 'restin', () => {
-                            setRestAction(restAction === 'restin' ? 'restout' : 'restin')
-                        })
-                    }} fullWidth
-                    startIcon={restAction === 'restin' ? <StopCircleOutlined style={{ fontSize: 50 }} sx={{ fontSize: 50 }} color={checkAction === 'checkout' || pendingStatus ? 'disabled' : 'error'} /> : <PlayCircleOutline style={{ fontSize: 50 }} sx={{ fontSize: 50, color: checkAction === 'checkout' || pendingStatus ? 'disabled' : "#7ADF7F" }} />}
-                >{restAction === 'restout' ? t('checking.startDescanso') : t('checking.endDescanso')}</SassButton>
+                        }} fullWidth
+                        startIcon={restAction === 'restin' ? <StopCircleOutlined style={{ fontSize: 50 }} sx={{ fontSize: 50 }} color={checkAction === 'checkout' || pendingStatus ? 'disabled' : 'error'} /> : <PlayCircleOutline style={{ fontSize: 50 }} sx={{ fontSize: 50, color: checkAction === 'checkout' || pendingStatus ? 'disabled' : "#7ADF7F" }} />}
+                    >{restAction === 'restout' ? t('checking.startDescanso') : t('checking.endDescanso')}</SassButton>
+                </Box>
             </Box>
 
 

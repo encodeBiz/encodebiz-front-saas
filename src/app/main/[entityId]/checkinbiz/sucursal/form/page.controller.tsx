@@ -21,6 +21,7 @@ import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyVal
 export default function useSucursalController() {
   const t = useTranslations();
   const { showToast } = useToast()
+
   const { navivateTo } = useLayout()
   const { token, user } = useAuth()
   const { id } = useParams<{ id: string }>()
@@ -38,7 +39,8 @@ export default function useSucursalController() {
     postalCode: '',
     region: '',
     street: '',
-    ratioChecklog:100
+    ratioChecklog:100, 
+   
 
   });
 

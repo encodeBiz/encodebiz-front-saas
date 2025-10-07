@@ -15,6 +15,7 @@ import {
     TableHead,
     TableRow,
     Typography,
+    useMediaQuery,
     useTheme
     ,
 
@@ -44,6 +45,8 @@ const CheckLog = () => {
     const [employeeLogs, setEmployeeLogs] = useState<Array<IChecklog>>([])
     const { showToast } = useToast()
     const { open, closeModal } = useCommonModal()
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
 
     const getEmplyeeLogsData = async (range: { start: any, end: any }, status: 'valid' | 'failed') => {
         setPending(true)
@@ -87,8 +90,8 @@ const CheckLog = () => {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
             fullWidth
-            fullScreen
-            maxWidth={false}
+            fullScreen={isMobile}
+            maxWidth={'lg'}
             slotProps={{ paper: { sx: { p: 0, borderRadius: 2, width: '100vw', height: '90vh', background: "#F0EFFD" } } }}
         >
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', p: 2 }}>
@@ -104,7 +107,19 @@ const CheckLog = () => {
             <DialogContent  >
                 <Box sx={{ p: 2, pt: 4, position: 'relative', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 6 }}>
 
-                    <Box sx={{display: 'flex', flexDirection: 'column', gap: 2, justifyContent:'flex-end' }}>
+                    <Box sx={{
+                        display: 'flex',
+                        flexDirection: {
+                            sx: 'column',
+                            sm: 'column',
+                            md: 'column',
+                            lg: 'row',
+                            xl: 'row',
+                        }, 
+                        gap: 2, 
+                        justifyContent: 'flex-end',
+                        alignItems:'flex-end'
+                    }}>
                         <DateRangePicker width='100%' value={range} onChange={(rg: { start: any, end: any }) => {
                             getEmplyeeLogsData(rg, status)
                             setRange(rg)
