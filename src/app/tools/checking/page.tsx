@@ -22,7 +22,7 @@ import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 
 const Checking = () => {
     const t = useTranslations()
-    const { branchList, setSessionData, sessionData } = useCheck()
+    const { branchList, setSessionData, sessionData, currentBranch, hanldeSelectedBranch, } = useCheck()
     const { open, openModal } = useCommonModal()
     return (
 
@@ -32,7 +32,7 @@ const Checking = () => {
                 <LocaleSwitcher />
             </Box>
             */}
-          
+
 
 
             <Check />
@@ -63,7 +63,10 @@ const Checking = () => {
 
             {open.type === CommonModalType.BRANCH_SELECTED && <BranchSelectorModal
                 branchList={branchList}
-                onOKAction={(branchId) => setSessionData({ ...sessionData as { employeeId: string, entityId: string, branchId: string, }, branchId: branchId.branchId })}
+                onOKAction={(branchId) => {
+                    hanldeSelectedBranch(branchId.branchId)
+                    setSessionData({ ...sessionData as { employeeId: string, entityId: string, branchId: string, }, branchId: branchId.branchId })
+                }}
             />}
             {open.type === CommonModalType.LOGS && <CheckLog />}
             {open.type === CommonModalType.CONFIG2AF && <ConfigTwoFA />}

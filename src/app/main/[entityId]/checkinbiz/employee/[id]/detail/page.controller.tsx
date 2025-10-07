@@ -70,11 +70,13 @@ export default function useEmployeeDetailController() {
       })
 
       const dataSucursalList: Array<ISucursal> = []
-      employee.branchId.forEach(async branchId => {
-        dataSucursalList.push((await fetchSucursalData(currentEntity?.entity.id as string, branchId as string)))
-      });
-      console.log(dataSucursalList);
-      
+   
+
+      await Promise.all(
+        employee.branchId.map(async (branchId) => {
+          dataSucursalList.push((await fetchSucursalData(currentEntity?.entity.id as string, branchId as string)))
+        })
+      );
       setBranchListEmployee(dataSucursalList)
       changeLoaderState({ show: false })
     } catch (error: any) {
@@ -307,7 +309,7 @@ export default function useEmployeeDetailController() {
     items, onSort, onRowsPerPageChange,
     onDelete, deleting, topFilter,
     onNext, onBack,
-    columns,branchListEmployee,
+    columns, branchListEmployee,
     loading, filterParams,
     initialValues
   }

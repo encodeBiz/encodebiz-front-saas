@@ -29,10 +29,6 @@ const Footer: React.FC = () => {
             {new Date().getFullYear()}{' '}
             {t('layout.footer.copyright')}
           </Typography>
-
-          <Typography variant="body2" color="inherit" align="center">
-            {t('layout.footer.policy')}
-          </Typography>
  
 
           <Link style={{ color: theme.palette.primary.main, textDecoration: 'none' }} href="/legal/politica-de-privacidad"> {t('core.label.accepTerm2')} </Link>

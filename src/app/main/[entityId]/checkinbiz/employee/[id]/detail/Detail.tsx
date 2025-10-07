@@ -101,20 +101,21 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                 </Box>
             </Paper>
             <Divider />
-
-            <Box sx={{ mt: 2 }}>
-                <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
-                    {t('core.label.sucursal')}
-                </Typography>
-                {Array.isArray(branchListEmployee) && <List>
-                    {branchListEmployee.map((e: ISucursal, i: number) => <ListItem key={i}>
-                        <ListItemText
-                            primary={e.name}
-                            secondary={e.address.street}
-                        />
-                    </ListItem>)}
-                </List>}
-            </Box>
+            <Paper elevation={0} sx={{ p: 3 }}>
+                <Box sx={{ mt: 2 }}>
+                    <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
+                        {t('core.label.sucursal')}
+                    </Typography>
+                    {Array.isArray(branchListEmployee) && <List>
+                        {branchListEmployee.map((e: ISucursal, i: number) => <ListItem key={i}>
+                            <ListItemText
+                                primary={e.name}
+                                secondary={e.address.street}
+                            />
+                        </ListItem>)}
+                    </List>}
+                </Box>
+            </Paper>
 
             <Divider />
 
@@ -149,12 +150,14 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
             </Paper>
         </CardContent>
 
-        {open.type === CommonModalType.DELETE && <ConfirmModal
-            isLoading={deleting}
-            title={t('employee.deleteConfirmModalTitle')}
-            description={t('employee.deleteConfirmModalTitle2')}
-            onOKAction={() => onDelete(employee)}
-        />}
-    </Card>
+        {
+            open.type === CommonModalType.DELETE && <ConfirmModal
+                isLoading={deleting}
+                title={t('employee.deleteConfirmModalTitle')}
+                description={t('employee.deleteConfirmModalTitle2')}
+                onOKAction={() => onDelete(employee)}
+            />
+        }
+    </Card >
 
 }

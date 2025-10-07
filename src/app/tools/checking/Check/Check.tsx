@@ -81,7 +81,7 @@ const Check = () => {
             {employee && <BorderBox sx={{ width: "100%", p: 2, mt: 2, mb: 2, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
                 <Typography variant="body1" fontSize={18}  > {employee.fullName}</Typography>
                 {employee?.jobTitle && <Typography variant="body1" color='textSecondary' fontSize={18}  >{employee?.jobTitle}</Typography>}
-                <Typography variant="body1" fontSize={18}  > {entity?.name}, {entity?.legal?.address.street}</Typography>
+                <Typography variant="body1" fontSize={18}  > {entity?.name}</Typography>
             </BorderBox>}
 
         </Box>
