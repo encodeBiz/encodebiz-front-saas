@@ -82,14 +82,18 @@ export default function useSucursalController() {
         entityId: currentEntity?.entity.id as string
       }
 
-      let response
+
       if (id)
-        response = await updateSucursal(data, token)
+        await updateSucursal(data, token)
       else
-        response = await createSucursal(data, token)
+        await createSucursal(data, token)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
-      navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/sucursal/${response.id}/detail`)
+
+      if (id)
+        navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/sucursal/${id}/detail`)
+      else
+        navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/sucursal`)
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
