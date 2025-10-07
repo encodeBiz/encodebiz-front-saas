@@ -46,6 +46,7 @@ export const codeError: any = {
   'twofactor/invalid_token':"La sesión ha expirado",
   "auth/untrusted_device": "Dispositivo no confiable. Se requiere verificación adicional", 
    "twofactor/invalid_code":"Código TOTP inválido",
+   "user/not_found":"No existe ningún usuario con ese correo electrónico",
   "stats/range_and_groupBy_tolong":"Los datos para graficar son demasiadox extensos, intenta seleccionar un rango menor de fechas o otro tipo de agrupación"
 };
 

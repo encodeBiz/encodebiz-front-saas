@@ -35,8 +35,8 @@ const Check = () => {
 
             <Typography variant="body1" fontWeight={'bold'} fontSize={22} > {t('checking.title')} </Typography>
 
-            <Box sx={{ p: 2, maxWidth: 600, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 4 }}>
-                <Box>
+            <Box sx={{ p: 0, maxWidth: 600, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 4 }}>
+                <Box  >
                     <Typography variant="body1" fontSize={18} > {t('checking.logDay')} </Typography>
                     <SassButton
                         sx={{

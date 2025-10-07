@@ -39,8 +39,8 @@ export default function useSucursalController() {
     postalCode: '',
     region: '',
     street: '',
-    ratioChecklog:100, 
-   
+    ratioChecklog: 100,
+
 
   });
 
@@ -59,7 +59,7 @@ export default function useSucursalController() {
     name: requiredRule(t),
     postalCode: requiredRule(t),
     status: requiredRule(t),
-    ratioChecklog:ratioLogRule(t)
+    ratioChecklog: ratioLogRule(t)
   });
 
   const handleSubmit = async (values: Partial<any>) => {
@@ -81,13 +81,15 @@ export default function useSucursalController() {
         },
         entityId: currentEntity?.entity.id as string
       }
+
+      let response
       if (id)
-        await updateSucursal(data, token)
+        response = await updateSucursal(data, token)
       else
-        await createSucursal(data, token)
+        response = await createSucursal(data, token)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
-      navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/sucursal`)
+      navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/sucursal/${response.id}/detail`)
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
@@ -204,9 +206,9 @@ export default function useSucursalController() {
         postalCode: sucursal.address.postalCode,
         region: sucursal.address.region,
         street: sucursal.address.street,
-        status:sucursal.status,
-        ratioChecklog:sucursal.ratioChecklog,
-        name:sucursal.name,
+        status: sucursal.status,
+        ratioChecklog: sucursal.ratioChecklog,
+        name: sucursal.name,
         metadata: objectToArray(sucursal.metadata)
       })
       changeLoaderState({ show: false })

@@ -65,13 +65,16 @@ export default function useEmployeeController() {
         "id": id,
         entityId: currentEntity?.entity.id
       }
+
+      let response
       if (id)
-        await updateEmployee(data, token)
+        response = await updateEmployee(data, token)
       else
-        await createEmployee(data, token)
+        response = await createEmployee(data, token)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
-      navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)
+
+      navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${response.id}/detail`)
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
