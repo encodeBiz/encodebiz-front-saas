@@ -104,7 +104,7 @@ const CheckLog = () => {
             <DialogContent  >
                 <Box sx={{ p: 2, pt: 4, position: 'relative', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 6 }}>
 
-                    <Box>
+                    <Box sx={{display: 'flex', flexDirection: 'column', gap: 2, justifyContent:'flex-end' }}>
                         <DateRangePicker width='100%' value={range} onChange={(rg: { start: any, end: any }) => {
                             getEmplyeeLogsData(rg, status)
                             setRange(rg)
