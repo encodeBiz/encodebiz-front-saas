@@ -33,22 +33,26 @@ import { useToast } from '@/hooks/useToast';
 import { fetchSucursal } from '@/services/checkinbiz/sucursal.service';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
+import SearchFilter from '@/components/common/table/filters/SearchFilter';
 const CheckLog = () => {
     const { sessionData } = useCheck()
     const t = useTranslations()
     const theme = useTheme()
     const [pending, setPending] = useState(false)
     const [range, setRange] = useState<{ start: any, end: any }>({ start: rmNDay(new Date(), 1), end: new Date() })
+    const [status, setStatus] = useState<'valid' | 'failed'>('valid')
     const [employeeLogs, setEmployeeLogs] = useState<Array<IChecklog>>([])
     const { showToast } = useToast()
     const { open, closeModal } = useCommonModal()
 
-    const getEmplyeeLogsData = async (range: { start: any, end: any }) => {
+    const getEmplyeeLogsData = async (range: { start: any, end: any }, status: 'valid' | 'failed') => {
         setPending(true)
         try {
             const filters = [
                 { field: 'timestamp', operator: '>=', value: new Date(range.start) },
                 { field: 'timestamp', operator: '<=', value: new Date(range.end) },
+                { field: 'status', operator: '==', value: status },
+
             ]
             const resultList: Array<IChecklog> = await getEmplyeeLogs(sessionData?.entityId || '', sessionData?.employeeId || '', sessionData?.branchId || '', { limit: 50, orderBy: 'timestamp', orderDirection: 'desc', filters } as any) as Array<IChecklog>
             const data = await Promise.all(
@@ -72,7 +76,7 @@ const CheckLog = () => {
 
     useEffect(() => {
         if (sessionData?.entityId)
-            getEmplyeeLogsData(range)
+            getEmplyeeLogsData(range, status)
     }, [sessionData?.entityId])
 
 
@@ -82,9 +86,9 @@ const CheckLog = () => {
             onClose={() => closeModal(CommonModalType.LOGS)}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
-             fullWidth
-             fullScreen
-             maxWidth={false}
+            fullWidth
+            fullScreen
+            maxWidth={false}
             slotProps={{ paper: { sx: { p: 0, borderRadius: 2, width: '100vw', height: '90vh', background: "#F0EFFD" } } }}
         >
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', p: 2 }}>
@@ -100,8 +104,18 @@ const CheckLog = () => {
             <DialogContent  >
                 <Box sx={{ p: 2, pt: 4, position: 'relative', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 6 }}>
 
+                    <SearchFilter
+                        label={t('core.label.status')}
+                        value={status}
+                        onChange={(value: any) => {
+                            setStatus(value)
+                            getEmplyeeLogsData(range, value)
+
+                        }}
+                        options={[{ value: 'valid' as string, label: t('core.label.valid') }, { value: 'failed' as string, label: t('core.label.failed') }]}
+                    />
                     <DateRangePicker width='100%' value={range} onChange={(rg: { start: any, end: any }) => {
-                        getEmplyeeLogsData(rg)
+                        getEmplyeeLogsData(rg, status)
                         setRange(rg)
                     }} />
                     <TableContainer component={Paper}>
