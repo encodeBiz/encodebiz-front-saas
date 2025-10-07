@@ -104,20 +104,23 @@ const CheckLog = () => {
             <DialogContent  >
                 <Box sx={{ p: 2, pt: 4, position: 'relative', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 6 }}>
 
-                    <SearchFilter width='100%'
-                        label={t('core.label.status')}
-                        value={status}
-                        onChange={(value: any) => {
-                            setStatus(value)
-                            getEmplyeeLogsData(range, value)
+                    <Box>
+                        <DateRangePicker width='100%' value={range} onChange={(rg: { start: any, end: any }) => {
+                            getEmplyeeLogsData(rg, status)
+                            setRange(rg)
+                        }} />
 
-                        }}
-                        options={[{ value: 'valid' as string, label: t('core.label.valid') }, { value: 'failed' as string, label: t('core.label.failed') }]}
-                    />
-                    <DateRangePicker width='100%' value={range} onChange={(rg: { start: any, end: any }) => {
-                        getEmplyeeLogsData(rg, status)
-                        setRange(rg)
-                    }} />
+                        <SearchFilter width='100%'
+                            label={t('core.label.status')}
+                            value={status}
+                            onChange={(value: any) => {
+                                setStatus(value)
+                                getEmplyeeLogsData(range, value)
+
+                            }}
+                            options={[{ value: 'valid' as string, label: t('core.label.valid') }, { value: 'failed' as string, label: t('core.label.failed') }]}
+                        />
+                    </Box>
                     <TableContainer component={Paper}>
                         <Table aria-label="simple table">
                             <TableHead>
