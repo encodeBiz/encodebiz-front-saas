@@ -22,7 +22,7 @@ import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 
 const Checking = () => {
     const t = useTranslations()
-    const { branchList, setSessionData, sessionData, currentBranch, hanldeSelectedBranch, } = useCheck()
+    const { branchList, setSessionData, sessionData,   hanldeSelectedBranch, } = useCheck()
     const { open, openModal } = useCommonModal()
     return (
 

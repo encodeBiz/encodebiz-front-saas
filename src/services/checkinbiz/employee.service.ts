@@ -204,6 +204,7 @@ export const getEmplyeeLogsState = async (entityId: string, employeeId: string, 
     filters: [
       ...params.filters ? params.filters : [],
       { field: 'employeeId', operator: '==', value: employeeId },
+      { field: 'status', operator: '==', value: 'valid' }
     ],
     collection: `${collection.ENTITIES}/${entityId}/checklogs`,
   });

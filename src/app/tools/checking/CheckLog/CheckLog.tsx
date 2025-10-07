@@ -82,16 +82,17 @@ const CheckLog = () => {
             onClose={() => closeModal(CommonModalType.LOGS)}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
-            maxWidth="lg"
-            fullScreen
-            slotProps={{ paper: { sx: { p: 0, borderRadius: 2, width: '100%' } } }}
+             fullWidth
+             fullScreen
+             maxWidth={false}
+            slotProps={{ paper: { sx: { p: 0, borderRadius: 2, width: '100vw', height: '90vh', background: "#F0EFFD" } } }}
         >
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', p: 2 }}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
-                    <Typography variant="body1" fontWeight={'bold'} fontSize={22} > {t('checking.title')} </Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left', mt: 4 }}>
+                    <Typography variant="body1" fontWeight={'bold'} fontSize={18} > {t('checking.history')} </Typography>
                     {pending && <CircularProgress color="inherit" size={20} />}                </Box>
                 <CustomIconBtn
-                    sx={{ position: 'absolute', top: 16, right: 16 }}
+                    sx={{ position: 'absolute', top: 16, right: 26 }}
                     onClick={() => closeModal(CommonModalType.LOGS)}
                     color={theme.palette.primary.main}
                 />
@@ -142,4 +143,3 @@ const CheckLog = () => {
 export default CheckLog;
 
 
- 

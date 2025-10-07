@@ -162,14 +162,18 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     const hanldeSelectedBranch = async (sucursalId: string) => {
         const branch = (await fetchSucursal(sessionData?.entityId as string, sucursalId))
         setCurrentBranch(branch)
+
+        createLogAction(checkAction === 'checkin' ? 'checkout' : 'checkin', () => {
+            setCheckAction(checkAction === 'checkin' ? 'checkout' : 'checkin')
+        }, sucursalId)
     }
 
-    const createLogAction = (type: "checkout" | "checkin" | "restin" | "restout", callback?: () => void) => {
+    const createLogAction = (type: "checkout" | "checkin" | "restin" | "restout", callback?: () => void, sucursalId?: string) => {
 
         const data: ICreateLog = {
             "employeeId": sessionData?.employeeId as string,
             "entityId": sessionData?.entityId as string,
-            "branchId": sessionData?.branchId as string,
+            "branchId": sucursalId ? sucursalId : sessionData?.branchId as string,
             type,
             "geo": {
                 "lat": geo.latitude,
