@@ -104,7 +104,7 @@ const CheckLog = () => {
             <DialogContent  >
                 <Box sx={{ p: 2, pt: 4, position: 'relative', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 6 }}>
 
-                    <SearchFilter
+                    <SearchFilter width='100%'
                         label={t('core.label.status')}
                         value={status}
                         onChange={(value: any) => {

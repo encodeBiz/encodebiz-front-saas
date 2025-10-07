@@ -18,20 +18,23 @@ import ConfigTwoFA from './ConfigTwoFA/ConfigTwoFA';
 import InfoModal from '@/components/common/modals/InfoModal';
 import VerifyTwoFA from './VerifyTwoFA/VerifyTwoFA';
 import LocaleSwitcher from '@/components/common/LocaleSwitcher';
+import { useStyles } from './page.styles';
 
 
 const Checking = () => {
     const t = useTranslations()
-    const { branchList, setSessionData, sessionData,   hanldeSelectedBranch, } = useCheck()
+    const { branchList, setSessionData, sessionData, hanldeSelectedBranch, } = useCheck()
     const { open, openModal } = useCommonModal()
+    const classes = useStyles();
+
     return (
 
         <Container maxWidth="sm" sx={{ backgroundColor: '#FFFFFF', height: '100vh', position: 'relative', paddingBottom: 10 }}>
-            {/** 
+
             <Box sx={classes.locale}>
                 <LocaleSwitcher />
             </Box>
-            */}
+
 
 
 
