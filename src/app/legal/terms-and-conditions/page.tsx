@@ -430,4 +430,6 @@ const TerminosCondiciones = () => {
   );
 };
 
-export default TerminosCondiciones;
+export default function TerminosCondicionesPage() {
+  return (<TerminosCondiciones />);
+}
