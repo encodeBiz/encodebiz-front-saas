@@ -68,7 +68,7 @@ const SearchFilter: React.FC<SearchIndexInputProps> = ({ onChange, options, valu
               height: 46,
               '& .MuiOutlinedInput-root': {
                 transition: 'width 0.3s ease',
-                width: '200px',
+                width: width,
                 height: 46,
                 
               },

@@ -1,10 +1,12 @@
 // src/components/Footer.tsx
 import React from 'react';
-import { Box, Typography, Container } from '@mui/material';
+import { Box, Typography, Container, useTheme } from '@mui/material';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 const Footer: React.FC = () => {
   const t = useTranslations()
+  const theme = useTheme()
   return (
     <Box
       sx={{
@@ -13,10 +15,10 @@ const Footer: React.FC = () => {
         position: 'relative',
         zIndex: (theme) => theme.zIndex.drawer + 1,
         py: 3,
-        mt:6,
-        height:110,
+        mt: 6,
+        height: 110,
         bottom: 0,
-        pt:6,
+        pt: 6,
         borderTop: 2, borderColor: 'secondary.dark',
       }}
     >
@@ -27,11 +29,10 @@ const Footer: React.FC = () => {
             {new Date().getFullYear()}{' '}
             {t('layout.footer.copyright')}
           </Typography>
+ 
 
-          <Typography variant="body2" color="inherit" align="center">
-
-            {t('layout.footer.policy')}
-          </Typography>
+          <Link style={{ color: theme.palette.primary.main, textDecoration: 'none' }} href="/legal/privacy-policy"> {t('core.label.accepTerm2')} </Link>
+          <Link style={{ color: theme.palette.primary.main, textDecoration: 'none' }} href="/legal/terms-and-conditions">{t('core.label.accepTerm4')} </Link>
         </Box>
       </Container>
     </Box>

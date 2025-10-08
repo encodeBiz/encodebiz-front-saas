@@ -11,6 +11,7 @@ export const useStyles = (): Record<string, SxProps<Theme>> => ({
   containerTop: { textAlign: 'center', mb: 4 },
   fullWidth: { width: '100%' },
   locale:{
+    marginBottom:4,
     position:{
       xs:'relative',
       sm:'relative',

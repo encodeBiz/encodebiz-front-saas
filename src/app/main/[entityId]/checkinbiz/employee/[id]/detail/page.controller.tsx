@@ -55,6 +55,7 @@ export default function useEmployeeDetailController() {
     branchId: [],
     metadata: []
   });
+  const [branchListEmployee, setBranchListEmployee] = useState<Array<ISucursal>>()
 
   const fetchData = async () => {
     try {
@@ -67,6 +68,16 @@ export default function useEmployeeDetailController() {
         trustedDevicesId: data.trustedDevicesId,
         metadata: objectToArray(employee.metadata ?? {})
       })
+
+      const dataSucursalList: Array<ISucursal> = []
+   
+
+      await Promise.all(
+        employee.branchId.map(async (branchId) => {
+          dataSucursalList.push((await fetchSucursalData(currentEntity?.entity.id as string, branchId as string)))
+        })
+      );
+      setBranchListEmployee(dataSucursalList)
       changeLoaderState({ show: false })
     } catch (error: any) {
       changeLoaderState({ show: false })
@@ -298,7 +309,7 @@ export default function useEmployeeDetailController() {
     items, onSort, onRowsPerPageChange,
     onDelete, deleting, topFilter,
     onNext, onBack,
-    columns,
+    columns, branchListEmployee,
     loading, filterParams,
     initialValues
   }

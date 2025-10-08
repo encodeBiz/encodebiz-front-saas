@@ -26,7 +26,7 @@
         "Services": "Servicios",
         "Events": "Eventos",
         "Media": "Media",
-        "Report": "Reporte",
+        "Report": "Reportes",
         "Sucursal": "Sucursal",
         "home": "Inicio",
         "Integration": "Integraciones",
@@ -91,18 +91,14 @@
       "nocard": "No tienes métodos de pago asociado a la entidad, por favor configure al menos uno."
     },
     "label": {
-
       "today": "Hoy",
       "thisWeek": "Esta semana",
       "thisMonth": "Este mes",
       "thisYear": "Este año",
-
       "valid": "Valido",
- 
-      
+      "sucursal": "Sucursal",
       "branch": "Sucursal",
       "register": "Registro",
-     
       "disable2AF": "No tiene habilitado 2AF",
       "enable2AF": "Tiene habilitado 2AF",
       "employee": "Empleado",
@@ -111,7 +107,6 @@
       "leave_of_absence": "Licencia por ausencia",
       "paternity_leave": "Permiso de paternidad",
       "maternity_leave": "Permiso de maternidad",
-
       "subEntity": "Sucursal",
       "subEntityName": "Nombre de la sucursal",
       "subEntityData": "DATOS DE LA SUCURSAL",
@@ -119,6 +114,7 @@
       "collaborator": "Colaborador",
       "ratioChecklog": "Radio de chequeo en metros",
       "ratioChecklog2": "Radio de chequeo",
+      "nit":"NIT",
       "inactive": "Inactivo",
       "personalData": "INFORMACIÓN PESONAL",
       "aditionalData": "INFORMACIÓN ADICIONAL",
@@ -150,8 +146,8 @@
       "availableEvent": "Eventos disponibles",
       "selectedEvent": "Eventos seleccionados",
       "events": "Eventos",
-      "jobTitle":"Ocupación actual",
-      "nationalId":"NIT/DNI/CI/ID",
+      "jobTitle": "Ocupación actual",
+      "nationalId": "NIT/DNI/CI/ID",
       "credential": "Credencial",
       "admin": "Administrador",
       "guest": "Invitado",
@@ -260,7 +256,6 @@
       "validator_event": "Verificador de eventos",
       "validator_credential": "Verificador de credenciales",
       "service": "Servicio",
-
       "checkout": "Terminando jornada",
       "checkin": "Comenzando jornada",
       "restin": "Comenzando descanso",
@@ -277,7 +272,7 @@
       "upgrade": "Actualizar plan",
       "upgradeSuscription": "Actualizar suscripción",
       "resend": "Reenviar",
-      "back":"Atrás",
+      "back": "Atrás",
       "reactive": "Reactivar",
       "submitting": "Enviando...",
       "submit": "Enviar",
@@ -304,6 +299,8 @@
     },
     "formValidatorMessages": {
       "required": "Este campo es requerido",
+      "min": "EL valor del campo debe ser mayor a ",
+      "max": "EL valor del campo debe ser menor a ",
       "minArray": "Debe seleccionar al menos 1 elemento",
       "email": "Este campo es debe ser un correo electrónico válido",
       "password": "La contraseña es demasiado corta: debe tener un mínimo de 8 caracteres.",
@@ -315,7 +312,7 @@
     "signup": {
       "title": "Crea una cuenta",
       "signup": "Crear cuenta",
-      "subtitle": "Tu panel único paragestionar los servicios de encodeBiz SaaS.",
+      "subtitle": "Tu panel único para gestionar los servicios de encodeBiz SaaS.",
       "or": "O",
       "google": "Unete con Google",
       "facebook": "Unete con Facebook",
@@ -596,6 +593,10 @@
     "description2": "Asocie o retire eventos al personal de apoyo",
     "description": "Rellene los campos para registrar el personal de apoyo",
     "deleteConfirmModalTitle": "Eliminar Personal de Apoyo",
+    "noEventTitle":"No existen eventos",
+    "noEventText":"No existen eventos asociados a la entidad, cree el primer evento ahora",
+    "createEvent":"Crear evento",
+         
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el personal de apoyo y todas sus configuraciones"
   },
   "employee": {
@@ -607,16 +608,14 @@
     "detail": "Detalles",
     "configureDevice": "Configurar dispositivo de confianza",
     "import": "Importar",
-     "detailSucursal": "Detalles de empleado",
-
+    "detailSucursal": "Detalles de empleado",
     "description": "Rellene los campos para registrar el empleado",
     "deleteConfirmModalTitle": "Eliminar empleado",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el empleado"
   },
-  "checklog":{
-     "title": "Registros de asistencia",
+  "checklog": {
+    "title": "Registros de asistencia",
     "list": "Registros de asistencia",
-      
     "formDesc": "Completa los campos a continuación para registrar el empleado."
   },
   "sucursal": {
@@ -628,19 +627,18 @@
     "report": "Emitir reporte",
     "detailSucursal": "Detalles de la sucursal",
     "update": "Editar",
+    "edit": "Editar",
     "import": "Importar",
     "description": "Rellene los campos para registrar la sucursal",
     "deleteConfirmModalTitle": "Eliminar sucursal",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente la sucursal"
   },
-  
   "report": {
     "title": "Reportes",
     "formDesc": "Completa los campos a continuación para crear un reporte.",
     "list": "Reportes",
     "add": "Crear reporte",
-    
-    "export":"Exportar reporte",
+    "export": "Exportar reporte",
     "report": "Emitir reporte",
     "detailSucursal": "Detalles del reporte",
     "update": "Editar",
@@ -801,45 +799,42 @@
     "series": "Series visibles",
     "empthytext": "Ajusta los filtros con los parámetros que requieras para gráficar información"
   },
-  "checking":{
-    "title":"Control de Asistencia",
-    "logDay":"Registro de Jornada",
-    "controlDay":"Control de Descanso",
-
-    "startJornada":"Iniciar Jornada",
-    "endJornada":"Finalizar Jornada",
-    "startDescanso":"Iniciar Descanso",
-    "endDescanso":"Finalizar Descanso",
- "titleBranch": "Seleccione la sucursal",
+  "checking": {
+    "title": "Control de Asistencia",
+    "logDay": "Registro de Jornada",
+    "controlDay": "Control de Descanso",
+    "startJornada": "Iniciar Jornada",
+    "endJornada": "Finalizar Jornada",
+    "startDescanso": "Iniciar Descanso",
+    "endDescanso": "Finalizar Descanso",
+    "titleBranch": "Seleccione la sucursal",
     "selected": "Seleccionar  sucursal",
-    "history":"Historial de Asistencia"
+    "history": "HISTORIAL DE ASISTENCIA"
   },
-  "twoFactor":{
-     "copyCode":"Código copiado",
-    "newDevice":"Nuevo dispositivo de seguridad",
-    "addCode":"Introduce el código de un solo uso",
-    "writeCode":"Escribe el código de 6 dígitos que te muestra la app de autenticación.",
-    "verifyAndContinue":"Verificar y continuar",
-    "newDeviceMessage":"Dispositivo de confianza confirmado",
-    "newDeviceMessageText":"Este equipo queda registrado como tu dispositivo de confianza.",
-    "configDevice":"Configurar dispositivo de seguridad",
-    "step1":"Paso 1: Escanea este código QR",
-    "step1Text1":"Añade una app de autenticación para proteger tus registros configuraciones en CheckBiz. ",
-    "step1Text2":"Puedes usar GoogleAuthenticator, Microsoft Authenticator, Duo, Authy u otra compatible.",
-    "step1Title1":"Abre tu app de autenticación y elige ",
-    "step1Title2":"“Añadir cuenta” → “Escanear código QR”.",
-    "noScanner":"¿No puedes escanear el código?",
-    "step2Title1":"Paso 2: Introduce el código de un solo uso",
-    "step2Text1":"Escribe el código de 6 dígitos que te muestra la app de autenticación.",
-    "step3Title1":"Paso 1: Copia y pega esta clave",
-    "step3Text1":"Pegue la clave a continuación en su aplicación de autenticación, Como GoogleAuthenticator, Microsoft Authenticator, Duo, Authy u otra compatible.",
-    "scannerQR":"¿Prefieres escanear un QR?",
-    "step4Title1":"Paso 2: Introduce el código de un solo uso",
-    "step4Text1":"Escribe el código de 6 dígitos que te muestra la app de autenticación.",
-    "copyClave":"Copiar clave",
-
-    "titleValidate":"Tu navegador no es de confianza",
-    "text1Validate":"Para poner agregar tu navegador como dispositivo de confianza escribe el código de 6 dígitos que te muestra la app de autenticación."
- 
-  } 
+  "twoFactor": {
+    "copyCode": "Código copiado",
+    "newDevice": "Nuevo dispositivo de seguridad",
+    "addCode": "Introduce el código de un solo uso",
+    "writeCode": "Escribe el código de 6 dígitos que te muestra la app de autenticación.",
+    "verifyAndContinue": "Verificar y continuar",
+    "newDeviceMessage": "Dispositivo de confianza confirmado",
+    "newDeviceMessageText": "Este equipo queda registrado como tu dispositivo de confianza.",
+    "configDevice": "Configurar dispositivo de seguridad",
+    "step1": "Paso 1: Escanea este código QR",
+    "step1Text1": "Añade una app de autenticación para proteger tus registros configuraciones en CheckBiz. ",
+    "step1Text2": "Puedes usar GoogleAuthenticator, Microsoft Authenticator, Duo, Authy u otra compatible.",
+    "step1Title1": "Abre tu app de autenticación y elige ",
+    "step1Title2": "“Añadir cuenta” → “Escanear código QR”.",
+    "noScanner": "¿No puedes escanear el código?",
+    "step2Title1": "Paso 2: Introduce el código de un solo uso",
+    "step2Text1": "Escribe el código de 6 dígitos que te muestra la app de autenticación.",
+    "step3Title1": "Paso 1: Copia y pega esta clave",
+    "step3Text1": "Pegue la clave a continuación en su aplicación de autenticación, Como GoogleAuthenticator, Microsoft Authenticator, Duo, Authy u otra compatible.",
+    "scannerQR": "¿Prefieres escanear un QR?",
+    "step4Title1": "Paso 2: Introduce el código de un solo uso",
+    "step4Text1": "Escribe el código de 6 dígitos que te muestra la app de autenticación.",
+    "copyClave": "Copiar clave",
+    "titleValidate": "Tu navegador no es de confianza",
+    "text1Validate": "Para poner agregar tu navegador como dispositivo de confianza escribe el código de 6 dígitos que te muestra la app de autenticación."
+  }
 }

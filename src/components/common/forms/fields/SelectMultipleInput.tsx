@@ -27,7 +27,7 @@ const SelectMultipleInput: React.FC<SelectMultipleInputProps> = ({
       disabled={props.disabled}
       multiple
       label={props.label}
-      error={!!error}
+      error={!!helperText}
       value={[...(field.value ?? [])]}
       onChange={(e: any) => {
         const value = e.target.value

@@ -14,11 +14,14 @@ import SelectMultipleInput from "@/components/common/forms/fields/SelectMultiple
 import { fetchEvent, search, searchEventsByStaff, updateEvent } from "@/services/passinbiz/event.service";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { Timestamp } from "firebase/firestore";
+import { useCommonModal } from "@/hooks/useCommonModal";
+import { CommonModalType } from "@/contexts/commonModalContext";
 
 
 export default function useStaffController() {
   const t = useTranslations();
   const { showToast } = useToast()
+  const { openModal } = useCommonModal()
 
   const { token, user } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
@@ -83,6 +86,9 @@ export default function useStaffController() {
   const onChangeType = async (typeValue: Array<'credential' | 'event'>) => {
 
     if (typeValue.includes('event')) {
+      if (eventData.eventList.length === 0) {
+        openModal(CommonModalType.INFO)
+      }
       setFields([...fieldList,
       {
         name: 'eventList',
@@ -187,7 +193,7 @@ export default function useStaffController() {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const staff: IStaff = await fetchStaff(currentEntity?.entity.id as string, id)
       const eventStaffList: Array<IEvent> = await searchEventsByStaff(id)
- 
+
       setInitialValues({
         fullName: staff.fullName ?? "",
         email: staff.email ?? "",

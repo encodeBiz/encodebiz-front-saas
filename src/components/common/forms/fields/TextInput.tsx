@@ -10,21 +10,21 @@ const TextInput: React.FC<FieldProps & TextFieldProps & { afterTextField: string
 }) => {
   const [field, meta] = useField(props.name);
   const { touched, error } = meta
-  const helperText = touched && error;
   const { formStatus } = useFormStatus()
   return (<Box display={'flex'} justifyItems={'center'} alignItems={'center'} >
+ 
     <TextField
       {...field}
       {...props}
       value={field.value ?? ``}
-      error={!!error}
+      error={!!(touched && error)}
       multiline={props.type === 'textarea'}
       rows={2}
       disabled={props.disabled || (props.name === 'postalCode' && (!formStatus?.values?.country || !formStatus?.values?.city))}
-      helperText={helperText as string}
-
+      helperText={touched && error as string}
+      
       slotProps={{
-        input: helperText ? {
+        input: touched && error ? {
           endAdornment: <InputAdornment position="end"><Error color='error' /></InputAdornment>,
         } : {},
       }}

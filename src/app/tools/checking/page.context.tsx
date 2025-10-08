@@ -4,6 +4,7 @@ import { CommonModalType } from '@/contexts/commonModalContext';
 import IEntity from '@/domain/core/auth/IEntity';
 import { IChecklog, ICreateLog } from '@/domain/features/checkinbiz/IChecklog';
 import { IEmployee } from '@/domain/features/checkinbiz/IEmployee';
+import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { useLayout } from '@/hooks/useLayout';
 import { useToast } from '@/hooks/useToast';
@@ -47,6 +48,9 @@ interface CheckType {
     setSessionData: (data: { employeeId: string, entityId: string, branchId: string, }) => void
     token: string
     setToken: (token: string) => void
+
+    currentBranch: ISucursal | undefined
+    hanldeSelectedBranch: (sucursalId: string) => void
 }
 
 
@@ -71,6 +75,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     const searchParams = useSearchParams()
     const customToken = searchParams.get('customToken') || token;
     const { openModal } = useCommonModal()
+    const [currentBranch, setCurrentBranch] = useState<ISucursal>()
 
     const [branchList, setBranchList] = useState<Array<{ name: string, branchId: string }>>([])
     const [sessionData, setSessionData] = useState<{ employeeId: string, entityId: string, branchId: string, }>()
@@ -109,7 +114,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
             if (!response.payload.twoFa) {
                 openModal(CommonModalType.CONFIG2AF)
-            }  
+            }
             getLastState(response.payload.entityId, response.payload.employeeId)
             setToken(response.sessionToken)
             changeLoaderState({ show: false })
@@ -154,38 +159,45 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
     }
 
-    const createLogAction = (type: "checkout" | "checkin" | "restin" | "restout", callback?: () => void) => {
-        if (!sessionData?.branchId && branchList.length > 0)
-            openModal(CommonModalType.BRANCH_SELECTED)
-        else {
-            const data: ICreateLog = {
-                "employeeId": sessionData?.employeeId as string,
-                "entityId": sessionData?.entityId as string,
-                "branchId": sessionData?.branchId as string,
-                type,
-                "geo": {
-                    "lat": geo.latitude,
-                    "lng": geo.longitude
-                }
+    const hanldeSelectedBranch = async (sucursalId: string) => {
+        const branch = (await fetchSucursal(sessionData?.entityId as string, sucursalId))
+        setCurrentBranch(branch)
+
+        createLogAction(checkAction === 'checkin' ? 'checkout' : 'checkin', () => {
+            setCheckAction(checkAction === 'checkin' ? 'checkout' : 'checkin')
+        }, sucursalId)
+    }
+
+    const createLogAction = (type: "checkout" | "checkin" | "restin" | "restout", callback?: () => void, sucursalId?: string) => {
+
+        const data: ICreateLog = {
+            "employeeId": sessionData?.employeeId as string,
+            "entityId": sessionData?.entityId as string,
+            "branchId": sucursalId ? sucursalId : sessionData?.branchId as string,
+            type,
+            "geo": {
+                "lat": geo.latitude,
+                "lng": geo.longitude
             }
-            setPending(true);
-            changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-
-            createLog(data, token).then(() => {
-
-                if (typeof callback === 'function') callback()
-
-            }).catch(e => {
-
-                if (e?.message?.includes('Dispositivo no confiable')) {
-                    openModal(CommonModalType.ADDDEVICE2AF)
-                }
-
-                showToast(e?.message, 'error')
-            }).finally(() => {
-                changeLoaderState({ show: false })
-            })
         }
+        setPending(true);
+        changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+
+        createLog(data, token).then(() => {
+
+            if (typeof callback === 'function') callback()
+
+        }).catch(e => {
+
+            if (e?.message?.includes('Dispositivo no confiable')) {
+                openModal(CommonModalType.ADDDEVICE2AF)
+            }
+
+            showToast(e?.message, 'error')
+        }).finally(() => {
+            changeLoaderState({ show: false })
+        })
+
     }
 
     const fetchEntityData = async () => {
@@ -216,7 +228,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
     return (
         <CheckContext.Provider value={{
-            pendingStatus,
+            pendingStatus, currentBranch, hanldeSelectedBranch,
             setSessionData, sessionData, setToken,
             entity, employee, branchList, token,
             pending, checkAction, setCheckAction, restAction, setRestAction, createLogAction

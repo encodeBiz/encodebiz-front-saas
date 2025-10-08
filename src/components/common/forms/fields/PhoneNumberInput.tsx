@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Box, InputAdornment, MenuItem, Select, TextField, TextFieldProps, Typography } from '@mui/material';
 import { FieldProps, useField } from 'formik';
-import { countries } from '@/config/constants';
-import Image from 'next/image';
+import { countriesCode } from '@/config/constants';
+import { Error } from '@mui/icons-material';
 
 const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
     ...props
@@ -11,7 +11,7 @@ const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
     const { touched, error } = meta
     const helperText = touched && error;
 
-    const [countryCode, setCountryCode] = useState('+34');
+    const [countryCode, setCountryCode] = useState('34');
     const [phoneNumber, setPhoneNumber] = useState(field.value.replace(/^\+\d+\s?/, ''));
 
     const handleCountryChange = (event: any) => {
@@ -46,13 +46,14 @@ const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
         <TextField
             {...field}
             {...props}
-            error={!!error}
+            error={!!helperText}
             helperText={helperText as string}
 
             value={formatPhoneNumber(phoneNumber)}
             onChange={handlePhoneChange}
             slotProps={{
                 input: {
+                    endAdornment: <InputAdornment position="end"><Error color='error' /></InputAdornment>,
                     startAdornment: <InputAdornment position="start">
                         <Select
                             value={countryCode}
@@ -77,26 +78,18 @@ const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
                                     }
                                 }
                             }}
+                            renderValue={(selected) => selected}
                         >
-                            {countries.map((country) => (
-                                <MenuItem key={country.code} value={country.dial_code}>
+                            {countriesCode.sort((a, b) => a.name.localeCompare(b.name)).map((country) => (
+                                <MenuItem key={country.isoCode} value={country.dialCode}>
                                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                        <Image width={20} height={20}
-                                            src={`https://flagcdn.com/w20/${country.code.toLowerCase()}.png`}
-                                            alt={country.name}
-                                            style={{ marginRight: 8, width: 20 }}
-                                        />
-                                        <Typography variant="body2">{country.dial_code}</Typography>
+                                        <Typography variant="body2">{country.phoneCode} {country.name}</Typography>
                                     </Box>
                                 </MenuItem>
                             ))}
                         </Select>
                     </InputAdornment>
                 }
-            }}
-            inputProps={{
-                inputMode: 'tel',
-                maxLength: countryCode === '+1' ? 14 : 20 // Adjust for formatting
             }}
         />
     );

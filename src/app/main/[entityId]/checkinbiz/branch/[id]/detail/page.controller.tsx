@@ -62,7 +62,7 @@ export default function useEmployeeDetailController() {
 
   const { navivateTo } = useLayout()
   const onDetail = async (item: any) => {
-    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${item.id}/detail`)
+    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${item.id}/detail?back=${id}`)
   }
 
   const rowAction: Array<IRowAction> = [

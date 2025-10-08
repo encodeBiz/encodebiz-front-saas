@@ -8,9 +8,12 @@ import { PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
 import { useParams, useSearchParams } from 'next/navigation';
 import { IStaff } from '@/domain/features/passinbiz/IStaff';
 import { SassButton } from '@/components/common/buttons/GenericButton';
- import { useRef } from 'react';
+import { useRef } from 'react';
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { useLayout } from '@/hooks/useLayout';
+import InfoModal from '@/components/common/modals/InfoModal';
+import { CommonModalType } from '@/contexts/commonModalContext';
+import { useCommonModal } from '@/hooks/useCommonModal';
 
 export default function StaffForm() {
   const { fields, initialValues, validationSchema, submitForm } = useStaffController();
@@ -20,7 +23,7 @@ export default function StaffForm() {
   const formRef = useRef(null)
   const { formStatus } = useFormStatus()
   const searchParams = useSearchParams()
-
+  const { open, closeModal } = useCommonModal()
   const handleExternalSubmit = () => {
     if (formRef.current) {
       (formRef.current as any).submitForm()
@@ -38,13 +41,13 @@ export default function StaffForm() {
               disabled={formStatus?.isSubmitting}
               onClick={() => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/staff?params=${searchParams.get('params')}`)}
               variant='outlined'
-            
+
             > {t('core.button.cancel')}</SassButton>
             <SassButton
               disabled={!formStatus?.isValid || formStatus?.isSubmitting}
               onClick={handleExternalSubmit}
               variant='contained'
-         
+
             > {t('core.button.saveChanges')}</SassButton>
           </Box>
         }
@@ -63,6 +66,18 @@ export default function StaffForm() {
           />
         </Box>
       </HeaderPage>
+
+      {open.type === CommonModalType.INFO && <InfoModal
+
+        title={t('staff.noEventTitle')}
+        description={t('staff.noEventText')}
+        btnText={t('staff.createEvent')}
+        onClose={() => {
+          closeModal(CommonModalType.INFO)
+          navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event/add`)
+        }}
+
+      />}
     </Container>
   );
 }

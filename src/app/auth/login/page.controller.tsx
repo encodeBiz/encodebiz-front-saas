@@ -107,6 +107,8 @@ export const useRegisterController = () => {
 
 
 
+    
+
 
     return { signInWithGoogle, signInWithEmail, validationSchema, initialValues, fields }
 }

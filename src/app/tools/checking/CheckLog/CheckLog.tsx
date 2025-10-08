@@ -15,6 +15,7 @@ import {
     TableHead,
     TableRow,
     Typography,
+    useMediaQuery,
     useTheme
     ,
 
@@ -33,22 +34,28 @@ import { useToast } from '@/hooks/useToast';
 import { fetchSucursal } from '@/services/checkinbiz/sucursal.service';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
+import SearchFilter from '@/components/common/table/filters/SearchFilter';
 const CheckLog = () => {
     const { sessionData } = useCheck()
     const t = useTranslations()
     const theme = useTheme()
     const [pending, setPending] = useState(false)
     const [range, setRange] = useState<{ start: any, end: any }>({ start: rmNDay(new Date(), 1), end: new Date() })
+    const [status, setStatus] = useState<'valid' | 'failed'>('valid')
     const [employeeLogs, setEmployeeLogs] = useState<Array<IChecklog>>([])
     const { showToast } = useToast()
     const { open, closeModal } = useCommonModal()
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-    const getEmplyeeLogsData = async (range: { start: any, end: any }) => {
+
+    const getEmplyeeLogsData = async (range: { start: any, end: any }, status: 'valid' | 'failed') => {
         setPending(true)
         try {
             const filters = [
                 { field: 'timestamp', operator: '>=', value: new Date(range.start) },
                 { field: 'timestamp', operator: '<=', value: new Date(range.end) },
+                { field: 'status', operator: '==', value: status },
+
             ]
             const resultList: Array<IChecklog> = await getEmplyeeLogs(sessionData?.entityId || '', sessionData?.employeeId || '', sessionData?.branchId || '', { limit: 50, orderBy: 'timestamp', orderDirection: 'desc', filters } as any) as Array<IChecklog>
             const data = await Promise.all(
@@ -72,7 +79,7 @@ const CheckLog = () => {
 
     useEffect(() => {
         if (sessionData?.entityId)
-            getEmplyeeLogsData(range)
+            getEmplyeeLogsData(range, status)
     }, [sessionData?.entityId])
 
 
@@ -82,16 +89,17 @@ const CheckLog = () => {
             onClose={() => closeModal(CommonModalType.LOGS)}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
-            maxWidth="lg"
-            fullScreen
-            slotProps={{ paper: { sx: { p: 0, borderRadius: 2, width: '100%' } } }}
+            fullWidth
+            fullScreen={isMobile}
+            maxWidth={'lg'}
+            slotProps={{ paper: { sx: { p: 0, borderRadius: 2, width: '100vw', height: '90vh', background: "#F0EFFD" } } }}
         >
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', p: 2 }}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
-                    <Typography variant="body1" fontWeight={'bold'} fontSize={22} > {t('checking.title')} </Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left', mt: 4 }}>
+                    <Typography variant="body1" fontWeight={'bold'} fontSize={18} > {t('checking.history')} </Typography>
                     {pending && <CircularProgress color="inherit" size={20} />}                </Box>
                 <CustomIconBtn
-                    sx={{ position: 'absolute', top: 16, right: 16 }}
+                    sx={{ position: 'absolute', top: 16, right: 26 }}
                     onClick={() => closeModal(CommonModalType.LOGS)}
                     color={theme.palette.primary.main}
                 />
@@ -99,10 +107,35 @@ const CheckLog = () => {
             <DialogContent  >
                 <Box sx={{ p: 2, pt: 4, position: 'relative', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 6 }}>
 
-                    <DateRangePicker width='100%' value={range} onChange={(rg: { start: any, end: any }) => {
-                        getEmplyeeLogsData(rg)
-                        setRange(rg)
-                    }} />
+                    <Box sx={{
+                        display: 'flex',
+                        flexDirection: {
+                            sx: 'column',
+                            sm: 'column',
+                            md: 'column',
+                            lg: 'column',
+                            xl: 'column',
+                        }, 
+                        gap: 2, 
+                        justifyContent: 'flex-end',
+                        alignItems:'flex-end'
+                    }}>
+                        <DateRangePicker width='100%' value={range} onChange={(rg: { start: any, end: any }) => {
+                            getEmplyeeLogsData(rg, status)
+                            setRange(rg)
+                        }} />
+
+                        <SearchFilter width='100%'
+                            label={t('core.label.status')}
+                            value={status}
+                            onChange={(value: any) => {
+                                setStatus(value)
+                                getEmplyeeLogsData(range, value)
+
+                            }}
+                            options={[{ value: 'valid' as string, label: t('core.label.valid') }, { value: 'failed' as string, label: t('core.label.failed') }]}
+                        />
+                    </Box>
                     <TableContainer component={Paper}>
                         <Table aria-label="simple table">
                             <TableHead>
@@ -142,4 +175,3 @@ const CheckLog = () => {
 export default CheckLog;
 
 
- 

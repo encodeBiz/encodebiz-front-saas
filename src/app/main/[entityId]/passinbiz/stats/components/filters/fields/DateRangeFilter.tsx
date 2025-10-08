@@ -92,7 +92,7 @@ export const DateRangePicker = ({
         return result;
     }
 
-
+    const [filterRange, setFilterRange] = useState('')
     return <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Box display={'flex'} flexDirection={'column'} gap={0} >
             <FormControl sx={{ width: width, mb: 0 }}>
@@ -100,17 +100,17 @@ export const DateRangePicker = ({
                 <Box display="flex" gap={2} flexDirection={{ xs: 'column', sm: 'row' }}>
                     <DateTimePicker
                         label={'Inicio'}
-            
+
                         defaultValue={dayjs(startDate ?? new Date())}
                         value={dayjs(startDate ?? new Date())}
                         onChange={handleStartDateChange}
                         maxDate={dayjs(endDate) || undefined}
-                        sx={{ flex: 1, height:46 }}
+                        sx={{ flex: 1, height: 46 }}
 
                         slotProps={{
                             textField: {
                                 size: 'small',
-                                
+
                             },
                         }}
                     />
@@ -135,10 +135,22 @@ export const DateRangePicker = ({
 
             </FormControl>
             {filter && <Box display={'flex'} flexDirection={'row'} gap={1} >
-                <Typography sx={{cursor:'pointer'}} variant="caption" onClick={() => onChange?.({ start: getDateRange('today')?.start, end: getDateRange('today')?.end })} color="primary">{t('core.label.today')}</Typography>
-                <Typography sx={{cursor:'pointer'}} variant="caption" onClick={() => onChange?.({ start: getDateRange('week')?.start, end: getDateRange('week')?.end })} color="primary">{t('core.label.thisWeek')}</Typography>
-                <Typography sx={{cursor:'pointer'}} variant="caption" onClick={() => onChange?.({ start: getDateRange('month')?.start, end: getDateRange('month')?.end })} color="primary">{t('core.label.thisMonth')}</Typography>
-                <Typography sx={{cursor:'pointer'}} variant="caption" onClick={() => onChange?.({ start: getDateRange('year')?.start, end: getDateRange('year')?.end })} color="primary">{t('core.label.thisYear')}</Typography>
+                <Typography sx={{ "&:hover": { background: '#E9E8F5' }, cursor: 'pointer', px: 2, py: 0.3, borderRadius: 4, ...(filterRange==='today'?{background: '#476ae73f', color: '#476BE7' }:{})}} variant="caption" onClick={() => {
+                    onChange?.({ start: getDateRange('today')?.start, end: getDateRange('today')?.end })
+                    setFilterRange('today')
+                }} >{t('core.label.today')}</Typography>
+                <Typography sx={{ "&:hover": { background: '#E9E8F5' }, cursor: 'pointer', px: 2, py: 0.3, borderRadius: 4, ...(filterRange==='week'?{background: '#476ae73f', color: '#476BE7' }:{})}} variant="caption" onClick={() => {
+                    onChange?.({ start: getDateRange('week')?.start, end: getDateRange('week')?.end })
+                    setFilterRange('week')
+                }} >{t('core.label.thisWeek')}</Typography>
+                <Typography sx={{ "&:hover": { background: '#E9E8F5' }, cursor: 'pointer', px: 2, py: 0.3, borderRadius: 4, ...(filterRange==='month'?{background: '#476ae73f', color: '#476BE7' }:{})}} variant="caption" onClick={() => {
+                    onChange?.({ start: getDateRange('month')?.start, end: getDateRange('month')?.end })
+                    setFilterRange('month')
+                }} >{t('core.label.thisMonth')}</Typography>
+                <Typography sx={{ "&:hover": { background: '#E9E8F5' }, cursor: 'pointer', px: 2, py: 0.3, borderRadius: 4, ...(filterRange==='year'?{background: '#476ae73f', color: '#476BE7' }:{})}} variant="caption" onClick={() => {
+                    onChange?.({ start: getDateRange('year')?.start, end: getDateRange('year')?.end })
+                    setFilterRange('year')
+                }} >{t('core.label.thisYear')}</Typography>
             </Box>}
         </Box>
     </LocalizationProvider>

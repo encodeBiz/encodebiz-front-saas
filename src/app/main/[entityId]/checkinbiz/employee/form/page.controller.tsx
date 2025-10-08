@@ -8,7 +8,7 @@ import { emailRule, requiredRule } from '@/config/yupRules';
 import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { ArrayToObject, objectToArray } from "@/lib/common/String";
 import { createEmployee, fetchEmployee, updateEmployee } from "@/services/checkinbiz/employee.service";
@@ -17,7 +17,7 @@ import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { search } from "@/services/checkinbiz/sucursal.service";
 import SelectMultipleInput from "@/components/common/forms/fields/SelectMultipleInput";
- 
+
 
 export default function useEmployeeController() {
   const t = useTranslations();
@@ -28,13 +28,15 @@ export default function useEmployeeController() {
   const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
   const [fields, setFields] = useState<Array<any>>([])
+  const searchParams = useSearchParams()
+  const branchId = searchParams.get('branchId')
   const [initialValues, setInitialValues] = useState<Partial<IEmployee>>({
     "fullName": '',
     email: '',
     phone: '',
     role: "internal",
     status: 'active',
-    branchId: [],
+    branchId: branchId ? [branchId] : [],
     metadata: []
   });
 
@@ -63,13 +65,19 @@ export default function useEmployeeController() {
         "id": id,
         entityId: currentEntity?.entity.id
       }
+
+ 
       if (id)
         await updateEmployee(data, token)
       else
-        await createEmployee(data, token)
+         await createEmployee(data, token)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
-      navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)
+
+      if (id)
+        navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${id}/detail`)
+      else
+        navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
@@ -112,7 +120,7 @@ export default function useEmployeeController() {
         phone: '',
         role: "internal",
         status: 'active',
-        branchId: branckList.length == 1 ? branckList.map(e => e.value as string) : [],
+        branchId: branchId ? [branchId] : branckList.length == 1 ? branckList.map(e => e.value as string) : [],
         metadata: []
       })
     }
@@ -178,6 +186,7 @@ export default function useEmployeeController() {
         required: false,
         options: branckList,
         component: SelectMultipleInput,
+        disabled: !!branchId
       },
       {
         isDivider: true,
@@ -199,7 +208,7 @@ export default function useEmployeeController() {
         type: 'text',
         required: false,
         component: TextInput,
-        
+
       },
       {
         name: 'metadata',

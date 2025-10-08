@@ -104,8 +104,6 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
 
                     </Box>
                     {name !== 'freemium' && <Divider sx={{ background: () => current ? '#4AB84F' : highlighted ? "#FFF" :  '#002FB7' }} />}
-
-
                     <List sx={{ marginTop: "10px" }}>
                         {(features as Array<string> ?? [])?.map((feature, i) => (
                             <ListItem key={i} disableGutters>
@@ -118,7 +116,6 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
                     </List>
                     {current && <SassButton
                         fullWidth
-
                         variant="outlined"
                         color='error'
                         onClick={() => {
@@ -136,8 +133,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
             description={t('salesPlan.imageConfirmModalTitle2')}
             textPoint={items}
             textBtn={t('core.button.configurenow')}
-            type={CommonModalType.BILLING}
-        
+            type={CommonModalType.BILLING}        
             onOKAction={() => {
                 closeModal(CommonModalType.BILLING)
                 if (items.length > 0)

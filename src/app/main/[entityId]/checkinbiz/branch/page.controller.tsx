@@ -11,9 +11,8 @@ import { CommonModalType } from "@/contexts/commonModalContext";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 import { deleteSucursal, search } from "@/services/checkinbiz/sucursal.service";
 import { useLayout } from "@/hooks/useLayout";
-import { useSearchParams } from "next/navigation";
 import { DeleteOutline, Edit, ListAltOutlined } from "@mui/icons-material";
-import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
+import { encodeToBase64 } from "@/lib/common/base64";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
@@ -40,7 +39,6 @@ interface IFilterParams {
 
 export default function useEmployeeListController() {
   const t = useTranslations();
-  const searchParams = useSearchParams()
   const { token } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
@@ -63,16 +61,7 @@ export default function useEmployeeListController() {
 
   const { closeModal, openModal } = useCommonModal()
   const rowAction: Array<IRowAction> = [
-    {
-      actionBtn: true,
-      color: 'error',
-      icon: <DeleteOutline color="error" />,
-      label: t('core.button.delete'),
-      allowItem: () => true,
-      showBulk: true,
-      onPress: (item: ISucursal) => openModal(CommonModalType.DELETE, { data: item }),
-      bulk: true
-    },
+
 
     {
       actionBtn: true,
@@ -92,6 +81,17 @@ export default function useEmployeeListController() {
       bulk: false,
       allowItem: () => true,
       onPress: (item: ISucursal) => onDetail(item)
+    },
+
+    {
+      actionBtn: true,
+      color: 'error',
+      icon: <DeleteOutline color="error" />,
+      label: t('core.button.delete'),
+      allowItem: () => true,
+      showBulk: true,
+      onPress: (item: ISucursal) => openModal(CommonModalType.DELETE, { data: item }),
+      bulk: true
     },
 
   ]
@@ -186,17 +186,6 @@ export default function useEmployeeListController() {
   }
 
 
-  const inicializeFilter = (params: string) => {
-    try {
-      const filters: IFilterParams = params !== 'null' ? filterParams : decodeFromBase64(params as string)
-      filters.params.startAfter = null
-      setFilterParams(filters)
-      setLoading(false)
-      fetchingData(filters)
-    } catch (error) {
-      showToast(String(error as any), 'error')
-    }
-  }
 
 
   useEffect(() => {
@@ -207,23 +196,20 @@ export default function useEmployeeListController() {
 
   useEffect(() => {
     if (currentEntity?.entity?.id) {
-      if (searchParams.get('params') && localStorage.getItem('sucursalIndex'))
-        inicializeFilter(searchParams.get('params') as string)
-      else
-        fetchingData(filterParams)
+      fetchingData(filterParams)
     }
-  }, [currentEntity?.entity?.id, searchParams.get('params')])
+  }, [currentEntity?.entity?.id])
 
 
 
   const onEdit = async (item: any) => {
-    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/sucursal/${item.id}/edit`)
+    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch/${item.id}/edit`)
   }
 
 
 
   const onDetail = async (item: any) => {
-    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/sucursal/${item.id}/detail`)
+    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch/${item.id}/detail`)
   }
 
   const [deleting, setDeleting] = useState(false)

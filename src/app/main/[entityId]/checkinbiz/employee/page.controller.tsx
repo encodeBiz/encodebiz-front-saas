@@ -69,7 +69,7 @@ export default function useEmployeeListController() {
   const [branchList, setBranchList] = useState<Array<ISucursal>>([])
 
   const rowAction: Array<IRowAction> = id ? [] : [
-   
+
 
     {
       actionBtn: true,
@@ -150,10 +150,10 @@ export default function useEmployeeListController() {
       id: 'fullName',
       label: t("core.label.name"),
       minWidth: 170,
-     
+
     },
 
-     {
+    {
       id: 'email',
       label: t("core.label.email"),
       minWidth: 170,
@@ -195,12 +195,10 @@ export default function useEmployeeListController() {
     }
     setLoading(true)
 
-    
-     if (filterParams.params.filters.find((e: any) => e.field === 'branchId' && e.value === 'none'))
+
+    if (filterParams.params.filters.find((e: any) => e.field === 'branchId' && e.value === 'none'))
       filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "branchId")
 
-
- 
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters: [...filterParams.params.filters, ...filters] }).then(async res => {
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
@@ -259,17 +257,10 @@ export default function useEmployeeListController() {
   }, [currentEntity?.entity?.id, searchParams.get('params')])
 
 
-
-
-
-
-
-
   const onEdit = async (item: any) => {
     navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${item.id}/edit`)
   }
 
-  
 
 
   const updateStatus = async (employee: IEmployee) => {
@@ -281,7 +272,7 @@ export default function useEmployeeListController() {
         "id": employee.id,
         entityId: currentEntity?.entity.id as string,
         status: employee.status
-      }
+      } 
       await updateEmployee(data, token)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
@@ -294,7 +285,7 @@ export default function useEmployeeListController() {
 
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
 
-    {branchList.length > 0 && <SelectFilter 
+    {branchList.length > 0 && <SelectFilter
       first
       label={t('core.label.subEntity')}
       defaultValue={'none'}
@@ -363,7 +354,7 @@ export default function useEmployeeListController() {
     onEdit,
     onNext, onBack, buildState,
     columns, rowAction, topFilter,
-    loading,   filterParams,
+    loading, filterParams,
 
   }
 

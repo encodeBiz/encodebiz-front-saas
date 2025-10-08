@@ -2,7 +2,7 @@ import { SassButton } from "@/components/common/buttons/GenericButton"
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes"
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal"
 import { useLayout } from "@/hooks/useLayout"
-import { Card, Box, Grid, Typography, CardContent, Paper, Divider, List, ListItem, ListItemText } from "@mui/material"
+import { Card, Box, Grid, Typography, CardContent, Paper, Divider, List, ListItem, ListItemText, Stack } from "@mui/material"
 import { useTranslations } from "next-intl"
 
 export const Detail = ({ branch, children }: { branch: ISucursal, children: React.ReactNode }) => {
@@ -18,12 +18,24 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
                     <Typography variant="h4"   >
                         {branch?.name}
                     </Typography>
-                    
-                </Grid>
+                     {branch?.nit && <Typography variant="body1"   >
+                        NIT: {branch?.nit}
+                    </Typography>}
 
-                <SassButton variant="contained" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/sucursal`)}>
-                    {t('core.button.back')}
-                </SassButton>
+                </Grid>
+                <Stack direction={'row'} gap={2}>
+                    <SassButton variant="outlined" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch`)}>
+                        {t('core.button.back')}
+                    </SassButton>
+
+                    <SassButton color="primary" variant="contained" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/add?branchId=${branch?.id}`)}>
+                        {t('employee.add')}
+                    </SassButton>
+
+                    <SassButton color="primary" variant="contained" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch/${branch.id}/edit`)}>
+                        {t('core.button.edit')}
+                    </SassButton>
+                </Stack>
 
             </Grid>
 
@@ -49,7 +61,7 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
                                 {t('core.label.ratioChecklog2')}
                             </Typography>
                             <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
-                                {branch?.ratioChecklog}
+                                {branch?.ratioChecklog}m
                             </Typography>
                         </Box>
                     </Box>

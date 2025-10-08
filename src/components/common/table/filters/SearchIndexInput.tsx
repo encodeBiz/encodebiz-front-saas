@@ -20,12 +20,12 @@ import { useDebouncedCallback } from "../../forms/customHooks/useDebounce";
 type Option = { id: string; label: string; data: ISearchIndex };
 
 interface SearchIndexInputProps {
-  type: "entities" | "users" | "events" | "staff" | "holder"| "employee"| "branch",
+  type: "entities" | "users" | "events" | "staff" | "holder" | "employee" | "branch",
   label?: any,
   onChange: (value: any) => void,
 }
 
-const getDataLabel = (data: ISearchIndex, type: "entities" | "users" | "events" | "staff" | "holder"| "employee"| "branch") => {
+const getDataLabel = (data: ISearchIndex, type: "entities" | "users" | "events" | "staff" | "holder" | "employee" | "branch") => {
   switch (type) {
     case "events":
       return data.fields['name']
@@ -39,7 +39,9 @@ const getDataLabel = (data: ISearchIndex, type: "entities" | "users" | "events" 
     case "employee":
       return data.fields['fullName']
       break;
-
+    case "branch":
+      return data.fields['name']
+      break;
     default:
       return data.id
       break;
@@ -72,7 +74,7 @@ const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type }) 
         const data = await fetchIndex({
           keyword: query, type, entityId: currentEntity?.entity?.id as string
         });
-         
+
         setOptions(
           data.map((e: any) => ({
             id: `${e.id}`,
@@ -131,7 +133,7 @@ const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type }) 
         renderInput={(params) => (
           <TextField
             {...params}
-           
+
             placeholder={t("core.label.search")}
             sx={{
 
@@ -152,7 +154,7 @@ const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type }) 
                 startAdornment: <SearchOutlined sx={{ mr: 1 }} />,
                 endAdornment: <React.Fragment>
                   {pending ? <CircularProgress color="inherit" size={20} /> : null}
-                  
+
                 </React.Fragment>
               },
             }}

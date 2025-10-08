@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
-import { requiredRule } from '@/config/yupRules';
+import { ratioLogRule, requiredRule } from '@/config/yupRules';
 import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
@@ -21,6 +21,7 @@ import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyVal
 export default function useSucursalController() {
   const t = useTranslations();
   const { showToast } = useToast()
+
   const { navivateTo } = useLayout()
   const { token, user } = useAuth()
   const { id } = useParams<{ id: string }>()
@@ -38,6 +39,7 @@ export default function useSucursalController() {
     postalCode: '',
     region: '',
     street: '',
+    ratioChecklog: 100,
 
 
   });
@@ -57,6 +59,7 @@ export default function useSucursalController() {
     name: requiredRule(t),
     postalCode: requiredRule(t),
     status: requiredRule(t),
+    ratioChecklog: ratioLogRule(t)
   });
 
   const handleSubmit = async (values: Partial<any>) => {
@@ -78,13 +81,19 @@ export default function useSucursalController() {
         },
         entityId: currentEntity?.entity.id as string
       }
+
+
       if (id)
         await updateSucursal(data, token)
       else
         await createSucursal(data, token)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
-      navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/sucursal`)
+
+      if (id)
+        navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch/${id}/detail`)
+      else
+        navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch`)
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
@@ -101,11 +110,15 @@ export default function useSucursalController() {
       name: 'name',
       label: t('core.label.subEntityName'),
       type: 'text',
-      fullWidth: true,
+
       required: true,
       component: TextInput,
     },
-
+    {
+      name: 'nit',
+      label: t('core.label.nit'),
+      component: TextInput,    
+    },
     {
       name: 'country',
       label: t('core.label.country'),
@@ -201,9 +214,9 @@ export default function useSucursalController() {
         postalCode: sucursal.address.postalCode,
         region: sucursal.address.region,
         street: sucursal.address.street,
-        status:sucursal.status,
-        ratioChecklog:sucursal.ratioChecklog,
-        name:sucursal.name,
+        status: sucursal.status,
+        ratioChecklog: sucursal.ratioChecklog,
+        name: sucursal.name,
         metadata: objectToArray(sucursal.metadata)
       })
       changeLoaderState({ show: false })

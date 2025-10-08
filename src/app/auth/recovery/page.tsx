@@ -31,18 +31,27 @@ const RecoveryPage = () => {
 
     return (
         <Container maxWidth="sm">
-            <Box sx={classes.locale}>
-                <LocaleSwitcher />
-            </Box>
+
             <BorderBox sx={classes.root}>
-                <Image
-                    width={150}
-                    height={44}
-                    src={logo}
-                    alt="Company Logo"
-                    style={{ position: 'relative', left: -15 }}
-                />
-                <Box sx={{ ...classes.containerTop, px: 6 }}>
+                <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'}>
+                    <Image
+                        width={150}
+                        height={44}
+                        src={logo}
+                        alt="Company Logo"
+                        style={{ position: 'relative', left: -15 }}
+                    />
+                    <LocaleSwitcher />
+                </Box>
+                <Box sx={{
+                    ...classes.containerTop, px: {
+                        xs: 0,
+                        sm: 0,
+                        md: 6,
+                        xl: 6,
+                        lg: 6,
+                    }
+                }}>
                     <Box sx={classes.containerTop}>
                         <Typography variant="h4" component="h1" >
                             {t('core.recovery.title')}
@@ -62,11 +71,9 @@ const RecoveryPage = () => {
                     />
 
                     <Box sx={{ textAlign: 'center' }}>
+
                         <Typography variant="body2">
-                            {t('core.recovery.noAccount')} <Link style={{color: theme.palette.primary.main, textDecoration:'none'}} href="/auth/register">{t('core.recovery.signup')}</Link>
-                        </Typography>
-                        <Typography variant="body2">
-                            {t('core.recovery.existAccount')} <Link style={{color: theme.palette.primary.main, textDecoration:'none'}} href="/auth/login">{t('core.recovery.signin')}</Link>
+                            {t('core.recovery.existAccount')} <Link style={{ color: theme.palette.primary.main, textDecoration: 'none' }} href="/auth/login">{t('core.recovery.signin')}</Link>
                         </Typography>
                     </Box>
                 </Box>

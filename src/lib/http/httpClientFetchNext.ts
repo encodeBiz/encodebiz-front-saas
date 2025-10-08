@@ -43,10 +43,11 @@ export const codeError: any = {
   "staff/unauthorized": "Acceso de personal de apoyo deshabilitado o vencido",
   "media/not_found": "Archivo no encontrado",
   "staff/not_found": "Personal de apoyo no encontrado",
-  'twofactor/invalid_token':"La sesión ha expirado",
-  "auth/untrusted_device": "Dispositivo no confiable. Se requiere verificación adicional", 
-   "twofactor/invalid_code":"Código TOTP inválido",
-  "stats/range_and_groupBy_tolong":"Los datos para graficar son demasiadox extensos, intenta seleccionar un rango menor de fechas o otro tipo de agrupación"
+  'twofactor/invalid_token': "La sesión ha expirado",
+  "auth/untrusted_device": "Dispositivo no confiable. Se requiere verificación adicional",
+  "twofactor/invalid_code": "Código TOTP inválido",
+  "user/not_found": "No existe ningún usuario con ese correo electrónico",
+  "stats/range_and_groupBy_tolong": "Los datos para graficar son demasiadox extensos, intenta seleccionar un rango menor de fechas o otro tipo de agrupación"
 };
 
 /**
@@ -117,16 +118,28 @@ export class HttpClient {
           let responseError: { code: string; message: string; error: string, errors: Array<string> }
           const responseErrorData = await response.json()
 
-          if (responseErrorData?.message && typeof responseErrorData?.message === 'string') {
-            try { responseError = JSON.parse(responseErrorData?.message) }
-            catch (error: any) { responseError = { code: responseErrorData?.code, message: responseErrorData?.message, error: error, errors: [] } }
+          if (responseErrorData?.error && responseErrorData?.details && Array.isArray(responseErrorData?.details) && responseErrorData?.details.length > 0) {
+            responseError = { code: responseErrorData?.details[0], message: responseErrorData?.details[0], error: responseErrorData?.details[0], errors: [] }
 
           } else {
-            if (typeof responseErrorData === 'string')
-              try { responseError = JSON.parse(responseErrorData) }
-              catch (error: any) { responseError = { code: 'error', message: '', error: error, errors: [] } }
-            else
-              responseError = responseErrorData
+
+            if (responseErrorData?.error && typeof responseErrorData?.error === 'string') {
+              try { responseError = JSON.parse(responseErrorData?.error) }
+              catch (error: any) {
+                responseError = { code: responseErrorData?.error, message: responseErrorData?.error, error: error, errors: [] }
+              }
+            } else {
+              if (responseErrorData?.message && typeof responseErrorData?.message === 'string') {
+                try { responseError = JSON.parse(responseErrorData?.message) }
+                catch (error: any) { responseError = { code: responseErrorData?.code, message: responseErrorData?.message, error: error, errors: [] } }
+              } else {
+                if (typeof responseErrorData === 'string')
+                  try { responseError = JSON.parse(responseErrorData) }
+                  catch (error: any) { responseError = { code: 'error', message: '', error: error, errors: [] } }
+                else
+                  responseError = responseErrorData
+              }
+            }
           }
 
           if (Array.isArray(responseError.errors) && responseError.errors.length > 0) {

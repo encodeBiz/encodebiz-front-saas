@@ -37,7 +37,7 @@ const ColorPickerInput: React.FC<FieldProps & TextFieldProps> = ({
                     }
                 }}
                 value={field.value}
-                error={!!error}
+                error={!!helperText}
                 multiline={props.type === 'textarea'}
                 rows={2}
                 disabled={props.disabled}

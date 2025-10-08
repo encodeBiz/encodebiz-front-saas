@@ -9,11 +9,15 @@ import { useCommonModal } from "@/hooks/useCommonModal"
 import ConfirmModal from "@/components/common/modals/ConfirmModal"
 import { CommonModalType } from "@/contexts/commonModalContext"
 import { CustomChip } from "@/components/common/table/CustomChip"
+import { ISucursal } from "@/domain/features/checkinbiz/ISucursal"
+import { useSearchParams } from "next/navigation"
 
 export const Detail = ({ employee, children }: { employee: IEmployee, children: React.ReactNode }) => {
     const t = useTranslations()
-    const { onDelete, deleting } = useEmployeeDetailController()
+    const { onDelete, deleting, branchListEmployee } = useEmployeeDetailController()
     const { openModal, open } = useCommonModal()
+    const search = useSearchParams()
+    const backAction = search.get('back')
 
     const { navivateTo } = useLayout()
     return <Card elevation={3} sx={{ width: '100%', margin: 'auto' }}>
@@ -24,16 +28,24 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                     <Typography variant="h4"   >
                         {employee?.fullName}
                     </Typography>
-                    
+
                     <CustomChip size='small' background={employee?.twoFA ? 'active' : 'revoked'} label={employee?.twoFA ? t('core.label.enable2AF') : t('core.label.disable2AF')} />
 
                 </Grid>
                 <Stack direction={'row'} gap={2}>
-                    <SassButton variant="outlined" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)}>
+                    <SassButton variant="outlined" onClick={() => {
+                        if (backAction) {
+                            navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch/${backAction}/detail`)
+                        } else {
+                            navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)
+                        }
+
+                    }
+                    }>
                         {t('core.button.back')}
                     </SassButton>
 
-                    <SassButton  color="primary" variant="contained" onClick={() =>  navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${employee.id}/edit`)}>
+                    <SassButton color="primary" variant="contained" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${employee.id}/edit`)}>
                         {t('core.button.edit')}
                     </SassButton>
 
@@ -93,12 +105,31 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                             {t('core.label.status')}
                         </Typography>
                         <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
-                            {t('core.label.'+employee?.status)}
+                            {t('core.label.' + employee?.status)}
                         </Typography>
                     </Box>
+
                 </Box>
             </Paper>
             <Divider />
+            <Paper elevation={0} sx={{ p: 3 }}>
+                <Box sx={{ mt: 2 }}>
+                    <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
+                        {t('core.label.sucursal')}
+                    </Typography>
+                    {Array.isArray(branchListEmployee) && <List>
+                        {branchListEmployee.map((e: ISucursal, i: number) => <ListItem key={i}>
+                            <ListItemText
+                                primary={e.name}
+                                secondary={e.address.street}
+                            />
+                        </ListItem>)}
+                    </List>}
+                </Box>
+            </Paper>
+
+            <Divider />
+
 
             {/* Additional Details */}
             {Array.isArray(employee.metadata) && employee.metadata.length > 0 && <> <Divider /><Paper elevation={0} sx={{ p: 3 }}>
@@ -127,18 +158,17 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
 
                 {children}
 
-
-
-
             </Paper>
         </CardContent>
 
-        {open.type === CommonModalType.DELETE && <ConfirmModal
-            isLoading={deleting}
-            title={t('employee.deleteConfirmModalTitle')}
-            description={t('employee.deleteConfirmModalTitle2')}
-            onOKAction={() => onDelete(employee)}
-        />}
-    </Card>
+        {
+            open.type === CommonModalType.DELETE && <ConfirmModal
+                isLoading={deleting}
+                title={t('employee.deleteConfirmModalTitle')}
+                description={t('employee.deleteConfirmModalTitle2')}
+                onOKAction={() => onDelete(employee)}
+            />
+        }
+    </Card >
 
 }
