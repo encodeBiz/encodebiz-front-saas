@@ -55,9 +55,9 @@ export const darkTheme: PaletteOptions = {
     contrastText: 'rgba(0, 0, 0, 0.87)',
   },
   secondary: {
-    main: '#ce93d8',
+    main: '#1E1E1E',
     light: '#f3e5f5',
-    dark: '#ab47bc',
+    dark: '#2f2d2dff',
     contrastText: 'rgba(0, 0, 0, 0.87)',
   },
   background: {

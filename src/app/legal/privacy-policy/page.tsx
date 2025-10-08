@@ -1,33 +1,9 @@
 'use client'
 import React  from 'react';
-import {
-  Container,
-  Typography,
-  Box,
-  Paper,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Link,
-  Divider,
-  Chip,
-  Button
-} from '@mui/material';
-import {
-  Security,
-  PrivacyTip,
-  Cookie,
-  DataUsage,
-  Share,
-  Delete,
-  Edit,
-  Visibility
-} from '@mui/icons-material';
+import {  Container} from '@mui/material';
  
-const PoliticaPrivacidad = () => {
-  const fechaActualizacion = '1 de Enero, 2024';
-
+const PoliticaPrivacidadPage = () => {
+ 
    
 
   return (
@@ -35,299 +11,71 @@ const PoliticaPrivacidad = () => {
       
 
       <Container maxWidth="lg" sx={{ py: 4 }}>
-        {/* Header */}
-        <Box textAlign="center" mb={6}>
-          <Chip 
-            icon={<Security />} 
-            label="Política de Privacidad" 
-            color="primary" 
-            variant="outlined"
-            sx={{ mb: 2 }}
-          />
-          <Typography variant="h3" component="h1" gutterBottom fontWeight="bold">
-            Política de Privacidad
-          </Typography>
-          <Typography variant="h6" color="text.secondary" gutterBottom>
-            Última actualización: {fechaActualizacion}
-          </Typography>
-        </Box>
+ <h1>Política de Privacidad</h1>
+    <p className="last-updated"><em>Última actualización: [FECHA DE ÚLTIMA ACTUALIZACIÓN]</em></p>
 
-        <Paper elevation={2} sx={{ p: 4, mb: 4 }}>
-          {/* Introducción */}
-          <Box mb={4}>
-            <Typography variant="h5" component="h2" gutterBottom color="primary">
-              Introducción
-            </Typography>
-            <Typography variant="body1" paragraph>
-              En <strong>Mi Empresa</strong>, valoramos y respetamos su privacidad. Esta política 
-              describe cómo recopilamos, usamos y protegemos su información personal cuando 
-              utiliza nuestros servicios.
-            </Typography>
-          </Box>
+    <p>Esta Política de Privacidad describe cómo [NOMBRE DEL SITIO WEB] (en adelante, nosotros, nuestro o la empresa) recopila, utiliza y protege la información personal que los usuarios (en adelante, usted  o  el usuario) proporcionan en nuestro sitio web.</p>
 
-          <Divider sx={{ my: 3 }} />
+    <h2>1. Responsable del Tratamiento</h2>
+    <p>El responsable del tratamiento de sus datos personales es:</p>
+    <ul>
+        <li><strong>Nombre:</strong> [TU EMPRESA/NOMBRE]</li>
+        <li><strong>Correo electrónico:</strong> [DIRECCIÓN DE CORREO ELECTRÓNICO]</li>
+    </ul>
 
-          {/* Información que recopilamos */}
-          <Box mb={4}>
-            <Typography variant="h5" component="h2" gutterBottom color="primary">
-              <PrivacyTip sx={{ verticalAlign: 'middle', mr: 1 }} />
-              Información que Recopilamos
-            </Typography>
-            
-            <List>
-              <ListItem>
-                <ListItemIcon>
-                  <Edit color="primary" />
-                </ListItemIcon>
-                <ListItemText 
-                  primary="Información Personal" 
-                  secondary="Nombre, dirección de email, número de teléfono cuando se registra en nuestro servicio." 
-                />
-              </ListItem>
-              
-              <ListItem>
-                <ListItemIcon>
-                  <DataUsage color="primary" />
-                </ListItemIcon>
-                <ListItemText 
-                  primary="Datos de Uso" 
-                  secondary="Información sobre cómo interactúa con nuestro sitio web y servicios." 
-                />
-              </ListItem>
-              
-              <ListItem>
-                <ListItemIcon>
-                  <Cookie color="primary" />
-                </ListItemIcon>
-                <ListItemText 
-                  primary="Cookies y Tecnologías Similares" 
-                  secondary="Utilizamos cookies para mejorar su experiencia y analizar el tráfico del sitio." 
-                />
-              </ListItem>
-            </List>
-          </Box>
+    <h2>2. Información que Recopilamos</h2>
+    <p>Podemos recopilar y procesar los siguientes tipos de información:</p>
+    <ul>
+        <li><strong>Información que usted nos proporciona directamente:</strong> Esto incluye datos personales como su nombre, dirección de correo electrónico, etc., que nos facilita al registrarse, suscribirse a boletines o contactarnos a través de formularios.</li>
+        <li><strong>Información recopilada automáticamente:</strong> Recopilamos información técnica de manera automática, como su dirección IP, tipo de navegador, sistema operativo, páginas visitadas y el tiempo que pasa en nuestro sitio web. Esta información se recopila mediante el uso de cookies y tecnologías similares.</li>
+    </ul>
 
-          <Divider sx={{ my: 3 }} />
+    <h2>3. Uso de la Información</h2>
+    <p>Utilizamos la información recopilada para los siguientes fines:</p>
+    <ul>
+        <li>Para operar y mantener nuestro sitio web.</li>
+        <li>Para mejorar y personalizar su experiencia de usuario.</li>
+        <li>Para responder a sus preguntas y solicitudes.</li>
+        <li>Para enviar comunicaciones de marketing, como boletines informativos, si ha dado su consentimiento para ello.</li>
+        <li>Para analizar el uso de nuestro sitio web y mejorar nuestros servicios.</li>
+    </ul>
 
-          {/* Uso de la información */}
-          <Box mb={4}>
-            <Typography variant="h5" component="h2" gutterBottom color="primary">
-              Cómo Utilizamos su Información
-            </Typography>
-            
-            <Box component="ul" sx={{ pl: 2 }}>
-              <Typography component="li" paragraph>
-                Proporcionar y mantener nuestros servicios
-              </Typography>
-              <Typography component="li" paragraph>
-                Personalizar su experiencia de usuario
-              </Typography>
-              <Typography component="li" paragraph>
-                Comunicarnos con usted sobre actualizaciones y ofertas
-              </Typography>
-              <Typography component="li" paragraph>
-                Mejorar la seguridad y prevenir fraudes
-              </Typography>
-              <Typography component="li" paragraph>
-                Cumplir con obligaciones legales
-              </Typography>
-            </Box>
-          </Box>
+    <h2>4. Base Legal para el Tratamiento</h2>
+    <p>Tratamos sus datos personales basándonos en las siguientes bases legales:</p>
+    <ul>
+        <li>Su consentimiento, que puede retirar en cualquier momento.</li>
+        <li>El cumplimiento de un contrato (por ejemplo, si nos compra un producto o servicio).</li>
+        <li>Nuestro interés legítimo en mejorar nuestros servicios y la experiencia de usuario.</li>
+        <li>El cumplimiento de una obligación legal.</li>
+    </ul>
 
-          <Divider sx={{ my: 3 }} />
+    <h2>5. Compartir la Información con Terceros</h2>
+    <p>No vendemos, intercambiamos ni transferimos de ninguna otra forma su información de identificación personal a terceros. Esto no incluye a los terceros de confianza que nos ayudan a operar nuestro sitio web, llevar a cabo nuestro negocio o prestarle servicio, siempre y cuando dichas partes se comprometan a mantener esta información confidencial.</p>
 
-          {/* Compartición de información */}
-          <Box mb={4}>
-            <Typography variant="h5" component="h2" gutterBottom color="primary">
-              <Share sx={{ verticalAlign: 'middle', mr: 1 }} />
-              Compartición de Información
-            </Typography>
-            
-            <Typography variant="body1" paragraph>
-              No vendemos, comerciamos ni transferimos su información personal a terceros, 
-              excepto en las siguientes circunstancias:
-            </Typography>
-            
-            <Box component="ul" sx={{ pl: 2 }}>
-              <Typography component="li" paragraph>
-                <strong>Proveedores de servicios:</strong> Empresas que nos ayudan a operar nuestro negocio
-              </Typography>
-              <Typography component="li" paragraph>
-                <strong>Requisitos legales:</strong> Cuando sea necesario por ley o proceso legal
-              </Typography>
-              <Typography component="li" paragraph>
-                <strong>Protección de derechos:</strong> Para proteger nuestros derechos y seguridad
-              </Typography>
-            </Box>
-          </Box>
+    <h2>6. Cookies</h2>
+    <p>Utilizamos cookies para mejorar la experiencia del usuario y analizar el tráfico de nuestro sitio. Las cookies son pequeños archivos de datos que se almacenan en su navegador. Usted puede configurar su navegador para que rechace las cookies, pero esto podría afectar el funcionamiento de algunas partes del sitio.</p>
 
-          <Divider sx={{ my: 3 }} />
+    <h2>7. Sus Derechos</h2>
+    <p>De acuerdo con la legislación aplicable, usted tiene los siguientes derechos en relación con sus datos personales:</p>
+    <ul>
+        <li><strong>Derecho de acceso:</strong> Puede solicitar una copia de los datos personales que tenemos sobre usted.</li>
+        <li><strong>Derecho de rectificación:</strong> Puede solicitar que corrijamos cualquier información inexacta o incompleta.</li>
+        <li><strong>Derecho de cancelación (o al olvido ):</strong> Puede solicitar la eliminación de sus datos personales.</li>
+        <li><strong>Derecho de oposición:</strong> Puede oponerse a nuestro tratamiento de sus datos personales.</li>
+        <li><strong>Derecho a la portabilidad:</strong> Puede solicitar la transferencia de sus datos a otra organización.</li>
+    </ul>
+    <p>Para ejercer cualquiera de estos derechos, puede contactarnos en [DIRECCIÓN DE CORREO ELECTRÓNICO].</p>
 
-          {/* Derechos del usuario */}
-          <Box mb={4}>
-            <Typography variant="h5" component="h2" gutterBottom color="primary">
-              <Visibility sx={{ verticalAlign: 'middle', mr: 1 }} />
-              Sus Derechos
-            </Typography>
-            
-            <Box display="grid" gridTemplateColumns="repeat(auto-fit, minmax(250px, 1fr))" gap={2}>
-              <Paper sx={{ p: 2, textAlign: 'center' }} variant="outlined">
-                <Typography variant="h6" gutterBottom>
-                  Acceso
-                </Typography>
-                <Typography variant="body2">
-                  Derecho a acceder a sus datos personales
-                </Typography>
-              </Paper>
-              
-              <Paper sx={{ p: 2, textAlign: 'center' }} variant="outlined">
-                <Typography variant="h6" gutterBottom>
-                  Rectificación
-                </Typography>
-                <Typography variant="body2">
-                  Derecho a corregir datos inexactos
-                </Typography>
-              </Paper>
-              
-              <Paper sx={{ p: 2, textAlign: 'center' }} variant="outlined">
-                <Typography variant="h6" gutterBottom>
-                  <Delete sx={{ verticalAlign: 'middle' }} />
-                  Eliminación
-                </Typography>
-                <Typography variant="body2">
-                  Derecho a eliminar sus datos personales
-                </Typography>
-              </Paper>
-              
-              <Paper sx={{ p: 2, textAlign: 'center' }} variant="outlined">
-                <Typography variant="h6" gutterBottom>
-                  Portabilidad
-                </Typography>
-                <Typography variant="body2">
-                  Derecho a transferir sus datos
-                </Typography>
-              </Paper>
-            </Box>
-          </Box>
+    <h2>8. Enlaces a Sitios Web de Terceros</h2>
+    <p>Nuestro sitio web puede contener enlaces a otros sitios web. No somos responsables de las políticas de privacidad ni de las prácticas de estos sitios. Le recomendamos leer las políticas de privacidad de cada sitio que visite.</p>
 
-          <Divider sx={{ my: 3 }} />
+    <h2>9. Cambios a esta Política de Privacidad</h2>
+    <p>Podemos actualizar nuestra Política de Privacidad de vez en cuando. Le notificaremos cualquier cambio publicando la nueva Política de Privacidad en esta página.</p>
 
-          {/* Seguridad */}
-          <Box mb={4}>
-            <Typography variant="h5" component="h2" gutterBottom color="primary">
-              Seguridad de los Datos
-            </Typography>
-            
-            <Typography variant="body1" paragraph>
-              Implementamos medidas de seguridad técnicas y organizativas apropiadas para 
-              proteger su información personal contra acceso no autorizado, alteración, 
-              divulgación o destrucción.
-            </Typography>
-            
-            <Box display="flex" gap={2} flexWrap="wrap" mt={2}>
-              <Chip label="Encriptación SSL" variant="outlined" />
-              <Chip label="Acceso Restringido" variant="outlined" />
-              <Chip label="Auditorías Regulares" variant="outlined" />
-              <Chip label="Backups Seguros" variant="outlined" />
-            </Box>
-          </Box>
-
-          <Divider sx={{ my: 3 }} />
-
-          {/* Cookies */}
-          <Box mb={4}>
-            <Typography variant="h5" component="h2" gutterBottom color="primary">
-              <Cookie sx={{ verticalAlign: 'middle', mr: 1 }} />
-              Política de Cookies
-            </Typography>
-            
-            <Typography variant="body1" paragraph>
-              Utilizamos diferentes tipos de cookies:
-            </Typography>
-            
-            <Box component="ul" sx={{ pl: 2 }}>
-              <Typography component="li" paragraph>
-                <strong>Esenciales:</strong> Necesarias para el funcionamiento del sitio
-              </Typography>
-              <Typography component="li" paragraph>
-                <strong>Analíticas:</strong> Nos ayudan a entender cómo los usuarios interactúan con el sitio
-              </Typography>
-              <Typography component="li" paragraph>
-                <strong>Funcionales:</strong> Recuerdan sus preferencias y configuraciones
-              </Typography>
-              <Typography component="li" paragraph>
-                <strong>Publicitarias:</strong> Muestran anuncios relevantes para usted
-              </Typography>
-            </Box>
-          </Box>
-
-          <Divider sx={{ my: 3 }} />
-
-          {/* Cambios en la política */}
-          <Box mb={4}>
-            <Typography variant="h5" component="h2" gutterBottom color="primary">
-              Cambios en esta Política
-            </Typography>
-            
-            <Typography variant="body1" paragraph>
-              Podemos actualizar esta política de privacidad periódicamente. Le notificaremos 
-              sobre cambios significativos publicando la nueva política en este sitio y 
-              actualizando la fecha de Última actualización.
-            </Typography>
-          </Box>
-
-          <Divider sx={{ my: 3 }} />
-
-          {/* Contacto */}
-          <Box textAlign="center">
-            <Typography variant="h5" component="h2" gutterBottom color="primary">
-              Contacto
-            </Typography>
-            
-            <Typography variant="body1" paragraph>
-              Si tiene preguntas sobre esta política de privacidad, contáctenos:
-            </Typography>
-            
-            <Box display="flex" justifyContent="center" gap={2} flexWrap="wrap" mt={3}>
-              <Button 
-                variant="contained" 
-                color="primary"
-                href="mailto:privacidad@miempresa.com"
-              >
-                Email: privacidad@miempresa.com
-              </Button>
-              
-              <Button 
-                variant="outlined" 
-                color="primary"
-                href="/contacto"
-              >
-                Formulario de Contacto
-              </Button>
-            </Box>
-            
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 3 }}>
-              <strong>Dirección:</strong> Calle Ejemplo 123, Ciudad, País
-              <br />
-              <strong>Teléfono:</strong> +1 (555) 123-4567
-            </Typography>
-          </Box>
-        </Paper>
-
-        {/* Footer */}
-        <Box textAlign="center" mt={4}>
-          <Typography variant="body2" color="text.secondary">
-            © {new Date().getFullYear()} Mi Empresa. Todos los derechos reservados.
-            <br />
-            <Link href="/terminos-servicio" color="inherit">
-              Términos de Servicio
-            </Link>
-            {' | '}
-            <Link href="/politica-cookies" color="inherit">
-              Política de Cookies
-            </Link>
-          </Typography>
-        </Box>
+    <h2>10. Contacto</h2>
+    <p>Si tiene alguna pregunta sobre esta Política de Privacidad, puede contactarnos en:</p>
+    <p><strong>Correo electrónico:</strong> [DIRECCIÓN DE CORREO ELECTRÓNICO]</p>
+        
       </Container>
     </>
   );
@@ -335,8 +83,6 @@ const PoliticaPrivacidad = () => {
 
 
 
-export default function PoliticaPrivacidadPage() {
-  return (<PoliticaPrivacidad />);
-}
+export default PoliticaPrivacidadPage
 
  
