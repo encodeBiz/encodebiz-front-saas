@@ -97,6 +97,8 @@
       "thisYear": "Este año",
       "valid": "Valido",
       "sucursal": "Sucursal",
+      "cargo": "Cargo",
+      "sucursalAsigned":"Sucursal asignada",
       "branch": "Sucursal",
       "register": "Registro",
       "disable2AF": "No tiene habilitado 2AF",

@@ -98,6 +98,7 @@ export default function usePricingCardController(id: string, name: string, fromS
             } else {
                 if (entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length === 0) {
                     if (name === 'enterprise' && payPerUse) {
+                      
                         openModal(CommonModalType.CONTACT);
                     } else {
                         subcribeAction()

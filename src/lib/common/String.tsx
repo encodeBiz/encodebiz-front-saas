@@ -67,7 +67,11 @@ export function isDecimal(number: number) {
     return number % 1 !== 0;
 }
 
-
+export function normalizarString(cadena: string) {
+   const minusculas = cadena.toLowerCase();
+  const normalizada = minusculas.normalize('NFD');
+  return normalizada.replace(/[\u0300-\u036f]/g, '');
+}
 
 export const getFileIcon = (file: IUserMedia) => {
     if (file.type.startsWith('image/')) return fileTypeIcons.image;

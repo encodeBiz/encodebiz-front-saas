@@ -16,6 +16,7 @@ import { useTranslations } from "next-intl";
 import { useEntity } from "@/hooks/useEntity";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { useDebouncedCallback } from "../../forms/customHooks/useDebounce";
+import { normalizarString } from "@/lib/common/String";
 
 type Option = { id: string; label: string; data: ISearchIndex };
 
@@ -72,7 +73,7 @@ const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type }) 
       try {
         setPending(true);
         const data = await fetchIndex({
-          keyword: query, type, entityId: currentEntity?.entity?.id as string
+          keyword: normalizarString(query), type, entityId: currentEntity?.entity?.id as string
         });
 
         setOptions(
