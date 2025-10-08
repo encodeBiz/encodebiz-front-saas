@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 
-export const DetailText = ({ label, value, orientation='column' }: { label: string, value: any, orientation?: 'row' | 'column' }) => <Box display={'flex'} flexDirection={orientation} sx={{ mt: 2 }}>
+export const DetailText = ({ label, value, orientation='column' }: { label: string, value: any, orientation?: 'row' | 'column' }) => <Box display={'flex'} flexDirection={orientation} gap={orientation==='column'?0:2} sx={{ mt: 2 }}>
     <Typography fontSize={16} color='#45474C' fontWeight={400} variant="subtitle1" gutterBottom >
         {label}
     </Typography>

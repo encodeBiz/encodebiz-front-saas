@@ -64,7 +64,7 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
         <CardContent sx={{ p: 0 }}>
 
             <Paper elevation={0} sx={{ p: 3 }}>
-                <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={2} alignItems={'flex-start'}>
+                <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={4} alignItems={'flex-start'}>
                     <DetailText label={t('core.label.email')} value={employee?.email} />
                     <DetailText label={t('core.label.phone')} value={employee?.phone} />
                     <DetailText label={t('core.label.status')} value={t('core.label.' + employee?.status)} />
@@ -72,13 +72,13 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                 </Box>
 
                 {/* Additional Details */}
-                {Array.isArray(employee.metadata) && employee.metadata.length > 0 && <> <Divider /><Paper elevation={0} sx={{ p: 3 }}>
+                {Array.isArray(employee.metadata) && employee.metadata.length > 0 && <> <Paper sx={{mt:4}} elevation={0} >
                     <Typography variant="subtitle1" gutterBottom  >
                         {t('core.label.aditionalData')}
                     </Typography>
 
                     {Array.isArray(employee.metadata) && <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'space-between'} alignItems={'flex-start'}>
-                        {employee.metadata.map((e: any, i: number) => <DetailText key={i} label={e.label} value={e.value} />)}
+                        {employee.metadata.map((e: any, i: number) => <DetailText key={i} label={e.label} value={e.value} orientation="row" />)}
                     </Box>}
                 </Paper></>}
             </Paper>
@@ -89,17 +89,17 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                         {t('core.label.sucursalAsigned')}
                     </Typography>
                     {Array.isArray(branchListEmployee) && <List>
-                        {branchListEmployee.map((e: ISucursal, i: number) => <BorderBox key={i}>
-                            {i === 0 && <Box display={'flex'} flexDirection={'row'}>
-                                <Typography fontSize={16} color='#45474C' fontWeight={400} variant="subtitle1" gutterBottom >
+                        {branchListEmployee.map((e: ISucursal, i: number) => <BorderBox key={i} sx={{padding:2}}>
+                            {i === 0 && <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'} >
+                                <Typography fontSize={16} color='#45474C' fontWeight={400} variant="subtitle1"  minWidth={200}>
                                     {t('core.label.sucursal')}
                                 </Typography>
-                                <Typography fontSize={16} color='#45474C' fontWeight={400} variant="subtitle1" gutterBottom >
+                                <Typography fontSize={16} color='#45474C' fontWeight={400} variant="subtitle1"  >
                                     {t('core.label.cargo')}
                                 </Typography>
                             </Box>}
-                            <Box display={'flex'} flexDirection={'row'}>
-                                <Typography fontSize={24} color='#1C1B1D' fontWeight={400} variant="body2"   >
+                            <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'}    alignItems={'flex-start'} >
+                                <Typography fontSize={24} color='#1C1B1D' fontWeight={400} variant="body2"  minWidth={200}   >
                                     {e.name}
                                 </Typography>
                                 <Typography fontSize={24} color='#1C1B1D' fontWeight={400} variant="body2"   >
