@@ -24,7 +24,7 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
 
                 </Grid>
                 <Stack direction={'row'} gap={2}>
-                    <SassButton variant="outlined" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/sucursal`)}>
+                    <SassButton variant="outlined" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch`)}>
                         {t('core.button.back')}
                     </SassButton>
 
@@ -32,7 +32,7 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
                         {t('employee.add')}
                     </SassButton>
 
-                    <SassButton color="primary" variant="contained" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/sucursal/${branch.id}/edit`)}>
+                    <SassButton color="primary" variant="contained" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch/${branch.id}/edit`)}>
                         {t('core.button.edit')}
                     </SassButton>
                 </Stack>

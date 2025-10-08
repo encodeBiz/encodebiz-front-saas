@@ -10,8 +10,7 @@ import { useAppLocale } from '@/hooks/useAppLocale';
 import passnbiz from '../../../../../public/assets/images/icono passbiz.svg'
 import checkbiz from '../../../../../public/assets/images/checkbiz.svg'
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
-import { useTheme } from '@mui/material';
+ 
 import { useLayout } from '@/hooks/useLayout';
 
 const icons = {
@@ -19,12 +18,10 @@ const icons = {
     'passinbiz': passnbiz,
 }
 const ServiceList = () => {
-    const theme = useTheme()
-    const { navivateTo } = useLayout()
+     const { navivateTo } = useLayout()
     const { entityServiceList, entitySuscription } = useEntity()
     const styles = useStyles()
-    const t = useTranslations()
-    const { currentLocale } = useAppLocale()
+     const { currentLocale } = useAppLocale()
     const handleActionClick = (id: any) => {
         navivateTo(`/${id}/onboarding`)
     };

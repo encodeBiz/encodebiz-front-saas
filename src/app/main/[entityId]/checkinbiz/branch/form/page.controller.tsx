@@ -91,9 +91,9 @@ export default function useSucursalController() {
       showToast(t('core.feedback.success'), 'success');
 
       if (id)
-        navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/sucursal/${id}/detail`)
+        navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch/${id}/detail`)
       else
-        navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/sucursal`)
+        navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch`)
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')

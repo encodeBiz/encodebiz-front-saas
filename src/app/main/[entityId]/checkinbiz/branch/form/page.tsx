@@ -38,7 +38,7 @@ export default function SucursalForm() {
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
             <SassButton
               disabled={formStatus?.isSubmitting}
-              onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/sucursal}`)}
+              onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch}`)}
               variant='outlined'
             
             > {t('core.button.cancel')}</SassButton>

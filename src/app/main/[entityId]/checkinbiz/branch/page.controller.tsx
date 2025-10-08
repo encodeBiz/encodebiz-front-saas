@@ -201,13 +201,13 @@ export default function useEmployeeListController() {
 
 
   const onEdit = async (item: any) => {
-    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/sucursal/${item.id}/edit`)
+    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch/${item.id}/edit`)
   }
 
 
 
   const onDetail = async (item: any) => {
-    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/sucursal/${item.id}/detail`)
+    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch/${item.id}/detail`)
   }
 
   const [deleting, setDeleting] = useState(false)

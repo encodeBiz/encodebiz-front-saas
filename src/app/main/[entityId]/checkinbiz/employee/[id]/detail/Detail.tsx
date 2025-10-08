@@ -35,7 +35,7 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                 <Stack direction={'row'} gap={2}>
                     <SassButton variant="outlined" onClick={() => {
                         if (backAction) {
-                            navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/sucursal/${backAction}/detail`)
+                            navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch/${backAction}/detail`)
                         } else {
                             navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)
                         }
