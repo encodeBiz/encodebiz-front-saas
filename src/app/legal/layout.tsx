@@ -7,10 +7,8 @@ export default function Layout({
     children: React.ReactNode;
 }) {
     return (
-        <PublicLayout>
-            
-               {children}
-           
+        <PublicLayout>            
+               {children}           
         </PublicLayout>
     );
 }
