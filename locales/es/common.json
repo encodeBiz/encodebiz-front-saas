@@ -626,6 +626,7 @@
     "report": "Emitir reporte",
     "detailSucursal": "Detalles de la sucursal",
     "update": "Editar",
+    "edit": "Editar",
     "import": "Importar",
     "description": "Rellene los campos para registrar la sucursal",
     "deleteConfirmModalTitle": "Eliminar sucursal",

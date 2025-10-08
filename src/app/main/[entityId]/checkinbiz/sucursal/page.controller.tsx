@@ -207,12 +207,9 @@ export default function useEmployeeListController() {
 
   useEffect(() => {
     if (currentEntity?.entity?.id) {
-      if (searchParams.get('params') && localStorage.getItem('sucursalIndex'))
-        inicializeFilter(searchParams.get('params') as string)
-      else
-        fetchingData(filterParams)
+      fetchingData(filterParams)
     }
-  }, [currentEntity?.entity?.id, searchParams.get('params')])
+  }, [currentEntity?.entity?.id])
 
 
 
