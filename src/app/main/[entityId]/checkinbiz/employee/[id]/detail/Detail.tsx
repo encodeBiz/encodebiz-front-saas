@@ -10,11 +10,14 @@ import ConfirmModal from "@/components/common/modals/ConfirmModal"
 import { CommonModalType } from "@/contexts/commonModalContext"
 import { CustomChip } from "@/components/common/table/CustomChip"
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal"
+import { useSearchParams } from "next/navigation"
 
 export const Detail = ({ employee, children }: { employee: IEmployee, children: React.ReactNode }) => {
     const t = useTranslations()
     const { onDelete, deleting, branchListEmployee } = useEmployeeDetailController()
     const { openModal, open } = useCommonModal()
+    const search = useSearchParams()
+    const backAction = search.get('back')
 
     const { navivateTo } = useLayout()
     return <Card elevation={3} sx={{ width: '100%', margin: 'auto' }}>
@@ -30,7 +33,15 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
 
                 </Grid>
                 <Stack direction={'row'} gap={2}>
-                    <SassButton variant="outlined" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)}>
+                    <SassButton variant="outlined" onClick={() => {
+                        if (backAction) {
+                            navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/sucursal/${backAction}/detail`)
+                        } else {
+                            navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)
+                        }
+
+                    }
+                    }>
                         {t('core.button.back')}
                     </SassButton>
 

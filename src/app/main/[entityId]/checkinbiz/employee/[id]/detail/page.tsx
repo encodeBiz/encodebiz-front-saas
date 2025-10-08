@@ -4,9 +4,8 @@ import { Container } from '@mui/material';
 import { GenericTable } from "@/components/common/table/GenericTable";
 import useEmployeeDetailController from './page.controller';
 import { Detail } from './Detail';
-
+ 
 export default function BranchDetail() {
-
 
 
     const { initialValues, items, topFilter, onRowsPerPageChange, onSort,
