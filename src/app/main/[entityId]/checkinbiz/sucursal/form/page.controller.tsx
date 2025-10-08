@@ -110,11 +110,15 @@ export default function useSucursalController() {
       name: 'name',
       label: t('core.label.subEntityName'),
       type: 'text',
-      fullWidth: true,
+
       required: true,
       component: TextInput,
     },
-
+    {
+      name: 'nit',
+      label: t('core.label.nit'),
+      component: TextInput,    
+    },
     {
       name: 'country',
       label: t('core.label.country'),
