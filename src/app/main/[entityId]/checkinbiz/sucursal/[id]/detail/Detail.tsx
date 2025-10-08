@@ -18,6 +18,9 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
                     <Typography variant="h4"   >
                         {branch?.name}
                     </Typography>
+                     {branch?.nit && <Typography variant="body1"   >
+                        NIT: {branch?.nit}
+                    </Typography>}
 
                 </Grid>
                 <Stack direction={'row'} gap={2}>
