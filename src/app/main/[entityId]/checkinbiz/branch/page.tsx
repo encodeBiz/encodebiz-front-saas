@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import useSucursalListController from './page.controller';
 import { GenericTable } from "@/components/common/table/GenericTable";
 import { CommonModalType } from '@/contexts/commonModalContext';
-import { Add, DownloadOutlined } from '@mui/icons-material';
+import { Add } from '@mui/icons-material';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
@@ -27,12 +27,7 @@ export default function SucursalList() {
         title={t("sucursal.list")}
         actions={
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
-            <SassButton
-              onClick={() => {}}
-              variant='outlined'
-              startIcon={<DownloadOutlined />}
-            >{t('sucursal.report')}</SassButton>
-            
+             
             <SassButton
               onClick={() => navivateTo(`/checkinbiz/sucursal/add?params=${buildState()}`)}
               variant='contained'

@@ -61,16 +61,7 @@ export default function useEmployeeListController() {
 
   const { closeModal, openModal } = useCommonModal()
   const rowAction: Array<IRowAction> = [
-    {
-      actionBtn: true,
-      color: 'error',
-      icon: <DeleteOutline color="error" />,
-      label: t('core.button.delete'),
-      allowItem: () => true,
-      showBulk: true,
-      onPress: (item: ISucursal) => openModal(CommonModalType.DELETE, { data: item }),
-      bulk: true
-    },
+
 
     {
       actionBtn: true,
@@ -90,6 +81,17 @@ export default function useEmployeeListController() {
       bulk: false,
       allowItem: () => true,
       onPress: (item: ISucursal) => onDetail(item)
+    },
+
+    {
+      actionBtn: true,
+      color: 'error',
+      icon: <DeleteOutline color="error" />,
+      label: t('core.button.delete'),
+      allowItem: () => true,
+      showBulk: true,
+      onPress: (item: ISucursal) => openModal(CommonModalType.DELETE, { data: item }),
+      bulk: true
     },
 
   ]
@@ -183,7 +185,7 @@ export default function useEmployeeListController() {
     })
   }
 
- 
+
 
 
   useEffect(() => {

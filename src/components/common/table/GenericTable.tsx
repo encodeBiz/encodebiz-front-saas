@@ -381,12 +381,12 @@ export function GenericTable<T extends Record<string, any>>({
                       const value = row[column.id];
                       return (
                         <TableCell
-                          sx={!column.format?{
+                          sx={!column.format ? {
                             whiteSpace: 'nowrap',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             maxWidth: 200
-                          }:{}}
+                          } : {}}
                           key={column.id as string} align={column.align}>
                           {column.format ? column.format(value, row) : <Tooltip title={value}>{value}</Tooltip>}
                         </TableCell>
@@ -396,7 +396,12 @@ export function GenericTable<T extends Record<string, any>>({
                     {(onEdit || onDelete || rowAction.length > 0) && (
                       <TableCell align="right" sx={{ whiteSpace: 'nowrap', gap: 2, display: 'flex', flexDirection: 'row' }}>
 
-                        {rowAction.length > 0 && <>
+                        {rowAction.length == 1 &&
+                          <SassButton startIcon={rowAction[0].icon} color={rowAction[0].color} variant='outlined' onClick={() => rowAction[0].onPress(row)}>
+                            {rowAction[0].label}
+                          </SassButton>
+                        }
+                        {rowAction.length > 1 && <>
                           <SassButton startIcon={<SettingsOutlined />} color='primary' variant='outlined' onClick={(e) => openRowMenu(e, row.id)}>
                             {t('core.table.actions')}
                           </SassButton>
