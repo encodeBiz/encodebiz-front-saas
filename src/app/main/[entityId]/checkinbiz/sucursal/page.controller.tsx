@@ -11,9 +11,8 @@ import { CommonModalType } from "@/contexts/commonModalContext";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 import { deleteSucursal, search } from "@/services/checkinbiz/sucursal.service";
 import { useLayout } from "@/hooks/useLayout";
-import { useSearchParams } from "next/navigation";
 import { DeleteOutline, Edit, ListAltOutlined } from "@mui/icons-material";
-import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
+import { encodeToBase64 } from "@/lib/common/base64";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
@@ -40,7 +39,6 @@ interface IFilterParams {
 
 export default function useEmployeeListController() {
   const t = useTranslations();
-  const searchParams = useSearchParams()
   const { token } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
@@ -185,18 +183,7 @@ export default function useEmployeeListController() {
     })
   }
 
-
-  const inicializeFilter = (params: string) => {
-    try {
-      const filters: IFilterParams = params !== 'null' ? filterParams : decodeFromBase64(params as string)
-      filters.params.startAfter = null
-      setFilterParams(filters)
-      setLoading(false)
-      fetchingData(filters)
-    } catch (error) {
-      showToast(String(error as any), 'error')
-    }
-  }
+ 
 
 
   useEffect(() => {
