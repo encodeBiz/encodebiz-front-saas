@@ -17,7 +17,7 @@ const QRScannerPage = () => {
     return (
         <Container maxWidth="sm">
             <Box sx={classes.locale} >
-                <LocaleSwitcher />
+                <LocaleSwitcher rmText={true} />
             </Box>
 
             <QRScanner />

@@ -183,7 +183,7 @@ const GenericForm = <T extends Record<string, any>>({
                 else {
                   return <BorderBox key={i} sx={{ width: '100%', p: 4 }}>
                     <Grid display={'flex'} flexDirection={{
-                      sx: 'column',
+                      xs: 'column',
                       sm: 'column',
                       md: 'column',
                       lg: 'row',

@@ -169,7 +169,7 @@ export const useUserAccountController = () => {
 
                     <SassButton sx={{
                         width: {
-                            sx: '90%',
+                            xs: '90%',
                             sm: '90%',
                             md: '90%',
                             lg: 610,

@@ -35,7 +35,7 @@ const Check = () => {
 
             <Typography variant="body1" fontWeight={'bold'} fontSize={22} > {t('checking.title')} </Typography>
 
-            <Box sx={{ p: 0, maxWidth: 600, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <Box sx={{ p: 0,width:'100%',  margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 4 }}>
                 <Box  >
                     <Typography variant="body1" fontSize={18} > {t('checking.logDay')} </Typography>
                     <SassButton
@@ -45,7 +45,7 @@ const Check = () => {
                         }}
                         disabled={restAction == 'restin' || pendingStatus} variant='contained' color='primary'
                         onClick={() => {
-                            if (!sessionData?.branchId && branchList.length > 0)
+                            if ((!sessionData?.branchId && branchList.length > 0) || (checkAction === 'checkin' && branchList.length > 0))
                                 openModal(CommonModalType.BRANCH_SELECTED)
                             else {
                                 createLogAction(checkAction === 'checkin' ? 'checkout' : 'checkin', () => {
@@ -80,7 +80,7 @@ const Check = () => {
 
 
             {employee && <Box sx={{ width: "100%", p: 2, mt: 2, mb: 2, boxShadow: '0px 2.5px 4px rgba(0, 0, 0, 0.25)', }}>
-                <Typography variant="body1" color='#1C1B1D' fontSize={18} fontWeight={500} > {employee.fullName}</Typography>
+                <Typography textTransform={'uppercase'} variant="body1" color='#1C1B1D' fontSize={18} fontWeight={500} > {employee.fullName}</Typography>
                 {employee?.jobTitle && <Typography color="#76777D" variant="body1" fontSize={18} fontWeight={500}  >{employee?.jobTitle}</Typography>}
                 <Typography color="#76777D" variant="body1" fontSize={18} fontWeight={500}  > {currentBranch?.name}</Typography>
             </Box>}

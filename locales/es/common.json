@@ -98,7 +98,7 @@
       "valid": "Valido",
       "sucursal": "Sucursal",
       "cargo": "Cargo",
-      "sucursalAsigned":"Sucursal asignada",
+      "sucursalAsigned": "Sucursal asignada",
       "branch": "Sucursal",
       "register": "Registro",
       "disable2AF": "No tiene habilitado 2AF",
@@ -116,7 +116,7 @@
       "collaborator": "Colaborador",
       "ratioChecklog": "Radio de chequeo en metros",
       "ratioChecklog2": "Zona de chequeo permitida",
-      "nit":"NIT",
+      "nit": "NIT",
       "inactive": "Inactivo",
       "personalData": "INFORMACIÓN PESONAL",
       "aditionalData": "INFORMACIÓN ADICIONAL",
@@ -595,10 +595,9 @@
     "description2": "Asocie o retire eventos al personal de apoyo",
     "description": "Rellene los campos para registrar el personal de apoyo",
     "deleteConfirmModalTitle": "Eliminar Personal de Apoyo",
-    "noEventTitle":"No existen eventos",
-    "noEventText":"No existen eventos asociados a la entidad, cree el primer evento ahora",
-    "createEvent":"Crear evento",
-         
+    "noEventTitle": "No existen eventos",
+    "noEventText": "No existen eventos asociados a la entidad, cree el primer evento ahora",
+    "createEvent": "Crear evento",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el personal de apoyo y todas sus configuraciones"
   },
   "employee": {
@@ -626,7 +625,7 @@
     "list": "Sucursales",
     "add": "Agregar sucursal",
     "map": "Ver en mapa",
-    "ratioHelp":"Distancia máxima desde la ubicación de la empresa donde los empleados pueden realizar su asistencia.",
+    "ratioHelp": "Distancia máxima desde la ubicación de la empresa donde los empleados pueden realizar su asistencia.",
     "report": "Emitir reporte",
     "detailSucursal": "Detalles de la sucursal",
     "update": "Editar sucursal",
@@ -812,7 +811,10 @@
     "endDescanso": "Finalizar Descanso",
     "titleBranch": "Seleccione la sucursal",
     "selected": "Seleccionar  sucursal",
-    "history": "HISTORIAL DE ASISTENCIA"
+    "history": "HISTORIAL DE ASISTENCIA",
+    "noGeo": "Activar geolocalización",
+    "noGeoBtn":"Activar ahora",
+    "noGeoText": "Al parecer no tienes activadp el permiso de geolocalización, actívelo para usar esta herramienta"
   },
   "twoFactor": {
     "copyCode": "Código copiado",

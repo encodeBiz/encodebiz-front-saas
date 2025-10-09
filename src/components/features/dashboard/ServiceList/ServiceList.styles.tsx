@@ -7,7 +7,7 @@ export const useStyles = (): Record<string, SxProps<Theme>> => ({
     width: '100%',
     height: '100%',
     maxWidth: {
-      sx: '100%',
+      xs: '100%',
       sm: '100%',
       md: '100%',
       lg: 483,

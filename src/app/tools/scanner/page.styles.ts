@@ -19,15 +19,15 @@ export const useStyles = (): Record<string, SxProps<Theme>> => ({
       lg:'absolute',
     },
     right:{
-      xs:140,
-      sm:140,
+      xs:60,
+      sm:60,
       md:140,
       xl:140,
       lg:140
     },
     top:{
-      xs:20,
-      sm:20,
+      xs:10,
+      sm:10,
       md:40,
       xl:40,
       lg:40

@@ -13,7 +13,7 @@ export default function TabContent({ title, subtitle, data }: { title: string, s
             {data.map((e, i) => <Box key={i}>
                 <Divider variant='fullWidth' />              
                 <Box display={'flex'} flexDirection={{
-                    sx: 'column',
+                    xs: 'column',
                     sm: 'column',
                     md: 'column',
                     xl: 'row',

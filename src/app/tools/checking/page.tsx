@@ -19,6 +19,7 @@ import InfoModal from '@/components/common/modals/InfoModal';
 import VerifyTwoFA from './VerifyTwoFA/VerifyTwoFA';
 import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 import { useStyles } from './page.styles';
+import { useGeoPermission } from '@/hooks/useGeoPermission';
 
 
 const Checking = () => {
@@ -26,16 +27,15 @@ const Checking = () => {
     const { branchList, setSessionData, sessionData, hanldeSelectedBranch, } = useCheck()
     const { open, openModal } = useCommonModal()
     const classes = useStyles();
+    const { requestLocation } = useGeoPermission();
 
     return (
 
         <Container maxWidth="sm" sx={{ backgroundColor: '#FFFFFF', height: '100vh', position: 'relative', paddingBottom: 10 }}>
 
             <Box sx={classes.locale}>
-                <LocaleSwitcher />
+                <LocaleSwitcher rmText={true} />
             </Box>
-
-
 
 
             <Check />
@@ -43,7 +43,6 @@ const Checking = () => {
 
             <Box onClick={() => openModal(CommonModalType.LOGS)}
                 sx={{
-
                     position: 'absolute',
                     width: '100%',
                     height: 89,
@@ -77,6 +76,15 @@ const Checking = () => {
             {open.type === CommonModalType.INFO && <InfoModal
                 title={t('twoFactor.newDeviceMessage')}
                 description={t('twoFactor.newDeviceMessageText')}
+            />}
+
+            {open.type === CommonModalType.GEO && <InfoModal
+                title={t('checking.noGeo')}
+                description={t('checking.noGeoText')}
+                btnText={t('checking.noGeoBtn')}
+                onClose={() => {
+                    requestLocation()
+                }}
             />}
         </Container>
 
