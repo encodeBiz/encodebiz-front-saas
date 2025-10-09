@@ -39,7 +39,7 @@ export default function EventForm() {
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
             <SassButton
               disabled={formStatus?.isSubmitting}
-              onClick={() => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event?params=${searchParams.get('params')}`)}
+              onClick={() => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event}`)}
               variant='outlined'
               
             > {t('core.button.cancel')}</SassButton>

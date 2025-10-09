@@ -96,7 +96,7 @@ const LocaleSwitcher = ({ rmText = false }: { rmText?: boolean }) => {
               marginLeft: '20px'
             },
           }}
-          renderValue={(select: 'es' | 'en') => <>{flags[select]} {rmText ? '' : <Typography >{select === 'es' ? t('layout.header.spanish') : t('layout.header.english')}</Typography>}</>}
+          renderValue={(select: 'es' | 'en') => <Box gap={1} display={'flex'} justifyItems={'center'} alignItems={'center'}>{flags[select]} {rmText ? '' : <Typography >{select === 'es' ? t('layout.header.spanish') : t('layout.header.english')}</Typography>}</Box>}
         >
           {locales.map((locale) => (
             <MenuItem key={locale} value={locale} >

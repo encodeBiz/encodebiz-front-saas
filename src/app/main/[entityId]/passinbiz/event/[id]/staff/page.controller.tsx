@@ -49,7 +49,7 @@ export default function useStaffController() {
       if (id) await updateEvent(data, token)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
-      navivateTo(`/passinbiz/event?params=${searchParams.get('params')}`)
+      navivateTo(`/passinbiz/event}`)
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')

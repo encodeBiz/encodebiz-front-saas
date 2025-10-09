@@ -17,8 +17,6 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
 
 
             <Grid container spacing={2} alignItems="center" justifyContent={'space-between'}>
-
-
                 <Grid display={'flex'} flexDirection={'row'} alignItems={'center'} justifyContent={'flex-start'} gap={2}>
                     <ArrowBackOutlined color="primary" style={{ fontSize: 45, cursor: 'pointer' }} onClick={() => {
                         navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch`)
@@ -28,13 +26,10 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
                             {branch?.name}
                         </Typography>
                         {branch?.nit && <Typography variant="body1"   >
-                            NIT: {branch?.nit}
+                            {t('core.label.nit')}: {branch?.nit}
                         </Typography>}   </Box>
                 </Grid>
                 <Stack direction={'row'} gap={2}>
-
-
-
                     <SassButton color="primary" variant="contained" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch/${branch.id}/edit`)}>
                         {t('core.button.edit')}
                     </SassButton>
@@ -46,11 +41,10 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
         </Box>
 
         <CardContent sx={{ p: 0 }}>
-
             <Paper elevation={0} sx={{ p: 3 }}>
                 <Box display={'flex'} justifyContent={'space-between'} alignItems={'flex-start'}>
                     <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={2} alignItems={'flex-start'}>
-                        <DetailText label={t('core.label.ratioChecklog2')} value={branch?.ratioChecklog + 'm'} orientation="row" help={t('sucursal.ratioHelp')} />
+                        <DetailText label={t('core.label.ratioChecklog2')} value={branch?.ratioChecklog + t('core.label.meters')} orientation="row" help={t('sucursal.ratioHelp')} />
                         <DetailText label={t('core.label.address')} value={branch?.address?.street} orientation="row" >
                             <Box sx={{ marginLeft: 4, minWidth: 140 }}><SassButton variant="text" onClick={() => onGoMap(branch.address.geo.lat, branch.address.geo.lng)}> {t('sucursal.map')}</SassButton></Box>
                         </DetailText>

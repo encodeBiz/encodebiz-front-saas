@@ -15,7 +15,6 @@ import { CommonModalType } from "@/contexts/commonModalContext";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { format_date, rmNDay } from "@/lib/common/Date";
-import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 import { search as searchBranch, fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucursal.service";
 import { Box } from "@mui/material";

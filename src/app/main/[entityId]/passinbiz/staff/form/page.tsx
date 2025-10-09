@@ -39,7 +39,7 @@ export default function StaffForm() {
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
             <SassButton
               disabled={formStatus?.isSubmitting}
-              onClick={() => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/staff?params=${searchParams.get('params')}`)}
+              onClick={() => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/staff}`)}
               variant='outlined'
 
             > {t('core.button.cancel')}</SassButton>

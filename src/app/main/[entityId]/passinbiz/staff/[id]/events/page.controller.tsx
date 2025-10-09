@@ -71,7 +71,7 @@ export default function useStaffController() {
 
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
-      navivateTo(`/passinbiz/staff?params=${searchParams.get('params')}`)
+      navivateTo(`/passinbiz/staff}`)
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
