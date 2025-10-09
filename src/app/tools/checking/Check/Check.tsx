@@ -25,7 +25,7 @@ import { useGeoPermission } from '@/hooks/useGeoPermission';
 const Check = () => {
     const { checkAction, setCheckAction, restAction, setRestAction, currentBranch, createLogAction, entity, employee, pendingStatus, sessionData, branchList } = useCheck()
     const t = useTranslations()
-    const {  openModal } = useCommonModal()
+    const { openModal } = useCommonModal()
     const { status } = useGeoPermission();
 
 
@@ -37,13 +37,13 @@ const Check = () => {
 
             <Typography variant="body1" fontWeight={'bold'} fontSize={22} > {t('checking.title')} </Typography>
 
-            <Box sx={{ p: 0,width:'100%',  margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 4 }}>
-                <Box  >
-                    <Typography  color="#76777D" variant="body1" fontSize={18} > {t('checking.logDay')} </Typography>
+            <Box sx={{ p: 0, width: '100%', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 4 }}>
+                <Box >
+                    <Typography color="#76777D" variant="body1" fontSize={18} > {t('checking.logDay')} </Typography>
                     <SassButton
                         sx={{
                             borderRadius: 4, textTransform: 'uppercase', mt: 1,
-                            px: 2, height: 73, maxWidth: 335, fontSize: 20
+                            px: 2, height: 73, maxWidth: '100%', fontSize: 20
                         }}
                         disabled={restAction == 'restin' || pendingStatus || status !== "granted"} variant='contained' color='primary'
                         onClick={() => {
@@ -60,12 +60,12 @@ const Check = () => {
                 </Box>
 
 
-                <Box>
+                <Box >
                     <Typography color="#76777D" variant="body1" fontSize={18} > {t('checking.controlDay')} </Typography>
                     <SassButton
                         sx={{
                             borderRadius: 4, textTransform: 'uppercase', mt: 1,
-                            px: 2, height: 73, maxWidth: 335, fontSize: 20, color: "#1C1B1D"
+                            px: 2, height: 73, maxWidth: '100%', fontSize: 20, color: "#1C1B1D"
                         }}
                         disabled={checkAction === 'checkout' || pendingStatus || status !== "granted"} variant='outlined' color='primary'
                         onClick={() => {

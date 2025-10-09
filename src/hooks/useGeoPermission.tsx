@@ -48,8 +48,7 @@ export function useGeoPermission() {
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
                     setStatus("granted");
-                    console.log(pos);
-                    
+                     
                     setPosition({
                         lat: pos.coords.latitude,
                         lng: pos.coords.longitude,

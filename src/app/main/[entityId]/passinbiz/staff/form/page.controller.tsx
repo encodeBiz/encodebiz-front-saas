@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useLayout } from "@/hooks/useLayout";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { createStaff, fetchStaff, updateStaff } from "@/services/passinbiz/staff.service";
 import { IStaff } from "@/domain/features/passinbiz/IStaff";
 import SelectMultipleInput from "@/components/common/forms/fields/SelectMultipleInput";
@@ -25,8 +25,7 @@ export default function useStaffController() {
 
   const { token, user } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
-  const searchParams = useSearchParams()
-  const { navivateTo } = useLayout()
+   const { navivateTo } = useLayout()
   const { changeLoaderState } = useLayout()
   const { id } = useParams<{ id: string }>()
   const fieldList = [

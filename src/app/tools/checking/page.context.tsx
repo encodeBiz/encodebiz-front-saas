@@ -211,8 +211,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     }, [sessionData?.entityId])
 
     useEffect(() => {
-        console.log(position);
-
+ 
         if (customToken && position?.lat) {
             handleValidateEmployee()
             setGeo({
@@ -224,8 +223,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
 
     useEffect(() => {
-        console.log(status);
-
+ 
         if (status === "denied" || status === "error") {
             openModal(CommonModalType.GEO)
         }
