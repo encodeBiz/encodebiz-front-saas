@@ -144,7 +144,7 @@ const QRScanner = () => {
                                     variant='outlined'>{t('scan.' + scanRessult.suggestedDirection)}</Alert>
                             </Box>}
 
-                            {Array.isArray(scanRessult?.holder?.metadata?.auxiliaryFields) && scanRessult?.holder?.metadata?.auxiliaryFields?.length > 0 && <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', width: '100%' }}>
+                            {Array.isArray(scanRessult?.holder?.metadata?.auxiliaryFields) && scanRessult?.holder?.metadata?.auxiliaryFields?.length > 0 && <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', width: '100%', px:2  }}>
                                 <Typography variant="body1" fontWeight={'bold'} textTransform={'capitalize'}>{t('core.label.aditionalData2')}: </Typography>
                                 {scanRessult?.holder?.metadata?.auxiliaryFields?.map((e: any, i: number) => <DetailText key={i}
                                     label={e.label}
@@ -152,18 +152,6 @@ const QRScanner = () => {
                                     valueFontSize={16}
                                 />)}
                             </Box>}
-
-                            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', width: '100%', px:2 }}>
-                                <Typography variant="body1" fontWeight={'bold'} textTransform={'capitalize'}>{t('core.label.aditionalData2')}: </Typography>
-                                <DetailText valueFontSize={16}
-                                    label={'Text'}
-                                    value={'Text 123'}
-                                />
-                            </Box>
-
-
-
-
 
                         </Box>
                     </CardContent>

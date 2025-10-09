@@ -108,16 +108,7 @@ export default function useStaffListController() {
   }
 
   const rowAction: Array<IRowAction> = [
-    {
-      actionBtn: true,
-      color: 'error',
-      icon: <DeleteOutline color="error" />,
-      label: t('core.button.delete'),
-      allowItem: () => true,
-      showBulk: true,
-      onPress: (item: IStaff) => openModal(CommonModalType.DELETE, { data: item }),
-      bulk: true
-    },
+    
     {
       actionBtn: true,
       bulk: false,
@@ -135,6 +126,17 @@ export default function useStaffListController() {
       allowItem: () => true,
       bulk: true,
       onPress: (item: IStaff) => handleResend(item)
+    },
+
+    {
+      actionBtn: true,
+      color: 'error',
+      icon: <DeleteOutline color="error" />,
+      label: t('core.button.delete'),
+      allowItem: () => true,
+      showBulk: true,
+      onPress: (item: IStaff) => openModal(CommonModalType.DELETE, { data: item }),
+      bulk: true
     },
   ]
 
