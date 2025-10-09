@@ -126,7 +126,7 @@ export class HttpClient {
             if (responseErrorData?.error && typeof responseErrorData?.error === 'string') {
               try { responseError = JSON.parse(responseErrorData?.error) }
               catch (error: any) {
-                responseError = { code: responseErrorData?.error, message: responseErrorData?.error, error: error, errors: [] }
+                responseError = { code: responseErrorData?.error, message: responseErrorData?.message, error: error, errors: [] }
               }
             } else {
               if (responseErrorData?.message && typeof responseErrorData?.message === 'string') {
@@ -146,6 +146,12 @@ export class HttpClient {
             throw new Error(responseError.errors[0])
           }
 
+          
+          
+          if (responseError.code === 'auth/invalid_token') {
+            logout()
+            window.location.href = "/auth/login?expiredToken=1"
+          }
           if (responseError.code === 'twofactor/invalid_token') {
             logout()
             window.location.href = "/auth/login?expiredToken=1"

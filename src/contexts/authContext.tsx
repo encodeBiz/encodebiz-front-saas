@@ -116,8 +116,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }
 
-    useEffect(() => {
-      
+    useEffect(() => {      
         if (!authToken && !PUBLIC_PATH.includes(pathName)) {
             setPendAuth(true)
             const unsubscribe = subscribeToAuthChanges(watchSesionState);

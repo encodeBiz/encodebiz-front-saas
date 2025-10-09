@@ -66,11 +66,11 @@ export default function useEmployeeController() {
         entityId: currentEntity?.entity.id
       }
 
- 
+
       if (id)
         await updateEmployee(data, token)
       else
-         await createEmployee(data, token)
+        await createEmployee(data, token)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
 
@@ -188,10 +188,6 @@ export default function useEmployeeController() {
         component: SelectMultipleInput,
         disabled: !!branchId
       },
-      {
-        isDivider: true,
-        label: t('core.label.aditionalData'),
-      },
 
       {
         name: 'jobTitle',
@@ -210,6 +206,12 @@ export default function useEmployeeController() {
         component: TextInput,
 
       },
+      {
+        isDivider: true,
+        label: t('core.label.aditionalData'),
+      },
+
+
       {
         name: 'metadata',
         label: t('core.label.setting'),

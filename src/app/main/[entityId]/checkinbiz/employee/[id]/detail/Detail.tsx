@@ -2,7 +2,7 @@ import { SassButton } from "@/components/common/buttons/GenericButton"
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes"
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee"
 import { useLayout } from "@/hooks/useLayout"
-import { Card, Box, Grid, Typography, CardContent, Paper, Divider, List, ListItem, ListItemText, Stack } from "@mui/material"
+import { Card, Box, Grid, Typography, CardContent, Paper, Divider, List, Stack } from "@mui/material"
 import { useTranslations } from "next-intl"
 import useEmployeeDetailController from "./page.controller"
 import { useCommonModal } from "@/hooks/useCommonModal"
@@ -11,6 +11,9 @@ import { CommonModalType } from "@/contexts/commonModalContext"
 import { CustomChip } from "@/components/common/table/CustomChip"
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal"
 import { useSearchParams } from "next/navigation"
+import { DetailText } from "@/components/common/table/DetailText"
+import { BorderBox } from "@/components/common/tabs/BorderBox"
+import { ArrowBackOutlined } from "@mui/icons-material"
 
 export const Detail = ({ employee, children }: { employee: IEmployee, children: React.ReactNode }) => {
     const t = useTranslations()
@@ -23,27 +26,25 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
     return <Card elevation={3} sx={{ width: '100%', margin: 'auto' }}>
         {/* Header Section */}
         <Box sx={{ p: 3, bgcolor: (theme) => theme.palette.secondary.main }}>
+
             <Grid container spacing={2} alignItems="center" justifyContent={'space-between'}>
-                <Grid >
-                    <Typography variant="h4"   >
-                        {employee?.fullName}
-                    </Typography>
-
-                    <CustomChip size='small' background={employee?.twoFA ? 'active' : 'revoked'} label={employee?.twoFA ? t('core.label.enable2AF') : t('core.label.disable2AF')} />
-
-                </Grid>
-                <Stack direction={'row'} gap={2}>
-                    <SassButton variant="outlined" onClick={() => {
+                <Grid display={'flex'} flexDirection={'row'} alignItems={'center'} justifyContent={'flex-start'} gap={2}>
+                    <ArrowBackOutlined color="primary" style={{ fontSize: 45, cursor:'pointer' }} onClick={() => {
                         if (backAction) {
                             navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch/${backAction}/detail`)
                         } else {
                             navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)
                         }
 
-                    }
-                    }>
-                        {t('core.button.back')}
-                    </SassButton>
+                    }} />
+                    <Box display={'flex'} flexDirection={'column'}>
+                        <Typography variant="h4"   >
+                            {employee?.fullName}
+                        </Typography>
+                        <CustomChip size='small' background={employee?.twoFA ? 'active' : 'revoked'} label={employee?.twoFA ? t('core.label.enable2AF') : t('core.label.disable2AF')} />
+                    </Box>
+                </Grid>
+                <Stack direction={'row'} gap={2}>
 
                     <SassButton color="primary" variant="contained" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${employee.id}/edit`)}>
                         {t('core.button.edit')}
@@ -62,68 +63,49 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
         <CardContent sx={{ p: 0 }}>
 
             <Paper elevation={0} sx={{ p: 3 }}>
-                <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'space-between'} alignItems={'flex-start'}>
-                    <Box sx={{ mt: 2 }}>
-                        <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
-                            {t('core.label.email')}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
-                            {employee?.email}
-                        </Typography>
-                    </Box>
-
-
-                    <Box sx={{ mt: 2 }}>
-                        <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
-                            {t('core.label.phone')}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
-                            {employee?.phone}
-                        </Typography>
-                    </Box>
-
-                    {employee?.nationalId && <Box sx={{ mt: 2 }}>
-                        <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
-                            {t('core.label.nationalId')}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
-                            {employee?.nationalId}
-                        </Typography>
-                    </Box>}
-
-                    {employee?.jobTitle && <Box sx={{ mt: 2 }}>
-                        <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
-                            {t('core.label.jobTitle')}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
-                            {employee?.jobTitle}
-                        </Typography>
-                    </Box>}
-
-                    <Box sx={{ mt: 2 }}>
-                        <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
-                            {t('core.label.status')}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
-                            {t('core.label.' + employee?.status)}
-                        </Typography>
-                    </Box>
-
+                <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={6} alignItems={'flex-start'}>
+                    <DetailText label={t('core.label.email')} value={employee?.email} />
+                    <DetailText label={t('core.label.phone')} value={employee?.phone} />
+                    <DetailText label={t('core.label.status')} value={t('core.label.' + employee?.status)} />
+                    <DetailText label={t('core.label.nationalId')} value={employee?.nationalId} />
                 </Box>
+
+                {/* Additional Details */}
+                {Array.isArray(employee.metadata) && employee.metadata.length > 0 && <> <Paper sx={{ mt: 4 }} elevation={0} >
+                    <Typography variant="subtitle1" gutterBottom  textTransform={'capitalize'} >
+                        {t('core.label.aditionalData')}
+                    </Typography>
+
+                    {Array.isArray(employee.metadata) && <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} alignItems={'flex-start'} gap={2}>
+                        {employee.metadata.map((e: any, i: number) => <DetailText key={i} label={e.label} value={e.value} orientation="row" />)}
+                    </Box>}
+                </Paper></>}
             </Paper>
             <Divider />
             <Paper elevation={0} sx={{ p: 3 }}>
                 <Box sx={{ mt: 2 }}>
-                    <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
-                        {t('core.label.sucursal')}
+                    <Typography variant="subtitle1" gutterBottom>
+                        {t('core.label.sucursalAsigned')}
                     </Typography>
                     {Array.isArray(branchListEmployee) && <List>
-                        {branchListEmployee.map((e: ISucursal, i: number) => <ListItem key={i}>
-                            <ListItemText
-                                primary={e.name}
-                                secondary={e.address.street}
-                            />
-                        </ListItem>)}
+                        {branchListEmployee.map((e: ISucursal, i: number) => <BorderBox key={i} sx={{ padding: 2 }}>
+                            {i === 0 && <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'} >
+                                <Typography fontSize={16} color='#45474C' fontWeight={400} variant="subtitle1" minWidth={200}>
+                                    {t('core.label.sucursal')}
+                                </Typography>
+                                <Typography fontSize={16} color='#45474C' fontWeight={400} variant="subtitle1"  >
+                                    {t('core.label.cargo')}
+                                </Typography>
+                            </Box>}
+                            <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'} >
+                                <Typography fontSize={24} color='#1C1B1D' fontWeight={400} variant="body2" minWidth={200}   >
+                                    {e.name}
+                                </Typography>
+                                <Typography fontSize={24} color='#1C1B1D' fontWeight={400} variant="body2"   >
+                                    {employee.jobTitle}
+                                </Typography>
+                            </Box>
+                        </BorderBox>)}
                     </List>}
                 </Box>
             </Paper>
@@ -131,23 +113,7 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
             <Divider />
 
 
-            {/* Additional Details */}
-            {Array.isArray(employee.metadata) && employee.metadata.length > 0 && <> <Divider /><Paper elevation={0} sx={{ p: 3 }}>
-                <Typography variant="subtitle1" gutterBottom  >
-                    {t('core.label.aditionalData')}
-                </Typography>
 
-                {Array.isArray(employee.metadata) && <List>
-                    {employee.metadata.map((e: any, i: number) => <ListItem key={i}>
-
-                        <ListItemText
-                            primary={e.label}
-                            secondary={e.value}
-                        />
-                    </ListItem>)}
-                </List>}
-
-            </Paper></>}
 
             <Divider />
 

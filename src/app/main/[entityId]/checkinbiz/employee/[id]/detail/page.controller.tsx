@@ -274,14 +274,6 @@ export default function useEmployeeDetailController() {
     <DateRangePicker filter width='100%' value={filterParams.filter.range} onChange={(rg: { start: any, end: any }) => {
       onFilter({ ...filterParams, filter: { ...filterParams.filter, range: rg } })
     }} />
-    {branchList.length > 0 && <SelectFilter
-      first
-      label={t('core.label.subEntity')}
-      defaultValue={'none'}
-      value={filterParams.filter.branchId}
-      onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, branchId: value } })}
-      items={branchList.map(e => ({ value: e.id, label: e.name }))}
-    />}
 
 
   </Box>
