@@ -69,7 +69,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     const [token, setToken] = useState('')
     const [pending, setPending] = useState(false)
     const [pendingStatus, setPendingStatus] = useState(true)
-    const { status, position, error, requestLocation } = useGeoPermission();
+    const { status, position, } = useGeoPermission();
 
     const [entity, setEntity] = useState<IEntity>()
     const [employee, setEmployee] = useState<IEmployee>()
@@ -82,22 +82,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     const [branchList, setBranchList] = useState<Array<{ name: string, branchId: string }>>([])
     const [sessionData, setSessionData] = useState<{ employeeId: string, entityId: string, branchId: string, }>()
 
-    const getCurrenGeo = () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    setGeo(position.coords as { latitude: number, longitude: number })
-                },
-                (error) => {
-                    showToast('Error getting user location: ' + error, 'error')
-                }
-            );
-        }
-        else {
-            showToast('Geolocation is not supported by this browser.', 'error');
-        }
-    }
-
+    
 
     const handleValidateEmployee = async () => {
         try {
@@ -196,6 +181,12 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
                 openModal(CommonModalType.ADDDEVICE2AF)
             }
 
+            if (e?.message?.includes('Untrusted device')) {
+                openModal(CommonModalType.ADDDEVICE2AF)
+            }
+
+            
+
             showToast(e?.message, 'error')
         }).finally(() => {
             changeLoaderState({ show: false })
@@ -214,8 +205,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
 
     useEffect(() => {
-        if (sessionData?.entityId) {
-            getCurrenGeo()
+        if (sessionData?.entityId) {    
             fetchEntityData()
             fetchEmployeeData()
         }

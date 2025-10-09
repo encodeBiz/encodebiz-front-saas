@@ -21,10 +21,12 @@ import image from '../../../../../public/assets/images/checkex.png'
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import { useCheck } from '../page.context';
 import { CommonModalType } from '@/contexts/commonModalContext';
+import { useGeoPermission } from '@/hooks/useGeoPermission';
 const Check = () => {
     const { checkAction, setCheckAction, restAction, setRestAction, currentBranch, createLogAction, entity, employee, pendingStatus, sessionData, branchList } = useCheck()
     const t = useTranslations()
-    const { open, openModal, closeModal } = useCommonModal()
+    const {  openModal } = useCommonModal()
+    const { status } = useGeoPermission();
 
 
     return (
@@ -43,7 +45,7 @@ const Check = () => {
                             borderRadius: 4, textTransform: 'uppercase', mt: 1,
                             px: 2, height: 73, maxWidth: 335, fontSize: 20
                         }}
-                        disabled={restAction == 'restin' || pendingStatus} variant='contained' color='primary'
+                        disabled={restAction == 'restin' || pendingStatus || status === "denied"} variant='contained' color='primary'
                         onClick={() => {
                             if ((!sessionData?.branchId && branchList.length > 0) || (checkAction === 'checkin' && branchList.length > 0))
                                 openModal(CommonModalType.BRANCH_SELECTED)
@@ -65,7 +67,7 @@ const Check = () => {
                             borderRadius: 4, textTransform: 'uppercase', mt: 1,
                             px: 2, height: 73, maxWidth: 335, fontSize: 20, color: "#1C1B1D"
                         }}
-                        disabled={checkAction === 'checkout' || pendingStatus} variant='outlined' color='primary'
+                        disabled={checkAction === 'checkout' || pendingStatus || status === "denied"} variant='outlined' color='primary'
                         onClick={() => {
                             createLogAction(restAction === 'restin' ? 'restout' : 'restin', () => {
                                 setRestAction(restAction === 'restin' ? 'restout' : 'restin')

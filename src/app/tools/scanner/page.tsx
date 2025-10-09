@@ -3,8 +3,7 @@
 import React from 'react';
 import {
     Container,
-    Box,
-    Paper
+    Box 
 } from '@mui/material';
 import { useStyles } from './page.styles';
 import LocaleSwitcher from '@/components/common/LocaleSwitcher';
