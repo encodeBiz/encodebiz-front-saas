@@ -55,7 +55,7 @@ const QRScanner = () => {
 
 
 
-        <BorderBox sx={{ mt: 10, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', background: (theme) => theme.palette.background.paper }}>
+        <BorderBox sx={{ mt: 10, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', background: () => "#F0EFFD" }}>
             <Box sx={{ p: 0, maxWidth: 600, margin: '0 auto' }}>
 
                 {staffValidating && (
