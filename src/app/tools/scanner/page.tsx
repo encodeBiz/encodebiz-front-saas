@@ -4,7 +4,8 @@ import React from 'react';
 import {
     Container,
     Box,
-    Paper} from '@mui/material';
+    Paper
+} from '@mui/material';
 import { useStyles } from './page.styles';
 import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 import QRScanner from '@/components/common/QRScanner/QRScanner';
@@ -15,12 +16,12 @@ const QRScannerPage = () => {
 
     return (
         <Container maxWidth="sm">
-            <Box sx={classes.locale}>
+            <Box sx={classes.locale} >
                 <LocaleSwitcher />
             </Box>
-            <Paper elevation={3} sx={classes.root}>               
-                <QRScanner />
-            </Paper>
+
+            <QRScanner />
+
         </Container>
     );
 };

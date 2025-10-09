@@ -12,15 +12,15 @@ export const useStyles = (): Record<string, SxProps<Theme>> => ({
   fullWidth: { width: '100%' },
   locale:{
     position:{
-      xs:'relative',
-      sm:'relative',
+      xs:'absolute',
+      sm:'absolute',
       md:'absolute',
       xl:'absolute',
       lg:'absolute',
     },
     right:{
-      xs:0,
-      sm:0,
+      xs:140,
+      sm:140,
       md:140,
       xl:140,
       lg:140
@@ -33,8 +33,8 @@ export const useStyles = (): Record<string, SxProps<Theme>> => ({
       lg:40
     },
     width:{
-      xs:'100%',
-      sm:'100%',
+      xs:40,
+      sm:40,
       md:40,
       xl:40,
       lg:40
