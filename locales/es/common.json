@@ -691,7 +691,7 @@
     "title": "Validar pase",
     "subtitle": "Escanee el código QR para confirmar si es valido el pase",
     "camaraFocus": "Apunta tu cámara a un código QR",
-    "resultTitle": "Pase confirmado",
+    "resultTitle": "Acceso confirmado",
     "scanOther": "Escanear otro código",
     "lastValidatedAt": "Última validación",
     "failed": "Ha fallado la lectura del código",

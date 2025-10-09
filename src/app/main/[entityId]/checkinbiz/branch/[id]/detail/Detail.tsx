@@ -58,11 +58,11 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
                 </Box>
 
                 {Array.isArray(branch.metadata) && branch.metadata.length > 0 && <><Divider /> <Paper sx={{ mt: 4 }} elevation={0} >
-                    <Typography variant="subtitle1" gutterBottom  >
+                    <Typography variant="subtitle1" gutterBottom  textTransform={'capitalize'} >
                         {t('core.label.aditionalData')}
                     </Typography>
 
-                    {Array.isArray(branch.metadata) && <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} alignItems={'flex-start'}>
+                    {Array.isArray(branch.metadata) && <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} alignItems={'flex-start'} gap={2}>
                         {branch.metadata.map((e: any, i: number) => <DetailText key={i} label={e.label} value={e.value} orientation="row" />)}
                     </Box>}
                 </Paper></>}

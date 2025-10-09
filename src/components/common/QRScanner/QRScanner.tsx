@@ -33,6 +33,7 @@ import { SassButton } from '../buttons/GenericButton';
 import { updateDoc } from 'firebase/firestore';
 import { getDocRefByPath } from '@/lib/firebase/firestore/readDocument';
 import ConfirmModal from '../modals/ConfirmModal';
+import { DetailText } from '../table/DetailText';
 
 const QRScanner = () => {
     const { eventSelected, handleScan, handleError, resetScanner, scanRessult, staffValidating, staffValid, error, eventList, setEventSelected } = useQRScanner()
@@ -113,22 +114,20 @@ const QRScanner = () => {
                         </Box>
 
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 2 }}>
-                            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', gap: 2, width: '100%' }}>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 2, width: '100%' }}>
                                 <Image style={{ borderRadius: 4, background: '#E9E8F5' }} src={scanRessult?.holder?.parent?.logo} width={80} height={80} alt='' />
                                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0 }}>
                                     <Typography variant="body1">{scanRessult?.holder?.fullName}</Typography>
-                                    <Typography variant="body1">{scanRessult?.holder?.parent?.name}</Typography>
-                                    <Typography variant="body1">{scanRessult?.holder?.parent?.dateLabel}</Typography>
                                 </Box>
                             </Box>
                         </Box>
 
 
 
-                        {scanRessult?.lastValidatedAt && <Typography variant="body1">
+                        {/*scanRessult?.lastValidatedAt && <Typography variant="body1">
                             {t('scan.lastValidatedAt')}:
                             {format_date(new Date(scanRessult?.lastValidatedAt as string), 'DD/MM/YY hh:mm')}</Typography>
-                        }
+                        */}
 
                         {scanRessult?.holder?.type !== 'credential' && <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                             <Alert severity='warning' style={{ fontSize: 14, paddingTop: 8, paddingBottom: 10, width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
@@ -140,6 +139,17 @@ const QRScanner = () => {
                                 variant='outlined'>{t('scan.' + scanRessult.suggestedDirection)}</Alert>
                         </Box>}
 
+
+
+                        {Array.isArray(scanRessult?.holder?.metadata?.auxiliaryFields) && scanRessult?.holder?.metadata?.auxiliaryFields?.length > 0 && <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', width: '100%' }}>
+                            <Typography variant="body1" fontWeight={'bold'}>{t('core.label.aditionalData2')}: </Typography>
+                            {scanRessult?.holder?.metadata?.auxiliaryFields?.map((e: any, i: number) => <DetailText key={i}
+                                label={e.label}
+                                value={e.value}
+                            />)}
+                        </Box>}
+
+
                         <SassButton
                             variant="contained"
                             color="primary"
@@ -148,19 +158,6 @@ const QRScanner = () => {
                         >
                             {t('scan.scanOther')}
                         </SassButton>
-
-                        {Array.isArray(scanRessult?.holder?.metadata?.auxiliaryFields) && scanRessult?.holder?.metadata?.auxiliaryFields?.length > 0 && <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', width: '100%' }}>
-                            <Typography variant="body1" fontWeight={'bold'}>{t('core.label.aditionalData2')}: </Typography>
-                            <List>
-                                {scanRessult?.holder?.metadata?.auxiliaryFields?.map((e: any, i: number) => <ListItem key={i}>
-
-                                    <ListItemText
-                                        primary={e.label}
-                                        secondary={e.value}
-                                    />
-                                </ListItem>)}
-                            </List>
-                        </Box>}
 
                     </Box>
                 </CardContent>

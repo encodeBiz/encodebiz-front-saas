@@ -72,11 +72,11 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
 
                 {/* Additional Details */}
                 {Array.isArray(employee.metadata) && employee.metadata.length > 0 && <> <Paper sx={{ mt: 4 }} elevation={0} >
-                    <Typography variant="subtitle1" gutterBottom  >
+                    <Typography variant="subtitle1" gutterBottom  textTransform={'capitalize'} >
                         {t('core.label.aditionalData')}
                     </Typography>
 
-                    {Array.isArray(employee.metadata) && <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} alignItems={'flex-start'} gap={4}>
+                    {Array.isArray(employee.metadata) && <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} alignItems={'flex-start'} gap={2}>
                         {employee.metadata.map((e: any, i: number) => <DetailText key={i} label={e.label} value={e.value} orientation="row" />)}
                     </Box>}
                 </Paper></>}

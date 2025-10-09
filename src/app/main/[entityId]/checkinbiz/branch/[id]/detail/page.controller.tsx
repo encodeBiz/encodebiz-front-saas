@@ -11,8 +11,7 @@ import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import { fetchSucursal } from "@/services/checkinbiz/sucursal.service";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 import { IRowAction } from "@/components/common/table/GenericTable";
-import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
-
+ 
 
 export default function useEmployeeDetailController() {
   const t = useTranslations();
@@ -59,11 +58,7 @@ export default function useEmployeeDetailController() {
       fetchData()
   }, [currentEntity?.entity.id, user?.id, id])
 
-  const { navivateTo } = useLayout()
-  const onDetail = async (item: any) => {
-    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${item.id}/detail?back=${id}`)
-  }
-
+   
   const rowAction: Array<IRowAction> = [ ]
 
   return { initialValues , rowAction}

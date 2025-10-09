@@ -1,8 +1,8 @@
 import { HelpOutline } from "@mui/icons-material";
 import { Box, Tooltip, Typography } from "@mui/material";
 
-export const DetailText = ({ label, value, orientation = 'column', children, help }: { help?: string, children?: React.ReactNode, label: string, value: any, orientation?: 'row' | 'column' }) => <Box display={'flex'} flexDirection={orientation} gap={orientation === 'column' ? 0 : 2} sx={{ mt: 2 }}>
-    <Typography fontSize={16} color='#45474C' fontWeight={400} variant="subtitle1" gutterBottom >
+export const DetailText = ({ label, value, orientation = 'column', children, help }: { help?: string, children?: React.ReactNode, label: string, value: any, orientation?: 'row' | 'column' }) => <Box display={'flex'} alignItems={orientation === 'row' ? 'center' : 'flex-start'} flexDirection={orientation} gap={orientation === 'column' ? 0 : 2} sx={{ mt: 2 }}>
+    <Typography fontSize={16} color='#45474C' fontWeight={400} variant="subtitle1" >
         {label} {help && <Tooltip
             slotProps={{
                 tooltip: {
