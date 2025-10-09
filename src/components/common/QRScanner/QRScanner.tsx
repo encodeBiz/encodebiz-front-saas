@@ -55,7 +55,7 @@ const QRScanner = () => {
 
 
 
-        <BorderBox sx={{mt:10, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', background: (theme) => theme.palette.background.paper }}>
+        <BorderBox sx={{ mt: 10, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', background: (theme) => theme.palette.background.paper }}>
             <Box sx={{ p: 0, maxWidth: 600, margin: '0 auto' }}>
 
                 {staffValidating && (
@@ -144,8 +144,6 @@ const QRScanner = () => {
                                     variant='outlined'>{t('scan.' + scanRessult.suggestedDirection)}</Alert>
                             </Box>}
 
-
-
                             {Array.isArray(scanRessult?.holder?.metadata?.auxiliaryFields) && scanRessult?.holder?.metadata?.auxiliaryFields?.length > 0 && <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', width: '100%' }}>
                                 <Typography variant="body1" fontWeight={'bold'} textTransform={'capitalize'}>{t('core.label.aditionalData2')}: </Typography>
                                 {scanRessult?.holder?.metadata?.auxiliaryFields?.map((e: any, i: number) => <DetailText key={i}
@@ -154,7 +152,7 @@ const QRScanner = () => {
                                 />)}
                             </Box>}
 
-                             
+
 
 
 

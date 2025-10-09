@@ -37,7 +37,7 @@ const Check = () => {
 
             <Box sx={{ p: 0,width:'100%',  margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 4 }}>
                 <Box  >
-                    <Typography variant="body1" fontSize={18} > {t('checking.logDay')} </Typography>
+                    <Typography  color="#76777D" variant="body1" fontSize={18} > {t('checking.logDay')} </Typography>
                     <SassButton
                         sx={{
                             borderRadius: 4, textTransform: 'uppercase', mt: 1,
@@ -52,7 +52,6 @@ const Check = () => {
                                     setCheckAction(checkAction === 'checkin' ? 'checkout' : 'checkin')
                                 })
                             }
-
                         }} fullWidth
                         startIcon={checkAction === 'checkin' ? <StopCircleOutlined style={{ fontSize: 50 }} sx={{ fontSize: 50, width: 50 }} color={restAction == 'restin' || pendingStatus ? 'disabled' : 'error'} /> : <PlayCircleOutline style={{ fontSize: 50 }} sx={{ fontSize: 50, color: restAction == 'restin' || pendingStatus ? 'disabled' : "#7ADF7F" }} />}
                     >{checkAction === 'checkout' ? t('checking.startJornada') : t('checking.endJornada')}</SassButton>
@@ -60,7 +59,7 @@ const Check = () => {
 
 
                 <Box>
-                    <Typography variant="body1" fontSize={18} > {t('checking.controlDay')} </Typography>
+                    <Typography color="#76777D" variant="body1" fontSize={18} > {t('checking.controlDay')} </Typography>
                     <SassButton
                         sx={{
                             borderRadius: 4, textTransform: 'uppercase', mt: 1,

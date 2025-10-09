@@ -28,7 +28,7 @@ export function useGeoPermission() {
                 setStatus(permission.state as GeoStatus);
             };
         } catch (err) {
-            setError("No se pudo consultar el estado del permiso.");
+            setError("No se pudo consultar el estado del permiso."+ err);
             setStatus("error");
         }
     }, []);
