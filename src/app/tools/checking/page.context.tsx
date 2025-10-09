@@ -6,6 +6,7 @@ import { IChecklog, ICreateLog } from '@/domain/features/checkinbiz/IChecklog';
 import { IEmployee } from '@/domain/features/checkinbiz/IEmployee';
 import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
 import { useCommonModal } from '@/hooks/useCommonModal';
+import { useGeoPermission } from '@/hooks/useGeoPermission';
 import { useLayout } from '@/hooks/useLayout';
 import { useToast } from '@/hooks/useToast';
 import { createLog, validateEmployee, getEmplyeeLogsState, fetchEmployee } from '@/services/checkinbiz/employee.service';
@@ -68,6 +69,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     const [token, setToken] = useState('')
     const [pending, setPending] = useState(false)
     const [pendingStatus, setPendingStatus] = useState(true)
+    const { status, position, } = useGeoPermission();
 
     const [entity, setEntity] = useState<IEntity>()
     const [employee, setEmployee] = useState<IEmployee>()
@@ -80,18 +82,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     const [branchList, setBranchList] = useState<Array<{ name: string, branchId: string }>>([])
     const [sessionData, setSessionData] = useState<{ employeeId: string, entityId: string, branchId: string, }>()
 
-    const getCurrenGeo = () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    setGeo(position.coords as { latitude: number, longitude: number })
-                },
-                (error) => showToast('Error getting user location: ' + error, 'error')
-            );
-        }
-        else showToast('Geolocation is not supported by this browser.', 'error');
-    }
-
+    
 
     const handleValidateEmployee = async () => {
         try {
@@ -184,14 +175,17 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
         changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
 
         createLog(data, token).then(() => {
-
             if (typeof callback === 'function') callback()
-
         }).catch(e => {
-
             if (e?.message?.includes('Dispositivo no confiable')) {
                 openModal(CommonModalType.ADDDEVICE2AF)
             }
+
+            if (e?.message?.includes('Untrusted device')) {
+                openModal(CommonModalType.ADDDEVICE2AF)
+            }
+
+            
 
             showToast(e?.message, 'error')
         }).finally(() => {
@@ -211,8 +205,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
 
     useEffect(() => {
-        if (sessionData?.entityId) {
-            getCurrenGeo()
+        if (sessionData?.entityId) {    
             fetchEntityData()
             fetchEmployeeData()
         }
@@ -221,6 +214,20 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         if (customToken) handleValidateEmployee()
     }, [customToken])
+
+
+    useEffect(() => {
+        if (position?.lat) {
+            setGeo({
+                latitude: position.lat,
+                longitude: position.lng,
+            })
+        }
+
+        if (status === "denied") {
+            openModal(CommonModalType.GEO)
+        }
+    }, [position, status])
 
 
 

@@ -40,7 +40,7 @@ const BillingPreferencesPage = () => {
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'center', textAlign: 'center' }}>
                         <SassButton sx={{
                             width: {
-                                sx: '90%',
+                                xs: '90%',
                                 sm: '90%',
                                 md: '90%',
                                 lg: 610,

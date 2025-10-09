@@ -30,7 +30,7 @@ const ServiceList = () => {
     if (entityServiceList.filter(e => e.active && entitySuscription.filter((es) => es.serviceId === e.id).length === 0).length> 0)
         return (
             <Grid container spacing={4} display={'flex'} flexDirection={{
-                sx: 'column',
+                xs: 'column',
                 sm: 'column',
                 md: 'column',
                 lg: 'row',

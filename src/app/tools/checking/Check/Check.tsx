@@ -21,10 +21,12 @@ import image from '../../../../../public/assets/images/checkex.png'
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import { useCheck } from '../page.context';
 import { CommonModalType } from '@/contexts/commonModalContext';
+import { useGeoPermission } from '@/hooks/useGeoPermission';
 const Check = () => {
     const { checkAction, setCheckAction, restAction, setRestAction, currentBranch, createLogAction, entity, employee, pendingStatus, sessionData, branchList } = useCheck()
     const t = useTranslations()
-    const { open, openModal, closeModal } = useCommonModal()
+    const {  openModal } = useCommonModal()
+    const { status } = useGeoPermission();
 
 
     return (
@@ -35,24 +37,23 @@ const Check = () => {
 
             <Typography variant="body1" fontWeight={'bold'} fontSize={22} > {t('checking.title')} </Typography>
 
-            <Box sx={{ p: 0, maxWidth: 600, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <Box sx={{ p: 0,width:'100%',  margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 4 }}>
                 <Box  >
-                    <Typography variant="body1" fontSize={18} > {t('checking.logDay')} </Typography>
+                    <Typography  color="#76777D" variant="body1" fontSize={18} > {t('checking.logDay')} </Typography>
                     <SassButton
                         sx={{
                             borderRadius: 4, textTransform: 'uppercase', mt: 1,
                             px: 2, height: 73, maxWidth: 335, fontSize: 20
                         }}
-                        disabled={restAction == 'restin' || pendingStatus} variant='contained' color='primary'
+                        disabled={restAction == 'restin' || pendingStatus || status === "denied"} variant='contained' color='primary'
                         onClick={() => {
-                            if (!sessionData?.branchId && branchList.length > 0)
+                            if ((!sessionData?.branchId && branchList.length > 0) || (checkAction === 'checkin' && branchList.length > 0))
                                 openModal(CommonModalType.BRANCH_SELECTED)
                             else {
                                 createLogAction(checkAction === 'checkin' ? 'checkout' : 'checkin', () => {
                                     setCheckAction(checkAction === 'checkin' ? 'checkout' : 'checkin')
                                 })
                             }
-
                         }} fullWidth
                         startIcon={checkAction === 'checkin' ? <StopCircleOutlined style={{ fontSize: 50 }} sx={{ fontSize: 50, width: 50 }} color={restAction == 'restin' || pendingStatus ? 'disabled' : 'error'} /> : <PlayCircleOutline style={{ fontSize: 50 }} sx={{ fontSize: 50, color: restAction == 'restin' || pendingStatus ? 'disabled' : "#7ADF7F" }} />}
                     >{checkAction === 'checkout' ? t('checking.startJornada') : t('checking.endJornada')}</SassButton>
@@ -60,13 +61,13 @@ const Check = () => {
 
 
                 <Box>
-                    <Typography variant="body1" fontSize={18} > {t('checking.controlDay')} </Typography>
+                    <Typography color="#76777D" variant="body1" fontSize={18} > {t('checking.controlDay')} </Typography>
                     <SassButton
                         sx={{
                             borderRadius: 4, textTransform: 'uppercase', mt: 1,
                             px: 2, height: 73, maxWidth: 335, fontSize: 20, color: "#1C1B1D"
                         }}
-                        disabled={checkAction === 'checkout' || pendingStatus} variant='outlined' color='primary'
+                        disabled={checkAction === 'checkout' || pendingStatus || status === "denied"} variant='outlined' color='primary'
                         onClick={() => {
                             createLogAction(restAction === 'restin' ? 'restout' : 'restin', () => {
                                 setRestAction(restAction === 'restin' ? 'restout' : 'restin')
@@ -80,7 +81,7 @@ const Check = () => {
 
 
             {employee && <Box sx={{ width: "100%", p: 2, mt: 2, mb: 2, boxShadow: '0px 2.5px 4px rgba(0, 0, 0, 0.25)', }}>
-                <Typography variant="body1" color='#1C1B1D' fontSize={18} fontWeight={500} > {employee.fullName}</Typography>
+                <Typography textTransform={'uppercase'} variant="body1" color='#1C1B1D' fontSize={18} fontWeight={500} > {employee.fullName}</Typography>
                 {employee?.jobTitle && <Typography color="#76777D" variant="body1" fontSize={18} fontWeight={500}  >{employee?.jobTitle}</Typography>}
                 <Typography color="#76777D" variant="body1" fontSize={18} fontWeight={500}  > {currentBranch?.name}</Typography>
             </Box>}

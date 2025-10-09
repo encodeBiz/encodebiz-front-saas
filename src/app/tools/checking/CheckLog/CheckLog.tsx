@@ -110,7 +110,7 @@ const CheckLog = () => {
                     <Box sx={{
                         display: 'flex',
                         flexDirection: {
-                            sx: 'column',
+                            xs: 'column',
                             sm: 'column',
                             md: 'column',
                             lg: 'column',

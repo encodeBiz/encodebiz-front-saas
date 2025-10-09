@@ -41,7 +41,7 @@ const flags = {
     </g>
   </svg>
 }
-const LocaleSwitcher: React.FC = () => {
+const LocaleSwitcher = ({ rmText = false }: { rmText?: boolean }) => {
   const t = useTranslations(); // 'LocaleSwitcher' refers to the key in your message files
   const { changeLocale, currentLocale } = useAppLocale()
   const [selectedLocale, setSelectedLocale] = useState(currentLocale);
@@ -83,12 +83,12 @@ const LocaleSwitcher: React.FC = () => {
   };
 
   return (
-    <Box sx={{ minWidth: 160, mt: 1 }}>
+    <Box sx={{ minWidth: rmText?80:160, mt: 1 }}>
       <FormControl fullWidth>
         <Select
           labelId="locale-switcher-label"
           id="locale-switcher-select"
-          value={selectedLocale}
+          value={selectedLocale as any}
           onChange={handleChange}
           size='small'
           sx={{
@@ -96,6 +96,7 @@ const LocaleSwitcher: React.FC = () => {
               marginLeft: '20px'
             },
           }}
+          renderValue={(select: 'es' | 'en') => <>{flags[select]} {rmText ? '' : <Typography >{select === 'es' ? t('layout.header.spanish') : t('layout.header.english')}</Typography>}</>}
         >
           {locales.map((locale) => (
             <MenuItem key={locale} value={locale} >
@@ -104,14 +105,11 @@ const LocaleSwitcher: React.FC = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 flexDirection: 'row',
-
                 gap: 1
               }}>
-              
+
                 {locale === 'en' && <>{flags[locale]} <Typography textTransform={'uppercase'}>{t('layout.header.english')}</Typography></>}
                 {locale === 'es' && <>{flags[locale]}<Typography textTransform={'uppercase'}>{t('layout.header.spanish')}</Typography></>}
-
-
               </Box>
             </MenuItem>
           ))}

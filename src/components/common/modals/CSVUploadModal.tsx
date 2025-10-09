@@ -130,7 +130,7 @@ const CSVUploadModal = ({ open, onClose, onConfirm }: ICSVUploadModal) => {
       <DialogContent>
         {!file ? (
           <Box display={'flex'} flexDirection={{
-            sx: 'column',
+            xs: 'column',
             sm: 'column',
             md: 'column',
             lg: 'row',

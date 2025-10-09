@@ -6,6 +6,7 @@ export enum CommonModalType {
     WELCOMEGUEST = 'WELCOMEGUEST',
     DELETE = 'DELETE',
     FILES = 'FILES',
+    GEO = 'GEO',
     SEND = 'SEND',
     BILLING = 'BILLING',
     RECOVERY = 'RECOVERY',
