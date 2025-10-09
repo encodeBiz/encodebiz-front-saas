@@ -43,7 +43,7 @@ const Checking = () => {
 
             <Box onClick={() => openModal(CommonModalType.LOGS)}
                 sx={{
-                    position: 'absolute',
+                    position: 'fixed',
                     width: '100%',
                     height: 89,
                     left: 0,
