@@ -1,18 +1,14 @@
 'use client'
 import { Box, CssBaseline } from '@mui/material';
-import bg from '../../../public/assets/images/bg.jpg'
-import { usePathname } from 'next/navigation';
-
+  
 export default function ToolLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const pathName = usePathname()
-  return (
+   return (
 
     <Box sx={{
-      backgroundImage: pathName.includes('/tools/scanner') ? 'none' : `url(${bg.src})`,
       backgroundSize: '100% 100%',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
