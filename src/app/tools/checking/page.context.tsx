@@ -52,6 +52,7 @@ interface CheckType {
 
     currentBranch: ISucursal | undefined
     hanldeSelectedBranch: (sucursalId: string) => void
+    handleRequestLocation: () => void
 }
 
 
@@ -69,7 +70,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     const [token, setToken] = useState('')
     const [pending, setPending] = useState(false)
     const [pendingStatus, setPendingStatus] = useState(true)
-    const { status, position, } = useGeoPermission();
+    const { status, position, requestLocation } = useGeoPermission();
 
     const [entity, setEntity] = useState<IEntity>()
     const [employee, setEmployee] = useState<IEmployee>()
@@ -82,7 +83,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     const [branchList, setBranchList] = useState<Array<{ name: string, branchId: string }>>([])
     const [sessionData, setSessionData] = useState<{ employeeId: string, entityId: string, branchId: string, }>()
 
-    
+
 
     const handleValidateEmployee = async () => {
         try {
@@ -181,13 +182,11 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
                 openModal(CommonModalType.ADDDEVICE2AF)
             }
 
-            if (e?.message?.includes('Untrusted device')) {
+            if (e?.message?.includes('Untrusted')) {
                 openModal(CommonModalType.ADDDEVICE2AF)
             }
 
-            
-
-            showToast(e?.message, 'error')
+            // showToast(e?.message, 'error')
         }).finally(() => {
             changeLoaderState({ show: false })
         })
@@ -205,38 +204,39 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
 
     useEffect(() => {
-        if (sessionData?.entityId) {    
+        if (sessionData?.entityId) {
             fetchEntityData()
             fetchEmployeeData()
         }
     }, [sessionData?.entityId])
 
     useEffect(() => {
-        if (customToken) handleValidateEmployee()
-    }, [customToken])
+ 
+        if (customToken && position?.lat) {
+            handleValidateEmployee()
+            setGeo({
+                latitude: position?.lat as number,
+                longitude: position?.lng as number,
+            })
+        }
+    }, [customToken, position?.lat])
 
 
     useEffect(() => {
-        if (position?.lat) {
-            setGeo({
-                latitude: position.lat,
-                longitude: position.lng,
-            })
-        }
-
-        if (status === "denied") {
+ 
+        if (status === "denied" || status === "error") {
             openModal(CommonModalType.GEO)
         }
-    }, [position, status])
 
+        
+    }, [status])
 
-
-
+    const handleRequestLocation = () => requestLocation()
 
     return (
         <CheckContext.Provider value={{
             pendingStatus, currentBranch, hanldeSelectedBranch,
-            setSessionData, sessionData, setToken,
+            setSessionData, sessionData, setToken, handleRequestLocation,
             entity, employee, branchList, token,
             pending, checkAction, setCheckAction, restAction, setRestAction, createLogAction
         }}>

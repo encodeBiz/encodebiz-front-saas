@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useState, useCallback, useEffect } from "react";
 
@@ -23,7 +24,7 @@ export function useGeoPermission() {
         try {
             const permission = await navigator.permissions.query({ name: "geolocation" as PermissionName });
             setStatus(permission.state as GeoStatus);
-
+            if(permission.state === 'granted') requestLocation()
             permission.onchange = () => {
                 setStatus(permission.state as GeoStatus);
             };
@@ -46,12 +47,13 @@ export function useGeoPermission() {
         return new Promise<void>((resolve) => {
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
+                    setStatus("granted");
+                     
                     setPosition({
                         lat: pos.coords.latitude,
                         lng: pos.coords.longitude,
                         accuracy: pos.coords.accuracy,
-                    });
-                    setStatus("granted");
+                    });                   
                     resolve();
                 },
                 (err) => {
@@ -74,7 +76,8 @@ export function useGeoPermission() {
 
     useEffect(() => {
         checkPermission();
-    }, [checkPermission]);
+    }, []);
+ 
 
     return {
         status,

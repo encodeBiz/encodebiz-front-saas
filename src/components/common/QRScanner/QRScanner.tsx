@@ -76,7 +76,7 @@ const QRScanner = () => {
                 </Box>}
 
                 {!scanRessult && !staffValidating && staffValid && !error && (eventList.length > 0 && !!eventSelected || eventList.length == 0) && (
-                    <StyledCard>
+                    <CardContent>
                         <ScannerContainer elevation={0}>
                             <PreviewContainer>
                                 <Scanner
@@ -104,7 +104,7 @@ const QRScanner = () => {
                                 {t('scan.camaraFocus')}
                             </Typography>
                         </Box>
-                    </StyledCard>
+                    </CardContent>
                 )}
 
                 {scanRessult && !staffValidating && staffValid && !error && (
@@ -149,8 +149,17 @@ const QRScanner = () => {
                                 {scanRessult?.holder?.metadata?.auxiliaryFields?.map((e: any, i: number) => <DetailText key={i}
                                     label={e.label}
                                     value={e.value}
+                                    valueFontSize={16}
                                 />)}
                             </Box>}
+
+                            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', width: '100%', px:2 }}>
+                                <Typography variant="body1" fontWeight={'bold'} textTransform={'capitalize'}>{t('core.label.aditionalData2')}: </Typography>
+                                <DetailText valueFontSize={16}
+                                    label={'Text'}
+                                    value={'Text 123'}
+                                />
+                            </Box>
 
 
 
@@ -163,8 +172,8 @@ const QRScanner = () => {
                 )}
 
                 {!!error && (
-                    <StyledCard>
-                        <CardContent>
+                    <CardContent>
+                       
                             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                                 <Error color="error" sx={{ fontSize: 100 }} />
                                 <Typography variant="h5" sx={{ textAlign: 'center' }}>
@@ -182,13 +191,13 @@ const QRScanner = () => {
                                     {t('scan.tryagain')}
                                 </Button>
                             </Box>
-                        </CardContent>
-                    </StyledCard>
+                         
+                    </CardContent>
                 )}
 
 
                 {!staffValid && !staffValidating && (
-                    <StyledCard>
+                  
                         <CardContent>
                             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                                 <Error color="error" sx={{ fontSize: 100 }} />
@@ -206,7 +215,7 @@ const QRScanner = () => {
                                 </SassButton>
                             </Box>
                         </CardContent>
-                    </StyledCard>
+                 
                 )}
 
 
@@ -229,17 +238,16 @@ const QRScanner = () => {
             </Box>
         </BorderBox>
 
-        {scanRessult && !staffValidating && staffValid && !error && (<SassButton
+        {scanRessult && !staffValidating && staffValid && !error && (<Box sx={{maxWidth:600,  width: '90%', position: 'fixed', bottom: 50, display:'flex', justifyContent:'center' }}><SassButton
             variant="contained"
             color="primary"
             onClick={resetScanner}
             sx={{
-                position: 'absolute', bottom: 50,
-                mt: 2, textTransform: 'inherit', width: '90%', m: 'auto'
+                textTransform: 'inherit', width: '250px', mx: 'auto'
             }}
         >
             {t('scan.scanOther')}
-        </SassButton>)}
+        </SassButton></Box>)}
     </>
     );
 };

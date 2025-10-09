@@ -19,15 +19,13 @@ import InfoModal from '@/components/common/modals/InfoModal';
 import VerifyTwoFA from './VerifyTwoFA/VerifyTwoFA';
 import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 import { useStyles } from './page.styles';
-import { useGeoPermission } from '@/hooks/useGeoPermission';
-
+ 
 
 const Checking = () => {
     const t = useTranslations()
-    const { branchList, setSessionData, sessionData, hanldeSelectedBranch, } = useCheck()
+    const { branchList, setSessionData, sessionData, hanldeSelectedBranch,handleRequestLocation } = useCheck()
     const { open, openModal } = useCommonModal()
     const classes = useStyles();
-    const { requestLocation } = useGeoPermission();
 
     return (
 
@@ -83,7 +81,7 @@ const Checking = () => {
                 description={t('checking.noGeoText')}
                 btnText={t('checking.noGeoBtn')}
                 onClose={() => {
-                    requestLocation()
+                    handleRequestLocation()
                 }}
             />}
         </Container>

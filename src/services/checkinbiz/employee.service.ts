@@ -166,7 +166,7 @@ export async function createLog(data: ICreateLog, token: string) {
         {
           ...data,
         }
-      );
+      );       
       if (response.errCode && response.errCode !== 200) {
         throw new Error(response.message);
       }

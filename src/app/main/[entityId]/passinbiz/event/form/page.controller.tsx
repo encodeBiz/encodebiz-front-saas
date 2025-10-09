@@ -104,7 +104,7 @@ export default function useHolderController() {
       else await createEvent(data, token)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
-      navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event?params=${searchParams.get('params')}`)
+      navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event}`)
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')

@@ -147,7 +147,7 @@ export default function useHolderController() {
       else
         await updateHolder(dataForm, token)
       showToast(t('core.feedback.success'), 'success');
-      navivateTo(`/passinbiz/holder?params=${searchParams.get('params')}`)
+      navivateTo(`/passinbiz/holder}`)
       changeLoaderState({ show: false })
     } catch (error: any) {
       showToast(error.message, 'error')

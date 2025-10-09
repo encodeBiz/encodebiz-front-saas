@@ -41,7 +41,7 @@ export default function EmployeeForm() {
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
             <SassButton
               disabled={formStatus?.isSubmitting}
-              onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee?params=${searchParams.get('params')}`)}
+              onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee}`)}
               variant='outlined'
             > {t('core.button.cancel')}</SassButton>
             <SassButton
