@@ -142,7 +142,7 @@ const QRScanner = () => {
 
 
                         {Array.isArray(scanRessult?.holder?.metadata?.auxiliaryFields) && scanRessult?.holder?.metadata?.auxiliaryFields?.length > 0 && <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', width: '100%' }}>
-                            <Typography variant="body1" fontWeight={'bold'}>{t('core.label.aditionalData2')}: </Typography>
+                            <Typography variant="body1" fontWeight={'bold'} textTransform={'capitalize'}>{t('core.label.aditionalData2')}: </Typography>
                             {scanRessult?.holder?.metadata?.auxiliaryFields?.map((e: any, i: number) => <DetailText key={i}
                                 label={e.label}
                                 value={e.value}
