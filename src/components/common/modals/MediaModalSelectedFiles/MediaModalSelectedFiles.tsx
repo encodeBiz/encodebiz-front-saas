@@ -112,11 +112,27 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
     }
   }, [currentEntity?.entity.id, fetchUserMedia, selectedType, showToast, token, user?.id]);
 
+ 
 
-  const handleFileChange = useCallback(async (event: any) => {
-    const file = event.currentTarget.files[0];
-    handleFile(file)
-  }, [handleFile]);
+  const handleFileChange = (e: any) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0]
+      const image = new Image();
+      image.onload = function () {
+        const size: { w: number, h: number } =  fileTypes(t).find(e => e.value === type)?.size as { w: number, h: number }
+        const minWidth = size.w
+        const minHeigth = size.h      
+        if (image.width === minWidth && image.height === minHeigth) {
+          handleFile(file)       
+        } else {
+          handleClose()
+          showToast(`${t('core.title.cropValidate1')} ${minWidth}x${minHeigth}.`,'error')
+        }
+      }
+      image.src = URL.createObjectURL(file);
+
+    }
+  };
 
   return (
     <Dialog
@@ -151,7 +167,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
                   disabled={!selectedType}
                   sx={{ width: 340, height: 55 }}
                 >
-                  {t('core.label.uploadResourse')}
+                  {t('core.label.uploadResourse')} 
                   <TextField
                     onChange={handleFileChange}
                     type="file"

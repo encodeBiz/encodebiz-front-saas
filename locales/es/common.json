@@ -72,7 +72,7 @@
       "next": "Adelante"
     },
     "title": {
-      "cropValidate1": "Las dimensiones minimas deben ser",
+      "cropValidate1": "Las dimensiones de la imagen deben ser ",
       "cropValidate2": " y las máximas",
       "loader": "Cargando sesión de usuario",
       "loaderChangeEntity": "Cambiando entidad",

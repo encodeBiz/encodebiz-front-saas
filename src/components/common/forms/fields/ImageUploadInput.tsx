@@ -143,7 +143,7 @@ const ImageUploadInput = ({ name, ...props }: any & FieldProps & TextFieldProps 
         )}
       </Box>
       <FormHelperText error={!!helperText}>{helperText as string}</FormHelperText>
-      {CommonModalType.FILES == open.type && open.open && open.args.name === name && <MediaModalSelectedFiles type={typeUpload} key={name} onSelected={handleOnSelected} />}
+      {CommonModalType.FILES == open.type && open.open && open.args.name === name && <MediaModalSelectedFiles crop={false} type={typeUpload} key={name} onSelected={handleOnSelected} />}
 
     </FormControl >
 
