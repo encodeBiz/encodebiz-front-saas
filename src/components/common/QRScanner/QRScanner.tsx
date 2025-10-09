@@ -76,7 +76,7 @@ const QRScanner = () => {
                 </Box>}
 
                 {!scanRessult && !staffValidating && staffValid && !error && (eventList.length > 0 && !!eventSelected || eventList.length == 0) && (
-                    <StyledCard>
+                    <CardContent>
                         <ScannerContainer elevation={0}>
                             <PreviewContainer>
                                 <Scanner
@@ -104,7 +104,7 @@ const QRScanner = () => {
                                 {t('scan.camaraFocus')}
                             </Typography>
                         </Box>
-                    </StyledCard>
+                    </CardContent>
                 )}
 
                 {scanRessult && !staffValidating && staffValid && !error && (
