@@ -11,7 +11,6 @@ import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import { fetchSucursal } from "@/services/checkinbiz/sucursal.service";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 import { IRowAction } from "@/components/common/table/GenericTable";
-import { ListAltOutlined } from "@mui/icons-material";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 
 
@@ -65,19 +64,7 @@ export default function useEmployeeDetailController() {
     navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${item.id}/detail?back=${id}`)
   }
 
-  const rowAction: Array<IRowAction> = [
-
-    {
-      actionBtn: true,
-      color: 'primary',
-      icon: <ListAltOutlined color="primary" />,
-      label: t('employee.detail'),
-      bulk: false,
-      allowItem: () => true,
-      onPress: (item: ISucursal) => onDetail(item)
-    },
-
-  ]
+  const rowAction: Array<IRowAction> = [ ]
 
   return { initialValues , rowAction}
 }
