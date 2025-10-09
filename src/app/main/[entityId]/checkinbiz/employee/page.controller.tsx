@@ -58,7 +58,7 @@ export default function useEmployeeListController() {
     currentPage: 0,
     total: 0,
     params: {
-      filters: [],
+      filters: [{field:'status',operator:'==', value:'active'}],
       startAfter: null,
       limit: 5,
       orderBy: 'createdAt',
@@ -339,8 +339,8 @@ export default function useEmployeeListController() {
       if (key === 'branchId' && filter[key] !== 'none')
         filterData.push({
           field: 'branchId',
-          operator: 'array-contains',
-          value: filter[key]
+          operator: 'array-contains-any',
+          value: [filter[key]]
         })
       else
         filterData.push({ field: key, operator: '==', value: filter[key] })

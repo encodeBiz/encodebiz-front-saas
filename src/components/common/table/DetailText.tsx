@@ -7,8 +7,8 @@ export const DetailText = ({ label, value, orientation = 'column', children, hel
             slotProps={{
                 tooltip: {
                     sx: {
-                        bgcolor: (theme)=>theme.palette.background.paper, // Dark green background
-                        color: (theme)=>theme.palette.text.primary, // White text color
+                        bgcolor: (theme)=>theme.palette.primary.main, // Dark green background
+                        color:"#FFF", // White text color
                     },
                 },
             }}

@@ -113,7 +113,7 @@
       "subEntityName": "Nombre de la sucursal",
       "subEntityData": "DATOS DE LA SUCURSAL",
       "internal": "Interno",
-      "meters": "Metros",
+      "meters": "metros",
       "collaborator": "Colaborador",
       "ratioChecklog": "Radio de chequeo en metros",
       "ratioChecklog2": "Zona de chequeo permitida",
