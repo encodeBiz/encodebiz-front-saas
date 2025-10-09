@@ -18,10 +18,11 @@ interface InfoModalProps {
     title: string
     description: string
     cancelBtn?: boolean
+    closeBtn?: boolean
     onClose?: () => void
     btnText?: string
 }
-const InfoModal = ({ title, description, onClose, btnText,
+const InfoModal = ({ title, description, onClose, btnText, closeBtn,
     cancelBtn = true }: InfoModalProps): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const t = useTranslations()
@@ -59,6 +60,17 @@ const InfoModal = ({ title, description, onClose, btnText,
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
+
+                {closeBtn && <SassButton
+                    color="primary"
+                    variant="outlined"
+                    onClick={() => closeModal(CommonModalType.INFO)}
+                    size='small'
+
+                >
+                    {t('core.button.accept')}
+                </SassButton>}
+
                 {cancelBtn && <SassButton
                     color="primary"
                     variant="outlined"

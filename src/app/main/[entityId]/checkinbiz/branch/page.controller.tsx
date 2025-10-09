@@ -143,11 +143,7 @@ export default function useEmployeeListController() {
       label: t("core.label.name"),
       minWidth: 170,
     },
-    {
-      id: 'name',
-      label: t("core.label.name"),
-      minWidth: 170,
-    },
+   
     {
       id: 'address',
       label: t("core.label.address"),

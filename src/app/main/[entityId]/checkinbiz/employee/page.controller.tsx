@@ -58,7 +58,7 @@ export default function useEmployeeListController() {
     currentPage: 0,
     total: 0,
     params: {
-      filters: [],
+      filters: [{field:'status',operator:'==', value:'active'}],
       startAfter: null,
       limit: 5,
       orderBy: 'createdAt',
@@ -199,7 +199,8 @@ export default function useEmployeeListController() {
     if (filterParams.params.filters.find((e: any) => e.field === 'branchId' && e.value === 'none'))
       filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "branchId")
 
-     
+    console.log({ ...(filterParams.params as any), filters: [...filterParams.params.filters, ...filters] });
+    
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters: [...filterParams.params.filters, ...filters] }).then(async res => {
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
@@ -339,8 +340,8 @@ export default function useEmployeeListController() {
       if (key === 'branchId' && filter[key] !== 'none')
         filterData.push({
           field: 'branchId',
-          operator: 'array-contains',
-          value: filter[key]
+          operator: 'array-contains-any',
+          value: [filter[key]]
         })
       else
         filterData.push({ field: key, operator: '==', value: filter[key] })
