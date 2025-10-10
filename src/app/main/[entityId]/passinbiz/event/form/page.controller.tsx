@@ -276,11 +276,14 @@ export default function useHolderController() {
       const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, id)
       const location = event.location.split('+++')
        
-      let country = 'España'
+      let countryCurrent = 'España'
       let city = 'Madrid'
       if (location.length === 2) {
-        country = location[1]
+        countryCurrent = location[1]
         city = location[0]
+
+        setCityList(country.find((e: any) => e.name === country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
+
       }
 
 
@@ -288,7 +291,7 @@ export default function useHolderController() {
         ...event,
         date: (event.date instanceof Timestamp) ? event.date.toDate() : new Date(event.date),
         endDate: (event.endDate instanceof Timestamp) ? event.endDate.toDate() : new Date(event.endDate),
-        country, city,
+        country:countryCurrent, city,
         metadata: objectToArray(event.metadata)
       })
 
