@@ -24,7 +24,6 @@ import {
 import { PreviewContainer, ScannerContainer, StyledCard } from './QRScanner.style';
 import { useTranslations } from 'next-intl';
 import { useQRScanner } from './QRScanner.controller';
-import { format_date, formatDateInSpanish } from '@/lib/common/Date';
 import EventSelectorModal from '../modals/EventSelector';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
@@ -35,7 +34,7 @@ import { getDocRefByPath } from '@/lib/firebase/firestore/readDocument';
 import ConfirmModal from '../modals/ConfirmModal';
 import { DetailText } from '../table/DetailText';
 import { BorderBox } from '../tabs/BorderBox';
-
+ 
 const QRScanner = () => {
     const { eventSelected, handleScan, handleError, resetScanner, scanRessult, staffValidating, staffValid, error, eventList, setEventSelected } = useQRScanner()
     const t = useTranslations()
@@ -55,7 +54,7 @@ const QRScanner = () => {
 
 
 
-        <BorderBox sx={{ mt: 10, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', background: () => "#F0EFFD" }}>
+        <BorderBox sx={{ mt: 10, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', background: () => "#FFFBFF" }}>
             <Box sx={{ p: 0, maxWidth: 600, margin: '0 auto' }}>
 
                 {staffValidating && (
