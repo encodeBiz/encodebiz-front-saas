@@ -19,10 +19,11 @@ interface InfoModalProps {
     description: string
     cancelBtn?: boolean
     closeBtn?: boolean
+    centerBtn?: boolean
     onClose?: () => void
     btnText?: string
 }
-const InfoModal = ({ title, description, onClose, btnText, closeBtn,
+const InfoModal = ({ title, description, onClose, btnText, closeBtn, centerBtn,
     cancelBtn = true }: InfoModalProps): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const t = useTranslations()
@@ -59,30 +60,30 @@ const InfoModal = ({ title, description, onClose, btnText, closeBtn,
                     <Typography variant='body1'>{description}</Typography>
                 </DialogContentText>
             </DialogContent>
-            <DialogActions>
+            <DialogActions >
 
-             
+                <Box display={'center'} alignItems={centerBtn ? 'center' : 'flex-start'} justifyContent={centerBtn ? 'center' : 'flex-start'}>
 
-                {cancelBtn && <SassButton
-                    color="primary"
-                    variant="outlined"
-                    onClick={(e) => handleClose(e, 'manual')}
-                    size='small'
+                    {cancelBtn && <SassButton
+                        color="primary"
+                        variant="outlined"
+                        onClick={(e) => handleClose(e, 'manual')}
+                        size='small'
 
-                >
-                    {btnText ? btnText : t('core.button.accept')}
-                </SassButton>}
+                    >
+                        {btnText ? btnText : t('core.button.accept')}
+                    </SassButton>}
 
-                   {closeBtn && <SassButton
-                    color="primary"
-                    variant="contained"
-                    onClick={() => closeModal(CommonModalType.INFO)}
-                    size='small'
+                    {closeBtn && <SassButton
+                        color="primary"
+                        variant="contained"
+                        onClick={() => closeModal(CommonModalType.INFO)}
+                        size='small'
 
-                >
-                    {t('core.button.accept')}
-                </SassButton>}
-
+                    >
+                        {t('core.button.accept')}
+                    </SassButton>}
+                </Box>
             </DialogActions>
         </Dialog>
     );

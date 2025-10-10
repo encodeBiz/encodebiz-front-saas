@@ -17,8 +17,7 @@ import { useTranslations } from 'next-intl';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import Image from 'next/image';
 import { SassButton } from '@/components/common/buttons/GenericButton';
-import image from '../../../../../public/assets/images/checkex.png'
-import { BorderBox } from '@/components/common/tabs/BorderBox';
+
 import { useCheck } from '../page.context';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useGeoPermission } from '@/hooks/useGeoPermission';
@@ -45,9 +44,9 @@ const Check = () => {
                             borderRadius: 4, textTransform: 'uppercase', mt: 1,
                             px: 2, height: 73, maxWidth: '100%', fontSize: 20
                         }}
-                        disabled={restAction == 'restin' || pendingStatus || status !== "granted"} variant='contained' color='primary'
+                        disabled={restAction == 'restin' || pendingStatus} variant='contained' color='primary'
                         onClick={() => {
-                             
+
                             if ((!sessionData?.branchId && branchList.length > 0) || (checkAction === 'checkout' && branchList.length > 0))
                                 openModal(CommonModalType.BRANCH_SELECTED)
                             else {
@@ -68,7 +67,7 @@ const Check = () => {
                             borderRadius: 4, textTransform: 'uppercase', mt: 1,
                             px: 2, height: 73, maxWidth: '100%', fontSize: 20, color: "#1C1B1D"
                         }}
-                        disabled={checkAction === 'checkout' || pendingStatus || status !== "granted"} variant='outlined' color='primary'
+                        disabled={checkAction === 'checkout' || pendingStatus} variant='outlined' color='primary'
                         onClick={() => {
                             createLogAction(restAction === 'restin' ? 'restout' : 'restin', () => {
                                 setRestAction(restAction === 'restin' ? 'restout' : 'restin')
