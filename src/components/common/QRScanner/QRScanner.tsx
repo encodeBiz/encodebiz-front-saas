@@ -24,7 +24,6 @@ import {
 import { PreviewContainer, ScannerContainer, StyledCard } from './QRScanner.style';
 import { useTranslations } from 'next-intl';
 import { useQRScanner } from './QRScanner.controller';
-import { format_date, formatDateInSpanish } from '@/lib/common/Date';
 import EventSelectorModal from '../modals/EventSelector';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
@@ -35,7 +34,7 @@ import { getDocRefByPath } from '@/lib/firebase/firestore/readDocument';
 import ConfirmModal from '../modals/ConfirmModal';
 import { DetailText } from '../table/DetailText';
 import { BorderBox } from '../tabs/BorderBox';
-
+ 
 const QRScanner = () => {
     const { eventSelected, handleScan, handleError, resetScanner, scanRessult, staffValidating, staffValid, error, eventList, setEventSelected } = useQRScanner()
     const t = useTranslations()
@@ -55,7 +54,7 @@ const QRScanner = () => {
 
 
 
-        <BorderBox sx={{ mt: 10, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', background: () => "#F0EFFD" }}>
+        <BorderBox sx={{ mt: 10, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', background: () => "#FFFBFF" }}>
             <Box sx={{ p: 0, maxWidth: 600, margin: '0 auto' }}>
 
                 {staffValidating && (
@@ -112,17 +111,18 @@ const QRScanner = () => {
                     <CardContent>
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
                             <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
-                                <CheckCircle color="success" sx={{ fontSize: 30 }} />
+                                <CheckCircle  sx={{ fontSize: 30, color:"#4AB84F" }} />
                                 <Typography variant="h5" >
                                     {t('scan.resultTitle')}
                                 </Typography>
                             </Box>
+ 
 
                             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 2 }}>
                                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 2, width: '100%' }}>
-                                    <Image style={{ borderRadius: 4, background: '#E9E8F5' }} src={scanRessult?.holder?.parent?.logo} width={80} height={80} alt='' />
+                                    <Image style={{ borderRadius: 4, background: '#AEADAD' }} src={scanRessult?.holder?.parent?.logo} width={80} height={80} alt='' />
                                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0 }}>
-                                        <Typography variant="body1">{scanRessult?.holder?.fullName}</Typography>
+                                        <Typography fontSize={16} color='#1C1B1D' variant="body1">{scanRessult?.holder?.fullName}</Typography>
                                     </Box>
                                 </Box>
                             </Box>
