@@ -43,7 +43,8 @@ export const ScannerContainer = styled(Paper)({
   position: 'relative',
   width: '100%',
   overflow: 'hidden',
-  borderRadius: 4
+  borderRadius: 4,
+  px:2, py:4
 });
 
 export const PreviewContainer = styled('div')({

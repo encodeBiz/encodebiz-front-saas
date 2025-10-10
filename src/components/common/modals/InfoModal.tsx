@@ -62,7 +62,7 @@ const InfoModal = ({ title, description, onClose, btnText, closeBtn, centerBtn,
             </DialogContent>
             <DialogActions >
 
-                <Box display={'center'} alignItems={centerBtn ? 'center' : 'flex-start'} justifyContent={centerBtn ? 'center' : 'flex-start'}>
+                <Box width={'100%'} display={'center'} alignItems={centerBtn ? 'center' : 'flex-end'} justifyContent={centerBtn ? 'center' : 'flex-end'}>
 
                     {cancelBtn && <SassButton
                         color="primary"
@@ -82,6 +82,17 @@ const InfoModal = ({ title, description, onClose, btnText, closeBtn, centerBtn,
 
                     >
                         {t('core.button.accept')}
+                    </SassButton>}
+
+                    {centerBtn && <SassButton
+                        color="primary" 
+                        sx={{width:139}}
+                        variant="contained"
+                        onClick={(e) => handleClose(e, 'manual')}
+                        size='small'
+
+                    >
+                        {btnText ? btnText : t('core.button.accept')}
                     </SassButton>}
                 </Box>
             </DialogActions>

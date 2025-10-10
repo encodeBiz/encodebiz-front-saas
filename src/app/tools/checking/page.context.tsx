@@ -162,49 +162,52 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     const hanldeSelectedBranch = async (sucursalId: string) => {
         const branch = (await fetchSucursal(sessionData?.entityId as string, sucursalId))
         setCurrentBranch(branch)
-
         createLogAction(checkAction === 'checkin' ? 'checkout' : 'checkin', () => {
             setCheckAction(checkAction === 'checkin' ? 'checkout' : 'checkin')
         }, sucursalId)
     }
 
-    const createLogAction = (type: "checkout" | "checkin" | "restin" | "restout", callback?: () => void, sucursalId?: string) => {
-
-        requestLocation().then(pos => {
-
-            const data: ICreateLog = {
-                "employeeId": sessionData?.employeeId as string,
-                "entityId": sessionData?.entityId as string,
-                "branchId": sucursalId ? sucursalId : sessionData?.branchId as string,
-                type,
-                "geo": {
-                    "lat": pos?.lat as number,
-                    "lng": pos?.lng as number
-                }
+    const handleCreateLog = (type: "checkout" | "checkin" | "restin" | "restout", callback?: () => void, sucursalId?: string, pos?: { lat: number, lng: number }) => {
+        const data: ICreateLog = {
+            "employeeId": sessionData?.employeeId as string,
+            "entityId": sessionData?.entityId as string,
+            "branchId": sucursalId ? sucursalId : sessionData?.branchId as string,
+            type,
+            "geo": {
+                "lat": pos?.lat as number,
+                "lng": pos?.lng as number
             }
-            setPending(true);
-            changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+        }
+        setPending(true);
+        changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
 
-            createLog(data, token).then(() => {
-                if (typeof callback === 'function') callback()
-            }).catch(e => {
-                if (e?.message?.includes('Dispositivo no confiable')) {
+        createLog(data, token).then(() => {
+            if (typeof callback === 'function') callback()
+        }).catch(e => {
+            if (e?.message?.includes('Dispositivo no confiable')) {
+                openModal(CommonModalType.ADDDEVICE2AF)
+            } else {
+                if (e?.message?.includes('Untrusted')) {
                     openModal(CommonModalType.ADDDEVICE2AF)
                 } else {
-                    if (e?.message?.includes('Untrusted')) {
-                        openModal(CommonModalType.ADDDEVICE2AF)
-                    } else {
-                        showToast(e?.message, 'error')
-                    }
+                    showToast(e?.message, 'error')
                 }
+            }
 
 
 
-            }).finally(() => {
-                changeLoaderState({ show: false })
-            })
+        }).finally(() => {
+            changeLoaderState({ show: false })
         })
+    }
 
+    const createLogAction = (type: "checkout" | "checkin" | "restin" | "restout", callback?: () => void, sucursalId?: string) => {
+        if (employee?.enableRemoteWork)
+            handleCreateLog(type, callback, sucursalId, { lat: 0, lng: 0 })
+        else
+            requestLocation().then(pos => {
+                handleCreateLog(type, callback, sucursalId, pos as { lat: number, lng: number })
+            })
     }
 
     const fetchEntityData = async () => {
@@ -226,13 +229,13 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
     useEffect(() => {
         if (customToken) {
-            handleValidateEmployee()            
+            handleValidateEmployee()
         }
     }, [customToken])
 
 
-    useEffect(() => {        
-        if (status === "denied" || status === "error" || status === "prompt") {
+    useEffect(() => {
+        if (status === "denied" || status === "prompt") {
             openModal(CommonModalType.GEO)
         }
     }, [status])
