@@ -180,13 +180,16 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
         }).catch(e => {
             if (e?.message?.includes('Dispositivo no confiable')) {
                 openModal(CommonModalType.ADDDEVICE2AF)
+            } else {
+                if (e?.message?.includes('Untrusted')) {
+                    openModal(CommonModalType.ADDDEVICE2AF)
+                } else {
+                    showToast(e?.message, 'error')
+                }
             }
 
-            if (e?.message?.includes('Untrusted')) {
-                openModal(CommonModalType.ADDDEVICE2AF)
-            }
 
-            // showToast(e?.message, 'error')
+
         }).finally(() => {
             changeLoaderState({ show: false })
         })
@@ -210,7 +213,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
         }
     }, [sessionData?.entityId])
 
-    useEffect(() => { 
+    useEffect(() => {
         if (customToken && position?.lat) {
             handleValidateEmployee()
             setGeo({
@@ -221,10 +224,10 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     }, [customToken, position?.lat])
 
 
-    useEffect(() => {          
-        if (status === "denied" || status === "error"  || status === "prompt"  ) {
+    useEffect(() => {
+        if (status === "denied" || status === "error" || status === "prompt") {
             openModal(CommonModalType.GEO)
-        }        
+        }
     }, [status])
 
     const handleRequestLocation = () => requestLocation()
