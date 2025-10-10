@@ -70,7 +70,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     const [token, setToken] = useState('')
     const [pending, setPending] = useState(false)
     const [pendingStatus, setPendingStatus] = useState(true)
-    const { status, position, requestLocation } = useGeoPermission();
+    const { status, requestLocation } = useGeoPermission();
 
     const [entity, setEntity] = useState<IEntity>()
     const [employee, setEmployee] = useState<IEmployee>()
