@@ -126,7 +126,12 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
             if (resultList.length > 0) {
                 const last = resultList[0]
-
+                 //const branchId = (await fetchSucursal(last.entityId, last.branchId))?.name
+                setSessionData({
+                    branchId: last.branchId,
+                    entityId: last.entityId,
+                    employeeId: last.employeeId
+                })
                 if (last.type === 'checkin' || last.type === 'checkout') {
                     setCheckAction(last.type)
                     if (last.type === 'checkout') {
