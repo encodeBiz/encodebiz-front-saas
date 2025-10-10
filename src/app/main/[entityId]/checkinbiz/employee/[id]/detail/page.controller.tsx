@@ -16,7 +16,7 @@ import { useCommonModal } from "@/hooks/useCommonModal";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { format_date, rmNDay } from "@/lib/common/Date";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
-import { search as searchBranch, fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucursal.service";
+import { fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucursal.service";
 import { Box } from "@mui/material";
 
 import { DateRangePicker } from "@/app/main/[entityId]/passinbiz/stats/components/filters/fields/DateRangeFilter";
@@ -226,7 +226,7 @@ export default function useEmployeeDetailController() {
   useEffect(() => {
     if (currentEntity?.entity?.id && id) {
       fetchingData(filterParams)
-      fetchSucursal()
+      
     }
   }, [currentEntity?.entity?.id, id])
 
@@ -263,10 +263,7 @@ export default function useEmployeeDetailController() {
   }
 
 
-  const [branchList, setBranchList] = useState<Array<ISucursal>>([])
-  const fetchSucursal = async () => {
-    setBranchList(await searchBranch(currentEntity?.entity.id as string, { ...{} as any, limit: 100 }))
-  }
+  
 
 
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>

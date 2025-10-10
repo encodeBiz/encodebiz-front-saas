@@ -5,7 +5,7 @@ import useHolderController from './page.controller';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { IEvent } from '@/domain/features/passinbiz/IEvent';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { useRef } from 'react';
@@ -21,8 +21,7 @@ export default function EventForm() {
   const { id } = useParams<{ id: string }>()
   const formRef = useRef(null)
   const { formStatus } = useFormStatus()
-  const searchParams = useSearchParams()
-
+ 
   const handleExternalSubmit = () => {
     if (formRef.current) {
       (formRef.current as any).submitForm()

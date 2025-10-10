@@ -11,7 +11,7 @@ import { useEntity } from "@/hooks/useEntity";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { search } from "@/services/passinbiz/event.service";
 import { useLayout } from "@/hooks/useLayout";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
 import ImageUploadInput from "@/components/common/forms/fields/ImageUploadInput";
 
@@ -24,8 +24,7 @@ export default function useHolderController() {
   const { currentEntity, watchServiceAccess } = useEntity()
   const { changeLoaderState } = useLayout()
   const { id } = useParams<{ id: string }>()
-  const searchParams = useSearchParams()
-
+ 
   const fieldList = [
     {
       name: 'fullName',

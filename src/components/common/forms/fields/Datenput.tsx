@@ -19,8 +19,8 @@ const DateInput: React.FC<FieldProps & TextFieldProps> = ({
       control={
         <DateTimePicker label={props.label}
           minDateTime={dayjs(props.name === 'endDate' ? new Date(formStatus?.values?.date) ?? new Date() : new Date())}
-          defaultValue={dayjs(field.value ?? new Date())}
-          value={dayjs(field.value ?? new Date())}
+          defaultValue={field.value?dayjs(field.value ?? new Date()):null}
+          value={field.value?dayjs(field.value ?? new Date()):null}
           onChange={(e) => helper.setValue(e)}
           disabled={props.disabled}
           sx={{ width: '100%' }}

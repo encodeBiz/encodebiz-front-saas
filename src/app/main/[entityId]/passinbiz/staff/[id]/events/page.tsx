@@ -9,7 +9,6 @@ import { SassButton } from '@/components/common/buttons/GenericButton';
 import { ArrowLeftOutlined, SaveOutlined } from '@mui/icons-material';
 import { useRef } from 'react';
 import { useFormStatus } from '@/hooks/useFormStatus';
-import { useSearchParams } from 'next/navigation';
 import { useLayout } from '@/hooks/useLayout';
 export default function EventForm() {
   const { fields, initialValues, validationSchema, setDinamicDataAction } = useStaffController();
@@ -17,8 +16,7 @@ export default function EventForm() {
    const { navivateTo } = useLayout()
   const formRef = useRef(null)
   const { formStatus } = useFormStatus()
-  const searchParams = useSearchParams()
-
+ 
   const handleExternalSubmit = () => {
     if (formRef.current) {
       (formRef.current as any).submitForm()
