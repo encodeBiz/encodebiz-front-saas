@@ -47,8 +47,8 @@ const CHECKINBIZ: any = [{
     link: `/${CHECKINBIZ_MODULE_ROUTE}/branch`,
     subMenu: []
 }, {
-    name: 'Report',  
-    link: `/${CHECKINBIZ_MODULE_ROUTE}/report`,
+    name: 'Attendance',  
+    link: `/${CHECKINBIZ_MODULE_ROUTE}/attendance`,
     subMenu: []
 }]
 

@@ -204,8 +204,7 @@ export default function useEmployeeListController() {
     if (filterParams.params.filters.find((e: any) => e.field === 'branchId' && e.value === 'none'))
       filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "branchId")
 
-    console.log({ ...(filterParams.params as any), filters: [...filterParams.params.filters, ...filters] });
-
+ 
 
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters: [...filterParams.params.filters, ...filters] }).then(async res => {
       if (res.length !== 0) {

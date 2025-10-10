@@ -27,6 +27,7 @@
         "Events": "Eventos",
         "Media": "Media",
         "Report": "Reportes",
+        "Attendance": "Asistencia",
         "Sucursal": "Sucursal",
         "home": "Inicio",
         "Integration": "Integraciones",
@@ -643,10 +644,10 @@
     "deleteConfirmModalTitle": "Eliminar sucursal",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente la sucursal"
   },
-  "report": {
-    "title": "Reportes",
+  "attendance": {
+    "title": "Reportes de asistencia",
     "formDesc": "Completa los campos a continuación para crear un reporte.",
-    "list": "Reportes",
+    "list": "Reportes  de asistencia",
     "add": "Crear reporte",
     "export": "Exportar reporte",
     "report": "Emitir reporte",
