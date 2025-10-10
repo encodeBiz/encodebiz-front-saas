@@ -20,13 +20,11 @@ import { SassButton } from '@/components/common/buttons/GenericButton';
 
 import { useCheck } from '../page.context';
 import { CommonModalType } from '@/contexts/commonModalContext';
-import { useGeoPermission } from '@/hooks/useGeoPermission';
-const Check = () => {
+ const Check = () => {
     const { checkAction, setCheckAction, restAction, setRestAction, currentBranch, createLogAction, entity, employee, pendingStatus, sessionData, branchList } = useCheck()
     const t = useTranslations()
     const { openModal } = useCommonModal()
-    const { status } = useGeoPermission();
-
+ 
 
     return (
         <Box sx={{ p: 2, maxWidth: 600, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 4 }}>

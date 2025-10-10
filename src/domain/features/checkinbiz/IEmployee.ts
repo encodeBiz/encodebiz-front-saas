@@ -12,7 +12,7 @@ export interface IEmployee {
     createdAt: Date;
     branchId: string[];// Proyecto asignado, sucursal , etc
     metadata?: any
-
+    enableRemoteWork?:boolean;
     nationalId: string;
     jobTitle?: string
 }

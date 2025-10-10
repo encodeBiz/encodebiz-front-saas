@@ -231,7 +231,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     }, [customToken])
 
 
-    useEffect(() => {
+    useEffect(() => {        
         if (status === "denied" || status === "error" || status === "prompt") {
             openModal(CommonModalType.GEO)
         }
