@@ -114,8 +114,7 @@ export default function useAttendanceController() {
     ]
     setLoading(true)
 
-    console.log({ ...(filterParams.params as any), filters });
-
+ 
 
     searchLogs(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async res => {
 
@@ -228,6 +227,8 @@ export default function useAttendanceController() {
           const item = await getRefByPathData(value.index)
           if (item)
             onFilter({ ...filterParams, filter: { ...filterParams.filter, branchId: item.id } })
+          else
+            onFilter({ ...filterParams, filter: { ...filterParams.filter, branchId: 'none' } })
         }
       }}
     />
@@ -238,10 +239,11 @@ export default function useAttendanceController() {
       onChange={async (value: ISearchIndex) => {
         if (value?.id) {
           const item = await getRefByPathData(value.index)
-          console.log(item);
-
+ 
           if (item)
             onFilter({ ...filterParams, filter: { ...filterParams.filter, employeeId: item.id } })
+          else
+            onFilter({ ...filterParams, filter: { ...filterParams.filter, employeeId: 'none' } })
         }
       }}
     />
