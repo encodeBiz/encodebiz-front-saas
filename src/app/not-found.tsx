@@ -1,7 +1,7 @@
 'use client';
 
 import { SassButton } from '@/components/common/buttons/GenericButton';
-import { Box, Container, Typography, Button } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
@@ -27,11 +27,11 @@ export default function NotFound() {
         <Typography variant="body1" color="text.secondary">
           {t('404.text3')}
         </Typography>
-        <SassButton
+        <SassButton 
           component={Link}
           href="/"
           variant="contained"
-          sx={{ mt: 3 }}
+          sx={{ mt: 3, textTransform:'inherit' }}
         >
           {t('404.text3')}
         </SassButton>
