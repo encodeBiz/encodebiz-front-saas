@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from 'react';
 import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
@@ -83,7 +84,7 @@ export default function useHolderController() {
         "createdBy": user?.id as string,
         "name": values.name,
         "description": values.description,
-        "location": `${values.city},${values.country}`,
+        "location": `${values.city}+++${values.country}`,
         "address": `${values.address as string}`,
         "entityId": currentEntity?.entity?.id as string,
         "colorPrimary": values.colorPrimary,
@@ -103,7 +104,7 @@ export default function useHolderController() {
       else await createEvent(data, token)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
-      navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event}`)
+      navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event`)
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
@@ -268,12 +269,13 @@ export default function useHolderController() {
 
   ];
 
-  const fetchData = useCallback(async () => {
+  const fetchData = async () => {
 
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, id)
-      const location = event.location.split(',')
+      const location = event.location.split('+++')
+       
       let country = 'España'
       let city = 'Madrid'
       if (location.length === 2) {
@@ -297,7 +299,7 @@ export default function useHolderController() {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
     }
-  }, [changeLoaderState, currentEntity?.entity.id, id, showToast, t])
+  }
 
 
   useEffect(() => {
@@ -308,7 +310,7 @@ export default function useHolderController() {
     if (currentEntity?.entity.id && user?.id) {
       watchServiceAccess('passinbiz')
     }
-  }, [currentEntity?.entity.id, user?.id, id, fetchData, watchServiceAccess])
+  }, [currentEntity?.entity.id, user?.id, id])
 
 
   return { fields, initialValues, validationSchema, setDinamicDataAction }
