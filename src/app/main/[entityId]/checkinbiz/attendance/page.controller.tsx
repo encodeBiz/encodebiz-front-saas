@@ -207,7 +207,7 @@ export default function useAttendanceController() {
 
     
 
-    <SearchIndexFilter
+    <SearchIndexFilter width='auto'
       type="branch"
       label={t('core.label.subEntity')}
       onChange={async (value: ISearchIndex) => {
@@ -219,12 +219,14 @@ export default function useAttendanceController() {
       }}
     />
 
-    <SearchIndexFilter
+    <SearchIndexFilter width='auto'
       type="employee"
       label={t('core.label.employee')}
       onChange={async (value: ISearchIndex) => {
         if (value?.id) {
           const item = await getRefByPathData(value.index)
+          console.log(item);
+          
           if (item)
             onFilter({ ...filterParams, filter: { ...filterParams.filter, employeeId: item.id } })
         }

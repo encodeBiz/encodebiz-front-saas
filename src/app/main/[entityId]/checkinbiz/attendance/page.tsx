@@ -1,7 +1,6 @@
 'use client';
 import { Container } from '@mui/material';
 import { useTranslations } from "next-intl";
-import useEmployeeListController from './page.controller';
 import { GenericTable } from "@/components/common/table/GenericTable";
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import useAttendanceController from './page.controller';
