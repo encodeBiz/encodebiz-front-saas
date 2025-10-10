@@ -29,7 +29,7 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
 
             <Grid container spacing={2} alignItems="center" justifyContent={'space-between'}>
                 <Grid display={'flex'} flexDirection={'row'} alignItems={'center'} justifyContent={'flex-start'} gap={2}>
-                    <ArrowBackOutlined color="primary" style={{ fontSize: 45, cursor:'pointer' }} onClick={() => {
+                    <ArrowBackOutlined color="primary" style={{ fontSize: 45, cursor: 'pointer' }} onClick={() => {
                         if (backAction) {
                             navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch/${backAction}/detail`)
                         } else {
@@ -72,7 +72,7 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
 
                 {/* Additional Details */}
                 {Array.isArray(employee.metadata) && employee.metadata.length > 0 && <> <Paper sx={{ mt: 4 }} elevation={0} >
-                    <Typography variant="subtitle1" gutterBottom  textTransform={'capitalize'} >
+                    <Typography variant="subtitle1" gutterBottom textTransform={'capitalize'} >
                         {t('core.label.aditionalData')}
                     </Typography>
 
@@ -87,26 +87,29 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                     <Typography variant="subtitle1" gutterBottom>
                         {t('core.label.sucursalAsigned')}
                     </Typography>
-                    {Array.isArray(branchListEmployee) && <List>
-                        {branchListEmployee.map((e: ISucursal, i: number) => <BorderBox key={i} sx={{ padding: 2 }}>
-                            {i === 0 && <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'} >
-                                <Typography fontSize={16} color='#45474C' fontWeight={400} variant="subtitle1" minWidth={200}>
-                                    {t('core.label.sucursal')}
-                                </Typography>
-                                <Typography fontSize={16} color='#45474C' fontWeight={400} variant="subtitle1"  >
-                                    {t('core.label.cargo')}
-                                </Typography>
-                            </Box>}
-                            <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'} >
-                                <Typography fontSize={24} color='#1C1B1D' fontWeight={400} variant="body2" minWidth={200}   >
-                                    {e.name}
-                                </Typography>
-                                <Typography fontSize={24} color='#1C1B1D' fontWeight={400} variant="body2"   >
-                                    {employee.jobTitle}
-                                </Typography>
+                    {Array.isArray(branchListEmployee) && <BorderBox>
+                        {branchListEmployee.map((e: ISucursal, i: number) => <Box minHeight={50} key={i}>
+                            <Box sx={{ p: 2 }}>
+                                {i === 0 && <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'} >
+                                    <Typography fontSize={16} color='#45474C' fontWeight={400} variant="subtitle1" minWidth={200}>
+                                        {t('core.label.sucursal')}
+                                    </Typography>
+                                    <Typography fontSize={16} color='#45474C' fontWeight={400} variant="subtitle1"  >
+                                        {t('core.label.cargo')}
+                                    </Typography>
+                                </Box>}
+                                <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'} >
+                                    <Typography fontSize={24} color='#1C1B1D' fontWeight={400} variant="body2" minWidth={200}   >
+                                        {e.name}
+                                    </Typography>
+                                    <Typography fontSize={24} color='#1C1B1D' fontWeight={400} variant="body2"   >
+                                        {employee.jobTitle}
+                                    </Typography>
+                                </Box>
                             </Box>
-                        </BorderBox>)}
-                    </List>}
+                            {branchListEmployee.length - 1 !== i && <Divider flexItem />}
+                        </Box>)}
+                    </BorderBox>}
                 </Box>
             </Paper>
 
