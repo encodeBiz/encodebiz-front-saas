@@ -126,8 +126,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
             if (resultList.length > 0) {
                 const last = resultList[0]
-                console.log(last);
-                
+                 
                 const branch = (await fetchSucursal(last?.entityId as string, last.branchId))
                 setCurrentBranch(branch)
                 setSessionData({
