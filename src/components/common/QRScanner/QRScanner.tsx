@@ -116,12 +116,13 @@ const QRScanner = () => {
                                     {t('scan.resultTitle')}
                                 </Typography>
                             </Box>
+ 
 
                             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 2 }}>
                                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 2, width: '100%' }}>
-                                    <Image style={{ borderRadius: 4, background: '#E9E8F5' }} src={scanRessult?.holder?.parent?.logo} width={80} height={80} alt='' />
+                                    <Image style={{ borderRadius: 4, background: '#AEADAD' }} src={scanRessult?.holder?.parent?.logo} width={80} height={80} alt='' />
                                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0 }}>
-                                        <Typography variant="body1">{scanRessult?.holder?.fullName}</Typography>
+                                        <Typography fontSize={16} color='#1C1B1D' variant="body1">{scanRessult?.holder?.fullName}</Typography>
                                     </Box>
                                 </Box>
                             </Box>
