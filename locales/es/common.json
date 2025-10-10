@@ -689,7 +689,7 @@
   },
   "scan": {
     "title": "Validar pase",
-    "subtitle": "Escanee el código QR para confirmar si es valido el pase",
+    "subtitle": "Escanee el código QR para confirmar si es válido el pase",
     "camaraFocus": "Apunta tu cámara a un código QR",
     "resultTitle": "Acceso confirmado",
     "scanOther": "Escanear otro código",

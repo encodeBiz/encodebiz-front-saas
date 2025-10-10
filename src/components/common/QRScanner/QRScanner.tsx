@@ -111,7 +111,7 @@ const QRScanner = () => {
                     <CardContent>
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
                             <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
-                                <CheckCircle color="success" sx={{ fontSize: 30 }} />
+                                <CheckCircle  sx={{ fontSize: 30, color:"#4AB84F" }} />
                                 <Typography variant="h5" >
                                     {t('scan.resultTitle')}
                                 </Typography>
