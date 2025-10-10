@@ -59,7 +59,7 @@ const InfoModal = ({ title, description, onClose, btnText, closeBtn, centerBtn, 
             <DialogContent>
                 <DialogContentText id="alert-dialog-description" sx={{ mb: 3 }}>
                     <Typography variant='body1'>{description}</Typography>
-                    {extraText && <Typography color='primary' variant='body1'>{extraText}</Typography>}
+                    {extraText && <Typography mt={1} color='primary' variant='body1'>{extraText}</Typography>}
 
                 </DialogContentText>
             </DialogContent>

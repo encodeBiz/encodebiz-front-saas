@@ -47,12 +47,13 @@ export interface IMedia {
 
 export interface MediaModalSelectedFilesProps {
   onSelected: (media: IUserMedia) => void
+  onFailed?: (text: string) => void
   type?: IUserMediaType
   crop?: boolean
 }
 
 
-const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: MediaModalSelectedFilesProps) => {
+const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom', onFailed }: MediaModalSelectedFilesProps) => {
   const theme = useTheme()
   const classes = useStyles(theme);
   const { userMediaList, fetchUserMedia } = useMedia()
@@ -63,7 +64,6 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
   const [selectedType, setSelectedType] = useState<string>(type)
   const { open, closeModal, openModal } = useCommonModal()
   const [isUploading, setIsUploading] = useState(false);
-  const [requiredSize, setRequiredSize] = useState('')
   const t = useTranslations();
 
   const handleClose = () => {
@@ -127,10 +127,10 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
         if (image.width === minWidth && image.height === minHeigth) {
           handleFile(file)
         } else {
-         // handleClose()
-          setRequiredSize(`${minWidth}x${minHeigth}`)
-          showToast(`${t('core.title.cropValidate1')} ${minWidth}x${minHeigth}.`, 'error')
-          openModal(CommonModalType.INFO)
+          handleClose()
+          if (typeof onFailed === 'function')
+            onFailed(`${minWidth}x${minHeigth}`)
+          
         }
       }
       image.src = URL.createObjectURL(file);
@@ -295,12 +295,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
         </Paper>
       </DialogContent>
 
-      {open.type === CommonModalType.INFO && <InfoModal
-        title={t('image.text1')}
-        description={t('image.text2')}
-        cancelBtn
-        extraText={t('image.text3') + ' ' + requiredSize}
-      />}
+      W
     </Dialog >
   );
 };

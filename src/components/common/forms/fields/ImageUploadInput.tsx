@@ -18,7 +18,8 @@ import { IUserMedia, IUserMediaType } from '@/domain/core/IUserMedia';
 import ImagePreview from '../../ImagePreview';
 import { fileTypes } from '@/config/constants';
 import { SassButton } from '../../buttons/GenericButton';
- 
+import InfoModal from '../../modals/InfoModal';
+
 interface ImageFieldProps {
   accept: string
   typeUpload: IUserMediaType
@@ -59,6 +60,12 @@ const ImageUploadInput = ({ name, ...props }: any & FieldProps & TextFieldProps 
     setPreview(null);
     helper.setValue(null);
   }, [helper]);
+  const [requiredSize, setRequiredSize] = useState('')
+
+  const onFailed = (requiredSize: string) => {
+    setRequiredSize(requiredSize)
+    openModal(CommonModalType.INFO)
+  }
 
   return (
     <FormControl key={name} required sx={{ m: 1, width: '100%' }}>
@@ -143,9 +150,14 @@ const ImageUploadInput = ({ name, ...props }: any & FieldProps & TextFieldProps 
         )}
       </Box>
       <FormHelperText error={!!helperText}>{helperText as string}</FormHelperText>
-      {CommonModalType.FILES == open.type && open.open && open.args.name === name && <MediaModalSelectedFiles crop={false} type={typeUpload} key={name} onSelected={handleOnSelected} />}
+      {CommonModalType.FILES == open.type && open.open && open.args.name === name && <MediaModalSelectedFiles crop={false} type={typeUpload} key={name} onSelected={handleOnSelected} onFailed={onFailed} />}
+      {open.type === CommonModalType.INFO && <InfoModal
+        title={t('image.text1')}
+        description={t('image.text2')}
+        cancelBtn
+        extraText={t('image.text3') + ' ' + requiredSize}
+      />}
 
-    
     </FormControl >
 
   );
