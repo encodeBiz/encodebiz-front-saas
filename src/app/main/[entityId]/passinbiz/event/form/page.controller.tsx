@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
@@ -282,7 +282,7 @@ export default function useHolderController() {
         countryCurrent = location[1]
         city = location[0]
 
-        setCityList(country.find((e: any) => e.name === country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
+        setCityList(country.find((e: any) => e.name === countryCurrent)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
 
       }
 
