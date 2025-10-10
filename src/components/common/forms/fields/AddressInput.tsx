@@ -167,7 +167,7 @@ const AddressInput: React.FC<AutoCompletedInputProps> = ({ onHandleChange, ...pr
         }}
       />
 
-      {!!error && <FormHelperText sx={{
+      {helperText && <FormHelperText sx={{
         ml: 2,
         color: error ? 'error.main' : 'text.secondary'
       }}>

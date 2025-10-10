@@ -38,7 +38,7 @@ import { ImageCropper } from '../../ImageCropper/ImageCropper';
 import { SassButton } from '../../buttons/GenericButton';
 import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import { CustomTypography } from '../../Text/CustomTypography';
-
+ 
 export interface IMedia {
   preview: string
   file: File
@@ -46,12 +46,13 @@ export interface IMedia {
 
 export interface MediaModalSelectedFilesProps {
   onSelected: (media: IUserMedia) => void
+  onFailed?: (text: string) => void
   type?: IUserMediaType
   crop?: boolean
 }
 
 
-const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: MediaModalSelectedFilesProps) => {
+const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom', onFailed }: MediaModalSelectedFilesProps) => {
   const theme = useTheme()
   const classes = useStyles(theme);
   const { userMediaList, fetchUserMedia } = useMedia()
@@ -112,21 +113,23 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
     }
   }, [currentEntity?.entity.id, fetchUserMedia, selectedType, showToast, token, user?.id]);
 
- 
+
 
   const handleFileChange = (e: any) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0]
       const image = new Image();
       image.onload = function () {
-        const size: { w: number, h: number } =  fileTypes(t).find(e => e.value === type)?.size as { w: number, h: number }
+        const size: { w: number, h: number } = fileTypes(t).find(e => e.value === type)?.size as { w: number, h: number }
         const minWidth = size.w
-        const minHeigth = size.h      
+        const minHeigth = size.h
         if (image.width === minWidth && image.height === minHeigth) {
-          handleFile(file)       
+          handleFile(file)
         } else {
           handleClose()
-          showToast(`${t('core.title.cropValidate1')} ${minWidth}x${minHeigth}.`,'error')
+          if (typeof onFailed === 'function')
+            onFailed(`${minWidth}x${minHeigth}`)
+          
         }
       }
       image.src = URL.createObjectURL(file);
@@ -167,7 +170,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
                   disabled={!selectedType}
                   sx={{ width: 340, height: 55 }}
                 >
-                  {t('core.label.uploadResourse')} 
+                  {t('core.label.uploadResourse')}
                   <TextField
                     onChange={handleFileChange}
                     type="file"
@@ -283,13 +286,15 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom' }: M
               disabled={(Array.isArray(selectedFile) && selectedFile.length === 0) || !selectedFile}
               color="primary"
               onClick={() => handleSelectedChange()}
-             
+
             >
               {t('core.button.accept')}
             </SassButton>
           </Box>
         </Paper>
       </DialogContent>
+
+      
     </Dialog >
   );
 };

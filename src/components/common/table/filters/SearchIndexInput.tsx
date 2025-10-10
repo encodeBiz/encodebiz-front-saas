@@ -23,6 +23,7 @@ type Option = { id: string; label: string; data: ISearchIndex };
 interface SearchIndexInputProps {
   type: "entities" | "users" | "events" | "staff" | "holder" | "employee" | "branch",
   label?: any,
+  width?: any,
   onChange: (value: any) => void,
 }
 
@@ -50,7 +51,7 @@ const getDataLabel = (data: ISearchIndex, type: "entities" | "users" | "events" 
 }
 
 
-const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type }) => {
+const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type, label, width='100%' }) => {
   const t = useTranslations();
   const { currentEntity } = useEntity()
 
@@ -117,7 +118,7 @@ const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type }) 
     debouncedSearch(newInput);
   };
   return (
-    <FormControl sx={{ width: "100%", textAlign: "left" }}>
+    <FormControl sx={{ width: width, textAlign: "left" }}>
 
       <Autocomplete<Option, false, false, false>
         options={options}
@@ -135,13 +136,14 @@ const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type }) 
           <TextField
             {...params}
 
-            placeholder={t("core.label.search")}
+            placeholder={label?label:t("core.label.search")}
             sx={{
 
               height: 46,
               '& .MuiOutlinedInput-root': {
                 transition: 'width 0.3s ease',
                 width: '200px',
+                position:'relative',
                 height: 46,
                 '&.Mui-focused': {
                   width: '300px',

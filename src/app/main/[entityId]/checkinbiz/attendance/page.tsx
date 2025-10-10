@@ -1,34 +1,24 @@
 'use client';
-import { Container, Box } from '@mui/material';
+import { Container } from '@mui/material';
 import { useTranslations } from "next-intl";
-import useEmployeeListController from './page.controller';
 import { GenericTable } from "@/components/common/table/GenericTable";
-import { Add } from '@mui/icons-material';
-import { SassButton } from '@/components/common/buttons/GenericButton';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
+import useAttendanceController from './page.controller';
  
-export default function ReportList() {
+export default function AttendanceList() {
   const t = useTranslations();
   const {
     items,   onRowsPerPageChange, onSort,
     onNext, onBack,  
     filterParams, topFilter,
-    columns, handleExport ,
-    loading } = useEmployeeListController();
+    columns,  
+    loading } = useAttendanceController();
    
    return (
     <Container maxWidth="lg">
       <HeaderPage
-        title={t("report.list")}
-        actions={
-          <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
-            <SassButton
-              onClick={handleExport}
-              variant='contained'
-              startIcon={<Add />}
-            >{t('report.export')}</SassButton>
-          </Box>
-        }
+        title={t("attendance.list")}
+         
       >
         <GenericTable
           data={items}

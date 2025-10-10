@@ -3,19 +3,20 @@ import { useTranslations } from "next-intl";
 import { useEffect, useState } from 'react';
 import { useToast } from "@/hooks/useToast";
 import { useEntity } from "@/hooks/useEntity";
-import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
-import { searchLogs, search as searchEmployee, fetchEmployee as fetchEmployeeData } from "@/services/checkinbiz/employee.service";
+import { searchLogs, fetchEmployee as fetchEmployeeData } from "@/services/checkinbiz/employee.service";
 import { IChecklog } from "@/domain/features/checkinbiz/IChecklog";
 import { Column } from "@/components/common/table/GenericTable";
 import { format_date, rmNDay } from "@/lib/common/Date";
-import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
-import { search as searchBranch, fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucursal.service";
+import { fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucursal.service";
 
 import { Box } from "@mui/material";
 
 import { DateRangePicker } from "@/app/main/[entityId]/passinbiz/stats/components/filters/fields/DateRangeFilter";
 import { useLayout } from "@/hooks/useLayout";
 import SearchFilter from "@/components/common/table/filters/SearchFilter";
+import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
+import { ISearchIndex } from "@/domain/core/SearchIndex";
+import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
 
 interface IFilterParams {
   filter: { branchId: 'none', employeeId: 'none', status: 'valid', range: { start: any, end: any } | null },
@@ -34,7 +35,7 @@ interface IFilterParams {
   currentPage: number
   startAfter: string | null,
 }
-export default function useReportController() {
+export default function useAttendanceController() {
   const t = useTranslations();
   const { showToast } = useToast()
   const { currentEntity, watchServiceAccess } = useEntity()
@@ -185,24 +186,13 @@ export default function useReportController() {
   useEffect(() => {
     if (currentEntity?.entity?.id) {
       fetchingData(filterParams)
-      fetchSucursal()
-      fetchEmployee()
+ 
     }
   }, [currentEntity?.entity?.id])
 
 
 
-
-  const [branchList, setBranchList] = useState<Array<ISucursal>>([])
-  const fetchSucursal = async () => {
-    setBranchList(await searchBranch(currentEntity?.entity.id as string, { ...{} as any, limit: 100 }))
-  }
-
-  const [employeeList, setEmployeeList] = useState<Array<IEmployee>>([])
-  const fetchEmployee = async () => {
-    setEmployeeList(await searchEmployee(currentEntity?.entity.id as string, { ...{} as any, limit: 100 }))
-  }
-
+ 
 
 
   const topFilter = <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap', width: '100%', justifyContent: 'flex-end' }}>
@@ -215,19 +205,33 @@ export default function useReportController() {
       options={[{ value: 'valid' as string, label: t('core.label.valid') }, { value: 'failed' as string, label: t('core.label.failed') }]}
     />
 
-    {employeeList.length > 0 && <SearchFilter
-      label={t('core.label.subEntity')}
-      value={filterParams.filter.branchId}
-      onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, branchId: value } })}
-      options={branchList.map(e => ({ value: e.id as string, label: e.name as string }))}
-    />}
+    
 
-    {employeeList.length > 0 && <SearchFilter
+    <SearchIndexFilter width='auto'
+      type="branch"
+      label={t('core.label.subEntity')}
+      onChange={async (value: ISearchIndex) => {
+        if (value?.id) {
+          const item = await getRefByPathData(value.index)
+          if (item)
+            onFilter({ ...filterParams, filter: { ...filterParams.filter, branchId: item.id } })
+        }
+      }}
+    />
+
+    <SearchIndexFilter width='auto'
+      type="employee"
       label={t('core.label.employee')}
-      value={filterParams.filter.employeeId}
-      onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, employeeId: value } })}
-      options={employeeList.map(e => ({ value: e.id as string, label: e.fullName as string }))}
-    />}
+      onChange={async (value: ISearchIndex) => {
+        if (value?.id) {
+          const item = await getRefByPathData(value.index)
+          console.log(item);
+          
+          if (item)
+            onFilter({ ...filterParams, filter: { ...filterParams.filter, employeeId: item.id } })
+        }
+      }}
+    />
     <DateRangePicker filter width='100%' value={filterParams.filter.range} onChange={(rg: { start: any, end: any }) => {
       onFilter({ ...filterParams, filter: { ...filterParams.filter, range: rg } })
     }} />

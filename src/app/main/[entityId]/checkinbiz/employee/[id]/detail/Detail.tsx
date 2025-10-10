@@ -41,7 +41,10 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                         <Typography variant="h4"   >
                             {employee?.fullName}
                         </Typography>
-                        <CustomChip size='small' background={employee?.twoFA ? 'active' : 'revoked'} label={employee?.twoFA ? t('core.label.enable2AF') : t('core.label.disable2AF')} />
+                        <Box display={'flex'} flexDirection={'row'} gap={1}>
+                            <CustomChip size='small' background={employee?.twoFA ? 'active' : 'revoked'} label={employee?.twoFA ? t('core.label.enable2AF') : t('core.label.disable2AF')} />
+                            <CustomChip size='small' label={employee.enableRemoteWork ? t('core.label.enableRemoteWorkEnable') : t('core.label.enableRemoteWorkDisabled')} />
+                        </Box>
                     </Box>
                 </Grid>
                 <Stack direction={'row'} gap={2}>

@@ -99,7 +99,10 @@ const CheckLog = () => {
             slotProps={{ paper: { sx: { p: 0, borderRadius: 2, width: '100vw', height: '90vh', background: "#F0EFFD" } } }}
         >
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', p: 2 }}>
-
+                <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'flex-start', textAlign: 'left', mt: 4 }}>
+                    <Typography variant="body1" fontWeight={'bold'} fontSize={18} > {t('checking.history')} </Typography>
+                    {pending && <CircularProgress color="inherit" size={20} />}
+                </Box>
                 <CustomIconBtn
                     sx={{ position: 'absolute', top: 16, right: 26 }}
                     onClick={() => closeModal(CommonModalType.LOGS)}
@@ -165,7 +168,7 @@ const CheckLog = () => {
                         </Table>
                         {employeeLogs.length === 0 && <EmptyState />}
                     </TableContainer>
-                    {pending && <Box sx={{width:'100%', display: 'flex', gap: 1, alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+                    {pending && <Box sx={{ width: '100%', display: 'flex', gap: 1, alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
                         <CircularProgress color="inherit" size={20} />
                     </Box>}
                     <SassButton variant='outlined' onClick={() => loadMore()} >{t('core.label.moreload')}</SassButton>
@@ -176,5 +179,3 @@ const CheckLog = () => {
 };
 
 export default CheckLog;
-
-

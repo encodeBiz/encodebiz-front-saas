@@ -17,7 +17,7 @@ export default function SucursalList() {
     items, rowAction, onRowsPerPageChange, onSort,
     onNext, onBack, onDelete, deleting,
     filterParams, topFilter,
-    columns, buildState,
+    columns,  
     loading } = useSucursalListController();
   const { navivateTo } = useLayout()
   const { open } = useCommonModal()
@@ -29,7 +29,7 @@ export default function SucursalList() {
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
              
             <SassButton
-              onClick={() => navivateTo(`/checkinbiz/sucursal/add?params=${buildState()}`)}
+              onClick={() => navivateTo(`/checkinbiz/branch/add`)}
               variant='contained'
               startIcon={<Add />}
             >{t('sucursal.add')}</SassButton>

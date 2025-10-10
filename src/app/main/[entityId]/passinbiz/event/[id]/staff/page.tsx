@@ -36,7 +36,7 @@ const { navivateTo } = useLayout()
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
             <SassButton
               disabled={formStatus?.isSubmitting}
-              onClick={() => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event}`)}
+              onClick={() => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event`)}
               variant='outlined'
               startIcon={<ArrowLeftOutlined />}
             > {t('core.button.cancel')}</SassButton>

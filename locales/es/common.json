@@ -27,6 +27,7 @@
         "Events": "Eventos",
         "Media": "Media",
         "Report": "Reportes",
+        "Attendance": "Asistencia",
         "Sucursal": "Sucursal",
         "home": "Inicio",
         "Integration": "Integraciones",
@@ -92,7 +93,7 @@
     },
     "label": {
       "today": "Hoy",
-      "moreload":"Cargar más",
+      "moreload": "Cargar más",
       "thisWeek": "Esta semana",
       "thisMonth": "Este mes",
       "thisYear": "Este año",
@@ -116,7 +117,7 @@
       "internal": "Interno",
       "meters": "metros",
       "collaborator": "Colaborador",
-      "ratioChecklog": "Radio de chequeo en metros",
+      "ratioChecklog": "Zona de chequeo en metros",
       "ratioChecklog2": "Zona de chequeo permitida",
       "nit": "Número de identificación fiscal",
       "inactive": "Inactivo",
@@ -140,6 +141,12 @@
       "expo": "Expositivo",
       "festival": "Festival",
       "rol": "rol",
+      "enableRemoteWork": "Habilitar trabajo remoto",
+      "enableRemoteWorkEnable": "Trabajo remoto habilitado",
+      "enableRemoteWorkDisabled": "Trabajo remoto deshabilitado",
+      "disableRatioChecklog": "Desabilitar zona de chequeo",
+      "disableRatioChecklogE": "Zona de chequeo habilitada",
+      "disableRatioChecklogD": "Zona de chequeo deshabilitado",
       "price": "Precio",
       "active": "Activo",
       "thumbnail": "Imagen en miniatura",
@@ -637,10 +644,10 @@
     "deleteConfirmModalTitle": "Eliminar sucursal",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente la sucursal"
   },
-  "report": {
-    "title": "Reportes",
+  "attendance": {
+    "title": "Reportes de asistencia",
     "formDesc": "Completa los campos a continuación para crear un reporte.",
-    "list": "Reportes",
+    "list": "Reportes  de asistencia",
     "add": "Crear reporte",
     "export": "Exportar reporte",
     "report": "Emitir reporte",
@@ -811,19 +818,15 @@
     "endJornada": "Finalizar Jornada",
     "startDescanso": "Iniciar Descanso",
     "endDescanso": "Finalizar Descanso",
-
-
     "startJornadaLabel": "Inicio Jornada",
     "endJornadaLabel": "Fin Jornada",
     "startDescansoLabel": "Inicio Descanso",
     "endDescansoLabel": "Fin Descanso",
-
-
     "titleBranch": "Seleccione la sucursal",
     "selected": "Seleccionar  sucursal",
     "history": "HISTORIAL DE ASISTENCIA",
     "noGeo": "Activar geolocalización",
-    "noGeoBtn":"Activar ahora",
+    "noGeoBtn": "Activar ahora",
     "noGeoText": "Al parecer no tienes activadp el permiso de geolocalización, actívelo para usar esta herramienta"
   },
   "twoFactor": {
@@ -851,5 +854,15 @@
     "copyClave": "Copiar clave",
     "titleValidate": "Tu navegador no es de confianza",
     "text1Validate": "Para poner agregar tu navegador como dispositivo de confianza escribe el código de 6 dígitos que te muestra la app de autenticación."
+  },
+  "404": {
+    "text1": "Página no encontrada",
+    "text2": "Lo sentimos, la página que estás buscando no existe.",
+    "text3": " Volver a la página de inicio"
+  },
+  "image": {
+    "text1": "Dimensiones de la imagen incorrecta",
+    "text2": "Es necesario ajustar la imagen a las dimenciones establecidas ya que esta va hacer utilizada en la construcción de pases digitales o plantillas estandarizadas",
+    "text3": "Dimensiones requeridas: "
   }
 }

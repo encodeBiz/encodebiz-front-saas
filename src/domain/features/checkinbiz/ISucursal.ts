@@ -15,6 +15,7 @@ export interface ISucursal {
         "lng": number
       }
     },
+    disableRatioChecklog?:boolean
     "ratioChecklog": number
     "metadata": any,
     "status": 'active' | 'inactive'
