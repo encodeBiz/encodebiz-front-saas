@@ -861,7 +861,7 @@
   },
   "image": {
     "text1": "Dimensiones de la imagen incorrecta",
-    "text2": "Es necesario estandarizar la imagen a las dimenciones establecidas ya que esta va hacer utilizada en la construcción de pases digitales "
-  
+    "text2": "Es necesario estandarizar la imagen a las dimenciones establecidas ya que esta va hacer utilizada en la construcción de pases digitales ",
+  "text3":"Dimensiones requeridas: "
   }
 }

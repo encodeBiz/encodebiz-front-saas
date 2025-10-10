@@ -22,8 +22,9 @@ interface InfoModalProps {
     centerBtn?: boolean
     onClose?: () => void
     btnText?: string
+    extraText?: string
 }
-const InfoModal = ({ title, description, onClose, btnText, closeBtn, centerBtn,
+const InfoModal = ({ title, description, onClose, btnText, closeBtn, centerBtn, extraText,
     cancelBtn = true }: InfoModalProps): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const t = useTranslations()
@@ -58,6 +59,8 @@ const InfoModal = ({ title, description, onClose, btnText, closeBtn, centerBtn,
             <DialogContent>
                 <DialogContentText id="alert-dialog-description" sx={{ mb: 3 }}>
                     <Typography variant='body1'>{description}</Typography>
+                    {extraText && <Typography color='primary' variant='body1'>{extraText}</Typography>}
+
                 </DialogContentText>
             </DialogContent>
             <DialogActions >
@@ -85,8 +88,8 @@ const InfoModal = ({ title, description, onClose, btnText, closeBtn, centerBtn,
                     </SassButton>}
 
                     {centerBtn && <SassButton
-                        color="primary" 
-                        sx={{width:139}}
+                        color="primary"
+                        sx={{ width: 139 }}
                         variant="contained"
                         onClick={(e) => handleClose(e, 'manual')}
                         size='small'
