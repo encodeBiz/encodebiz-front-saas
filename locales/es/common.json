@@ -851,5 +851,10 @@
     "copyClave": "Copiar clave",
     "titleValidate": "Tu navegador no es de confianza",
     "text1Validate": "Para poner agregar tu navegador como dispositivo de confianza escribe el código de 6 dígitos que te muestra la app de autenticación."
+  },
+  "404":{
+    "text1":"Página no encontrada",
+    "text2":"Lo sentimos, la página que estás buscando no existe.",
+    "text3":" Volver a la página de inicio"
   }
 }
