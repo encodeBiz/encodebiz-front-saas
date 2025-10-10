@@ -71,8 +71,8 @@ const Checking = () => {
             {open.type === CommonModalType.LOGS && <CheckLog />}
             {open.type === CommonModalType.CONFIG2AF && <ConfigTwoFA />}
             {open.type === CommonModalType.ADDDEVICE2AF && <VerifyTwoFA />}
-            {open.type === CommonModalType.INFO && <InfoModal centerBtn
-                title={t('twoFactor.newDeviceMessage')}
+            {open.type === CommonModalType.INFO && <InfoModal centerBtn cancelBtn={false} closeBtn={false}
+                title={t('twoFactor.newDeviceMessage')} 
                 description={t('twoFactor.newDeviceMessageText')}
             />}
 
@@ -84,6 +84,7 @@ const Checking = () => {
                     handleRequestLocation()
                 }}
             />}
+ 
         </Container>
 
     );

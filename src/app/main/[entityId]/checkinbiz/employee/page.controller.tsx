@@ -278,6 +278,7 @@ export default function useEmployeeListController() {
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
       navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)
+      fetchingData(filterParams)
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')

@@ -92,6 +92,7 @@
     },
     "label": {
       "today": "Hoy",
+      "moreload":"Cargar más",
       "thisWeek": "Esta semana",
       "thisMonth": "Este mes",
       "thisYear": "Este año",
@@ -688,8 +689,8 @@
     "btn2": "Cambiar método de pago"
   },
   "scan": {
-    "title": "Validar pase",
-    "subtitle": "Escanee el código QR para confirmar si es válido el pase",
+    "title": "Validar Pase",
+    "subtitle": "Escanee el código QR para validar el pase",
     "camaraFocus": "Apunta tu cámara a un código QR",
     "resultTitle": "Acceso confirmado",
     "scanOther": "Escanear otro código",
@@ -810,6 +811,14 @@
     "endJornada": "Finalizar Jornada",
     "startDescanso": "Iniciar Descanso",
     "endDescanso": "Finalizar Descanso",
+
+
+    "startJornadaLabel": "Inicio Jornada",
+    "endJornadaLabel": "Fin Jornada",
+    "startDescansoLabel": "Inicio Descanso",
+    "endDescansoLabel": "Fin Descanso",
+
+
     "titleBranch": "Seleccione la sucursal",
     "selected": "Seleccionar  sucursal",
     "history": "HISTORIAL DE ASISTENCIA",

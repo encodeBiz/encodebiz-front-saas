@@ -35,6 +35,7 @@ import { fetchSucursal } from '@/services/checkinbiz/sucursal.service';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import SearchFilter from '@/components/common/table/filters/SearchFilter';
+import { SassButton } from '@/components/common/buttons/GenericButton';
 const CheckLog = () => {
     const { sessionData } = useCheck()
     const t = useTranslations()
@@ -46,9 +47,9 @@ const CheckLog = () => {
     const { showToast } = useToast()
     const { open, closeModal } = useCommonModal()
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const [limit, setLimit] = useState<number>(10)
 
-
-    const getEmplyeeLogsData = async (range: { start: any, end: any }, status: 'valid' | 'failed') => {
+    const getEmplyeeLogsData = async (range: { start: any, end: any }, status: 'valid' | 'failed', limit: number = 10) => {
         setPending(true)
         try {
             const filters = [
@@ -57,7 +58,7 @@ const CheckLog = () => {
                 { field: 'status', operator: '==', value: status },
 
             ]
-            const resultList: Array<IChecklog> = await getEmplyeeLogs(sessionData?.entityId || '', sessionData?.employeeId || '', sessionData?.branchId || '', { limit: 50, orderBy: 'timestamp', orderDirection: 'desc', filters } as any) as Array<IChecklog>
+            const resultList: Array<IChecklog> = await getEmplyeeLogs(sessionData?.entityId || '', sessionData?.employeeId || '', sessionData?.branchId || '', { limit, orderBy: 'timestamp', orderDirection: 'desc', filters } as any) as Array<IChecklog>
             const data = await Promise.all(
                 resultList.map(async (item) => {
                     const branchId = (await fetchSucursal(item.entityId, item.branchId))?.name
@@ -81,7 +82,10 @@ const CheckLog = () => {
         if (sessionData?.entityId)
             getEmplyeeLogsData(range, status)
     }, [sessionData?.entityId])
-
+    const loadMore = () => {
+        setLimit(limit + 10)
+        getEmplyeeLogsData(range, status, limit + 10)
+    }
 
     return (
         <Dialog
@@ -95,9 +99,7 @@ const CheckLog = () => {
             slotProps={{ paper: { sx: { p: 0, borderRadius: 2, width: '100vw', height: '90vh', background: "#F0EFFD" } } }}
         >
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', p: 2 }}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left', mt: 4 }}>
-                    <Typography variant="body1" fontWeight={'bold'} fontSize={18} > {t('checking.history')} </Typography>
-                    {pending && <CircularProgress color="inherit" size={20} />}                </Box>
+
                 <CustomIconBtn
                     sx={{ position: 'absolute', top: 16, right: 26 }}
                     onClick={() => closeModal(CommonModalType.LOGS)}
@@ -115,10 +117,10 @@ const CheckLog = () => {
                             md: 'column',
                             lg: 'column',
                             xl: 'column',
-                        }, 
-                        gap: 2, 
+                        },
+                        gap: 2,
                         justifyContent: 'flex-end',
-                        alignItems:'flex-end'
+                        alignItems: 'flex-end'
                     }}>
                         <DateRangePicker width='100%' value={range} onChange={(rg: { start: any, end: any }) => {
                             getEmplyeeLogsData(rg, status)
@@ -163,9 +165,10 @@ const CheckLog = () => {
                         </Table>
                         {employeeLogs.length === 0 && <EmptyState />}
                     </TableContainer>
-
-
-
+                    {pending && <Box sx={{width:'100%', display: 'flex', gap: 1, alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+                        <CircularProgress color="inherit" size={20} />
+                    </Box>}
+                    <SassButton variant='outlined' onClick={() => loadMore()} >{t('core.label.moreload')}</SassButton>
                 </Box>
             </DialogContent>
         </Dialog>

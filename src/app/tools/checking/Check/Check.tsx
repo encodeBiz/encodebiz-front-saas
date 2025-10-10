@@ -20,12 +20,10 @@ import { SassButton } from '@/components/common/buttons/GenericButton';
 
 import { useCheck } from '../page.context';
 import { CommonModalType } from '@/contexts/commonModalContext';
-import { useGeoPermission } from '@/hooks/useGeoPermission';
 const Check = () => {
     const { checkAction, setCheckAction, restAction, setRestAction, currentBranch, createLogAction, entity, employee, pendingStatus, sessionData, branchList } = useCheck()
     const t = useTranslations()
     const { openModal } = useCommonModal()
-    const { status } = useGeoPermission();
 
 
     return (
@@ -38,7 +36,9 @@ const Check = () => {
 
             <Box sx={{ p: 0, width: '100%', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 4 }}>
                 <Box >
-                    <Typography color="#76777D" variant="body1" fontSize={18} > {t('checking.logDay')} </Typography>
+
+
+                    <Typography color="#595E70" variant="body1" fontWeight={400} fontSize={16} > {t('checking.logDay')} </Typography>
                     <SassButton
                         sx={{
                             borderRadius: 4, textTransform: 'uppercase', mt: 1,
@@ -61,7 +61,7 @@ const Check = () => {
 
 
                 <Box >
-                    <Typography color="#76777D" variant="body1" fontSize={18} > {t('checking.controlDay')} </Typography>
+                    <Typography color="#595E70" variant="body1" fontWeight={400} fontSize={16}  > {t('checking.controlDay')} </Typography>
                     <SassButton
                         sx={{
                             borderRadius: 4, textTransform: 'uppercase', mt: 1,
@@ -91,3 +91,4 @@ const Check = () => {
 };
 
 export default Check;
+   

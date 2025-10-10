@@ -87,6 +87,7 @@ const SixDigitCodeInput = ({ onCompleted }: { onCompleted: (completed: string) =
             {digits.map((digit, index) => (
                 <TextField
                     key={index}
+                    type='number'
                     inputRef={(el) => (((inputRefs.current as any) as any)[index] = el)}
                     value={digit}
                     onChange={(e) => handleDigitChange(index, e.target.value)}
