@@ -58,7 +58,7 @@ export default function useEmployeeListController() {
     currentPage: 0,
     total: 0,
     params: {
-      filters: [{field:'status',operator:'==', value:'active'}],
+      filters: [{ field: 'status', operator: '==', value: 'active' }],
       startAfter: null,
       limit: 5,
       orderBy: 'createdAt',
@@ -199,7 +199,9 @@ export default function useEmployeeListController() {
     if (filterParams.params.filters.find((e: any) => e.field === 'branchId' && e.value === 'none'))
       filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "branchId")
 
-     
+    console.log({ ...(filterParams.params as any), filters: [...filterParams.params.filters, ...filters] });
+
+
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters: [...filterParams.params.filters, ...filters] }).then(async res => {
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
@@ -273,12 +275,14 @@ export default function useEmployeeListController() {
         "id": employee.id,
         entityId: currentEntity?.entity.id as string,
         status: employee.status
-      } 
+      }
       await updateEmployee(data, token)
+      const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
+      fetchingData(filterParamsUpdated)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
-      navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)
-      fetchingData(filterParams)
+      //navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)
+
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
@@ -362,3 +366,4 @@ export default function useEmployeeListController() {
 
 
 }
+
