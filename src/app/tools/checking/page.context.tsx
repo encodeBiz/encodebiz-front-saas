@@ -133,7 +133,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
                     entityId: last.entityId,
                     employeeId: last.employeeId
                 })
-              
+               
                 
                 if (last.type === 'checkin' || last.type === 'checkout') {
                     setCheckAction(last.type)
@@ -144,7 +144,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
                 if (last.type === 'restin' || last.type === 'restout') {
                     setRestAction(last.type)
-                    setCheckAction('checkout')
+                    setCheckAction('checkin')
                 }
 
             } else {
