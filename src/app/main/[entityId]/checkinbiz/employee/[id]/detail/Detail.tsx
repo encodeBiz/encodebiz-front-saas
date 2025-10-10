@@ -2,7 +2,7 @@ import { SassButton } from "@/components/common/buttons/GenericButton"
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes"
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee"
 import { useLayout } from "@/hooks/useLayout"
-import { Card, Box, Grid, Typography, CardContent, Paper, Divider, List, Stack } from "@mui/material"
+import { Card, Box, Grid, Typography, CardContent, Paper, Divider, Stack } from "@mui/material"
 import { useTranslations } from "next-intl"
 import useEmployeeDetailController from "./page.controller"
 import { useCommonModal } from "@/hooks/useCommonModal"
@@ -91,10 +91,10 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                         {branchListEmployee.map((e: ISucursal, i: number) => <Box minHeight={50} key={i}>
                             <Box sx={{ p: 2 }}>
                                 {i === 0 && <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'} >
-                                    <Typography fontSize={16} color='#45474C' fontWeight={400} variant="subtitle1" minWidth={200}>
+                                    <Typography fontSize={16} color='#76777D' fontWeight={400} variant="subtitle1" minWidth={200}>
                                         {t('core.label.sucursal')}
                                     </Typography>
-                                    <Typography fontSize={16} color='#45474C' fontWeight={400} variant="subtitle1"  >
+                                    <Typography fontSize={16} color='#76777D' fontWeight={400} variant="subtitle1"  >
                                         {t('core.label.cargo')}
                                     </Typography>
                                 </Box>}

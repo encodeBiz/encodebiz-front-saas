@@ -47,6 +47,7 @@ const Check = () => {
                         }}
                         disabled={restAction == 'restin' || pendingStatus || status !== "granted"} variant='contained' color='primary'
                         onClick={() => {
+                             
                             if ((!sessionData?.branchId && branchList.length > 0) || (checkAction === 'checkin' && branchList.length > 0))
                                 openModal(CommonModalType.BRANCH_SELECTED)
                             else {
