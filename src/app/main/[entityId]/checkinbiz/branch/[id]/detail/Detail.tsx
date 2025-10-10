@@ -1,4 +1,5 @@
 import { SassButton } from "@/components/common/buttons/GenericButton"
+import { CustomChip } from "@/components/common/table/CustomChip"
 import { DetailText } from "@/components/common/table/DetailText"
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes"
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal"
@@ -25,9 +26,14 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
                         <Typography variant="h4"   >
                             {branch?.name}
                         </Typography>
-                        {branch?.nit && <Typography variant="body1"   >
-                            {t('core.label.nit')}: {branch?.nit}
-                        </Typography>}   </Box>
+                        <Box display={'flex'} flexDirection={'row'} gap={1}>
+                            {branch?.nit && <Typography variant="body1"   >
+                                {t('core.label.nit')}: {branch?.nit}
+                            </Typography>}                                                       
+                            <CustomChip size='small' label={branch.disableRatioChecklog ? t('core.label.disableRatioChecklogD') : t('core.label.disableRatioChecklogE')} />
+                        </Box>
+
+                    </Box>
                 </Grid>
                 <Stack direction={'row'} gap={2}>
                     <SassButton color="primary" variant="contained" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch/${branch.id}/edit`)}>
@@ -44,7 +50,7 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
             <Paper elevation={0} sx={{ p: 3 }}>
                 <Box display={'flex'} justifyContent={'space-between'} alignItems={'flex-start'}>
                     <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={2} alignItems={'flex-start'}>
-                        <DetailText label={t('core.label.ratioChecklog2')} value={branch?.ratioChecklog +' '+ t('core.label.meters')} orientation="row" help={t('sucursal.ratioHelp')} />
+                        <DetailText label={t('core.label.ratioChecklog2')} value={branch?.ratioChecklog + ' ' + t('core.label.meters')} orientation="row" help={t('sucursal.ratioHelp')} />
                         <DetailText label={t('core.label.address')} value={branch?.address?.street} orientation="row" >
                             <Box sx={{ marginLeft: 4, minWidth: 140 }}><SassButton variant="text" onClick={() => onGoMap(branch.address.geo.lat, branch.address.geo.lng)}> {t('sucursal.map')}</SassButton></Box>
                         </DetailText>
@@ -52,7 +58,7 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
                 </Box>
 
                 {Array.isArray(branch.metadata) && branch.metadata.length > 0 && <><Divider /> <Paper sx={{ mt: 4 }} elevation={0} >
-                    <Typography variant="subtitle1" gutterBottom  textTransform={'capitalize'} >
+                    <Typography variant="subtitle1" gutterBottom textTransform={'capitalize'} >
                         {t('core.label.aditionalData')}
                     </Typography>
 

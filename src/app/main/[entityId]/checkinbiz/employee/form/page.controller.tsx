@@ -17,6 +17,7 @@ import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { search } from "@/services/checkinbiz/sucursal.service";
 import SelectMultipleInput from "@/components/common/forms/fields/SelectMultipleInput";
+import ToggleInput from "@/components/common/forms/fields/ToggleInput";
 
 
 export default function useEmployeeController() {
@@ -37,7 +38,8 @@ export default function useEmployeeController() {
     role: "internal",
     status: 'active',
     branchId: branchId ? [branchId] : [],
-    metadata: []
+    metadata: [],
+    enableRemoteWork: false
   });
 
   const validationSchema = Yup.object().shape({
@@ -120,6 +122,7 @@ export default function useEmployeeController() {
         phone: '',
         role: "internal",
         status: 'active',
+        enableRemoteWork: false,
         branchId: branchId ? [branchId] : branckList.length == 1 ? branckList.map(e => e.value as string) : [],
         metadata: []
       })
@@ -204,6 +207,14 @@ export default function useEmployeeController() {
         type: 'text',
         required: false,
         component: TextInput,
+
+      },
+
+      {
+        name: 'enableRemoteWork',
+        label: t('core.label.enableRemoteWork'),
+        required: false,
+        component: ToggleInput,
 
       },
       {

@@ -12,7 +12,7 @@ const TextInput: React.FC<FieldProps & TextFieldProps & { afterTextField: string
   const { touched, error } = meta
   const { formStatus } = useFormStatus()
   return (<Box display={'flex'} justifyItems={'center'} alignItems={'center'} >
- 
+
     <TextField
       {...field}
       {...props}
@@ -20,9 +20,9 @@ const TextInput: React.FC<FieldProps & TextFieldProps & { afterTextField: string
       error={!!(touched && error)}
       multiline={props.type === 'textarea'}
       rows={2}
-      disabled={props.disabled || (props.name === 'postalCode' && (!formStatus?.values?.country || !formStatus?.values?.city))}
+      disabled={props.disabled || (props.name === 'ratioChecklog' && formStatus?.values?.disableRatioChecklog) || (props.name === 'postalCode' && (!formStatus?.values?.country || !formStatus?.values?.city))}
       helperText={touched && error as string}
-      
+
       slotProps={{
         input: touched && error ? {
           endAdornment: <InputAdornment position="end"><Error color='error' /></InputAdornment>,

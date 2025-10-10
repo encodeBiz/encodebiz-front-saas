@@ -16,6 +16,7 @@ import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 import { country } from "@/config/country";
 import AddressInput from "@/components/common/forms/fields/AddressInput";
 import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
+import ToggleInput from "@/components/common/forms/fields/ToggleInput";
 
 
 export default function useSucursalController() {
@@ -33,14 +34,14 @@ export default function useSucursalController() {
   const [initialValues, setInitialValues] = useState<Partial<any>>({
     "name": '',
     metadata: [],
-    "country": 'España',
-    "city": 'Madrid',
+    "country": '',
+    "city": '',
     geo: { lat: 0, lng: 0 },
     postalCode: '',
     region: '',
     street: '',
     ratioChecklog: 100,
-
+    disableRatioChecklog: true,
 
   });
 
@@ -117,7 +118,7 @@ export default function useSucursalController() {
     {
       name: 'nit',
       label: t('core.label.nit'),
-      component: TextInput,    
+      component: TextInput,
     },
     {
       name: 'country',
@@ -159,10 +160,10 @@ export default function useSucursalController() {
     },
 
     {
-      name: 'region',
-      label: t('core.label.region'),
-      component: TextInput,
-
+      name: 'disableRatioChecklog',
+      label: t('core.label.disableRatioChecklog'),
+      required: false,
+      component: ToggleInput,
 
     },
 

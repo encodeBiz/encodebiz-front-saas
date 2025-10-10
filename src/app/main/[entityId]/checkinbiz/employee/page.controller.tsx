@@ -19,6 +19,7 @@ import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
 import { Box } from "@mui/material";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
+import { CustomChip } from "@/components/common/table/CustomChip";
 
 
 interface IFilterParams {
@@ -150,6 +151,10 @@ export default function useEmployeeListController() {
       id: 'fullName',
       label: t("core.label.name"),
       minWidth: 170,
+      format: (value, row) => <Box>
+        {row.fullName}
+        <CustomChip size='small' label={row.enableRemoteWork ? t('core.label.enableRemoteWorkEnable') : t('core.label.enableRemoteWorkDisabled')} />
+      </Box>
 
     },
 

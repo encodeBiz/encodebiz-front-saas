@@ -29,7 +29,7 @@ export default function SucursalList() {
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
              
             <SassButton
-              onClick={() => navivateTo(`/checkinbiz/sucursal/add?params=${buildState()}`)}
+              onClick={() => navivateTo(`/checkinbiz/branch/add`)}
               variant='contained'
               startIcon={<Add />}
             >{t('sucursal.add')}</SassButton>
