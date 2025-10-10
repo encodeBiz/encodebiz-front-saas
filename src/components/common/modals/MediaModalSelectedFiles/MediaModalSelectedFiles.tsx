@@ -38,8 +38,7 @@ import { ImageCropper } from '../../ImageCropper/ImageCropper';
 import { SassButton } from '../../buttons/GenericButton';
 import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import { CustomTypography } from '../../Text/CustomTypography';
-import InfoModal from '../InfoModal';
-
+ 
 export interface IMedia {
   preview: string
   file: File
@@ -62,7 +61,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom', onF
   const { showToast } = useToast()
   const [selectedFile, setSelectedFile] = useState<any>([]);
   const [selectedType, setSelectedType] = useState<string>(type)
-  const { open, closeModal, openModal } = useCommonModal()
+  const { open, closeModal } = useCommonModal()
   const [isUploading, setIsUploading] = useState(false);
   const t = useTranslations();
 
