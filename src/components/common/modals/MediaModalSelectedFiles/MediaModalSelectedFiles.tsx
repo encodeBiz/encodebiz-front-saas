@@ -294,7 +294,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom', onF
         </Paper>
       </DialogContent>
 
-      W
+      
     </Dialog >
   );
 };
