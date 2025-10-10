@@ -47,6 +47,8 @@ export const codeError: any = {
   "auth/untrusted_device": "Dispositivo no confiable. Se requiere verificación adicional",
   "twofactor/invalid_code": "Código TOTP inválido",
   "user/not_found": "No existe ningún usuario con ese correo electrónico",
+  "checklog/two_type_followed":"No se puede iniciar jornada dos veces seguidas",
+  "checklog/out_of_radius":"Parece que no te encuentras en la sucursal seleccionada, no puedes iniciar jornada",
   "stats/range_and_groupBy_tolong": "Los datos para graficar son demasiadox extensos, intenta seleccionar un rango menor de fechas o otro tipo de agrupación"
 };
 
@@ -124,7 +126,7 @@ export class HttpClient {
             if (responseErrorData?.error && typeof responseErrorData?.error === 'string') {
               try { responseError = JSON.parse(responseErrorData?.error) }
               catch (error: any) {
-                responseError = { code: responseErrorData?.error, message: responseErrorData?.message, error: error, errors: [] }
+                responseError = { code: responseErrorData?.code, message: responseErrorData?.message, error: error, errors: [] }
               }
             } else {
               if (responseErrorData?.message && typeof responseErrorData?.message === 'string') {
