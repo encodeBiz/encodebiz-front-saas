@@ -17,7 +17,7 @@ export default function SucursalList() {
     items, rowAction, onRowsPerPageChange, onSort,
     onNext, onBack, onDelete, deleting,
     filterParams, topFilter,
-    columns, buildState,
+    columns,  
     loading } = useSucursalListController();
   const { navivateTo } = useLayout()
   const { open } = useCommonModal()

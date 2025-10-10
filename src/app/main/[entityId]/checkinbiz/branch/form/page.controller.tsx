@@ -41,7 +41,7 @@ export default function useSucursalController() {
     region: '',
     street: '',
     ratioChecklog: 100,
-    disableRatioChecklog: true,
+    disableRatioChecklog: false,
 
   });
 
