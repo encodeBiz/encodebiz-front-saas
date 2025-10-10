@@ -24,12 +24,12 @@ export function useGeoPermission() {
         try {
             const permission = await navigator.permissions.query({ name: "geolocation" as PermissionName });
             setStatus(permission.state as GeoStatus);
-            if(permission.state === 'granted') requestLocation()
+            if (permission.state === 'granted') requestLocation()
             permission.onchange = () => {
                 setStatus(permission.state as GeoStatus);
             };
         } catch (err) {
-            setError("No se pudo consultar el estado del permiso."+ err);
+            setError("No se pudo consultar el estado del permiso." + err);
             setStatus("error");
         }
     }, []);
@@ -44,17 +44,25 @@ export function useGeoPermission() {
         setStatus("fetching");
         setError(null);
 
-        return new Promise<void>((resolve) => {
+        return new Promise<{
+            lat: number,
+            lng: number,
+            accuracy: number,
+        }>((resolve) => {
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
                     setStatus("granted");
-                     
+
                     setPosition({
                         lat: pos.coords.latitude,
                         lng: pos.coords.longitude,
                         accuracy: pos.coords.accuracy,
-                    });                   
-                    resolve();
+                    });
+                    resolve({
+                        lat: pos.coords.latitude,
+                        lng: pos.coords.longitude,
+                        accuracy: pos.coords.accuracy,
+                    });
                 },
                 (err) => {
                     if (err.code === err.PERMISSION_DENIED) {
@@ -67,7 +75,11 @@ export function useGeoPermission() {
                         setStatus("error");
                         setError("Error al obtener la ubicación.");
                     }
-                    resolve();
+                    resolve({
+                        lat: 0,
+                        lng: 0,
+                        accuracy: 0,
+                    });
                 },
                 { enableHighAccuracy: true, timeout: 10000 }
             );
@@ -77,7 +89,7 @@ export function useGeoPermission() {
     useEffect(() => {
         checkPermission();
     }, []);
- 
+
 
     return {
         status,

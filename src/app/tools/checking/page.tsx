@@ -71,7 +71,7 @@ const Checking = () => {
             {open.type === CommonModalType.LOGS && <CheckLog />}
             {open.type === CommonModalType.CONFIG2AF && <ConfigTwoFA />}
             {open.type === CommonModalType.ADDDEVICE2AF && <VerifyTwoFA />}
-            {open.type === CommonModalType.INFO && <InfoModal
+            {open.type === CommonModalType.INFO && <InfoModal centerBtn
                 title={t('twoFactor.newDeviceMessage')}
                 description={t('twoFactor.newDeviceMessageText')}
             />}

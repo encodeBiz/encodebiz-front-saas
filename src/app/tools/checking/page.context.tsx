@@ -70,11 +70,10 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     const [token, setToken] = useState('')
     const [pending, setPending] = useState(false)
     const [pendingStatus, setPendingStatus] = useState(true)
-    const { status, position, requestLocation } = useGeoPermission();
+    const { status, requestLocation } = useGeoPermission();
 
     const [entity, setEntity] = useState<IEntity>()
     const [employee, setEmployee] = useState<IEmployee>()
-    const [geo, setGeo] = useState<{ latitude: number, longitude: number }>({ latitude: 0, longitude: 0 })
     const searchParams = useSearchParams()
     const customToken = searchParams.get('customToken') || token;
     const { openModal } = useCommonModal()
@@ -126,8 +125,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
             if (resultList.length > 0) {
                 const last = resultList[0]
-                console.log(last);
-                
+
                 const branch = (await fetchSucursal(last?.entityId as string, last.branchId))
                 setCurrentBranch(branch)
                 setSessionData({
@@ -135,8 +133,8 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
                     entityId: last.entityId,
                     employeeId: last.employeeId
                 })
-               
-                
+
+
                 if (last.type === 'checkin' || last.type === 'checkout') {
                     setCheckAction(last.type)
                     if (last.type === 'checkout') {
@@ -172,36 +170,39 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
     const createLogAction = (type: "checkout" | "checkin" | "restin" | "restout", callback?: () => void, sucursalId?: string) => {
 
-        const data: ICreateLog = {
-            "employeeId": sessionData?.employeeId as string,
-            "entityId": sessionData?.entityId as string,
-            "branchId": sucursalId ? sucursalId : sessionData?.branchId as string,
-            type,
-            "geo": {
-                "lat": geo.latitude,
-                "lng": geo.longitude
-            }
-        }
-        setPending(true);
-        changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+        requestLocation().then(pos => {
 
-        createLog(data, token).then(() => {
-            if (typeof callback === 'function') callback()
-        }).catch(e => {
-            if (e?.message?.includes('Dispositivo no confiable')) {
-                openModal(CommonModalType.ADDDEVICE2AF)
-            } else {
-                if (e?.message?.includes('Untrusted')) {
-                    openModal(CommonModalType.ADDDEVICE2AF)
-                } else {
-                    showToast(e?.message, 'error')
+            const data: ICreateLog = {
+                "employeeId": sessionData?.employeeId as string,
+                "entityId": sessionData?.entityId as string,
+                "branchId": sucursalId ? sucursalId : sessionData?.branchId as string,
+                type,
+                "geo": {
+                    "lat": pos?.lat as number,
+                    "lng": pos?.lng as number
                 }
             }
+            setPending(true);
+            changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+
+            createLog(data, token).then(() => {
+                if (typeof callback === 'function') callback()
+            }).catch(e => {
+                if (e?.message?.includes('Dispositivo no confiable')) {
+                    openModal(CommonModalType.ADDDEVICE2AF)
+                } else {
+                    if (e?.message?.includes('Untrusted')) {
+                        openModal(CommonModalType.ADDDEVICE2AF)
+                    } else {
+                        showToast(e?.message, 'error')
+                    }
+                }
 
 
 
-        }).finally(() => {
-            changeLoaderState({ show: false })
+            }).finally(() => {
+                changeLoaderState({ show: false })
+            })
         })
 
     }
@@ -224,14 +225,10 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     }, [sessionData?.entityId])
 
     useEffect(() => {
-        if (customToken && position?.lat) {
-            handleValidateEmployee()
-            setGeo({
-                latitude: position?.lat as number,
-                longitude: position?.lng as number,
-            })
+        if (customToken) {
+            handleValidateEmployee()            
         }
-    }, [customToken, position?.lat])
+    }, [customToken])
 
 
     useEffect(() => {
@@ -240,7 +237,9 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
         }
     }, [status])
 
-    const handleRequestLocation = () => requestLocation()
+
+
+    const handleRequestLocation = async () => await requestLocation()
 
     return (
         <CheckContext.Provider value={{
