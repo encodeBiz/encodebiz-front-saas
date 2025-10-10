@@ -17,6 +17,7 @@ import SearchFilter from "@/components/common/table/filters/SearchFilter";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
+import { CustomChip } from "@/components/common/table/CustomChip";
 
 interface IFilterParams {
   filter: { branchId: 'none', employeeId: 'none', status: 'valid', range: { start: any, end: any } | null },
@@ -50,7 +51,11 @@ export default function useAttendanceController() {
     currentPage: 0,
     total: 0,
     params: {
-      filters: [],
+      filters: [
+        { field: 'status', operator: '==', value: 'valid' },
+        { field: 'timestamp', operator: '>=', value: rmNDay(new Date(), 1) },
+        { field: 'timestamp', operator: '<=', value: new Date() }
+      ],
       startAfter: null,
       limit: 5,
       orderBy: 'timestamp',
@@ -109,6 +114,8 @@ export default function useAttendanceController() {
     ]
     setLoading(true)
 
+    console.log({ ...(filterParams.params as any), filters });
+
 
     searchLogs(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async res => {
 
@@ -164,6 +171,12 @@ export default function useAttendanceController() {
       format: (value, row) => t('core.label.' + row.type)
     },
     {
+      id: 'status',
+      label: t("core.label.status"),
+      minWidth: 170,
+      format: (value, row) => <CustomChip label={t('core.label.' + row.status)} />
+    },
+    {
       id: 'timestamp',
       label: t("core.label.date"),
       minWidth: 170,
@@ -186,13 +199,13 @@ export default function useAttendanceController() {
   useEffect(() => {
     if (currentEntity?.entity?.id) {
       fetchingData(filterParams)
- 
+
     }
   }, [currentEntity?.entity?.id])
 
 
 
- 
+
 
 
   const topFilter = <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap', width: '100%', justifyContent: 'flex-end' }}>
@@ -205,7 +218,7 @@ export default function useAttendanceController() {
       options={[{ value: 'valid' as string, label: t('core.label.valid') }, { value: 'failed' as string, label: t('core.label.failed') }]}
     />
 
-    
+
 
     <SearchIndexFilter width='auto'
       type="branch"
@@ -226,7 +239,7 @@ export default function useAttendanceController() {
         if (value?.id) {
           const item = await getRefByPathData(value.index)
           console.log(item);
-          
+
           if (item)
             onFilter({ ...filterParams, filter: { ...filterParams.filter, employeeId: item.id } })
         }
