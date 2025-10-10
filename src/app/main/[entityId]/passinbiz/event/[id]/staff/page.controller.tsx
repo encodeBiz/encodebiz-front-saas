@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { fetchEvent, updateEvent } from "@/services/passinbiz/event.service";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import TransferList from "@/components/common/forms/fields/TransferListField/TransferListField";
 import { search } from "@/services/passinbiz/staff.service";
@@ -24,7 +24,6 @@ export default function useStaffController() {
   const { currentEntity, watchServiceAccess } = useEntity()
   const [staffList, setStaffList] = useState<Array<IStaff>>([])
   const { changeLoaderState } = useLayout()
-  const searchParams = useSearchParams()
   const [fields, setFields] = useState<Array<any>>([])
   const [initialValues, setInitialValues] = useState<Partial<IEvent>>({
     assignedStaff: [],

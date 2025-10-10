@@ -13,7 +13,7 @@ import DateInput from "@/components/common/forms/fields/Datenput";
 import ImageUploadInput from "@/components/common/forms/fields/ImageUploadInput";
 import ColorPickerInput from "@/components/common/forms/fields/ColorPickerInput";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { ArrayToObject, objectToArray } from "@/lib/common/String";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
@@ -30,7 +30,6 @@ export default function useHolderController() {
   const { token, user } = useAuth()
   const { id } = useParams<{ id: string }>()
   const { currentEntity, watchServiceAccess } = useEntity()
-  const searchParams = useSearchParams()
   const [geo, setGeo] = useState<{ lat: number, lng: number }>({ lat: 0, lng: 0 })
 
   const [cityList, setCityList] = useState<any>(country.find(e => e.name === 'España')?.states.map(e => ({ label: e.name, value: e.name })))
@@ -41,8 +40,8 @@ export default function useHolderController() {
     "description": '',
     "address": '',
     "language": 'ES',
-    "date": new Date(),
-    "endDate": new Date(),
+    "date": null,
+    "endDate": null,
     "location": '',
     "country": 'España',
     "city": 'Madrid',

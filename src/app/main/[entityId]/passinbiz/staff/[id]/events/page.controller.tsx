@@ -6,7 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { fetchEvent, search, searchEventsByStaff, updateEvent } from "@/services/passinbiz/event.service";
 import { IEvent } from "@/domain/features/passinbiz/IEvent";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import TransferList from "@/components/common/forms/fields/TransferListField/TransferListField";
 import { Timestamp } from "firebase/firestore";
@@ -23,8 +23,7 @@ export default function useStaffController() {
   const [initialValues, setInitialValues] = useState<{ event: Array<string> }>({
     event: [],
   });
-  const searchParams = useSearchParams()
-
+ 
   const validationSchema = Yup.object().shape({
 
   });

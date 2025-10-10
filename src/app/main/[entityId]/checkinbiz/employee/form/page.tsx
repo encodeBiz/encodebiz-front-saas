@@ -5,7 +5,7 @@ import useEmployeeController from './page.controller';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { CHECKINBIZ_MODULE_ROUTE } from '@/config/routes';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useLayout } from '@/hooks/useLayout';
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { useRef } from 'react';
@@ -22,8 +22,7 @@ export default function EmployeeForm() {
 
   const formRef = useRef(null)
   const { formStatus } = useFormStatus()
-  const searchParams = useSearchParams()
-
+ 
   const handleExternalSubmit = () => {
     if (formRef.current) {
       (formRef.current as any).submitForm()

@@ -5,7 +5,7 @@ import useStaffController from './page.controller';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { IStaff } from '@/domain/features/passinbiz/IStaff';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { useRef } from 'react';
@@ -22,7 +22,6 @@ export default function StaffForm() {
   const { id } = useParams<{ id: string }>()
   const formRef = useRef(null)
   const { formStatus } = useFormStatus()
-  const searchParams = useSearchParams()
   const { open, closeModal } = useCommonModal()
   const handleExternalSubmit = () => {
     if (formRef.current) {
@@ -76,6 +75,7 @@ export default function StaffForm() {
           closeModal(CommonModalType.INFO)
           navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event/add`)
         }}
+        closeBtn
 
       />}
     </Container>

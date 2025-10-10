@@ -61,15 +61,7 @@ const InfoModal = ({ title, description, onClose, btnText, closeBtn,
             </DialogContent>
             <DialogActions>
 
-                {closeBtn && <SassButton
-                    color="primary"
-                    variant="outlined"
-                    onClick={() => closeModal(CommonModalType.INFO)}
-                    size='small'
-
-                >
-                    {t('core.button.accept')}
-                </SassButton>}
+             
 
                 {cancelBtn && <SassButton
                     color="primary"
@@ -79,6 +71,16 @@ const InfoModal = ({ title, description, onClose, btnText, closeBtn,
 
                 >
                     {btnText ? btnText : t('core.button.accept')}
+                </SassButton>}
+
+                   {closeBtn && <SassButton
+                    color="primary"
+                    variant="contained"
+                    onClick={() => closeModal(CommonModalType.INFO)}
+                    size='small'
+
+                >
+                    {t('core.button.accept')}
                 </SassButton>}
 
             </DialogActions>
