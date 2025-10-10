@@ -133,11 +133,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
                     entityId: last.entityId,
                     employeeId: last.employeeId
                 })
-                console.log({
-                    branchId: last.branchId,
-                    entityId: last.entityId,
-                    employeeId: last.employeeId
-                });
+               
                 
                 if (last.type === 'checkin' || last.type === 'checkout') {
                     setCheckAction(last.type)
