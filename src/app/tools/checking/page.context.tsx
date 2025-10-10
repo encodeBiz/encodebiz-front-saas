@@ -144,7 +144,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
                 if (last.type === 'restin' || last.type === 'restout') {
                     setRestAction(last.type)
-                    setCheckAction('checkin')
+                    setCheckAction('checkout')
                 }
 
             } else {
