@@ -714,7 +714,8 @@
     "title": "Contact Us",
     "title2": "Payment Methods",
     "test1": "I request to test an event",
-    "test2": "I request enterprise plan"
+    "test2": "I request enterprise plan",
+    "test3": "Contact with EncodeBiz Saas"
   },
   "integration": {
     "title": "Integrations",

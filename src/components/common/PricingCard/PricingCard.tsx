@@ -143,7 +143,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
             }}
         />}
 
-        {open.type === CommonModalType.CONTACT && <ContactModalModal />}
+        {open.type === CommonModalType.CONTACT && <ContactModalModal  subject={t('contact.test2')} />}
     </>
     );
 };

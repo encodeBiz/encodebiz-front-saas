@@ -24,6 +24,7 @@ export default function Dashboard() {
           title={t('features.dashboard.card.title')}
           description={t('features.dashboard.card.subtitle')}
           image={image}
+          
         />
 
         {entitySuscription.filter((e) => e.serviceId === "passinbiz").length > 0 && <BorderBox sx={{ width: "100%", p: 2, mt: 10, background: 'white'}}>
