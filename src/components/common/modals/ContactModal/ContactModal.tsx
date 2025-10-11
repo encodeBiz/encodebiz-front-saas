@@ -22,7 +22,7 @@ import { useEntity } from '@/hooks/useEntity';
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { BorderBox } from '../../tabs/BorderBox';
 
-const ContactModalModal = (): React.JSX.Element => {
+const ContactModalModal = ({ subject }: { subject: string }): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const theme = useTheme()
     const [isLoading, setIsLoading] = useState(false)
@@ -79,7 +79,7 @@ const ContactModalModal = (): React.JSX.Element => {
                     <GenericForm<Partial<ContactFromModel>>
                         column={2}
                         initialValues={{
-                            "subject": t('contact.test2'),
+                            "subject": subject ? subject : t('contact.test2'),
                             "message": '',
                             "email": user?.email as string,
                             "phone": user?.phoneNumber as string,
@@ -103,7 +103,7 @@ const ContactModalModal = (): React.JSX.Element => {
                     onClick={(e) => handleClose(e, 'manual')}
                     disabled={isLoading}
                     size='small'
-                  
+
 
                 >
                     {t('core.button.cancel')}
