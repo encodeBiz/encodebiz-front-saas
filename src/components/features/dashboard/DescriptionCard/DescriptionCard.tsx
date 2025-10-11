@@ -47,7 +47,7 @@ export default function DescriptionCard({ title1, title2, description1, descript
         </Box>
 
       </Box>
-      {open.type === CommonModalType.CONTACT && <ContactModalModal subject={t('contact.test3')} />}
+      {open.type === CommonModalType.CONTACT && <ContactModalModal role='user' subject={t('contact.test3')} />}
 
     </Paper>
 

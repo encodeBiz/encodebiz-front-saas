@@ -178,8 +178,6 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
                 "lng": pos?.lng as number
             }
         }
-        setPending(true);
-        changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
 
         createLog(data, token).then(() => {
             if (typeof callback === 'function') callback()
@@ -202,11 +200,18 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     }
 
     const createLogAction = (type: "checkout" | "checkin" | "restin" | "restout", callback?: () => void, sucursalId?: string) => {
+        setPending(true);
+        changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+
         if (employee?.enableRemoteWork)
             handleCreateLog(type, callback, sucursalId, { lat: 0, lng: 0 })
         else
             requestLocation().then(pos => {
                 handleCreateLog(type, callback, sucursalId, pos as { lat: number, lng: number })
+            }).catch(err => {
+                setPending(false);
+                changeLoaderState({ show: false })
+                showToast(err?.message, 'error')
             })
     }
 

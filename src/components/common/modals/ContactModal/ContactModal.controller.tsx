@@ -71,7 +71,7 @@ export default function useFormContactController() {
       name: 'phone',
       label: t('core.label.phone'),
       type: 'text',
-      disabled: true,
+      disabled: false,
       required: true,
       component: TextInput,
     },
