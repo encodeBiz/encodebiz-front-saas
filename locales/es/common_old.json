@@ -43,7 +43,7 @@
         "Settings": "Preferencias",
         "Account": "Cuenta",
         "Notifications": "Notificaciones",
-        "Security": "Seguridad",
+        "Security": "Securidad",
         "Entity": "Entidad",
         "HoldersList": "Listado de Titulares",
         "AddHolders": "Adicionar Titulares",
@@ -57,7 +57,7 @@
       "contactUs": "Contáctenos",
       "whatsApp": "WhatsApp",
       "policy": "Política de Privacidad",
-      "terms": "Términos y condiciones"
+      "terms": "Términos y Condiciones"
     }
   },
   "core": {
@@ -152,7 +152,7 @@
       "thumbnail": "Imagen en miniatura",
       "subject": "Asunto",
       "comminsoom": "- Muy pronto",
-      "from": "Correo electrónico",
+      "from": "Correo electronico",
       "owner": "Propietario",
       "availableEvent": "Eventos disponibles",
       "selectedEvent": "Eventos seleccionados",
@@ -187,7 +187,7 @@
       "archived": "Archivado",
       "selectedStaff": "Personal de apoyo seleccionado",
       "availableStaff": "Personal de apoyo disponible",
-      "sponsor": "Patrocinador",
+      "sponsor": "Patrosinador",
       "ticketCapacity": "Capacidad",
       "date": "Fecha",
       "medida": "Medida recomendada",
@@ -225,7 +225,7 @@
       "acceptTerms": "Aceptar términos y condiciones",
       "phone": "Teléfono",
       "accepTerm1": " He leído y acepto los",
-      "accepTerm2": " Términos y condiciones",
+      "accepTerm2": " Términos y Condiciones",
       "accepTerm3": " y la",
       "accepTerm4": " Política de Privacidad",
       "billingEmail": "Email para gestionar los pagos",
@@ -346,7 +346,7 @@
     "recovery": {
       "title": "Recuperar contraseña",
       "signup": "Crear cuenta",
-      "subtitle": "Introduzca el correo electrónico para recuperar su clave de acceso a EncodeBiz SaaS",
+      "subtitle": "Introduzca el correo electrónico para recuperar su clave de acceso a EncodeBiz Saas",
       "or": "O",
       "google": "Unete con Google",
       "facebook": "Unete con Facebook",
@@ -359,8 +359,8 @@
       "ok": "De acuerdo"
     },
     "upload": {
-      "title": "Subir archivo CSV",
-      "btn": "Seleccionar archivo",
+      "title": "Subir archico CSV",
+      "btn": "Seleccionar archico",
       "descFile": "Descargue el archivo de referencia",
       "desc": "Por favor seleccione un archivo CSV para previsualizar el contenido y seleccionarlo",
       "file": "Archivo",
@@ -388,7 +388,7 @@
         "card": {
           "title": "Crear entidad legal",
           "createEntity": "Crear entidad",
-          "subtitle": "En la plataforma puedes asociar varias entidades a la cuenta, pero es necesario al menos una para comenzar a utilizar nuestros productos"
+          "subtitle": "En la plataforma puedes asociar varias entidades a la cuenta, pero es necesario al menos una para comenzar a utilixar nuestros productos"
         }
       }
     }
@@ -490,7 +490,7 @@
     "upToFive": "Límite: Hasta 5 titulares de pases.",
     "basicAnalitics": "Análisis básico",
     "emailSuport": "Soporte por correo electrónico",
-    "emailPrioritySuport": "Soporte priorizado por correo electrónico",
+    "emailPrioritySuport": "Soporte piorizado por correo electrónico",
     "emailAndPhoneSuport": "Soporte telefónico y correo electrónico",
     "estimateRange": "Margen estimado por pase: ~0,49 €",
     "estimateRangeCustom": "Margen estimado: Variable, pero con potencial de ser significativo",
@@ -525,10 +525,10 @@
     "notAllowedPlan": "Debes actualizar los datos legales de la entidad seleccionada antes de obtener un plan."
   },
   "terms": {
-    "title": "Términos y condiciones"
+    "title": "Términos y Condiciones"
   },
   "policy": {
-    "title": "Política de privacidad"
+    "title": "Política y Privacidad"
   },
   "holders": {
     "title": "Pases Digitales",
@@ -660,10 +660,10 @@
   },
   "media": {
     "title": "Multimedias",
-    "text1": "Archivos seleccionados",
+    "text1": "Archicos seleccionados",
     "labelType": "Tipo de archivo",
     "deleteConfirmModalTitle": "Eliminar archivo",
-    "deleteConfirmModalTitle2": "¡Tenga cuidado!. Esta acción no se puede deshacer. Si elimina un archivo que este asociado a algún servicio o entidad, podría atentar con el correcto funcionamiento de estos elementos en la plataforma."
+    "deleteConfirmModalTitle2": "¡Tenga cuidaddo!. Esta acción no se puede deshacer. Si elimina un archivo que este asociado a algún servicio o entidad, podría atentar con el correcto funcionamiento de estos elementos en la plataforma."
   },
   "renew": {
     "title": "Tus suscripciones",
@@ -718,7 +718,7 @@
     "title2": "Métodos de Pago",
     "test1": "Solicito realizar una prueba de evento",
     "test2": "Solicito plan enterprise",
-    "test3": "Contactar con EncodeBiz SaaS"
+    "test3": "Contactar con EncodeBiz Saas"
   },
   "integration": {
     "title": "Integraciones",
@@ -840,7 +840,7 @@
     "newDeviceMessageText": "Este equipo queda registrado como tu dispositivo de confianza.",
     "configDevice": "Configurar dispositivo de seguridad",
     "step1": "Paso 1: Añade tu app de autenticación",
-    "step1Text1": "Busca desde Apple o Google Store una de las siguientes apps de autenticación. ",
+    "step1Text1": "Busca desde Apple o Goolge Store una de las siguientes apps de autenticación. ",
     "step1Text2": "Puedes usar Google Authenticator, Microsoft Authenticator, Duo, Authy u otra compatible.",
     "step1Title1": "Abre tu app de autenticación y elige ",
     "step1Title2": "“Añadir cuenta” → “Escanear código QR”.",
@@ -863,7 +863,7 @@
   },
   "image": {
     "text1": "Dimensiones de la imagen incorrecta",
-    "text2": "Es necesario ajustar la imagen a las dimensiones establecidas ya que esta va hacer utilizada en la construcción de pases digitales o plantillas estandarizadas",
+    "text2": "Es necesario ajustar la imagen a las dimenciones establecidas ya que esta va hacer utilizada en la construcción de pases digitales o plantillas estandarizadas",
     "text3": "Dimensiones requeridas: "
   }
 }
