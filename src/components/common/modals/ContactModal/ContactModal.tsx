@@ -22,7 +22,7 @@ import { useEntity } from '@/hooks/useEntity';
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { BorderBox } from '../../tabs/BorderBox';
 
-const ContactModalModal = ({ subject, role = 'entity' }: { subject: string, role: 'user' | 'entity' }): React.JSX.Element => {
+const ContactModalModal = ({ subject, role = 'entity' }: { subject: string, role?: 'user' | 'entity' }): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const theme = useTheme()
     const [isLoading, setIsLoading] = useState(false)
