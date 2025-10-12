@@ -47,8 +47,7 @@
         "HoldersList": "Holders List",
         "AddHolders": "Add Holders",
         "Plans": "Plans",
-        "Holders": "Digital Passes",
-        "Attendance": "[MISSING TRANSLATION] Asistencia"
+        "Holders": "Digital Passes"
       }
     },
     "footer": {
@@ -268,9 +267,7 @@
       "checkout": "Ending workday",
       "checkin": "Starting workday",
       "restin": "Starting break",
-      "restout": "Ending break",
-      "disableRatioChecklogE": "[MISSING TRANSLATION] Zona de chequeo habilitada",
-      "disableRatioChecklogD": "[MISSING TRANSLATION] Zona de chequeo deshabilitado"
+      "restout": "Ending break"
     },
     "button": {
       "revoke": "Revoke",
@@ -865,19 +862,5 @@
     "text1": "Incorrect image dimensions",
     "text2": "The image needs to be adjusted to the established dimensions as it will be used in the construction of digital passes or standardized templates",
     "text3": "Required dimensions: "
-  },
-  "attendance": {
-    "title": "[MISSING TRANSLATION] Reportes de asistencia",
-    "formDesc": "[MISSING TRANSLATION] Completa los campos a continuación para crear un reporte.",
-    "list": "[MISSING TRANSLATION] Reportes  de asistencia",
-    "add": "[MISSING TRANSLATION] Crear reporte",
-    "export": "[MISSING TRANSLATION] Exportar reporte",
-    "report": "[MISSING TRANSLATION] Emitir reporte",
-    "detailSucursal": "[MISSING TRANSLATION] Detalles del reporte",
-    "update": "[MISSING TRANSLATION] Editar",
-    "import": "[MISSING TRANSLATION] Importar",
-    "description": "[MISSING TRANSLATION] Rellene los campos para registrar el reporte",
-    "deleteConfirmModalTitle": "[MISSING TRANSLATION] Eliminar reporte",
-    "deleteConfirmModalTitle2": "[MISSING TRANSLATION] Esta acción no se puede deshacer. Eliminará permanentemente el reporte"
   }
 }
