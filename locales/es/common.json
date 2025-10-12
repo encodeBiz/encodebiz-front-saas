@@ -854,7 +854,7 @@
     "step4Text1": "Escribe el código de 6 dígitos que te muestra la app de autenticación.",
     "copyClave": "Copiar clave",
     "titleValidate": "Tu navegador no es de confianza",
-    "text1Validate": "Para poner agregar tu navegador como dispositivo de confianza escribe el código de 6 dígitos que te muestra la app de autenticación."
+    "text1Validate": "Para poder agregar tu navegador como dispositivo de confianza escribe el código de 6 dígitos que te muestra la app de autenticación."
   },
   "404": {
     "text1": "Página no encontrada",

@@ -29,7 +29,7 @@ const Check = () => {
     return (
         <Box sx={{ p: 2, maxWidth: 600, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 4 }}>
             <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', gap: 2, width: '100%' }}>
-                {entity?.branding?.logo && <Image style={{ borderRadius: 4, background: '#E9E8F5' }} src={entity?.branding?.logo} width={160} height={80} alt='' />}
+                {entity?.branding?.logo && <Image style={{ borderRadius: 4, background: '#E9E8F5' }} src={entity?.branding?.logo} width={100} height={100} alt='' />}
             </Box>
 
             <Typography variant="body1" fontWeight={'bold'} fontSize={22} > {t('checking.title')} </Typography>
