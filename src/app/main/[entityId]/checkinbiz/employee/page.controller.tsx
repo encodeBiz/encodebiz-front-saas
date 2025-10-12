@@ -11,15 +11,14 @@ import { search, updateEmployee } from "@/services/checkinbiz/employee.service";
 import { search as searchBranch } from "@/services/checkinbiz/sucursal.service";
 import { useLayout } from "@/hooks/useLayout";
 import { useParams, useSearchParams } from "next/navigation";
-import { Edit, ListAltOutlined } from "@mui/icons-material";
+import { Edit, ListAltOutlined, SignalWifi4Bar, SignalWifi4BarLockOutlined } from "@mui/icons-material";
 import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
-import { Box } from "@mui/material";
+import { Box, Tooltip } from "@mui/material";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
-import { CustomChip } from "@/components/common/table/CustomChip";
 
 
 interface IFilterParams {
@@ -152,8 +151,11 @@ export default function useEmployeeListController() {
       label: t("core.label.name"),
       minWidth: 170,
       format: (value, row) => <Box>
-        {row.fullName}
-        <CustomChip size='small' label={row.enableRemoteWork ? t('core.label.enableRemoteWorkEnable') : t('core.label.enableRemoteWorkDisabled')} />
+        <div style={{ display: "flex", alignItems: 'center' , cursor: 'help'}}>
+          <Tooltip title={row.enableRemoteWork ? t('core.label.enableRemoteWorkEnable') : t('core.label.enableRemoteWorkDisabled')}>
+            <span>{row.enableRemoteWork ? <SignalWifi4Bar color="primary" /> : <SignalWifi4BarLockOutlined color="secondary" />}</span>
+          </Tooltip>
+          {row.fullName}</div>
       </Box>
 
     },
@@ -204,7 +206,7 @@ export default function useEmployeeListController() {
     if (filterParams.params.filters.find((e: any) => e.field === 'branchId' && e.value === 'none'))
       filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "branchId")
 
- 
+
 
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters: [...filterParams.params.filters, ...filters] }).then(async res => {
       if (res.length !== 0) {
