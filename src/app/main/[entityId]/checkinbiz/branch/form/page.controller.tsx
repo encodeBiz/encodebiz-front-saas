@@ -208,6 +208,8 @@ export default function useSucursalController() {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const sucursal: ISucursal = await fetchSucursal(currentEntity?.entity.id as string, id)
+      setCityList(country.find((e: any) => e.name === sucursal.address.country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
+
       setInitialValues({
         "country": sucursal.address.country,
         "city": sucursal.address.city,
