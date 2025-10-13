@@ -28,7 +28,7 @@
         "Media": "Media",
         "Report": "Reportes",
         "Attendance": "Asistencia",
-        "Sucursal": "Sucursal",
+        "Sucursal": "Sucursal/Proyecto",
         "home": "Inicio",
         "Integration": "Integraciones",
         "general": "General",
@@ -631,9 +631,9 @@
     "formDesc": "Completa los campos a continuación para registrar el empleado."
   },
   "sucursal": {
-    "title": "Sucursales/Propyectos",
+    "title": "Sucursales/Proyectos",
     "formDesc": "Completa los campos a continuación para registrar la sucursal/proyecto.",
-    "list": "Sucursales",
+    "list": "Sucursales/Proyectos",
     "add": "Agregar sucursal/proyecto",
     "map": "Ver en mapa",
     "ratioHelp": "Distancia máxima desde la ubicación de la empresa donde los empleados pueden realizar su asistencia.",

@@ -1,12 +1,9 @@
 import { useTranslations } from "next-intl";
-import { useEffect } from 'react';
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { requiredRule } from '@/config/yupRules';
 import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
-import { useEntity } from "@/hooks/useEntity";
- import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { ContactFromModel } from "@/domain/core/IContact";
 import { sendFormContact } from "@/services/core/helper.service";
@@ -18,9 +15,7 @@ import PhoneNumberInput from "../../forms/fields/PhoneNumberInput";
 export default function useFormContactController() {
   const t = useTranslations();
   const { showToast } = useToast()
-  const { token, user } = useAuth()
-  const { id } = useParams<{ id: string }>()
-  const { currentEntity, watchServiceAccess } = useEntity()
+  const { token } = useAuth()
   const { changeLoaderState } = useLayout()
   const { closeModal } = useCommonModal()
 
@@ -96,7 +91,7 @@ export default function useFormContactController() {
 
 
   ];
- 
+
 
 
   return { fields, validationSchema, setDinamicDataAction }
