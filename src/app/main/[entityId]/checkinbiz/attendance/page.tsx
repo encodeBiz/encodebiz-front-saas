@@ -11,7 +11,7 @@ export default function AttendanceList() {
     items,   onRowsPerPageChange, onSort,
     onNext, onBack,  
     filterParams, topFilter,
-    columns,  
+    columns,  rowAction,
     loading } = useAttendanceController();
    
    return (
@@ -22,7 +22,7 @@ export default function AttendanceList() {
       >
         <GenericTable
           data={items}
-          rowAction={[]}
+          rowAction={rowAction}
           columns={columns}
           title={''}
           keyField="id"

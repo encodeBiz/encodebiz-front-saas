@@ -12,6 +12,7 @@ import { ContactFromModel } from "@/domain/core/IContact";
 import { sendFormContact } from "@/services/core/helper.service";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
+import PhoneNumberInput from "@/components/common/forms/fields/PhoneNumberInput";
 
 
 export default function useFormContactController() {
@@ -79,7 +80,7 @@ export default function useFormContactController() {
       type: 'text',
       disabled: true,
       required: true,
-      component: TextInput,
+      component: PhoneNumberInput,
     },
     {
       name: 'name',

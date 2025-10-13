@@ -16,8 +16,9 @@ import { useLayout } from "@/hooks/useLayout";
 import SearchFilter from "@/components/common/table/filters/SearchFilter";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
-import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
 import { CustomChip } from "@/components/common/table/CustomChip";
+import { Map } from "@mui/icons-material";
+import { onGoMap } from "@/lib/common/maps";
 
 interface IFilterParams {
   filter: { branchId: 'none', employeeId: 'none', status: 'valid', range: { start: any, end: any } | null },
@@ -73,6 +74,16 @@ export default function useAttendanceController() {
 
   }
 
+  const rowAction: Array<any> = [{
+    actionBtn: true,
+    color: 'primary',
+    icon: <Map color="primary" />,
+    label: t('sucursal.map'),
+    bulk: false,
+    allowItem: () => true,
+    onPress: (item: IChecklog) => onGoMap(item.geo.lat, item.geo.lng)
+  }]
+
   /** Paginated Changed */
   const onNext = async (): Promise<void> => {
     setLoading(true)
@@ -114,7 +125,7 @@ export default function useAttendanceController() {
     ]
     setLoading(true)
 
- 
+
 
     searchLogs(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async res => {
 
@@ -177,16 +188,11 @@ export default function useAttendanceController() {
     },
     {
       id: 'timestamp',
-      label: t("core.label.date"),
+      label: t("core.label.date-hour"),
       minWidth: 170,
-      format: (value, row) => format_date(row.timestamp, 'DD/MM/YYYY')
+      format: (value, row) => <>{format_date(row.timestamp, 'DD/MM/YYYY')} {format_date(row.timestamp, 'hh:mm')}</>
     },
-    {
-      id: 'id',
-      label: t("core.label.time"),
-      minWidth: 170,
-      format: (value, row) => format_date(row.timestamp, 'hh:mm')
-    },
+
 
 
   ];
@@ -224,9 +230,10 @@ export default function useAttendanceController() {
       label={t('core.label.subEntity')}
       onChange={async (value: ISearchIndex) => {
         if (value?.id) {
-          const item = await getRefByPathData(value.index)
-          if (item)
-            onFilter({ ...filterParams, filter: { ...filterParams.filter, branchId: item.id } })
+          const parts = value.index?.split('/')
+          const branchId = parts[parts.length - 1]
+          if (branchId)
+            onFilter({ ...filterParams, filter: { ...filterParams.filter, branchId } })
           else
             onFilter({ ...filterParams, filter: { ...filterParams.filter, branchId: 'none' } })
         }
@@ -237,11 +244,11 @@ export default function useAttendanceController() {
       type="employee"
       label={t('core.label.employee')}
       onChange={async (value: ISearchIndex) => {
-        if (value?.id) {
-          const item = await getRefByPathData(value.index)
- 
-          if (item)
-            onFilter({ ...filterParams, filter: { ...filterParams.filter, employeeId: item.id } })
+        if (value?.index) {
+          const parts = value.index?.split('/')
+          const employeeId = parts[parts.length - 1]
+          if (employeeId)
+            onFilter({ ...filterParams, filter: { ...filterParams.filter, employeeId } })
           else
             onFilter({ ...filterParams, filter: { ...filterParams.filter, employeeId: 'none' } })
         }
@@ -368,7 +375,7 @@ export default function useAttendanceController() {
     items, onSort, onRowsPerPageChange,
     topFilter, handleExport,
     onNext, onBack,
-    columns,
+    columns, rowAction,
     loading, filterParams
   }
 }

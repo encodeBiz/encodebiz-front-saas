@@ -3,10 +3,10 @@ import { useState } from "react"; import {
     Box
 } from '@mui/material';
 
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { useTranslations } from "next-intl";
 
 
@@ -31,20 +31,28 @@ export const DateRangePicker = ({
     const handleStartDateChange = (newDate: any) => {
         const updatedStartDate = newDate;
         setStartDate(updatedStartDate);
-
+        
+        
         // Ensure end date is not before start date
         if (endDate && updatedStartDate && updatedStartDate.isAfter(endDate)) {
             setEndDate(null);
-            onChange?.({ start: updatedStartDate, end: null });
+            const selectedStart = new Date(updatedStartDate?.toDate().getFullYear(), updatedStartDate?.toDate().getMonth(), updatedStartDate?.toDate().getDate(), 0, 1)
+            onChange?.({ start: selectedStart, end: null });
         } else {
-            onChange?.({ start: updatedStartDate, end: endDate });
+            const selectedEnd = new Date(endDate?.getFullYear(), endDate?.getMonth(), endDate?.getDate(), 23, 59, 59, 999)
+            const selectedStart = new Date(updatedStartDate?.toDate().getFullYear(), updatedStartDate?.toDate().getMonth(), updatedStartDate?.toDate().getDate(), 0, 1)
+
+            onChange?.({ start: selectedStart, end: selectedEnd });
         }
     };
 
     const handleEndDateChange = (newDate: any) => {
         const updatedEndDate = newDate;
+        const selectedStart = new Date(startDate?.toDate().getFullYear(), startDate?.toDate().getMonth(), startDate?.toDate().getDate(), 0, 1)
+        const selectedEnd = new Date(updatedEndDate?.toDate().getFullYear(), updatedEndDate?.toDate().getMonth(), updatedEndDate?.toDate().getDate(), 23, 59, 59, 999)
+
         setEndDate(updatedEndDate);
-        onChange?.({ start: startDate, end: updatedEndDate });
+        onChange?.({ start: selectedStart, end: selectedEnd });
     };
 
     function getDateRange(rangeType: 'today' | 'week' | 'month' | 'year') {
@@ -98,7 +106,7 @@ export const DateRangePicker = ({
             <FormControl sx={{ width: width, mb: 0 }}>
 
                 <Box display="flex" gap={2} flexDirection={{ xs: 'column', sm: 'row' }}>
-                    <DateTimePicker
+                    <DatePicker
                         label={'Inicio'}
 
                         defaultValue={dayjs(startDate ?? new Date())}
@@ -115,12 +123,12 @@ export const DateRangePicker = ({
                         }}
                     />
 
-                    <DateTimePicker
+                    <DatePicker
                         label={'Fin'}
                         defaultValue={dayjs(new Date(endDate))}
                         value={dayjs(new Date(endDate))}
                         onChange={handleEndDateChange}
-                        minDateTime={dayjs(startDate)}
+                        minDate={dayjs(startDate)}
                         disabled={!startDate}
                         sx={{ flex: 1 }}
 
@@ -135,19 +143,19 @@ export const DateRangePicker = ({
 
             </FormControl>
             {filter && <Box display={'flex'} flexDirection={'row'} gap={1} >
-                <Typography sx={{ "&:hover": { background: '#E9E8F5' }, cursor: 'pointer', px: 2, py: 0.3, borderRadius: 4, ...(filterRange==='today'?{background: '#476ae73f', color: '#476BE7' }:{})}} variant="caption" onClick={() => {
+                <Typography sx={{ "&:hover": { background: '#E9E8F5' }, cursor: 'pointer', px: 2, py: 0.3, borderRadius: 4, ...(filterRange === 'today' ? { background: '#476ae73f', color: '#476BE7' } : {}) }} variant="caption" onClick={() => {
                     onChange?.({ start: getDateRange('today')?.start, end: getDateRange('today')?.end })
                     setFilterRange('today')
                 }} >{t('core.label.today')}</Typography>
-                <Typography sx={{ "&:hover": { background: '#E9E8F5' }, cursor: 'pointer', px: 2, py: 0.3, borderRadius: 4, ...(filterRange==='week'?{background: '#476ae73f', color: '#476BE7' }:{})}} variant="caption" onClick={() => {
+                <Typography sx={{ "&:hover": { background: '#E9E8F5' }, cursor: 'pointer', px: 2, py: 0.3, borderRadius: 4, ...(filterRange === 'week' ? { background: '#476ae73f', color: '#476BE7' } : {}) }} variant="caption" onClick={() => {
                     onChange?.({ start: getDateRange('week')?.start, end: getDateRange('week')?.end })
                     setFilterRange('week')
                 }} >{t('core.label.thisWeek')}</Typography>
-                <Typography sx={{ "&:hover": { background: '#E9E8F5' }, cursor: 'pointer', px: 2, py: 0.3, borderRadius: 4, ...(filterRange==='month'?{background: '#476ae73f', color: '#476BE7' }:{})}} variant="caption" onClick={() => {
+                <Typography sx={{ "&:hover": { background: '#E9E8F5' }, cursor: 'pointer', px: 2, py: 0.3, borderRadius: 4, ...(filterRange === 'month' ? { background: '#476ae73f', color: '#476BE7' } : {}) }} variant="caption" onClick={() => {
                     onChange?.({ start: getDateRange('month')?.start, end: getDateRange('month')?.end })
                     setFilterRange('month')
                 }} >{t('core.label.thisMonth')}</Typography>
-                <Typography sx={{ "&:hover": { background: '#E9E8F5' }, cursor: 'pointer', px: 2, py: 0.3, borderRadius: 4, ...(filterRange==='year'?{background: '#476ae73f', color: '#476BE7' }:{})}} variant="caption" onClick={() => {
+                <Typography sx={{ "&:hover": { background: '#E9E8F5' }, cursor: 'pointer', px: 2, py: 0.3, borderRadius: 4, ...(filterRange === 'year' ? { background: '#476ae73f', color: '#476BE7' } : {}) }} variant="caption" onClick={() => {
                     onChange?.({ start: getDateRange('year')?.start, end: getDateRange('year')?.end })
                     setFilterRange('year')
                 }} >{t('core.label.thisYear')}</Typography>

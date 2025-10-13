@@ -136,6 +136,13 @@ export const countriesCode = [
     "phoneCode": "+1",
     "dialCode": "1"
   },
+   {
+    "name": "Cuba",
+    "isoCode": "CU",
+    "flag": "cu",
+    "phoneCode": "+53",
+    "dialCode": "53"
+  },
   {
     "name": "Canada",
     "isoCode": "CA",

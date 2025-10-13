@@ -53,7 +53,7 @@ const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
             onChange={handlePhoneChange}
             slotProps={{
                 input: {
-                    endAdornment: <InputAdornment position="end"><Error color='error' /></InputAdornment>,
+                    endAdornment: helperText && <InputAdornment position="end"><Error color='error' /></InputAdornment>,
                     startAdornment: <InputAdornment position="start">
                         <Select
                             value={countryCode}
@@ -68,7 +68,7 @@ const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
                                     borderBottom: 'none !important'
                                 },
                                 '& .MuiSelect-icon': {
-                                    right: 0
+                                    right: -2
                                 }
                             }}
                             MenuProps={{

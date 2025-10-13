@@ -18,6 +18,7 @@ import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { search } from "@/services/checkinbiz/sucursal.service";
 import SelectMultipleInput from "@/components/common/forms/fields/SelectMultipleInput";
 import ToggleInput from "@/components/common/forms/fields/ToggleInput";
+import PhoneNumberInput from "@/components/common/forms/fields/PhoneNumberInput";
 
 
 export default function useEmployeeController() {
@@ -152,7 +153,7 @@ export default function useEmployeeController() {
         label: t('core.label.phone'),
         type: 'text',
         required: true,
-        component: TextInput,
+        component: PhoneNumberInput,
       },
       {
         name: 'role',
