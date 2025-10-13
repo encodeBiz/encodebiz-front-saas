@@ -4,6 +4,7 @@ import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
+import { mapperErrorFromBack } from "@/lib/common/String";
  
 
 /**
@@ -61,7 +62,7 @@ export async function createSucursal(data: Partial<ISucursal>, token: string) {
       return response;
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -89,7 +90,7 @@ export async function updateSucursal(data: Partial<ISucursal>, token: string) {
       return response;
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -125,7 +126,7 @@ export const deleteSucursal = async (entityId: string, id: string, token: string
       return response;
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 

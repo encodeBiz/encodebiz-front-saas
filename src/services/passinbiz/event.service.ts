@@ -6,6 +6,7 @@ import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import { IContact } from "@/domain/core/IContact";
 import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
+import { mapperErrorFromBack } from "@/lib/common/String";
 
 
 /**
@@ -80,7 +81,7 @@ export async function createContact(data: Partial<IContact>, token: string) {
       return response;
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -108,7 +109,7 @@ export async function createEvent(data: Partial<IEvent>, token: string) {
       return response;
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -136,7 +137,7 @@ export async function updateEvent(data: Partial<IEvent>, token: string) {
       return response;
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 

@@ -17,8 +17,9 @@ import SearchFilter from "@/components/common/table/filters/SearchFilter";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { CustomChip } from "@/components/common/table/CustomChip";
-import { Map } from "@mui/icons-material";
+import { Edit, Map } from "@mui/icons-material";
 import { onGoMap } from "@/lib/common/maps";
+import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 
 interface IFilterParams {
   filter: { branchId: 'none', employeeId: 'none', status: 'valid', range: { start: any, end: any } | null },
@@ -41,7 +42,7 @@ export default function useAttendanceController() {
   const t = useTranslations();
   const { showToast } = useToast()
   const { currentEntity, watchServiceAccess } = useEntity()
-  const { changeLoaderState } = useLayout()
+  const { changeLoaderState, navivateTo } = useLayout()
 
   const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<IChecklog[]>([]);
@@ -74,7 +75,20 @@ export default function useAttendanceController() {
 
   }
 
+  const onEdit = async (item: any) => {
+    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/attendance/${item.id}/edit`)
+  }
+
+
   const rowAction: Array<any> = [{
+    actionBtn: true,
+    color: 'primary',
+    icon: <Edit color="primary" />,
+    label: t('core.button.edit'),
+    bulk: false,
+    allowItem: () => true,
+    onPress: (item: IChecklog) => onEdit(item)
+  }, {
     actionBtn: true,
     color: 'primary',
     icon: <Map color="primary" />,

@@ -1,6 +1,7 @@
 import { collection } from "@/config/collection";
 import { SearchParams } from "@/domain/core/firebase/firestore";
 import { IWebHook } from "@/domain/core/integration/IWebHook";
+import { mapperErrorFromBack } from "@/lib/common/String";
 import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
 
@@ -39,7 +40,7 @@ export async function createWebHook(data: Partial<IWebHook>, token: string) {
             return response;
         }
     } catch (error: any) {
-        throw new Error(error.message);
+        throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
     }
 }
 

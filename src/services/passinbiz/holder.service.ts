@@ -4,6 +4,7 @@ import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
+import { mapperErrorFromBack } from "@/lib/common/String";
   
 
 /**
@@ -61,7 +62,7 @@ export async function createHolder(data: Partial<Holder>, token: string) {
       return response;
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -81,7 +82,7 @@ export async function updateHolder(data: Partial<Holder>, token: string) {
       });
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 */
@@ -110,7 +111,7 @@ export async function updateHolder(data: Partial<Holder>, token: string) {
       return response;
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -136,7 +137,7 @@ export async function importHolder(data: FormData, token: string) {
       return response;
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -166,7 +167,7 @@ export async function fetchStats(data: any, token: string) {
       return response;
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -223,7 +224,7 @@ export async function validateHolder(data: any, tokenValidateStaff: string) {
     return response;
 
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -248,6 +249,6 @@ export async function validateStaff(base64: string) {
     return response;
 
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }

@@ -827,6 +827,8 @@
     "selected": "Select branch",
     "history": "ATTENDANCE HISTORY",
     "noGeo": "Enable geolocation",
+    "outRadiusTitle": "Out of Area",
+    "outRadiusText": "It seems you are not within the check-in zone. Please note that to use this tool's functions, you must be near the branch office or project site.",
     "noGeoBtn": "Enable now",
     "noGeoText": "It seems you do not have the geolocation permission enabled, enable it to use this tool"
   },
@@ -879,5 +881,33 @@
     "description": "[MISSING TRANSLATION] Rellene los campos para registrar el reporte",
     "deleteConfirmModalTitle": "[MISSING TRANSLATION] Eliminar reporte",
     "deleteConfirmModalTitle2": "[MISSING TRANSLATION] Esta acción no se puede deshacer. Eliminará permanentemente el reporte"
+  },
+  "error": {
+    "auth/invalid-credential": "Incorrect credentials",
+    "auth/email-already-exists": "Email already in use. Please log in or use a different email address.",
+    "auth/email-already-in-use": "Email already in use. Please log in or use a different email address.",
+    "auth/invalid-email": "Invalid email address. Please enter a valid email address.",
+    "auth/weak-password": "Password is too weak. Please choose a stronger password",
+    "auth/operation-not-allowed": "Email and password authentication is not enabled. Please contact technical support",
+    "auth/too-many-requests": "Too many requests. Please try again later",
+    "auth/user-disabled": "Your account has been disabled. Please contact support for assistance",
+    "auth/network-request-failed": "Network error. Please check your internet connection and try again",
+    "auth/missing-email": "Email is required. Please enter your email address.",
+    "auth/missing-password": "Password is required. Please enter your password.",
+    "unavailable": "Service unavailable. Please try again later",
+    "staff/email_already_exists": "A staff member with that email already exists",
+    "media/invalid_dimesions": "Invalid dimensions",
+    "auth/invalid_plan": "Freemium plan cannot create events",
+    "auth/unauthorized": "Unauthorized access to resource",
+    "staff/unauthorized": "Staff access disabled or expired",
+    "media/not_found": "File not found",
+    "staff/not_found": "Staff member not found",
+    "twofactor/invalid_token": "Session has expired",
+    "auth/untrusted_device": "Untrusted device. Additional verification required",
+    "twofactor/invalid_code": "Invalid TOTP code",
+    "user/not_found": "No user exists with that email address",
+    "checklog/two_type_followed": "Cannot start work shift twice in a row",
+    "checklog/out_of_radius": "It seems you are not at the selected branch, you cannot start your work shift",
+    "stats/range_and_groupBy_tolong": "The data to graph is too extensive, please try selecting a smaller date range or a different grouping type"
   }
 }

@@ -9,7 +9,7 @@ import { useLayout } from '@/hooks/useLayout';
 import { useTranslations } from 'next-intl';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useCommonModal } from '@/hooks/useCommonModal';
-import { PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
+import { CHECKINBIZ_MODULE_ROUTE, PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
 export default function usePricingCardController(id: string, name: string, fromService: "passinbiz" | "checkinbiz") {
     const { currentEntity, entitySuscription } = useEntity();
     const { token } = useAuth()
@@ -44,7 +44,7 @@ export default function usePricingCardController(id: string, name: string, fromS
                 }
 
                 if(fromService === 'checkinbiz'){
-                    navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/employee`)
+                    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)
                 }
             } catch (error: unknown) {
                 setLoadingGetPlan(false);

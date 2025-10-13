@@ -19,12 +19,12 @@ import InfoModal from '@/components/common/modals/InfoModal';
 import VerifyTwoFA from './VerifyTwoFA/VerifyTwoFA';
 import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 import { useStyles } from './page.styles';
- 
+
 
 const Checking = () => {
     const t = useTranslations()
-    const { branchList, setSessionData, sessionData, hanldeSelectedBranch,handleRequestLocation } = useCheck()
-    const { open, openModal } = useCommonModal()
+    const { branchList, setSessionData, sessionData, hanldeSelectedBranch, handleRequestLocation } = useCheck()
+    const { open, openModal, closeModal } = useCommonModal()
     const classes = useStyles();
 
     return (
@@ -72,8 +72,16 @@ const Checking = () => {
             {open.type === CommonModalType.CONFIG2AF && <ConfigTwoFA />}
             {open.type === CommonModalType.ADDDEVICE2AF && <VerifyTwoFA />}
             {open.type === CommonModalType.INFO && <InfoModal centerBtn cancelBtn={false} closeBtn={false}
-                title={t('twoFactor.newDeviceMessage')} 
+                title={t('twoFactor.newDeviceMessage')}
                 description={t('twoFactor.newDeviceMessageText')}
+            />}
+
+            {open.type === CommonModalType.OUT_RADIUS && <InfoModal centerBtn cancelBtn={false} closeBtn={false}
+                title={t('checking.outRadiusTitle')}
+                description={t('checking.outRadiusText')}
+                onClose={() => {
+                    closeModal(CommonModalType.OUT_RADIUS)
+                }}
             />}
 
             {open.type === CommonModalType.GEO && <InfoModal
@@ -84,7 +92,7 @@ const Checking = () => {
                     handleRequestLocation()
                 }}
             />}
- 
+
         </Container>
 
     );

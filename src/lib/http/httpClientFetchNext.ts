@@ -47,8 +47,8 @@ export const codeError: any = {
   "auth/untrusted_device": "Dispositivo no confiable. Se requiere verificación adicional",
   "twofactor/invalid_code": "Código TOTP inválido",
   "user/not_found": "No existe ningún usuario con ese correo electrónico",
-  "checklog/two_type_followed":"No se puede iniciar jornada dos veces seguidas",
-  "checklog/out_of_radius":"Parece que no te encuentras en la sucursal seleccionada, no puedes iniciar jornada",
+  "checklog/two_type_followed": "No se puede iniciar jornada dos veces seguidas",
+  "checklog/out_of_radius": "Parece que no te encuentras en la sucursal seleccionada, no puedes iniciar jornada",
   "stats/range_and_groupBy_tolong": "Los datos para graficar son demasiadox extensos, intenta seleccionar un rango menor de fechas o otro tipo de agrupación"
 };
 
@@ -146,8 +146,8 @@ export class HttpClient {
             throw new Error(responseError.errors[0])
           }
 
-          
-          
+
+
           if (responseError.code === 'auth/invalid_token') {
             logout()
             window.location.href = "/auth/login?expiredToken=1"
@@ -157,7 +157,8 @@ export class HttpClient {
             window.location.href = "/auth/login?expiredToken=1"
           }
           const message = codeError[responseError.code];
-          throw new Error(message ? message : responseError.error ? responseError.error : `HTTP error! status: ${response.status}`);
+          const messageError = message ? message : responseError.error ? responseError.error : `HTTP error! status: ${response.status}`
+          throw new Error(JSON.stringify({ message: messageError, code: responseError.code }));
         } else throw new Error(`HTTP error! status: ${response.status}`);
       }
 

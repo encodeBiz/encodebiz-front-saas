@@ -4,6 +4,7 @@ import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { IStaff } from "@/domain/features/passinbiz/IStaff";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
+import { mapperErrorFromBack } from "@/lib/common/String";
  
 
 /**
@@ -95,7 +96,7 @@ export async function createStaff(data: Partial<IStaff>, token: string) {
       return response;
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -123,7 +124,7 @@ export async function updateStaff(data: Partial<IStaff>, token: string) {
       return response;
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 

@@ -2,6 +2,7 @@
 import { collection } from "@/config/collection";
 import { ContactFromModel } from "@/domain/core/IContact";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
+import { mapperErrorFromBack } from "@/lib/common/String";
 import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
 export interface IAddress {
@@ -39,7 +40,7 @@ export async function fetchLocation(data: {
       return response;
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -99,7 +100,7 @@ export async function sendFormContact(data: ContactFromModel | any): Promise<voi
       return response;
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 

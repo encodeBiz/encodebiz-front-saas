@@ -68,9 +68,9 @@ export function isDecimal(number: number) {
 }
 
 export function normalizarString(cadena: string) {
-   const minusculas = cadena.toLowerCase();
-  const normalizada = minusculas.normalize('NFD');
-  return normalizada.replace(/[\u0300-\u036f]/g, '');
+    const minusculas = cadena.toLowerCase();
+    const normalizada = minusculas.normalize('NFD');
+    return normalizada.replace(/[\u0300-\u036f]/g, '');
 }
 
 export const getFileIcon = (file: IUserMedia) => {
@@ -119,4 +119,15 @@ export const ArrayToObject = (arr: Array<{
     return object
 }
 
- 
+
+export const mapperErrorFromBack = (message: string, getCode = false): string => {
+    let responseError: { message: string, code: string } = { message: '', code: '' }
+    try { responseError = JSON.parse(message) }
+    catch (error: any) {
+        responseError = { code: error, message: message }
+    }
+
+    if (!getCode) return responseError.message as string
+    else return JSON.stringify(responseError)
+
+}

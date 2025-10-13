@@ -8,6 +8,7 @@ import { SearchParams } from "@/domain/core/firebase/firestore";
 import { onSnapshotCollection, searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { Unsubscribe } from "firebase/firestore";
 import { createDocumentWithId } from "@/lib/firebase/firestore/addDocument";
+import { mapperErrorFromBack } from "@/lib/common/String";
 
 
 
@@ -16,7 +17,7 @@ export async function fetchAvailablePlans(productId: string): Promise<IPlan[]> {
         const planDataList = await getAll<IPlanData>(`service/${productId}/plan`);
         return planDataList;
     } catch (error: any) {
-        throw new Error(error.message);
+        throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
     }
 }
 
@@ -25,7 +26,7 @@ export async function fetchService(productId: string): Promise<IService> {
         const planDataList = await getOne<IService>(`service`, productId);
         return planDataList;
     } catch (error: any) {
-        throw new Error(error.message);
+        throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
     }
 }
 
@@ -34,7 +35,7 @@ export async function fetchServiceList(): Promise<Array<IService>> {
         const planDataList = await getAll<IService>(`service`);
         return planDataList;
     } catch (error: any) {
-        throw new Error(error.message);
+        throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
     }
 }
 
@@ -57,7 +58,7 @@ export async function updateModulePlan() {
 
 
     } catch (error: any) {
-        throw new Error(error.message);
+        throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
     }
 }
 
@@ -133,7 +134,7 @@ export async function fetchSuscriptionByEntity(entityId: string): Promise<Array<
         const planDataList = await getAll<IEntitySuscription>(`${collection.ENTITIES}/${entityId}/subscriptions`);
         return planDataList;
     } catch (error: any) {
-        throw new Error(error.message);
+        throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
     }
 }
 

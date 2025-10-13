@@ -174,7 +174,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
             "branchId": sucursalId ? sucursalId : sessionData?.branchId as string,
             type,
             "geo": {
-                "lat": pos?.lat as number,
+                "lat": 24 as number,
                 "lng": pos?.lng as number
             }
         }
@@ -182,15 +182,19 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
         createLog(data, token).then(() => {
             if (typeof callback === 'function') callback()
         }).catch(e => {
-            if (e?.message?.includes('Dispositivo no confiable')) {
-                openModal(CommonModalType.ADDDEVICE2AF)
+            const errorData: { code: string, message: string } = JSON.parse(e?.message) as { code: string, message: string }
+            if (errorData.code === 'checklog/out_of_radius') {
+                openModal(CommonModalType.OUT_RADIUS)
             } else {
-                if (e?.message?.includes('Untrusted')) {
+                if (errorData.code === 'auth/untrusted_device') {
                     openModal(CommonModalType.ADDDEVICE2AF)
                 } else {
-                    showToast(e?.message, 'error')
+                    showToast(errorData.message, 'error')
                 }
             }
+
+
+
 
 
 

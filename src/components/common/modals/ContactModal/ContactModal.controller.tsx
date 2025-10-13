@@ -96,15 +96,7 @@ export default function useFormContactController() {
 
 
   ];
-
-
-
-  useEffect(() => {
-
-    if (currentEntity?.entity.id && user?.id) {
-      watchServiceAccess('passinbiz')
-    }
-  }, [currentEntity?.entity.id, user?.id, id, watchServiceAccess])
+ 
 
 
   return { fields, validationSchema, setDinamicDataAction }
