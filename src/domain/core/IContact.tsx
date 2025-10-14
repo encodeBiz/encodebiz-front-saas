@@ -23,12 +23,4 @@ export interface ContactFromModel {
     token?: string
   }
 
-  /**
-   * 
-   * const response = await HTTP.post(process.env.NEXT_PUBLIC_ENDPOINT_CONTACT as string,{
-            to: 'hola@encodebiz.com', //"receiver@sender.com"
-            subject: 'Contacto desde Encodebiz',  //"Message title"
-            type: 'CONTACT_ENCODEBIZ', //template typew
-            replacements: data
-        });
-   */
+ 

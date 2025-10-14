@@ -209,3 +209,4 @@ export function formatLocalDateTime(codeLocale: string, date: Date) {
         hour12: false
     });
 }
+

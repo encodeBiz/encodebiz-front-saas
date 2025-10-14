@@ -1,25 +1,26 @@
 import React, { useState } from 'react';
-import { Box, InputAdornment, MenuItem, Select, TextField, TextFieldProps, Typography } from '@mui/material';
+import { Box, InputAdornment, ListSubheader, MenuItem, Select, TextField, TextFieldProps, Typography } from '@mui/material';
 import { FieldProps, useField } from 'formik';
 import { countriesCode } from '@/config/constants';
-import { Error } from '@mui/icons-material';
+import { Error, SearchOutlined } from '@mui/icons-material';
 import { extractCountryCode } from '@/lib/common/String';
-
+import { useTranslations } from 'next-intl';
+ 
 const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
     ...props
 }) => {
     const [field, meta, helper] = useField(props.name);
     const { touched, error } = meta
     const helperText = touched && error;
+    const t = useTranslations()
 
-     
     const [countryCode, setCountryCode] = useState(field.value ? extractCountryCode(field.value)?.code as string : '34');
-    const [phoneNumber, setPhoneNumber] = useState(field.value?extractCountryCode(field.value)?.phone?.replace(/^\+\d+\s?/, ''):'');
+    const [phoneNumber, setPhoneNumber] = useState(field.value ? extractCountryCode(field.value)?.phone?.replace(/^\+\d+\s?/, '') : '');
 
-    const handleCountryChange = (event: any) => {
-        setCountryCode(event.target.value);
-        triggerOnChange(event.target.value, phoneNumber);
-    };
+    const [codeFiltered, setCodeFiltered] = useState(countriesCode)
+    const [searchText, setSearchText] = useState('')
+
+
 
     const handlePhoneChange = (event: any) => {
         const number = event.target.value.replace(/\D/g, ''); // Remove non-digits
@@ -59,7 +60,7 @@ const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
                     startAdornment: <InputAdornment position="start">
                         <Select
                             value={countryCode}
-                            onChange={handleCountryChange}
+
                             variant="standard"
                             sx={{
                                 '& .MuiSelect-select': {
@@ -74,21 +75,62 @@ const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
                                 }
                             }}
                             MenuProps={{
+                                autoFocus: false,
+
                                 PaperProps: {
                                     sx: {
-                                        maxHeight: 300
+                                        height: 300
                                     }
                                 }
                             }}
-                            renderValue={(selected) => selected}
+                            renderValue={(selected) => '+' + selected}
+
                         >
-                            {countriesCode.sort((a, b) => a.name.localeCompare(b.name)).map((country) => (
-                                <MenuItem key={country.isoCode} value={country.dialCode}>
-                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                        <Typography variant="body2">{country.phoneCode} {country.name}</Typography>
-                                    </Box>
-                                </MenuItem>
-                            ))}
+                            <ListSubheader sx={{ mb: 2 }}>
+                                <TextField autoFocus
+                                    placeholder={t("core.label.search")}
+                                    value={searchText}
+                                    onChange={(event) => {
+                                        setSearchText(event.target.value)
+                                        setCodeFiltered(countriesCode.filter(e => e.name?.toLowerCase().includes(event.target.value?.toLowerCase())))
+                                    }}
+                                    onKeyDown={(e) => {
+                                        if (e.key !== 'Escape') {
+                                            e.stopPropagation();
+                                        }
+                                    }}
+                                    slotProps={{
+                                        input: {
+                                            startAdornment: <SearchOutlined sx={{ mr: 1 }} />,
+                                        },
+                                    }}
+                                    sx={{ height: 40 }}
+                                />
+                            </ListSubheader>
+                            <Box sx={{ maxHeight: 200, overflow: 'scroll' }}>
+                                {codeFiltered.sort((a, b) => a.name.localeCompare(b.name)).map((country) => (
+                                    <MenuItem key={country.isoCode} value={country.dialCode} sx={{ height: 40 }} onClick={() => {
+                                        setCountryCode(country.dialCode);
+                                        triggerOnChange(country.dialCode, phoneNumber);
+                                        setSearchText('')
+                                        setCodeFiltered(countriesCode)
+
+                                    }}>
+                                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                            {/** <Image
+                                                src={`https://flagpedia.net/data/flags/icon/72x54/${country.flag.toLowerCase()}.png`}
+                                                width={40}
+                                                height={40 * 0.75}
+                                                alt={countryCode}
+                                                style={{
+                                                    borderRadius: '2px'
+                                                }}
+                                            />*/}
+                                            <Typography variant="body2">{country.phoneCode} {country.name}</Typography>
+                                        </Box>
+                                    </MenuItem>
+                                ))}
+                            </Box>
                         </Select>
                     </InputAdornment>
                 }
