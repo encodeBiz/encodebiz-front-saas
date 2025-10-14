@@ -66,7 +66,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
         if (userAuth) {
             const entityList: Array<IUserEntity> = await fetchUserEntities(userAuth.uid)
-
+             
             if (entityList.length > 0) {
                 if (entityList.length > 0 && entityList.filter(e => e.isActive).length === 0) {
                     const item = entityList[0]
@@ -81,6 +81,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
                     changeCurrentEntity(entityId, userAuth?.uid)
                 } else {
                     _currentEntity = entityList.find(e => e.isActive) as IUserEntity
+                     
                     setCurrentEntity(_currentEntity)
                     const extraData = await fetchUserAccount(userAuth.uid)
                     if (extraData.fullName !== "Guest")
@@ -161,7 +162,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
     const watchEntityState = async (entity: IEntity) => {
 
-        changeLocale(entity.language?.toLowerCase() ?? 'es')
+        changeLocale(entity?.language?.toLowerCase() ?? 'es')
         const item = entityList.find(e => e.entity.id == entity.id && e.entity.active)
         const itemIndex = entityList.findIndex(e => e.entity.id == entity.id && e.entity.active)
         if (item) {

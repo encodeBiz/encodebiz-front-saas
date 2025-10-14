@@ -4,6 +4,7 @@ import { DetailText } from "@/components/common/table/DetailText"
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes"
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal"
 import { useLayout } from "@/hooks/useLayout"
+import { onGoMap } from "@/lib/common/maps"
 import { ArrowBackOutlined } from "@mui/icons-material"
 import { Card, Box, Grid, Typography, CardContent, Paper, Divider, Stack } from "@mui/material"
 import { useTranslations } from "next-intl"
@@ -11,7 +12,6 @@ import { useTranslations } from "next-intl"
 export const Detail = ({ branch, children }: { branch: ISucursal, children: React.ReactNode }) => {
     const t = useTranslations()
     const { navivateTo } = useLayout()
-    const onGoMap = (lat: number, lng: number) => window.open(`http://www.google.com/maps?q=${lat},${lng}`, '_blank')
     return <Card elevation={3} sx={{ width: '100%', margin: 'auto' }}>
         {/* Header Section */}
         <Box sx={{ p: 3, bgcolor: (theme) => theme.palette.secondary.main }}>
@@ -29,7 +29,7 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
                         <Box display={'flex'} flexDirection={'row'} gap={1}>
                             {branch?.nit && <Typography variant="body1"   >
                                 {t('core.label.nit')}: {branch?.nit}
-                            </Typography>}                                                       
+                            </Typography>}
                             <CustomChip size='small' label={branch.disableRatioChecklog ? t('core.label.disableRatioChecklogD') : t('core.label.disableRatioChecklogE')} />
                         </Box>
 

@@ -22,6 +22,7 @@ export enum CommonModalType {
     WEBHOOK = 'WEBHOOK',
 
     ADDDEVICE2AF = 'ADDDEVICE2AF',
+    OUT_RADIUS = 'OUT_RADIUS',
     CONFIG2AF = 'CONFIG2AF',
     LOGS = 'LOGS',
  }

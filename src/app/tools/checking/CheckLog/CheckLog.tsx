@@ -48,6 +48,7 @@ const CheckLog = () => {
     const { open, closeModal } = useCommonModal()
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [limit, setLimit] = useState<number>(10)
+    const [total, setTotal] = useState(0)
 
     const getEmplyeeLogsData = async (range: { start: any, end: any }, status: 'valid' | 'failed', limit: number = 10) => {
         setPending(true)
@@ -59,6 +60,8 @@ const CheckLog = () => {
 
             ]
             const resultList: Array<IChecklog> = await getEmplyeeLogs(sessionData?.entityId || '', sessionData?.employeeId || '', sessionData?.branchId || '', { limit, orderBy: 'timestamp', orderDirection: 'desc', filters } as any) as Array<IChecklog>
+            if (resultList.length > 0) setTotal((resultList[0] as any).totalItems)
+
             const data = await Promise.all(
                 resultList.map(async (item) => {
                     const branchId = (await fetchSucursal(item.entityId, item.branchId))?.name
@@ -171,7 +174,7 @@ const CheckLog = () => {
                     {pending && <Box sx={{ width: '100%', display: 'flex', gap: 1, alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
                         <CircularProgress color="inherit" size={20} />
                     </Box>}
-                    <SassButton variant='outlined' onClick={() => loadMore()} >{t('core.label.moreload')}</SassButton>
+                    {limit<=total && <SassButton variant='outlined' onClick={() => loadMore()} >{t('core.label.moreload')}</SassButton>}
                 </Box>
             </DialogContent>
         </Dialog>

@@ -5,6 +5,7 @@ import { collection } from "@/config/collection";
 import { IUserMedia } from "@/domain/core/IUserMedia";
 import { SearchParams } from "@/domain/core/firebase/firestore";
 import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
+import { mapperErrorFromBack } from "@/lib/common/String";
 
 
 export async function uploadMedia(
@@ -42,7 +43,7 @@ export async function uploadMedia(
 
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -73,7 +74,7 @@ export async function fetchAllMedia(entityId: string): Promise<Array<IUserMedia>
     const entities = await getAll<IUserMedia>(`${collection.ENTITIES}/${entityId}/${collection.MEDIA}`);
     return entities;
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -85,7 +86,7 @@ export async function fetchAllMediaPaginated(limitCount: number = 5, startAfter:
     const { data, lastVisible } = await getAllWithLimit<IUserMedia>(collection.ENTITIES, limitCount, startAfter);
     return { items: data, lastVisible };
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 

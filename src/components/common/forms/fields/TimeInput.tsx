@@ -2,12 +2,12 @@
 import React from 'react';
 import { FormControlLabel, FormHelperText, TextFieldProps } from '@mui/material';
 import { FieldProps, useField } from 'formik';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { TimePicker  } from '@mui/x-date-pickers/TimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 import { useFormStatus } from '@/hooks/useFormStatus';
-const DateInput: React.FC<FieldProps & TextFieldProps> = ({
+const TimeInput: React.FC<FieldProps & TextFieldProps> = ({
   ...props
 }) => {
   const [field, meta, helper] = useField(props.name);
@@ -17,12 +17,12 @@ const DateInput: React.FC<FieldProps & TextFieldProps> = ({
   return (<LocalizationProvider dateAdapter={AdapterDayjs}>
     <FormControlLabel
       control={
-        <DateTimePicker label={props.label}
-          minDateTime={props.name === 'endDate'?dayjs(props.name === 'endDate' ? new Date(formStatus?.values?.date) ?? new Date() : new Date()):undefined}
+        <TimePicker label={props.label}
+          //minTime={dayjs(props.name === 'endTime' ? new Date(formStatus?.values?.startTime) ?? new Date() : new Date())}
           defaultValue={field.value?dayjs(field.value ?? new Date()):null}
           value={field.value?dayjs(field.value ?? new Date()):null}
           onChange={(e) => helper.setValue(e)}
-          disabled={props.disabled}
+          disabled={props.disabled || ((props.name === 'endTime' || props.name === 'startTime') && !formStatus?.values?.enableDayTimeRange)}
           sx={{ width: '100%' }}
         />
       }
@@ -40,4 +40,4 @@ const DateInput: React.FC<FieldProps & TextFieldProps> = ({
   );
 };
 
-export default DateInput;
+export default TimeInput;

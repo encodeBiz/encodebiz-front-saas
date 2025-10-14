@@ -18,6 +18,7 @@ import { fetchUserEntities } from '@/services/core/entity.service';
 import { useRouter } from 'nextjs-toploader/app';
 import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
 import IUserEntity from '@/domain/core/auth/IUserEntity';
+import PhoneNumberInput from '@/components/common/forms/fields/PhoneNumberInput';
 export interface UserFormValues {
     "uid": string
     "name": string
@@ -87,7 +88,7 @@ export const useUserProfileController = () => {
             label: t('core.label.phone'),
             type: 'text',
             required: true,
-            component: TextInput,
+            component: PhoneNumberInput,
         },
 
 

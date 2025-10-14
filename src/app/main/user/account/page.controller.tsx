@@ -15,6 +15,7 @@ import { useLayout } from '@/hooks/useLayout';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
+import PhoneNumberInput from '@/components/common/forms/fields/PhoneNumberInput';
 export interface UserFormValues {
     "uid": string
     "name": string
@@ -100,7 +101,7 @@ export const useUserAccountController = () => {
             label: t('core.label.phone'),
             type: 'text',
             required: true,
-            component: TextInput,
+            component: PhoneNumberInput,
         }
     ];
 

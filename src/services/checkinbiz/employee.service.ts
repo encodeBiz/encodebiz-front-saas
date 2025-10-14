@@ -5,6 +5,7 @@ import { collection } from "@/config/collection";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import { IChecklog, ICreateLog } from "@/domain/features/checkinbiz/IChecklog";
+import { mapperErrorFromBack } from "@/lib/common/String";
 
 
 /**
@@ -20,7 +21,7 @@ export const fetchEmployee = async (entityId: string, id: string): Promise<IEmpl
     id);
 }
 
-export const fetch2FAData = async (entityId: string, id: string): Promise<{ twoFA: boolean, trustedDevicesId: Array<string>}> => {
+export const fetch2FAData = async (entityId: string, id: string): Promise<{ twoFA: boolean, trustedDevicesId: Array<string> }> => {
 
 
   const result: any[] = await searchFirestore(
@@ -80,7 +81,7 @@ export async function createEmployee(data: Partial<IEmployee>, token: string) {
       return response;
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -108,7 +109,7 @@ export async function updateEmployee(data: Partial<IEmployee>, token: string) {
       return response;
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -144,7 +145,7 @@ export const deleteEmployee = async (entityId: string, id: string, token: string
       return response;
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -166,15 +167,20 @@ export async function createLog(data: ICreateLog, token: string) {
         {
           ...data,
         }
-      );       
+      );
+
+
       if (response.errCode && response.errCode !== 200) {
         throw new Error(response.message);
       }
 
+
+
       return response;
     }
   } catch (error: any) {
-    throw new Error(error.message);
+
+    throw new Error(mapperErrorFromBack(error?.message as string, true) as string);
   }
 }
 
@@ -235,7 +241,7 @@ export async function validateEmployee(token: string) {
     return response;
 
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -262,7 +268,7 @@ export async function enable2AF(token: string) {
     return response;
 
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -289,7 +295,7 @@ export async function verify2AF(code: string, token: string) {
     return response;
 
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 

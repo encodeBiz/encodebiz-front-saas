@@ -17,6 +17,7 @@ import { country } from "@/config/country";
 import AddressInput from "@/components/common/forms/fields/AddressInput";
 import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 import ToggleInput from "@/components/common/forms/fields/ToggleInput";
+import TimeInput from "@/components/common/forms/fields/TimeInput";
 
 
 export default function useSucursalController() {
@@ -80,7 +81,12 @@ export default function useSucursalController() {
           region: values.region,
           street: values.street
         },
-        entityId: currentEntity?.entity.id as string
+        entityId: currentEntity?.entity.id as string,
+        advance: {
+          "enableDayTimeRange": values.enableDayTimeRange,
+          "startTime": values.startTime,
+          "endTime": values.endTime
+        }
       }
 
 
@@ -201,6 +207,35 @@ export default function useSucursalController() {
       fullWidth: true,
       component: DynamicKeyValueInput,
     },
+ {
+      isDivider: true,
+      label: t('core.label.advance'),
+    },
+    {
+      isCollapse: true,
+      column: 3,
+      label: t('core.label.dayTimeRange'),
+      fieldList: [
+        {
+          name: 'enableDayTimeRange',
+          label: t('core.label.enableDayTimeRange'),
+          component: ToggleInput,
+          required: true,
+        },
+        {
+          name: 'startTime',
+          label: t('core.label.startTime'),
+          component: TimeInput,
+          required: true,
+        },
+        {
+          name: 'endTime',
+          label: t('core.label.endTime'),
+          component: TimeInput,
+          required: true,
+        },
+      ]
+    },
   ];
 
   const fetchData = useCallback(async () => {
@@ -208,6 +243,8 @@ export default function useSucursalController() {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const sucursal: ISucursal = await fetchSucursal(currentEntity?.entity.id as string, id)
+      setCityList(country.find((e: any) => e.name === sucursal.address.country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
+
       setInitialValues({
         "country": sucursal.address.country,
         "city": sucursal.address.city,
@@ -218,7 +255,11 @@ export default function useSucursalController() {
         status: sucursal.status,
         ratioChecklog: sucursal.ratioChecklog,
         name: sucursal.name,
-        metadata: objectToArray(sucursal.metadata)
+        metadata: objectToArray(sucursal.metadata),
+        "enableDayTimeRange": sucursal?.advance?.enableDayTimeRange,
+        "startTime": sucursal?.advance?.startTime,
+        "endTime": sucursal?.advance?.endTime
+
       })
       changeLoaderState({ show: false })
     } catch (error: any) {

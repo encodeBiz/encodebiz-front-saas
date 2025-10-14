@@ -1,0 +1,1 @@
+export     const onGoMap = (lat: number, lng: number) => window.open(`http://www.google.com/maps?q=${lat},${lng}`, '_blank')

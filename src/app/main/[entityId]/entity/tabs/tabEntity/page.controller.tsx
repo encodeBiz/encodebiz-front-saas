@@ -73,7 +73,7 @@ export const useSettingEntityController = () => {
         "taxId": currentEntity?.entity?.legal?.taxId as string ?? "",
         "legalName": currentEntity?.entity?.legal?.legalName as string ?? "",
         billingEmail: currentEntity?.entity?.billingEmail as string ?? "",
-
+        language: currentEntity?.entity?.language as any,
     });
 
     const validationSchema = Yup.object().shape({
@@ -84,6 +84,7 @@ export const useSettingEntityController = () => {
         postalCode: requiredRule(t),
         taxId: requiredRule(t),
         legalName: requiredRule(t),
+        language: requiredRule(t),
 
     });
 
@@ -101,8 +102,14 @@ export const useSettingEntityController = () => {
             label: t('core.label.companyName'),
             type: 'text',
             required: true,
-            fullWidth: true,
+
             component: TextInput,
+        },
+        {
+            name: 'language',
+            label: t('core.label.language'),
+            component: SelectInput,
+            options: [{ label: t('layout.header.spanish'), value: 'ES' }, { label: t('layout.header.english'), value: 'EN' }]
         },
 
         {
@@ -190,7 +197,7 @@ export const useSettingEntityController = () => {
                 "name": values.name,
                 "slug": createSlug(values.name),
                 "billingEmail": values.billingEmail,
-                "language": currentEntity?.entity?.language ?? 'ES',
+                "language": values?.language ?? 'ES',
                 "legal": {
                     "legalName": values.legalName,
                     "taxId": values.taxId,
@@ -205,8 +212,6 @@ export const useSettingEntityController = () => {
                 },
                 "active": true
             }
-
-
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
             await updateEntity(updateData, token)
             changeLoaderState({ show: false })
@@ -240,6 +245,7 @@ export const useSettingEntityController = () => {
                 "postalCode": entity?.legal?.address.postalCode as string ?? "",
                 "taxId": entity?.legal?.taxId as string ?? "",
                 "legalName": entity?.legal?.legalName as string ?? "",
+                "language": entity?.language as any,
                 billingEmail: entity?.billingEmail as string ?? user?.email as string ?? ''
             })
             setCityList(country.find(e => e.name === entity?.legal?.address.country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])

@@ -17,7 +17,7 @@ export default function AttendanceList() {
    return (
     <Container maxWidth="lg">
       <HeaderPage
-        title={t("attendance.list")}
+        title={t("report.list")}
          
       >
         <GenericTable

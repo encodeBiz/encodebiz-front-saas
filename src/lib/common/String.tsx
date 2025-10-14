@@ -1,3 +1,4 @@
+import { countriesCode } from "@/config/constants";
 import { fileTypeIcons } from "@/config/theme";
 import { IUserMedia } from "@/domain/core/IUserMedia";
 
@@ -68,9 +69,9 @@ export function isDecimal(number: number) {
 }
 
 export function normalizarString(cadena: string) {
-   const minusculas = cadena.toLowerCase();
-  const normalizada = minusculas.normalize('NFD');
-  return normalizada.replace(/[\u0300-\u036f]/g, '');
+    const minusculas = cadena.toLowerCase();
+    const normalizada = minusculas.normalize('NFD');
+    return normalizada.replace(/[\u0300-\u036f]/g, '');
 }
 
 export const getFileIcon = (file: IUserMedia) => {
@@ -119,4 +120,50 @@ export const ArrayToObject = (arr: Array<{
     return object
 }
 
- 
+
+export const mapperErrorFromBack = (message: string, getCode = false): string => {
+    let responseError: { message: string, code: string } = { message: '', code: '' }
+    try { responseError = JSON.parse(message) }
+    catch (error: any) {
+        responseError = { code: error, message: message }
+    }
+
+    if (!getCode) return responseError.message as string
+    else return JSON.stringify(responseError)
+
+
+
+}
+
+export function extractCountryCode(phoneNumber: string) {
+    // Remove all non-digit characters except +
+    const cleaned = '+' + phoneNumber.replace(/[^\d+]/g, '');
+    // Common country code patterns
+    const countryCodePatterns = [...countriesCode.map(e => '/^\/+' + e.dialCode + '(\d+)$/')]
+
+
+
+    for (const pattern of countryCodePatterns) {
+        const match = cleaned.match(pattern);
+        if (match) {
+
+            return {
+                code: cleaned.replace(match[1], ''),
+                phone: match[1]
+            }
+        }
+    }
+
+
+    // Fallback: extract + followed by 1-3 digits
+    const fallbackMatch: any = cleaned.match(/^\+(\d{1,2})/);
+
+    if (fallbackMatch) {
+        return {
+            code: fallbackMatch[1],
+            phone: phoneNumber.substring(fallbackMatch[1].length)
+        }
+    }
+
+    return fallbackMatch ? fallbackMatch[1] : null;
+}

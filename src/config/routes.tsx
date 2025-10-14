@@ -50,6 +50,10 @@ const CHECKINBIZ: any = [{
     name: 'Attendance',  
     link: `/${CHECKINBIZ_MODULE_ROUTE}/attendance`,
     subMenu: []
+}, {
+    name: 'Report',  
+    link: `/${CHECKINBIZ_MODULE_ROUTE}/report`,
+    subMenu: []
 }]
 
 export const menuItemsHome = [{

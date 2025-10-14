@@ -13,6 +13,7 @@ import { IAssing } from "@/app/main/[entityId]/entity/tabs/tabCollaborators/page
 import { fetchUser } from "./users.service";
 import { deleteDocument } from "@/lib/firebase/firestore/deleteDocument";
 import { Unsubscribe } from "firebase/firestore";
+import { mapperErrorFromBack } from "@/lib/common/String";
 
 export async function fetchEntity(id: string): Promise<IEntity> {
   try {
@@ -119,7 +120,7 @@ export async function createEntity(data: EntityFormValues | any, token: string) 
       return response;
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -161,7 +162,7 @@ export async function updateEntity(
       }
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -188,7 +189,7 @@ export async function updateEntityBranding(
       }
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -200,7 +201,7 @@ export async function fetchAllEntities(): Promise<IEntity[]> {
     const entities = await getAll<IEntity>(collection.ENTITIES);
     return entities;
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -212,7 +213,7 @@ export async function fetchAllEntitiesPaginated(limitCount: number = 5, startAft
     const { data, lastVisible } = await getAllWithLimit<IEntity>(collection.ENTITIES, limitCount, startAfter);
     return { items: data, lastVisible };
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -270,7 +271,7 @@ export async function assignedUserToEntity(data: IAssing, token: string) {
       return response;
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -304,7 +305,7 @@ export async function fetchAllOwnerOfEntity(entityId: string): Promise<IUserEnti
       })
     );
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
@@ -316,7 +317,7 @@ export async function deleteOwnerOfEntity(id: string): Promise<void> {
       id
     });
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
 }
 
