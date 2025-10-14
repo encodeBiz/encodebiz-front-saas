@@ -9,22 +9,19 @@ import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useEffect, useState } from "react";
 import { useEntity } from "@/hooks/useEntity";
-import { fetchSucursal, search } from "@/services/checkinbiz/sucursal.service";
-import { fetchEmployee } from "@/services/checkinbiz/employee.service";
+import { search } from "@/services/checkinbiz/sucursal.service";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
-import { useFormStatus } from "@/hooks/useFormStatus";
 import { createReport } from "@/services/checkinbiz/report.service";
 import { IReport } from "@/domain/features/checkinbiz/IReport";
 import { format_date } from "@/lib/common/Date";
 
 
-export default function useAttendanceFormModalController(onSuccess: () => void, employeeId?: string, branchId?: string) {
+export default function useAttendanceFormModalController(onSuccess: () => void) {
   const t = useTranslations();
   const { showToast } = useToast()
   const { token } = useAuth()
   const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
-  const { formStatus } = useFormStatus()
   const { closeModal } = useCommonModal()
   const [initialValues] = useState<Partial<any>>({
     branchId: '',
@@ -53,8 +50,7 @@ export default function useAttendanceFormModalController(onSuccess: () => void, 
 
       }
       const response = await createReport(data, token)
-      console.log(response);
-
+ 
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
       closeModal(CommonModalType.CHECKLOGFORM)
@@ -81,7 +77,7 @@ export default function useAttendanceFormModalController(onSuccess: () => void, 
     },
 
     {
-      name: 'sucursal',
+      name: 'branchId',
       label: t('core.label.sucursal'),
       component: SelectInput,
       options: [{ value: '' as string, label: t('core.label.all') },
@@ -106,6 +102,7 @@ export default function useAttendanceFormModalController(onSuccess: () => void, 
       ]
     } as any)).map(e => ({ value: e.id, label: e.name }))
 
+     
     setBranchList(branckList)
   }
   useEffect(() => {

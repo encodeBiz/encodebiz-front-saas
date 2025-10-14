@@ -86,7 +86,10 @@ export default function useSucursalController() {
         advance: {
           "enableDayTimeRange": values.enableDayTimeRange,
           "startTime": values.startTime,
-          "endTime": values.endTime
+          "endTime": values.endTime,
+
+          "disableBreak": values.disableBreak,
+          "timeBreak": values.timeBreak,
         }
       }
 
@@ -237,6 +240,27 @@ export default function useSucursalController() {
         },
       ]
     },
+
+    {
+      isCollapse: true,
+      column: 3,
+      label: t('core.label.dayTimeRange'),
+      fieldList: [
+        {
+          name: 'disableBreak',
+          label: t('core.label.disableBreak'),
+          component: ToggleInput,
+          required: true,
+        },
+        {
+          name: 'startTime',
+          label: t('core.label.startTime'),
+          component: TextInput,
+          required: true,
+        },
+        
+      ]
+    },
   ];
 
   const fetchData = useCallback(async () => {
@@ -259,7 +283,10 @@ export default function useSucursalController() {
         metadata: objectToArray(sucursal.metadata),
         "enableDayTimeRange": sucursal?.advance?.enableDayTimeRange,
         "startTime": sucursal?.advance?.startTime,
-        "endTime": sucursal?.advance?.endTime
+        "endTime": sucursal?.advance?.endTime,
+
+        "disableBreak": sucursal?.advance?.disableBreak,
+        "timeBreak": sucursal?.advance?.timeBreak,
 
       })
       changeLoaderState({ show: false })

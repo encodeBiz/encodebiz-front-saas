@@ -3,23 +3,15 @@ import { useTranslations } from "next-intl";
 import { useEffect, useState } from 'react';
 import { useToast } from "@/hooks/useToast";
 import { useEntity } from "@/hooks/useEntity";
-import { searchLogs, fetchEmployee as fetchEmployeeData } from "@/services/checkinbiz/employee.service";
-import { IChecklog } from "@/domain/features/checkinbiz/IChecklog";
-import { Column } from "@/components/common/table/GenericTable";
-import { format_date, rmNDay } from "@/lib/common/Date";
+import { IReport } from "@/domain/features/checkinbiz/IReport";
+import { Column, IRowAction } from "@/components/common/table/GenericTable";
+import { format_date } from "@/lib/common/Date";
 import { fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucursal.service";
+import { search } from "@/services/checkinbiz/report.service";
+import { StripeInvoice } from "@/domain/core/auth/ISubscription";
+import { DownloadOutlined } from "@mui/icons-material";
 
-import { Box } from "@mui/material";
-
-import { DateRangePicker } from "@/app/main/[entityId]/passinbiz/stats/components/filters/fields/DateRangeFilter";
-import { useLayout } from "@/hooks/useLayout";
-import SearchFilter from "@/components/common/table/filters/SearchFilter";
-import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
-import { ISearchIndex } from "@/domain/core/SearchIndex";
-import { CustomChip } from "@/components/common/table/CustomChip";
- 
 interface IFilterParams {
-  filter: { branchId: 'none', employeeId: 'none', status: 'valid', range: { start: any, end: any } | null },
   params: {
     orderBy: string,
     orderDirection: 'desc' | 'asc',
@@ -39,25 +31,19 @@ export default function useAttendanceController() {
   const t = useTranslations();
   const { showToast } = useToast()
   const { currentEntity, watchServiceAccess } = useEntity()
-  const { changeLoaderState } = useLayout()
 
   const [loading, setLoading] = useState<boolean>(true);
-  const [items, setItems] = useState<IChecklog[]>([]);
-  const [itemsHistory, setItemsHistory] = useState<IChecklog[]>([]);
+  const [items, setItems] = useState<IReport[]>([]);
+  const [itemsHistory, setItemsHistory] = useState<IReport[]>([]);
   const [filterParams, setFilterParams] = useState<any>({
-    filter: { branchId: 'none', employeeId: 'none', status: 'valid', range: { start: rmNDay(new Date(), 1), end: new Date() } },
     startAfter: null,
     currentPage: 0,
     total: 0,
     params: {
-      filters: [
-        { field: 'status', operator: '==', value: 'valid' },
-        { field: 'timestamp', operator: '>=', value: rmNDay(new Date(), 1) },
-        { field: 'timestamp', operator: '<=', value: new Date() }
-      ],
+      filters: [],
       startAfter: null,
       limit: 5,
-      orderBy: 'timestamp',
+      orderBy: 'start',
       orderDirection: 'desc',
     }
   })
@@ -72,10 +58,21 @@ export default function useAttendanceController() {
 
   }
 
-   
 
-  const rowAction: Array<any> = []
 
+  const rowAction: Array<IRowAction> = [
+        {
+            actionBtn: true,
+            color: 'error',
+            icon: <DownloadOutlined color="primary" />,
+            label: t('core.button.download'),
+            allowItem: () => true,
+            showBulk: false,
+            onPress: (item:IReport) => window.open(item.url,'_blank'),
+            bulk: false
+        },
+
+    ]
   /** Paginated Changed */
   const onNext = async (): Promise<void> => {
     setLoading(true)
@@ -119,16 +116,16 @@ export default function useAttendanceController() {
 
 
 
-    searchLogs(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async res => {
+    search(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async res => {
 
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
-
-        const data: Array<IChecklog> = await Promise.all(
+        const data: Array<IReport> = await Promise.all(
           res.map(async (item) => {
-            const branchId = (await fetchSucursalData(currentEntity?.entity.id as string, item.branchId as string))?.name
-            const employeeId = (await fetchEmployeeData(currentEntity?.entity.id as string, item.employeeId as string))?.fullName
-            return { ...item, branchId, employeeId };
+            let branchId = null
+            if (item.branchId)
+              branchId = (await fetchSucursalData(currentEntity?.entity.id as string, item.branchId as string))?.name
+            return { ...item, branchId };
           })
         );
 
@@ -153,40 +150,25 @@ export default function useAttendanceController() {
   }
 
 
-  const columns: Column<IChecklog>[] = [
+  const columns: Column<IReport>[] = [
     {
       id: 'branchId',
       label: t("core.label.branch"),
       minWidth: 170,
-      format: (value, row) => row.branchId
+      format: (value, row) => row.branchId ?? '-'
     },
     {
-      id: 'employeeId',
-      label: t("core.label.employee"),
+      id: 'start',
+      label: t("core.label.start"),
       minWidth: 170,
-      format: (value, row) => row.employeeId
+      format: (value, row) => format_date(row.start, 'YYYY-MM-DD')
     },
     {
-      id: 'type',
-      label: t("core.label.register"),
+      id: 'end',
+      label: t("core.label.end"),
       minWidth: 170,
-      format: (value, row) => t('core.label.' + row.type)
+      format: (value, row) => format_date(row.end, 'YYYY-MM-DD')
     },
-    {
-      id: 'status',
-      label: t("core.label.status"),
-      minWidth: 170,
-      format: (value, row) => <CustomChip label={t('core.label.' + row.status)} />
-    },
-    {
-      id: 'timestamp',
-      label: t("core.label.date-hour"),
-      minWidth: 170,
-      format: (value, row) => <>{format_date(row.timestamp, 'DD/MM/YYYY')} {format_date(row.timestamp, 'hh:mm')}</>
-    },
-
-
-
   ];
 
 
@@ -204,93 +186,10 @@ export default function useAttendanceController() {
 
 
 
- 
- 
 
 
-  function exportToCSV(data: Array<IChecklog>, headersMap = null, filename = 'data.csv') {
-    if (!data.length) return;
-
-    // Use custom headers or object keys
-    const headers = headersMap ? Object.keys(headersMap) : Object.keys(data[0]);
-    const headerLabels = headersMap ? Object.values(headersMap) : headers;
-
-    let csvContent = headerLabels.join(',') + '\n';
-
-    data.forEach((row: any) => {
-      const values = headers.map(header => {
-        let value = row[header] !== undefined ? row[header] : '';
-        value = String(value);
-
-        if (value.includes(',') || value.includes('"') || value.includes('\n')) {
-          value = `"${value.replace(/"/g, '""')}"`;
-        }
-
-        return value;
-      });
-
-      csvContent += values.join(',') + '\n';
-    });
-
-    // Download
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-
-    link.setAttribute('href', url);
-    link.setAttribute('download', filename);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
 
 
-  const handleExport = () => {
-    if (filterParams.params.filters.find((e: any) => e.field === 'branchId' && e.value === 'none'))
-      filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "branchId")
-
-    if (filterParams.params.filters.find((e: any) => e.field === "employeeId" && !e.value))
-      filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "employeeId")
-
-    const filters = [
-      ...filterParams.params.filters,
-    ]
-    changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-
-
-    searchLogs(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters, limit: 10000 }).then(async res => {
-
-      const data: Array<any> = await Promise.all(
-        res.map(async (item) => {
-          const branchId = (await fetchSucursalData(currentEntity?.entity.id as string, item.branchId as string))?.name
-          const employeeId = (await fetchEmployeeData(currentEntity?.entity.id as string, item.employeeId as string))?.fullName
-          return {
-
-            date: format_date(item.timestamp, 'DD/MM/YYYY'),
-            time: format_date(item.timestamp, 'hh:mm'),
-            type: t('core.label.' + item.type),
-            branchId,
-            employeeId
-          };
-        })
-      );
-
-      const headersMap: any = {
-        branchId: t('core.label.sucursal'),
-        employeeId: t('core.label.employee'),
-        type: t('core.label.register'),
-        date: t('core.label.date'),
-        time: t('core.label.time'),
-      };
-
-      exportToCSV(data, headersMap)
-
-    }).catch(e => {
-      showToast(e?.message, 'error')
-    }).finally(() => {
-      changeLoaderState({ show: false })
-    })
-  }
 
 
   useEffect(() => {
@@ -300,15 +199,15 @@ export default function useAttendanceController() {
   }, [currentEntity?.entity?.id])
 
   const onSuccessCreate = () => {
-const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null} }
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
     setFilterParams(filterParamsUpdated)
     fetchingData(filterParamsUpdated)
   }
 
   return {
     items, onSort, onRowsPerPageChange,
-     handleExport,
-    onNext, onBack,onSuccessCreate,
+
+    onNext, onBack, onSuccessCreate,
     columns, rowAction,
     loading, filterParams
   }

@@ -31,8 +31,8 @@ export const fetchChecklog = async (entityId: string, id: string): Promise<IChec
    * @param {SearchParams} params
    * @returns {Promise<Iemployee[]>}
    */
-export const search = async (entityId: string, params: SearchParams): Promise<IEmployee[]> => {
-  const result: IEmployee[] = await searchFirestore({
+export const search = async (entityId: string, params: SearchParams): Promise<IReport[]> => {
+  const result: IReport[] = await searchFirestore({
     ...params,
     collection: `${collection.ENTITIES}/${entityId}/${collection.CHECKBIZ_REPORT}`,
   });

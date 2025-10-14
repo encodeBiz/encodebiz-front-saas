@@ -12,10 +12,7 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useTranslations } from 'next-intl';
 import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
-import { ContactFromModel, IContact } from '@/domain/core/IContact';
-import useFormContactController from './ReportFormModal.controller';
-import { useAuth } from '@/hooks/useAuth';
-import { useEntity } from '@/hooks/useEntity';
+ 
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { CustomTypography } from '@/components/common/Text/CustomTypography';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
@@ -24,11 +21,11 @@ import { SassButton } from '@/components/common/buttons/GenericButton';
 import useReportFormModalController from './ReportFormModal.controller';
 import { IChecklog } from '@/domain/features/checkinbiz/IChecklog';
 
-const ReportFormModal = ({ employeeId, branchId , onSuccess}: { employeeId?: string, branchId?: string, onSuccess:()=>void }): React.JSX.Element => {
+const ReportFormModal = ({ onSuccess }: { onSuccess: () => void }): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const theme = useTheme()
     const [isLoading, setIsLoading] = useState(false)
-    const { fields, validationSchema, setDinamicDataAction, initialValues } = useReportFormModalController(onSuccess,employeeId, branchId);
+    const { fields, validationSchema, setDinamicDataAction, initialValues } = useReportFormModalController(onSuccess);
     const t = useTranslations();
 
     const handleClose = (event: any, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
@@ -102,16 +99,7 @@ const ReportFormModal = ({ employeeId, branchId , onSuccess}: { employeeId?: str
                     {t('core.button.cancel')}
                 </SassButton>
 
-                 <SassButton
-                    onClick={handleExternalSubmit}
-                    disabled={!formStatus?.isValid || formStatus?.isSubmitting}
-                    color="primary"
-                    size='small'
-                    variant="contained"
-                    startIcon={isLoading ? <CircularProgress size={20} /> : null}
-                >
-                    {t('core.button.create-download')}
-                </SassButton>
+                 
 
                 <SassButton
                     onClick={handleExternalSubmit}
@@ -121,7 +109,7 @@ const ReportFormModal = ({ employeeId, branchId , onSuccess}: { employeeId?: str
                     variant="contained"
                     startIcon={isLoading ? <CircularProgress size={20} /> : null}
                 >
-                    {t('core.button.create')}
+                    {t('core.button.createReport')}
                 </SassButton>
             </DialogActions>
         </Dialog>

@@ -4,7 +4,7 @@ export interface IReport {
     entityId: string
     start: string
     end: string
-
+    url?: string
 }
 
 
