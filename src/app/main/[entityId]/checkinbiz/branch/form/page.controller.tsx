@@ -244,7 +244,7 @@ export default function useSucursalController() {
     {
       isCollapse: true,
       column: 3,
-      label: t('core.label.dayTimeRange'),
+      label: t('core.label.breakTimeRange'),
       fieldList: [
         {
           name: 'disableBreak',
@@ -253,9 +253,10 @@ export default function useSucursalController() {
           required: true,
         },
         {
-          name: 'startTime',
-          label: t('core.label.startTime'),
+          name: 'timeBreak',
+          label: t('core.label.timeBreak'),
           component: TextInput,
+          type:'number',
           required: true,
         },
         

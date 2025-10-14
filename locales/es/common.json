@@ -283,6 +283,7 @@
       "restin": "Comenzando descanso",
       "restout": "Terminando descanso",
        "disableBreak":"Desabilitar descanso",
+       "breakTimeRange":"Tiempo de descanso",
       "timeBreak":"Tiempo de descanzo (minutos)"
     },
     "button": {
