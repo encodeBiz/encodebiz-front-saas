@@ -83,7 +83,7 @@ const LocaleSwitcher = ({ rmText = false }: { rmText?: boolean }) => {
   };
 
   return (
-    <Box sx={{ minWidth: rmText?80:160, mt: 1 }}>
+    <Box sx={{ minWidth: rmText ? 80 : 160, mt: 1 }}>
       <FormControl fullWidth>
         <Select
           labelId="locale-switcher-label"
@@ -94,6 +94,10 @@ const LocaleSwitcher = ({ rmText = false }: { rmText?: boolean }) => {
           sx={{
             "& .MuiSelect-icon": {
               marginLeft: '20px'
+            },
+            '&.MuiSelect-root': {
+
+              height: 40
             },
           }}
           renderValue={(select: 'es' | 'en') => <Box gap={1} display={'flex'} justifyItems={'center'} alignItems={'center'}>{flags[select]} {rmText ? '' : <Typography >{select === 'es' ? t('layout.header.spanish') : t('layout.header.english')}</Typography>}</Box>}

@@ -81,7 +81,12 @@ export default function useSucursalController() {
           region: values.region,
           street: values.street
         },
-        entityId: currentEntity?.entity.id as string
+        entityId: currentEntity?.entity.id as string,
+        advance: {
+          "enableDayTimeRange": values.enableDayTimeRange,
+          "startTime": values.startTime,
+          "endTime": values.endTime
+        }
       }
 
 
@@ -202,11 +207,14 @@ export default function useSucursalController() {
       fullWidth: true,
       component: DynamicKeyValueInput,
     },
-
+ {
+      isDivider: true,
+      label: t('core.label.advance'),
+    },
     {
       isCollapse: true,
       column: 3,
-      label: t('core.label.advance'),
+      label: t('core.label.dayTimeRange'),
       fieldList: [
         {
           name: 'enableDayTimeRange',
@@ -247,7 +255,11 @@ export default function useSucursalController() {
         status: sucursal.status,
         ratioChecklog: sucursal.ratioChecklog,
         name: sucursal.name,
-        metadata: objectToArray(sucursal.metadata)
+        metadata: objectToArray(sucursal.metadata),
+        "enableDayTimeRange": sucursal?.advance?.enableDayTimeRange,
+        "startTime": sucursal?.advance?.startTime,
+        "endTime": sucursal?.advance?.endTime
+
       })
       changeLoaderState({ show: false })
     } catch (error: any) {

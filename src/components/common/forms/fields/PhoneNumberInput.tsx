@@ -12,8 +12,7 @@ const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
     const { touched, error } = meta
     const helperText = touched && error;
 
-    console.log(extractCountryCode(field.value));
-    
+     
     const [countryCode, setCountryCode] = useState(field.value ? extractCountryCode(field.value)?.code as string : '34');
     const [phoneNumber, setPhoneNumber] = useState(field.value?extractCountryCode(field.value)?.phone?.replace(/^\+\d+\s?/, ''):'');
 

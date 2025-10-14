@@ -14,6 +14,7 @@ import { IChecklog } from "@/domain/features/checkinbiz/IChecklog";
 import { createLog } from "@/services/checkinbiz/employee.service";
 import { fetchChecklog, updateChecklog } from "@/services/checkinbiz/report.service";
 import DateInput from "@/components/common/forms/fields/Datenput";
+import { Timestamp } from "firebase/firestore";
 
 
 export default function useChecklogFormController() {
@@ -76,9 +77,8 @@ export default function useChecklogFormController() {
     {
       name: 'timestamp',
       label: t('core.label.timestamp'),
-      component: TextInput,
-      fullWidth: true,
-      options: DateInput
+      component: DateInput,
+      
     },
 
   ];
@@ -89,7 +89,8 @@ export default function useChecklogFormController() {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const checklog: IChecklog | Partial<IChecklog> = await fetchChecklog(currentEntity?.entity.id as string, id)
       setInitialValues({
-        ...checklog
+        ...checklog,
+        timestamp: (checklog.timestamp as Timestamp).toDate()
       })
       changeLoaderState({ show: false })
     } catch (error: any) {
