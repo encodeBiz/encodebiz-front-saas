@@ -17,6 +17,7 @@ import { country } from "@/config/country";
 import AddressInput from "@/components/common/forms/fields/AddressInput";
 import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 import ToggleInput from "@/components/common/forms/fields/ToggleInput";
+import TimeInput from "@/components/common/forms/fields/TimeInput";
 
 
 export default function useSucursalController() {
@@ -200,6 +201,32 @@ export default function useSucursalController() {
       required: true,
       fullWidth: true,
       component: DynamicKeyValueInput,
+    },
+
+    {
+      isCollapse: true,
+      column: 3,
+      label: t('core.label.advance'),
+      fieldList: [
+        {
+          name: 'enableDayTimeRange',
+          label: t('core.label.enableDayTimeRange'),
+          component: ToggleInput,
+          required: true,
+        },
+        {
+          name: 'startTime',
+          label: t('core.label.startTime'),
+          component: TimeInput,
+          required: true,
+        },
+        {
+          name: 'endTime',
+          label: t('core.label.endTime'),
+          component: TimeInput,
+          required: true,
+        },
+      ]
     },
   ];
 

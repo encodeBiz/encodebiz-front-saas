@@ -4,6 +4,9 @@ import React, { useEffect } from 'react';
 import { Formik, Form, FormikProps, FormikHelpers, useFormikContext } from 'formik';
 import * as Yup from 'yup';
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
 
   Grid,
@@ -17,6 +20,7 @@ import { useFormStatus } from '@/hooks/useFormStatus';
 import { BorderBox } from '../tabs/BorderBox';
 import { SassButton } from '../buttons/GenericButton';
 import Link from 'next/link';
+import { ExpandMoreOutlined } from '@mui/icons-material';
 
 
 // A component that watches the form state
@@ -91,7 +95,7 @@ const FieldItem = ({ field, i, formikProps, column, disabled }: { field: FormFie
   if (field.isDivider) return <Grid size={{
     xs: 12,
     sm: 12
-  }} key={i} sx={{ width: '100%',position:'relative', top:10, mt:2 }}>
+  }} key={i} sx={{ width: '100%', position: 'relative', top: 10, mt: 2 }}>
     <Typography variant='subtitle1'>{field.label as string}</Typography>
   </Grid>
   else
@@ -140,7 +144,7 @@ const GenericForm = <T extends Record<string, any>>({
   disabled = false,
   activateWatchStatus = false,
   hideBtn = false,
-  linkForm= false,
+  linkForm = false,
   formRef
 }: GenericFormProps<T>) => {
   const t = useTranslations()
@@ -174,32 +178,62 @@ const GenericForm = <T extends Record<string, any>>({
         {(formikProps: FormikProps<T>) => (
           <Form noValidate>
             {/*JSON.stringify(formikProps.errors)*/}
-            
+
             {activateWatchStatus && <FormStatusWatcher />}
             <Grid container spacing={3}>
               {fields.map((field, i) => {
-                if (!field.isGroup)
-                  return <FieldItem key={i} field={field} i={i} disabled={disabled} column={column} formikProps={formikProps} />
-                else {
-                  return <BorderBox key={i} sx={{ width: '100%', p: 4 }}>
-                    <Grid display={'flex'} flexDirection={{
-                      xs: 'column',
-                      sm: 'column',
-                      md: 'column',
-                      lg: 'row',
-                      xl: 'row',
-                    }} container spacing={3}>
-                      {
-                        field.fieldList?.map((fieldInner, index) => {
-                          return <FieldItem key={index + '-' + i} field={fieldInner} i={index} disabled={disabled} column={field.column ? field.column : column} formikProps={formikProps} />
-                        })
-                      }
-                    </Grid>
-                  </BorderBox>
-                }
+                if (field.isCollapse)
+                  return <Accordion key={i} sx={{ width: '100%' }}>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreOutlined />}
+                      aria-controls="panel1-content"
+                      id="panel1-header"
+                      sx={{ height:56}}
+                    >
+                      <Typography component="span" textTransform={'uppercase'}>{field.label as string}</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Box sx={{ width: '100%', p: 4 }}>
+                        <Grid display={'flex'} flexDirection={{
+                          xs: 'column',
+                          sm: 'column',
+                          md: 'column',
+                          lg: 'row',
+                          xl: 'row',
+                        }} container spacing={3}>
+                          {
+                            field.fieldList?.map((fieldInner, index) => {
+                              return <FieldItem key={index + '-' + i} field={fieldInner} i={index} disabled={disabled} column={field.column ? field.column : column} formikProps={formikProps} />
+                            })
+                          }
+                        </Grid>
+                      </Box>
+                    </AccordionDetails>
+                  </Accordion>
+
+                else
+                  if (field.isGroup)
+                    return <BorderBox key={i} sx={{ width: '100%', p: 4 }}>
+                      <Grid display={'flex'} flexDirection={{
+                        xs: 'column',
+                        sm: 'column',
+                        md: 'column',
+                        lg: 'row',
+                        xl: 'row',
+                      }} container spacing={3}>
+                        {
+                          field.fieldList?.map((fieldInner, index) => {
+                            return <FieldItem key={index + '-' + i} field={fieldInner} i={index} disabled={disabled} column={field.column ? field.column : column} formikProps={formikProps} />
+                          })
+                        }
+                      </Grid>
+                    </BorderBox>
+                  else
+                    return <FieldItem key={i} field={field} i={i} disabled={disabled} column={column} formikProps={formikProps} />
+
               })}
               {linkForm && <Typography variant="body2">
-                <Link style={{color: theme.palette.primary.main, textDecoration:'none'}} href="/auth/recovery">{t('core.signup.recovery')}</Link>
+                <Link style={{ color: theme.palette.primary.main, textDecoration: 'none' }} href="/auth/recovery">{t('core.signup.recovery')}</Link>
               </Typography>}
 
               <Grid sx={{ width: '100%' }}>

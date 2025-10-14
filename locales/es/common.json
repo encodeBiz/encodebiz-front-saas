@@ -93,6 +93,10 @@
     },
     "label": {
       "today": "Hoy",
+      "advance":"Configuración avanzada",
+      "enableDayTimeRange":"Habilitar horario",
+      "startTime":"Hora de inicio",
+      "endTime":"Hora de fin",
       "moreload": "Cargar más",
       "thisWeek": "Esta semana",
       "thisMonth": "Este mes",

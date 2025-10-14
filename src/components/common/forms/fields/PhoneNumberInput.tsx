@@ -3,6 +3,7 @@ import { Box, InputAdornment, MenuItem, Select, TextField, TextFieldProps, Typog
 import { FieldProps, useField } from 'formik';
 import { countriesCode } from '@/config/constants';
 import { Error } from '@mui/icons-material';
+import { extractCountryCode } from '@/lib/common/String';
 
 const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
     ...props
@@ -11,8 +12,10 @@ const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
     const { touched, error } = meta
     const helperText = touched && error;
 
-    const [countryCode, setCountryCode] = useState('34');
-    const [phoneNumber, setPhoneNumber] = useState(field.value.replace(/^\+\d+\s?/, ''));
+    console.log(extractCountryCode(field.value));
+    
+    const [countryCode, setCountryCode] = useState(field.value ? extractCountryCode(field.value)?.code as string : '34');
+    const [phoneNumber, setPhoneNumber] = useState(field.value?extractCountryCode(field.value)?.phone?.replace(/^\+\d+\s?/, ''):'');
 
     const handleCountryChange = (event: any) => {
         setCountryCode(event.target.value);

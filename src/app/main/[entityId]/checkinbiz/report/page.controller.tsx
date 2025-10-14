@@ -39,7 +39,7 @@ export default function useAttendanceController() {
   const t = useTranslations();
   const { showToast } = useToast()
   const { currentEntity, watchServiceAccess } = useEntity()
-  const { changeLoaderState, navivateTo } = useLayout()
+  const { changeLoaderState } = useLayout()
 
   const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<IChecklog[]>([]);
