@@ -29,7 +29,7 @@ interface EntityContextType {
     entitySuscription: Array<IEntitySuscription>
     watchServiceAccess: (serviceId: BizType) => void
     cleanEntityContext: () => void
-   
+
 
 }
 export const EntityContext = createContext<EntityContextType | undefined>(undefined);
@@ -57,8 +57,8 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
         const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
         setEntitySuscription(serviceSuscription.filter(e => e.status !== "cancelled" && e.status !== "pending-pay"))
         const serviceList: Array<IService> = await fetchServiceList()
-        setEntityServiceList(serviceList.sort((a,b)=>a.order-b.order).map(e => ({ ...e, isBillingActive: !!serviceSuscription.find(service => service.serviceId === e.id && service.status !== "cancelled" && service.status !== "pending-pay") })))
-       
+        setEntityServiceList(serviceList.sort((a, b) => a.order - b.order).map(e => ({ ...e, isBillingActive: !!serviceSuscription.find(service => service.serviceId === e.id && service.status !== "cancelled" && service.status !== "pending-pay") })))
+
     }
 
 
@@ -66,7 +66,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
         if (userAuth) {
             const entityList: Array<IUserEntity> = await fetchUserEntities(userAuth.uid)
-             
+
             if (entityList.length > 0) {
                 if (entityList.length > 0 && entityList.filter(e => e.isActive).length === 0) {
                     const item = entityList[0]
@@ -81,7 +81,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
                     changeCurrentEntity(entityId, userAuth?.uid)
                 } else {
                     _currentEntity = entityList.find(e => e.isActive) as IUserEntity
-                     
+
                     setCurrentEntity(_currentEntity)
                     const extraData = await fetchUserAccount(userAuth.uid)
                     if (extraData.fullName !== "Guest")
@@ -127,6 +127,8 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     const changeCurrentEntity = async (id: string, userId: string, callback?: () => void,) => {
         const entityList: Array<IUserEntity> = await fetchUserEntities(userId)
         const current: IUserEntity = entityList.find(e => e.entity.id === id) as IUserEntity
+        console.log(current);
+
         if (current) {
             const updatedList: Array<IUserEntity> = []
             entityList.forEach(element => {
@@ -138,12 +140,22 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
             })
             setEntityList(updatedList)
             setCurrentEntity(current)
+
             push(`${pathname.replace(entityId, current.entity.id as string)}`)
             await saveStateCurrentEntity(updatedList)
 
             setTimeout(() => {
                 if (typeof callback === 'function') callback()
             }, 1000);
+        } else {
+            const entityList: Array<IUserEntity> = await fetchUserEntities(userId)
+            if (entityList.length > 0) {
+                setEntityList(entityList)
+                const entity = entityList.find(e => e.isActive) ?? entityList[0]
+                changeCurrentEntity(entity.entity.id as string, userId)
+            } else {
+                push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
+            }
         }
     }
 
