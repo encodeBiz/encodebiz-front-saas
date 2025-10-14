@@ -204,72 +204,8 @@ export default function useAttendanceController() {
 
 
 
-
-  const topFilter = <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap', width: '100%', justifyContent: 'flex-end' }}>
-
-
-    <SearchFilter
-      label={t('core.label.status')}
-      value={filterParams.filter.status}
-      onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, status: value } })}
-      options={[{ value: 'valid' as string, label: t('core.label.valid') }, { value: 'failed' as string, label: t('core.label.failed') }]}
-    />
-
-
-
-    <SearchIndexFilter width='auto'
-      type="branch"
-      label={t('core.label.subEntity')}
-      onChange={async (value: ISearchIndex) => {
-        if (value?.id) {
-          const parts = value.index?.split('/')
-          const branchId = parts[parts.length - 1]
-          if (branchId)
-            onFilter({ ...filterParams, filter: { ...filterParams.filter, branchId } })
-          else
-            onFilter({ ...filterParams, filter: { ...filterParams.filter, branchId: 'none' } })
-        }
-      }}
-    />
-
-    <SearchIndexFilter width='auto'
-      type="employee"
-      label={t('core.label.employee')}
-      onChange={async (value: ISearchIndex) => {
-        if (value?.index) {
-          const parts = value.index?.split('/')
-          const employeeId = parts[parts.length - 1]
-          if (employeeId)
-            onFilter({ ...filterParams, filter: { ...filterParams.filter, employeeId } })
-          else
-            onFilter({ ...filterParams, filter: { ...filterParams.filter, employeeId: 'none' } })
-        }
-      }}
-    />
-    <DateRangePicker filter width='100%' value={filterParams.filter.range} onChange={(rg: { start: any, end: any }) => {
-      onFilter({ ...filterParams, filter: { ...filterParams.filter, range: rg } })
-    }} />
-
-  </Box>
-
-
-  const onFilter = (filterParamsData: any) => {
-
-    const filterData: Array<{ field: string, operator: any, value: any }> = []
-    const filter = filterParamsData.filter
-    Object.keys(filter).forEach((key) => {
-      if (key === 'range')
-        filterData.push(
-          { field: 'timestamp', operator: '>=', value: filter[key].start },
-          { field: 'timestamp', operator: '<=', value: filter[key].end }
-        )
-      else
-        filterData.push({ field: key, operator: '==', value: filter[key] })
-    })
-    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null, filters: filterData }, filter: filter }
-    setFilterParams(filterParamsUpdated)
-    fetchingData(filterParamsUpdated)
-  }
+ 
+ 
 
 
   function exportToCSV(data: Array<IChecklog>, headersMap = null, filename = 'data.csv') {
@@ -363,10 +299,16 @@ export default function useAttendanceController() {
     }
   }, [currentEntity?.entity?.id])
 
+  const onSuccessCreate = () => {
+const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null} }
+    setFilterParams(filterParamsUpdated)
+    fetchingData(filterParamsUpdated)
+  }
+
   return {
     items, onSort, onRowsPerPageChange,
-    topFilter, handleExport,
-    onNext, onBack,
+     handleExport,
+    onNext, onBack,onSuccessCreate,
     columns, rowAction,
     loading, filterParams
   }

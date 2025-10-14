@@ -385,11 +385,17 @@ export default function useAttendanceController() {
     }
   }, [currentEntity?.entity?.id])
 
+
+  const onSuccessCreate = () => {
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
+    setFilterParams(filterParamsUpdated)
+    fetchingData(filterParamsUpdated)
+  }
   return {
     items, onSort, onRowsPerPageChange,
     topFilter, handleExport,
     onNext, onBack,
-    columns, rowAction,
+    columns, rowAction, onSuccessCreate,
     loading, filterParams
   }
 }

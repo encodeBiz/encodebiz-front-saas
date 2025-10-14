@@ -1,7 +1,10 @@
 export interface IReport {
-    id?: string; // uid
+    id?: string;
+    branchId?: string | null
+    entityId: string
+    start: string
+    end: string
 
 }
 
 
- 

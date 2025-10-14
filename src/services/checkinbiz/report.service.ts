@@ -52,7 +52,7 @@ export async function createReport(data: Partial<IReport>, token: string) {
         },
       });
       const response: any = await httpClientFetchInstance.post(
-        process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_CREATE_EMPLOYEE as string,
+        process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_GENERATE_REPORT as string,
         {
           ...data,
         }

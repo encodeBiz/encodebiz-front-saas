@@ -17,11 +17,11 @@ const TextInput: React.FC<FieldProps & TextFieldProps & { afterTextField: string
       {...field}
       {...props}
       value={field.value ?? ``}
-      error={!!(touched && error)}
       multiline={props.type === 'textarea'}
       rows={2}
       disabled={props.disabled || (props.name === 'ratioChecklog' && formStatus?.values?.disableRatioChecklog) || (props.name === 'postalCode' && (!formStatus?.values?.country || !formStatus?.values?.city))}
       helperText={touched && error as string}
+      error={!!(touched && error)}
 
       slotProps={{
         input: touched && error ? {

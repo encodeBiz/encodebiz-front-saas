@@ -92,7 +92,9 @@
       "nocard": "No tienes métodos de pago asociado a la entidad, por favor configure al menos uno."
     },
     "label": {
-      "today": "Hoy",
+      "today": "Hoy", 
+      "periocity":"Rango de Fecha",
+      "create-download":"Crear y descargar",
       "advance":"Configuración avanzada",
       "dayTimeRange":"Horario de Jornada Laboral",
       "enableDayTimeRange":"Habilitar horario",
@@ -655,8 +657,8 @@
     "title": "Reportes de asistencia",
     "formDesc": "Completa los campos a continuación para crear/editar un reporte de asistencia.",
     "list": "Reportes  de asistencia",
-    "add": "Crear registro",
-    "edit": "Editar registro",
+    "add": "Crear registro de asistencia",
+    "edit": "Editar registro de asistencia",
     "export": "Exportar reportes de asistencia",
     "report": "Emitir reporte",
     "detailSucursal": "Detalles del reporte",

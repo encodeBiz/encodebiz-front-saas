@@ -39,6 +39,7 @@ export default function useSucursalController() {
     "city": '',
     geo: { lat: 0, lng: 0 },
     postalCode: '',
+    status: 'active',
     region: '',
     street: '',
     ratioChecklog: 100,
@@ -149,7 +150,7 @@ export default function useSucursalController() {
       label: t('core.label.postalCode'),
       component: TextInput,
       fullWidth: true,
-      options: cityList
+
     },
 
     {
@@ -207,7 +208,7 @@ export default function useSucursalController() {
       fullWidth: true,
       component: DynamicKeyValueInput,
     },
- {
+    {
       isDivider: true,
       label: t('core.label.advance'),
     },
@@ -244,7 +245,7 @@ export default function useSucursalController() {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const sucursal: ISucursal = await fetchSucursal(currentEntity?.entity.id as string, id)
       setCityList(country.find((e: any) => e.name === sucursal.address.country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
-
+      setGeo({ lat: sucursal.address.geo.lat, lng: sucursal.address.geo.lng })
       setInitialValues({
         "country": sucursal.address.country,
         "city": sucursal.address.city,

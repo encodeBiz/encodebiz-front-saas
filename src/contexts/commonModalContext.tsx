@@ -5,6 +5,8 @@ export enum CommonModalType {
     ONBOARDING = 'ONBOARDING',
     WELCOMEGUEST = 'WELCOMEGUEST',
     DELETE = 'DELETE',
+    CHECKLOGFORM = 'CHECKLOGFORM',
+    REPORTFORM = 'REPORTFORM',
     FILES = 'FILES',
     GEO = 'GEO',
     SEND = 'SEND',
