@@ -174,7 +174,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
             "branchId": sucursalId ? sucursalId : sessionData?.branchId as string,
             type,
             "geo": {
-                "lat": 24 as number,
+                "lat": pos?.lat as number,
                 "lng": pos?.lng as number
             }
         }
