@@ -1,7 +1,6 @@
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from 'react';
 import * as Yup from 'yup';
-import TextInput from '@/components/common/forms/fields/TextInput';
 import { requiredRule } from '@/config/yupRules';
 import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
