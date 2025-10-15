@@ -143,7 +143,7 @@ export default function useEmployeeListController() {
       label: t("core.label.name"),
       minWidth: 170,
     },
-   
+
     {
       id: 'address',
       label: t("core.label.address"),
@@ -199,7 +199,7 @@ export default function useEmployeeListController() {
 
 
   const onEdit = async (item: any) => {
-    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch/${item.id}/edit`)
+    openModal(CommonModalType.FORM, { ...item })
   }
 
 
@@ -264,21 +264,15 @@ export default function useEmployeeListController() {
     />
   </Box>
 
-  const buildState = () => {
-    const dataStatus = {
-      items,
-      itemsHistory,
-    }
-    localStorage.setItem('sucursalIndex', JSON.stringify(dataStatus))
-    return encodeToBase64({ ...filterParams })
+  const onSuccess = () => {
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
+    fetchingData(filterParamsUpdated)
   }
-
-
 
   return {
     items, onSort, onRowsPerPageChange,
-    onEdit,
-    onNext, onBack, buildState,
+    onEdit, onSuccess,
+    onNext, onBack,
     columns, rowAction, onDelete, topFilter,
     loading, deleting, filterParams,
 

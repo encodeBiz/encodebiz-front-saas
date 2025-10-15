@@ -10,8 +10,7 @@ import { objectToArray } from "@/lib/common/String";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import { fetchSucursal } from "@/services/checkinbiz/sucursal.service";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
-import { useCommonModal } from "@/hooks/useCommonModal";
-
+ 
 
 export default function useEmployeeDetailController() {
   const t = useTranslations();
@@ -29,11 +28,6 @@ export default function useEmployeeDetailController() {
     branchId: [],
     metadata: []
   });
-  const { openModal } = useCommonModal()
-
-
-
-
 
 
   const fetchData = async () => {
@@ -63,7 +57,10 @@ export default function useEmployeeDetailController() {
   
   const rowAction: Array<any> = []
 
+  const onSuccess = () => {
+    fetchData()
+  }
 
 
-  return { initialValues, rowAction }
+  return { initialValues, rowAction, onSuccess }
 }

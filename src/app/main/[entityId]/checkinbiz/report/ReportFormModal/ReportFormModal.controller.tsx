@@ -15,21 +15,21 @@ import { createReport } from "@/services/checkinbiz/report.service";
 import { IReport } from "@/domain/features/checkinbiz/IReport";
 import { format_date } from "@/lib/common/Date";
 
-interface ReportOutput{
-  
-    "reporData": {
-        "branch": string
-        "employee": string
-        "entity": string
-        "entityId": string
-        "start": string
-        "end": string
-        "ref": {
-            "url": string
-            "path": string
-        }
-    },
-    "code": "report/success"
+interface ReportOutput {
+
+  "reporData": {
+    "branch": string
+    "employee": string
+    "entity": string
+    "entityId": string
+    "start": string
+    "end": string
+    "ref": {
+      "url": string
+      "path": string
+    }
+  },
+  "code": "report/success"
 
 }
 
@@ -44,7 +44,7 @@ export default function useAttendanceFormModalController(onSuccess: () => void) 
     branchId: '',
     periocity: '',
   })
-
+  const [download, setDownload] = useState(false)
   const [branchList, setBranchList] = useState<Array<any>>([])
   const validationSchema = Yup.object().shape({
     periocity: requiredRule(t),
@@ -67,7 +67,9 @@ export default function useAttendanceFormModalController(onSuccess: () => void) 
 
       }
       const response: ReportOutput = await createReport(data, token)
- 
+      if (download)
+        window.open(response.reporData.ref.url, '_blank')
+
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
       closeModal(CommonModalType.CHECKLOGFORM)
@@ -119,7 +121,7 @@ export default function useAttendanceFormModalController(onSuccess: () => void) 
       ]
     } as any)).map(e => ({ value: e.id, label: e.name }))
 
-     
+
     setBranchList(branckList)
   }
   useEffect(() => {
@@ -171,5 +173,5 @@ export default function useAttendanceFormModalController(onSuccess: () => void) 
   }
 
 
-  return { fields, validationSchema, setDinamicDataAction, initialValues }
+  return { fields, validationSchema, setDinamicDataAction, initialValues, download, setDownload }
 }

@@ -2,21 +2,24 @@ import { SassButton } from "@/components/common/buttons/GenericButton"
 import { CustomChip } from "@/components/common/table/CustomChip"
 import { DetailText } from "@/components/common/table/DetailText"
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes"
+import { CommonModalType } from "@/contexts/commonModalContext"
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal"
+import { useCommonModal } from "@/hooks/useCommonModal"
 import { useLayout } from "@/hooks/useLayout"
 import { onGoMap } from "@/lib/common/maps"
 import { ArrowBackOutlined } from "@mui/icons-material"
 import { Card, Box, Grid, Typography, CardContent, Paper, Divider, Stack } from "@mui/material"
 import { useTranslations } from "next-intl"
+import FormModal from "../../edit/FormModal"
 
-export const Detail = ({ branch, children }: { branch: ISucursal, children: React.ReactNode }) => {
+export const Detail = ({ branch,onSuccess, children }: { branch: ISucursal, children: React.ReactNode, onSuccess:()=>void }) => {
     const t = useTranslations()
     const { navivateTo } = useLayout()
+    const { openModal, open } = useCommonModal()
+
     return <Card elevation={3} sx={{ width: '100%', margin: 'auto' }}>
         {/* Header Section */}
         <Box sx={{ p: 3, bgcolor: (theme) => theme.palette.secondary.main }}>
-
-
             <Grid container spacing={2} alignItems="center" justifyContent={'space-between'}>
                 <Grid display={'flex'} flexDirection={'row'} alignItems={'center'} justifyContent={'flex-start'} gap={2}>
                     <ArrowBackOutlined color="primary" style={{ fontSize: 45, cursor: 'pointer' }} onClick={() => {
@@ -36,7 +39,7 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
                     </Box>
                 </Grid>
                 <Stack direction={'row'} gap={2}>
-                    <SassButton color="primary" variant="contained" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch/${branch.id}/edit`)}>
+                    <SassButton color="primary" variant="contained" onClick={() => openModal(CommonModalType.FORM, { ...branch })}>
                         {t('core.button.edit')}
                     </SassButton>
                 </Stack>
@@ -58,15 +61,15 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
 
                     </Box>
                 </Box>
-                
-                <Divider  sx={{mt:2}} />
-                <Typography variant="subtitle1" gutterBottom textTransform={'capitalize'} sx={{mt:2}}>
+
+                <Divider sx={{ mt: 2 }} />
+                <Typography variant="subtitle1" gutterBottom textTransform={'capitalize'} sx={{ mt: 2 }}>
                     {t('core.label.advance')}
                 </Typography>
 
                 <Box display={'flex'} justifyContent={'space-between'} alignItems={'flex-start'}>
 
-                    <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={2} alignItems={'flex-start'}>
+                    <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={4} alignItems={'flex-start'}>
                         <DetailText label={t('core.label.enableDayTimeRange')} value={branch?.advance?.enableDayTimeRange ? t('core.label.enable') : t('core.label.noenable')} />
                         {branch?.advance?.enableDayTimeRange && <DetailText label={t('core.label.periocityTime')} value={branch?.advance?.startTimeWorkingDay?.hour + ':' + branch?.advance?.startTimeWorkingDay?.minute + ' - ' + branch?.advance?.endTimeWorkingDay?.hour + ':' + branch?.advance?.endTimeWorkingDay?.minute} />}
 
@@ -104,6 +107,8 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
 
             </Paper>
         </CardContent>
+        {open.type === CommonModalType.FORM && <FormModal onSuccess={onSuccess} />}
+
     </Card>
 
 }

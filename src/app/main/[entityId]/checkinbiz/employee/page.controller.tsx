@@ -19,6 +19,7 @@ import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
 import { Box, Tooltip } from "@mui/material";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
+import { useCommonModal } from "@/hooks/useCommonModal";
 
 
 interface IFilterParams {
@@ -44,6 +45,7 @@ export default function useEmployeeListController() {
   const t = useTranslations();
   const { id } = useParams<{ id: string }>()
   const { changeLoaderState } = useLayout()
+  const { open, openModal } = useCommonModal()
   const searchParams = useSearchParams()
   const { token, user } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()

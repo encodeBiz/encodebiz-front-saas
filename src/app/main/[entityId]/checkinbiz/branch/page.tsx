@@ -10,6 +10,7 @@ import { SassButton } from '@/components/common/buttons/GenericButton';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import { useLayout } from '@/hooks/useLayout';
 import { useCommonModal } from '@/hooks/useCommonModal';
+import FormModal from './edit/FormModal';
 
 export default function SucursalList() {
   const t = useTranslations();
@@ -17,7 +18,7 @@ export default function SucursalList() {
     items, rowAction, onRowsPerPageChange, onSort,
     onNext, onBack, onDelete, deleting,
     filterParams, topFilter,
-    columns,  
+    columns,  onSuccess,
     loading } = useSucursalListController();
   const { navivateTo } = useLayout()
   const { open } = useCommonModal()
@@ -63,6 +64,8 @@ export default function SucursalList() {
         description={t('sucursal.deleteConfirmModalTitle2')}
         onOKAction={(args: { data: any }) => onDelete(args.data)}
       />}
+
+      {open.type === CommonModalType.FORM && <FormModal onSuccess={onSuccess}/>}
     </Container>
   );
 }

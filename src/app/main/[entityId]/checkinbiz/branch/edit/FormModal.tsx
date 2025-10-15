@@ -6,46 +6,43 @@ import {
     DialogTitle,
     Box,
     CircularProgress,
-    useTheme,
-    FormControlLabel,
-    Switch
+    useTheme
 } from '@mui/material';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useTranslations } from 'next-intl';
 import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
-
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { CustomTypography } from '@/components/common/Text/CustomTypography';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { SassButton } from '@/components/common/buttons/GenericButton';
-import useReportFormModalController from './ReportFormModal.controller';
-import { IChecklog } from '@/domain/features/checkinbiz/IChecklog';
+import useFormModalController from './FormModal.controller';
+import * as Yup from 'yup';
+import { IEmployee } from '@/domain/features/checkinbiz/IEmployee';
 
-const ReportFormModal = ({ onSuccess }: { onSuccess: () => void }): React.JSX.Element => {
+const FormModal = ({onSuccess }: { employeeId?: string, branchId?: string, onSuccess: () => void }): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const theme = useTheme()
     const [isLoading, setIsLoading] = useState(false)
-    const { fields, validationSchema, setDinamicDataAction, initialValues, download, setDownload } = useReportFormModalController(onSuccess);
+    const { fields, validationSchema, handleSubmit, initialValues } = useFormModalController(onSuccess);
     const t = useTranslations();
-
+    const formRef = useRef(null)
     const handleClose = (event: any, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
         if (reason !== 'backdropClick')
             closeModal(CommonModalType.CHECKLOGFORM);
     };
 
-    const handleContactModal = (values: Partial<IChecklog>) => {
+    const handleModal = (values: Partial<IEmployee>) => {
         setIsLoading(true)
         setTimeout(() => {
-            setDinamicDataAction(values)
-            closeModal(CommonModalType.CHECKLOGFORM);
+            handleSubmit(values, () => { (formRef.current as any).resetForm() })
             setIsLoading(true)
         }, 2000);
     }
 
 
-    const formRef = useRef(null)
+
     const { formStatus } = useFormStatus()
 
     const handleExternalSubmit = () => {
@@ -65,7 +62,8 @@ const ReportFormModal = ({ onSuccess }: { onSuccess: () => void }): React.JSX.El
         >
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
-                    <CustomTypography >{t('report.report')}</CustomTypography>
+                    <CustomTypography >{t('sucursal.edit')}</CustomTypography>
+                    <CustomTypography  sx={{fontSize:20}} >{t('sucursal.formDesc')}</CustomTypography>
                 </Box>
                 <CustomIconBtn
                     onClick={() => handleClose(null, 'manual')}
@@ -73,12 +71,12 @@ const ReportFormModal = ({ onSuccess }: { onSuccess: () => void }): React.JSX.El
                 />
             </DialogTitle>
             <DialogContent>
-                <BorderBox sx={{ p: 2 }}>
-                    <GenericForm<Partial<IChecklog>>
+                <BorderBox sx={{ p: 2 }} key={open.open + ''}>
+                    <GenericForm<Partial<IEmployee>>
                         column={2}
                         initialValues={initialValues}
-                        validationSchema={validationSchema}
-                        onSubmit={handleContactModal}
+                        validationSchema={Yup.object().shape(validationSchema)}
+                        onSubmit={handleModal}
                         fields={fields as FormField[]}
                         submitButtonText={t('core.button.save')}
                         enableReinitialize
@@ -89,17 +87,6 @@ const ReportFormModal = ({ onSuccess }: { onSuccess: () => void }): React.JSX.El
                 </BorderBox>
             </DialogContent>
             <DialogActions>
-
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={download}
-                            onChange={(e) => setDownload(e.target.checked)}
-                        />
-                    }
-
-                    label={t('core.label.download')}
-                />
                 <SassButton
                     color="primary"
                     variant="outlined"
@@ -111,9 +98,6 @@ const ReportFormModal = ({ onSuccess }: { onSuccess: () => void }): React.JSX.El
                 >
                     {t('core.button.cancel')}
                 </SassButton>
-
-
-
                 <SassButton
                     onClick={handleExternalSubmit}
                     disabled={!formStatus?.isValid || formStatus?.isSubmitting}
@@ -122,11 +106,11 @@ const ReportFormModal = ({ onSuccess }: { onSuccess: () => void }): React.JSX.El
                     variant="contained"
                     startIcon={isLoading ? <CircularProgress size={20} /> : null}
                 >
-                    {t('core.button.createReport')}
+                    {t('core.button.submit')}
                 </SassButton>
             </DialogActions>
         </Dialog>
     );
 };
 
-export default ReportFormModal
+export default FormModal

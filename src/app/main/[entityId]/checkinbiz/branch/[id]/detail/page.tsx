@@ -5,10 +5,7 @@ import { GenericTable } from "@/components/common/table/GenericTable";
 import useEmployeeListController from '../../../employee/page.controller';
 import useEmployeeDetailController from './page.controller';
 import { Detail } from './Detail';
-import { useCommonModal } from '@/hooks/useCommonModal';
-import { CommonModalType } from '@/contexts/commonModalContext';
-import AttendanceFormModal from '../../../attendance/AttendanceFormModal/AttendanceFormModal';
-
+ 
 export default function BranchDetail() {
 
     const {
@@ -18,12 +15,12 @@ export default function BranchDetail() {
         columns, 
         loading } = useEmployeeListController();
 
-    const { initialValues, rowAction } = useEmployeeDetailController()
+    const { initialValues, rowAction , onSuccess} = useEmployeeDetailController()
 
     return (
         <Container maxWidth="lg">
 
-            {initialValues?.id && <Detail branch={initialValues as any} >
+            {initialValues?.id && <Detail branch={initialValues as any}  onSuccess={onSuccess} >
                 <GenericTable
                     data={items}
                     rowAction={rowAction}
