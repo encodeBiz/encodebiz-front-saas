@@ -26,5 +26,6 @@ export interface ISucursal {
 
     disableBreak: boolean,
     timeBreak: number
+    timeZone:string
   }
 }

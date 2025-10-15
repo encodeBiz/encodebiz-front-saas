@@ -31,7 +31,7 @@ export default function useSucursalController() {
   const { changeLoaderState } = useLayout()
   const [geo, setGeo] = useState<{ lat: number, lng: number }>({ lat: 0, lng: 0 })
   const [cityList, setCityList] = useState<any>(country.find(e => e.name === 'España')?.states.map(e => ({ label: e.name, value: e.name })))
-
+  const [tz, setTz] = useState('')
   const [initialValues, setInitialValues] = useState<Partial<any>>({
     "name": '',
     metadata: [],
@@ -90,6 +90,7 @@ export default function useSucursalController() {
 
           "disableBreak": values.disableBreak,
           "timeBreak": values.timeBreak,
+          timeZone: tz
         }
       }
 
@@ -163,8 +164,9 @@ export default function useSucursalController() {
       fullWidth: true,
       component: AddressInput,
       extraProps: {
-        onHandleChange: (data: { lat: number, lng: number }) => {
-          setGeo(data)
+        onHandleChange: (data: { lat: number, lng: number, timeZone: string }) => {
+          setGeo({ lat: data.lat, lng: data.lng })
+          setTz(data.timeZone)
         },
       },
     },
@@ -256,10 +258,10 @@ export default function useSucursalController() {
           name: 'timeBreak',
           label: t('core.label.timeBreak'),
           component: TextInput,
-          type:'number',
+          type: 'number',
           required: true,
         },
-        
+
       ]
     },
   ];
@@ -271,6 +273,7 @@ export default function useSucursalController() {
       const sucursal: ISucursal = await fetchSucursal(currentEntity?.entity.id as string, id)
       setCityList(country.find((e: any) => e.name === sucursal.address.country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
       setGeo({ lat: sucursal.address.geo.lat, lng: sucursal.address.geo.lng })
+      setTz(sucursal.advance?.timeZone as string)
       setInitialValues({
         "country": sucursal.address.country,
         "city": sucursal.address.city,
