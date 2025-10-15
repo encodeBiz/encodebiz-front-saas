@@ -7,11 +7,11 @@ import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
-import { search, updateEmployee } from "@/services/checkinbiz/employee.service";
+import { createEmployee, search, updateEmployee } from "@/services/checkinbiz/employee.service";
 import { search as searchBranch } from "@/services/checkinbiz/sucursal.service";
 import { useLayout } from "@/hooks/useLayout";
 import { useParams, useSearchParams } from "next/navigation";
-import { Edit, ListAltOutlined, SignalWifi4Bar, SignalWifi4BarLockOutlined } from "@mui/icons-material";
+import { Edit, ListAltOutlined, ReplyAllOutlined, SignalWifi4Bar, SignalWifi4BarLockOutlined } from "@mui/icons-material";
 import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
@@ -83,6 +83,15 @@ export default function useEmployeeListController() {
       onPress: (item: IEmployee) => onEdit(item)
     },
 
+    {
+      actionBtn: true,
+      color: 'primary',
+      icon: <ReplyAllOutlined color="primary" />,
+      label: t('core.button.resend'),
+      bulk: false,
+      allowItem: () => true,
+      onPress: (item: IEmployee) => onResend(item)
+    },
 
     {
       actionBtn: true,
@@ -100,6 +109,22 @@ export default function useEmployeeListController() {
   const onDetail = async (item: any) => {
     navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${item.id}/detail`)
   }
+
+  const onResend = async (values: IEmployee) => {
+    try {
+      changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+      const data = {
+        ...values,
+      }
+      await createEmployee(data, token)
+      changeLoaderState({ show: false })
+      showToast(t('core.feedback.success'), 'success');
+
+    } catch (error: any) {
+      changeLoaderState({ show: false })
+      showToast(error.message, 'error')
+    }
+  };
 
 
   /** Paginated Changed */
@@ -153,12 +178,12 @@ export default function useEmployeeListController() {
       label: t("core.label.name"),
       minWidth: 170,
       format: (value, row) => <Box>
-        <div style={{ display: "flex", alignItems: 'center' , cursor: 'help', gap:4}}>
+        <div style={{ display: "flex", alignItems: 'center', cursor: 'help', gap: 4 }}>
           <Tooltip title={row.enableRemoteWork ? t('core.label.enableRemoteWorkEnable') : t('core.label.enableRemoteWorkDisabled')}>
             <span>{row.enableRemoteWork ? <SignalWifi4Bar color="primary" /> : <SignalWifi4BarLockOutlined color="secondary" />}</span>
           </Tooltip>
-            {row.fullName}
-          </div>
+          {row.fullName}
+        </div>
       </Box>
 
     },
@@ -364,15 +389,15 @@ export default function useEmployeeListController() {
     fetchingData(filterParamsUpdated)
   }
 
-    const onSuccessCreate = () => {
-     const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
+  const onSuccessCreate = () => {
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
     setFilterParams(filterParamsUpdated)
     fetchingData(filterParamsUpdated)
   }
 
   return {
     items, onSort, onRowsPerPageChange,
-    onEdit,onSuccessCreate,
+    onEdit, onSuccessCreate,
     onNext, onBack, buildState,
     columns, rowAction, topFilter,
     loading, filterParams,

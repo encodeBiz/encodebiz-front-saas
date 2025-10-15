@@ -14,7 +14,7 @@ import { useSearchParams } from "next/navigation"
 import { DetailText } from "@/components/common/table/DetailText"
 import { ArrowBackOutlined } from "@mui/icons-material"
 
-export const Detail = ({ employee, children }: { employee: IEmployee, children: React.ReactNode }) => {
+export const Detail = ({ employee, onResend, children }: { employee: IEmployee, onResend: (v: IEmployee) => void, children: React.ReactNode }) => {
     const t = useTranslations()
     const { onDelete, deleting, branchListEmployee } = useEmployeeDetailController()
     const { openModal, open } = useCommonModal()
@@ -52,6 +52,11 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                         {t('core.button.edit')}
                     </SassButton>
 
+                    <SassButton color="primary" variant="contained" onClick={() => onResend(employee)}>
+                        {t('core.button.resend')}
+                    </SassButton>
+
+
                     <SassButton loading={deleting} color="error" variant="contained" onClick={() => openModal(CommonModalType.DELETE)}>
                         {t('core.button.delete')}
                     </SassButton>
@@ -71,7 +76,7 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                     <DetailText label={t('core.label.status')} value={t('core.label.' + employee?.status)} />
                     <DetailText label={t('core.label.nationalId')} value={employee?.nationalId} />
                     <DetailText label={t('core.label.remoteWork')} value={employee?.enableRemoteWork ? t('core.label.enable') : t('core.label.noenable')} />
-                    
+
                 </Box>
 
                 {/* Additional Details */}

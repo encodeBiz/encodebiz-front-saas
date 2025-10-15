@@ -8,7 +8,7 @@ import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { objectToArray } from "@/lib/common/String";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
-import { deleteEmployee, fetch2FAData, fetchEmployee, searchLogs } from "@/services/checkinbiz/employee.service";
+import { createEmployee, deleteEmployee, fetch2FAData, fetchEmployee, searchLogs } from "@/services/checkinbiz/employee.service";
 import { IChecklog } from "@/domain/features/checkinbiz/IChecklog";
 import { Column } from "@/components/common/table/GenericTable";
 import { CommonModalType } from "@/contexts/commonModalContext";
@@ -312,6 +312,22 @@ export default function useEmployeeDetailController() {
     openModal(CommonModalType.CHECKLOGFORM, { data: item })
   }
 
+  const onResend = async (values: IEmployee) => {
+      try {
+        changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+        const data = {
+          ...values,
+        }
+        await createEmployee(data, token)
+        changeLoaderState({ show: false })
+        showToast(t('core.feedback.success'), 'success');
+  
+      } catch (error: any) {
+        changeLoaderState({ show: false })
+        showToast(error.message, 'error')
+      }
+    };
+
 
   const rowAction: Array<any> = [{
     actionBtn: true,
@@ -337,7 +353,7 @@ export default function useEmployeeDetailController() {
     onDelete, deleting, topFilter,
     onNext, onBack, onSuccessCreate,
     columns, branchListEmployee,
-    loading, filterParams,
+    loading, filterParams,onResend,
     initialValues, rowAction
   }
 }

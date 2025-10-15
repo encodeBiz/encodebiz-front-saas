@@ -16,11 +16,11 @@ export default function BranchDetail() {
         onNext, onBack,
         filterParams, rowAction,
         columns, onSuccessCreate,
-        loading } = useEmployeeDetailController()
+        loading, onResend } = useEmployeeDetailController()
     return (
         <Container maxWidth="lg">
 
-            {initialValues?.id && <Detail employee={initialValues as any} >
+            {initialValues?.id && <Detail onResend={onResend} employee={initialValues as any} >
                 <GenericTable
                     data={items}
                     rowAction={rowAction}
