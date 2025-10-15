@@ -891,6 +891,8 @@
     "text3": "Required dimensions:"
   },
   "error": {
+        "report/internal_error":"Error interno",
+
     "auth/invalid-credential": "Incorrect credentials",
     "auth/email-already-exists": "The email is already in use. Sign in or use a different email.",
     "auth/email-already-in-use": "The email is already in use. Sign in or use a different email.",

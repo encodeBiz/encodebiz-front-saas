@@ -1,34 +1,35 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useState } from 'react';
-import * as Yup from 'yup';
-import TextInput from '@/components/common/forms/fields/TextInput';
 import { ratioLogRule, requiredRule, timeBreakRule } from '@/config/yupRules';
 import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
-import { useEntity } from "@/hooks/useEntity";
-import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
-import { ArrayToObject, objectToArray } from "@/lib/common/String";
+import { useCallback, useEffect, useState } from "react";
+import { useEntity } from "@/hooks/useEntity";
 import { createSucursal, fetchSucursal, updateSucursal } from "@/services/checkinbiz/sucursal.service";
-import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
-import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
-import { country } from "@/config/country";
+import { useFormStatus } from "@/hooks/useFormStatus";
 import AddressInput from "@/components/common/forms/fields/AddressInput";
 import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
-import ToggleInput from "@/components/common/forms/fields/ToggleInput";
+import TextInput from "@/components/common/forms/fields/TextInput";
 import TimeInput from "@/components/common/forms/fields/TimeInput";
-import { useFormStatus } from "@/hooks/useFormStatus";
- 
+import ToggleInput from "@/components/common/forms/fields/ToggleInput";
+import { country } from "@/config/country";
+import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
+import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
+import { ArrayToObject, objectToArray } from "@/lib/common/String";
+import * as Yup from 'yup';
+import { useCommonModal } from "@/hooks/useCommonModal";
+import { CommonModalType } from "@/contexts/commonModalContext";
 
-export default function useSucursalController() {
+
+export default function useFormModalController(onSuccess: () => void) {
   const t = useTranslations();
   const { showToast } = useToast()
-
+  const { open, closeModal } = useCommonModal()
   const { navivateTo } = useLayout()
   const { token, user } = useAuth()
-  const { id } = useParams<{ id: string }>()
+  const id = open.args?.id
   const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
   const { formStatus } = useFormStatus()
@@ -77,7 +78,7 @@ export default function useSucursalController() {
 
 
 
-  const handleSubmit = async (values: Partial<any>) => {
+  const handleSubmit = async (values: Partial<any>, callback: () => void) => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const data: ISucursal = {
@@ -113,9 +114,10 @@ export default function useSucursalController() {
         await createSucursal(data, token)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
-
+      onSuccess()
+      callback()
       if (id)
-        navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch/${id}/detail`)
+        closeModal(CommonModalType.FORM)
       else
         navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch`)
     } catch (error: any) {

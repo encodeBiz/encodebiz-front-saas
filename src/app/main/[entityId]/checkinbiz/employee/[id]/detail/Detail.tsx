@@ -2,7 +2,7 @@ import { SassButton } from "@/components/common/buttons/GenericButton"
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes"
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee"
 import { useLayout } from "@/hooks/useLayout"
-import { Card, Box, Grid, Typography, CardContent, Paper, Divider, Stack } from "@mui/material"
+import { Card, Box, Grid, Typography, CardContent, Paper, Divider, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
 import { useTranslations } from "next-intl"
 import useEmployeeDetailController from "./page.controller"
 import { useCommonModal } from "@/hooks/useCommonModal"
@@ -12,7 +12,6 @@ import { CustomChip } from "@/components/common/table/CustomChip"
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal"
 import { useSearchParams } from "next/navigation"
 import { DetailText } from "@/components/common/table/DetailText"
-import { BorderBox } from "@/components/common/tabs/BorderBox"
 import { ArrowBackOutlined } from "@mui/icons-material"
 
 export const Detail = ({ employee, children }: { employee: IEmployee, children: React.ReactNode }) => {
@@ -68,9 +67,11 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
             <Paper elevation={0} sx={{ p: 3 }}>
                 <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={6} alignItems={'flex-start'}>
                     <DetailText label={t('core.label.email')} value={employee?.email} />
-                    <DetailText label={t('core.label.phone')} value={employee?.phone} />
+                    <DetailText label={t('core.label.phone')} value={'+' + employee?.phone} />
                     <DetailText label={t('core.label.status')} value={t('core.label.' + employee?.status)} />
                     <DetailText label={t('core.label.nationalId')} value={employee?.nationalId} />
+                    <DetailText label={t('core.label.remoteWork')} value={employee?.enableRemoteWork ? t('core.label.enable') : t('core.label.noenable')} />
+                    
                 </Box>
 
                 {/* Additional Details */}
@@ -90,29 +91,46 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                     <Typography variant="subtitle1" gutterBottom>
                         {t('core.label.sucursalAsigned')}
                     </Typography>
-                    {Array.isArray(branchListEmployee) && <BorderBox>
-                        {branchListEmployee.map((e: ISucursal, i: number) => <Box minHeight={50} key={i}>
-                            <Box sx={{ p: 2 }}>
-                                {i === 0 && <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'} >
-                                    <Typography fontSize={16} color='#76777D' fontWeight={400} variant="subtitle1" minWidth={200}>
-                                        {t('core.label.sucursal')}
-                                    </Typography>
-                                    <Typography fontSize={16} color='#76777D' fontWeight={400} variant="subtitle1"  >
-                                        {t('core.label.cargo')}
-                                    </Typography>
-                                </Box>}
-                                <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'flex-start'} >
-                                    <Typography fontSize={24} color='#1C1B1D' fontWeight={400} variant="body2" minWidth={200}   >
-                                        {e.name}
-                                    </Typography>
-                                    <Typography fontSize={24} color='#1C1B1D' fontWeight={400} variant="body2"   >
-                                        {employee.jobTitle}
-                                    </Typography>
-                                </Box>
-                            </Box>
-                            {branchListEmployee.length - 1 !== i && <Divider flexItem />}
-                        </Box>)}
-                    </BorderBox>}
+                    <TableContainer component={Paper}>
+                        {Array.isArray(branchListEmployee) && <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell align="left">
+                                        <Typography fontSize={16} color='#76777D' fontWeight={400} variant="subtitle1" minWidth={200}>
+                                            {t('core.label.sucursal')}
+                                        </Typography>
+                                    </TableCell>
+                                    <TableCell align="left">
+                                        <Typography fontSize={16} color='#76777D' fontWeight={400} variant="subtitle1"  >
+                                            {t('core.label.cargo')}
+                                        </Typography>
+                                    </TableCell>
+
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {branchListEmployee.map((e: ISucursal, i: number) => (
+                                    <TableRow
+                                        key={i}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    >
+
+                                        <TableCell align="left">
+                                            <Typography fontSize={24} color='#1C1B1D' fontWeight={400} variant="body2" minWidth={200}   >
+                                                {e.name}
+                                            </Typography>
+                                        </TableCell>
+                                        <TableCell align="left">
+                                            <Typography fontSize={24} color='#1C1B1D' fontWeight={400} variant="body2" minWidth={200}   >
+                                                {employee.jobTitle}
+                                            </Typography>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>}
+                    </TableContainer>
+
                 </Box>
             </Paper>
 

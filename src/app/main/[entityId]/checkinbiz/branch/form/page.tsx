@@ -11,6 +11,7 @@ import { useFormStatus } from '@/hooks/useFormStatus';
 import { useRef } from 'react';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
+import * as Yup from 'yup';
  
 
 
@@ -51,11 +52,12 @@ export default function SucursalForm() {
           </Box>
         }
       >
-        <Box p={4}>
+       
+        <Box p={4} >
           <GenericForm<Partial<ISucursal>>
             column={2}
             initialValues={initialValues}
-            validationSchema={validationSchema}
+            validationSchema={Yup.object().shape({...validationSchema})}
             onSubmit={handleSubmit}
             fields={fields as FormField[]}
             enableReinitialize

@@ -22,7 +22,7 @@ export enum CommonModalType {
     COLABORATOR = 'COLABORATOR',
     INFO = 'INFO',
     WEBHOOK = 'WEBHOOK',
-
+    FORM = 'FORM',
     ADDDEVICE2AF = 'ADDDEVICE2AF',
     OUT_RADIUS = 'OUT_RADIUS',
     CONFIG2AF = 'CONFIG2AF',

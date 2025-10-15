@@ -26,17 +26,18 @@ import { ExpandMoreOutlined } from '@mui/icons-material';
 // A component that watches the form state
 const FormStatusWatcher = () => {
   // Access the entire Formik state
-  const { dirty, isSubmitting, isValid, status, values } = useFormikContext();
+  const { dirty, isSubmitting, isValid, status, values, validateForm } = useFormikContext();
   const { updateFromStatus } = useFormStatus()
 
   useEffect(() => {
-
+    
     updateFromStatus({
       isValid,
       isSubmitting,
       dirty,
       status,
-      values
+      values,
+      validateForm
     })
 
 

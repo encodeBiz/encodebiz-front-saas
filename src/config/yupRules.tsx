@@ -2,6 +2,8 @@ import * as Yup from 'yup';
 
 
 export const requiredRule = (t: any) => Yup.string().required(t('core.formValidatorMessages.required'))
+export const optionalRule = () => Yup.string().optional()
+ 
 export const passwordRestrictionRule = (t: any, min: number = 8) => Yup.string()
     .required(t('core.formValidatorMessages.required'))
     .min(min, t('core.formValidatorMessages.password'))
@@ -42,3 +44,8 @@ export const ratioLogRule = (t: any) => Yup.number()
     .required(t('core.formValidatorMessages.required'))
     .min(100, t('core.formValidatorMessages.min') + 100)
     .max(1000, t('core.formValidatorMessages.max') + 1000)
+
+export const timeBreakRule = (t: any) => Yup.number()
+    .required(t('core.formValidatorMessages.required'))
+    .min(15, t('core.formValidatorMessages.min') + 15)
+    .max(60*24, t('core.formValidatorMessages.max') + 60*24)

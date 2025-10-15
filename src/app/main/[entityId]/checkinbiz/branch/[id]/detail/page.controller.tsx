@@ -10,7 +10,6 @@ import { objectToArray } from "@/lib/common/String";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import { fetchSucursal } from "@/services/checkinbiz/sucursal.service";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
-import { IRowAction } from "@/components/common/table/GenericTable";
  
 
 export default function useEmployeeDetailController() {
@@ -31,10 +30,6 @@ export default function useEmployeeDetailController() {
   });
 
 
-
-
-
-
   const fetchData = async () => {
 
     try {
@@ -53,13 +48,19 @@ export default function useEmployeeDetailController() {
 
 
   useEffect(() => {
-
     if (currentEntity?.entity.id && user?.id && id)
       fetchData()
   }, [currentEntity?.entity.id, user?.id, id])
 
-   
-  const rowAction: Array<IRowAction> = [ ]
 
-  return { initialValues , rowAction}
+
+  
+  const rowAction: Array<any> = []
+
+  const onSuccess = () => {
+    fetchData()
+  }
+
+
+  return { initialValues, rowAction, onSuccess }
 }

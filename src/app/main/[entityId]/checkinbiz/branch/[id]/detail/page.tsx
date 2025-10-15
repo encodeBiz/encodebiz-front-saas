@@ -1,25 +1,26 @@
 'use client';
-import { Container  } from '@mui/material';
- 
+import { Container } from '@mui/material';
+
 import { GenericTable } from "@/components/common/table/GenericTable";
 import useEmployeeListController from '../../../employee/page.controller';
 import useEmployeeDetailController from './page.controller';
 import { Detail } from './Detail';
-
+ 
 export default function BranchDetail() {
-    
+
     const {
         items, onRowsPerPageChange, onSort,
         onNext, onBack,
-        filterParams,  
-        columns,
+        filterParams,
+        columns, 
         loading } = useEmployeeListController();
 
-    const { initialValues, rowAction } = useEmployeeDetailController()
+    const { initialValues, rowAction , onSuccess} = useEmployeeDetailController()
+
     return (
         <Container maxWidth="lg">
 
-            {initialValues?.id && <Detail branch={initialValues as any} >
+            {initialValues?.id && <Detail branch={initialValues as any}  onSuccess={onSuccess} >
                 <GenericTable
                     data={items}
                     rowAction={rowAction}
@@ -34,13 +35,13 @@ export default function BranchDetail() {
                     sort={{ orderBy: filterParams.params.orderBy, orderDirection: filterParams.params.orderDirection }}
                     onBack={onBack}
                     onNext={onNext}
-                  
-                     
+
+
 
                 />
             </Detail>}
 
-             
+
 
         </Container>
     );

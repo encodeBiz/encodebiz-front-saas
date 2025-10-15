@@ -12,14 +12,14 @@ import { fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucurs
 import { Box } from "@mui/material";
 
 import { DateRangePicker } from "@/app/main/[entityId]/passinbiz/stats/components/filters/fields/DateRangeFilter";
-import { useLayout } from "@/hooks/useLayout";
 import SearchFilter from "@/components/common/table/filters/SearchFilter";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { CustomChip } from "@/components/common/table/CustomChip";
 import { Edit, Map } from "@mui/icons-material";
 import { onGoMap } from "@/lib/common/maps";
-import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
+import { useCommonModal } from "@/hooks/useCommonModal";
+import { CommonModalType } from "@/contexts/commonModalContext";
 
 interface IFilterParams {
   filter: { branchId: 'none', employeeId: 'none', status: 'valid', range: { start: any, end: any } | null },
@@ -42,8 +42,7 @@ export default function useAttendanceController() {
   const t = useTranslations();
   const { showToast } = useToast()
   const { currentEntity, watchServiceAccess } = useEntity()
-  const { changeLoaderState, navivateTo } = useLayout()
-
+  const { openModal } = useCommonModal()
   const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<IChecklog[]>([]);
   const [itemsHistory, setItemsHistory] = useState<IChecklog[]>([]);
@@ -76,7 +75,7 @@ export default function useAttendanceController() {
   }
 
   const onEdit = async (item: any) => {
-    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/attendance/${item.id}/edit`)
+    openModal(CommonModalType.CHECKLOGFORM, { data: item })
   }
 
 
@@ -148,9 +147,9 @@ export default function useAttendanceController() {
 
         const data: Array<IChecklog> = await Promise.all(
           res.map(async (item) => {
-            const branchId = (await fetchSucursalData(currentEntity?.entity.id as string, item.branchId as string))?.name
-            const employeeId = (await fetchEmployeeData(currentEntity?.entity.id as string, item.employeeId as string))?.fullName
-            return { ...item, branchId, employeeId };
+            const branch = (await fetchSucursalData(currentEntity?.entity.id as string, item.branchId as string))?.name
+            const employee = (await fetchEmployeeData(currentEntity?.entity.id as string, item.employeeId as string))?.fullName
+            return { ...item, branch, employee };
           })
         );
 
@@ -175,18 +174,18 @@ export default function useAttendanceController() {
   }
 
 
-  const columns: Column<IChecklog>[] = [
+  const columns: Column<any>[] = [
     {
-      id: 'branchId',
+      id: 'branch',
       label: t("core.label.branch"),
       minWidth: 170,
-      format: (value, row) => row.branchId
+      format: (value, row) => row.branch
     },
     {
-      id: 'employeeId',
+      id: 'employee',
       label: t("core.label.employee"),
       minWidth: 170,
-      format: (value, row) => row.employeeId
+      format: (value, row) => row.employee
     },
     {
       id: 'type',
@@ -331,53 +330,7 @@ export default function useAttendanceController() {
   }
 
 
-  const handleExport = () => {
-    if (filterParams.params.filters.find((e: any) => e.field === 'branchId' && e.value === 'none'))
-      filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "branchId")
-
-    if (filterParams.params.filters.find((e: any) => e.field === "employeeId" && !e.value))
-      filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "employeeId")
-
-    const filters = [
-      ...filterParams.params.filters,
-    ]
-    changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-
-
-    searchLogs(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters, limit: 10000 }).then(async res => {
-
-      const data: Array<any> = await Promise.all(
-        res.map(async (item) => {
-          const branchId = (await fetchSucursalData(currentEntity?.entity.id as string, item.branchId as string))?.name
-          const employeeId = (await fetchEmployeeData(currentEntity?.entity.id as string, item.employeeId as string))?.fullName
-          return {
-
-            date: format_date(item.timestamp, 'DD/MM/YYYY'),
-            time: format_date(item.timestamp, 'hh:mm'),
-            type: t('core.label.' + item.type),
-            branchId,
-            employeeId
-          };
-        })
-      );
-
-      const headersMap: any = {
-        branchId: t('core.label.sucursal'),
-        employeeId: t('core.label.employee'),
-        type: t('core.label.register'),
-        date: t('core.label.date'),
-        time: t('core.label.time'),
-      };
-
-      exportToCSV(data, headersMap)
-
-    }).catch(e => {
-      showToast(e?.message, 'error')
-    }).finally(() => {
-      changeLoaderState({ show: false })
-    })
-  }
-
+  
 
   useEffect(() => {
     if (currentEntity?.entity?.id) {
@@ -393,7 +346,7 @@ export default function useAttendanceController() {
   }
   return {
     items, onSort, onRowsPerPageChange,
-    topFilter, handleExport,
+    topFilter,  
     onNext, onBack,
     columns, rowAction, onSuccessCreate,
     loading, filterParams

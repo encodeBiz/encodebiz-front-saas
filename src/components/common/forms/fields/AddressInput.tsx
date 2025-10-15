@@ -104,7 +104,7 @@ const AddressInput: React.FC<AutoCompletedInputProps> = ({ onHandleChange, ...pr
     debouncedSearch?.cancel?.();
     helper.setValue(newOption?.label ?? "");
     if (typeof onHandleChange === "function" && newOption?.data) {
-      onHandleChange({ lat: newOption.data.lat, lng: newOption.data.lng });
+      onHandleChange({ lat: newOption.data.lat, lng: newOption.data.lng, timeZone: newOption.data.timeZone });
     }
   };
 

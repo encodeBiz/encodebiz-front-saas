@@ -19,6 +19,7 @@ import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
 import { Box, Tooltip } from "@mui/material";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
+import { useCommonModal } from "@/hooks/useCommonModal";
 
 
 interface IFilterParams {
@@ -44,6 +45,7 @@ export default function useEmployeeListController() {
   const t = useTranslations();
   const { id } = useParams<{ id: string }>()
   const { changeLoaderState } = useLayout()
+  const { open, openModal } = useCommonModal()
   const searchParams = useSearchParams()
   const { token, user } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
@@ -151,11 +153,12 @@ export default function useEmployeeListController() {
       label: t("core.label.name"),
       minWidth: 170,
       format: (value, row) => <Box>
-        <div style={{ display: "flex", alignItems: 'center' , cursor: 'help'}}>
+        <div style={{ display: "flex", alignItems: 'center' , cursor: 'help', gap:4}}>
           <Tooltip title={row.enableRemoteWork ? t('core.label.enableRemoteWorkEnable') : t('core.label.enableRemoteWorkDisabled')}>
             <span>{row.enableRemoteWork ? <SignalWifi4Bar color="primary" /> : <SignalWifi4BarLockOutlined color="secondary" />}</span>
           </Tooltip>
-          {row.fullName}</div>
+            {row.fullName}
+          </div>
       </Box>
 
     },
@@ -361,9 +364,15 @@ export default function useEmployeeListController() {
     fetchingData(filterParamsUpdated)
   }
 
+    const onSuccessCreate = () => {
+     const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
+    setFilterParams(filterParamsUpdated)
+    fetchingData(filterParamsUpdated)
+  }
+
   return {
     items, onSort, onRowsPerPageChange,
-    onEdit,
+    onEdit,onSuccessCreate,
     onNext, onBack, buildState,
     columns, rowAction, topFilter,
     loading, filterParams,

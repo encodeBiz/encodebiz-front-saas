@@ -12,7 +12,6 @@ import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 import { deleteSucursal, search } from "@/services/checkinbiz/sucursal.service";
 import { useLayout } from "@/hooks/useLayout";
 import { DeleteOutline, Edit, ListAltOutlined } from "@mui/icons-material";
-import { encodeToBase64 } from "@/lib/common/base64";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
@@ -143,7 +142,7 @@ export default function useEmployeeListController() {
       label: t("core.label.name"),
       minWidth: 170,
     },
-   
+
     {
       id: 'address',
       label: t("core.label.address"),
@@ -199,7 +198,7 @@ export default function useEmployeeListController() {
 
 
   const onEdit = async (item: any) => {
-    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch/${item.id}/edit`)
+    openModal(CommonModalType.FORM, { ...item })
   }
 
 
@@ -264,21 +263,15 @@ export default function useEmployeeListController() {
     />
   </Box>
 
-  const buildState = () => {
-    const dataStatus = {
-      items,
-      itemsHistory,
-    }
-    localStorage.setItem('sucursalIndex', JSON.stringify(dataStatus))
-    return encodeToBase64({ ...filterParams })
+  const onSuccess = () => {
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
+    fetchingData(filterParamsUpdated)
   }
-
-
 
   return {
     items, onSort, onRowsPerPageChange,
-    onEdit,
-    onNext, onBack, buildState,
+    onEdit, onSuccess,
+    onNext, onBack,
     columns, rowAction, onDelete, topFilter,
     loading, deleting, filterParams,
 
