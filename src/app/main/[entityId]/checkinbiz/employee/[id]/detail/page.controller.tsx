@@ -22,6 +22,7 @@ import { Box } from "@mui/material";
 import { DateRangePicker } from "@/app/main/[entityId]/passinbiz/stats/components/filters/fields/DateRangeFilter";
 import { onGoMap } from "@/lib/common/maps";
 import { Edit, MapOutlined } from "@mui/icons-material";
+import { CustomChip } from "@/components/common/table/CustomChip";
 
 interface IFilterParams {
   filter: { branchId: '', range: { start: any, end: any } | null },
@@ -46,7 +47,7 @@ export default function useEmployeeDetailController() {
   const { user, token } = useAuth()
   const { id } = useParams<{ id: string }>()
   const { currentEntity } = useEntity()
-  const {openModal} = useCommonModal()
+  const { openModal } = useCommonModal()
   const { changeLoaderState, navivateTo } = useLayout()
   const [initialValues, setInitialValues] = useState<Partial<IEmployee>>({
     "fullName": '',
@@ -208,15 +209,19 @@ export default function useEmployeeDetailController() {
     },
     {
       id: 'timestamp',
-      label: t("core.label.date"),
+      label: t("core.label.date-hour"),
       minWidth: 170,
-      format: (value, row) => format_date(row.timestamp, 'DD/MM/YYYY')
+      format: (value, row) => format_date(row.timestamp, 'DD/MM/YYYY') + ' ' + format_date(row.timestamp, 'hh:mm')
     },
+
     {
-      id: 'id',
-      label: t("core.label.time"),
+      id: 'status',
+      label: t("core.label.status"),
       minWidth: 170,
-      format: (value, row) => format_date(row.timestamp, 'hh:mm')
+      format: (value, row) => <CustomChip background={row.status} text={t("error." + row.failedCode)}
+        size="small"
+        label={t("core.label." + row.status)}
+      />,
     },
 
 
@@ -302,7 +307,7 @@ export default function useEmployeeDetailController() {
     fetchingData(filterParamsUpdated)
   }
 
-  
+
   const onEdit = async (item: any) => {
     openModal(CommonModalType.CHECKLOGFORM, { data: item })
   }

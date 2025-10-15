@@ -12,7 +12,6 @@ import { CustomChip } from "@/components/common/table/CustomChip"
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal"
 import { useSearchParams } from "next/navigation"
 import { DetailText } from "@/components/common/table/DetailText"
-import { BorderBox } from "@/components/common/tabs/BorderBox"
 import { ArrowBackOutlined } from "@mui/icons-material"
 
 export const Detail = ({ employee, children }: { employee: IEmployee, children: React.ReactNode }) => {
@@ -71,6 +70,8 @@ export const Detail = ({ employee, children }: { employee: IEmployee, children: 
                     <DetailText label={t('core.label.phone')} value={'+' + employee?.phone} />
                     <DetailText label={t('core.label.status')} value={t('core.label.' + employee?.status)} />
                     <DetailText label={t('core.label.nationalId')} value={employee?.nationalId} />
+                    <DetailText label={t('core.label.remoteWork')} value={employee?.enableRemoteWork ? t('core.label.enable') : t('core.label.noenable')} />
+                    
                 </Box>
 
                 {/* Additional Details */}
