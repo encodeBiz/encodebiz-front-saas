@@ -151,11 +151,12 @@ export default function useEmployeeListController() {
       label: t("core.label.name"),
       minWidth: 170,
       format: (value, row) => <Box>
-        <div style={{ display: "flex", alignItems: 'center' , cursor: 'help'}}>
+        <div style={{ display: "flex", alignItems: 'center' , cursor: 'help', gap:4}}>
           <Tooltip title={row.enableRemoteWork ? t('core.label.enableRemoteWorkEnable') : t('core.label.enableRemoteWorkDisabled')}>
             <span>{row.enableRemoteWork ? <SignalWifi4Bar color="primary" /> : <SignalWifi4BarLockOutlined color="secondary" />}</span>
           </Tooltip>
-          {row.fullName}</div>
+            {row.fullName}
+          </div>
       </Box>
 
     },

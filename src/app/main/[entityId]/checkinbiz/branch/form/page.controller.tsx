@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
-import { optionalRule, ratioLogRule, requiredRule, timeBreakRule } from '@/config/yupRules';
+import { ratioLogRule, requiredRule, timeBreakRule } from '@/config/yupRules';
 import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
