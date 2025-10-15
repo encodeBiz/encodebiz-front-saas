@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslations } from "next-intl";
-import * as Yup from 'yup';
 import { requiredRule } from '@/config/yupRules';
 import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
@@ -16,6 +15,8 @@ import SearchIndexFilterInput from "@/components/common/forms/fields/SearchFilte
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import DateInput from "@/components/common/forms/fields/Datenput";
 import { useFormStatus } from "@/hooks/useFormStatus";
+import { Timestamp } from "firebase/firestore";
+import { updateChecklog } from "@/services/checkinbiz/report.service";
 
 
 export default function useAttendanceFormModalController(onSuccess: () => void, employeeId?: string, branchId?: string,) {
@@ -25,93 +26,133 @@ export default function useAttendanceFormModalController(onSuccess: () => void, 
   const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
   const { formStatus } = useFormStatus()
-  const { closeModal } = useCommonModal()
-  const [initialValues] = useState<Partial<IChecklog>>({
+  const { closeModal, open } = useCommonModal()
+
+
+  const [initialValues, setInitialValues] = useState<Partial<IChecklog>>({
     status: 'valid',
     branchId: branchId ?? '' as string,
     employeeId: employeeId ?? '' as string,
-    type: undefined
+    type: undefined,
+    timestamp: null
   })
 
   const [branchList, setBranchList] = useState<Array<any>>([])
-  const validationSchema = Yup.object().shape({
+  const [validationSchema, setValidationSchema] = useState<any>({
     employeeId: requiredRule(t),
     branchId: requiredRule(t),
     type: requiredRule(t),
     timestamp: requiredRule(t),
-  });
+  })
 
 
-
-  const setDinamicDataAction = async (values: Partial<IChecklog>) => {
+  const setDinamicDataAction = async (values: Partial<IChecklog>, callback:()=>void) => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const branch = await fetchSucursal(currentEntity?.entity?.id as string, (branchId ?? values.branchId) as string)
-      const data: IChecklog = {
-        "employeeId": employeeId ?? values.employeeId as string,
-        "entityId": currentEntity?.entity?.id as string,
-        "branchId": branchId ?? values.branchId as string,
-        "type": values.type as "checkout" | "checkin" | "restin" | "restout",
-        "geo": {
-          "lat": branch.address.geo.lat,
-          "lng": branch.address.geo.lng
-        },
-        timestamp: values.timestamp,
-        status: 'valid',
-        failedCode: ''
+      if (!open.args?.data) {
+        const branch = await fetchSucursal(currentEntity?.entity?.id as string, (branchId ?? values.branchId) as string)
+        const data: IChecklog & { idAdmin: boolean } = {
+          "employeeId": employeeId ?? values.employeeId as string,
+          "entityId": currentEntity?.entity?.id as string,
+          "branchId": branchId ?? values.branchId as string,
+          "type": values.type as "checkout" | "checkin" | "restin" | "restout",
+          "geo": {
+            "lat": branch.address.geo.lat,
+            "lng": branch.address.geo.lng
+          },
+          timestamp: values.timestamp,
+          status: 'valid',
+          failedCode: '',
+          idAdmin: true
+        }
+
+        await createLog(data, token)
+      } else {
+        const data: Partial<IChecklog> = {
+          entityId: open.args?.data?.entityId,
+          employeeId: open.args?.data?.employeeId,
+          branchId: open.args?.data?.branchId,
+          type: open.args?.data?.type,
+          id: open.args?.data?.id,
+          timestamp: values.timestamp,
+          status: values.status as any,
+          failedCode: ''
+        }
+        await updateChecklog(data, token)
+
       }
-      await createLog(data, token)
+
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
       closeModal(CommonModalType.CHECKLOGFORM)
       if (typeof onSuccess === 'function') onSuccess()
+      if (typeof callback === 'function') callback()
+        
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
     }
   };
+  let fields = []
+  if (!open.args?.data) {
+    fields = [
+      {
+        name: 'employeeId',
+        label: t('core.label.employee'),
+        type: 'text',
+        required: true,
+        component: SearchIndexFilterInput,
+      },
+
+      {
+        name: 'branchId',
+        label: t('core.label.sucursal'),
+        component: SelectInput,
+        options: [...branchList]
+      },
+
+      {
+        name: 'type',
+        label: t('core.label.status'),
+        component: SelectInput,
+        options: [
+          { value: '' as string, label: t('core.label.select') },
+          { value: 'checkin' as string, label: t('core.label.checkin') },
+          { value: 'checkout' as string, label: t('core.label.checkout') },
+          { value: 'restin' as string, label: t('core.label.restin') },
+          { value: 'restout' as string, label: t('core.label.restout') }
+        ]
+      },
+      {
+        name: 'timestamp',
+        label: t('core.label.timestamp'),
+        component: DateInput,
+
+      },
+
+    ];
+  } else {
+    fields = [
+      {
+        name: 'status',
+        label: t('core.label.status'),
+        component: SelectInput,
+        options: [
+          { value: 'valid' as string, label: t('core.label.valid') },
+          { value: 'failed' as string, label: t('core.label.failed') },
+        ]
+      },
+      {
+        name: 'timestamp',
+        label: t('core.label.timestamp'),
+        component: DateInput,
+
+      },
 
 
-  const fields = [
-    {
-      name: 'employeeId',
-      label: t('core.label.employee'),
-      type: 'text',
-      required: true,
-      component: SearchIndexFilterInput,
-    },
+    ];
+  }
 
-    {
-      name: 'branchId',
-      label: t('core.label.sucursal'),
-      component: SelectInput,
-      options: [...branchList]
-    },
-
-    {
-      name: 'type',
-      label: t('core.label.status'),
-      component: SelectInput,
-      options: [
-        { value: '' as string, label: t('core.label.select') },
-        { value: 'checkin' as string, label: t('core.label.checkin') },
-        { value: 'checkout' as string, label: t('core.label.checkout') },
-        { value: 'restin' as string, label: t('core.label.restin') },
-        { value: 'restout' as string, label: t('core.label.restout') }
-      ]
-    },
-
-
-
-    {
-      name: 'timestamp',
-      label: t('core.label.timestamp'),
-      component: DateInput,
-
-    },
-
-
-  ];
 
   const getSucursalList = async (employeeId: string) => {
     const employee = await fetchEmployee(currentEntity?.entity.id as string, employeeId)
@@ -130,6 +171,20 @@ export default function useAttendanceFormModalController(onSuccess: () => void, 
     }
   }, [formStatus?.values?.employeeId])
 
+
+  useEffect(() => {
+    if (open.args?.data) {
+      setInitialValues({
+        ...initialValues,
+        status: open.args?.data ? open.args?.data.status : 'valid',
+        timestamp: (open.args?.data.timestamp instanceof Timestamp) ? open.args?.data.timestamp.toDate() : new Date(open.args?.data.timestamp),
+      })
+      setValidationSchema({
+        status: requiredRule(t),
+        timestamp: requiredRule(t),
+      })
+    }
+  }, [open.args?.data])
 
 
 

@@ -14,7 +14,7 @@ export default function EmployeeList() {
     items, rowAction, onRowsPerPageChange, onSort,
     onNext, onBack,  
     filterParams, topFilter,
-    columns, buildState,
+    columns,  
     loading } = useEmployeeListController();
   const { navivateTo } = useLayout()
    return (
@@ -24,7 +24,7 @@ export default function EmployeeList() {
         actions={
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
             <SassButton
-              onClick={() => navivateTo(`/checkinbiz/employee/add?params=${buildState()}`)}
+              onClick={() => navivateTo(`/checkinbiz/employee/add`)}
               variant='contained'
               startIcon={<Add />}
             >{t('employee.add')}</SassButton>

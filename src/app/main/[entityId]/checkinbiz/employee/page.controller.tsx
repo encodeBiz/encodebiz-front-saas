@@ -361,9 +361,15 @@ export default function useEmployeeListController() {
     fetchingData(filterParamsUpdated)
   }
 
+    const onSuccessCreate = () => {
+     const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
+    setFilterParams(filterParamsUpdated)
+    fetchingData(filterParamsUpdated)
+  }
+
   return {
     items, onSort, onRowsPerPageChange,
-    onEdit,
+    onEdit,onSuccessCreate,
     onNext, onBack, buildState,
     columns, rowAction, topFilter,
     loading, filterParams,

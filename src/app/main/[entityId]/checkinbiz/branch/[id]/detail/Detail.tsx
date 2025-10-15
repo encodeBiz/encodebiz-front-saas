@@ -4,6 +4,7 @@ import { DetailText } from "@/components/common/table/DetailText"
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes"
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal"
 import { useLayout } from "@/hooks/useLayout"
+import { format_date } from "@/lib/common/Date"
 import { onGoMap } from "@/lib/common/maps"
 import { ArrowBackOutlined } from "@mui/icons-material"
 import { Card, Box, Grid, Typography, CardContent, Paper, Divider, Stack } from "@mui/material"
@@ -54,6 +55,25 @@ export const Detail = ({ branch, children }: { branch: ISucursal, children: Reac
                         <DetailText label={t('core.label.address')} value={branch?.address?.street} orientation="row" >
                             <Box sx={{ marginLeft: 4, minWidth: 140 }}><SassButton variant="text" onClick={() => onGoMap(branch.address.geo.lat, branch.address.geo.lng)}> {t('sucursal.map')}</SassButton></Box>
                         </DetailText>
+
+
+                    </Box>
+                </Box>
+                
+                <Divider  sx={{mt:2}} />
+                <Typography variant="subtitle1" gutterBottom textTransform={'capitalize'} sx={{mt:2}}>
+                    {t('core.label.advance')}
+                </Typography>
+
+                <Box display={'flex'} justifyContent={'space-between'} alignItems={'flex-start'}>
+
+                    <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={2} alignItems={'flex-start'}>
+                        <DetailText label={t('core.label.enableDayTimeRange')} value={branch?.advance?.enableDayTimeRange ? t('core.label.enable') : t('core.label.noenable')} />
+                        {branch?.advance?.enableDayTimeRange && <DetailText label={t('core.label.periocityTime')} value={branch?.advance?.startTimeWorkingDay?.hour + ':' + branch?.advance?.startTimeWorkingDay?.minute + ' - ' + branch?.advance?.endTimeWorkingDay?.hour + ':' + branch?.advance?.endTimeWorkingDay?.minute} />}
+
+                        <DetailText label={t('core.label.disableBreak')} value={branch?.advance?.disableBreak ? t('core.label.yes') : t('core.label.no')} />
+                        {branch?.advance?.disableBreak && <DetailText label={t('core.label.breakTimeRange')} value={branch?.advance?.timeBreak + ' ' + t('core.label.minutes')} />}
+
                     </Box>
                 </Box>
 

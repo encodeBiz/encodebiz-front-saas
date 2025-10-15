@@ -20,6 +20,8 @@ import { fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucurs
 import { Box } from "@mui/material";
 
 import { DateRangePicker } from "@/app/main/[entityId]/passinbiz/stats/components/filters/fields/DateRangeFilter";
+import { onGoMap } from "@/lib/common/maps";
+import { Edit, MapOutlined } from "@mui/icons-material";
 
 interface IFilterParams {
   filter: { branchId: '', range: { start: any, end: any } | null },
@@ -44,6 +46,7 @@ export default function useEmployeeDetailController() {
   const { user, token } = useAuth()
   const { id } = useParams<{ id: string }>()
   const { currentEntity } = useEntity()
+  const {openModal} = useCommonModal()
   const { changeLoaderState, navivateTo } = useLayout()
   const [initialValues, setInitialValues] = useState<Partial<IEmployee>>({
     "fullName": '',
@@ -69,7 +72,7 @@ export default function useEmployeeDetailController() {
       })
 
       const dataSucursalList: Array<ISucursal> = []
-   
+
 
       await Promise.all(
         employee.branchId.map(async (branchId) => {
@@ -226,7 +229,7 @@ export default function useEmployeeDetailController() {
   useEffect(() => {
     if (currentEntity?.entity?.id && id) {
       fetchingData(filterParams)
-      
+
     }
   }, [currentEntity?.entity?.id, id])
 
@@ -263,7 +266,7 @@ export default function useEmployeeDetailController() {
   }
 
 
-  
+
 
 
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
@@ -293,12 +296,43 @@ export default function useEmployeeDetailController() {
     fetchingData(filterParamsUpdated)
   }
 
+  const onSuccessCreate = () => {
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
+    setFilterParams(filterParamsUpdated)
+    fetchingData(filterParamsUpdated)
+  }
+
+  
+  const onEdit = async (item: any) => {
+    openModal(CommonModalType.CHECKLOGFORM, { data: item })
+  }
+
+
+  const rowAction: Array<any> = [{
+    actionBtn: true,
+    color: 'primary',
+    icon: <Edit color="primary" />,
+    label: t('core.button.edit'),
+    bulk: false,
+    allowItem: () => true,
+    onPress: (item: IChecklog) => onEdit(item)
+  }, {
+    actionBtn: true,
+    color: 'primary',
+    icon: <MapOutlined color="primary" />,
+    label: t('sucursal.map'),
+    bulk: false,
+    allowItem: () => true,
+    onPress: (item: IChecklog) => onGoMap(item.geo.lat, item.geo.lng)
+  }]
+
+
   return {
     items, onSort, onRowsPerPageChange,
     onDelete, deleting, topFilter,
-    onNext, onBack,
+    onNext, onBack, onSuccessCreate,
     columns, branchListEmployee,
     loading, filterParams,
-    initialValues
+    initialValues, rowAction
   }
 }

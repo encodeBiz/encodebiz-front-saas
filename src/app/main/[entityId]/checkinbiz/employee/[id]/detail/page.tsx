@@ -4,14 +4,18 @@ import { Container } from '@mui/material';
 import { GenericTable } from "@/components/common/table/GenericTable";
 import useEmployeeDetailController from './page.controller';
 import { Detail } from './Detail';
- 
+import { useCommonModal } from '@/hooks/useCommonModal';
+import AttendanceFormModal from '../../../attendance/AttendanceFormModal/AttendanceFormModal';
+import { CommonModalType } from '@/contexts/commonModalContext';
+
 export default function BranchDetail() {
+    const { open } = useCommonModal();
 
 
     const { initialValues, items, topFilter, onRowsPerPageChange, onSort,
         onNext, onBack,
-        filterParams,
-        columns,
+        filterParams, rowAction,
+        columns, onSuccessCreate,
         loading } = useEmployeeDetailController()
     return (
         <Container maxWidth="lg">
@@ -19,6 +23,7 @@ export default function BranchDetail() {
             {initialValues?.id && <Detail employee={initialValues as any} >
                 <GenericTable
                     data={items}
+                    rowAction={rowAction}
                     topFilter={topFilter}
                     columns={columns}
                     title={''}
@@ -36,9 +41,7 @@ export default function BranchDetail() {
 
                 />
             </Detail>}
-
-
-
+            {open.type === CommonModalType.CHECKLOGFORM && <AttendanceFormModal onSuccess={onSuccessCreate} />}
         </Container>
     );
 }

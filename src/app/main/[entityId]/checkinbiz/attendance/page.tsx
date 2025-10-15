@@ -7,7 +7,11 @@ import useAttendanceController from './page.controller';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
-import AttendanceFormModal from './AttendanceFormModal/AttendanceFormModal';
+import dynamic from "next/dynamic";
+ 
+const AttendanceFormModal = dynamic(() => import("./AttendanceFormModal/AttendanceFormModal").then(mod => mod.default), {
+    ssr: false,
+})
 
 export default function AttendanceList() {
   const t = useTranslations();

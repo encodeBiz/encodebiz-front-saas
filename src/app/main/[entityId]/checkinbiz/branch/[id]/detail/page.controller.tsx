@@ -10,8 +10,8 @@ import { objectToArray } from "@/lib/common/String";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import { fetchSucursal } from "@/services/checkinbiz/sucursal.service";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
-import { IRowAction } from "@/components/common/table/GenericTable";
- 
+import { useCommonModal } from "@/hooks/useCommonModal";
+
 
 export default function useEmployeeDetailController() {
   const t = useTranslations();
@@ -29,6 +29,7 @@ export default function useEmployeeDetailController() {
     branchId: [],
     metadata: []
   });
+  const { openModal } = useCommonModal()
 
 
 
@@ -53,13 +54,16 @@ export default function useEmployeeDetailController() {
 
 
   useEffect(() => {
-
     if (currentEntity?.entity.id && user?.id && id)
       fetchData()
   }, [currentEntity?.entity.id, user?.id, id])
 
-   
-  const rowAction: Array<IRowAction> = [ ]
 
-  return { initialValues , rowAction}
+
+  
+  const rowAction: Array<any> = []
+
+
+
+  return { initialValues, rowAction }
 }

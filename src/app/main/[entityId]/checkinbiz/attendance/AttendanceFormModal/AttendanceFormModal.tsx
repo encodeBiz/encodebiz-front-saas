@@ -19,14 +19,15 @@ import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import useAttendanceFormModalController from './AttendanceFormModal.controller';
 import { IChecklog } from '@/domain/features/checkinbiz/IChecklog';
+import * as Yup from 'yup';
 
-const AttendanceFormModal = ({ employeeId, branchId, onSuccess }: { employeeId?: string, branchId?: string, onSuccess:()=>void }): React.JSX.Element => {
+const AttendanceFormModal = ({ employeeId, branchId, onSuccess }: { employeeId?: string, branchId?: string, onSuccess: () => void }): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const theme = useTheme()
     const [isLoading, setIsLoading] = useState(false)
     const { fields, validationSchema, setDinamicDataAction, initialValues } = useAttendanceFormModalController(onSuccess, employeeId, branchId);
     const t = useTranslations();
-
+    const formRef = useRef(null)
     const handleClose = (event: any, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
         if (reason !== 'backdropClick')
             closeModal(CommonModalType.CHECKLOGFORM);
@@ -35,14 +36,13 @@ const AttendanceFormModal = ({ employeeId, branchId, onSuccess }: { employeeId?:
     const handleContactModal = (values: Partial<IChecklog>) => {
         setIsLoading(true)
         setTimeout(() => {
-            setDinamicDataAction(values)
-            closeModal(CommonModalType.CHECKLOGFORM);
+            setDinamicDataAction(values, () => { (formRef.current as any).resetForm() })
             setIsLoading(true)
         }, 2000);
     }
 
 
-    const formRef = useRef(null)
+
     const { formStatus } = useFormStatus()
 
     const handleExternalSubmit = () => {
@@ -62,7 +62,7 @@ const AttendanceFormModal = ({ employeeId, branchId, onSuccess }: { employeeId?:
         >
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
-                    <CustomTypography >{t('attendance.add')}</CustomTypography>
+                    <CustomTypography >{open?.args?.data ? t('attendance.edit') : t('attendance.add')}</CustomTypography>
                 </Box>
                 <CustomIconBtn
                     onClick={() => handleClose(null, 'manual')}
@@ -70,11 +70,11 @@ const AttendanceFormModal = ({ employeeId, branchId, onSuccess }: { employeeId?:
                 />
             </DialogTitle>
             <DialogContent>
-                <BorderBox sx={{ p: 2 }}>
+                <BorderBox sx={{ p: 2 }} key={open.open + ''}>
                     <GenericForm<Partial<IChecklog>>
                         column={2}
                         initialValues={initialValues}
-                        validationSchema={validationSchema}
+                        validationSchema={Yup.object().shape(validationSchema)}
                         onSubmit={handleContactModal}
                         fields={fields as FormField[]}
                         submitButtonText={t('core.button.save')}
