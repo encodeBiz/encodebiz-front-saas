@@ -127,8 +127,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     const changeCurrentEntity = async (id: string, userId: string, callback?: () => void,) => {
         const entityList: Array<IUserEntity> = await fetchUserEntities(userId)
         const current: IUserEntity = entityList.find(e => e.entity.id === id) as IUserEntity
-        console.log(current);
-
+ 
         if (current) {
             const updatedList: Array<IUserEntity> = []
             entityList.forEach(element => {

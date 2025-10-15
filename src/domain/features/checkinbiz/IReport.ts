@@ -4,7 +4,15 @@ export interface IReport {
     entityId: string
     start: string
     end: string
-    url?: string
+
+    branch?: string
+    employee?: string
+    entity?: string
+
+    ref?: {
+        url: string
+        path: string
+    }
 }
 
 

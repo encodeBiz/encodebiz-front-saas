@@ -61,18 +61,18 @@ export default function useAttendanceController() {
 
 
   const rowAction: Array<IRowAction> = [
-        {
-            actionBtn: true,
-            color: 'error',
-            icon: <DownloadOutlined color="primary" />,
-            label: t('core.button.download'),
-            allowItem: () => true,
-            showBulk: false,
-            onPress: (item:IReport) => window.open(item.url,'_blank'),
-            bulk: false
-        },
+    {
+      actionBtn: true,
+      color: 'error',
+      icon: <DownloadOutlined color="primary" />,
+      label: t('core.button.download'),
+      allowItem: () => true,
+      showBulk: false,
+      onPress: (item: IReport) => window.open(item.ref?.url, '_blank'),
+      bulk: false
+    },
 
-    ]
+  ]
   /** Paginated Changed */
   const onNext = async (): Promise<void> => {
     setLoading(true)
