@@ -8,7 +8,6 @@ import { Column, IRowAction } from "@/components/common/table/GenericTable";
 import { format_date } from "@/lib/common/Date";
 import { fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucursal.service";
 import { search } from "@/services/checkinbiz/report.service";
-import { StripeInvoice } from "@/domain/core/auth/ISubscription";
 import { DownloadOutlined } from "@mui/icons-material";
 
 interface IFilterParams {
@@ -63,7 +62,7 @@ export default function useAttendanceController() {
   const rowAction: Array<IRowAction> = [
     {
       actionBtn: true,
-      color: 'error',
+      color: 'primary',
       icon: <DownloadOutlined color="primary" />,
       label: t('core.button.download'),
       allowItem: () => true,
@@ -151,12 +150,7 @@ export default function useAttendanceController() {
 
 
   const columns: Column<IReport>[] = [
-    {
-      id: 'branchId',
-      label: t("core.label.branch"),
-      minWidth: 170,
-      format: (value, row) => row.branchId ?? '-'
-    },
+
     {
       id: 'start',
       label: t("core.label.start"),
