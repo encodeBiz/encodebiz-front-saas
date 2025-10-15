@@ -12,7 +12,6 @@ import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 import { deleteSucursal, search } from "@/services/checkinbiz/sucursal.service";
 import { useLayout } from "@/hooks/useLayout";
 import { DeleteOutline, Edit, ListAltOutlined } from "@mui/icons-material";
-import { encodeToBase64 } from "@/lib/common/base64";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";

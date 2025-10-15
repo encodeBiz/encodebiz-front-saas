@@ -905,6 +905,7 @@
     "text3": "Dimensiones requeridas: "
   },
   "error": {
+    "report/internal_error":"Error interno",
     "auth/invalid-credential": "Credenciales incorrectas",
     "auth/email-already-exists": "El correo electrónico ya está en uso. Inicie sesión o utilice un correo electrónico diferente.",
     "auth/email-already-in-use": "El correo electrónico ya está en uso. Inicie sesión o utilice un correo electrónico diferente.",
