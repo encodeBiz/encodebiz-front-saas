@@ -19,7 +19,6 @@ import AddressInput from "@/components/common/forms/fields/AddressInput";
 import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 import ToggleInput from "@/components/common/forms/fields/ToggleInput";
 import TimeInput from "@/components/common/forms/fields/TimeInput";
-import { useFormStatus } from "@/hooks/useFormStatus";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 
@@ -32,7 +31,6 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
   const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
-  const { formStatus } = useFormStatus()
   const [geo, setGeo] = useState<{ lat: number, lng: number }>({ lat: 0, lng: 0 })
   const [cityList, setCityList] = useState<any>(country.find(e => e.name === 'España')?.states.map(e => ({ label: e.name, value: e.name })))
   const [tz, setTz] = useState('')
@@ -83,12 +81,15 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     country: requiredRule(t),
     city: requiredRule(t),
     name: requiredRule(t),
-    nif: requiredRule(t), 
+    nif: requiredRule(t),
     postalCode: requiredRule(t),
     status: requiredRule(t),
-    ratioChecklog: ratioLogRule(t)
+    ratioChecklog: ratioLogRule(t),
+    startTime: requiredRule(t),
+    endTime: requiredRule(t),
+    timeBreak: timeBreakRule(t),
   }
-  const [validationSchema, setValidationSchema] = useState(defaultValidationSchema)
+  const [validationSchema] = useState(defaultValidationSchema)
 
 
 
@@ -244,6 +245,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       isCollapse: true,
       column: 3,
       label: t('core.label.dayTimeRange'),
+      hit: t('core.label.dayTimeRangeDesc'),
       fieldList: [
         {
           name: 'enableDayTimeRange',
@@ -269,6 +271,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     {
       isCollapse: true,
       column: 3,
+      hit: t('core.label.timeBreakDesc'),
       label: t('core.label.breakTimeRange'),
       fieldList: [
         {
@@ -351,35 +354,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       fetchData()
   }, [currentEntity?.entity.id, user?.id, itemId])
 
-  useEffect(() => {
-    if (formStatus?.values?.enableDayTimeRange)
-      setValidationSchema({
-        ...validationSchema,
-        startTime: requiredRule(t),
-        endTime: requiredRule(t),
-      })
-    else {
-      delete validationSchema.startTime
-      delete validationSchema.endTime
-      setValidationSchema({
-        ...validationSchema,
-      })
-    }
 
-
-    if (formStatus?.values?.disableBreak)
-      setValidationSchema({
-        ...validationSchema,
-        timeBreak: timeBreakRule(t),
-      })
-
-    else {
-      delete validationSchema.timeBreak
-      setValidationSchema({
-        ...validationSchema
-      })
-    }
-  }, [formStatus?.values])
 
   return { fields, initialValues, validationSchema, handleSubmit }
 }

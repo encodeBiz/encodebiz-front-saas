@@ -71,8 +71,7 @@ export const Detail = ({ branch, onSuccess, children }: { branch: ISucursal, chi
 
                     {branch?.advance && <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={4} alignItems={'flex-start'}>
                         <DetailText label={t('core.label.enableDayTimeRange')} value={branch?.advance?.enableDayTimeRange ? t('core.label.enable') : t('core.label.noenable')} />
-                        {branch?.advance?.enableDayTimeRange && <DetailText label={t('core.label.periocityTime')} value={branch?.advance?.startTimeWorkingDay?.hour + ':' + branch?.advance?.startTimeWorkingDay?.minute + ' - ' + branch?.advance?.endTimeWorkingDay?.hour + ':' + branch?.advance?.endTimeWorkingDay?.minute} />}
-
+                        <DetailText label={t('core.label.periocityTime')} value={((branch?.advance?.startTimeWorkingDay?.hour as number)<10?'0'+branch?.advance?.startTimeWorkingDay?.hour:branch?.advance?.startTimeWorkingDay?.hour)+ ':' + ((branch?.advance?.startTimeWorkingDay?.minute as number)<10?'0'+branch?.advance?.startTimeWorkingDay?.minute:branch?.advance?.startTimeWorkingDay?.minute) + ' - ' + ((branch?.advance?.endTimeWorkingDay?.hour as number)<10?'0'+branch?.advance?.endTimeWorkingDay?.hour:branch?.advance?.endTimeWorkingDay?.hour)+ ':' + ((branch?.advance?.endTimeWorkingDay?.minute as number)<10?'0'+branch?.advance?.endTimeWorkingDay?.minute:branch?.advance?.endTimeWorkingDay?.minute)} />
                         <DetailText label={t('core.label.disableBreak')} value={branch?.advance?.disableBreak ? t('core.label.yes') : t('core.label.no')} />
                         <DetailText label={t('core.label.breakTimeRange')} value={branch?.advance?.timeBreak + ' ' + t('core.label.minutes')} />
 

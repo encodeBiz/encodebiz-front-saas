@@ -47,5 +47,5 @@ export const ratioLogRule = (t: any) => Yup.number()
 
 export const timeBreakRule = (t: any) => Yup.number()
     .required(t('core.formValidatorMessages.required'))
-    .min(15, t('core.formValidatorMessages.min') + 15)
+    .min(60, t('core.formValidatorMessages.min') + 60)
     .max(60*24, t('core.formValidatorMessages.max') + 60*24)

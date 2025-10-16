@@ -179,7 +179,7 @@ const GenericForm = <T extends Record<string, any>>({
       >
         {(formikProps: FormikProps<T>) => (
           <Form noValidate>
-            {JSON.stringify(formikProps.errors)}
+            {/*JSON.stringify(formikProps.errors)*/}
 
             {activateWatchStatus && <FormStatusWatcher />}
             <Grid container spacing={3}>
@@ -193,6 +193,7 @@ const GenericForm = <T extends Record<string, any>>({
                       sx={{ height:56}}
                     >
                       <Typography component="span" textTransform={'uppercase'}>{field.label as string}</Typography>
+                      {field.hit && <Typography color='textSecondary' component="span" >{field.hit as string}</Typography>}
                     </AccordionSummary>
                     <AccordionDetails>
                       <Box sx={{ width: '100%', p: 4 }}>
