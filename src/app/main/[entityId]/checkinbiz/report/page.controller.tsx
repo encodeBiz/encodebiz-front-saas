@@ -5,12 +5,18 @@ import { useToast } from "@/hooks/useToast";
 import { useEntity } from "@/hooks/useEntity";
 import { IReport } from "@/domain/features/checkinbiz/IReport";
 import { Column, IRowAction } from "@/components/common/table/GenericTable";
-import { format_date } from "@/lib/common/Date";
+import { format_date, getDateRange, rmNDay } from "@/lib/common/Date";
 import { fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucursal.service";
-import { search } from "@/services/checkinbiz/report.service";
+import { search, updateReport } from "@/services/checkinbiz/report.service";
 import { DownloadOutlined } from "@mui/icons-material";
+import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
+import { useLayout } from "@/hooks/useLayout";
+import SearchFilter from "@/components/common/table/filters/SearchFilter";
+import { DateRangePicker } from "../../passinbiz/stats/components/filters/fields/DateRangeFilter";
+import { Box } from "@mui/material";
 
 interface IFilterParams {
+  filter: { status: string, range: { start: any, end: any } | null },
   params: {
     orderBy: string,
     orderDirection: 'desc' | 'asc',
@@ -30,22 +36,33 @@ export default function useAttendanceController() {
   const t = useTranslations();
   const { showToast } = useToast()
   const { currentEntity, watchServiceAccess } = useEntity()
-
+  const { changeLoaderState } = useLayout()
   const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<IReport[]>([]);
   const [itemsHistory, setItemsHistory] = useState<IReport[]>([]);
   const [filterParams, setFilterParams] = useState<any>({
+    filter: { status: 'active', range: getDateRange('year') },
     startAfter: null,
     currentPage: 0,
     total: 0,
     params: {
-      filters: [],
+      filters: [
+        { field: 'status', operator: '==', value: 'active' },
+        { field: 'start', operator: '>=', value: getDateRange('year').start },
+        { field: 'end', operator: '<=', value: getDateRange('year').end }
+      ],
       startAfter: null,
       limit: 5,
       orderBy: 'start',
       orderDirection: 'desc',
     }
   })
+
+  const options = [
+    { label: t('core.label.active'), value: 'active' },
+    { label: t('core.label.archived'), value: 'archived' },
+  ]
+
 
   /** Paginated Changed */
   const onBack = (): void => {
@@ -57,6 +74,43 @@ export default function useAttendanceController() {
 
   }
 
+
+
+  const onFilter = (filterParamsData: any) => {
+
+    const filterData: Array<{ field: string, operator: any, value: any }> = []
+    const filter = filterParamsData.filter
+    Object.keys(filter).forEach((key) => {
+      if (key === 'range')
+        filterData.push(
+          { field: 'start', operator: '>=', value: filter[key].start },
+          { field: 'end', operator: '<=', value: filter[key].end }
+        )
+      else
+        filterData.push({ field: key, operator: '==', value: filter[key] })
+    })
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null, filters: filterData }, filter: filter }
+    setFilterParams(filterParamsUpdated)
+    fetchingData(filterParamsUpdated)
+  }
+
+
+  const topFilter = <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap', width: '100%', justifyContent: 'flex-end' }}>
+
+
+    <SearchFilter
+      label={t('core.label.status')}
+      value={filterParams.filter.status}
+      onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, status: value } })}
+      options={[{ value: 'active' as string, label: t('core.label.active') }, { value: 'archived' as string, label: t('core.label.archived') }]}
+    />
+
+
+    <DateRangePicker filter width='100%' value={filterParams.filter.range} onChange={(rg: { start: any, end: any }) => {
+      onFilter({ ...filterParams, filter: { ...filterParams.filter, range: rg } })
+    }} />
+
+  </Box>
 
 
   const rowAction: Array<IRowAction> = [
@@ -100,22 +154,17 @@ export default function useAttendanceController() {
 
   const fetchingData = (filterParams: IFilterParams) => {
 
-    if (filterParams.params.filters.find((e: any) => e.field === 'branchId' && e.value === 'none'))
-      filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "branchId")
 
-    if (filterParams.params.filters.find((e: any) => e.field === "employeeId" && e.value === 'none'))
-      filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "employeeId")
-
-    if (filterParams.params.filters.find((e: any) => e.field === "employeeId" && !e.value))
-      filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "employeeId")
     const filters = [
       ...filterParams.params.filters,
     ]
     setLoading(true)
 
 
+    console.log({ ...(filterParams.params as any), filters });
 
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async res => {
+      console.log(res);
 
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
@@ -152,6 +201,21 @@ export default function useAttendanceController() {
   const columns: Column<IReport>[] = [
 
     {
+      id: 'status',
+      label: t("core.label.status"),
+      minWidth: 170,
+      format: (value, row) => <SelectFilter first={false}
+        defaultValue={row.status}
+        value={row.status}
+        onChange={(value: any) => {
+          row.status = value
+          updateStatus(row)
+        }}
+        items={options}
+      />
+    },
+
+    {
       id: 'start',
       label: t("core.label.start"),
       minWidth: 170,
@@ -163,17 +227,36 @@ export default function useAttendanceController() {
       minWidth: 170,
       format: (value, row) => format_date(row.end, 'YYYY-MM-DD')
     },
+
+
   ];
 
 
 
+  const updateStatus = async (report: IReport) => {
+    try {
+      changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+      const data: any = {
+        "id": report.id,
+        status: report.status,
+        entityId: currentEntity?.entity.id
+      }
+      await updateReport(data)
+      const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
+      fetchingData(filterParamsUpdated)
+      changeLoaderState({ show: false })
+      showToast(t('core.feedback.success'), 'success');
+    } catch (error: any) {
+      changeLoaderState({ show: false })
+      showToast(error.message, 'error')
+    }
+  };
 
 
   useEffect(() => {
-    if (currentEntity?.entity?.id) {
+    if (currentEntity?.entity?.id)
       fetchingData(filterParams)
 
-    }
   }, [currentEntity?.entity?.id])
 
 
@@ -202,7 +285,7 @@ export default function useAttendanceController() {
     items, onSort, onRowsPerPageChange,
 
     onNext, onBack, onSuccessCreate,
-    columns, rowAction,
+    columns, rowAction, topFilter,
     loading, filterParams
   }
 }

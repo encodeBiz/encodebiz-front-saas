@@ -263,10 +263,10 @@ export default function useEmployeeListController() {
     />
   </Box>
 
-  const onSuccess = () => {
-    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
-    fetchingData(filterParamsUpdated)
-  }
+    const onSuccess = () => {
+      const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
+      fetchingData(filterParamsUpdated)
+    }
 
   return {
     items, onSort, onRowsPerPageChange,

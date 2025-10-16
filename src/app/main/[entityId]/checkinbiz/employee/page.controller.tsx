@@ -20,6 +20,7 @@ import { Box, Tooltip } from "@mui/material";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 import { useCommonModal } from "@/hooks/useCommonModal";
+import { CommonModalType } from "@/contexts/commonModalContext";
 
 
 interface IFilterParams {
@@ -45,7 +46,6 @@ export default function useEmployeeListController() {
   const t = useTranslations();
   const { id } = useParams<{ id: string }>()
   const { changeLoaderState } = useLayout()
-  const { open, openModal } = useCommonModal()
   const searchParams = useSearchParams()
   const { token, user } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
@@ -67,6 +67,7 @@ export default function useEmployeeListController() {
       orderDirection: 'desc',
     }
   })
+  const { openModal } = useCommonModal()
 
   const [branchList, setBranchList] = useState<Array<ISucursal>>([])
 
@@ -295,7 +296,7 @@ export default function useEmployeeListController() {
 
 
   const onEdit = async (item: any) => {
-    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${item.id}/edit`)
+    openModal(CommonModalType.FORM, { ...item })
   }
 
 
@@ -389,7 +390,7 @@ export default function useEmployeeListController() {
     fetchingData(filterParamsUpdated)
   }
 
-  const onSuccessCreate = () => {
+  const onSuccess = () => {
     const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
     setFilterParams(filterParamsUpdated)
     fetchingData(filterParamsUpdated)
@@ -397,7 +398,7 @@ export default function useEmployeeListController() {
 
   return {
     items, onSort, onRowsPerPageChange,
-    onEdit, onSuccessCreate,
+    onEdit, onSuccess,
     onNext, onBack, buildState,
     columns, rowAction, topFilter,
     loading, filterParams,

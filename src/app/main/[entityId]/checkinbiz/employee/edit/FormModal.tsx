@@ -17,15 +17,14 @@ import { CustomTypography } from '@/components/common/Text/CustomTypography';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { SassButton } from '@/components/common/buttons/GenericButton';
-import * as Yup from 'yup';
 import { IEmployee } from '@/domain/features/checkinbiz/IEmployee';
 import useFormController from '../form/form.controller';
-
-const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSuccess: () => void }): React.JSX.Element => {
+ 
+const FormModal = ({onSuccess }: { employeeId?: string, branchId?: string, onSuccess: () => void }): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const theme = useTheme()
     const [isLoading, setIsLoading] = useState(false)
-    const { fields, validationSchema, handleSubmit, initialValues } = useFormController(true, onSuccess);
+    const { fields, validationSchema, handleSubmit, initialValues } = useFormController(true,onSuccess);
     const t = useTranslations();
     const formRef = useRef(null)
     const handleClose = (event: any, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
@@ -40,8 +39,6 @@ const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSu
             setIsLoading(true)
         }, 2000);
     }
-
-
 
     const { formStatus } = useFormStatus()
 
@@ -62,8 +59,8 @@ const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSu
         >
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
-                    <CustomTypography >{t('sucursal.edit')}</CustomTypography>
-                    <CustomTypography sx={{ fontSize: 20 }} >{t('sucursal.formDesc')}</CustomTypography>
+                    <CustomTypography >{t('employee.edit')}</CustomTypography>
+                    <CustomTypography  sx={{fontSize:20}} >{t('employee.formDesc')}</CustomTypography>
                 </Box>
                 <CustomIconBtn
                     onClick={() => handleClose(null, 'manual')}
@@ -75,7 +72,7 @@ const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSu
                     <GenericForm<Partial<IEmployee>>
                         column={2}
                         initialValues={initialValues}
-                        validationSchema={Yup.object().shape(validationSchema)}
+                        validationSchema={validationSchema}
                         onSubmit={handleModal}
                         fields={fields as FormField[]}
                         submitButtonText={t('core.button.save')}
@@ -93,6 +90,8 @@ const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSu
                     onClick={(e) => handleClose(e, 'manual')}
                     disabled={isLoading}
                     size='small'
+
+
                 >
                     {t('core.button.cancel')}
                 </SassButton>

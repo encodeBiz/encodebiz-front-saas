@@ -7,17 +7,22 @@ import { Add } from '@mui/icons-material';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import { useLayout } from '@/hooks/useLayout';
+import FormModal from './edit/FormModal';
+import { CommonModalType } from '@/contexts/commonModalContext';
+import { useCommonModal } from '@/hooks/useCommonModal';
 
 export default function EmployeeList() {
   const t = useTranslations();
   const {
     items, rowAction, onRowsPerPageChange, onSort,
-    onNext, onBack,  
+    onNext, onBack,
     filterParams, topFilter,
-    columns,  
+    columns, onSuccess,
     loading } = useEmployeeListController();
   const { navivateTo } = useLayout()
-   return (
+  const { open } = useCommonModal()
+
+  return (
     <Container maxWidth="lg">
       <HeaderPage
         title={t("employee.list")}
@@ -46,11 +51,12 @@ export default function EmployeeList() {
           onBack={onBack}
           onNext={onNext}
           topFilter={topFilter}
-           
+
 
         />
       </HeaderPage>
-     
+      {open.type === CommonModalType.FORM && <FormModal onSuccess={onSuccess} />}
+
     </Container>
   );
 }

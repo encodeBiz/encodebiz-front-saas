@@ -210,3 +210,43 @@ export function formatLocalDateTime(codeLocale: string, date: Date) {
     });
 }
 
+export function getDateRange(rangeType: 'today' | 'week' | 'month' | 'year') {
+        const now = new Date();
+        const result: any = { label: rangeType };
+
+        switch (rangeType) {
+            case 'today':
+                result.start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                result.end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+                break;
+
+            case 'week':
+                const day = now.getDay();
+                const startOfWeek = new Date(now);
+                startOfWeek.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
+                startOfWeek.setHours(0, 0, 0, 0);
+
+                result.start = startOfWeek;
+                result.end = new Date(startOfWeek);
+                result.end.setDate(startOfWeek.getDate() + 6);
+                result.end.setHours(23, 59, 59, 999);
+                break;
+
+            case 'month':
+                result.start = new Date(now.getFullYear(), now.getMonth(), 1);
+                result.end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+                break;
+
+            case 'year':
+                result.start = new Date(now.getFullYear(), 0, 1);
+                result.end = new Date(now.getFullYear(), 11, 31, 23, 59, 59, 999);
+                break;
+
+            default:
+                throw new Error('Invalid range type');
+        }
+
+      
+
+        return result;
+    }

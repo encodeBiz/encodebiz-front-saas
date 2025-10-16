@@ -20,21 +20,26 @@ import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyVal
 import ToggleInput from "@/components/common/forms/fields/ToggleInput";
 import TimeInput from "@/components/common/forms/fields/TimeInput";
 import { useFormStatus } from "@/hooks/useFormStatus";
- 
+import { useCommonModal } from "@/hooks/useCommonModal";
+import { CommonModalType } from "@/contexts/commonModalContext";
 
-export default function useSucursalController() {
+
+export default function useFormController(isFromModal: boolean, onSuccess?:()=>void) {
   const t = useTranslations();
   const { showToast } = useToast()
-
   const { navivateTo } = useLayout()
   const { token, user } = useAuth()
-  const { id } = useParams<{ id: string }>()
+
   const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
   const { formStatus } = useFormStatus()
   const [geo, setGeo] = useState<{ lat: number, lng: number }>({ lat: 0, lng: 0 })
   const [cityList, setCityList] = useState<any>(country.find(e => e.name === 'España')?.states.map(e => ({ label: e.name, value: e.name })))
   const [tz, setTz] = useState('')
+  const { open, closeModal } = useCommonModal()
+  const { id } = useParams<{ id: string }>()
+
+  const itemId = isFromModal ? open.args?.id : id
   const [initialValues, setInitialValues] = useState<Partial<any>>({
     "name": '',
     metadata: [],
@@ -47,7 +52,7 @@ export default function useSucursalController() {
     street: '',
     ratioChecklog: 100,
     disableRatioChecklog: false,
-
+    nit:'',
     startTime: null,
     endTime: null,
     "enableDayTimeRange": false,
@@ -77,15 +82,16 @@ export default function useSucursalController() {
 
 
 
-  const handleSubmit = async (values: Partial<any>) => {
+  const handleSubmit = async (values: Partial<any>, callback?:()=>void) => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const data: ISucursal = {
         name: values.name,
         ratioChecklog: values.ratioChecklog ?? 0,
         status: values.status,
+        nit: values.status,
         "metadata": ArrayToObject(values.metadata as any),
-        "id": id,
+        "id": itemId,
         address: {
           "country": values.country,
           "city": values.city,
@@ -107,17 +113,24 @@ export default function useSucursalController() {
       }
 
 
-      if (id)
+      if (itemId)
         await updateSucursal(data, token)
       else
         await createSucursal(data, token)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
 
-      if (id)
-        navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch/${id}/detail`)
-      else
-        navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch`)
+      if(typeof onSuccess === 'function') onSuccess()
+      if(typeof callback === 'function') callback()
+        
+      if (isFromModal)
+        closeModal(CommonModalType.FORM)
+      else {
+        if (itemId)
+          navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch/${itemId}/detail`)
+        else
+          navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch`)
+      }
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
@@ -284,7 +297,7 @@ export default function useSucursalController() {
 
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const sucursal: ISucursal = await fetchSucursal(currentEntity?.entity.id as string, id)
+      const sucursal: ISucursal = await fetchSucursal(currentEntity?.entity.id as string, itemId)
       setCityList(country.find((e: any) => e.name === sucursal.address.country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
       setGeo({ lat: sucursal.address.geo.lat, lng: sucursal.address.geo.lng })
       setTz(sucursal.address?.timeZone as string)
@@ -307,6 +320,7 @@ export default function useSucursalController() {
         status: sucursal.status,
         ratioChecklog: sucursal.ratioChecklog,
         name: sucursal.name,
+        nit: sucursal.nit,
         metadata: objectToArray(sucursal.metadata),
         "enableDayTimeRange": sucursal?.advance?.enableDayTimeRange,
         "startTime": startTime,
@@ -320,12 +334,12 @@ export default function useSucursalController() {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
     }
-  }, [changeLoaderState, currentEntity?.entity.id, id, showToast, t])
+  }, [currentEntity?.entity.id, itemId])
 
   useEffect(() => {
-    if (currentEntity?.entity.id && user?.id && id)
+    if (currentEntity?.entity.id && user?.id && itemId)
       fetchData()
-  }, [currentEntity?.entity.id, user?.id, id])
+  }, [currentEntity?.entity.id, user?.id, itemId])
 
   useEffect(() => {
     if (formStatus?.values?.enableDayTimeRange)

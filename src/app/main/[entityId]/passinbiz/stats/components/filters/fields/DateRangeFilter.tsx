@@ -8,6 +8,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 import { useTranslations } from "next-intl";
+import { getDateRange } from "@/lib/common/Date";
 
 
 
@@ -31,8 +32,8 @@ export const DateRangePicker = ({
     const handleStartDateChange = (newDate: any) => {
         const updatedStartDate = newDate;
         setStartDate(updatedStartDate);
-        
-        
+
+
         // Ensure end date is not before start date
         if (endDate && updatedStartDate && updatedStartDate.isAfter(endDate)) {
             setEndDate(null);
@@ -55,49 +56,10 @@ export const DateRangePicker = ({
         onChange?.({ start: selectedStart, end: selectedEnd });
     };
 
-    function getDateRange(rangeType: 'today' | 'week' | 'month' | 'year') {
-        const now = new Date();
-        const result: any = { label: rangeType };
-
-        switch (rangeType) {
-            case 'today':
-                result.start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                result.end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
-                break;
-
-            case 'week':
-                const day = now.getDay();
-                const startOfWeek = new Date(now);
-                startOfWeek.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
-                startOfWeek.setHours(0, 0, 0, 0);
-
-                result.start = startOfWeek;
-                result.end = new Date(startOfWeek);
-                result.end.setDate(startOfWeek.getDate() + 6);
-                result.end.setHours(23, 59, 59, 999);
-                break;
-
-            case 'month':
-                result.start = new Date(now.getFullYear(), now.getMonth(), 1);
-                result.end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
-                break;
-
-            case 'year':
-                result.start = new Date(now.getFullYear(), 0, 1);
-                result.end = new Date(now.getFullYear(), 11, 31, 23, 59, 59, 999);
-                break;
-
-            default:
-                throw new Error('Invalid range type');
-        }
-
-        if (result.start)
-            setStartDate(result.start)
-
-        if (result.end)
-            setEndDate(result.end)
-
-        return result;
+    function getRange(rangeType: 'today' | 'week' | 'month' | 'year') {
+        setStartDate(getDateRange(rangeType).start)
+        setEndDate(getDateRange(rangeType).end)
+        return getDateRange(rangeType);
     }
 
     const [filterRange, setFilterRange] = useState('')
@@ -144,19 +106,19 @@ export const DateRangePicker = ({
             </FormControl>
             {filter && <Box display={'flex'} flexDirection={'row'} gap={1} >
                 <Typography sx={{ "&:hover": { background: '#E9E8F5' }, cursor: 'pointer', px: 2, py: 0.3, borderRadius: 4, ...(filterRange === 'today' ? { background: '#476ae73f', color: '#476BE7' } : {}) }} variant="caption" onClick={() => {
-                    onChange?.({ start: getDateRange('today')?.start, end: getDateRange('today')?.end })
+                    onChange?.({ start: getRange('today')?.start, end: getRange('today')?.end })
                     setFilterRange('today')
                 }} >{t('core.label.today')}</Typography>
                 <Typography sx={{ "&:hover": { background: '#E9E8F5' }, cursor: 'pointer', px: 2, py: 0.3, borderRadius: 4, ...(filterRange === 'week' ? { background: '#476ae73f', color: '#476BE7' } : {}) }} variant="caption" onClick={() => {
-                    onChange?.({ start: getDateRange('week')?.start, end: getDateRange('week')?.end })
+                    onChange?.({ start: getRange('week')?.start, end: getRange('week')?.end })
                     setFilterRange('week')
                 }} >{t('core.label.thisWeek')}</Typography>
                 <Typography sx={{ "&:hover": { background: '#E9E8F5' }, cursor: 'pointer', px: 2, py: 0.3, borderRadius: 4, ...(filterRange === 'month' ? { background: '#476ae73f', color: '#476BE7' } : {}) }} variant="caption" onClick={() => {
-                    onChange?.({ start: getDateRange('month')?.start, end: getDateRange('month')?.end })
+                    onChange?.({ start: getRange('month')?.start, end: getRange('month')?.end })
                     setFilterRange('month')
                 }} >{t('core.label.thisMonth')}</Typography>
                 <Typography sx={{ "&:hover": { background: '#E9E8F5' }, cursor: 'pointer', px: 2, py: 0.3, borderRadius: 4, ...(filterRange === 'year' ? { background: '#476ae73f', color: '#476BE7' } : {}) }} variant="caption" onClick={() => {
-                    onChange?.({ start: getDateRange('year')?.start, end: getDateRange('year')?.end })
+                    onChange?.({ start: getRange('year')?.start, end: getRange('year')?.end })
                     setFilterRange('year')
                 }} >{t('core.label.thisYear')}</Typography>
             </Box>}
