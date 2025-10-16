@@ -18,8 +18,8 @@ import { BorderBox } from '@/components/common/tabs/BorderBox';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import * as Yup from 'yup';
-import { IEmployee } from '@/domain/features/checkinbiz/IEmployee';
 import useFormController from '../form/form.controller';
+import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
 
 const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSuccess: () => void }): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
@@ -28,22 +28,21 @@ const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSu
     const { fields, validationSchema, handleSubmit, initialValues } = useFormController(true, onSuccess);
     const t = useTranslations();
     const formRef = useRef(null)
+    const { formStatus } = useFormStatus()
+
     const handleClose = (event: any, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
         if (reason !== 'backdropClick')
             closeModal(CommonModalType.CHECKLOGFORM);
     };
 
-    const handleModal = (values: Partial<IEmployee>) => {
-        setIsLoading(true)
-        setTimeout(() => {
-            handleSubmit(values, () => { (formRef.current as any).resetForm() })
-            setIsLoading(true)
+    const handleModal = (values: Partial<ISucursal>) => {
+         setTimeout(() => {
+            handleSubmit(values)
         }, 2000);
     }
 
 
 
-    const { formStatus } = useFormStatus()
 
     const handleExternalSubmit = () => {
         if (formRef.current) {
@@ -57,7 +56,7 @@ const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSu
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
             fullWidth
-            maxWidth="md"
+            maxWidth="xl"
             slotProps={{ paper: { sx: { p: 2, borderRadius: 2 } } }}
         >
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -72,7 +71,7 @@ const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSu
             </DialogTitle>
             <DialogContent>
                 <BorderBox sx={{ p: 2 }} key={open.open + ''}>
-                    <GenericForm<Partial<IEmployee>>
+                    <GenericForm<Partial<ISucursal>>
                         column={2}
                         initialValues={initialValues}
                         validationSchema={Yup.object().shape(validationSchema)}
@@ -91,7 +90,7 @@ const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSu
                     color="primary"
                     variant="outlined"
                     onClick={(e) => handleClose(e, 'manual')}
-                    disabled={isLoading}
+                    disabled={formStatus?.isSubmitting}
                     size='small'
                 >
                     {t('core.button.cancel')}
@@ -102,7 +101,7 @@ const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSu
                     color="primary"
                     size='small'
                     variant="contained"
-                    startIcon={isLoading ? <CircularProgress size={20} /> : null}
+                    startIcon={formStatus?.isSubmitting ? <CircularProgress size={20} /> : null}
                 >
                     {t('core.button.submit')}
                 </SassButton>

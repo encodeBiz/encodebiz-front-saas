@@ -89,7 +89,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?:()=>v
         name: values.name,
         ratioChecklog: values.ratioChecklog ?? 0,
         status: values.status,
-        nit: values.status,
+        nit: values.nit,
         "metadata": ArrayToObject(values.metadata as any),
         "id": itemId,
         address: {

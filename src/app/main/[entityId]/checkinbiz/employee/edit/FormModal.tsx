@@ -19,12 +19,11 @@ import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { IEmployee } from '@/domain/features/checkinbiz/IEmployee';
 import useFormController from '../form/form.controller';
- 
-const FormModal = ({onSuccess }: { employeeId?: string, branchId?: string, onSuccess: () => void }): React.JSX.Element => {
+
+const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSuccess: () => void }): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const theme = useTheme()
-    const [isLoading, setIsLoading] = useState(false)
-    const { fields, validationSchema, handleSubmit, initialValues } = useFormController(true,onSuccess);
+    const { fields, validationSchema, handleSubmit, initialValues } = useFormController(true, onSuccess);
     const t = useTranslations();
     const formRef = useRef(null)
     const handleClose = (event: any, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
@@ -33,11 +32,7 @@ const FormModal = ({onSuccess }: { employeeId?: string, branchId?: string, onSuc
     };
 
     const handleModal = (values: Partial<IEmployee>) => {
-        setIsLoading(true)
-        setTimeout(() => {
-            handleSubmit(values, () => { (formRef.current as any).resetForm() })
-            setIsLoading(true)
-        }, 2000);
+        handleSubmit(values)
     }
 
     const { formStatus } = useFormStatus()
@@ -60,7 +55,7 @@ const FormModal = ({onSuccess }: { employeeId?: string, branchId?: string, onSuc
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
                     <CustomTypography >{t('employee.edit')}</CustomTypography>
-                    <CustomTypography  sx={{fontSize:20}} >{t('employee.formDesc')}</CustomTypography>
+                    <CustomTypography sx={{ fontSize: 20 }} >{t('employee.formDesc')}</CustomTypography>
                 </Box>
                 <CustomIconBtn
                     onClick={() => handleClose(null, 'manual')}
@@ -88,7 +83,7 @@ const FormModal = ({onSuccess }: { employeeId?: string, branchId?: string, onSuc
                     color="primary"
                     variant="outlined"
                     onClick={(e) => handleClose(e, 'manual')}
-                    disabled={isLoading}
+                    disabled={formStatus?.isSubmitting}
                     size='small'
 
 
@@ -101,7 +96,7 @@ const FormModal = ({onSuccess }: { employeeId?: string, branchId?: string, onSuc
                     color="primary"
                     size='small'
                     variant="contained"
-                    startIcon={isLoading ? <CircularProgress size={20} /> : null}
+                    startIcon={formStatus?.isSubmitting ? <CircularProgress size={20} /> : null}
                 >
                     {t('core.button.submit')}
                 </SassButton>

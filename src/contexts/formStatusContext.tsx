@@ -8,8 +8,8 @@ interface IFormStatus {
     dirty: boolean
     status: any
     values: any
-
-    validateForm:(values?: any)=>void
+    setSubmitting: (isSubmitting: boolean) => void
+    validateForm: (values?: any) => void
 }
 
 interface FormStatusContextType {
