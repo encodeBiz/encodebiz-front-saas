@@ -15,7 +15,7 @@ import { Box } from "@mui/material";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
 import { useLayout } from "@/hooks/useLayout";
 import { useSearchParams } from "next/navigation";
-import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
+import { decodeFromBase64 } from "@/lib/common/base64";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
@@ -116,7 +116,7 @@ export default function useStaffListController() {
       icon: <Event color="primary" />,
       label: t('core.label.event'),
       allowItem: (item: IStaff) => item?.allowedTypes?.includes('event'),
-      onPress: (item: IStaff) => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/staff/${item.id}/events?params=${buildState()}`)
+      onPress: (item: IStaff) => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/staff/${item.id}/events`)
     },
     {
       actionBtn: true,
@@ -246,14 +246,7 @@ export default function useStaffListController() {
     }
   }
 
-  const buildState = () => {
-    const dataStatus = {
-      items,
-      itemsHistory,
-    }
-    localStorage.setItem('staffIndex', JSON.stringify(dataStatus))
-    return encodeToBase64({ ...filterParams })
-  }
+ 
 
   const fetchingData = (filterParams: IFilterParams) => {
     setLoading(true)
@@ -375,7 +368,7 @@ export default function useStaffListController() {
   return {
     items, onSort, onRowsPerPageChange,
     onEdit,
-    onNext, onBack, buildState,
+    onNext, onBack, 
     columns, rowAction, onDelete, topFilter,
     loading, deleting, filterParams,
 

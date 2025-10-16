@@ -22,14 +22,19 @@ import { country } from "@/config/country";
 import { formatLocalDateTime } from "@/lib/common/Date";
 import AddressInput from "@/components/common/forms/fields/AddressInput";
 import { Timestamp } from "firebase/firestore";
+import { useCommonModal } from "@/hooks/useCommonModal";
+import { CommonModalType } from "@/contexts/commonModalContext";
 
 
-export default function useHolderController() {
+export default function useFormController(isFromModal: boolean, onSuccess?: () => void) {
   const t = useTranslations();
   const { showToast } = useToast()
   const { navivateTo } = useLayout()
   const { token, user } = useAuth()
+  const { open, closeModal } = useCommonModal()
+   
   const { id } = useParams<{ id: string }>()
+  const itemId = isFromModal ? open.args?.id : id
   const { currentEntity, watchServiceAccess } = useEntity()
   const [geo, setGeo] = useState<{ lat: number, lng: number }>({ lat: 0, lng: 0 })
 
@@ -74,7 +79,7 @@ export default function useHolderController() {
     colorAccent: requiredRule(t),
   });
 
-  const setDinamicDataAction = async (values: Partial<IEvent>) => {
+  const handleSubmit = async (values: Partial<IEvent>) => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const codeLocale = country.find(e => e.name === countrySelected)?.code2
@@ -98,13 +103,21 @@ export default function useHolderController() {
         "endDate": new Date(values.endDate).toISOString(),
         template: values.template as "default" | "vip" | "expo" | "festival",
         "metadata": ArrayToObject(values.metadata),
-        "id": id,
+        "id": itemId,
       }
-      if (id) await updateEvent(data, token)
+      if (itemId) await updateEvent(data, token)
       else await createEvent(data, token)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
-      navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event`)
+
+      if (typeof onSuccess === 'function') onSuccess()
+
+      if (isFromModal)
+        closeModal(CommonModalType.FORM)
+      else {
+        navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event`)
+
+      }
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
@@ -261,7 +274,7 @@ export default function useHolderController() {
     {
       name: 'metadata',
       label: t('core.label.setting'),
-   
+
       required: false,
       fullWidth: true,
       component: DynamicKeyValueInput,
@@ -273,9 +286,9 @@ export default function useHolderController() {
 
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, id)
+      const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, itemId)
       const location = event.location.split('+++')
-       
+
       let countryCurrent = 'España'
       let city = 'Madrid'
       if (location.length === 2) {
@@ -291,7 +304,7 @@ export default function useHolderController() {
         ...event,
         date: (event.date instanceof Timestamp) ? event.date.toDate() : new Date(event.date),
         endDate: (event.endDate instanceof Timestamp) ? event.endDate.toDate() : new Date(event.endDate),
-        country:countryCurrent, city,
+        country: countryCurrent, city,
         metadata: objectToArray(event.metadata)
       })
 
@@ -306,15 +319,15 @@ export default function useHolderController() {
 
 
   useEffect(() => {
-    if (currentEntity?.entity.id && user?.id && id) {
+    if (currentEntity?.entity.id && user?.id && itemId) {
       fetchData()
     }
 
     if (currentEntity?.entity.id && user?.id) {
       watchServiceAccess('passinbiz')
     }
-  }, [currentEntity?.entity.id, user?.id, id])
+  }, [currentEntity?.entity.id, user?.id, itemId])
 
 
-  return { fields, initialValues, validationSchema, setDinamicDataAction }
+  return { fields, initialValues, validationSchema, handleSubmit }
 }

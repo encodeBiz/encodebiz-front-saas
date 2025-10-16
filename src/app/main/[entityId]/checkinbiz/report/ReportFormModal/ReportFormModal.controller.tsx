@@ -13,7 +13,7 @@ import { search } from "@/services/checkinbiz/sucursal.service";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { createReport } from "@/services/checkinbiz/report.service";
 import { IReport } from "@/domain/features/checkinbiz/IReport";
-import { format_date } from "@/lib/common/Date";
+import { format_date, getDateRange } from "@/lib/common/Date";
 
 interface ReportOutput {
 
@@ -41,7 +41,7 @@ export default function useAttendanceFormModalController(onSuccess: () => void) 
   const { changeLoaderState } = useLayout()
   const { closeModal } = useCommonModal()
   const [initialValues] = useState<Partial<any>>({
-    branchId: '',
+    branchId: 'none',
     periocity: '',
   })
   const [download, setDownload] = useState(false)
@@ -63,9 +63,8 @@ export default function useAttendanceFormModalController(onSuccess: () => void) 
         entityId: currentEntity?.entity?.id as string,
         start: format_date(dateRange.start, 'YYYY-MM-DD'),
         end: format_date(dateRange.end, 'YYYY-MM-DD'),
-        branchId: values.branchId ?? null
-
       }
+      if (values.branchId !== 'none') Object.assign(data, { branchId: values.branchId })
       const response: ReportOutput = await createReport(data, token)
       if (download)
         window.open(response.reporData.ref.url, '_blank')
@@ -86,8 +85,7 @@ export default function useAttendanceFormModalController(onSuccess: () => void) 
       name: 'periocity',
       label: t('core.label.periocity'),
       component: SelectInput,
-      options: [
-        { value: '' as string, label: t('core.label.select') },
+      options: [        
         { value: 'today' as string, label: t('core.label.today') },
         { value: 'week' as string, label: t('core.label.thisWeek') },
         { value: 'month' as string, label: t('core.label.thisMonth') },
@@ -99,7 +97,7 @@ export default function useAttendanceFormModalController(onSuccess: () => void) 
       name: 'branchId',
       label: t('core.label.sucursal'),
       component: SelectInput,
-      options: [{ value: '' as string, label: t('core.label.all') },
+      options: [{ value: 'none', label: t('core.label.all') },
       ...branchList
       ]
     },
@@ -131,46 +129,6 @@ export default function useAttendanceFormModalController(onSuccess: () => void) 
   }, [currentEntity?.entity.id])
 
 
-  function getDateRange(rangeType: 'today' | 'week' | 'month' | 'year') {
-    const now = new Date();
-    const result: any = { label: rangeType };
-
-    switch (rangeType) {
-      case 'today':
-        result.start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        result.end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
-        break;
-
-      case 'week':
-        const day = now.getDay();
-        const startOfWeek = new Date(now);
-        startOfWeek.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
-        startOfWeek.setHours(0, 0, 0, 0);
-
-        result.start = startOfWeek;
-        result.end = new Date(startOfWeek);
-        result.end.setDate(startOfWeek.getDate() + 6);
-        result.end.setHours(23, 59, 59, 999);
-        break;
-
-      case 'month':
-        result.start = new Date(now.getFullYear(), now.getMonth(), 1);
-        result.end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
-        break;
-
-      case 'year':
-        result.start = new Date(now.getFullYear(), 0, 1);
-        result.end = new Date(now.getFullYear(), 11, 31, 23, 59, 59, 999);
-        break;
-
-      default:
-        throw new Error('Invalid range type');
-    }
-
-
-
-    return result;
-  }
 
 
   return { fields, validationSchema, setDinamicDataAction, initialValues, download, setDownload }

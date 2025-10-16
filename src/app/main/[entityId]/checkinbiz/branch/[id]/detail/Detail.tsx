@@ -12,7 +12,7 @@ import { Card, Box, Grid, Typography, CardContent, Paper, Divider, Stack } from 
 import { useTranslations } from "next-intl"
 import FormModal from "../../edit/FormModal"
 
-export const Detail = ({ branch,onSuccess, children }: { branch: ISucursal, children: React.ReactNode, onSuccess:()=>void }) => {
+export const Detail = ({ branch, onSuccess, children }: { branch: ISucursal, children: React.ReactNode, onSuccess: () => void }) => {
     const t = useTranslations()
     const { navivateTo } = useLayout()
     const { openModal, open } = useCommonModal()
@@ -30,8 +30,8 @@ export const Detail = ({ branch,onSuccess, children }: { branch: ISucursal, chil
                             {branch?.name}
                         </Typography>
                         <Box display={'flex'} flexDirection={'row'} gap={1}>
-                            {branch?.nit && <Typography variant="body1"   >
-                                {t('core.label.nit')}: {branch?.nit}
+                            {branch?.nif && <Typography variant="body1"   >
+                                {t('core.label.nif')}: {branch?.nif}
                             </Typography>}
                             <CustomChip size='small' label={branch.disableRatioChecklog ? t('core.label.disableRatioChecklogD') : t('core.label.disableRatioChecklogE')} />
                         </Box>
@@ -52,12 +52,12 @@ export const Detail = ({ branch,onSuccess, children }: { branch: ISucursal, chil
         <CardContent sx={{ p: 0 }}>
             <Paper elevation={0} sx={{ p: 3 }}>
                 <Box display={'flex'} justifyContent={'space-between'} alignItems={'flex-start'}>
-                    <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={2} alignItems={'flex-start'}>
+                    <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={0} alignItems={'flex-start'}>
                         <DetailText label={t('core.label.ratioChecklog2')} value={branch?.ratioChecklog + ' ' + t('core.label.meters')} orientation="row" help={t('sucursal.ratioHelp')} />
                         <DetailText label={t('core.label.address')} value={branch?.address?.street} orientation="row" >
                             <Box sx={{ marginLeft: 4, minWidth: 140 }}><SassButton variant="text" onClick={() => onGoMap(branch.address.geo.lat, branch.address.geo.lng)}> {t('sucursal.map')}</SassButton></Box>
                         </DetailText>
-
+                        <DetailText label={t('core.label.timeZone')} value={branch?.address?.timeZone} orientation="row" />
 
                     </Box>
                 </Box>
@@ -69,14 +69,13 @@ export const Detail = ({ branch,onSuccess, children }: { branch: ISucursal, chil
 
                 <Box display={'flex'} justifyContent={'space-between'} alignItems={'flex-start'}>
 
-                    <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={4} alignItems={'flex-start'}>
+                    {branch?.advance && <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={4} alignItems={'flex-start'}>
                         <DetailText label={t('core.label.enableDayTimeRange')} value={branch?.advance?.enableDayTimeRange ? t('core.label.enable') : t('core.label.noenable')} />
-                        {branch?.advance?.enableDayTimeRange && <DetailText label={t('core.label.periocityTime')} value={branch?.advance?.startTimeWorkingDay?.hour + ':' + branch?.advance?.startTimeWorkingDay?.minute + ' - ' + branch?.advance?.endTimeWorkingDay?.hour + ':' + branch?.advance?.endTimeWorkingDay?.minute} />}
-
+                        <DetailText label={t('core.label.periocityTime')} value={((branch?.advance?.startTimeWorkingDay?.hour as number)<10?'0'+branch?.advance?.startTimeWorkingDay?.hour:branch?.advance?.startTimeWorkingDay?.hour)+ ':' + ((branch?.advance?.startTimeWorkingDay?.minute as number)<10?'0'+branch?.advance?.startTimeWorkingDay?.minute:branch?.advance?.startTimeWorkingDay?.minute) + ' - ' + ((branch?.advance?.endTimeWorkingDay?.hour as number)<10?'0'+branch?.advance?.endTimeWorkingDay?.hour:branch?.advance?.endTimeWorkingDay?.hour)+ ':' + ((branch?.advance?.endTimeWorkingDay?.minute as number)<10?'0'+branch?.advance?.endTimeWorkingDay?.minute:branch?.advance?.endTimeWorkingDay?.minute)} />
                         <DetailText label={t('core.label.disableBreak')} value={branch?.advance?.disableBreak ? t('core.label.yes') : t('core.label.no')} />
-                        {branch?.advance?.disableBreak && <DetailText label={t('core.label.breakTimeRange')} value={branch?.advance?.timeBreak + ' ' + t('core.label.minutes')} />}
+                        <DetailText label={t('core.label.breakTimeRange')} value={branch?.advance?.timeBreak + ' ' + t('core.label.minutes')} />
 
-                    </Box>
+                    </Box>}
                 </Box>
 
                 {Array.isArray(branch.metadata) && branch.metadata.length > 0 && <><Divider /> <Paper sx={{ mt: 4 }} elevation={0} >

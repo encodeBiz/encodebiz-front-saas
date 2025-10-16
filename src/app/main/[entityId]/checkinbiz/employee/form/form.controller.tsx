@@ -19,14 +19,19 @@ import { search } from "@/services/checkinbiz/sucursal.service";
 import SelectMultipleInput from "@/components/common/forms/fields/SelectMultipleInput";
 import ToggleInput from "@/components/common/forms/fields/ToggleInput";
 import PhoneNumberInput from "@/components/common/forms/fields/PhoneNumberInput";
+import { useCommonModal } from "@/hooks/useCommonModal";
+import { CommonModalType } from "@/contexts/commonModalContext";
 
 
-export default function useEmployeeController() {
+export default function useFormController(isFromModal: boolean, onSuccess?: () => void) {
   const t = useTranslations();
   const { showToast } = useToast()
   const { navivateTo } = useLayout()
   const { token, user } = useAuth()
+  const { open, closeModal } = useCommonModal()
   const { id } = useParams<{ id: string }>()
+  const itemId = isFromModal ? open.args?.id : id
+
   const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
   const [fields, setFields] = useState<Array<any>>([])
@@ -58,29 +63,36 @@ export default function useEmployeeController() {
 
   });
 
-  const handleSubmit = async (values: Partial<IEmployee>) => {
+  const handleSubmit = async (values: Partial<IEmployee>, callback?: () => void) => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const data = {
         ...values,
         "uid": user?.id as string,
         "metadata": ArrayToObject(values.metadata as any),
-        "id": id,
+        "id": itemId,
         entityId: currentEntity?.entity.id
       }
 
 
-      if (id)
+      if (itemId)
         await updateEmployee(data, token)
       else
         await createEmployee(data, token)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
 
-      if (id)
-        navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${id}/detail`)
-      else
-        navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)
+      if (typeof onSuccess === 'function') onSuccess()
+      if (typeof callback === 'function') callback()
+
+      if (isFromModal)
+        closeModal(CommonModalType.FORM)
+      else {
+        if (itemId)
+          navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${itemId}/detail`)
+        else
+          navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)
+      }
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
@@ -93,7 +105,7 @@ export default function useEmployeeController() {
 
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const event: IEmployee = await fetchEmployee(currentEntity?.entity.id as string, id)
+      const event: IEmployee = await fetchEmployee(currentEntity?.entity.id as string, itemId)
       setInitialValues({
         ...event,
         metadata: objectToArray(event.metadata)
@@ -241,9 +253,9 @@ export default function useEmployeeController() {
     if (currentEntity?.entity.id) {
       inicialize()
     }
-    if (currentEntity?.entity.id && user?.id && id)
+    if (currentEntity?.entity.id && user?.id && itemId)
       fetchData()
-  }, [currentEntity?.entity.id, user?.id, id])
+  }, [currentEntity?.entity.id, user?.id, itemId])
 
 
   return { fields, initialValues, validationSchema, handleSubmit }

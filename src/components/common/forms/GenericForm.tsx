@@ -26,7 +26,7 @@ import { ExpandMoreOutlined } from '@mui/icons-material';
 // A component that watches the form state
 const FormStatusWatcher = () => {
   // Access the entire Formik state
-  const { dirty, isSubmitting, isValid, status, values, validateForm } = useFormikContext();
+  const { dirty, isSubmitting, isValid, status, values, validateForm, setSubmitting } = useFormikContext();
   const { updateFromStatus } = useFormStatus()
 
   useEffect(() => {
@@ -34,6 +34,7 @@ const FormStatusWatcher = () => {
     updateFromStatus({
       isValid,
       isSubmitting,
+      setSubmitting,
       dirty,
       status,
       values,
@@ -192,6 +193,7 @@ const GenericForm = <T extends Record<string, any>>({
                       sx={{ height:56}}
                     >
                       <Typography component="span" textTransform={'uppercase'}>{field.label as string}</Typography>
+                      {field.hit && <Typography color='textSecondary' component="span" >{field.hit as string}</Typography>}
                     </AccordionSummary>
                     <AccordionDetails>
                       <Box sx={{ width: '100%', p: 4 }}>
@@ -236,7 +238,7 @@ const GenericForm = <T extends Record<string, any>>({
               {linkForm && <Typography variant="body2">
                 <Link style={{ color: theme.palette.primary.main, textDecoration: 'none' }} href="/auth/recovery">{t('core.signup.recovery')}</Link>
               </Typography>}
-
+               
               <Grid sx={{ width: '100%' }}>
                 <Box display="flex" justifyContent="flex-end" gap={2}>
                   {onCancel && (

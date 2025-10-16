@@ -13,7 +13,7 @@ export default function AttendanceList() {
   const t = useTranslations();
   const {
     items, onRowsPerPageChange, onSort,
-    onNext, onBack,
+    onNext, onBack,topFilter,
     filterParams,  
     columns, rowAction,onSuccessCreate,
     loading } = useAttendanceController();
@@ -37,6 +37,7 @@ export default function AttendanceList() {
         <GenericTable
           data={items}
           rowAction={rowAction}
+          topFilter={topFilter}
           columns={columns}
           title={''}
           keyField="id"

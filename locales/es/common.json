@@ -102,6 +102,7 @@
       "create-download": "Crear y descargar",
       "advance": "CONFICURACIÓN AVANZADA",
       "dayTimeRange": "Horario de Jornada Laboral",
+      "dayTimeRangeDesc": "Por defecto el horario de la Jornada Laboral será 08:00 a 17:00",
       "enableDayTimeRange": "Habilitar horario",
       "startTime": "Hora de inicio",
       "endTime": "Hora de fin",
@@ -132,7 +133,7 @@
       "collaborator": "Colaborador",
       "ratioChecklog": "Zona de chequeo en metros",
       "ratioChecklog2": "Zona de chequeo permitida",
-      "nit": "Número de identificación fiscal",
+      "nif": "Número de identificación fiscal",
       "inactive": "Inactivo",
       "personalData": "INFORMACIÓN PESONAL",
       "aditionalData": "INFORMACIÓN ADICIONAL",
@@ -149,6 +150,7 @@
       "state": "Estado",
       "vip": "VIP",
       "number": "Número",
+      "timeZone": "Zona horaria",
       "search": "Buscar",
       "template": "Plantilla",
       "expo": "Expositivo",
@@ -290,7 +292,8 @@
       "breakTimeRange": "Tiempo de descanso",
       "yes": "Si",
       "no": "No",
-      "timeBreak": "Tiempo de descanzo (minutos)"
+      "timeBreakDesc": "Por defecto el tiempo de descanso será de 60 minutos",
+      "timeBreak": "Tiempo de descanso (minutos)"
     },
     "button": {
       "revoke": "Revocar",
@@ -905,7 +908,7 @@
     "text3": "Dimensiones requeridas: "
   },
   "error": {
-    "report/internal_error":"Error interno",
+    "report/internal_error": "Error interno",
     "auth/invalid-credential": "Credenciales incorrectas",
     "auth/email-already-exists": "El correo electrónico ya está en uso. Inicie sesión o utilice un correo electrónico diferente.",
     "auth/email-already-in-use": "El correo electrónico ya está en uso. Inicie sesión o utilice un correo electrónico diferente.",

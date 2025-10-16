@@ -51,7 +51,7 @@ export default function useAttendanceFormModalController(onSuccess: () => void, 
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       if (!open.args?.data) {
         const branch = await fetchSucursal(currentEntity?.entity?.id as string, (branchId ?? values.branchId) as string)
-        const data: IChecklog & { idAdmin: boolean } = {
+        const data: IChecklog & { isAdmin: boolean } = {
           "employeeId": employeeId ?? values.employeeId as string,
           "entityId": currentEntity?.entity?.id as string,
           "branchId": branchId ?? values.branchId as string,
@@ -63,7 +63,7 @@ export default function useAttendanceFormModalController(onSuccess: () => void, 
           timestamp: values.timestamp,
           status: 'valid',
           failedCode: '',
-          idAdmin: true
+          isAdmin: true
         }
 
         await createLog(data, token)

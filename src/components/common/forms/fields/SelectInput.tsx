@@ -32,6 +32,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
       label={props.label}
       error={!!helperText}
       value={field.value}
+      defaultValue={field.value}
       key={createSlug(field?.value ?? '')}
       onChange={(e: any) => {
         if (typeof onHandleChange === 'function') onHandleChange(e.target.value)

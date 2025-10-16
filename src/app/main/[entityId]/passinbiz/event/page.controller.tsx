@@ -13,7 +13,7 @@ import { ArchiveOutlined, Edit, Person2 } from "@mui/icons-material";
 import { Box, Chip, Typography } from "@mui/material";
 import { formatDateInSpanish } from "@/lib/common/Date";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
-import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
+import { decodeFromBase64 } from "@/lib/common/base64";
 import { useSearchParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
@@ -43,7 +43,7 @@ export default function useIEventListController() {
   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
   const { navivateTo } = useLayout()
-  const { closeModal } = useCommonModal()
+  const { closeModal, openModal } = useCommonModal()
   const searchParams = useSearchParams()
 
   /** Filter and PAgination Control */
@@ -63,8 +63,6 @@ export default function useIEventListController() {
       orderDirection: 'desc',
     }
   })
-  /** Filter and PAgination Control */
-  const { openModal } = useCommonModal()
 
 
   /** Paginated Changed */
@@ -127,7 +125,7 @@ export default function useIEventListController() {
       items={options}
     />
 
-     
+
     <SearchIndexFilter
       type="events"
       label={t('core.label.search')}
@@ -229,18 +227,11 @@ export default function useIEventListController() {
 
   }
 
-  const buildState = () => {
-    const dataStatus = {
-      items,
-      itemsHistory,
-    }
-    localStorage.setItem('eventIndex', JSON.stringify(dataStatus))
-    return encodeToBase64({ ...filterParams })
-  }
+
 
   const [deleting, setDeleting] = useState(false)
   const onEdit = async (item: any) => {
-    navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event/${item.id}/edit?params=${buildState()}`)
+    openModal(CommonModalType.FORM, { ...item })
   }
 
 
@@ -283,7 +274,7 @@ export default function useIEventListController() {
       label: t('core.label.staff1'),
       bulk: false,
       allowItem: () => true,
-      onPress: (item: IEvent) => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event/${item.id}/staff?params=${buildState()}`)
+      onPress: (item: IEvent) => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event/${item.id}/staff`)
     },
 
     {
@@ -325,11 +316,15 @@ export default function useIEventListController() {
   }, [currentEntity?.entity?.id, searchParams.get('params')])
 
 
-
+  const onSuccess = () => {
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
+    setFilterParams(filterParamsUpdated)
+    fetchingData(filterParamsUpdated)
+  }
   return {
     onArchived, items, onSort, onRowsPerPageChange, topFilter,
     onEdit,
-    onBack, onNext, buildState,
+    onBack, onNext, onSuccess,
     columns, deleting, rowAction,
     loading, filterParams
   }

@@ -1,11 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import {
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
     Box,
-    CircularProgress,
     useTheme,
     FormControlLabel,
     Switch
@@ -26,22 +25,17 @@ import { IChecklog } from '@/domain/features/checkinbiz/IChecklog';
 const ReportFormModal = ({ onSuccess }: { onSuccess: () => void }): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const theme = useTheme()
-    const [isLoading, setIsLoading] = useState(false)
     const { fields, validationSchema, setDinamicDataAction, initialValues, download, setDownload } = useReportFormModalController(onSuccess);
     const t = useTranslations();
 
     const handleClose = (event: any, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
         if (reason !== 'backdropClick')
-            closeModal(CommonModalType.CHECKLOGFORM);
+            closeModal(CommonModalType.FORM);
     };
 
     const handleContactModal = (values: Partial<IChecklog>) => {
-        setIsLoading(true)
-        setTimeout(() => {
-            setDinamicDataAction(values)
-            closeModal(CommonModalType.CHECKLOGFORM);
-            setIsLoading(true)
-        }, 2000);
+        setDinamicDataAction(values)
+
     }
 
 
@@ -104,7 +98,7 @@ const ReportFormModal = ({ onSuccess }: { onSuccess: () => void }): React.JSX.El
                     color="primary"
                     variant="outlined"
                     onClick={(e) => handleClose(e, 'manual')}
-                    disabled={isLoading}
+                    disabled={formStatus?.isSubmitting}
                     size='small'
 
 
@@ -120,7 +114,6 @@ const ReportFormModal = ({ onSuccess }: { onSuccess: () => void }): React.JSX.El
                     color="primary"
                     size='small'
                     variant="contained"
-                    startIcon={isLoading ? <CircularProgress size={20} /> : null}
                 >
                     {t('core.button.createReport')}
                 </SassButton>

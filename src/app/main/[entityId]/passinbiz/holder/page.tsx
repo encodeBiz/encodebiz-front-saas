@@ -20,7 +20,7 @@ export default function HolderList() {
     items, rowAction, onRowsPerPageChange, onSort,
     onNext, onBack, filterParams, onAction, revoking,
     topFilter,
-    columns, buildState,
+    columns, 
     loading,
   } = useHolderListController();
   const { open, closeModal, openModal } = useCommonModal()
@@ -41,7 +41,7 @@ export default function HolderList() {
             >{t('core.button.confirmSCV')}</SassButton>
 
             <SassButton
-              onClick={() => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/holder/add?params=${buildState()}`)}
+              onClick={() => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/holder/add`)}
               variant='contained'
               startIcon={<Add />}
             >{t('holders.addHolder')}</SassButton>

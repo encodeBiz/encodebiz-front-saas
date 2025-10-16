@@ -22,7 +22,7 @@ import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 
 interface IFilterParams {
-  filter: { branchId: 'none', employeeId: 'none', status: 'valid', range: { start: any, end: any } | null },
+  filter: { branchId: string, employeeId: string, status: string, range: { start: any, end: any } | null },
   params: {
     orderBy: string,
     orderDirection: 'desc' | 'asc',
@@ -292,43 +292,7 @@ export default function useAttendanceController() {
     fetchingData(filterParamsUpdated)
   }
 
-
-  function exportToCSV(data: Array<IChecklog>, headersMap = null, filename = 'data.csv') {
-    if (!data.length) return;
-
-    // Use custom headers or object keys
-    const headers = headersMap ? Object.keys(headersMap) : Object.keys(data[0]);
-    const headerLabels = headersMap ? Object.values(headersMap) : headers;
-
-    let csvContent = headerLabels.join(',') + '\n';
-
-    data.forEach((row: any) => {
-      const values = headers.map(header => {
-        let value = row[header] !== undefined ? row[header] : '';
-        value = String(value);
-
-        if (value.includes(',') || value.includes('"') || value.includes('\n')) {
-          value = `"${value.replace(/"/g, '""')}"`;
-        }
-
-        return value;
-      });
-
-      csvContent += values.join(',') + '\n';
-    });
-
-    // Download
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-
-    link.setAttribute('href', url);
-    link.setAttribute('download', filename);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-
+ 
 
   
 
