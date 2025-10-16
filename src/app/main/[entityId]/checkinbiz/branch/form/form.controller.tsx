@@ -42,12 +42,12 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const itemId = isFromModal ? open.args?.id : id
 
   const startTime = new Date()
-  startTime.setMinutes(8)
-  startTime.setHours(0)
+  startTime.setMinutes(0)
+  startTime.setHours(8)
 
   const endTime = new Date()
-  endTime.setMinutes(17)
-  endTime.setHours(0)
+  endTime.setMinutes(0)
+  endTime.setHours(17)
 
   const [initialValues, setInitialValues] = useState<Partial<any>>({
     "name": '',
@@ -59,7 +59,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     status: 'active',
     region: '',
     street: '',
-    ratioChecklog: 100,
+    ratioChecklog: 201,
     disableRatioChecklog: false,
     nif: '',
     startTime: startTime,
@@ -83,6 +83,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     country: requiredRule(t),
     city: requiredRule(t),
     name: requiredRule(t),
+    nif: requiredRule(t), 
     postalCode: requiredRule(t),
     status: requiredRule(t),
     ratioChecklog: ratioLogRule(t)

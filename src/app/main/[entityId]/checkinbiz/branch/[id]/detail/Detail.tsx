@@ -74,7 +74,7 @@ export const Detail = ({ branch, onSuccess, children }: { branch: ISucursal, chi
                         {branch?.advance?.enableDayTimeRange && <DetailText label={t('core.label.periocityTime')} value={branch?.advance?.startTimeWorkingDay?.hour + ':' + branch?.advance?.startTimeWorkingDay?.minute + ' - ' + branch?.advance?.endTimeWorkingDay?.hour + ':' + branch?.advance?.endTimeWorkingDay?.minute} />}
 
                         <DetailText label={t('core.label.disableBreak')} value={branch?.advance?.disableBreak ? t('core.label.yes') : t('core.label.no')} />
-                        {branch?.advance?.disableBreak && <DetailText label={t('core.label.breakTimeRange')} value={branch?.advance?.timeBreak + ' ' + t('core.label.minutes')} />}
+                        <DetailText label={t('core.label.breakTimeRange')} value={branch?.advance?.timeBreak + ' ' + t('core.label.minutes')} />
 
                     </Box>}
                 </Box>
