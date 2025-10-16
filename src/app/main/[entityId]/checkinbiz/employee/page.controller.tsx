@@ -12,7 +12,7 @@ import { search as searchBranch } from "@/services/checkinbiz/sucursal.service";
 import { useLayout } from "@/hooks/useLayout";
 import { useParams, useSearchParams } from "next/navigation";
 import { Edit, ListAltOutlined, ReplyAllOutlined, SignalWifi4Bar, SignalWifi4BarLockOutlined } from "@mui/icons-material";
-import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
+import { decodeFromBase64 } from "@/lib/common/base64";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";

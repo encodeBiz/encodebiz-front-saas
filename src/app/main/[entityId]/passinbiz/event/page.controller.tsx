@@ -13,7 +13,7 @@ import { ArchiveOutlined, Edit, Person2 } from "@mui/icons-material";
 import { Box, Chip, Typography } from "@mui/material";
 import { formatDateInSpanish } from "@/lib/common/Date";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
-import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
+import { decodeFromBase64 } from "@/lib/common/base64";
 import { useSearchParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";

@@ -15,7 +15,7 @@ import { Box } from "@mui/material";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
 import { useLayout } from "@/hooks/useLayout";
 import { useSearchParams } from "next/navigation";
-import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
+import { decodeFromBase64 } from "@/lib/common/base64";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";

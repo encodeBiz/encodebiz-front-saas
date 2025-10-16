@@ -16,7 +16,7 @@ import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { search as searchEvent } from "@/services/passinbiz/event.service";
 import { CustomChip } from "@/components/common/table/CustomChip";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
-import { decodeFromBase64, encodeToBase64 } from "@/lib/common/base64";
+import { decodeFromBase64 } from "@/lib/common/base64";
 import { useSearchParams } from "next/navigation";
 import { PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
