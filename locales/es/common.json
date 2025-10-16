@@ -149,6 +149,7 @@
       "state": "Estado",
       "vip": "VIP",
       "number": "Número",
+      "timeZone":"Zona horaria",
       "search": "Buscar",
       "template": "Plantilla",
       "expo": "Expositivo",
