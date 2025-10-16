@@ -48,7 +48,7 @@ const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSu
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
             fullWidth
-            maxWidth="md"
+            maxWidth="xl"
             slotProps={{ paper: { sx: { p: 2, borderRadius: 2 } } }}
         >
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>

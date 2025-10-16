@@ -231,7 +231,7 @@ export default function useIEventListController() {
 
   const [deleting, setDeleting] = useState(false)
   const onEdit = async (item: any) => {
-    openModal(CommonModalType.FORM, { item })
+    openModal(CommonModalType.FORM, { ...item })
   }
 
 

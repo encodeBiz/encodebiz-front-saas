@@ -32,6 +32,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const { navivateTo } = useLayout()
   const { token, user } = useAuth()
   const { open, closeModal } = useCommonModal()
+   
   const { id } = useParams<{ id: string }>()
   const itemId = isFromModal ? open.args?.id : id
   const { currentEntity, watchServiceAccess } = useEntity()
