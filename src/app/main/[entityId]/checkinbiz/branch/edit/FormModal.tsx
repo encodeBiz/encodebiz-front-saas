@@ -1,12 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import {
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
     Box,
-    CircularProgress,
-    useTheme
+     useTheme
 } from '@mui/material';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
@@ -31,7 +30,7 @@ const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSu
 
     const handleClose = (event: any, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
         if (reason !== 'backdropClick')
-            closeModal(CommonModalType.CHECKLOGFORM);
+            closeModal(CommonModalType.FORM);
     };
 
     const handleModal = (values: Partial<ISucursal>) => {
@@ -100,8 +99,7 @@ const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSu
                     color="primary"
                     size='small'
                     variant="contained"
-                    startIcon={formStatus?.isSubmitting ? <CircularProgress size={20} /> : null}
-                >
+                 >
                     {t('core.button.submit')}
                 </SassButton>
             </DialogActions>

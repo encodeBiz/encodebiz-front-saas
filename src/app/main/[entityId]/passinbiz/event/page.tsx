@@ -13,13 +13,14 @@ import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import { useLayout } from '@/hooks/useLayout';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useCommonModal } from '@/hooks/useCommonModal';
+import FormModal from './edit/FormModal';
 
 export default function HolderList() {
   const t = useTranslations();
   const {
     items, rowAction, onArchived, deleting,
     onNext, onBack, onSort, onRowsPerPageChange,
-    topFilter, buildState, filterParams,
+    topFilter, onSuccess, filterParams,
     columns, loading, } = useHolderListController();
   const { entitySuscription } = useEntity()
   const { navivateTo } = useLayout()
@@ -33,7 +34,7 @@ export default function HolderList() {
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
             {!entitySuscription.find(e => e.serviceId === "passinbiz" && e.plan === "freemium") ? <SassButton
               role='link'
-              onClick={() => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event/add?params=${buildState()}`)}
+              onClick={() => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event/add`)}
               variant='contained'
               startIcon={<Add />}
             > {t('event.add')}</SassButton> :
@@ -78,6 +79,9 @@ export default function HolderList() {
         description={t('event.deleteConfirmModalTitle2')}
         onOKAction={(args: { data: Array<string> }) => onArchived(args.data as any)}
       />}
+
+      {open.type === CommonModalType.FORM && <FormModal onSuccess={onSuccess} />}
+
     </Container>
   );
 }

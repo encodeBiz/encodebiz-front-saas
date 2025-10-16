@@ -18,7 +18,7 @@ export default function HolderList() {
     items, rowAction, onRowsPerPageChange, onSort,
     onNext, onBack, onDelete, deleting,
     filterParams, topFilter,
-    columns, buildState,
+    columns,
     loading } = useHolderListController();
   const { open } = useCommonModal()
   const { navivateTo } = useLayout()
@@ -29,7 +29,7 @@ export default function HolderList() {
         actions={
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
             <SassButton
-              onClick={() => navivateTo(`/passinbiz/staff/add?params=${buildState()}`)}
+              onClick={() => navivateTo(`/passinbiz/staff/add`)}
               variant='contained'
               startIcon={<Add />}
             >{t('staff.add')}</SassButton>

@@ -5,7 +5,6 @@ import {
     DialogContent,
     DialogTitle,
     Box,
-    CircularProgress,
     useTheme
 } from '@mui/material';
 import { useCommonModal } from '@/hooks/useCommonModal';
@@ -28,7 +27,7 @@ const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSu
     const formRef = useRef(null)
     const handleClose = (event: any, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
         if (reason !== 'backdropClick')
-            closeModal(CommonModalType.CHECKLOGFORM);
+            closeModal(CommonModalType.FORM);
     };
 
     const handleModal = (values: Partial<IEmployee>) => {
@@ -96,7 +95,6 @@ const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSu
                     color="primary"
                     size='small'
                     variant="contained"
-                    startIcon={formStatus?.isSubmitting ? <CircularProgress size={20} /> : null}
                 >
                     {t('core.button.submit')}
                 </SassButton>

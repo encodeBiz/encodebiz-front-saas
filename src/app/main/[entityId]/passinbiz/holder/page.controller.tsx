@@ -308,15 +308,7 @@ export default function useHolderListController() {
 
   }
 
-  const buildState = () => {
-    const dataStatus = {
-      items,
-      itemsHistory,
-    }
-    localStorage.setItem('holderIndex', JSON.stringify(dataStatus))
-    return encodeToBase64({ ...filterParams })
-  }
-
+  
   const fetchingData = (filterParams: IFilterParams) => {
 
     setLoading(true)
@@ -403,7 +395,7 @@ export default function useHolderListController() {
 
   }
   const onEdit = async (item: any) => {
-    navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/holder/${item.id}/edit?params=${buildState()}`)
+    navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/holder/${item.id}/edit`)
   }
 
 
@@ -448,7 +440,7 @@ export default function useHolderListController() {
     onEdit, onSort, onRowsPerPageChange,
     handleUploadConfirm, isUploading, handleConfigConfirm,
     onNext, onBack,
-    columns, rowAction, setFilterParams, filterParams, buildState,
+    columns, rowAction, setFilterParams, filterParams,
     loading, onAction, revoking,
 
   }

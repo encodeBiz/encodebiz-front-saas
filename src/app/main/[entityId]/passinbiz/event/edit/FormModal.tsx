@@ -5,7 +5,7 @@ import {
     DialogContent,
     DialogTitle,
     Box,
-     useTheme
+    useTheme
 } from '@mui/material';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
@@ -16,28 +16,23 @@ import { CustomTypography } from '@/components/common/Text/CustomTypography';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { SassButton } from '@/components/common/buttons/GenericButton';
-import useAttendanceFormModalController from './AttendanceFormModal.controller';
-import { IChecklog } from '@/domain/features/checkinbiz/IChecklog';
-import * as Yup from 'yup';
-
-const AttendanceFormModal = ({ employeeId, branchId, onSuccess }: { employeeId?: string, branchId?: string, onSuccess: () => void }): React.JSX.Element => {
+import useFormController from '../form/form.controller';
+import { IEvent } from '@/domain/features/passinbiz/IEvent';
+ 
+const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSuccess: () => void }): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const theme = useTheme()
-    const { fields, validationSchema, setDinamicDataAction, initialValues } = useAttendanceFormModalController(onSuccess, employeeId, branchId);
+    const { fields, validationSchema, handleSubmit, initialValues } = useFormController(true, onSuccess);
     const t = useTranslations();
     const formRef = useRef(null)
     const handleClose = (event: any, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
         if (reason !== 'backdropClick')
-            closeModal(CommonModalType.CHECKLOGFORM);
+            closeModal(CommonModalType.FORM);
     };
 
-    const handleContactModal = (values: Partial<IChecklog>) => {
-
-        setDinamicDataAction(values, () => { (formRef.current as any).resetForm() })
-
+    const handleModal = (values: Partial<IEvent>) => {
+        handleSubmit(values)
     }
-
-
 
     const { formStatus } = useFormStatus()
 
@@ -58,7 +53,8 @@ const AttendanceFormModal = ({ employeeId, branchId, onSuccess }: { employeeId?:
         >
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
-                    <CustomTypography >{open?.args?.data ? t('attendance.edit') : t('attendance.add')}</CustomTypography>
+                    <CustomTypography >{t('event.edit')}</CustomTypography>
+                    <CustomTypography sx={{ fontSize: 20 }} >{t('event.formDesc')}</CustomTypography>
                 </Box>
                 <CustomIconBtn
                     onClick={() => handleClose(null, 'manual')}
@@ -67,11 +63,11 @@ const AttendanceFormModal = ({ employeeId, branchId, onSuccess }: { employeeId?:
             </DialogTitle>
             <DialogContent>
                 <BorderBox sx={{ p: 2 }} key={open.open + ''}>
-                    <GenericForm<Partial<IChecklog>>
+                    <GenericForm<Partial<IEvent>>
                         column={2}
                         initialValues={initialValues}
-                        validationSchema={Yup.object().shape(validationSchema)}
-                        onSubmit={handleContactModal}
+                        validationSchema={validationSchema}
+                        onSubmit={handleModal}
                         fields={fields as FormField[]}
                         submitButtonText={t('core.button.save')}
                         enableReinitialize
@@ -107,4 +103,4 @@ const AttendanceFormModal = ({ employeeId, branchId, onSuccess }: { employeeId?:
     );
 };
 
-export default AttendanceFormModal
+export default FormModal

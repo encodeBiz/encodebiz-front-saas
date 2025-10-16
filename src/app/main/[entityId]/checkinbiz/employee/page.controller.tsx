@@ -361,14 +361,7 @@ export default function useEmployeeListController() {
     />
   </Box>
 
-  const buildState = () => {
-    const dataStatus = {
-      items,
-      itemsHistory,
-    }
-    localStorage.setItem('employeeIndex', JSON.stringify(dataStatus))
-    return encodeToBase64({ ...filterParams })
-  }
+ 
 
 
   const onFilter = (filterParamsData: any) => {
@@ -399,7 +392,7 @@ export default function useEmployeeListController() {
   return {
     items, onSort, onRowsPerPageChange,
     onEdit, onSuccess,
-    onNext, onBack, buildState,
+    onNext, onBack,
     columns, rowAction, topFilter,
     loading, filterParams,
 

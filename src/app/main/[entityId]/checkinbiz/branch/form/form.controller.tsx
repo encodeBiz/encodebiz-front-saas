@@ -24,7 +24,7 @@ import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 
 
-export default function useFormController(isFromModal: boolean, onSuccess?:()=>void) {
+export default function useFormController(isFromModal: boolean, onSuccess?: () => void) {
   const t = useTranslations();
   const { showToast } = useToast()
   const { navivateTo } = useLayout()
@@ -40,6 +40,15 @@ export default function useFormController(isFromModal: boolean, onSuccess?:()=>v
   const { id } = useParams<{ id: string }>()
 
   const itemId = isFromModal ? open.args?.id : id
+
+  const startTime = new Date()
+  startTime.setMinutes(8)
+  startTime.setHours(0)
+
+  const endTime = new Date()
+  endTime.setMinutes(17)
+  endTime.setHours(0)
+
   const [initialValues, setInitialValues] = useState<Partial<any>>({
     "name": '',
     metadata: [],
@@ -52,12 +61,12 @@ export default function useFormController(isFromModal: boolean, onSuccess?:()=>v
     street: '',
     ratioChecklog: 100,
     disableRatioChecklog: false,
-    nif:'',
-    startTime: null,
-    endTime: null,
+    nif: '',
+    startTime: startTime,
+    endTime: endTime,
     "enableDayTimeRange": false,
     "disableBreak": false,
-    "timeBreak": null
+    "timeBreak": 60
 
   });
 
@@ -82,7 +91,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?:()=>v
 
 
 
-  const handleSubmit = async (values: Partial<any>, callback?:()=>void) => {
+  const handleSubmit = async (values: Partial<any>, callback?: () => void) => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const data: ISucursal = {
@@ -120,9 +129,9 @@ export default function useFormController(isFromModal: boolean, onSuccess?:()=>v
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
 
-      if(typeof onSuccess === 'function') onSuccess()
-      if(typeof callback === 'function') callback()
-        
+      if (typeof onSuccess === 'function') onSuccess()
+      if (typeof callback === 'function') callback()
+
       if (isFromModal)
         closeModal(CommonModalType.FORM)
       else {
