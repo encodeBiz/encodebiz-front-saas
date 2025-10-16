@@ -30,8 +30,8 @@ export const Detail = ({ branch, onSuccess, children }: { branch: ISucursal, chi
                             {branch?.name}
                         </Typography>
                         <Box display={'flex'} flexDirection={'row'} gap={1}>
-                            {branch?.nit && <Typography variant="body1"   >
-                                {t('core.label.nit')}: {branch?.nit}
+                            {branch?.nif && <Typography variant="body1"   >
+                                {t('core.label.nif')}: {branch?.nif}
                             </Typography>}
                             <CustomChip size='small' label={branch.disableRatioChecklog ? t('core.label.disableRatioChecklogD') : t('core.label.disableRatioChecklogE')} />
                         </Box>
@@ -55,9 +55,10 @@ export const Detail = ({ branch, onSuccess, children }: { branch: ISucursal, chi
                     <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={2} alignItems={'flex-start'}>
                         <DetailText label={t('core.label.ratioChecklog2')} value={branch?.ratioChecklog + ' ' + t('core.label.meters')} orientation="row" help={t('sucursal.ratioHelp')} />
                         <DetailText label={t('core.label.address')} value={branch?.address?.street} orientation="row" >
-                            <Typography fontSize={16}>{t('core.label.timeZone') + ": " + branch?.address?.timeZone}</Typography>
                             <Box sx={{ marginLeft: 4, minWidth: 140 }}><SassButton variant="text" onClick={() => onGoMap(branch.address.geo.lat, branch.address.geo.lng)}> {t('sucursal.map')}</SassButton></Box>
                         </DetailText>
+                        <DetailText label={t('core.label.timeZone')} value={branch?.address?.timeZone} orientation="row" />
+
                     </Box>
                 </Box>
 

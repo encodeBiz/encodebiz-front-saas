@@ -52,7 +52,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?:()=>v
     street: '',
     ratioChecklog: 100,
     disableRatioChecklog: false,
-    nit:'',
+    nif:'',
     startTime: null,
     endTime: null,
     "enableDayTimeRange": false,
@@ -89,7 +89,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?:()=>v
         name: values.name,
         ratioChecklog: values.ratioChecklog ?? 0,
         status: values.status,
-        nit: values.nit,
+        nif: values.nif,
         "metadata": ArrayToObject(values.metadata as any),
         "id": itemId,
         address: {
@@ -152,8 +152,8 @@ export default function useFormController(isFromModal: boolean, onSuccess?:()=>v
       component: TextInput,
     },
     {
-      name: 'nit',
-      label: t('core.label.nit'),
+      name: 'nif',
+      label: t('core.label.nif'),
       component: TextInput,
     },
     {
@@ -320,7 +320,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?:()=>v
         status: sucursal.status,
         ratioChecklog: sucursal.ratioChecklog,
         name: sucursal.name,
-        nit: sucursal.nit,
+        nif: sucursal.nif,
         metadata: objectToArray(sucursal.metadata),
         "enableDayTimeRange": sucursal?.advance?.enableDayTimeRange,
         "startTime": startTime,

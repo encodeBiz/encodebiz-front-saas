@@ -24,7 +24,6 @@ import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
 const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSuccess: () => void }): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const theme = useTheme()
-    const [isLoading, setIsLoading] = useState(false)
     const { fields, validationSchema, handleSubmit, initialValues } = useFormController(true, onSuccess);
     const t = useTranslations();
     const formRef = useRef(null)

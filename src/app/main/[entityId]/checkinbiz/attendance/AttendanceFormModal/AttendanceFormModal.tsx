@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import {
     Dialog,
     DialogActions,
@@ -24,7 +24,6 @@ import * as Yup from 'yup';
 const AttendanceFormModal = ({ employeeId, branchId, onSuccess }: { employeeId?: string, branchId?: string, onSuccess: () => void }): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const theme = useTheme()
-    const [isLoading, setIsLoading] = useState(false)
     const { fields, validationSchema, setDinamicDataAction, initialValues } = useAttendanceFormModalController(onSuccess, employeeId, branchId);
     const t = useTranslations();
     const formRef = useRef(null)
@@ -34,11 +33,9 @@ const AttendanceFormModal = ({ employeeId, branchId, onSuccess }: { employeeId?:
     };
 
     const handleContactModal = (values: Partial<IChecklog>) => {
-        setIsLoading(true)
-        setTimeout(() => {
-            setDinamicDataAction(values, () => { (formRef.current as any).resetForm() })
-            setIsLoading(true)
-        }, 2000);
+
+        setDinamicDataAction(values, () => { (formRef.current as any).resetForm() })
+
     }
 
 
@@ -90,7 +87,7 @@ const AttendanceFormModal = ({ employeeId, branchId, onSuccess }: { employeeId?:
                     color="primary"
                     variant="outlined"
                     onClick={(e) => handleClose(e, 'manual')}
-                    disabled={isLoading}
+                    disabled={formStatus?.isSubmitting}
                     size='small'
 
 
@@ -103,7 +100,7 @@ const AttendanceFormModal = ({ employeeId, branchId, onSuccess }: { employeeId?:
                     color="primary"
                     size='small'
                     variant="contained"
-                    startIcon={isLoading ? <CircularProgress size={20} /> : null}
+                    startIcon={formStatus?.isSubmitting ? <CircularProgress size={20} /> : null}
                 >
                     {t('core.button.submit')}
                 </SassButton>

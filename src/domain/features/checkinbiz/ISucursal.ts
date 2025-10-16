@@ -3,7 +3,7 @@ export interface ISucursal {
   id?: string;
   name: string
   entityId: string,
-  nit?: string
+  nif?: string
   address: {
     street: string,
     city: string,
