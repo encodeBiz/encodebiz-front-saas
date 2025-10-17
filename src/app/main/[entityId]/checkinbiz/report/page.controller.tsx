@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/useToast";
 import { useEntity } from "@/hooks/useEntity";
 import { IReport } from "@/domain/features/checkinbiz/IReport";
 import { Column, IRowAction } from "@/components/common/table/GenericTable";
-import { format_date, getDateRange, rmNDay } from "@/lib/common/Date";
+import { format_date, getDateRange } from "@/lib/common/Date";
 import { fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucursal.service";
 import { search, updateReport } from "@/services/checkinbiz/report.service";
 import { DownloadOutlined } from "@mui/icons-material";
