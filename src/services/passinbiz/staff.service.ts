@@ -27,7 +27,7 @@ export const fetchStaff = async (entityId: string, id: string): Promise<IStaff> 
    * @param {SearchParams} params
    * @returns {Promise<IStaff[]>}
    */
-export const deleteStaff = async (entityId: string, id: string, token: string): Promise<void> => {
+export const deleteStaff = async (entityId: string, id: string, token: string, locale: any = 'es'): Promise<void> => {
 
   try {
 
@@ -37,7 +37,7 @@ export const deleteStaff = async (entityId: string, id: string, token: string): 
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: '',
         headers: {
-          authorization: `Bearer ${token}`
+          authorization: `Bearer ${token}`,locale
         },
       });
       const response: any = await httpClientFetchInstance.delete(process.env.NEXT_PUBLIC_BACKEND_URI_PASSINBIZ_DELETE_STAFF as string, {
@@ -72,7 +72,7 @@ export const search = async (entityId: string, params: SearchParams): Promise<IS
 }
 
 
-export async function createStaff(data: Partial<IStaff>, token: string) {
+export async function createStaff(data: Partial<IStaff>, token: string, locale: any = 'es') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -80,7 +80,7 @@ export async function createStaff(data: Partial<IStaff>, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -100,7 +100,7 @@ export async function createStaff(data: Partial<IStaff>, token: string) {
   }
 }
 
-export async function updateStaff(data: Partial<IStaff>, token: string) {
+export async function updateStaff(data: Partial<IStaff>, token: string, locale: any = 'es') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -108,7 +108,7 @@ export async function updateStaff(data: Partial<IStaff>, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,locale
         },
       });
       const response: any = await httpClientFetchInstance.post(

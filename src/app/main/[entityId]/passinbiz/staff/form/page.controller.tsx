@@ -167,9 +167,9 @@ export default function useStaffController() {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       let data
       if (!id)
-        data = await createStaff(dataForm, token)
+        data = await createStaff(dataForm, token , currentLocale)
       else
-        await updateStaff(dataForm, token)
+        await updateStaff(dataForm, token , currentLocale)
 
       saveEventByStaff(values.eventList as Array<string>, id ? id : data?.id)
 
