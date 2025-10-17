@@ -19,6 +19,7 @@ import { useRouter } from 'nextjs-toploader/app';
 import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
 import IUserEntity from '@/domain/core/auth/IUserEntity';
 import PhoneNumberInput from '@/components/common/forms/fields/PhoneNumberInput';
+import { useAppLocale } from '@/hooks/useAppLocale';
 export interface UserFormValues {
     "uid": string
     "name": string
@@ -45,6 +46,8 @@ export const useUserProfileController = () => {
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
     const { push } = useRouter()
+    const { currentLocale } = useAppLocale()
+
     const [initialValues, setInitialValues] = useState<UserFormValues>({
         uid: user?.uid as string | "",
         "name": user?.displayName as string | "",
@@ -114,8 +117,8 @@ export const useUserProfileController = () => {
                     password: '123hg3j4h5gj3h4g5j',
                     passwordConfirm: '123hg3j4h5gj3h4g5j',
                     phone: values.phone as string ?? '',
-                }, sessionToken, user?.uid)
-                
+                }, sessionToken, user?.uid, currentLocale)
+
                 setUser({
                     ...user as any,
                     ...await getUser() as User
@@ -124,7 +127,7 @@ export const useUserProfileController = () => {
                 refrestList(user?.uid)
                 updateUserData()
                 changeLoaderState({ show: false })
-               
+
                 goEntity()
 
             }
@@ -155,7 +158,7 @@ export const useUserProfileController = () => {
 
     const checkProfile = async () => {
         try {
-            const userData: IUser = await fetchUserAccount(user?.uid as string)
+            const userData: IUser = await fetchUserAccount(user?.uid as string, currentLocale)
             if (userData.email && userData.fullName !== 'Guest') goEntity()
         } catch (error) {
             if (error instanceof Error) {

@@ -7,6 +7,7 @@ import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
 import { emailRule, passwordRestrictionRule } from '@/config/yupRules';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import IUserEntity from '@/domain/core/auth/IUserEntity';
+import { useAppLocale } from '@/hooks/useAppLocale';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { useLayout } from '@/hooks/useLayout';
 import { useToast } from '@/hooks/useToast';
@@ -31,6 +32,7 @@ export const useRegisterController = () => {
     const { push } = useRouter()
     const search = useSearchParams()
     const { openModal } = useCommonModal()
+    const { currentLocale } = useAppLocale()
 
     const [initialValues] = useState<LoginFormValues>({
         email: '',
@@ -59,7 +61,7 @@ export const useRegisterController = () => {
     const signInWithEmail = async (values: LoginFormValues) => {
         try {
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-            const userAuth = await signInEmail(values.email, values.password)
+            const userAuth = await signInEmail(values.email, values.password, currentLocale)
             goEntity(userAuth?.user.uid)
             changeLoaderState({ show: false })
         } catch (error: any) {

@@ -6,6 +6,7 @@ import SimpleCheckTerm from '@/components/common/forms/fields/SimpleCheckTerm';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { GENERAL_ROUTE, MAIN_ROUTE } from '@/config/routes';
 import { emailRule, passwordRestrictionRule, requiredRule } from '@/config/yupRules';
+import { useAppLocale } from '@/hooks/useAppLocale';
 import { useAuth } from '@/hooks/useAuth';
 import { useLayout } from '@/hooks/useLayout';
 import { useToast } from '@/hooks/useToast';
@@ -31,6 +32,7 @@ export const useRegisterController = () => {
     const { changeLoaderState } = useLayout()
     const { updateUserData } = useAuth()
     const { push } = useRouter()
+     const { currentLocale } = useAppLocale()
     const t = useTranslations()
     const [initialValues] = useState<RegisterFormValues>({
         fullName: '',
@@ -69,7 +71,7 @@ export const useRegisterController = () => {
             if (!responseAuth) {
                 showToast('Error to fetch user auth token', 'error')
             } else {
-                await signUpEmail(values, sessionToken, responseAuth.user.uid as string)
+                await signUpEmail(values, sessionToken, responseAuth.user.uid as string, currentLocale)
                 await updateUserData()
                 push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
                 changeLoaderState({ show: false })

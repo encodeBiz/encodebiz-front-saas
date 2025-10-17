@@ -12,6 +12,7 @@ import { MAIN_ROUTE, GENERAL_ROUTE, USER_ROUTE, PUBLIC_PATH } from "@/config/rou
 import { useToast } from "@/hooks/useToast";
 import IUserEntity from "@/domain/core/auth/IUserEntity";
 import { fetchUserEntities } from "@/services/core/entity.service";
+import { useAppLocale } from "@/hooks/useAppLocale";
 interface AuthContextType {
     user: IUser | null;
     userAuth: User | null;
@@ -28,6 +29,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [token, setToken] = useState<string>('');
     const [pendAuth, setPendAuth] = useState(true);
     const { push } = useRouter()
+    const { currentLocale } = useAppLocale()
     const { showToast } = useToast()
     const searchParams = useSearchParams()
     const pathName = usePathname()
@@ -39,7 +41,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     /** Refresh User Data */
     const updateUserData = async () => {
         const userAuth: User = await getUser() as User
-        const extraData = await fetchUserAccount(userAuth.uid)
+        const extraData = await fetchUserAccount(userAuth.uid, currentLocale)
         const userData: IUser = {
             ...extraData
         }
@@ -65,7 +67,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             if (userAuth) {
                 setUserAuth(userAuth)
                 setToken(await userAuth.getIdToken())
-                const extraData = await fetchUserAccount(userAuth.uid)
+                const extraData = await fetchUserAccount(userAuth.uid, currentLocale)
                 setUser({
                     ...userAuth,
                     ...extraData,
@@ -126,7 +128,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const authWithToken = async (authToken: string) => {
         try {
-            const data = await signInToken(authToken);
+            const data = await signInToken(authToken,currentLocale);
             updateUserData()
             goEntity(data.user.uid)
         } catch (error) {

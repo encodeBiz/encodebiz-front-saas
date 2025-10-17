@@ -43,6 +43,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     const pathname = usePathname()
     const { changeLocale } = useAppLocale()
     const { entityId } = useParams<any>()
+    const { currentLocale } = useAppLocale()
 
     const watchServiceAccess = useCallback(async (serviceId: BizType) => {
         const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
@@ -83,7 +84,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
                     _currentEntity = entityList.find(e => e.isActive) as IUserEntity
 
                     setCurrentEntity(_currentEntity)
-                    const extraData = await fetchUserAccount(userAuth.uid)
+                    const extraData = await fetchUserAccount(userAuth.uid, currentLocale)
                     if (extraData.fullName !== "Guest")
                         push(`/${MAIN_ROUTE}/${_currentEntity.entity.id}/dashboard`)
 
@@ -91,7 +92,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
             } else {
                 try {
-                    const userData: IUser = await fetchUserAccount(userAuth.uid)
+                    const userData: IUser = await fetchUserAccount(userAuth.uid, currentLocale)
                     if (userData.email)
                         push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
                 } catch (error) {

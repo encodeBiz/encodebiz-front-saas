@@ -24,7 +24,7 @@ import {
 
   BrightnessHigh,
   Menu as MenuIcon,
- 
+
 } from '@mui/icons-material';
 import HelpIcon from '@mui/icons-material/Help';
 import { useLayout } from '@/hooks/useLayout';
@@ -40,6 +40,7 @@ import EntitySwitcher from '@/components/common/EntitySwitcher';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { MoonIcon } from '@/components/common/icons/MoonIcon';
 import { QuestionIcon } from '@/components/common/icons/QuestionIcon';
+import { useAppLocale } from '@/hooks/useAppLocale';
 
 
 export default function Header({ drawerWidth }: { drawerWidth: number }) {
@@ -54,6 +55,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
   const { cleanEntityContext } = useEntity()
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const { currentLocale } = useAppLocale()
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -168,7 +170,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
       <MenuItem onClick={() => {
         handleMenuClose(); handleLogout(() => {
           cleanEntityContext()
-        })
+        }, currentLocale)
       }}>
         <IconButton
           size="large"
@@ -219,7 +221,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
                 width: 40
               }}
             >
-              {theme.palette.mode === 'dark' ? <BrightnessHigh /> : <MoonIcon   />}
+              {theme.palette.mode === 'dark' ? <BrightnessHigh /> : <MoonIcon />}
             </IconButton>
 
 
@@ -240,11 +242,11 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
                 }}
                 onClick={() => openModal()}
               >
-                <QuestionIcon  />
+                <QuestionIcon />
               </IconButton>
             </Tooltip>
 
-            <Divider sx={{height: 30,mt:1.5}} orientation="vertical" flexItem />
+            <Divider sx={{ height: 30, mt: 1.5 }} orientation="vertical" flexItem />
 
             <Tooltip title={t('layout.header.profile')}>
               <IconButton
