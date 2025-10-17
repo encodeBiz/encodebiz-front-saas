@@ -23,6 +23,7 @@ import { enable2AF, verify2AF } from '@/services/checkinbiz/employee.service';
 import Image from 'next/image';
 import { useLayout } from '@/hooks/useLayout';
 import { useToast } from '@/hooks/useToast';
+import { useAppLocale } from '@/hooks/useAppLocale';
 
 interface ConfigTwoFAType {
     qrImage: string
@@ -39,6 +40,7 @@ const ConfigTwoFA = () => {
     const t = useTranslations()
     const { open, openModal, closeModal } = useCommonModal()
     const { token } = useCheck()
+    const { currentLocale } = useAppLocale()
 
     const { changeLoaderState } = useLayout()
     const { showToast } = useToast()
@@ -51,7 +53,7 @@ const ConfigTwoFA = () => {
         setPending(true)
         setLaunch(true)
         try {
-            const enable2AFData: ConfigTwoFAType = await enable2AF(token)
+            const enable2AFData: ConfigTwoFAType = await enable2AF(token, currentLocale)
             setData(enable2AFData)
 
 
@@ -65,7 +67,7 @@ const ConfigTwoFA = () => {
         changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
 
         try {
-            const data: VerifyTwoFAType = await verify2AF(code, token)
+            const data: VerifyTwoFAType = await verify2AF(code, token, currentLocale)
             //setToken(data.token)
             closeModal(CommonModalType.CONFIG2AF)
             openModal(CommonModalType.INFO)
@@ -113,7 +115,7 @@ const ConfigTwoFA = () => {
                             {pending && !data?.qrImage && <BoxLoader message=' ' />}
                             {!pending && data?.qrImage && <Image width={200} height={200} alt='' src={data?.qrImage as string} />}
                         </Box>
-                       <Box sx={{cursor:'pointer'}} ><Typography onClick={() => setQr(false)} variant="body1" fontSize={16} fontWeight={'bold'} color='primary' > {t('twoFactor.noScanner')} </Typography></Box>
+                        <Box sx={{ cursor: 'pointer' }} ><Typography onClick={() => setQr(false)} variant="body1" fontSize={16} fontWeight={'bold'} color='primary' > {t('twoFactor.noScanner')} </Typography></Box>
                     </Box>}
 
                     {!qr && data?.secret && !pending && <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} gap={3}>
@@ -126,7 +128,7 @@ const ConfigTwoFA = () => {
                         }} boxShadow={'0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)'} width={'100%'} height={40} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
                             <Typography variant="body1" fontSize={16}   > {t('twoFactor.copyClave')} </Typography>
                         </Box>
-                        <Box sx={{cursor:'pointer'}} ><Typography  onClick={() => setQr(true)} variant="body1" fontSize={16} fontWeight={'bold'} color='primary' > {t('twoFactor.scannerQR')} </Typography></Box>
+                        <Box sx={{ cursor: 'pointer' }} ><Typography onClick={() => setQr(true)} variant="body1" fontSize={16} fontWeight={'bold'} color='primary' > {t('twoFactor.scannerQR')} </Typography></Box>
                     </Box>}
                     <Divider />
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>

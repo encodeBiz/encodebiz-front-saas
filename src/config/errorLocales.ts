@@ -60,6 +60,5 @@ export const errorDict: any = {
     "stats/range_and_groupBy_tolong": "The data to graph is too extensive. Try selecting a smaller date range or another grouping type"
   }
 }
- 
-const lang = 'es'
-export const codeError = errorDict[lang]
+
+export const codeError = errorDict

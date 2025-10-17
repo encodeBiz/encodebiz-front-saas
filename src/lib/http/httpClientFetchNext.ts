@@ -71,6 +71,9 @@ export class HttpClient {
       ...options,
     };
 
+ 
+    
+
     try {
       const response = await fetch(fullURL, { ...config, cache: forceCache });
 
@@ -118,7 +121,8 @@ export class HttpClient {
             logout()
             window.location.href = "/auth/login?expiredToken=1"
           }
-          const message = codeError[responseError.code];
+          const lang = (this.headers as any)?.locale??'es'
+          const message = codeError[lang][responseError.code];
           const messageError = message ? message : responseError.error ? responseError.error : `HTTP error! status: ${response.status}`
 
           throw new Error(JSON.stringify({ message: messageError, code: responseError.code }));

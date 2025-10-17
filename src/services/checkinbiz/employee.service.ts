@@ -22,8 +22,6 @@ export const fetchEmployee = async (entityId: string, id: string): Promise<IEmpl
 }
 
 export const fetch2FAData = async (entityId: string, id: string): Promise<{ twoFA: boolean, trustedDevicesId: Array<string> }> => {
-
-
   const result: any[] = await searchFirestore(
     {
       limit: 2,
@@ -57,7 +55,7 @@ export const search = async (entityId: string, params: SearchParams): Promise<IE
   return result;
 }
 
-export async function createEmployee(data: Partial<IEmployee>, token: string) {
+export async function createEmployee(data: Partial<IEmployee>, token: string, locale: any = 'es') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -66,6 +64,7 @@ export async function createEmployee(data: Partial<IEmployee>, token: string) {
         baseURL: "",
         headers: {
           authorization: `Bearer ${token}`,
+          locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -85,7 +84,7 @@ export async function createEmployee(data: Partial<IEmployee>, token: string) {
   }
 }
 
-export async function updateEmployee(data: Partial<IEmployee>, token: string) {
+export async function updateEmployee(data: Partial<IEmployee>, token: string, locale: any = 'es') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -94,6 +93,7 @@ export async function updateEmployee(data: Partial<IEmployee>, token: string) {
         baseURL: "",
         headers: {
           authorization: `Bearer ${token}`,
+          locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -121,7 +121,7 @@ export async function updateEmployee(data: Partial<IEmployee>, token: string) {
    * @param {SearchParams} params
    * @returns {Promise<Iemployee[]>}
    */
-export const deleteEmployee = async (entityId: string, id: string, token: string): Promise<void> => {
+export const deleteEmployee = async (entityId: string, id: string, token: string, locale: any = 'es'): Promise<void> => {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -129,7 +129,7 @@ export const deleteEmployee = async (entityId: string, id: string, token: string
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,locale
         },
       });
       const response: any = await httpClientFetchInstance.delete(
@@ -151,7 +151,7 @@ export const deleteEmployee = async (entityId: string, id: string, token: string
 
 
 
-export async function createLog(data: ICreateLog, token: string) {
+export async function createLog(data: ICreateLog, token: string, locale: any = 'es') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -159,7 +159,7 @@ export async function createLog(data: ICreateLog, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -219,13 +219,13 @@ export const getEmplyeeLogsState = async (entityId: string, employeeId: string, 
 }
 
 
-export async function validateEmployee(token: string) {
+export async function validateEmployee(token: string, locale: any = 'es') {
   try {
 
     const httpClientFetchInstance: HttpClient = new HttpClient({
       baseURL: "",
       headers: {
-        'authorization': `Bearer ${token}`,
+        'authorization': `Bearer ${token}`, locale
       },
     });
     const response: any = await httpClientFetchInstance.post(
@@ -246,13 +246,13 @@ export async function validateEmployee(token: string) {
 }
 
 
-export async function enable2AF(token: string) {
+export async function enable2AF(token: string, locale: any = 'es') {
   try {
 
     const httpClientFetchInstance: HttpClient = new HttpClient({
       baseURL: "",
       headers: {
-        'authorization': `Bearer ${token}`,
+        'authorization': `Bearer ${token}`, locale
       },
     });
     const response: any = await httpClientFetchInstance.post(
@@ -273,13 +273,13 @@ export async function enable2AF(token: string) {
 }
 
 
-export async function verify2AF(code: string, token: string) {
+export async function verify2AF(code: string, token: string, locale: any = 'es') {
   try {
 
     const httpClientFetchInstance: HttpClient = new HttpClient({
       baseURL: "",
       headers: {
-        'authorization': `Bearer ${token}`,
+        'authorization': `Bearer ${token}`, locale
       },
     });
     const response: any = await httpClientFetchInstance.post(
