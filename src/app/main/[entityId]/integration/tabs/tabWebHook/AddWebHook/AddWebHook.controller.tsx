@@ -13,6 +13,7 @@ import { createWebHook } from "@/services/core/integration.service";
 import { IWebHook } from "@/domain/core/integration/IWebHook";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
+import { useAppLocale } from "@/hooks/useAppLocale";
 
 const types = ["pass.created", "pass.created.failed", "pass.revoked", "pass.sent", "credential.created", "credential.sent", "credential.sent.failed", "validation.scanned", "validation.scanned.success", "validation.scanned.failed", "attendance.clock_in", "attendance.clock_out"]
 export default function useAddWebHookController() {
@@ -23,6 +24,7 @@ export default function useAddWebHookController() {
   const { id } = useParams<{ id: string }>()
   const { currentEntity, watchServiceAccess } = useEntity()
   const { changeLoaderState } = useLayout()
+  const { currentLocale } = useAppLocale()
 
   const validationSchema = Yup.object().shape({
     url: requiredRule(t),
@@ -37,7 +39,7 @@ export default function useAddWebHookController() {
       const data: Partial<IWebHook> = {
         ...values
       }
-      await createWebHook(data, token)
+      await createWebHook(data, token, currentLocale)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
       closeModal(CommonModalType.WEBHOOK);

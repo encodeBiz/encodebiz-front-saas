@@ -63,12 +63,12 @@ export async function updateModulePlan() {
 }
 
 
-export async function subscribeInSassProduct(data: ISubscription, token: string) {
+export async function subscribeInSassProduct(data: ISubscription, token: string, locale: string) {
     try {
         const httpClientFetchInstance: HttpClient = new HttpClient({
             baseURL: '',
             headers: {
-                authorization: `Bearer ${token}`
+                authorization: `Bearer ${token}`, locale
             },
         });
         const response: any = await httpClientFetchInstance.post(process.env.NEXT_PUBLIC_BACKEND_URI_SUBCRIBE as string, {
@@ -85,12 +85,12 @@ export async function subscribeInSassProduct(data: ISubscription, token: string)
 
 
 
-export async function unSubscribeInSassProduct(data: IUnSubscription, token: string) {
+export async function unSubscribeInSassProduct(data: IUnSubscription, token: string, locale: string) {
     try {
         const httpClientFetchInstance: HttpClient = new HttpClient({
             baseURL: '',
             headers: {
-                authorization: `Bearer ${token}`
+                authorization: `Bearer ${token}`, locale
             },
         });
         const response: any = await httpClientFetchInstance.post(process.env.NEXT_PUBLIC_BACKEND_URI_UNSUBCRIBE as string, {
@@ -108,12 +108,12 @@ export async function unSubscribeInSassProduct(data: IUnSubscription, token: str
 
 export async function configBilling(data: {
     "entityId": string
-}, token: string) {
+}, token: string, locale: string) {
     try {
         const httpClientFetchInstance: HttpClient = new HttpClient({
             baseURL: '',
             headers: {
-                authorization: `Bearer ${token}`
+                authorization: `Bearer ${token}`, locale
             },
         });
         const response: any = await httpClientFetchInstance.post(process.env.NEXT_PUBLIC_BACKEND_URI_CONFIGBILLING as string, {

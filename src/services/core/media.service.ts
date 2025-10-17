@@ -10,7 +10,7 @@ import { mapperErrorFromBack } from "@/lib/common/String";
 
 export async function uploadMedia(
   data: IUserMedia | any,
-  token: string
+  token: string, locale: string
 ) {
   try {
     if (!token) {
@@ -21,12 +21,12 @@ export async function uploadMedia(
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,locale
         },
       });
       const headers = {
         headers: {
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,locale
         }
       }
       const response: any = await httpClientFetchInstance.upload(
@@ -94,7 +94,7 @@ export async function fetchAllMediaPaginated(limitCount: number = 5, startAfter:
 export async function deleteMedia(data: {
   "mediaId": string,
   "entityId": string
-} | any, token: string) {
+} | any, token: string, locale: string) {
   try {
 
     if (!token) {
@@ -103,7 +103,7 @@ export async function deleteMedia(data: {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: '',
         headers: {
-          authorization: `Bearer ${token}`
+          authorization: `Bearer ${token}`, locale
         },
       });
       const response: any = await httpClientFetchInstance.delete(process.env.NEXT_PUBLIC_BACKEND_URI_DELETE_MEDIA as string, {

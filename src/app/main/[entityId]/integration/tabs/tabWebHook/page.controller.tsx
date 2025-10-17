@@ -13,6 +13,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { DeleteOutline } from '@mui/icons-material';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
+import { useAppLocale } from '@/hooks/useAppLocale';
 
 
 interface IFilterParams {
@@ -38,6 +39,7 @@ export const useWebHookTabController = () => {
     const { showToast } = useToast()
     const { token } = useAuth()
     const { openModal } = useCommonModal()
+    const { currentLocale } = useAppLocale()
     /** Filter and PAgination Control */
     const [loading, setLoading] = useState<boolean>(true);
     const [items, setItems] = useState<IWebHook[]>([]);
@@ -178,7 +180,7 @@ export const useWebHookTabController = () => {
             await deleteWebhook({
                 "endpointId": id,
                 "entityId": currentEntity?.entity.id
-            }, token)
+            }, token, currentLocale)
             setItemsHistory(itemsHistory.filter(e => e.id !== id))
             setItems(itemsHistory.filter(e => e.id !== id))
             setDeleting(false)
