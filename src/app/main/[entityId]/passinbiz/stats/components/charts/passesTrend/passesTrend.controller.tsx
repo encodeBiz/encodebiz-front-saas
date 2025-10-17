@@ -4,6 +4,7 @@ import { useToast } from "@/hooks/useToast";
 import { fetchStats } from "@/services/passinbiz/holder.service";
 import { useState } from "react";
 import { IPassTrendStatsRequest, IPassTrendStatsResponse } from "../../../model/PassTrend";
+import { useAppLocale } from "@/hooks/useAppLocale";
 
 
 type TrendItem = { total: number; event?: string; type?: string };
@@ -72,6 +73,7 @@ export interface ChartData {
 }
 
 export default function usePassesTrendController() {
+    const { currentLocale } = useAppLocale()
 
     const [loading, setLoading] = useState(false);
     //Graph Data
@@ -81,7 +83,7 @@ export default function usePassesTrendController() {
     async function handleFetchStats(payload: IPassTrendStatsRequest) {
         setLoading(true);
 
-        fetchStats({ ...payload } as IPassTrendStatsRequest, token).then(res => {
+        fetchStats({ ...payload } as IPassTrendStatsRequest, token, currentLocale).then(res => {
             const normalized: any = normalizeTrendResponse(res);
             const trend = buildMonthlyRows(normalized?.month);
             const dr = normalized?.dateRange;

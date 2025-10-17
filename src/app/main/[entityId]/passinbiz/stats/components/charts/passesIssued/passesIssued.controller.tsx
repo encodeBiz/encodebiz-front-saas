@@ -1,8 +1,9 @@
 import { useAuth } from "@/hooks/useAuth";
- 
+
 import { fetchStats } from "@/services/passinbiz/holder.service";
 import { BucketItem, GroupBy, IPassIssuedStatsRequest, IPassIssuedStatsResponse } from "../../../model/PassIssued";
 import { usePassinBizStats } from "../../../context/passBizStatsContext";
+import { useAppLocale } from "@/hooks/useAppLocale";
 
 
 
@@ -107,18 +108,19 @@ export interface ChartData {
 
 export default function usePassesIssuedController() {
 
+    const { currentLocale } = useAppLocale()
 
     //Graph Data
     const { setGraphData, graphData, pending, setPending, setError, error } = usePassinBizStats()
     const { token } = useAuth()
-  
+
     async function handleFetchStats(payload: IPassIssuedStatsRequest) {
         setPending({ ...pending, 'issued': true });
- setError({
-                ...error,
-                ['issued']: ''
-            })
-        fetchStats({ ...payload } as IPassIssuedStatsRequest, token).then(res => {
+        setError({
+            ...error,
+            ['issued']: ''
+        })
+        fetchStats({ ...payload } as IPassIssuedStatsRequest, token, currentLocale).then(res => {
             const normalized = normalizeApiResponse(res);
             const buckets = getBuckets(normalized as IPassIssuedStatsResponse, payload.groupBy)
             const { rows, series } = buildChartData(buckets, payload.groupBy)
@@ -132,7 +134,7 @@ export default function usePassesIssuedController() {
                 }
             })
 
-           
+
         }).catch(e => {
             setError({
                 ...error,

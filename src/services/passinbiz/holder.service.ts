@@ -38,7 +38,7 @@ export const fetchHolder = async (entityId: string, id: string): Promise<Holder>
 }
 
 
-export async function createHolder(data: Partial<Holder>, token: string) {
+export async function createHolder(data: Partial<Holder>, token: string, locale: any = 'es') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -46,7 +46,7 @@ export async function createHolder(data: Partial<Holder>, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -66,28 +66,9 @@ export async function createHolder(data: Partial<Holder>, token: string) {
   }
 }
 
-/*
-export async function updateHolder(data: Partial<Holder>, token: string) {
-  try {
-    if (!token) {
-      throw new Error("Error to fetch user auth token");
-    } else {
-      await updateDocument<Partial<any>>({
-        collection: `${collection.ENTITIES}/${data.entityId}/${collection.HOLDER}`,
-        data: {
-          ...data,
-          updatedAt: new Date(),
-        },
-        id: data.id as string,
-      });
-    }
-  } catch (error: any) {
-    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
-  }
-}
-*/
+ 
 
-export async function updateHolder(data: Partial<Holder>, token: string) {
+export async function updateHolder(data: Partial<Holder>, token: string, locale: any = 'es') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -95,7 +76,7 @@ export async function updateHolder(data: Partial<Holder>, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,locale
         },
       });
       const response: any = await httpClientFetchInstance.put(
@@ -115,7 +96,7 @@ export async function updateHolder(data: Partial<Holder>, token: string) {
   }
 }
 
-export async function importHolder(data: FormData, token: string) {
+export async function importHolder(data: FormData, token: string , locale: any = 'es') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -123,7 +104,7 @@ export async function importHolder(data: FormData, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,locale
         },
       });
       const response: any = await httpClientFetchInstance.upload(
@@ -143,7 +124,7 @@ export async function importHolder(data: FormData, token: string) {
 
 
 
-export async function fetchStats(data: any, token: string) {
+export async function fetchStats(data: any, token: string , locale: any = 'es') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -151,7 +132,7 @@ export async function fetchStats(data: any, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -177,7 +158,7 @@ export async function fetchStats(data: any, token: string) {
 export async function deleteHolder(data: {
   "holderId": string,
   "entityId": string
-} | any, token: string) {
+} | any, token: string, locale: any = 'es') {
   try {
 
     if (!token) {
@@ -186,7 +167,7 @@ export async function deleteHolder(data: {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: '',
         headers: {
-          authorization: `Bearer ${token}`
+          authorization: `Bearer ${token}`, locale
         },
       });
       const response: any = await httpClientFetchInstance.delete(process.env.NEXT_PUBLIC_BACKEND_URI_DELETE_MEDIA as string, {
@@ -202,13 +183,13 @@ export async function deleteHolder(data: {
 }
 
 
-export async function validateHolder(data: any, tokenValidateStaff: string) {
+export async function validateHolder(data: any, tokenValidateStaff: string, locale: any = 'es') {
   try {
 
     const httpClientFetchInstance: HttpClient = new HttpClient({
       baseURL: "",
       headers: {
-        'authorization': `Bearer ${tokenValidateStaff}`,
+        'authorization': `Bearer ${tokenValidateStaff}`,locale
       },
     });
     const response: any = await httpClientFetchInstance.post(
@@ -229,7 +210,7 @@ export async function validateHolder(data: any, tokenValidateStaff: string) {
 }
 
 
-export async function validateStaff(base64: string) {
+export async function validateStaff(base64: string, locale: any = 'es') {
   try {
 
     const httpClientFetchInstance: HttpClient = new HttpClient({
@@ -239,7 +220,7 @@ export async function validateStaff(base64: string) {
     const response: any = await httpClientFetchInstance.post(
       process.env.NEXT_PUBLIC_BACKEND_URI_PASSINBIZ_VALIDATE_STAFF as string,
       {
-        token: base64,
+        token: base64,locale
       }
     );
     if (response.errCode && response.errCode !== 200) {

@@ -22,6 +22,7 @@ import { PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
+import { useAppLocale } from "@/hooks/useAppLocale";
 
 interface IFilterParams {
   filter: { passStatus: string, type: string, email: string, parentId: string }
@@ -51,7 +52,7 @@ export default function useHolderListController() {
   const { openModal, closeModal } = useCommonModal()
   const [revoking, setRevoking] = useState(false)
   const { navivateTo } = useLayout()
-
+  const { currentLocale } = useAppLocale()
   /** Filter and PAgination Control */
   const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<Holder[]>([]);
@@ -308,7 +309,7 @@ export default function useHolderListController() {
 
   }
 
-  
+
   const fetchingData = (filterParams: IFilterParams) => {
 
     setLoading(true)
@@ -376,7 +377,7 @@ export default function useHolderListController() {
               id: id,
               entityId: currentEntity?.entity?.id,
               ...update,
-            }, token)
+            }, token, currentLocale)
 
           } catch (e: any) {
             showToast(e?.message, 'error')
@@ -423,7 +424,7 @@ export default function useHolderListController() {
       form.append('type', type as string);
       if (type === 'event')
         form.append('event', eventId as string);
-      await importHolder(form, token)
+      await importHolder(form, token, currentLocale)
       fetchingData(filterParams)
       setIsUploading(false)
       changeLoaderState({ show: false })

@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 import { CommonModalType } from "@/contexts/commonModalContext"
+import { useAppLocale } from "@/hooks/useAppLocale"
 import { useCommonModal } from "@/hooks/useCommonModal"
 import { useLayout } from "@/hooks/useLayout"
 import { useToast } from "@/hooks/useToast"
@@ -69,6 +70,7 @@ export const useQRScanner = () => {
     const [staffValidating, setStaffValidating] = useState(true)
     const [staffValid, setStaffValid] = useState(false)
     const { openModal } = useCommonModal()
+    const { currentLocale } = useAppLocale()
 
     const [eventList, setEventList] = useState<Array<{ name: string, eventId: string }>>([])
     const [eventSelected, setEventSelected] = useState<{ name: string, eventId: string }>()
@@ -78,7 +80,7 @@ export const useQRScanner = () => {
         try {
             setStaffValidating(true)
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-            const response: StaffResponse = await validateStaff(tokenBase64 as string)
+            const response: StaffResponse = await validateStaff(tokenBase64 as string, currentLocale)
             setEventList(response.events)
             if (response.events.length == 1) {
                 setEventSelected(response.events[0])
@@ -106,7 +108,7 @@ export const useQRScanner = () => {
             const response = await validateHolder({
                 ...data,
                 eventId: eventSelected?.eventId as string
-            }, tokenValidateStaff)
+            }, tokenValidateStaff, currentLocale)
             setScanRessult({
                 ...data,
                 ...response
