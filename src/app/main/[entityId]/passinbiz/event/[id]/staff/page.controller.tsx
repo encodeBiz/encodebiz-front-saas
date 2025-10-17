@@ -13,6 +13,7 @@ import TransferList from "@/components/common/forms/fields/TransferListField/Tra
 import { search } from "@/services/passinbiz/staff.service";
 import { IStaff } from "@/domain/features/passinbiz/IStaff";
 import { Timestamp } from "firebase/firestore";
+import { useAppLocale } from "@/hooks/useAppLocale";
 
 
 export default function useStaffController() {
@@ -21,6 +22,7 @@ export default function useStaffController() {
   const { navivateTo } = useLayout()
   const { token, user } = useAuth()
   const { id } = useParams<{ id: string }>()
+  const {currentLocale} = useAppLocale()
   const { currentEntity, watchServiceAccess } = useEntity()
   const [staffList, setStaffList] = useState<Array<IStaff>>([])
   const { changeLoaderState } = useLayout()
@@ -45,7 +47,7 @@ export default function useStaffController() {
         "entityId": currentEntity?.entity?.id as string,
         "id": id,
       }
-      if (id) await updateEvent(data, token)
+      if (id) await updateEvent(data, token, currentLocale)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
       navivateTo(`/passinbiz/event}`)

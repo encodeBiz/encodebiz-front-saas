@@ -57,7 +57,7 @@ export const search = async (entityId: string, params: SearchParams): Promise<IE
 }
 
 
-export async function createContact(data: Partial<IContact>, token: string) {
+export async function createContact(data: Partial<IContact>, token: string, locale: any = 'es') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -65,7 +65,7 @@ export async function createContact(data: Partial<IContact>, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -85,7 +85,7 @@ export async function createContact(data: Partial<IContact>, token: string) {
   }
 }
 
-export async function createEvent(data: Partial<IEvent>, token: string) {
+export async function createEvent(data: Partial<IEvent>, token: string, locale: any = 'es') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -93,7 +93,7 @@ export async function createEvent(data: Partial<IEvent>, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -113,7 +113,7 @@ export async function createEvent(data: Partial<IEvent>, token: string) {
   }
 }
 
-export async function updateEvent(data: Partial<IEvent>, token: string) {
+export async function updateEvent(data: Partial<IEvent>, token: string, locale: any = 'es') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -121,7 +121,7 @@ export async function updateEvent(data: Partial<IEvent>, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
