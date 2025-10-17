@@ -1,6 +1,7 @@
 'use client'
 
 import { CommonModalType } from "@/contexts/commonModalContext";
+import { useAppLocale } from "@/hooks/useAppLocale";
 import { useAuth } from "@/hooks/useAuth";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { useEntity } from "@/hooks/useEntity";
@@ -10,7 +11,7 @@ import { deleteEntity } from "@/services/core/entity.service";
 import { Theme } from "@emotion/react";
 import { SxProps } from "@mui/material";
 import { useTranslations } from "next-intl";
-  
+
 import { ReactNode, useState } from "react";
 
 
@@ -20,7 +21,7 @@ export type TabItem = {
     content: ReactNode;
     disabled?: boolean;
     sx?: SxProps<Theme>;
-    id?:string
+    id?: string
 };
 
 export const useSettingEntityController = () => {
@@ -31,6 +32,8 @@ export const useSettingEntityController = () => {
     const { user, token } = useAuth();
     const { showToast } = useToast()
     const { refrestList } = useEntity()
+    const { currentLocale } = useAppLocale()
+
     const handleDeleteEntity = async (entityId: string) => {
         setPending(true)
         try {
@@ -38,13 +41,13 @@ export const useSettingEntityController = () => {
             await deleteEntity({
                 uid: user?.id as string,
                 entityId: entityId
-            }, token)
+            }, token, currentLocale)
             changeLoaderState({ show: false })
             refrestList(user?.id as string)
             showToast(t('core.feedback.success'), 'success');
             setPending(false)
             closeModal(CommonModalType.DELETE)
-       
+
         } catch (error: unknown) {
             if (error instanceof Error) {
                 showToast(error.message, 'error');

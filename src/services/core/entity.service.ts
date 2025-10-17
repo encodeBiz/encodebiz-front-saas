@@ -16,16 +16,16 @@ import { Unsubscribe } from "firebase/firestore";
 import { mapperErrorFromBack } from "@/lib/common/String";
 import { codeError } from "@/config/errorLocales";
 
-export async function fetchEntity(id: string): Promise<IEntity> {
+export async function fetchEntity(id: string, locale: any = 'es'): Promise<IEntity> {
   try {
     return await getOne(collection.ENTITIES, id);
   } catch (error: any) {
-    throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
+    throw new Error(codeError[locale][error.code] ? codeError[locale][error.code] : error.message)
   }
 }
 
 export async function fetchUserEntities(
-  uid: string
+  uid: string, locale: any = 'es'
 ): Promise<Array<IUserEntity>> {
   const params: SearchParams = {
     collection: collection.USER_ENTITY_ROLES,
@@ -41,7 +41,7 @@ export async function fetchUserEntities(
     const resultList: IUserEntity[] = await searchFirestore(params);
     return await Promise.all(
       resultList.map(async (item) => {
-        const entity = await fetchEntity(item.entityId);
+        const entity = await fetchEntity(item.entityId, locale);
         return {
           ...item,
           entity,
@@ -49,13 +49,13 @@ export async function fetchUserEntities(
       })
     );
   } catch (error: any) {
-    throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
+    throw new Error(codeError[locale][error.code] ? codeError[locale][error.code] : error.message)
   }
 }
 
 export async function updateAuth(
   id: string,
-  userId: string
+  userId: string, locale: any = 'es'
 ): Promise<void> {
   try {
     await updateDocument<IUserEntity>({
@@ -66,15 +66,15 @@ export async function updateAuth(
       },
       id: id as string,
     });
-    localStorage.setItem(`ENTITY-${id}-${userId}`,'1')
+    localStorage.setItem(`ENTITY-${id}-${userId}`, '1')
   } catch (error: any) {
-    throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
+    throw new Error(codeError[locale][error.code] ? codeError[locale][error.code] : error.message)
   }
 }
 
 
 export async function saveStateCurrentEntity(
-  entityList: Array<IUserEntity>
+  entityList: Array<IUserEntity>, locale: any = 'es'
 ): Promise<void> {
   try {
     entityList.forEach(async (element) => {
@@ -88,7 +88,7 @@ export async function saveStateCurrentEntity(
       });
     });
   } catch (error: any) {
-    throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
+    throw new Error(codeError[locale][error.code] ? codeError[locale][error.code] : error.message)
   }
 }
 
@@ -96,7 +96,7 @@ export async function saveStateCurrentEntity(
 
 
 
-export async function createEntity(data: EntityFormValues | any, token: string) {
+export async function createEntity(data: EntityFormValues | any, token: string, locale: any = 'es') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -104,7 +104,7 @@ export async function createEntity(data: EntityFormValues | any, token: string) 
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -126,7 +126,7 @@ export async function createEntity(data: EntityFormValues | any, token: string) 
 }
 
 export async function updateExtraEntity(
-  data: Partial<IEntity> | any,
+  data: Partial<IEntity> | any 
 
 ) {
   await updateDocument<IEntity>({
@@ -140,7 +140,7 @@ export async function updateExtraEntity(
 
 export async function updateEntity(
   data: EntityUpdatedFormValues | any,
-  token: string
+  token: string, locale: any = 'es'
 ) {
   try {
     if (!token) {
@@ -149,7 +149,7 @@ export async function updateEntity(
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          token: `Bearer ${token}`,
+          token: `Bearer ${token}`,locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -169,7 +169,7 @@ export async function updateEntity(
 
 export async function updateEntityBranding(
   data: BrandFormValues | any,
-  token: string
+  token: string, locale: any = 'es'
 ) {
   try {
     if (!token) {
@@ -178,7 +178,7 @@ export async function updateEntityBranding(
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          token: `Bearer ${token}`,
+          token: `Bearer ${token}`,locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -222,7 +222,7 @@ export async function fetchAllEntitiesPaginated(limitCount: number = 5, startAft
 export async function deleteEntity(data: {
   "entityId": string,
   "uid": string
-} | any, token: string) {
+} | any, token: string, locale: any) {
   try {
 
     if (!token) {
@@ -231,7 +231,7 @@ export async function deleteEntity(data: {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: '',
         headers: {
-          authorization: `Bearer ${token}`
+          authorization: `Bearer ${token}`, locale
         },
       });
       const response: any = await httpClientFetchInstance.delete(process.env.NEXT_PUBLIC_BACKEND_URI_DELETE_ENTITY as string, {
@@ -247,7 +247,7 @@ export async function deleteEntity(data: {
 }
 
 
-export async function assignedUserToEntity(data: IAssing, token: string) {
+export async function assignedUserToEntity(data: IAssing, token: string, locale: any = 'es') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -255,7 +255,7 @@ export async function assignedUserToEntity(data: IAssing, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -280,7 +280,7 @@ export async function assignedUserToEntity(data: IAssing, token: string) {
 /**
  * Servicio para obtener todas las entidades
  */
-export async function fetchAllOwnerOfEntity(entityId: string): Promise<IUserEntity[]> {
+export async function fetchAllOwnerOfEntity(entityId: string, locale: string): Promise<IUserEntity[]> {
 
   const params: SearchParams = {
     collection: collection.USER_ENTITY_ROLES,
@@ -296,7 +296,7 @@ export async function fetchAllOwnerOfEntity(entityId: string): Promise<IUserEnti
     const resultList: IUserEntity[] = await searchFirestore(params);
     return await Promise.all(
       resultList.map(async (item) => {
-        const entity = await fetchEntity(item.entityId);
+        const entity = await fetchEntity(item.entityId, locale);
         const user = await fetchUser(item.userId);
         return {
           ...item,

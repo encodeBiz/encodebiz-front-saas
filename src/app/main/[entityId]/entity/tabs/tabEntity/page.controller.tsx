@@ -18,6 +18,7 @@ import { requiredRule } from '@/config/yupRules';
 import { useLayout } from '@/hooks/useLayout';
 import IEntity from '@/domain/core/auth/IEntity';
 import AddressInput from '@/components/common/forms/fields/AddressInput';
+import { useAppLocale } from '@/hooks/useAppLocale';
 
 
 
@@ -62,6 +63,8 @@ export const useSettingEntityController = () => {
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
     const [cityList, setCityList] = useState<any>([])
+    const { currentLocale } = useAppLocale()
+
     const [initialValues, setInitialValues] = useState<EntityUpdatedFormValues>({
         uid: currentEntity?.entity?.id as string ?? "",
         "name": currentEntity?.entity?.name as string ?? "",
@@ -213,7 +216,7 @@ export const useSettingEntityController = () => {
                 "active": true
             }
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-            await updateEntity(updateData, token)
+            await updateEntity(updateData, token, currentLocale)
             changeLoaderState({ show: false })
             showToast(t('core.feedback.success'), 'success');
             setPending(false)
@@ -234,7 +237,7 @@ export const useSettingEntityController = () => {
 
     const fetchData = async () => {
         try {
-            const entity: IEntity = await fetchEntity(currentEntity?.entity.id as string)
+            const entity: IEntity = await fetchEntity(currentEntity?.entity.id as string, currentLocale)
             setInitialValues({
                 uid: entity?.id as string ?? "",
                 "name": entity?.name as string ?? "",

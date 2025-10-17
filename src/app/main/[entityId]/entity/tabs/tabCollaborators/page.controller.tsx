@@ -13,6 +13,7 @@ import { assignedUserToEntity, deleteOwnerOfEntity, fetchAllOwnerOfEntity } from
 import IUserEntity from '@/domain/core/auth/IUserEntity';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
+import { useAppLocale } from '@/hooks/useAppLocale';
 
 export interface IAssing {
     "role": "admin" | 'owner'
@@ -27,6 +28,7 @@ export const useCollaboratorsController = () => {
     const { currentEntity } = useEntity();
     const { token, user } = useAuth()
     const { changeLoaderState } = useLayout()
+    const { currentLocale } = useAppLocale()
     const { showToast } = useToast()
     const { closeModal, openModal } = useCommonModal()
     const [loading, setLoading] = useState(false)
@@ -48,7 +50,7 @@ export const useCollaboratorsController = () => {
         setLoading(true)
         try {
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-            await assignedUserToEntity(data, token)
+            await assignedUserToEntity(data, token, currentLocale)
             changeLoaderState({ show: false })
             showToast(t('core.feedback.success'), 'success');
             setLoading(false)
@@ -96,7 +98,7 @@ export const useCollaboratorsController = () => {
     const [pendFetch, setPendFetch] = useState(false)
     const updateColaborators = async () => {
         setPendFetch(true)
-        const data: Array<IUserEntity> = await fetchAllOwnerOfEntity(currentEntity?.entity.id as string)
+        const data: Array<IUserEntity> = await fetchAllOwnerOfEntity(currentEntity?.entity.id as string, currentLocale)
         setCurrentProject({
             owner: {
                 user: data.find(e => e.role === 'owner')?.user as IUser,

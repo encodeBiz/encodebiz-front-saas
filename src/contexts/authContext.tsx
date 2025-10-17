@@ -103,7 +103,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             if (entityId)
                 push(`/${MAIN_ROUTE}/${entityId}/dashboard`)
             else {
-                const entityList: Array<IUserEntity> = await fetchUserEntities(userAuth.uid)
+                const entityList: Array<IUserEntity> = await fetchUserEntities(userAuth.uid, currentLocale)
                 if (entityList.length > 0) {
                     const item = entityList[0]
                     push(`/${MAIN_ROUTE}/${item?.entity?.id}/dashboard`)
@@ -143,7 +143,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     const goEntity = async (uid: string) => {
-        const entityList: Array<IUserEntity> = await fetchUserEntities(uid as string)
+        const entityList: Array<IUserEntity> = await fetchUserEntities(uid as string, currentLocale)
         if (entityList.length > 0) {
             const item = entityList.find(e => e.isActive) ?? entityList[0]
             push(`/${MAIN_ROUTE}/${item?.entity?.id}/dashboard`)

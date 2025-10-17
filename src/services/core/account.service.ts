@@ -1,11 +1,11 @@
 import { RegisterFormValues } from "@/app/auth/register/page.controller";
 import { collection } from "@/config/collection";
-import { changePass, getUser, login, loginWithGoogle, loginWithToken } from "@/lib/firebase/authentication/login";
+import { getUser, login, loginWithGoogle, loginWithToken } from "@/lib/firebase/authentication/login";
 import { logout } from "@/lib/firebase/authentication/logout";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import IUser from "@/domain/core/auth/IUser";
-import { EmailAuthProvider, reauthenticateWithCredential, updateProfile, User, UserCredential } from "firebase/auth";
+import { updateProfile, User, UserCredential } from "firebase/auth";
 import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
 import { codeError } from "@/config/errorLocales";
  

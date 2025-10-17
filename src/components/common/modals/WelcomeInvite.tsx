@@ -21,6 +21,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'nextjs-toploader/app';
 import { MAIN_ROUTE } from '@/config/routes';
 import IUserEntity from '@/domain/core/auth/IUserEntity';
+import { useAppLocale } from '@/hooks/useAppLocale';
 
 
 const WelcomeInviteModal = (): React.JSX.Element => {
@@ -30,17 +31,18 @@ const WelcomeInviteModal = (): React.JSX.Element => {
     const t = useTranslations()
     const { currentEntity, setCurrentEntity } = useEntity()
     const { user } = useAuth()
+    const { currentLocale } = useAppLocale()
     const { push } = useRouter()
     const isGuest = user?.fullName?.trim()?.toLowerCase() === 'guest'
     // Handler for closing the dialog
     const handleWelcomeInvite = async () => {
-        await updateAuth(currentEntity?.id as string, user?.id as string)
+        await updateAuth(currentEntity?.id as string, user?.id as string, currentLocale)
         setCurrentEntity({ ...currentEntity, status: 'active' } as IUserEntity)
         if (isGuest) push(`/${MAIN_ROUTE}/user/account`)
         closeModal(CommonModalType.WELCOMEGUEST)
     }
     const handleClose = async () => {
-        await updateAuth(currentEntity?.id as string, user?.id as string)
+        await updateAuth(currentEntity?.id as string, user?.id as string, currentLocale)
         setCurrentEntity({ ...currentEntity, status: 'active' } as IUserEntity)
         if (isGuest) push(`/${MAIN_ROUTE}/user/account`)
         closeModal(CommonModalType.WELCOMEGUEST)

@@ -146,7 +146,7 @@ export const useUserProfileController = () => {
     };
 
     const goEntity = async () => {
-        const entityList: Array<IUserEntity> = await fetchUserEntities(user?.uid as string)
+        const entityList: Array<IUserEntity> = await fetchUserEntities(user?.uid as string, currentLocale)
         if (entityList.length > 0) {
             const item = entityList[0]
             push(`/${MAIN_ROUTE}/${item?.entity?.id}/dashboard`)

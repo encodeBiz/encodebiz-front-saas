@@ -1,6 +1,7 @@
 'use client'
 
 import { CommonModalType } from "@/contexts/commonModalContext";
+import { useAppLocale } from "@/hooks/useAppLocale";
 import { useAuth } from "@/hooks/useAuth";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { useEntity } from "@/hooks/useEntity";
@@ -29,7 +30,8 @@ export const useSettingEntityController = () => {
     const { user, token } = useAuth();
     const { showToast } = useToast()
     const { refrestList } = useEntity()
- 
+     const { currentLocale } = useAppLocale()
+
     const handleDeleteEntity = async (entityId: string) => {
         setPending(true)
         try {
@@ -37,7 +39,7 @@ export const useSettingEntityController = () => {
             await deleteEntity({
                 uid: user?.id as string,
                 entityId: entityId
-            }, token)
+            }, token, currentLocale)
             changeLoaderState({ show: false })
             refrestList(user?.id as string)
             showToast(t('core.feedback.success'), 'success');

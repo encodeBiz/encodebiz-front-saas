@@ -71,7 +71,7 @@ export const useRegisterController = () => {
     };
 
     const goEntity = async (uid: string) => {
-        const entityList: Array<IUserEntity> = await fetchUserEntities(uid as string)
+        const entityList: Array<IUserEntity> = await fetchUserEntities(uid as string, currentLocale)
         if (entityList.length > 0) {
             const item = entityList.find(e => e.isActive) ?? entityList[0]
             push(`/${MAIN_ROUTE}/${item?.entity?.id}/dashboard`)

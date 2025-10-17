@@ -222,7 +222,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     }
 
     const fetchEntityData = async () => {
-        setEntity(await fetchEntity(sessionData?.entityId as string))
+        setEntity(await fetchEntity(sessionData?.entityId as string,currentLocale))
     }
 
     const fetchEmployeeData = async () => {
