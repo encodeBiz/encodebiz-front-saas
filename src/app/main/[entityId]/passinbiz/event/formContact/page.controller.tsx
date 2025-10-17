@@ -13,6 +13,7 @@ import { sendFormContact } from "@/services/core/helper.service";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import PhoneNumberInput from "@/components/common/forms/fields/PhoneNumberInput";
+import { useAppLocale } from "@/hooks/useAppLocale";
 
 
 export default function useFormContactController() {
@@ -24,6 +25,7 @@ export default function useFormContactController() {
   const { currentEntity, watchServiceAccess } = useEntity()
   const { changeLoaderState } = useLayout()
   const { openModal } = useCommonModal()
+  const { currentLocale } = useAppLocale()
   const formRef = useRef(null)
   const validationSchema = Yup.object().shape({
     message: requiredRule(t),
@@ -42,7 +44,7 @@ export default function useFormContactController() {
         token: token as string,
 
       }
-      await sendFormContact(data)
+      await sendFormContact(data, currentLocale)
 
       changeLoaderState({ show: false })
       openModal(CommonModalType.INFO)

@@ -22,6 +22,7 @@ import { useFormStatus } from "@/hooks/useFormStatus";
 import { country } from "@/config/country";
 import { useTranslations } from "next-intl";
 import { useDebouncedCallback } from "../customHooks/useDebounce"; // debe exponer .cancel()
+import { useAppLocale } from "@/hooks/useAppLocale";
 
 type Option = { id: string; label: string; data: any };
 
@@ -37,6 +38,7 @@ const AddressInput: React.FC<AutoCompletedInputProps> = ({ onHandleChange, ...pr
   const { touched, error } = meta;
   const helperText = touched && error;
   const { formStatus } = useFormStatus();
+  const { currentLocale } = useAppLocale();
 
   const [pending, setPending] = useState(false);
   const [inputValue, setInputValue] = useState<string>(field.value ?? "");
@@ -57,7 +59,7 @@ const AddressInput: React.FC<AutoCompletedInputProps> = ({ onHandleChange, ...pr
       }
       try {
         setPending(true);
-        const data = await fetchLocation({ address: query.toLowerCase(), country: code }, token);
+        const data = await fetchLocation({ address: query.toLowerCase(), country: code }, token, currentLocale);
         setOptions(
           data.map((e: any) => ({
             id: `${e.lng}${e.lat}`,

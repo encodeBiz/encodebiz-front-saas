@@ -20,7 +20,7 @@ export async function fetchLocation(data: {
   "country"?: string,
   "city"?: string,
   "zipCode"?: string
-}, token: string): Promise<Array<IAddress>> {
+}, token: string, locale: any): Promise<Array<IAddress>> {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -28,7 +28,7 @@ export async function fetchLocation(data: {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -73,7 +73,7 @@ export async function fetchIndex(data: {
 
 
 
-export async function sendFormContact(data: ContactFromModel | any): Promise<void> {
+export async function sendFormContact(data: ContactFromModel | any, locale: string): Promise<void> {
   try {
     if (!data.token) {
       throw new Error("Error to fetch user auth token");
@@ -81,7 +81,7 @@ export async function sendFormContact(data: ContactFromModel | any): Promise<voi
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${data.token}`,
+          authorization: `Bearer ${data.token}`,locale
         },
       });
       data.mesagge = data.message
