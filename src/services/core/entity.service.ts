@@ -5,7 +5,7 @@ import { SearchParams } from "@/domain/core/firebase/firestore";
 import { getOne, getAll, getAllWithLimit } from "@/lib/firebase/firestore/readDocument";
 import { onSnapshotFirestore, searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
-import { codeError, HttpClient } from "@/lib/http/httpClientFetchNext";
+import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { EntityFormValues } from "@/app/main/core/entity/create/page.controller";
 import { EntityUpdatedFormValues, BrandFormValues } from "@/app/main/[entityId]/entity/tabs/tabEntity/page.controller";
@@ -14,6 +14,7 @@ import { fetchUser } from "./users.service";
 import { deleteDocument } from "@/lib/firebase/firestore/deleteDocument";
 import { Unsubscribe } from "firebase/firestore";
 import { mapperErrorFromBack } from "@/lib/common/String";
+import { codeError } from "@/config/errorLocales";
 
 export async function fetchEntity(id: string): Promise<IEntity> {
   try {

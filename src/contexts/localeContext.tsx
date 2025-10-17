@@ -1,6 +1,6 @@
 'use client'
 import { NextIntlClientProvider } from 'next-intl';
-import React, { createContext, useMemo, useState } from 'react';
+import React, { createContext, useEffect, useMemo, useState } from 'react';
 
 import messagesDe from '../../locales/de/common.json';
 import messagesEs from '../../locales/es/common.json';
@@ -31,8 +31,12 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
 
     const changeLocale = (locale: 'es' | 'en' | 'de' | 'fr' | string) => {
         setLocale(locale);
-        localStorage.setItem('lang', locale)
     };
+
+    useEffect(() => {
+        localStorage.setItem('lang', locale)
+    }, [locale])
+
 
 
     return (

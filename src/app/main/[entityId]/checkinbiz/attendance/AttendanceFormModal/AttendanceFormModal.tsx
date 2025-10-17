@@ -32,7 +32,6 @@ const AttendanceFormModal = ({ employeeId, branchId, onSuccess }: { employeeId?:
     };
 
     const handleContactModal = (values: Partial<IChecklog>) => {
-
         setDinamicDataAction(values, () => { (formRef.current as any).resetForm() })
 
     }

@@ -7,6 +7,13 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 import { useFormStatus } from '@/hooks/useFormStatus';
+import { useAppLocale } from '@/hooks/useAppLocale';
+
+
+import { esES } from '@mui/x-date-pickers/locales';
+import { enUS } from '@mui/x-date-pickers/locales';
+
+
 const TimeInput: React.FC<FieldProps & TextFieldProps> = ({
   ...props
 }) => {
@@ -14,10 +21,12 @@ const TimeInput: React.FC<FieldProps & TextFieldProps> = ({
   const { touched, error } = meta
   const helperText = touched && error;
   const { formStatus } = useFormStatus()
-  return (<LocalizationProvider dateAdapter={AdapterDayjs}>
+      const {currentLocale} = useAppLocale()
+  
+    return (<LocalizationProvider dateAdapter={AdapterDayjs} localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}>
     <FormControlLabel
       control={
-        <TimePicker label={props.label}
+        <TimePicker label={props.label} localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}
           //minTime={dayjs(props.name === 'endTime' ? new Date(formStatus?.values?.startTime) ?? new Date() : new Date())}
           defaultValue={field.value?dayjs(field.value ?? new Date()):null}
           value={field.value?dayjs(field.value ?? new Date()):null}

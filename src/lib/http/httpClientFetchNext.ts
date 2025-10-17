@@ -1,3 +1,4 @@
+import { codeError } from "@/config/errorLocales";
 import { logout } from "../firebase/authentication/logout";
 
 
@@ -12,46 +13,6 @@ interface HttpClientOptions {
   headers?: HeadersInit;
 }
 
-export const codeError: any = {
-  "auth/invalid-credential":
-    "Credenciales incorrectas",
-  "auth/email-already-exists":
-    "El correo electrónico ya está en uso. Inicie sesión o utilice un correo electrónico diferente.",
-  "auth/email-already-in-use":
-    "El correo electrónico ya está en uso. Inicie sesión o utilice un correo electrónico diferente.",
-  "auth/invalid-email":
-    "Dirección de correo electrónico no válida. Ingrese una dirección de correo electrónico válida.",
-  "auth/weak-password":
-    "La contraseña es demasiado débil. Elija una contraseña más segura",
-  "auth/operation-not-allowed":
-    "La autenticación por correo electrónico y contraseña no está habilitada. Comuníquese con el servicio de asistencia técnica",
-  "auth/too-many-requests":
-    "Demasiadas solicitudes. Inténtalo de nuevo más tarde",
-  "auth/user-disabled":
-    "Su cuenta ha sido deshabilitada. Póngase en contacto con el servicio de asistencia para obtener ayuda",
-  "auth/network-request-failed":
-    "Error de red. Verifique su conexión a Internet y vuelva a intentarlo",
-  "auth/missing-email":
-    "Se requiere correo electrónico. Por favor, introduzca su correo electrónico.",
-  "auth/missing-password":
-    "Se requiere contraseña. Por favor, introduzca su contraseña.",
-  "unavailable": "Servicio no disponible. Inténtalo de nuevo más tarde",
-  "staff/email_already_exists": "Ya existe un personal de apoyo con ese correo electronico ",
-  "media/invalid_dimesions": "Dimenciones no validas",
-  "auth/invalid_plan": "El plan Freemium no puede crear eventos",
-  "auth/unauthorized": "Acceso a recurso no autorizado",
-  "staff/unauthorized": "Acceso de personal de apoyo deshabilitado o vencido",
-  "media/not_found": "Archivo no encontrado",
-  "staff/not_found": "Personal de apoyo no encontrado",
-  'twofactor/invalid_token': "La sesión ha expirado",
-  "auth/untrusted_device": "Dispositivo no confiable. Se requiere verificación adicional",
-  "twofactor/invalid_code": "Código TOTP inválido",
-  "user/not_found": "No existe ningún usuario con ese correo electrónico",
-  "checklog/two_type_followed": "No se puede iniciar jornada dos veces seguidas",
-  "report/internal_error":"Error interno",
-  "checklog/out_of_radius": "Parece que no te encuentras en la sucursal seleccionada, no puedes iniciar jornada",
-  "stats/range_and_groupBy_tolong": "Los datos para graficar son demasiadox extensos, intenta seleccionar un rango menor de fechas o otro tipo de agrupación"
-};
 
 /**
  * Http client based on fetch
@@ -159,6 +120,7 @@ export class HttpClient {
           }
           const message = codeError[responseError.code];
           const messageError = message ? message : responseError.error ? responseError.error : `HTTP error! status: ${response.status}`
+
           throw new Error(JSON.stringify({ message: messageError, code: responseError.code }));
         } else throw new Error(`HTTP error! status: ${response.status}`);
       }
