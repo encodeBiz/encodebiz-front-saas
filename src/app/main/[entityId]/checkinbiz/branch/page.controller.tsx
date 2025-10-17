@@ -16,6 +16,7 @@ import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInpu
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
 import { Box } from "@mui/material";
+import { useAppLocale } from "@/hooks/useAppLocale";
 
 
 interface IFilterParams {
@@ -41,6 +42,7 @@ export default function useEmployeeListController() {
   const { token } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
+  const { currentLocale } = useAppLocale()
   const { navivateTo } = useLayout()
   const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<ISucursal[]>([]);
@@ -220,7 +222,7 @@ export default function useEmployeeListController() {
       await Promise.all(
         ids.map(async (id) => {
           try {
-            await deleteSucursal(currentEntity?.entity.id as string, id as string, token)
+            await deleteSucursal(currentEntity?.entity.id as string, id as string, token, currentLocale)
           } catch (e: any) {
             showToast(e?.message, 'error')
             setDeleting(false)

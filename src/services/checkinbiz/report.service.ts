@@ -3,7 +3,6 @@ import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
-import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import { IReport } from "@/domain/features/checkinbiz/IReport";
 import { mapperErrorFromBack } from "@/lib/common/String";
 import { IChecklog } from "@/domain/features/checkinbiz/IChecklog";
@@ -41,7 +40,7 @@ export const search = async (entityId: string, params: SearchParams): Promise<IR
   return result;
 }
 
-export async function createReport(data: Partial<IReport>, token: string) {
+export async function createReport(data: Partial<IReport>, token: string, locale: any = 'es') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -49,7 +48,7 @@ export async function createReport(data: Partial<IReport>, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -72,7 +71,7 @@ export async function createReport(data: Partial<IReport>, token: string) {
 
 }
 
-export async function updateChecklog(data: Partial<IChecklog>, token: string) {
+export async function updateChecklog(data: Partial<IChecklog>, token: string, locale: any = 'es') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -80,7 +79,7 @@ export async function updateChecklog(data: Partial<IChecklog>, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,locale
         },
       });
       const response: any = await httpClientFetchInstance.post(

@@ -80,7 +80,7 @@ export default function useAttendanceFormModalController(onSuccess: () => void, 
           status: values.status as any,
           failedCode: ''
         }
-        await updateChecklog(data, token)
+        await updateChecklog(data, token, currentLocale)
 
       }
 
