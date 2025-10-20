@@ -58,6 +58,7 @@ export const useSettingEntityController = () => {
     const t = useTranslations();
     const { currentEntity } = useEntity();
     const [geo, setGeo] = useState<{ lat: number, lng: number }>({ lat: 0, lng: 0 })
+    const [timeZone, setTimeZone] = useState('')
     const { changeLoaderState } = useLayout()
     const { user, token } = useAuth();
     const { showToast } = useToast()
@@ -176,8 +177,12 @@ export const useSettingEntityController = () => {
             fullWidth: true,
             component: AddressInput,
             extraProps: {
-                onHandleChange: (data: { lat: number, lng: number }) => {
-                    setGeo(data)
+                onHandleChange: (data: { lat: number, lng: number, timeZone: string }) => {
+                    setGeo({
+                        lat: data.lat,
+                        lng: data.lng,
+                    })
+                    setTimeZone(timeZone)
                 },
             },
         },
@@ -210,6 +215,7 @@ export const useSettingEntityController = () => {
                         "city": values.city,
                         "postalCode": values.postalCode,
                         "country": values.country,
+                        timeZone
 
                     }
                 },
@@ -252,6 +258,8 @@ export const useSettingEntityController = () => {
                 billingEmail: entity?.billingEmail as string ?? user?.email as string ?? ''
             })
             setCityList(country.find(e => e.name === entity?.legal?.address.country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
+            setGeo(entity.legal?.address?.geo as { lat: number, lng: number })
+            setTimeZone(entity.legal?.address?.timeZone as string)
         } catch (error) {
             if (error instanceof Error) {
                 showToast(error.message, 'error');
