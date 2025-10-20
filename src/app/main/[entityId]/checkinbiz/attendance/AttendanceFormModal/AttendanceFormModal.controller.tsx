@@ -17,6 +17,7 @@ import DateInput from "@/components/common/forms/fields/Datenput";
 import { useFormStatus } from "@/hooks/useFormStatus";
 import { Timestamp } from "firebase/firestore";
 import { updateChecklog } from "@/services/checkinbiz/report.service";
+import { useAppLocale } from "@/hooks/useAppLocale";
 
 
 export default function useAttendanceFormModalController(onSuccess: () => void, employeeId?: string, branchId?: string,) {
@@ -27,6 +28,7 @@ export default function useAttendanceFormModalController(onSuccess: () => void, 
   const { changeLoaderState } = useLayout()
   const { formStatus } = useFormStatus()
   const { closeModal, open } = useCommonModal()
+  const {currentLocale} = useAppLocale()
 
 
   const [initialValues, setInitialValues] = useState<Partial<IChecklog>>({
@@ -66,7 +68,7 @@ export default function useAttendanceFormModalController(onSuccess: () => void, 
           isAdmin: true
         }
 
-        await createLog(data, token)
+        await createLog(data, token, currentLocale)
       } else {
         const data: Partial<IChecklog> = {
           entityId: open.args?.data?.entityId,
@@ -78,7 +80,7 @@ export default function useAttendanceFormModalController(onSuccess: () => void, 
           status: values.status as any,
           failedCode: ''
         }
-        await updateChecklog(data, token)
+        await updateChecklog(data, token, currentLocale)
 
       }
 

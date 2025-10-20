@@ -13,6 +13,7 @@ import { updateEntityBranding } from '@/services/core/entity.service';
 import ImageUploadInput from '@/components/common/forms/fields/ImageUploadInput';
 import { requiredRule } from '@/config/yupRules';
 import { useLayout } from '@/hooks/useLayout';
+import { useAppLocale } from '@/hooks/useAppLocale';
 
 
 
@@ -53,6 +54,7 @@ export type TabItem = {
 export const useSettingEntityController = () => {
     const t = useTranslations();
     const { currentEntity, refrestList } = useEntity();
+    const { currentLocale } = useAppLocale()
 
     const { changeLoaderState } = useLayout()
     const { user, token } = useAuth();
@@ -184,7 +186,7 @@ export const useSettingEntityController = () => {
                 }
             }
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-            await updateEntityBranding(data, token)
+            await updateEntityBranding(data, token, currentLocale)
 
             refrestList(user?.id as string)
             showToast(t('core.feedback.success'), 'success');

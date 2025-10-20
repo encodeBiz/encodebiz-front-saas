@@ -5,6 +5,7 @@ import IEntity from '@/domain/core/auth/IEntity';
 import { IChecklog, ICreateLog } from '@/domain/features/checkinbiz/IChecklog';
 import { IEmployee } from '@/domain/features/checkinbiz/IEmployee';
 import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
+import { useAppLocale } from '@/hooks/useAppLocale';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { useGeoPermission } from '@/hooks/useGeoPermission';
 import { useLayout } from '@/hooks/useLayout';
@@ -62,6 +63,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     const t = useTranslations()
     const { changeLoaderState } = useLayout()
     const { showToast } = useToast()
+    const { currentLocale } = useAppLocale()
 
 
     const [checkAction, setCheckAction] = useState<"checkout" | "checkin">('checkout')
@@ -88,7 +90,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
         try {
             setPendingStatus(true)
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-            const response: IValidateEmployeData = await validateEmployee(customToken as string)
+            const response: IValidateEmployeData = await validateEmployee(customToken as string, currentLocale)
             setSessionData({
                 ...sessionData as { employeeId: string, entityId: string, branchId: string, },
                 entityId: response.payload.entityId as string,
@@ -179,7 +181,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
             }
         }
 
-        createLog(data, token).then(() => {
+        createLog(data, token, currentLocale).then(() => {
             if (typeof callback === 'function') callback()
         }).catch(e => {
             const errorData: { code: string, message: string } = JSON.parse(e?.message) as { code: string, message: string }
@@ -220,7 +222,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     }
 
     const fetchEntityData = async () => {
-        setEntity(await fetchEntity(sessionData?.entityId as string))
+        setEntity(await fetchEntity(sessionData?.entityId as string,currentLocale))
     }
 
     const fetchEmployeeData = async () => {

@@ -19,6 +19,7 @@ import { decodeFromBase64 } from "@/lib/common/base64";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
+import { useAppLocale } from "@/hooks/useAppLocale";
 
 
  
@@ -71,7 +72,7 @@ export default function useStaffListController() {
   const { navivateTo } = useLayout()
   const { changeLoaderState } = useLayout()
   const searchParams = useSearchParams()
-
+  const { currentLocale } = useAppLocale()
   const handleResend = async (item: IStaff | Array<IStaff>) => {
     const dataForm = []
     if (Array.isArray(item)) {
@@ -100,7 +101,7 @@ export default function useStaffListController() {
 
     changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
     dataForm.forEach(async element => {
-      await createStaff(element, token)
+      await createStaff(element, token, currentLocale)
     });
     showToast(t('core.feedback.success'), 'success');
     changeLoaderState({ show: false })
@@ -306,7 +307,7 @@ export default function useStaffListController() {
       await Promise.all(
         ids.map(async (id) => {
           try {
-            await deleteStaff(currentEntity?.entity.id as string, id, token)
+            await deleteStaff(currentEntity?.entity.id as string, id, token, currentLocale)
           } catch (e: any) {
             showToast(e?.message, 'error')
             setDeleting(false)

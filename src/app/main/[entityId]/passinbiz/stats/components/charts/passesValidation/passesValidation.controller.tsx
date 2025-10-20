@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { fetchStats } from "@/services/passinbiz/holder.service";
 import { IPassValidatorStatsRequest, IPassValidatorStatsResponse } from "../../../model/PassValidator";
 import { usePassinBizStats } from "../../../context/passBizStatsContext";
+import { useAppLocale } from "@/hooks/useAppLocale";
 
 
 
@@ -181,10 +182,7 @@ export interface ChartData {
 export default function usePassesValidationController() {
 
   const { setSeriesChart2, pending, setPending, setError, error } = usePassinBizStats()
-
-
-
-
+  const { currentLocale } = useAppLocale()
   //Graph Data
   const { setGraphData, graphData } = usePassinBizStats()
 
@@ -196,7 +194,7 @@ export default function usePassesValidationController() {
       ...error,
       ['validator']: ''
     })
-    fetchStats({ ...payload } as IPassValidatorStatsRequest, token).then(res => {
+    fetchStats({ ...payload } as IPassValidatorStatsRequest, token, currentLocale).then(res => {
       const normalized = normalizeApiResponse(res);
 
       const buckets = getBuckets(normalized as IPassValidatorStatsResponse, payload.groupBy)

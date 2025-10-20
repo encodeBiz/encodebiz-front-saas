@@ -639,6 +639,7 @@
     "list": "Empleados",
     "add": "Crear empleado",
     "update": "Editar empleado",
+    "edit": "Editar empleado",
     "detail": "Detalles",
     "configureDevice": "Configurar dispositivo de confianza",
     "import": "Importar",

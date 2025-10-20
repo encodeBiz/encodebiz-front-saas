@@ -3,6 +3,7 @@
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { emailRule } from '@/config/yupRules';
 import { CommonModalType } from '@/contexts/commonModalContext';
+import { useAppLocale } from '@/hooks/useAppLocale';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { useToast } from '@/hooks/useToast';
 import { recoveryPassword } from '@/services/core/account.service';
@@ -19,6 +20,8 @@ export const useRegisterController = () => {
     const t = useTranslations()
     const { showToast } = useToast()
     const { openModal } = useCommonModal()
+    const { currentLocale } = useAppLocale()
+
     const [initialValues] = useState<RecoveryFormValues>({
         email: '',
     })
@@ -31,7 +34,7 @@ export const useRegisterController = () => {
 
     const handleRecoveryPassword = async (values: RecoveryFormValues) => {
         try {
-            await recoveryPassword(values.email)
+            await recoveryPassword(values.email, currentLocale)
             openModal(CommonModalType.RECOVERY)
         } catch (error: any) {
             showToast(error.message, 'error')

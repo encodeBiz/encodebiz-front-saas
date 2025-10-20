@@ -10,6 +10,7 @@ import { useTranslations } from 'next-intl';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CHECKINBIZ_MODULE_ROUTE, PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
+import { useAppLocale } from '@/hooks/useAppLocale';
 export default function usePricingCardController(id: string, name: string, fromService: "passinbiz" | "checkinbiz") {
     const { currentEntity, entitySuscription } = useEntity();
     const { token } = useAuth()
@@ -18,6 +19,7 @@ export default function usePricingCardController(id: string, name: string, fromS
     const { changeLoaderState, navivateTo } = useLayout()
     const t = useTranslations()
     const { openModal } = useCommonModal()
+    const { currentLocale } = useAppLocale()
 
     const subcribeAction = async () => {
 
@@ -34,7 +36,7 @@ export default function usePricingCardController(id: string, name: string, fromS
                 }
                 changeLoaderState({ show: true, args: { text: t('core.title.loaderActionBilling') } })
 
-                await subscribeInSassProduct(data, token)
+                await subscribeInSassProduct(data, token, currentLocale)
 
                 showToast(`${t('salesPlan.feedText1')} ${id} ${t('salesPlan.feedText2')} ${fromService} ${t('salesPlan.feedText3')}`, 'success');
                 setLoadingGetPlan(false);
@@ -66,7 +68,7 @@ export default function usePricingCardController(id: string, name: string, fromS
             }
             changeLoaderState({ show: true, args: { text: t('core.title.loaderActionBilling') } })
 
-            await unSubscribeInSassProduct(data, token)
+            await unSubscribeInSassProduct(data, token, currentLocale)
 
             showToast(`${t('salesPlan.feedText1')} ${fromService} ${t('salesPlan.feedText4')}`, 'success');
             setLoadingGetPlan(false);

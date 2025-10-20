@@ -24,6 +24,7 @@ import AddressInput from "@/components/common/forms/fields/AddressInput";
 import { Timestamp } from "firebase/firestore";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
+import { useAppLocale } from "@/hooks/useAppLocale";
 
 
 export default function useFormController(isFromModal: boolean, onSuccess?: () => void) {
@@ -32,7 +33,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const { navivateTo } = useLayout()
   const { token, user } = useAuth()
   const { open, closeModal } = useCommonModal()
-   
+  const {currentLocale} = useAppLocale()
   const { id } = useParams<{ id: string }>()
   const itemId = isFromModal ? open.args?.id : id
   const { currentEntity, watchServiceAccess } = useEntity()
@@ -105,8 +106,8 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         "metadata": ArrayToObject(values.metadata),
         "id": itemId,
       }
-      if (itemId) await updateEvent(data, token)
-      else await createEvent(data, token)
+      if (itemId) await updateEvent(data, token, currentLocale)
+      else await createEvent(data, token, currentLocale)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
 

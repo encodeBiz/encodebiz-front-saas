@@ -21,6 +21,7 @@ import ToggleInput from "@/components/common/forms/fields/ToggleInput";
 import PhoneNumberInput from "@/components/common/forms/fields/PhoneNumberInput";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
+import { useAppLocale } from "@/hooks/useAppLocale";
 
 
 export default function useFormController(isFromModal: boolean, onSuccess?: () => void) {
@@ -29,9 +30,10 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const { navivateTo } = useLayout()
   const { token, user } = useAuth()
   const { open, closeModal } = useCommonModal()
+   
   const { id } = useParams<{ id: string }>()
   const itemId = isFromModal ? open.args?.id : id
-
+  const {currentLocale} = useAppLocale()
   const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
   const [fields, setFields] = useState<Array<any>>([])
@@ -76,9 +78,9 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
 
       if (itemId)
-        await updateEmployee(data, token)
+        await updateEmployee(data, token, currentLocale)
       else
-        await createEmployee(data, token)
+        await createEmployee(data, token, currentLocale)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
 
@@ -106,6 +108,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const event: IEmployee = await fetchEmployee(currentEntity?.entity.id as string, itemId)
+       
       setInitialValues({
         ...event,
         metadata: objectToArray(event.metadata)
@@ -128,7 +131,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       ]
     } as any)).map(e => ({ value: e.id, label: e.name }))
 
-    if (!id) {
+    if (!itemId) {
       setInitialValues({
         "fullName": '',
         email: '',

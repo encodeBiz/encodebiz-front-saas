@@ -1,35 +1,24 @@
 import { RegisterFormValues } from "@/app/auth/register/page.controller";
 import { collection } from "@/config/collection";
-import { changePass, getUser, login, loginWithGoogle, loginWithToken } from "@/lib/firebase/authentication/login";
+import { getUser, login, loginWithGoogle, loginWithToken } from "@/lib/firebase/authentication/login";
 import { logout } from "@/lib/firebase/authentication/logout";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
-import httpClientFetchInstance, { codeError, HttpClient } from "@/lib/http/httpClientFetchNext";
+import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import IUser from "@/domain/core/auth/IUser";
-import { EmailAuthProvider, reauthenticateWithCredential, updateProfile, User, UserCredential } from "firebase/auth";
+import { updateProfile, User, UserCredential } from "firebase/auth";
 import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
+import { codeError } from "@/config/errorLocales";
  
 
-export async function validateToken(
-    token: string,
-): Promise<Array<IUser>> {
-    try {
-        const items = await httpClientFetchInstance.post<Array<IUser>>(
-            `/api/auth/verify-token`,
-            { token }
-        );
-        return items;
-    } catch (error) {
-        return error ? [] : []
-    }
-}
+ 
 
 export async function signInToken(
-    token: string
+    token: string, locale: any = 'es'
 ): Promise<UserCredential> {
     try {
         return await loginWithToken(token)
     } catch (error: any) {
-        throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
+        throw new Error(codeError[locale][error.code] ? codeError[error.code] : error.message)
 
     }
 }
@@ -45,21 +34,21 @@ export async function signInGoogle(): Promise<UserCredential> {
 }
 
 export async function signInEmail(
-    email: string, password: string
+    email: string, password: string, locale: any = 'es'
 ): Promise<UserCredential> {
     try {
         return await login({ email, password })
     } catch (error: any) {
-        throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
+        throw new Error(codeError[locale][error.code] ? codeError[locale][error.code] : error.message)
 
     }
 }
 
-export async function recoveryPassword(email: string) {
+export async function recoveryPassword(email: string, locale: any = 'es') {
     try {
         const httpClientFetchInstance: HttpClient = new HttpClient({
             baseURL: process.env.NEXT_PUBLIC_BACKEND_URI_RECOVERY_PASS,
-            headers: {},
+            headers: {locale},
         });
         const response: any = await httpClientFetchInstance.post('', {
             email
@@ -74,12 +63,12 @@ export async function recoveryPassword(email: string) {
 
 }
 
-export async function signUpEmail(data: RegisterFormValues, sessionToken?: string, uid?: string) {
+export async function signUpEmail(data: RegisterFormValues, sessionToken?: string, uid?: string, locale: any = 'es') {
     try {
         const httpClientFetchInstance: HttpClient = new HttpClient({
             baseURL: process.env.NEXT_PUBLIC_BACKEND_URI_CREATE_USER,
             headers: {
-                Authorization: `Bearer ${sessionToken}`
+                Authorization: `Bearer ${sessionToken}`, locale
             },
         });
         const response: any = await httpClientFetchInstance.post('', {           
@@ -106,50 +95,33 @@ export async function signUpEmail(data: RegisterFormValues, sessionToken?: strin
 
 
 export async function fetchUserAccount(
-    uid: string
+    uid: string, locale: any = 'es'
 ): Promise<IUser> {
     try {
         return await getOne(collection.USER, uid);
     } catch (error: any) {
-        throw new Error(codeError[error.code] ? codeError[error.code] : error?.message)
+        throw new Error(codeError[locale][error.code] ? codeError[locale][error.code] : error?.message)
 
     }
 }
 
 
 
-export async function handleLogout(callback: () => void): Promise<void> {
+export async function handleLogout(callback: () => void, locale: any = 'es'): Promise<void> {
     try {
         await logout()
         if (typeof callback === 'function') callback()
     } catch (error: any) {
-        throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
+        throw new Error(codeError[locale][error.code] ? codeError[locale][error.code] : error.message)
 
     }
 }
 
-export async function reAuth(password: string): Promise<UserCredential> {
-    try {
-        const user = await getUser()
-        const credencial = EmailAuthProvider.credential(user?.email as string, password)
-        return await reauthenticateWithCredential(user as User, credencial)
-    } catch (error: any) {
-        throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
-    }
-}
+ 
 
+ 
 
-export async function changePassword(password: string): Promise<void> {
-    try {
-        const user = await getUser()
-        await changePass(user as User, password)
-    } catch (error: any) {
-        throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
-
-    }
-}
-
-export async function updateAccout(photoURL: string, phoneNumber: string, displayName: string): Promise<void> {
+export async function updateAccout(photoURL: string, phoneNumber: string, displayName: string, locale: any = 'es'): Promise<void> {
     try {
         const user = await getUser()
         await updateProfile(user as User, {
@@ -170,7 +142,7 @@ export async function updateAccout(photoURL: string, phoneNumber: string, displa
 
 
     } catch (error: any) {
-        throw new Error(codeError[error.code] ? codeError[error.code] : error.message)
+        throw new Error(codeError[locale][error.code] ? codeError[locale][error.code] : error.message)
 
     }
 }

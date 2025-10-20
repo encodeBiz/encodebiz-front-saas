@@ -43,6 +43,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     const pathname = usePathname()
     const { changeLocale } = useAppLocale()
     const { entityId } = useParams<any>()
+    const { currentLocale } = useAppLocale()
 
     const watchServiceAccess = useCallback(async (serviceId: BizType) => {
         const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
@@ -65,7 +66,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     const watchSesionState = async (userAuth: User) => {
 
         if (userAuth) {
-            const entityList: Array<IUserEntity> = await fetchUserEntities(userAuth.uid)
+            const entityList: Array<IUserEntity> = await fetchUserEntities(userAuth.uid, currentLocale)
 
             if (entityList.length > 0) {
                 if (entityList.length > 0 && entityList.filter(e => e.isActive).length === 0) {
@@ -83,7 +84,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
                     _currentEntity = entityList.find(e => e.isActive) as IUserEntity
 
                     setCurrentEntity(_currentEntity)
-                    const extraData = await fetchUserAccount(userAuth.uid)
+                    const extraData = await fetchUserAccount(userAuth.uid, currentLocale)
                     if (extraData.fullName !== "Guest")
                         push(`/${MAIN_ROUTE}/${_currentEntity.entity.id}/dashboard`)
 
@@ -91,7 +92,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
             } else {
                 try {
-                    const userData: IUser = await fetchUserAccount(userAuth.uid)
+                    const userData: IUser = await fetchUserAccount(userAuth.uid, currentLocale)
                     if (userData.email)
                         push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
                 } catch (error) {
@@ -107,7 +108,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     const refrestList = async (userId: string) => {
-        const entityList: Array<IUserEntity> = await fetchUserEntities(userId)
+        const entityList: Array<IUserEntity> = await fetchUserEntities(userId, currentLocale)
         if (entityList.length > 0) {
             if (entityList.length > 0 && entityList.filter(e => e.isActive).length === 0) {
                 const item = entityList[0]
@@ -125,7 +126,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
 
     const changeCurrentEntity = async (id: string, userId: string, callback?: () => void,) => {
-        const entityList: Array<IUserEntity> = await fetchUserEntities(userId)
+        const entityList: Array<IUserEntity> = await fetchUserEntities(userId, currentLocale)
         const current: IUserEntity = entityList.find(e => e.entity.id === id) as IUserEntity
  
         if (current) {
@@ -141,13 +142,13 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
             setCurrentEntity(current)
 
             push(`${pathname.replace(entityId, current.entity.id as string)}`)
-            await saveStateCurrentEntity(updatedList)
+            await saveStateCurrentEntity(updatedList, currentLocale)
 
             setTimeout(() => {
                 if (typeof callback === 'function') callback()
             }, 1000);
         } else {
-            const entityList: Array<IUserEntity> = await fetchUserEntities(userId)
+            const entityList: Array<IUserEntity> = await fetchUserEntities(userId, currentLocale)
             if (entityList.length > 0) {
                 setEntityList(entityList)
                 const entity = entityList.find(e => e.isActive) ?? entityList[0]

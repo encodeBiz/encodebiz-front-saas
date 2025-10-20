@@ -21,6 +21,7 @@ import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
+import { useAppLocale } from "@/hooks/useAppLocale";
 
 
 interface IFilterParams {
@@ -46,6 +47,7 @@ export default function useEmployeeListController() {
   const t = useTranslations();
   const { id } = useParams<{ id: string }>()
   const { changeLoaderState } = useLayout()
+  const {currentLocale} = useAppLocale()
   const searchParams = useSearchParams()
   const { token, user } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
@@ -54,6 +56,7 @@ export default function useEmployeeListController() {
   const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<IEmployee[]>([]);
   const [itemsHistory, setItemsHistory] = useState<IEmployee[]>([]);
+ 
   const [filterParams, setFilterParams] = useState<IFilterParams>({
     filter: { status: 'active', branchId: 'none' },
     startAfter: null,
@@ -117,7 +120,7 @@ export default function useEmployeeListController() {
       const data = {
         ...values,
       }
-      await createEmployee(data, token)
+      await createEmployee(data, token, currentLocale)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
 
@@ -311,7 +314,7 @@ export default function useEmployeeListController() {
         entityId: currentEntity?.entity.id as string,
         status: employee.status
       }
-      await updateEmployee(data, token)
+      await updateEmployee(data, token,currentLocale)
       const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
       fetchingData(filterParamsUpdated)
       changeLoaderState({ show: false })

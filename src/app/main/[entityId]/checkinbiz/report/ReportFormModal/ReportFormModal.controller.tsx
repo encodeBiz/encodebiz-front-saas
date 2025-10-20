@@ -14,6 +14,7 @@ import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { createReport } from "@/services/checkinbiz/report.service";
 import { IReport } from "@/domain/features/checkinbiz/IReport";
 import { format_date, getDateRange } from "@/lib/common/Date";
+import { useAppLocale } from "@/hooks/useAppLocale";
 
 interface ReportOutput {
 
@@ -39,6 +40,7 @@ export default function useAttendanceFormModalController(onSuccess: () => void) 
   const { token } = useAuth()
   const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
+  const { currentLocale } = useAppLocale()
   const { closeModal } = useCommonModal()
   const [initialValues] = useState<Partial<any>>({
     branchId: 'none',
@@ -65,7 +67,7 @@ export default function useAttendanceFormModalController(onSuccess: () => void) 
         end: format_date(dateRange.end, 'YYYY-MM-DD'),
       }
       if (values.branchId !== 'none') Object.assign(data, { branchId: values.branchId })
-      const response: ReportOutput = await createReport(data, token)
+      const response: ReportOutput = await createReport(data, token,currentLocale)
       if (download)
         window.open(response.reporData.ref.url, '_blank')
 

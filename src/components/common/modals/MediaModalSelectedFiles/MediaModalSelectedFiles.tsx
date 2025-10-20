@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useState } from 'react';
 import {
   Box,
@@ -38,6 +39,7 @@ import { ImageCropper } from '../../ImageCropper/ImageCropper';
 import { SassButton } from '../../buttons/GenericButton';
 import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import { CustomTypography } from '../../Text/CustomTypography';
+import { useAppLocale } from '@/hooks/useAppLocale';
  
 export interface IMedia {
   preview: string
@@ -63,6 +65,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom', onF
   const [selectedType, setSelectedType] = useState<string>(type)
   const { open, closeModal } = useCommonModal()
   const [isUploading, setIsUploading] = useState(false);
+  const {currentLocale} = useAppLocale()
   const t = useTranslations();
 
   const handleClose = () => {
@@ -97,7 +100,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom', onF
       form.append('uid', user?.id as string);
       form.append('type', selectedType);
       form.append('file', renameF);
-      const mediaId = (await uploadMedia(form, token) as { mediaId: string })?.mediaId
+      const mediaId = (await uploadMedia(form, token, currentLocale) as { mediaId: string })?.mediaId
 
 
       setSelectedFile(mediaId)
@@ -111,7 +114,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom', onF
       }
       setIsUploading(false);
     }
-  }, [currentEntity?.entity.id, fetchUserMedia, selectedType, showToast, token, user?.id]);
+  }, [currentEntity?.entity.id, selectedType, token, user?.id]);
 
 
 

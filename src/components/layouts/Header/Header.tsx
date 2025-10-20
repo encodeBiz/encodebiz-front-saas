@@ -18,13 +18,10 @@ import {
 import {
   Mail as MailIcon,
   Notifications as NotificationsIcon,
-  Brightness4 as DarkModeIcon,
-  Brightness7 as LightModeIcon,
-  MenuOutlined,
-
+  
   BrightnessHigh,
   Menu as MenuIcon,
- 
+
 } from '@mui/icons-material';
 import HelpIcon from '@mui/icons-material/Help';
 import { useLayout } from '@/hooks/useLayout';
@@ -40,6 +37,9 @@ import EntitySwitcher from '@/components/common/EntitySwitcher';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { MoonIcon } from '@/components/common/icons/MoonIcon';
 import { QuestionIcon } from '@/components/common/icons/QuestionIcon';
+import { useAppLocale } from '@/hooks/useAppLocale';
+import { useRouter } from 'nextjs-toploader/app';
+import { MAIN_ROUTE, USER_ROUTE } from '@/config/routes';
 
 
 export default function Header({ drawerWidth }: { drawerWidth: number }) {
@@ -54,6 +54,8 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
   const { cleanEntityContext } = useEntity()
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const { currentLocale } = useAppLocale()
+  const { push } = useRouter()
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -76,7 +78,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
       <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', p: 2 }}>
         {user?.photoURL && <Avatar
           sx={{ width: 40, height: 40, mr: 1 }}
-          src={user?.photoURL}
+          src={user?.photoURL??''}
           alt={user?.fullName}
         />}
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
@@ -120,12 +122,12 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
       </Box>
 
 
-      <MenuItem>
+      {/** <MenuItem>
         <IconButton onClick={() => changeColorMode()} size="large" color="inherit">
           {theme.palette.mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
         </IconButton>
         <p>{t('layout.header.theme')}</p>
-      </MenuItem>
+      </MenuItem>*/}
 
       {showMessages > 0 && <MenuItem>
         <IconButton size="large" color="inherit">
@@ -150,7 +152,20 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
       </MenuItem>}
 
 
-
+      <MenuItem onClick={() => {
+        push(`/${MAIN_ROUTE}/${USER_ROUTE}/account`);
+      }}>
+        <IconButton
+          size="large"
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <HelpIcon />
+        </IconButton>
+        <p>{t('layout.header.profile')}</p>
+      </MenuItem>
 
       <MenuItem onClick={() => openModal(CommonModalType.ONBOARDING)}>
         <IconButton
@@ -168,7 +183,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
       <MenuItem onClick={() => {
         handleMenuClose(); handleLogout(() => {
           cleanEntityContext()
-        })
+        }, currentLocale)
       }}>
         <IconButton
           size="large"
@@ -219,7 +234,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
                 width: 40
               }}
             >
-              {theme.palette.mode === 'dark' ? <BrightnessHigh /> : <MoonIcon   />}
+              {theme.palette.mode === 'dark' ? <BrightnessHigh /> : <MoonIcon />}
             </IconButton>
 
 
@@ -240,11 +255,11 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
                 }}
                 onClick={() => openModal()}
               >
-                <QuestionIcon  />
+                <QuestionIcon />
               </IconButton>
             </Tooltip>
 
-            <Divider sx={{height: 30,mt:1.5}} orientation="vertical" flexItem />
+            <Divider sx={{ height: 30, mt: 1.5 }} orientation="vertical" flexItem />
 
             <Tooltip title={t('layout.header.profile')}>
               <IconButton
@@ -275,7 +290,11 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
               onClick={handleMobileMenuOpen}
               color="inherit"
             >
-              <MenuOutlined />
+              <Avatar
+                sx={{ width: 32, height: 32 }}
+                src={user?.photoURL ? user?.photoURL : ''}
+                alt={user?.displayName as string}
+              />
             </IconButton>
           </Box>
 

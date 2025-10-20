@@ -21,6 +21,7 @@ import ToggleInput from "@/components/common/forms/fields/ToggleInput";
 import TimeInput from "@/components/common/forms/fields/TimeInput";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
+import { useAppLocale } from "@/hooks/useAppLocale";
 
 
 export default function useFormController(isFromModal: boolean, onSuccess?: () => void) {
@@ -28,6 +29,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const { showToast } = useToast()
   const { navivateTo } = useLayout()
   const { token, user } = useAuth()
+  const { currentLocale } = useAppLocale()
 
   const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
@@ -125,9 +127,9 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
 
       if (itemId)
-        await updateSucursal(data, token)
+        await updateSucursal(data, token, currentLocale)
       else
-        await createSucursal(data, token)
+        await createSucursal(data, token, currentLocale)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
 

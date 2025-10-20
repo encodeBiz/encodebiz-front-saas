@@ -16,6 +16,7 @@ import { SassButton } from '@/components/common/buttons/GenericButton';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import PhoneNumberInput from '@/components/common/forms/fields/PhoneNumberInput';
+import { useAppLocale } from '@/hooks/useAppLocale';
 export interface UserFormValues {
     "uid": string
     "name": string
@@ -56,10 +57,11 @@ export const useUserAccountController = () => {
         avatar: user?.photoURL as string | "",
         "active": true,
     });
+    const { currentLocale } = useAppLocale()
 
     const changePasswrod = async () => {
         changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-        await recoveryPassword(user?.email as string)
+        await recoveryPassword(user?.email as string,currentLocale)
         changeLoaderState({ show: false })
         openModal(CommonModalType.INFO)
     }
@@ -119,7 +121,7 @@ export const useUserAccountController = () => {
                 uri = values.avatar
             }
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-            await updateAccout(uri, values.phone, values.name)
+            await updateAccout(uri, values.phone, values.name, currentLocale)
             updateUserData()
 
             showToast(t('core.feedback.success'), 'success');

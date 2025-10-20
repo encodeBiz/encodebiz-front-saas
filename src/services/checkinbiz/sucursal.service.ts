@@ -38,7 +38,7 @@ export const search = async (entityId: string, params: SearchParams): Promise<IS
   return result;
 }
 
-export async function createSucursal(data: Partial<ISucursal>, token: string) {
+export async function createSucursal(data: Partial<ISucursal>, token: string, locale: any = 'es') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -46,7 +46,7 @@ export async function createSucursal(data: Partial<ISucursal>, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -66,7 +66,7 @@ export async function createSucursal(data: Partial<ISucursal>, token: string) {
   }
 }
 
-export async function updateSucursal(data: Partial<ISucursal>, token: string) {
+export async function updateSucursal(data: Partial<ISucursal>, token: string, locale: any = 'es') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -74,7 +74,7 @@ export async function updateSucursal(data: Partial<ISucursal>, token: string) {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -102,7 +102,7 @@ export async function updateSucursal(data: Partial<ISucursal>, token: string) {
    * @param {SearchParams} params
    * @returns {Promise<Iemployee[]>}
    */
-export const deleteSucursal = async (entityId: string, id: string, token: string): Promise<void> => {
+export const deleteSucursal = async (entityId: string, id: string, token: string, locale: any = 'es'): Promise<void> => {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -110,7 +110,7 @@ export const deleteSucursal = async (entityId: string, id: string, token: string
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,locale
         },
       });
       const response: any = await httpClientFetchInstance.delete(

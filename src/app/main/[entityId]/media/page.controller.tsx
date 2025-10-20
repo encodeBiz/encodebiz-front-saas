@@ -17,6 +17,7 @@ import { DeleteOutline } from '@mui/icons-material';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { SassButton } from '@/components/common/buttons/GenericButton';
+import { useAppLocale } from '@/hooks/useAppLocale';
 
 
 interface IFilterParams {
@@ -43,7 +44,7 @@ export const useMediaList = () => {
     const { token, user } = useAuth()
     const { currentEntity } = useEntity()
     const { showToast } = useToast()
-
+    const {currentLocale} = useAppLocale()
     const { openModal, closeModal } = useCommonModal()
 
     /** Filter and PAgination Control */
@@ -186,7 +187,7 @@ export const useMediaList = () => {
             await deleteMedia({
                 "mediaId": id,
                 "entityId": currentEntity?.entity.id
-            }, token)
+            }, token, currentLocale)
             setItemsHistory(itemsHistory.filter(e => e.id !== id))
             setItems(itemsHistory.filter(e => e.id !== id))
             setDeleting(false)
@@ -222,7 +223,7 @@ export const useMediaList = () => {
             form.append('uid', user?.id as string);
             form.append('type', selectedType);
             form.append('file', renameF);
-            await uploadMedia(form, token)
+            await uploadMedia(form, token, currentLocale)
             fetchingData(filterParams)
             setIsUploading(false);
         } catch (error: unknown) {

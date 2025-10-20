@@ -10,6 +10,7 @@ import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import TransferList from "@/components/common/forms/fields/TransferListField/TransferListField";
 import { Timestamp } from "firebase/firestore";
+import { useAppLocale } from "@/hooks/useAppLocale";
 
 export default function useStaffController() {
   const t = useTranslations();
@@ -19,6 +20,7 @@ export default function useStaffController() {
   const { id } = useParams<{ id: string }>()
   const { currentEntity, watchServiceAccess } = useEntity()
   const { changeLoaderState } = useLayout()
+  const {currentLocale} = useAppLocale()
   const [fields, setFields] = useState<Array<any>>([])
   const [initialValues, setInitialValues] = useState<{ event: Array<string> }>({
     event: [],
@@ -45,7 +47,7 @@ export default function useStaffController() {
               endDate: (event.endDate instanceof Timestamp) ? event.endDate.toDate() : new Date(event.endDate),
               entityId: event.entityId,
               assignedStaff: event.assignedStaff
-            }, token);
+            }, token, currentLocale);
 
           }
         })
@@ -62,7 +64,7 @@ export default function useStaffController() {
               date: (event.date instanceof Timestamp) ? event.date.toDate() : new Date(event.date),
               endDate: (event.endDate instanceof Timestamp) ? event.endDate.toDate() : new Date(event.endDate),
               assignedStaff: event.assignedStaff
-            }, token);
+            }, token, currentLocale);
 
           }
         })

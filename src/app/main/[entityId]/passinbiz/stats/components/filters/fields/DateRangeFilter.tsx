@@ -9,6 +9,10 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 import { useTranslations } from "next-intl";
 import { getDateRange } from "@/lib/common/Date";
+import { useAppLocale } from "@/hooks/useAppLocale";
+
+import { esES } from '@mui/x-date-pickers/locales';
+import { enUS } from '@mui/x-date-pickers/locales';
 
 
 
@@ -25,7 +29,7 @@ export const DateRangePicker = ({
 
 
 }) => {
-
+    const { currentLocale } = useAppLocale()
     const [startDate, setStartDate] = useState(value?.start);
     const [endDate, setEndDate] = useState(value?.end);
     const t = useTranslations()
@@ -63,14 +67,16 @@ export const DateRangePicker = ({
     }
 
     const [filterRange, setFilterRange] = useState('')
-    return <LocalizationProvider dateAdapter={AdapterDayjs}>
+    return <LocalizationProvider dateAdapter={AdapterDayjs} localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}>
+
         <Box display={'flex'} flexDirection={'column'} gap={0} >
             <FormControl sx={{ width: width, mb: 0 }}>
 
                 <Box display="flex" gap={2} flexDirection={{ xs: 'column', sm: 'row' }}>
                     <DatePicker
                         label={'Inicio'}
-
+                        localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}
+                        
                         defaultValue={dayjs(startDate ?? new Date())}
                         value={dayjs(startDate ?? new Date())}
                         onChange={handleStartDateChange}
@@ -93,7 +99,7 @@ export const DateRangePicker = ({
                         minDate={dayjs(startDate)}
                         disabled={!startDate}
                         sx={{ flex: 1 }}
-
+                        localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}
                         slotProps={{
                             textField: {
                                 size: 'small'

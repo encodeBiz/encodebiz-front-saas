@@ -16,7 +16,7 @@ export const fetchWebHookByEntity = async (entityId: string, params: SearchParam
 }
 
 
-export async function createWebHook(data: Partial<IWebHook>, token: string) {
+export async function createWebHook(data: Partial<IWebHook>, token: string, locale: string) {
     try {
         if (!token) {
             throw new Error("Error to fetch user auth token");
@@ -24,7 +24,7 @@ export async function createWebHook(data: Partial<IWebHook>, token: string) {
             const httpClientFetchInstance: HttpClient = new HttpClient({
                 baseURL: "",
                 headers: {
-                    authorization: `Bearer ${token}`,
+                    authorization: `Bearer ${token}`, locale
                 },
             });
             const response: any = await httpClientFetchInstance.post(
@@ -49,7 +49,7 @@ export async function createWebHook(data: Partial<IWebHook>, token: string) {
 export async function deleteWebhook(data: {
     "endpointId": string,
     "entityId": string
-} | any, token: string) {
+} | any, token: string, locale: string) {
     try {
 
         if (!token) {
@@ -58,7 +58,7 @@ export async function deleteWebhook(data: {
             const httpClientFetchInstance: HttpClient = new HttpClient({
                 baseURL: '',
                 headers: {
-                    authorization: `Bearer ${token}`
+                    authorization: `Bearer ${token}`, locale
                 },
             });
             const response: any = await httpClientFetchInstance.delete(process.env.NEXT_PUBLIC_BACKEND_URI_DELETE_WEBHOOK as string, {

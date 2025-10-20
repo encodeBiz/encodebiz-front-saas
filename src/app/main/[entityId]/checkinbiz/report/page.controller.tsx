@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/useToast";
 import { useEntity } from "@/hooks/useEntity";
 import { IReport } from "@/domain/features/checkinbiz/IReport";
 import { Column, IRowAction } from "@/components/common/table/GenericTable";
-import { format_date, getDateRange, rmNDay } from "@/lib/common/Date";
+import { format_date, getDateRange } from "@/lib/common/Date";
 import { fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucursal.service";
 import { search, updateReport } from "@/services/checkinbiz/report.service";
 import { DownloadOutlined } from "@mui/icons-material";
@@ -49,7 +49,7 @@ export default function useAttendanceController() {
       filters: [
         { field: 'status', operator: '==', value: 'active' },
         { field: 'start', operator: '>=', value: getDateRange('year').start },
-        { field: 'end', operator: '<=', value: getDateRange('year').end }
+        { field: 'start', operator: '<=', value: getDateRange('year').end }
       ],
       startAfter: null,
       limit: 5,
@@ -84,7 +84,7 @@ export default function useAttendanceController() {
       if (key === 'range')
         filterData.push(
           { field: 'start', operator: '>=', value: filter[key].start },
-          { field: 'end', operator: '<=', value: filter[key].end }
+          { field: 'start', operator: '<=', value: filter[key].end }
         )
       else
         filterData.push({ field: key, operator: '==', value: filter[key] })
@@ -161,11 +161,9 @@ export default function useAttendanceController() {
     setLoading(true)
 
 
-    console.log({ ...(filterParams.params as any), filters });
-
+ 
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async res => {
-      console.log(res);
-
+ 
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
         const data: Array<IReport> = await Promise.all(
@@ -258,14 +256,6 @@ export default function useAttendanceController() {
       fetchingData(filterParams)
 
   }, [currentEntity?.entity?.id])
-
-
-
-
-
-
-
-
 
 
 

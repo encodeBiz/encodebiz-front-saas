@@ -23,6 +23,7 @@ import { DateRangePicker } from "@/app/main/[entityId]/passinbiz/stats/component
 import { onGoMap } from "@/lib/common/maps";
 import { Edit, MapOutlined } from "@mui/icons-material";
 import { CustomChip } from "@/components/common/table/CustomChip";
+import { useAppLocale } from "@/hooks/useAppLocale";
 
 interface IFilterParams {
   filter: { branchId: '', range: { start: any, end: any } | null },
@@ -48,6 +49,8 @@ export default function useEmployeeDetailController() {
   const { id } = useParams<{ id: string }>()
   const { currentEntity } = useEntity()
   const { openModal } = useCommonModal()
+  const { currentLocale } = useAppLocale()
+
   const { changeLoaderState, navivateTo } = useLayout()
   const [initialValues, setInitialValues] = useState<Partial<IEmployee>>({
     "fullName": '',
@@ -252,7 +255,7 @@ export default function useEmployeeDetailController() {
       await Promise.all(
         ids.map(async (id) => {
           try {
-            await deleteEmployee(currentEntity?.entity.id as string, id as string, token)
+            await deleteEmployee(currentEntity?.entity.id as string, id as string, token, currentLocale)
           } catch (e: any) {
             showToast(e?.message, 'error')
             setDeleting(false)
@@ -313,20 +316,20 @@ export default function useEmployeeDetailController() {
   }
 
   const onResend = async (values: IEmployee) => {
-      try {
-        changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-        const data = {
-          ...values,
-        }
-        await createEmployee(data, token)
-        changeLoaderState({ show: false })
-        showToast(t('core.feedback.success'), 'success');
-  
-      } catch (error: any) {
-        changeLoaderState({ show: false })
-        showToast(error.message, 'error')
+    try {
+      changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+      const data = {
+        ...values,
       }
-    };
+      await createEmployee(data, token, currentLocale)
+      changeLoaderState({ show: false })
+      showToast(t('core.feedback.success'), 'success');
+
+    } catch (error: any) {
+      changeLoaderState({ show: false })
+      showToast(error.message, 'error')
+    }
+  };
 
 
   const rowAction: Array<any> = [{
@@ -353,7 +356,7 @@ export default function useEmployeeDetailController() {
     onDelete, deleting, topFilter,
     onNext, onBack, onSuccessCreate,
     columns, branchListEmployee,
-    loading, filterParams,onResend,
+    loading, filterParams, onResend,
     initialValues, rowAction
   }
 }

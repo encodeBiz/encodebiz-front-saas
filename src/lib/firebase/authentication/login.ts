@@ -9,8 +9,8 @@ import {
   UserCredential,
 } from "firebase/auth";
 import { auth } from "../initializeApp";
-import { codeError } from "@/lib/http/httpClientFetchNext";
-
+import { codeError } from "@/config/errorLocales";
+ 
 export const login = async (params: {email:string, password:string}): Promise<UserCredential> => {
   const { email, password } = params;
 

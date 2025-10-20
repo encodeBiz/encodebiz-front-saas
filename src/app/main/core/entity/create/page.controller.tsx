@@ -15,6 +15,7 @@ import { MAIN_ROUTE } from '@/config/routes';
 import { createSlug } from '@/lib/common/String';
 import AddressInput from '@/components/common/forms/fields/AddressInput';
 import { useLayout } from '@/hooks/useLayout';
+import { useAppLocale } from '@/hooks/useAppLocale';
 
 
 export interface EntityFormValues {
@@ -37,6 +38,7 @@ export const useRegisterController = () => {
     const { user, token } = useAuth()
     const { changeCurrentEntity } = useEntity()
     const { push } = useRouter()
+    const {currentLocale} = useAppLocale()
     const [cityList, setCityList] = useState<any>([])
     const [geo, setGeo] = useState<{ lat: number, lng: number }>({ lat: 0, lng: 0 })
     const { changeLoaderState } = useLayout()
@@ -87,7 +89,7 @@ export const useRegisterController = () => {
                 },
                 "active": true
             }
-            const data: { entity: { id: string } } = await createEntity(createData, token)
+            const data: { entity: { id: string } } = await createEntity(createData, token, currentLocale)
 
             if (data.entity.id) {
                 changeCurrentEntity(data.entity.id, user?.id as string, () => {

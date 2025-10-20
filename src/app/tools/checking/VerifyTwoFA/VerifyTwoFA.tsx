@@ -24,6 +24,7 @@ import { useLayout } from '@/hooks/useLayout';
 import { useToast } from '@/hooks/useToast';
 import SixDigitCodeInput from '../ConfigTwoFA/SixDigitCodeInput';
 import { VerifyTwoFAType } from '../ConfigTwoFA/ConfigTwoFA';
+import { useAppLocale } from '@/hooks/useAppLocale';
 
 const VerifyTwoFA = () => {
     const { setToken } = useCheck()
@@ -33,12 +34,13 @@ const VerifyTwoFA = () => {
     const { changeLoaderState } = useLayout()
     const { showToast } = useToast()
     const [code, setCode] = useState('')
+  const {currentLocale} = useAppLocale()
 
     const verifyCode = async () => {
         changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
 
         try {
-            const data: VerifyTwoFAType = await verify2AF(code, token)
+            const data: VerifyTwoFAType = await verify2AF(code, token, currentLocale)
             //setToken(data.token)
             closeModal(CommonModalType.CONFIG2AF)
             openModal(CommonModalType.INFO)

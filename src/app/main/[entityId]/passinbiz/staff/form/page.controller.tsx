@@ -16,13 +16,14 @@ import { IEvent } from "@/domain/features/passinbiz/IEvent";
 import { Timestamp } from "firebase/firestore";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
+import { useAppLocale } from "@/hooks/useAppLocale";
 
 
 export default function useStaffController() {
   const t = useTranslations();
   const { showToast } = useToast()
   const { openModal } = useCommonModal()
-
+  const {currentLocale} = useAppLocale()
   const { token, user } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
    const { navivateTo } = useLayout()
@@ -122,7 +123,7 @@ export default function useStaffController() {
               assignedStaff: event.assignedStaff,
               date: (event.date instanceof Timestamp) ? event.date.toDate() : new Date(event.date),
               endDate: (event.endDate instanceof Timestamp) ? event.endDate.toDate() : new Date(event.endDate),
-            }, token);
+            }, token, currentLocale);
 
           }
         })
@@ -140,7 +141,7 @@ export default function useStaffController() {
                 date: (event.date instanceof Timestamp) ? event.date.toDate() : new Date(event.date),
                 endDate: (event.endDate instanceof Timestamp) ? event.endDate.toDate() : new Date(event.endDate),
                 assignedStaff: event.assignedStaff
-              }, token);
+              }, token, currentLocale);
             }
           })
         );
@@ -166,9 +167,9 @@ export default function useStaffController() {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       let data
       if (!id)
-        data = await createStaff(dataForm, token)
+        data = await createStaff(dataForm, token , currentLocale)
       else
-        await updateStaff(dataForm, token)
+        await updateStaff(dataForm, token , currentLocale)
 
       saveEventByStaff(values.eventList as Array<string>, id ? id : data?.id)
 

@@ -14,6 +14,7 @@ import { useLayout } from "@/hooks/useLayout";
 import { useParams } from "next/navigation";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
 import ImageUploadInput from "@/components/common/forms/fields/ImageUploadInput";
+import { useAppLocale } from "@/hooks/useAppLocale";
 
 
 export default function useHolderController() {
@@ -24,7 +25,7 @@ export default function useHolderController() {
   const { currentEntity, watchServiceAccess } = useEntity()
   const { changeLoaderState } = useLayout()
   const { id } = useParams<{ id: string }>()
- 
+  const { currentLocale } = useAppLocale()
   const fieldList = [
     {
       name: 'fullName',
@@ -142,9 +143,9 @@ export default function useHolderController() {
       }
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       if (!id)
-        await createHolder(dataForm, token)
+        await createHolder(dataForm, token, currentLocale)
       else
-        await updateHolder(dataForm, token)
+        await updateHolder(dataForm, token, currentLocale)
       showToast(t('core.feedback.success'), 'success');
       navivateTo(`/passinbiz/holder`)
       changeLoaderState({ show: false })

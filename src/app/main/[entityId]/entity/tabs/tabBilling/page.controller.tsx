@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl';
 import { SxProps, Theme } from '@mui/material';
 import { configBilling } from '@/services/core/subscription.service';
 import { useLayout } from '@/hooks/useLayout';
+import { useAppLocale } from '@/hooks/useAppLocale';
 
 
 
@@ -46,13 +47,14 @@ export const useSettingEntityController = () => {
     const { currentEntity } = useEntity();
     const { token } = useAuth()
     const { changeLoaderState } = useLayout()
+    const { currentLocale } = useAppLocale()
 
 
     const configBillingAction = async () => {
         changeLoaderState({ show: true, args: { text: t('core.title.loaderActionBilling') } })
         const data: { url: string } = await configBilling({
             entityId: currentEntity?.entity.id as string
-        }, token)
+        }, token, currentLocale)
         if (data.url)
             window.open(data.url, 'blank')
         changeLoaderState({ show: false })
