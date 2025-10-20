@@ -76,11 +76,11 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
       sx={{ mt: 6 }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', p: 2 }}>
-        <Avatar
+        {user?.photoURL && <Avatar
           sx={{ width: 40, height: 40, mr: 1 }}
-          src={user?.photoURL ?? ''}
+          src={user?.photoURL??''}
           alt={user?.fullName}
-        />
+        />}
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
           <Typography variant="body2" noWrap component="div" sx={{ fontWeight: 'bold' }}>
             {user?.fullName}
