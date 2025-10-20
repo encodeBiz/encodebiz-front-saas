@@ -57,7 +57,7 @@
       "contactUs": "Contact Us",
       "whatsApp": "WhatsApp",
       "policy": "Privacy Policy",
-      "terms": "Terms and Conditions"
+      "terms": "Terms and conditions"
     }
   },
   "core": {
@@ -93,8 +93,16 @@
     },
     "label": {
       "today": "Today",
-      "advance": "Advanced Settings",
+      "start": "Start",
+      "end": "End",
+      "download": "Download",
+      "periocity": "Date Range",
+      "minutes": "minutes",
+      "periocityTime": "Time Range",
+      "create-download": "Create and download",
+      "advance": "ADVANCED SETTINGS",
       "dayTimeRange": "Work Schedule",
+      "dayTimeRangeDesc": "By default, the work schedule will be 08:00 to 17:00",
       "enableDayTimeRange": "Enable schedule",
       "startTime": "Start time",
       "endTime": "End time",
@@ -108,8 +116,8 @@
       "sucursalAsigned": "Assigned branch",
       "branch": "Branch",
       "register": "Register",
-      "disable2AF": "2FA is not enabled",
-      "enable2AF": "2FA is enabled",
+      "disable2AF": "You do not have 2FA enabled",
+      "enable2AF": "You have 2FA enabled",
       "employee": "Employee",
       "vacation": "Vacation",
       "timestamp": "Date/Time",
@@ -142,12 +150,14 @@
       "state": "State",
       "vip": "VIP",
       "number": "Number",
+      "timeZone": "Time zone",
       "search": "Search",
       "template": "Template",
       "expo": "Expo",
       "festival": "Festival",
       "rol": "Role",
       "enableRemoteWork": "Enable remote work",
+      "remoteWork": "Remote work",
       "enableRemoteWorkEnable": "Remote work enabled",
       "enableRemoteWorkDisabled": "Remote work disabled",
       "disableRatioChecklog": "Disable check-in area",
@@ -164,7 +174,7 @@
       "selectedEvent": "Selected events",
       "events": "Events",
       "jobTitle": "Current occupation",
-      "nationalId": "TAX ID/DNI/CI/ID",
+      "nationalId": "NIT/DNI/CI/ID",
       "credential": "Credential",
       "admin": "Administrator",
       "guest": "Guest",
@@ -247,7 +257,7 @@
       "icon": "Icon",
       "iconx2": "Large Icon",
       "color": "Color",
-      "taxId": "TAX ID / VAT",
+      "taxId": "NIF / CIF / NIE / VAT",
       "street": "Address",
       "city": "City",
       "postalCode": "Postal Code",
@@ -277,12 +287,19 @@
       "checkout": "Ending workday",
       "checkin": "Starting workday",
       "restin": "Starting break",
-      "restout": "Ending break"
+      "restout": "Ending break",
+      "disableBreak": "Disable break",
+      "breakTimeRange": "Break time",
+      "yes": "Yes",
+      "no": "No",
+      "timeBreakDesc": "By default, the break time will be 60 minutes",
+      "timeBreak": "Break time (minutes)"
     },
     "button": {
       "revoke": "Revoke",
       "applyFilter": "Apply",
       "configure": "Configure",
+      "createReport": "Create report",
       "close": "Close",
       "deny": "Deny",
       "disabled": "DENY ACCESS",
@@ -319,12 +336,12 @@
       "required": "This field is required",
       "min": "The field value must be greater than ",
       "max": "The field value must be less than ",
-      "minArray": "You must select at least 1 element",
+      "minArray": "You must select at least 1 item",
       "email": "This field must be a valid email",
-      "password": "Password is too short: minimum of 8 characters required.",
+      "password": "Password is too short: must have a minimum of 8 characters.",
       "passwordMatch": "Passwords do not match",
       "acceptTerm": "You must accept the terms and conditions",
-      "avatarUpload": "Please select a valid image file.",
+      "avatarUpload": "Select a valid image file.",
       "avatarMaxSize": "The image is too large. Maximum allowed: 5MB."
     },
     "signup": {
@@ -353,7 +370,7 @@
     "recovery": {
       "title": "Recover password",
       "signup": "Create account",
-      "subtitle": "Enter your email to recover your access key to EncodeBiz SaaS",
+      "subtitle": "Enter the email to recover your access key to EncodeBiz SaaS",
       "or": "Or",
       "google": "Join with Google",
       "facebook": "Join with Facebook",
@@ -363,7 +380,7 @@
       "signin": "Sign in",
       "modalTitle": "Request sent",
       "modalTitle2": "We will shortly send you instructions to reset your password to your email",
-      "ok": "Okay"
+      "ok": "OK"
     },
     "upload": {
       "title": "Upload CSV file",
@@ -381,7 +398,7 @@
       "stats": "Statistics",
       "card": {
         "title": "Welcome to encodeBiz SaaS",
-        "subtitle": "Register, control and manage accesses in one place, PassBiz ready for you and soon CheckBiz."
+        "subtitle": "Register, control and manage accesses in one place, PassBiz ready for you and very soon CheckBiz."
       },
       "cardDesc": {
         "title1": "More than software,",
@@ -408,7 +425,7 @@
       },
       "tab2": {
         "title": "Change Password",
-        "text": "Click the following button to send you instructions to change your password"
+        "text": "Tap the following button to send you the instructions to change the password"
       }
     },
     "sessionLastTime": "Last login"
@@ -421,7 +438,7 @@
         "descriptionAbout": "Complete your company's general data.",
         "title": "Company Data",
         "deleteConfirmModalTitle": "Delete Entity",
-        "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the entity and all its associated configurations and purchases",
+        "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the entity and all its associated settings and purchases",
         "deleteConfirmModalTitle3": "Please enter the following word to continue with the action"
       },
       "tab2": {
@@ -433,8 +450,8 @@
       "tab3": {
         "title": "Configure Billing",
         "btn": "Configure Billing",
-        "pendingLegal": "To configure payment methods, you must first set up the company's legal data",
-        "advise": "To configure payment methods, a pop-up window needs to open. If your browser blocks this action, you must unblock it and try again."
+        "pendingLegal": "To configure payment methods, you must first configure the company's legal data",
+        "advise": "To configure payment methods, a pop-up window needs to be opened. If your browser blocks the action, you must unblock it and try again."
       },
       "tab4": {
         "title": "Subscriptions",
@@ -454,30 +471,30 @@
     "presentation": {
       "card1": {},
       "title": "Webhook",
-      "text": "Webhooks associated with available events in the services."
+      "text": "Webhooks associated with the events available in the services."
     },
     "passinbiz": {
       "tab1Title": "How do I start?",
       "tab2Title": "What do we solve?",
-      "stepsTitle": "Setup guide",
-      "stepsDesc": "Follow the steps in this guide to set up the PassBiz service.",
+      "stepsTitle": "Setup Guide",
+      "stepsDesc": "Follow the steps in this guide to configure the PassBiz service.",
       "targetTitle": "Solve with PassBiz what was previously a problem:",
-      "targetDesc": "Follow the steps in this guide to set up the PassBiz service."
+      "targetDesc": "Follow the steps in this guide to configure the PassBiz service."
     },
     "checkinbiz": {
       "tab1Title": "How do I start?",
       "tab2Title": "What do we solve?",
-      "stepsTitle": "Setup guide",
-      "stepsDesc": "Follow the steps in this guide to set up the PassBiz service.",
+      "stepsTitle": "Setup Guide",
+      "stepsDesc": "Follow the steps in this guide to configure the PassBiz service.",
       "targetTitle": "Solve with CheckBiz what was previously a problem:",
-      "targetDesc": "Follow the steps in this guide to set up the PassBiz service."
+      "targetDesc": "Follow the steps in this guide to configure the PassBiz service."
     }
   },
   "salesPlan": {
     "title": "AVAILABLE PLANS",
     "emissionLimit": "Emission limit:",
     "sinLimit": "No limits",
-    "subTitle": "Choose between the Free, Bronze, or Enterprise version based on the features you need. Upgrade or change your plan at any time to enhance your experience with PassBiz.",
+    "subTitle": "Choose between the Free, Bronze, or Enterprise version depending on the features you need. Upgrade or change your plan at any time to enhance your experience with PassBiz.",
     "free": "Free",
     "configureLegal": "Company Data",
     "configureBranding": "Visual Identity",
@@ -487,7 +504,7 @@
     "month": "month",
     "bronze": "Bronze",
     "freemium": "Free",
-    "branding": "Branding: Default EncodeBiz logo and design",
+    "branding": "Branding: EncodeBiz default logo and design",
     "brandingCustom": "Branding: Complete pass customization",
     "cost": "Estimated cost per pass: ~€0.01",
     "costEstimated": "Estimated cost: Variable based on usage",
@@ -503,7 +520,7 @@
     "estimateRangeCustom": "Estimated margin: Variable, but with potential to be significant",
     "enterprise": "Enterprise",
     "customerTime": "24/7 customer support",
-    "apiAcces": "API access",
+    "apiAcces": "API Access",
     "customReport": "Custom reports",
     "unlimitedProducts": "Unlimited products",
     "premium": "Premium",
@@ -523,8 +540,8 @@
     "contract": "Current Plan",
     "renew": "Change plan",
     "del": "Cancel subscription",
-    "feedText1": "Subscription to the",
-    "feedText2": "plan of the service",
+    "feedText1": "The subscription to the plan",
+    "feedText2": "of the service",
     "feedText3": "has been completed successfully",
     "feedText4": "has been successfully deleted",
     "imageConfirmModalTitle": "Configure your Entity to continue",
@@ -560,7 +577,7 @@
     "archivedConfirmModalTitle2": "This action cannot be undone. It will archive the digital pass(es) again",
     "filter": {
       "email": "Email",
-      "state": "Status"
+      "state": "State"
     },
     "selectType": "Select pass type",
     "importSCVTitle": "Import CSV",
@@ -614,7 +631,7 @@
     "noEventTitle": "No events",
     "noEventText": "The entity currently has no associated events, create the first event now",
     "createEvent": "Create event",
-    "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the support staff and all their configurations"
+    "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the support staff and all its settings"
   },
   "employee": {
     "title": "Employees",
@@ -622,6 +639,7 @@
     "list": "Employees",
     "add": "Create employee",
     "update": "Edit employee",
+    "edit": "Edit employee",
     "detail": "Details",
     "configureDevice": "Configure trusted device",
     "import": "Import",
@@ -631,8 +649,8 @@
     "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the employee"
   },
   "checklog": {
-    "title": "Attendance records",
-    "list": "Attendance records",
+    "title": "Attendance Records",
+    "list": "Attendance Records",
     "formDesc": "Complete the fields below to register the employee."
   },
   "sucursal": {
@@ -652,11 +670,11 @@
     "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the branch/project"
   },
   "attendance": {
-    "title": "Attendance reports",
+    "title": "Attendance Reports",
     "formDesc": "Complete the fields below to create/edit an attendance report.",
-    "list": "Attendance reports",
-    "add": "Create record",
-    "edit": "Edit record",
+    "list": "Attendance Reports",
+    "add": "Create attendance record",
+    "edit": "Edit attendance record",
     "export": "Export attendance reports",
     "report": "Generate report",
     "detailSucursal": "Report details",
@@ -669,7 +687,7 @@
   "report": {
     "title": "Reports",
     "formDesc": "Complete the fields below to create/edit a report.",
-    "list": "Attendance reports",
+    "list": "Attendance Reports",
     "add": "Create report",
     "export": "Export reports",
     "report": "Generate report",
@@ -754,13 +772,13 @@
   },
   "webhook": {
     "title": "Webhook",
-    "text": "Webhooks associated with available events in the services."
+    "text": "Webhooks associated with the events available in the services."
   },
   "guestModal": {
-    "title": "You have been invited as a collaborator",
+    "title": "You have been invited as a collaborator ",
     "text1": " As a collaborator you will be able to manage projects, access administrative tools and work together with the assigned team.",
-    "text2": " Please configure your account information and add a password",
-    "btn": "Set up account"
+    "text2": " Please configure the account information and add a password",
+    "btn": "Configure account"
   },
   "cards": {
     "card1": {
@@ -771,7 +789,7 @@
     },
     "card2": {
       "text1": "First, configure your entity",
-      "text2": "Before choosing a service and plan, we recommend completing your entity setup.",
+      "text2": "Before choosing a service and plan, we recommend completing your entity configuration.",
       "text3": "This allows us to,",
       "text4": "Personalize the experience",
       "text5": "with your organization's corporate identity in any service.",
@@ -786,15 +804,15 @@
       "text1": "Today with encodeBiz SaaS",
       "text2": "Your first service,",
       "text3": "SaaS service for",
-      "text4": "issuing and managing credentials",
+      "text4": "issue and manage credentials",
       "text5": "and",
       "text6": "event passes",
-      "text7": "digitally from a single panel.",
-      "text8": "Issue digital credentials for employees, students, or clients.",
+      "text7": "digital from a single panel.",
+      "text8": "Issue digital credentials for employees, students or clients.",
       "text9": "Create and manage events with passes for attendees and staff.",
-      "text10": "Control access securely and in real-time.",
+      "text10": " Control access securely and in real time.",
       "text11": "Attendance control and management service.",
-      "text12": "Register entries and exits with geolocation",
+      "text12": " Register entries and exits with geolocation",
       "text13": ", organize teams and projects, and generate real-time reports.",
       "text14": "Go to Configure Entity",
       "text15": "Configure later"
@@ -808,11 +826,11 @@
     "type": "Type",
     "event": "Events",
     "passesIssued": "Passes Issued",
-    "passesIssuedText": "Distribution of issued passes in stacked bars by events or credentials",
+    "passesIssuedText": "Distribution of issued passes in stacked bars by events or credential",
     "passesIssuedRank": "Passes Issued Ranking",
-    "passesValidation": "Validation: Attempts vs Successes vs Revoked Validated Passes",
-    "passesValidationText": "Distribution of valid, failed and revoked passes in stacked bars by events or credentials",
-    "passesValidationRank": "Validated Passes Ranking",
+    "passesValidation": "Validation: Attempts vs Successes vs Revoked",
+    "passesValidationText": "Distribution of valid, failed and revoked passes in stacked bars by events or credential",
+    "passesValidationRank": "Passes Validated Ranking",
     "cumulativo": "Cumulative",
     "dateRange": "Date Range",
     "passes": "Passes",
@@ -822,20 +840,20 @@
     "attempts": "Attempts",
     "peak": "Peaks",
     "failed": "Failures",
-    "statusPass": "Statuses",
+    "statusPass": "Status",
     "revoked": "Revoked",
     "totalByEvent": "Total by event",
     "validation%": "Validation %",
-    "passesTrend": "Monthly trend · Credentials/Passes",
-    "passesTrendText": "Growth projection",
+    "passesTrend": "Monthly Trend · Credentials/Passes",
+    "passesTrendText": "Growth projection.",
     "empthy": "Make your first query",
     "summary": "Summary",
     "series": "Visible series",
-    "empthytext": "Adjust the filters with the required parameters to graph information"
+    "empthytext": "Adjust the filters with the parameters you need to graph information"
   },
   "checking": {
     "title": "Attendance Control",
-    "logDay": "Workday Log",
+    "logDay": "Workday Record",
     "controlDay": "Break Control",
     "startJornada": "Start Workday",
     "endJornada": "End Workday",
@@ -850,9 +868,9 @@
     "history": "ATTENDANCE HISTORY",
     "noGeo": "Enable geolocation",
     "noGeoBtn": "Enable now",
-    "outRadiusTitle": "Outside Zone",
+    "outRadiusTitle": "Out of Zone",
     "outRadiusText": "It seems you are not within the check-in area. To perform operations with this tool, you must be near the branch or project.",
-    "noGeoText": "It seems you don't have the geolocation permission enabled. Please enable it to use this tool"
+    "noGeoText": "It seems you don't have geolocation permission enabled. Please enable it to use this tool"
   },
   "twoFactor": {
     "copyCode": "Code copied",
@@ -864,9 +882,9 @@
     "newDeviceMessageText": "This device is now registered as your trusted device.",
     "configDevice": "Configure security device",
     "step1": "Step 1: Add your authentication app",
-    "step1Text1": "Search the Apple or Google Store for one of the following authentication apps.",
+    "step1Text1": "Search for one of the following authentication apps from Apple or Google Store. ",
     "step1Text2": "You can use Google Authenticator, Microsoft Authenticator, Duo, Authy or another compatible one.",
-    "step1Title1": "Open your authentication app and choose",
+    "step1Title1": "Open your authentication app and choose ",
     "step1Title2": "\"Add account\" → \"Scan QR code\".",
     "noScanner": "Can't scan the code?",
     "step2Title1": "Step 2: Enter the one-time code",
@@ -882,17 +900,16 @@
   },
   "404": {
     "text1": "Page not found",
-    "text2": "Sorry, the page you are looking for does not exist.",
-    "text3": "Return to home page"
+    "text2": "We're sorry, the page you are looking for does not exist.",
+    "text3": " Return to home page"
   },
   "image": {
     "text1": "Incorrect image dimensions",
-    "text2": "It is necessary to adjust the image to the established dimensions as it will be used in the construction of digital passes or standardized templates",
-    "text3": "Required dimensions:"
+    "text2": "It's necessary to adjust the image to the established dimensions as it will be used in the construction of digital passes or standardized templates",
+    "text3": "Required dimensions: "
   },
   "error": {
-        "report/internal_error":"Error interno",
-
+    "report/internal_error": "Internal error",
     "auth/invalid-credential": "Incorrect credentials",
     "auth/email-already-exists": "The email is already in use. Sign in or use a different email.",
     "auth/email-already-in-use": "The email is already in use. Sign in or use a different email.",
@@ -908,7 +925,7 @@
     "staff/email_already_exists": "Support staff with that email already exists",
     "media/invalid_dimesions": "Invalid dimensions",
     "auth/invalid_plan": "The Freemium plan cannot create events",
-    "auth/unauthorized": "Unauthorized access to resource",
+    "auth/unauthorized": "Unauthorized resource access",
     "staff/unauthorized": "Support staff access disabled or expired",
     "media/not_found": "File not found",
     "staff/not_found": "Support staff not found",
@@ -918,6 +935,6 @@
     "user/not_found": "No user found with that email",
     "checklog/two_type_followed": "Cannot start workday twice in a row",
     "checklog/out_of_radius": "It seems you are not at the selected branch, you cannot start workday",
-    "stats/range_and_groupBy_tolong": "The data to graph is too extensive. Try selecting a smaller date range or another grouping type"
+    "stats/range_and_groupBy_tolong": "The data to graph is too extensive, try selecting a smaller date range or another grouping type"
   }
 }

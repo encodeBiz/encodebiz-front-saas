@@ -74,7 +74,7 @@ export const DateRangePicker = ({
 
                 <Box display="flex" gap={2} flexDirection={{ xs: 'column', sm: 'row' }}>
                     <DatePicker
-                        label={'Inicio'}
+                        label={t('core.label.start')}
                         localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}
                         
                         defaultValue={dayjs(startDate ?? new Date())}
@@ -92,7 +92,7 @@ export const DateRangePicker = ({
                     />
 
                     <DatePicker
-                        label={'Fin'}
+                        label={t('core.label.end')}
                         defaultValue={dayjs(new Date(endDate))}
                         value={dayjs(new Date(endDate))}
                         onChange={handleEndDateChange}

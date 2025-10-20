@@ -289,6 +289,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, itemId)
+       
       const location = event.location.split('+++')
       setGeo(event.geo)
       setTimeZone(event.timeZone as string)
