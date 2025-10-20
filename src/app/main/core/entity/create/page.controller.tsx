@@ -28,6 +28,7 @@ export interface EntityFormValues {
     "postalCode": string
     //"region": string
     "taxId": string
+    language: string
     legalName: string
     billingEmail: string
 };
@@ -38,9 +39,11 @@ export const useRegisterController = () => {
     const { user, token } = useAuth()
     const { changeCurrentEntity } = useEntity()
     const { push } = useRouter()
-    const {currentLocale} = useAppLocale()
+    const { currentLocale } = useAppLocale()
     const [cityList, setCityList] = useState<any>([])
     const [geo, setGeo] = useState<{ lat: number, lng: number }>({ lat: 0, lng: 0 })
+    const [timeZone, setTimeZone] = useState('')
+
     const { changeLoaderState } = useLayout()
     const [initialValues, setInitialValues] = useState<EntityFormValues>({
         uid: user?.id as string,
@@ -53,7 +56,8 @@ export const useRegisterController = () => {
         //"region": currentEntity?.entity?.legal?.address.region as string | "",
         "taxId": "",
         "legalName": "",
-        billingEmail: user?.email as string | ""
+        billingEmail: user?.email as string | "",
+        "language":""
     });
     const validationSchema = Yup.object().shape({
         name: requiredRule(t),
@@ -61,7 +65,7 @@ export const useRegisterController = () => {
         country: requiredRule(t),
         city: requiredRule(t),
         postalCode: requiredRule(t),
-        //region: requiredRule(t),
+        language: requiredRule(t),
         taxId: requiredRule(t),
         legalName: requiredRule(t),
 
@@ -75,6 +79,7 @@ export const useRegisterController = () => {
                 "name": values.name,
                 "slug": createSlug(values.name),
                 "billingEmail": values.billingEmail,
+                "language": values?.language ?? 'ES',
                 "legal": {
                     "legalName": values.legalName,
                     "taxId": values.taxId,
@@ -84,6 +89,7 @@ export const useRegisterController = () => {
                         "city": values.city,
                         "postalCode": values.postalCode,
                         "country": values.country,
+                        timeZone
 
                     }
                 },
@@ -116,8 +122,15 @@ export const useRegisterController = () => {
             label: t('core.label.companyName'),
             type: 'text',
             required: true,
-            fullWidth: true,
+
             component: TextInput,
+        },
+
+        {
+            name: 'language',
+            label: t('core.label.language'),
+            component: SelectInput,
+            options: [{ label: t('layout.header.spanish'), value: 'ES' }, { label: t('layout.header.english'), value: 'EN' }]
         },
 
         {
@@ -182,8 +195,12 @@ export const useRegisterController = () => {
             fullWidth: true,
             component: AddressInput,
             extraProps: {
-                onHandleChange: (data: { lat: number, lng: number }) => {
-                    setGeo(data)
+                onHandleChange: (data: { lat: number, lng: number, timeZone: string }) => {
+                    setGeo({
+                        lat: data.lat,
+                        lng: data.lng,
+                    })
+                    setTimeZone(data.timeZone)
                 },
             },
         },
@@ -207,10 +224,11 @@ export const useRegisterController = () => {
                 postalCode: '',
                 street: '',
                 taxId: '',
+                language:''
             })
         }
         return () => { }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user?.id])
 
 
