@@ -907,34 +907,5 @@
     "text1": "Incorrect image dimensions",
     "text2": "It's necessary to adjust the image to the established dimensions as it will be used in the construction of digital passes or standardized templates",
     "text3": "Required dimensions: "
-  },
-  "error": {
-    "report/internal_error": "Internal error",
-    "auth/invalid-credential": "Incorrect credentials",
-    "auth/email-already-exists": "The email is already in use. Sign in or use a different email.",
-    "auth/email-already-in-use": "The email is already in use. Sign in or use a different email.",
-    "auth/invalid-email": "Invalid email address. Please enter a valid email address.",
-    "auth/weak-password": "The password is too weak. Choose a stronger password",
-    "auth/operation-not-allowed": "Email and password authentication is not enabled. Contact technical support",
-    "auth/too-many-requests": "Too many requests. Please try again later",
-    "auth/user-disabled": "Your account has been disabled. Contact support for assistance",
-    "auth/network-request-failed": "Network error. Check your internet connection and try again",
-    "auth/missing-email": "Email is required. Please enter your email.",
-    "auth/missing-password": "Password is required. Please enter your password.",
-    "unavailable": "Service unavailable. Please try again later",
-    "staff/email_already_exists": "Support staff with that email already exists",
-    "media/invalid_dimesions": "Invalid dimensions",
-    "auth/invalid_plan": "The Freemium plan cannot create events",
-    "auth/unauthorized": "Unauthorized resource access",
-    "staff/unauthorized": "Support staff access disabled or expired",
-    "media/not_found": "File not found",
-    "staff/not_found": "Support staff not found",
-    "twofactor/invalid_token": "Session has expired",
-    "auth/untrusted_device": "Untrusted device. Additional verification required",
-    "twofactor/invalid_code": "Invalid TOTP code",
-    "user/not_found": "No user found with that email",
-    "checklog/two_type_followed": "Cannot start workday twice in a row",
-    "checklog/out_of_radius": "It seems you are not at the selected branch, you cannot start workday",
-    "stats/range_and_groupBy_tolong": "The data to graph is too extensive, try selecting a smaller date range or another grouping type"
-  }
+  } 
 }
