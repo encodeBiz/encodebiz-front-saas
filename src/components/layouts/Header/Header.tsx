@@ -41,6 +41,8 @@ import { CommonModalType } from '@/contexts/commonModalContext';
 import { MoonIcon } from '@/components/common/icons/MoonIcon';
 import { QuestionIcon } from '@/components/common/icons/QuestionIcon';
 import { useAppLocale } from '@/hooks/useAppLocale';
+import { useRouter } from 'nextjs-toploader/app';
+import { MAIN_ROUTE, USER_ROUTE } from '@/config/routes';
 
 
 export default function Header({ drawerWidth }: { drawerWidth: number }) {
@@ -56,6 +58,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const { currentLocale } = useAppLocale()
+  const { push } = useRouter()
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -78,7 +81,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
       <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', p: 2 }}>
         <Avatar
           sx={{ width: 40, height: 40, mr: 1 }}
-          src={user?.phoneNumber}
+          src={user?.photoURL ?? ''}
           alt={user?.fullName}
         />
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
@@ -122,12 +125,12 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
       </Box>
 
 
-      <MenuItem>
+      {/** <MenuItem>
         <IconButton onClick={() => changeColorMode()} size="large" color="inherit">
           {theme.palette.mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
         </IconButton>
         <p>{t('layout.header.theme')}</p>
-      </MenuItem>
+      </MenuItem>*/}
 
       {showMessages > 0 && <MenuItem>
         <IconButton size="large" color="inherit">
@@ -152,7 +155,20 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
       </MenuItem>}
 
 
-
+      <MenuItem onClick={() => {
+        push(`/${MAIN_ROUTE}/${USER_ROUTE}/account`);
+      }}>
+        <IconButton
+          size="large"
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <HelpIcon />
+        </IconButton>
+        <p>{t('layout.header.profile')}</p>
+      </MenuItem>
 
       <MenuItem onClick={() => openModal(CommonModalType.ONBOARDING)}>
         <IconButton
@@ -277,7 +293,11 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
               onClick={handleMobileMenuOpen}
               color="inherit"
             >
-              <MenuOutlined />
+              <Avatar
+                sx={{ width: 32, height: 32 }}
+                src={user?.photoURL ? user?.photoURL : ''}
+                alt={user?.displayName as string}
+              />
             </IconButton>
           </Box>
 
