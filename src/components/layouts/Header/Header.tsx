@@ -12,20 +12,17 @@ import {
   MenuItem,
   ListItemIcon,
   Tooltip,
-  useTheme,
   Divider
 } from '@mui/material';
 import {
   Mail as MailIcon,
   Notifications as NotificationsIcon,
-  
-  BrightnessHigh,
+
   Menu as MenuIcon,
 
 } from '@mui/icons-material';
 import HelpIcon from '@mui/icons-material/Help';
 import { useLayout } from '@/hooks/useLayout';
-import { useAppTheme } from '@/hooks/useTheme';
 import { useTranslations } from 'next-intl';
 import LocaleSwitcher from '../../common/LocaleSwitcher';
 import { handleLogout } from '@/services/core/account.service';
@@ -35,7 +32,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import EntitySwitcher from '@/components/common/EntitySwitcher';
 import { CommonModalType } from '@/contexts/commonModalContext';
-import { MoonIcon } from '@/components/common/icons/MoonIcon';
 import { QuestionIcon } from '@/components/common/icons/QuestionIcon';
 import { useAppLocale } from '@/hooks/useAppLocale';
 import { useRouter } from 'nextjs-toploader/app';
@@ -45,8 +41,7 @@ import { MAIN_ROUTE, USER_ROUTE } from '@/config/routes';
 export default function Header({ drawerWidth }: { drawerWidth: number }) {
   const { changeLayoutState, layoutState } = useLayout()
   const { user } = useAuth()
-  const { changeColorMode } = useAppTheme()
-  const theme = useTheme();
+
   const t = useTranslations();
   const { anchorEl, contextMenu, handleMobileMenuClose, handleProfileMenuOpen, handleMobileMenuOpen,
     mobileMoreAnchorEl, handleMenuClose, showNotification, showMessages } = useHeader()
@@ -78,7 +73,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
       <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', p: 2 }}>
         {user?.photoURL && <Avatar
           sx={{ width: 40, height: 40, mr: 1 }}
-          src={user?.photoURL??''}
+          src={user?.photoURL ?? ''}
           alt={user?.fullName}
         />}
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
@@ -220,6 +215,8 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <LocaleSwitcher />
+
+            {/** 
             <IconButton
               onClick={() => changeColorMode()}
               sx={{
@@ -236,6 +233,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
             >
               {theme.palette.mode === 'dark' ? <BrightnessHigh /> : <MoonIcon />}
             </IconButton>
+            */}
 
 
 

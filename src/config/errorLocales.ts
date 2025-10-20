@@ -1,4 +1,4 @@
- 
+
 
 export const errorDict: any = {
   es: {
@@ -29,6 +29,42 @@ export const errorDict: any = {
     "checklog/two_type_followed": "No se puede iniciar jornada dos veces seguidas",
     "checklog/out_of_radius": "Parece que no te encuentras en la sucursal seleccionada, no puedes iniciar jornada",
     "stats/range_and_groupBy_tolong": "Los datos para graficar son demasiadox extensos, intenta seleccionar un rango menor de fechas o otro tipo de agrupación"
+    , "auth/authentication_already_exists": "",
+    "twofactor/not_activated": "A2F no activada para este empleado",
+    "employee/not_found": "Empleado no encontrado",
+    "entity/not_found": "Entidad no encontrada",
+    "payment/pending": "Tiene pagos pendientes",
+    "event/not_found": "Evento no encontrado",
+    "event/not_logo": "Evento sin logotipo",
+    "media/invalid_meda_type": "Tipo de medio no permitido",
+    "media/error": "Error interno del servidor (Almacenamiento de medios)",
+    "internal": "Error interno del servidor",
+    "twofactor/unauthorized": "Token 2FA requerido",
+    "subscribe/not_found": "Servicio no encontrado",
+    "subscribe/internal": "Error interno del servidor (Suscripción)",
+    "sub/bad_request": "Carga útil no válida",
+    "sub/entity_not_found": "Entidad no encontrada",
+    "suscription/entity_not_configured": "Entidad no configurada",
+    "suscription_checkinbiz/entity_legal_not_configured": "Entidad no configurada en Checkbiz; necesitamos información legal",
+    "suscription/already_subscribed_into_plan": "Ya suscrito",
+    "suscription/ko": "Error en la suscripción",
+    "subscribe/invalid_entity_service": "Entidad o servicio incorrecto",
+    "user/internal": "Error interno del servidor (Usuario)",
+    "employee/exist_employee": "Ya existe un empleado con ese correo electrónico o número de teléfono",
+    "employee/bad_request": "Se requiere el ID del empleado para la eliminación",
+    "checklog/invalid_checkout": "Finalización de sesión no válida",
+    "checklog/invalid_checki": "Ingreso no válido",
+    "checklog/invalid_restout": "Restauración inválida",
+    "checklog/invalid_restin": "Restauración inválida",
+    "checklog/unknown_type": "Tipo desconocido",
+    "checklog/invalid": "No se encuentra el registro relacionado",
+    "checklog/bad_request": "Registro de verificación no encontrado",
+    "branch/not_found": "Sucursal no encontrada",
+    "employee/branchId_required": "Se requiere el ID de sucursal",
+    "checklog/internal_error": "Error interno del servidor (registro de verificación)",
+    "holder/not_found": "No se encuentra el titular",
+    "holder/not_found_applepass": "No se encuentra el Applepass del titular"
+
   },
   en: {
     "report/internal_error": "Error interno",
@@ -57,7 +93,46 @@ export const errorDict: any = {
     "user/not_found": "No user found with that email",
     "checklog/two_type_followed": "Cannot start workday twice in a row",
     "checklog/out_of_radius": "It seems you are not at the selected branch, you cannot start workday",
-    "stats/range_and_groupBy_tolong": "The data to graph is too extensive. Try selecting a smaller date range or another grouping type"
+    "stats/range_and_groupBy_tolong": "The data to graph is too extensive. Try selecting a smaller date range or another grouping type",
+
+    "auth/authentication_already_exists": "",
+    "twofactor/not_activated": "2FA no activado para este Empleado",
+    "employee/not_found": "Employee not found",
+    "entity/not_found": "Entity not found",
+    "payment/pending": "You have pending payments.",
+    "event/not_found": "Event not found",
+    "event/not_logo": "Event without logo",
+    "media/invalid_meda_type": "`Tipo de media no permitido`",
+    "media/error": "Internal server error (Media Storage)",
+    "internal": "Internal server error",
+    "twofactor/unauthorized": "Token 2FA requerido",
+    "subscribe/not_found": "Service not found",
+    "subscribe/internal": "Internal server error (Subscribe)",
+    "sub/bad_request": "Invalid payload",
+    "sub/entity_not_found": "Entity not found",
+    "suscription/entity_not_configured": "Entity is not configured",
+    "suscription_checkinbiz/entity_legal_not_configured": "Entity is not configured to Checkbiz, we need legal Information",
+    "suscription/already_subscribed_into_plan": "Already subscribed",
+    "suscription/ko": "Error in subscription",
+    "subscribe/invalid_entity_service": "Entidad o servicio incorrectos",
+    "user/internal": "Internal server error (User)",
+    "employee/exist_employee": "An employee with that email or phone number already exists.",
+    "employee/bad_request": "Employee ID is required for deletion.",
+    "checklog/invalid_checkout": "Invalid checkout",
+    "checklog/invalid_checki": "Invalid checkin",
+    "checklog/invalid_restout": "Invalid restout",
+    "checklog/invalid_restin": "Invalid restin",
+    "checklog/unknown_type": "Unknown type",
+    "checklog/invalid": "Checkin related is not found",
+    "checklog/bad_request": "Checklog not found",
+    "branch/not_found": "Branch not found",
+    "employee/branchId_required": "branchId is required",
+    "checklog/internal_error": "Internal server error (checklog)",
+    "holder/not_found": "Holder not found",
+    "holder/not_found_applepass": "Holder not found applepass"
+
+
+
   }
 }
 

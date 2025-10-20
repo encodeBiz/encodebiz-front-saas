@@ -21,6 +21,7 @@ export interface IEvent {
     "metadata": any
     geo: { lat: number, lng: number }
     "city"?: string
+    "timeZone"?: string
     "country"?: string
     language?: string
 }

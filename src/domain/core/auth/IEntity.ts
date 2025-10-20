@@ -40,6 +40,8 @@ interface IEntity {
       postalCode: string;
       region?: string;
       country: string;
+      timeZone?: string;
+      geo:{lat:number, lng:number}
     };
   };
   billingConfig: {
