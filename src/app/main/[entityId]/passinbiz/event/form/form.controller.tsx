@@ -33,12 +33,12 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const { navivateTo } = useLayout()
   const { token, user } = useAuth()
   const { open, closeModal } = useCommonModal()
-  const {currentLocale} = useAppLocale()
+  const { currentLocale } = useAppLocale()
   const { id } = useParams<{ id: string }>()
   const itemId = isFromModal ? open.args?.id : id
   const { currentEntity, watchServiceAccess } = useEntity()
   const [geo, setGeo] = useState<{ lat: number, lng: number }>({ lat: 0, lng: 0 })
-
+  const [timeZone, setTimeZone] = useState('')
   const [cityList, setCityList] = useState<any>(country.find(e => e.name === 'España')?.states.map(e => ({ label: e.name, value: e.name })))
   const [countrySelected, setCountrySelected] = useState<any>('España')
   const { changeLoaderState } = useLayout()
@@ -86,7 +86,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       const codeLocale = country.find(e => e.name === countrySelected)?.code2
       const data: Partial<IEvent> = {
         "uid": user?.id as string,
-        geo,
+        geo, timeZone,
         "createdBy": user?.id as string,
         "name": values.name,
         "description": values.description,
@@ -192,8 +192,9 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       fullWidth: true,
       component: AddressInput,
       extraProps: {
-        onHandleChange: (data: { lat: number, lng: number }) => {
-          setGeo(data)
+        onHandleChange: (data: { lat: number, lng: number, timeZone: string }) => {
+          setGeo({ lat: data.lat, lng: data.lng })
+          setTimeZone(data.timeZone)
         },
       },
 
@@ -289,7 +290,8 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, itemId)
       const location = event.location.split('+++')
-
+      setGeo(event.geo)
+      setTimeZone(event.timeZone as string)
       let countryCurrent = 'España'
       let city = 'Madrid'
       if (location.length === 2) {

@@ -177,12 +177,14 @@ export const useSettingEntityController = () => {
             fullWidth: true,
             component: AddressInput,
             extraProps: {
+                
                 onHandleChange: (data: { lat: number, lng: number, timeZone: string }) => {
+ 
                     setGeo({
                         lat: data.lat,
                         lng: data.lng,
                     })
-                    setTimeZone(timeZone)
+                    setTimeZone(data.timeZone)
                 },
             },
         },
