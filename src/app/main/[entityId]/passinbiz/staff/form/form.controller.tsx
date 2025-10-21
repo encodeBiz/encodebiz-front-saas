@@ -19,16 +19,18 @@ import { CommonModalType } from "@/contexts/commonModalContext";
 import { useAppLocale } from "@/hooks/useAppLocale";
 
 
-export default function useStaffController() {
+export default function useFormController(isFromModal: boolean, onSuccess?: () => void) {
   const t = useTranslations();
   const { showToast } = useToast()
-  const { openModal } = useCommonModal()
-  const {currentLocale} = useAppLocale()
+  const { open, closeModal, openModal } = useCommonModal()
+  const { currentLocale } = useAppLocale()
   const { token, user } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
-   const { navivateTo } = useLayout()
+  const { navivateTo } = useLayout()
   const { changeLoaderState } = useLayout()
   const { id } = useParams<{ id: string }>()
+  const itemId = isFromModal ? open.args?.id : id
+
   const fieldList = [
     {
       name: 'fullName',
@@ -154,7 +156,7 @@ export default function useStaffController() {
   };
 
 
-  const submitForm = async (values: Partial<IStaff>) => {
+  const handleSubmit = async (values: Partial<IStaff>) => {
     try {
       const dataForm = {
         "fullName": values.fullName,
@@ -162,21 +164,25 @@ export default function useStaffController() {
         "entityId": currentEntity?.entity?.id as string,
         allowedTypes: values.allowedTypes,
 
-        id
+        itemId
       }
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       let data
-      if (!id)
-        data = await createStaff(dataForm, token , currentLocale)
+      if (!itemId)
+        data = await createStaff(dataForm, token, currentLocale)
       else
-        await updateStaff(dataForm, token , currentLocale)
+        await updateStaff(dataForm, token, currentLocale)
 
-      saveEventByStaff(values.eventList as Array<string>, id ? id : data?.id)
+      saveEventByStaff(values.eventList as Array<string>, itemId ? itemId : data?.id)
 
       showToast(t('core.feedback.success'), 'success');
       changeLoaderState({ show: false })
-
-      navivateTo(`/passinbiz/staff}`)
+      if (typeof onSuccess === 'function') onSuccess()
+      if (isFromModal)
+        closeModal(CommonModalType.FORM)
+      else {
+        navivateTo(`/passinbiz/staff`)
+      }
     } catch (error: any) {
       showToast(error.message, 'error')
       changeLoaderState({ show: false })
@@ -191,7 +197,7 @@ export default function useStaffController() {
     try {
 
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const staff: IStaff = await fetchStaff(currentEntity?.entity.id as string, id)
+      const staff: IStaff = await fetchStaff(currentEntity?.entity.id as string, itemId)
       const eventStaffList: Array<IEvent> = await searchEventsByStaff(id)
 
       setInitialValues({
@@ -223,7 +229,7 @@ export default function useStaffController() {
     setLoadForm(true)
 
 
-    if (currentEntity?.entity.id && user?.id && id)
+    if (currentEntity?.entity.id && user?.id && itemId)
       fetchData()
   }
   const inicializeEvent = async () => {
@@ -244,7 +250,7 @@ export default function useStaffController() {
   if (currentEntity?.entity.id && user?.id && !eventData.loaded) inicializeEvent()
   if (currentEntity?.entity.id && user?.id && !loadForm && eventData.loaded) inicializeField()
 
-  return { fields, initialValues, validationSchema, submitForm }
+  return { fields, initialValues, validationSchema, handleSubmit }
 }
 
 

@@ -161,7 +161,8 @@ export default function useAttendanceController() {
     setLoading(true)
 
 
- 
+    //console.log({ ...(filterParams.params as any), filters });
+    
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async res => {
  
       if (res.length !== 0) {
