@@ -59,7 +59,7 @@ export default function Dashboard() {
         onPress={scrollToPlan}
         right={5}
         top={-10}
-        width={350}
+        width={400}
         height={390}
         heightCard={376}
       />
@@ -85,3 +85,6 @@ export default function Dashboard() {
     </Container>
   );
 }
+
+
+//
