@@ -52,7 +52,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
     const { open, closeModal } = useCommonModal()
     const { entitySuscription, currentEntity } = useEntity()
     const [items, setItems] = useState<Array<{ text: string, link: string }>>([])
-     const [price] = useState(payPerUse ? t(pricePerUse) : monthlyPrice)
+     const [price] = useState(payPerUse ? t(pricePerUse) : t(monthlyPrice))
 
 
 
