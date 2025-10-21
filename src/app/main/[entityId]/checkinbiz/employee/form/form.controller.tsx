@@ -160,6 +160,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         name: 'email',
         label: t('core.label.email'),
         type: 'text',
+        disabled:!!itemId,
         required: true,
         component: TextInput,
       },
