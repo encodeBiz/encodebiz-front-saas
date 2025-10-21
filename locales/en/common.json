@@ -610,7 +610,7 @@
     "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently archive the event",
     "fremiunContact": {
       "title": "Request test event",
-      "description": "Describe the characteristics of the event you want to create, and we will contact you"
+      "description": "Describe the characteristics of the event you want to create, and we will contact you."
     },
     "info": {
       "title": "Request sent.",

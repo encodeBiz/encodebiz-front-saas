@@ -610,7 +610,7 @@
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Archivará permanentemente el evento",
     "fremiunContact": {
       "title": "Solicitar evento de prueba",
-      "description": "Describa las caractericticas del evento que desea crear, y nos pondremos en contacto con usted"
+      "description": "Describa las caractericticas del evento que desea crear, y nos pondremos en contacto con usted."
     },
     "info": {
       "title": "Solicitud enviada.",
