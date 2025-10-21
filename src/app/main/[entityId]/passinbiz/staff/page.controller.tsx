@@ -22,7 +22,7 @@ import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
 import { useAppLocale } from "@/hooks/useAppLocale";
 
 
- 
+
 
 interface IFilterParams {
   filter: { allowedTypes: string, email: string }
@@ -109,7 +109,7 @@ export default function useStaffListController() {
   }
 
   const rowAction: Array<IRowAction> = [
-    
+
     {
       actionBtn: true,
       bulk: false,
@@ -237,7 +237,7 @@ export default function useStaffListController() {
 
   const inicializeFilter = (params: string) => {
     try {
-      const filters: IFilterParams = params!=='null'?filterParams:decodeFromBase64(params as string)
+      const filters: IFilterParams = params !== 'null' ? filterParams : decodeFromBase64(params as string)
       filters.params.startAfter = null
       setFilterParams(filters)
       setLoading(false)
@@ -247,7 +247,7 @@ export default function useStaffListController() {
     }
   }
 
- 
+
 
   const fetchingData = (filterParams: IFilterParams) => {
     setLoading(true)
@@ -290,9 +290,10 @@ export default function useStaffListController() {
   }, [currentEntity?.entity?.id])
 
 
-  const onEdit = async (item: any) => {
-    navivateTo(`/passinbiz/staff/${item.id}/edit`)
+ const onEdit = async (item: any) => {
+    openModal(CommonModalType.FORM, { ...item })
   }
+
 
   const [deleting, setDeleting] = useState(false)
   const onDelete = async (item: IStaff | Array<IStaff>) => {
@@ -365,11 +366,15 @@ export default function useStaffListController() {
 
 
 
-
+  const onSuccess = () => {
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
+    setFilterParams(filterParamsUpdated)
+    fetchingData(filterParamsUpdated)
+  }
   return {
     items, onSort, onRowsPerPageChange,
-    onEdit,
-    onNext, onBack, 
+    onEdit, onSuccess,
+    onNext, onBack,
     columns, rowAction, onDelete, topFilter,
     loading, deleting, filterParams,
 

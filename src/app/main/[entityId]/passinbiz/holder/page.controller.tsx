@@ -18,7 +18,6 @@ import { CustomChip } from "@/components/common/table/CustomChip";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
 import { decodeFromBase64 } from "@/lib/common/base64";
 import { useSearchParams } from "next/navigation";
-import { PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
@@ -51,7 +50,6 @@ export default function useHolderListController() {
   const { changeLoaderState } = useLayout()
   const { openModal, closeModal } = useCommonModal()
   const [revoking, setRevoking] = useState(false)
-  const { navivateTo } = useLayout()
   const { currentLocale } = useAppLocale()
   /** Filter and PAgination Control */
   const [loading, setLoading] = useState<boolean>(true);
@@ -395,9 +393,7 @@ export default function useHolderListController() {
     }
 
   }
-  const onEdit = async (item: any) => {
-    navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/holder/${item.id}/edit`)
-  }
+   
 
 
 
@@ -438,7 +434,7 @@ export default function useHolderListController() {
 
   return {
     items, topFilter,
-    onEdit, onSort, onRowsPerPageChange,
+     onSort, onRowsPerPageChange,
     handleUploadConfirm, isUploading, handleConfigConfirm,
     onNext, onBack,
     columns, rowAction, setFilterParams, filterParams,

@@ -117,7 +117,6 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         closeModal(CommonModalType.FORM)
       else {
         navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event`)
-
       }
     } catch (error: any) {
       changeLoaderState({ show: false })
@@ -289,6 +288,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, itemId)
+       
       const location = event.location.split('+++')
       setGeo(event.geo)
       setTimeZone(event.timeZone as string)
@@ -297,7 +297,6 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       if (location.length === 2) {
         countryCurrent = location[1]
         city = location[0]
-
         setCityList(country.find((e: any) => e.name === countryCurrent)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
 
       }

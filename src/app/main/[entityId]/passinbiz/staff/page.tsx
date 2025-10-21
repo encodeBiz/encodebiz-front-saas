@@ -11,13 +11,14 @@ import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import { useLayout } from '@/hooks/useLayout';
+import FormModal from './edit/FormModal';
 
 export default function HolderList() {
   const t = useTranslations();
   const {
     items, rowAction, onRowsPerPageChange, onSort,
     onNext, onBack, onDelete, deleting,
-    filterParams, topFilter,
+    filterParams, topFilter,onSuccess,
     columns,
     loading } = useHolderListController();
   const { open } = useCommonModal()
@@ -63,6 +64,9 @@ export default function HolderList() {
         description={t('staff.deleteConfirmModalTitle2')}
         onOKAction={(args: { data: any }) => onDelete(args.data)}
       />}
+
+            {open.type === CommonModalType.FORM && <FormModal onSuccess={onSuccess} />}
+
     </Container>
   );
 }

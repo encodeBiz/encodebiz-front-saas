@@ -125,7 +125,7 @@ const UserAssignment = ({ project, onAssign, onRemove, proccesing = false }: Use
 
                                 <ListItem
                                     secondaryAction={
-                                        <Box display={'flex'}>
+                                        <Box display={'flex'} justifyItems={'center'} alignItems={'center'} gap={2}>
 
                                             {collaborator.status === 'invited' && <CustomChip
                                                 id={collaborator.user.id}
@@ -135,7 +135,7 @@ const UserAssignment = ({ project, onAssign, onRemove, proccesing = false }: Use
 
                                             />}
                                             {
-                                                ((collaborator.role === 'admin' && collaborator.status !== 'invited') || (collaborator.role === 'owner' && collaborator.status !== 'invited' && project.collaborators.filter(e => e.role === 'owner' && e.status === 'active').length > 1)) && (
+                                                ((collaborator.role === 'admin'  ) || (collaborator.role === 'owner' &&  collaborator.status === 'invited')) && (
                                                     <CustomIconBtn
                                                         onClick={() => openModal(CommonModalType.COLABORATOR, { data: collaborator.user.uid })}
                                                         icon={<TrashIcon />}

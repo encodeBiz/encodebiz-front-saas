@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 import HelpTabs from "@/components/features/dashboard/HelpTabs/HelpTabs";
-import passinbiz from '@/../public/assets/images/passinbiz.svg'
-import checkbiz from '@/../public/assets/images/checkbiz-onbooarding.svg'
+import passinbiz from '@/../public/assets/images/service-logo/passbiz.png'
+import checkbiz from '@/../public/assets/images/service-logo/checkbiz.png'
 import { Box, Container } from '@mui/material';
 import useDashboardController from "./page.controller";
 import { useEffect, useRef } from "react";
@@ -59,7 +59,7 @@ export default function Dashboard() {
         onPress={scrollToPlan}
         right={5}
         top={-10}
-        width={350}
+        width={400}
         height={390}
         heightCard={376}
       />
@@ -85,3 +85,6 @@ export default function Dashboard() {
     </Container>
   );
 }
+
+
+//

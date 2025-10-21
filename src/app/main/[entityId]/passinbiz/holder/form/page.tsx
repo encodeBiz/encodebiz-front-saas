@@ -11,15 +11,20 @@ import { useRef } from 'react';
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { useLayout } from '@/hooks/useLayout';
+import InfoModal from '@/components/common/modals/InfoModal';
+import { useCommonModal } from '@/hooks/useCommonModal';
+import { CommonModalType } from '@/contexts/commonModalContext';
 
 
 export default function HolderForm() {
   const { fields, initialValues, validationSchema, submitForm } = useHolderController();
   const t = useTranslations();
-    const { navivateTo } = useLayout()
+  const { navivateTo } = useLayout()
   const { id } = useParams<{ id: string }>()
   const formRef = useRef(null)
   const { formStatus } = useFormStatus()
+    const { open, closeModal } = useCommonModal()
+  
   const handleExternalSubmit = () => {
     if (formRef.current) {
       (formRef.current as any).submitForm()
@@ -37,13 +42,13 @@ export default function HolderForm() {
               disabled={formStatus?.isSubmitting}
               onClick={() => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/holder`)}
               variant='outlined'
-          
+
             > {t('core.button.cancel')}</SassButton>
             <SassButton
               disabled={!formStatus?.isValid || formStatus?.isSubmitting}
               onClick={handleExternalSubmit}
               variant='contained'
-              
+
             > {t('core.button.saveChanges')}</SassButton>
           </Box>
         }
@@ -62,6 +67,19 @@ export default function HolderForm() {
           />
         </Box>
       </HeaderPage>
+
+
+      {open.type === CommonModalType.INFO && <InfoModal
+        title={t('staff.noEventTitle')}
+        description={t('staff.noEventText')}
+        btnText={t('staff.createEvent')}
+        onClose={() => {
+          closeModal(CommonModalType.INFO)
+          navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event/add`)
+        }}
+        closeBtn
+
+      />}
     </Container>
   );
 }

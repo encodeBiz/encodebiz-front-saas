@@ -243,6 +243,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
                 size="large"
                 sx={{
                   mr: 2,
+                  ml:2,
                   mt: 1,
                   borderWidth: 2,
                   borderStyle: 'solid',
