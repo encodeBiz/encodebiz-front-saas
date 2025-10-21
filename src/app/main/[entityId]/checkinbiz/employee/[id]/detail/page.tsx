@@ -15,12 +15,12 @@ export default function BranchDetail() {
     const { initialValues, items, topFilter, onRowsPerPageChange, onSort,
         onNext, onBack,
         filterParams, rowAction,
-        columns, onSuccessCreate,
+        columns, onSuccessCreate,onSuccess,
         loading, onResend } = useEmployeeDetailController()
     return (
         <Container maxWidth="lg">
 
-            {initialValues?.id && <Detail onResend={onResend} employee={initialValues as any} >
+            {initialValues?.id && <Detail onSuccess={onSuccess} onResend={onResend} employee={initialValues as any} >
                 <GenericTable
                     data={items}
                     rowAction={rowAction}

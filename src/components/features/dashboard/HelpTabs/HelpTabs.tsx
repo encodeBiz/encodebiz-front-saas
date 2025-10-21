@@ -44,6 +44,7 @@ const HelpTabs = ({ tabs, ref }: HelpTabsProps) => {
           alignItems: 'flex-start',
           textTransform: 'none',
           textAlign: 'left',
+        
 
         }}>
           <Typography fontFamily={karla.style.fontFamily} variant="h4" sx={{ fontWeight: 400, fontSize: 22, marginLeft: 1 }}>
@@ -55,7 +56,7 @@ const HelpTabs = ({ tabs, ref }: HelpTabsProps) => {
         </Box>
       }
       sx={{
-        minHeight: 72,
+        minHeight: 87,
         padding: theme.spacing(1.5, 2),
         justifyContent: 'flex-start',
         '&.Mui-selected': {
@@ -67,14 +68,12 @@ const HelpTabs = ({ tabs, ref }: HelpTabsProps) => {
   );
 
 
-
-
   return (
 
     <Paper ref={ref} elevation={0} sx={{
       boxShadow: 'none',
       borderRadius: 1,
-   
+      mt:10   
     }}>
       <Tabs
         orientation='horizontal'

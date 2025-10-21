@@ -62,7 +62,7 @@ export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
                     <Typography
                         align='center'
                         variant="h5" >
-                        {planInfo?.payPerUse ? planInfo?.pricePerUse : planInfo?.monthlyPrice}
+                        {planInfo?.payPerUse ? t(planInfo?.pricePerUse) : planInfo?.monthlyPrice}
                     </Typography>
                 </Box>
 
