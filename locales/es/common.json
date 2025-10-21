@@ -974,26 +974,30 @@
   },
   "plan_translation": {
     "checkinbiz": {
-      "bronze":{
-        "pricePerUse": "1,50€/Empleado al mes" 
+      "bronze": {
+        "pricePerUse": "1,50€/Empleado al mes"
       },
-      "enterprise":{
-        "pricePerUse": "" 
+      "enterprise": {
+        "pricePerUse": "",
+        "monthlyPrice": "Precio a medida"
       },
-      "freemium":{
-        "pricePerUse": "" 
-      }    
+      "freemium": {
+        "pricePerUse": "",
+        "monthlyPrice": "Gratis"
+      }
     },
     "passinbiz": {
-      "bronze":{
-        "pricePerUse": "0,15€/Pase 0,25€/Credencial al mes" 
+      "bronze": {
+        "pricePerUse": "0,15€/Pase 0,25€/Credencial al mes"
       },
-      "enterprise":{
-        "pricePerUse": "" 
+      "enterprise": {
+        "pricePerUse": "",
+        "monthlyPrice": "Precio a medida"
       },
-      "freemium":{
-        "pricePerUse": "" 
-      }    
+      "freemium": {
+        "pricePerUse": "",
+        "monthlyPrice": "Gratis"
+      }
     }
   }
 }
