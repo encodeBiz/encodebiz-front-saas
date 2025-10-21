@@ -15,6 +15,8 @@ import { useParams } from "next/navigation";
 import { Holder } from "@/domain/features/passinbiz/IHolder";
 import ImageUploadInput from "@/components/common/forms/fields/ImageUploadInput";
 import { useAppLocale } from "@/hooks/useAppLocale";
+import { useCommonModal } from "@/hooks/useCommonModal";
+import { CommonModalType } from "@/contexts/commonModalContext";
 
 
 export default function useHolderController() {
@@ -26,6 +28,8 @@ export default function useHolderController() {
   const { changeLoaderState } = useLayout()
   const { id } = useParams<{ id: string }>()
   const { currentLocale } = useAppLocale()
+  const { openModal } = useCommonModal()
+
   const fieldList = [
     {
       name: 'fullName',
@@ -168,6 +172,10 @@ export default function useHolderController() {
           ]
         } as any, limit: 100
       })
+
+      if (eventList.length === 0) {
+        openModal(CommonModalType.INFO)
+      }
       const fieldList = fields.filter(e => e.name !== 'thumbnail')
       fieldList.splice(4, 0, {
         name: 'parentId',
