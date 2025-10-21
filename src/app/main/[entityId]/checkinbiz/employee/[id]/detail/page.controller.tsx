@@ -351,8 +351,10 @@ export default function useEmployeeDetailController() {
   }]
 
 
+  const onSuccess = () => fetchData()
+
   return {
-    items, onSort, onRowsPerPageChange,
+    items, onSort, onRowsPerPageChange,onSuccess,
     onDelete, deleting, topFilter,
     onNext, onBack, onSuccessCreate,
     columns, branchListEmployee,

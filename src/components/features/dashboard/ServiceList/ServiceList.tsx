@@ -7,8 +7,8 @@ import Box from '@mui/material/Box';
 import { useEntity } from '@/hooks/useEntity';
 import { useStyles } from './ServiceList.styles';
 import { useAppLocale } from '@/hooks/useAppLocale';
-import passnbiz from '../../../../../public/assets/images/icono passbiz.svg'
-import checkbiz from '../../../../../public/assets/images/checkbiz.svg'
+import passnbiz from '../../../../../public/assets/images/service-logo/icono-passbiz.png'
+import checkbiz from '../../../../../public/assets/images/service-logo/icono-checkbiz.png'
 import Image from 'next/image';
  
 import { useLayout } from '@/hooks/useLayout';
@@ -40,7 +40,7 @@ const ServiceList = () => {
                     <Card key={card.id} sx={styles.card} style={{ cursor: card.id != 'checkinbiz' ? 'pointer' : 'default' }} onClick={() => card.id != 'checkinbiz' ? handleActionClick(card.id) : null} elevation={0} >
                         <CardContent sx={styles.card}>
                             <Box sx={styles.iconContainer} >
-                                <Image src={icons[card.id]} width={card.id == 'checkinbiz'?76:70} height={card.id == 'checkinbiz'?76:70} alt='' />
+                                <Image src={icons[card.id]} width={card.id == 'checkinbiz'?70:70} height={card.id == 'checkinbiz'?76:70} alt='' />
                             </Box>
                             <Box sx={styles.textContainer} >
                                 <Typography textTransform={'uppercase'} variant="h5" component="div">

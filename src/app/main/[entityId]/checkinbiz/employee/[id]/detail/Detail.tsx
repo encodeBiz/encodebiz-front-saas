@@ -13,8 +13,9 @@ import { ISucursal } from "@/domain/features/checkinbiz/ISucursal"
 import { useSearchParams } from "next/navigation"
 import { DetailText } from "@/components/common/table/DetailText"
 import { ArrowBackOutlined } from "@mui/icons-material"
+import FormModal from "../../edit/FormModal"
 
-export const Detail = ({ employee, onResend, children }: { employee: IEmployee, onResend: (v: IEmployee) => void, children: React.ReactNode }) => {
+export const Detail = ({ employee, onResend,onSuccess, children }: { employee: IEmployee,onSuccess:()=>void, onResend: (v: IEmployee) => void, children: React.ReactNode }) => {
     const t = useTranslations()
     const { onDelete, deleting, branchListEmployee } = useEmployeeDetailController()
     const { openModal, open } = useCommonModal()
@@ -48,14 +49,13 @@ export const Detail = ({ employee, onResend, children }: { employee: IEmployee, 
                 </Grid>
                 <Stack direction={'row'} gap={2}>
 
-                    <SassButton color="primary" variant="contained" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${employee.id}/edit`)}>
+                    <SassButton color="primary" variant="contained" onClick={() => openModal(CommonModalType.FORM,{...employee})}>
                         {t('core.button.edit')}
                     </SassButton>
 
                     <SassButton color="primary" variant="contained" onClick={() => onResend(employee)}>
                         {t('core.button.resend')}
                     </SassButton>
-
 
                     <SassButton loading={deleting} color="error" variant="contained" onClick={() => openModal(CommonModalType.DELETE)}>
                         {t('core.button.delete')}
@@ -164,6 +164,9 @@ export const Detail = ({ employee, onResend, children }: { employee: IEmployee, 
                 onOKAction={() => onDelete(employee)}
             />
         }
+
+              {open.type === CommonModalType.FORM && <FormModal onSuccess={onSuccess} />}
+
     </Card >
 
 }
