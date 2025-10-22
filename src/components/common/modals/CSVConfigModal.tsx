@@ -23,7 +23,7 @@ import { useTranslations } from 'next-intl';
 import { IEvent } from '@/domain/features/passinbiz/IEvent';
 import { search } from '@/services/passinbiz/event.service';
 import { useEntity } from '@/hooks/useEntity';
- // Use public URL for static assets in Next.js
+// Use public URL for static assets in Next.js
 interface ICSVConfigModal {
   open: boolean
   onClose: () => void
@@ -40,7 +40,17 @@ const CSVConfigModal = ({ open, onClose, onConfirm }: ICSVConfigModal) => {
   const [filteredEvents, setFilteredEvents] = useState<Array<IEvent>>([]);
 
   const inicializeEvent = async () => {
-    setEventList(await search(currentEntity?.entity.id as string, { ...{} as any, limit: 100 }))
+    setEventList(await search(currentEntity?.entity.id as string, {
+      ...{
+        filters: [
+          {
+            field: 'status',
+            value: 'published',
+            operator: '=='
+          }
+        ]
+      } as any, limit: 100
+    }))
   }
 
   useEffect(() => {
@@ -64,14 +74,14 @@ const CSVConfigModal = ({ open, onClose, onConfirm }: ICSVConfigModal) => {
   }, [eventList, eventSelected, searchInput]);
 
   const handleSelected = () => {
-    
+
     if (type == 'event' && eventSelected) {
       handleClose();
       onConfirm({
         type: type as 'event' | 'credential',
         eventId: eventSelected?.id
       })
-    }else{
+    } else {
       onConfirm({
         type: type as 'event' | 'credential',
         eventId: undefined
@@ -143,7 +153,7 @@ const CSVConfigModal = ({ open, onClose, onConfirm }: ICSVConfigModal) => {
           variant="contained"
           size='small'
           disabled={(type === 'credential') ? !type : (!type || !eventSelected)}
-         
+
         >
           {t('core.button.importCSV')}
         </SassButton>
