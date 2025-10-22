@@ -61,11 +61,11 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     street: '',
     ratioChecklog: 201,
     disableRatioChecklog: false,
-    nif: '',
+    nif: 'N/A',
     startTime: startTime,
     endTime: endTime,
-    "enableDayTimeRange": false,
-    "disableBreak": false,
+    "enableDayTimeRange": false, //poner texto  explicativo en los detalles  y el form
+    "disableBreak": false, //poner texto  explicativo en los detalles y el form
     "timeBreak": 60
 
   });

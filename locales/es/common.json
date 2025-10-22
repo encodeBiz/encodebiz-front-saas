@@ -646,7 +646,10 @@
     "detailSucursal": "Detalles de empleado",
     "description": "Rellene los campos para registrar el empleado",
     "deleteConfirmModalTitle": "Eliminar empleado",
-    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el empleado"
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el empleado",
+    "breakHelp": "Si esta opción no esta habilitada no se mostrará la accion de marcar el tiempo de descanso en la herramienta y se tomara por defecto con configurado. Por defecto el tiempo de descanso será de 60 minutos.",
+    "dayTimeHelp": "Por defecto el horario de marcar el inicio y fin de jornada seria de 8:00 a las 17:00, esta configuración se puede cambiar desde los ajustes, pero sino se configura se tomará como referencia."
+
   },
   "checklog": {
     "title": "Registros de asistencia",
@@ -668,6 +671,7 @@
     "description": "Rellene los campos para registrar la sucursal/proyecto",
     "deleteConfirmModalTitle": "Eliminar sucursal/proyecto",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente la sucursal/proyecto"
+    
   },
   "attendance": {
     "title": "Reportes de asistencia",

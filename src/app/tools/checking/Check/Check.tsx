@@ -60,7 +60,7 @@ const Check = () => {
                 </Box>
 
 
-                <Box >
+                {!currentBranch?.advance?.disableBreak && <Box >
                     <Typography color="#595E70" variant="body1" fontWeight={400} fontSize={16}  > {t('checking.controlDay')} </Typography>
                     <SassButton
                         sx={{
@@ -75,7 +75,7 @@ const Check = () => {
                         }} fullWidth
                         startIcon={restAction === 'restin' ? <StopCircleOutlined style={{ fontSize: 50 }} sx={{ fontSize: 50 }} color={checkAction === 'checkout' || pendingStatus ? 'disabled' : 'error'} /> : <PlayCircleOutline style={{ fontSize: 50 }} sx={{ fontSize: 50, color: checkAction === 'checkout' || pendingStatus ? 'disabled' : "#7ADF7F" }} />}
                     >{restAction === 'restout' ? t('checking.startDescanso') : t('checking.endDescanso')}</SassButton>
-                </Box>
+                </Box>}
             </Box>
 
 
@@ -91,4 +91,4 @@ const Check = () => {
 };
 
 export default Check;
-   
+

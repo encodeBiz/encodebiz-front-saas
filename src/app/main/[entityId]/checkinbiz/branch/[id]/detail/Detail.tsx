@@ -70,9 +70,9 @@ export const Detail = ({ branch, onSuccess, children }: { branch: ISucursal, chi
                 <Box display={'flex'} justifyContent={'space-between'} alignItems={'flex-start'}>
 
                     {branch?.advance && <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={4} alignItems={'flex-start'}>
-                        <DetailText label={t('core.label.enableDayTimeRange')} value={branch?.advance?.enableDayTimeRange ? t('core.label.enable') : t('core.label.noenable')} />
-                        <DetailText label={t('core.label.periocityTime')} value={((branch?.advance?.startTimeWorkingDay?.hour as number)<10?'0'+branch?.advance?.startTimeWorkingDay?.hour:branch?.advance?.startTimeWorkingDay?.hour)+ ':' + ((branch?.advance?.startTimeWorkingDay?.minute as number)<10?'0'+branch?.advance?.startTimeWorkingDay?.minute:branch?.advance?.startTimeWorkingDay?.minute) + ' - ' + ((branch?.advance?.endTimeWorkingDay?.hour as number)<10?'0'+branch?.advance?.endTimeWorkingDay?.hour:branch?.advance?.endTimeWorkingDay?.hour)+ ':' + ((branch?.advance?.endTimeWorkingDay?.minute as number)<10?'0'+branch?.advance?.endTimeWorkingDay?.minute:branch?.advance?.endTimeWorkingDay?.minute)} />
-                        <DetailText label={t('core.label.disableBreak')} value={branch?.advance?.disableBreak ? t('core.label.yes') : t('core.label.no')} />
+                        <DetailText help={t('employee.dayTimeHelp')} label={t('core.label.enableDayTimeRange')} value={branch?.advance?.enableDayTimeRange ? t('core.label.enable') : t('core.label.noenable')} />
+                        <DetailText  label={t('core.label.periocityTime')} value={((branch?.advance?.startTimeWorkingDay?.hour as number)<10?'0'+branch?.advance?.startTimeWorkingDay?.hour:branch?.advance?.startTimeWorkingDay?.hour)+ ':' + ((branch?.advance?.startTimeWorkingDay?.minute as number)<10?'0'+branch?.advance?.startTimeWorkingDay?.minute:branch?.advance?.startTimeWorkingDay?.minute) + ' - ' + ((branch?.advance?.endTimeWorkingDay?.hour as number)<10?'0'+branch?.advance?.endTimeWorkingDay?.hour:branch?.advance?.endTimeWorkingDay?.hour)+ ':' + ((branch?.advance?.endTimeWorkingDay?.minute as number)<10?'0'+branch?.advance?.endTimeWorkingDay?.minute:branch?.advance?.endTimeWorkingDay?.minute)} />
+                        <DetailText help={t('employee.breakHelp')} label={t('core.label.disableBreak')} value={branch?.advance?.disableBreak ? t('core.label.yes') : t('core.label.no')} />
                         <DetailText label={t('core.label.breakTimeRange')} value={branch?.advance?.timeBreak + ' ' + t('core.label.minutes')} />
 
                     </Box>}
@@ -98,9 +98,7 @@ export const Detail = ({ branch, onSuccess, children }: { branch: ISucursal, chi
                     <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
                         {t("employee.list")}
                     </Typography>
-                    <SassButton color="primary" variant="contained" onClick={() => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/add?branchId=${branch?.id}`)}>
-                        {t('employee.add')}
-                    </SassButton>
+                  
                 </Box>
                 {children}
 

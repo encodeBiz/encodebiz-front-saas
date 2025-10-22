@@ -8,16 +8,14 @@ import { emailRule, requiredRule } from '@/config/yupRules';
 import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { ArrayToObject, objectToArray } from "@/lib/common/String";
 import { createEmployee, fetchEmployee, updateEmployee } from "@/services/checkinbiz/employee.service";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
-import { search } from "@/services/checkinbiz/sucursal.service";
-import SelectMultipleInput from "@/components/common/forms/fields/SelectMultipleInput";
-import ToggleInput from "@/components/common/forms/fields/ToggleInput";
+  import ToggleInput from "@/components/common/forms/fields/ToggleInput";
 import PhoneNumberInput from "@/components/common/forms/fields/PhoneNumberInput";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
@@ -29,23 +27,21 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const { showToast } = useToast()
   const { navivateTo } = useLayout()
   const { token, user } = useAuth()
-  const { open, closeModal } = useCommonModal()
-   
+  const { open, closeModal } =  useCommonModal()
+
   const { id } = useParams<{ id: string }>()
   const itemId = isFromModal ? open.args?.id : id
-  const {currentLocale} = useAppLocale()
+  const { currentLocale } = useAppLocale()
   const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
   const [fields, setFields] = useState<Array<any>>([])
-  const searchParams = useSearchParams()
-  const branchId = searchParams.get('branchId')
+    
   const [initialValues, setInitialValues] = useState<Partial<IEmployee>>({
     "fullName": '',
     email: '',
     phone: '',
     role: "internal",
     status: 'active',
-    branchId: branchId ? [branchId] : [],
     metadata: [],
     enableRemoteWork: false
   });
@@ -108,7 +104,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const event: IEmployee = await fetchEmployee(currentEntity?.entity.id as string, itemId)
-       
+
       setInitialValues({
         ...event,
         metadata: objectToArray(event.metadata)
@@ -122,14 +118,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
   const inicialize = async () => {
     changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-    const branckList = (await search(currentEntity?.entity.id as string, {
-      limit: 100,
-      filters: [
-        {
-          field: 'status', operator: '==', value: 'active'
-        }
-      ]
-    } as any)).map(e => ({ value: e.id, label: e.name }))
+    
 
     if (!itemId) {
       setInitialValues({
@@ -139,7 +128,6 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         role: "internal",
         status: 'active',
         enableRemoteWork: false,
-        branchId: branchId ? [branchId] : branckList.length == 1 ? branckList.map(e => e.value as string) : [],
         metadata: []
       })
     }
@@ -160,7 +148,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         name: 'email',
         label: t('core.label.email'),
         type: 'text',
-        disabled:!!itemId,
+        disabled: !!itemId,
         required: true,
         component: TextInput,
       },
@@ -199,15 +187,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         ],
         component: SelectInput,
       },
-      {
-        name: 'branchId',
-        label: t('core.label.subEntity'),
-        type: 'text',
-        required: false,
-        options: branckList,
-        component: SelectMultipleInput,
-        disabled: !!branchId
-      },
+
 
       {
         name: 'jobTitle',

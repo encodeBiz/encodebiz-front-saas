@@ -9,7 +9,7 @@ import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { IStaff } from "@/domain/features/passinbiz/IStaff";
 import { createStaff, deleteStaff, search } from "@/services/passinbiz/staff.service";
-import { DeleteOutline, Event, ReplyAllOutlined } from "@mui/icons-material";
+import { DeleteOutline, Edit, Event, ReplyAllOutlined } from "@mui/icons-material";
 import { PASSSINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { Box } from "@mui/material";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
@@ -109,7 +109,15 @@ export default function useStaffListController() {
   }
 
   const rowAction: Array<IRowAction> = [
-
+    {
+      actionBtn: true,
+      color: 'primary',
+      icon: <Edit color="primary" />,
+      label: t('core.button.edit'),
+      bulk: false,
+      allowItem: () => true,
+      onPress: (item: IStaff) => onEdit(item)
+    },
     {
       actionBtn: true,
       bulk: false,
@@ -290,7 +298,7 @@ export default function useStaffListController() {
   }, [currentEntity?.entity?.id])
 
 
- const onEdit = async (item: any) => {
+  const onEdit = async (item: any) => {
     openModal(CommonModalType.FORM, { ...item })
   }
 

@@ -646,7 +646,9 @@
     "detailSucursal": "Employee details",
     "description": "Fill in the fields to register the employee",
     "deleteConfirmModalTitle": "Delete employee",
-    "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the employee"
+    "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the employee",
+    "breakHelp": "Si esta opción no esta habilitada no se mostrará la accion de marcar el tiempo de descanso en la herramienta y se tomara por defecto con configurado. Por defecto el tiempo de descanso será de 60 minutos.",
+    "dayTimeHelp": "Por defecto el horario de marcar el inicio y fin de jornada seria de 8:00 a las 17:00, esta configuración se puede cambiar desde los ajustes, pero sino se configura se tomará como referencia."
   },
   "checklog": {
     "title": "Attendance Records",
