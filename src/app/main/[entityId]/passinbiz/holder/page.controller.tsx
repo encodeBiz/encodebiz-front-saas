@@ -135,7 +135,17 @@ export default function useHolderListController() {
 
   const [eventList, setEventList] = useState<Array<IEvent>>([])
   const inicializeEvent = useCallback(async () => {
-    setEventList(await searchEvent(currentEntity?.entity.id as string, { ...{} as any, limit: 100 }))
+    setEventList(await searchEvent(currentEntity?.entity.id as string, {
+      ...{
+        filters: [
+          {
+            field: 'status',
+            value: 'published',
+            operator: '=='
+          }
+        ]
+      } as any, limit: 100
+    }))
   }, [currentEntity?.entity.id])
 
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
@@ -393,7 +403,7 @@ export default function useHolderListController() {
     }
 
   }
-   
+
 
 
 
@@ -434,7 +444,7 @@ export default function useHolderListController() {
 
   return {
     items, topFilter,
-     onSort, onRowsPerPageChange,
+    onSort, onRowsPerPageChange,
     handleUploadConfirm, isUploading, handleConfigConfirm,
     onNext, onBack,
     columns, rowAction, setFilterParams, filterParams,

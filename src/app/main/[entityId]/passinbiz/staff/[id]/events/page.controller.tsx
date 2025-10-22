@@ -20,12 +20,12 @@ export default function useStaffController() {
   const { id } = useParams<{ id: string }>()
   const { currentEntity, watchServiceAccess } = useEntity()
   const { changeLoaderState } = useLayout()
-  const {currentLocale} = useAppLocale()
+  const { currentLocale } = useAppLocale()
   const [fields, setFields] = useState<Array<any>>([])
   const [initialValues, setInitialValues] = useState<{ event: Array<string> }>({
     event: [],
   });
- 
+
   const validationSchema = Yup.object().shape({
 
   });
@@ -90,7 +90,15 @@ export default function useStaffController() {
       setInitialValues({
         event: eventStaffList.map(e => e.id)
       })
-      const eventList: IEvent[] = await search(currentEntity?.entity.id as string, { limit: 100 } as any)
+      const eventList: IEvent[] = await search(currentEntity?.entity.id as string, {
+        filters: [
+          {
+            field: 'status',
+            value: 'published',
+            operator: '=='
+          }
+        ], limit: 100
+      } as any)
 
       setFields([
         {
