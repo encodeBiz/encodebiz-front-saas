@@ -63,7 +63,7 @@ export const useUserAccountController = () => {
         changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
         await recoveryPassword(user?.email as string,currentLocale)
         changeLoaderState({ show: false })
-        openModal(CommonModalType.INFO)
+        openModal(CommonModalType.INFO,{id:'recovery'})
     }
 
     const validationSchema = Yup.object().shape({

@@ -26,7 +26,7 @@ const AccountPreferencesPage = () => {
                 />
             </HeaderPage>
 
-            {open.open && open.type == CommonModalType.INFO && <InfoModal
+            {open.open && open?.args?.id==='recovery' && open.type == CommonModalType.INFO && <InfoModal
                 title={t('core.recovery.modalTitle')}
                 description={t('core.recovery.modalTitle2')}             
                 onClose={() => {
