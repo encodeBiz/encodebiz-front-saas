@@ -2,23 +2,23 @@ import { SassButton } from "@/components/common/buttons/GenericButton"
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes"
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee"
 import { useLayout } from "@/hooks/useLayout"
-import { Card, Box, Grid, Typography, CardContent, Paper, Divider, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
+import { Card, Box, Grid, Typography, CardContent, Paper, Divider, Stack } from "@mui/material"
 import { useTranslations } from "next-intl"
 import useEmployeeDetailController from "./page.controller"
 import { useCommonModal } from "@/hooks/useCommonModal"
 import ConfirmModal from "@/components/common/modals/ConfirmModal"
 import { CommonModalType } from "@/contexts/commonModalContext"
 import { CustomChip } from "@/components/common/table/CustomChip"
-import { ISucursal } from "@/domain/features/checkinbiz/ISucursal"
 import { useSearchParams } from "next/navigation"
 import { DetailText } from "@/components/common/table/DetailText"
 import { ArrowBackOutlined } from "@mui/icons-material"
 import FormModal from "../../edit/FormModal"
 import BranchSelectorModal from "@/components/common/modals/BranchSelector"
+import SucursalFromItem from "./SucursalFromItem/SucursalFromItem"
 
 export const Detail = ({ employee, onResend, onSuccess, children }: { employee: IEmployee, onSuccess: () => void, onResend: (v: IEmployee) => void, children: React.ReactNode }) => {
     const t = useTranslations()
-    const { onDelete, deleting, branchListEmployee, branchList, addEntityResponsibility } = useEmployeeDetailController()
+    const { onDelete, deleting, branchList, addEntityResponsibility, entityResponsibilityList } = useEmployeeDetailController()
     const { openModal, open } = useCommonModal()
     const search = useSearchParams()
     const backAction = search.get('back')
@@ -104,45 +104,9 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
                             {t('core.button.addBranch')}
                         </SassButton>
                     </Box>
-                    <TableContainer component={Paper}>
-                        {Array.isArray(branchListEmployee) && <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell align="left">
-                                        <Typography fontSize={16} color='#76777D' fontWeight={400} variant="subtitle1" minWidth={200}>
-                                            {t('core.label.sucursal')}
-                                        </Typography>
-                                    </TableCell>
-                                    <TableCell align="left">
-                                        <Typography fontSize={16} color='#76777D' fontWeight={400} variant="subtitle1"  >
-                                            {t('core.label.cargo')}
-                                        </Typography>
-                                    </TableCell>
-
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {branchListEmployee.map((e: ISucursal, i: number) => (
-                                    <TableRow
-                                        key={i}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-
-                                        <TableCell align="left">
-                                            <Typography fontSize={24} color='#1C1B1D' fontWeight={400} variant="body2" minWidth={200}   >
-                                                {e.name}
-                                            </Typography>
-                                        </TableCell>
-                                        <TableCell align="left">
-                                            <Typography fontSize={24} color='#1C1B1D' fontWeight={400} variant="body2" minWidth={200}   >
-                                                {employee.jobTitle}
-                                            </Typography>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>}
-                    </TableContainer>
+                    <Box>
+                        {entityResponsibilityList.map((e, i) => <SucursalFromItem key={i} item={e} />)}
+                    </Box>
 
                 </Box>
             </Paper>
@@ -179,8 +143,7 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
         {open.type === CommonModalType.BRANCH_SELECTED && <BranchSelectorModal
             branchList={branchList.map(e => ({ name: e.name, branchId: e.id as string }))}
             onOKAction={(branchId) => {
-               addEntityResponsibility(branchId.branchId);
-
+                addEntityResponsibility(branchId.branchId);
             }}
         />}
 

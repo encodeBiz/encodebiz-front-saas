@@ -8,15 +8,17 @@ import { SassButton } from '@/components/common/buttons/GenericButton';
 import { EmployeeEntityResponsibility } from '@/domain/features/checkinbiz/IEmployee';
 import useSucursalFromItemController from './SucursalFromItem.controller';
 import { ExpandMoreOutlined } from '@mui/icons-material';
+import { useEntity } from '@/hooks/useEntity';
 
 
 
-export default function SucursalFromItem(item: EmployeeEntityResponsibility) {
+export default function SucursalFromItem({item}:{item: EmployeeEntityResponsibility}) {
     const { fields, initialValues, validationSchema, handleSubmit } = useSucursalFromItemController(item);
     const t = useTranslations();
 
     const formRef = useRef(null)
     const { formStatus } = useFormStatus()
+    const { currentEntity } = useEntity()
 
     const handleExternalSubmit = () => {
         if (formRef.current) {
@@ -34,8 +36,8 @@ export default function SucursalFromItem(item: EmployeeEntityResponsibility) {
                 id="panel1-header"
                 sx={{ height: 56 }}
             >
-                <Typography component="span" textTransform={'uppercase'}>Title</Typography>
-                <Typography color='textSecondary' component="span" >Sub title</Typography>
+                <Typography component="span" textTransform={'uppercase'}>{currentEntity?.entity?.name}</Typography>
+                <Typography color='textSecondary' component="span" >{item.branch?.name}</Typography>
 
                 <SassButton
                     disabled={!formStatus?.isValid || formStatus?.isSubmitting}

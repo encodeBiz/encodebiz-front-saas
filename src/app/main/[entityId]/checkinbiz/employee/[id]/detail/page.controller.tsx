@@ -385,7 +385,7 @@ export default function useEmployeeDetailController() {
     onDelete, deleting, topFilter,
     onNext, onBack, onSuccessCreate,
     columns, branchListEmployee, addEntityResponsibility,
-    loading, filterParams, onResend,
+    loading, filterParams, onResend,entityResponsibilityList,
     initialValues, rowAction, branchList
   }
 }
