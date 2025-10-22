@@ -14,13 +14,15 @@ import { useSearchParams } from "next/navigation"
 import { DetailText } from "@/components/common/table/DetailText"
 import { ArrowBackOutlined } from "@mui/icons-material"
 import FormModal from "../../edit/FormModal"
+import BranchSelectorModal from "@/components/common/modals/BranchSelector"
 
-export const Detail = ({ employee, onResend,onSuccess, children }: { employee: IEmployee,onSuccess:()=>void, onResend: (v: IEmployee) => void, children: React.ReactNode }) => {
+export const Detail = ({ employee, onResend, onSuccess, children }: { employee: IEmployee, onSuccess: () => void, onResend: (v: IEmployee) => void, children: React.ReactNode }) => {
     const t = useTranslations()
-    const { onDelete, deleting, branchListEmployee } = useEmployeeDetailController()
+    const { onDelete, deleting, branchListEmployee, branchList, addEntityResponsibility } = useEmployeeDetailController()
     const { openModal, open } = useCommonModal()
     const search = useSearchParams()
     const backAction = search.get('back')
+
 
     const { navivateTo } = useLayout()
     return <Card elevation={3} sx={{ width: '100%', margin: 'auto' }}>
@@ -49,7 +51,7 @@ export const Detail = ({ employee, onResend,onSuccess, children }: { employee: I
                 </Grid>
                 <Stack direction={'row'} gap={2}>
 
-                    <SassButton color="primary" variant="contained" onClick={() => openModal(CommonModalType.FORM,{...employee})}>
+                    <SassButton color="primary" variant="contained" onClick={() => openModal(CommonModalType.FORM, { ...employee })}>
                         {t('core.button.edit')}
                     </SassButton>
 
@@ -93,9 +95,15 @@ export const Detail = ({ employee, onResend,onSuccess, children }: { employee: I
             <Divider />
             <Paper elevation={0} sx={{ p: 3 }}>
                 <Box sx={{ mt: 2 }}>
-                    <Typography variant="subtitle1" gutterBottom>
-                        {t('core.label.sucursalAsigned')}
-                    </Typography>
+                    <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
+                        <Typography variant="subtitle1" gutterBottom>
+                            {t('core.label.sucursalAsigned')}
+                        </Typography>
+
+                        <SassButton color="primary" variant="contained" onClick={() => openModal(CommonModalType.BRANCH_SELECTED)}>
+                            {t('core.button.addBranch')}
+                        </SassButton>
+                    </Box>
                     <TableContainer component={Paper}>
                         {Array.isArray(branchListEmployee) && <Table sx={{ minWidth: 650 }} aria-label="simple table">
                             <TableHead>
@@ -165,7 +173,16 @@ export const Detail = ({ employee, onResend,onSuccess, children }: { employee: I
             />
         }
 
-              {open.type === CommonModalType.FORM && <FormModal onSuccess={onSuccess} />}
+        {open.type === CommonModalType.FORM && <FormModal onSuccess={onSuccess} />}
+        {open.type === CommonModalType.INFO && <FormModal onSuccess={onSuccess} />}
+
+        {open.type === CommonModalType.BRANCH_SELECTED && <BranchSelectorModal
+            branchList={branchList.map(e => ({ name: e.name, branchId: e.id as string }))}
+            onOKAction={(branchId) => {
+               addEntityResponsibility(branchId.branchId);
+
+            }}
+        />}
 
     </Card >
 

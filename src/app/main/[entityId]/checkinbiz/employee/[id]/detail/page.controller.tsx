@@ -7,7 +7,7 @@ import { useEntity } from "@/hooks/useEntity";
 import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { objectToArray } from "@/lib/common/String";
-import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
+import { EmployeeEntityResponsibility, IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import { createEmployee, deleteEmployee, fetch2FAData, fetchEmployee, searchLogs } from "@/services/checkinbiz/employee.service";
 import { IChecklog } from "@/domain/features/checkinbiz/IChecklog";
 import { Column } from "@/components/common/table/GenericTable";
@@ -16,7 +16,7 @@ import { useCommonModal } from "@/hooks/useCommonModal";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { format_date, rmNDay } from "@/lib/common/Date";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
-import { fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucursal.service";
+import { fetchSucursal, fetchSucursal as fetchSucursalData, search } from "@/services/checkinbiz/sucursal.service";
 import { Box } from "@mui/material";
 
 import { DateRangePicker } from "@/app/main/[entityId]/passinbiz/stats/components/filters/fields/DateRangeFilter";
@@ -353,12 +353,39 @@ export default function useEmployeeDetailController() {
 
   const onSuccess = () => fetchData()
 
+  const [branchList, setBranchList] = useState<Array<ISucursal>>([])
+  const fetchSucursalList = async () => {
+    setBranchList(await search(currentEntity?.entity.id as string, { ...{} as any, limit: 100 }))
+  }
+
+  useEffect(() => {
+    fetchSucursalList()
+  }, [])
+
+
+  const [entityResponsibilityList, setEntityResponsibilityListList] = useState<Array<EmployeeEntityResponsibility>>([])
+  const addEntityResponsibility = async (branchId: string) => {
+    setEntityResponsibilityListList([...entityResponsibilityList, {
+      employeeId: initialValues.id as string,
+      responsibility: 'worker',
+      level: 4,
+      scope: { entityId: currentEntity?.entity.id as string, branchId, scope: 'branch' },
+      job: {
+        job: '',
+        price: 0,
+        id: ''
+      },
+      active: 1,
+      branch: await fetchSucursal(currentEntity?.entity.id as string, branchId)
+    }])
+  }
+
   return {
-    items, onSort, onRowsPerPageChange,onSuccess,
+    items, onSort, onRowsPerPageChange, onSuccess,
     onDelete, deleting, topFilter,
     onNext, onBack, onSuccessCreate,
-    columns, branchListEmployee,
+    columns, branchListEmployee, addEntityResponsibility,
     loading, filterParams, onResend,
-    initialValues, rowAction
+    initialValues, rowAction, branchList
   }
 }

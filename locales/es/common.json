@@ -330,7 +330,8 @@
       "saveChanges": "Guardar",
       "ok": "Entiendo",
       "configurenow": "Configurar",
-      "update": "Actualizar"
+      "update": "Actualizar",
+      "addBranch":"Agregar sucursal"
     },
     "formValidatorMessages": {
       "required": "Este campo es requerido",
