@@ -104,7 +104,7 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
                             {t('core.button.addBranch')}
                         </SassButton>
                     </Box>
-                    <Box>
+                    <Box gap={2} display={'flex'} flexDirection={'column'} mt={2}>
                         {entityResponsibilityList.map((e, i) => <SucursalFromItem key={i} item={e} />)}
                     </Box>
 

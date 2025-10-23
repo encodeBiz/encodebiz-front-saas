@@ -15,17 +15,9 @@ import { useEntity } from '@/hooks/useEntity';
 export default function SucursalFromItem({item}:{item: EmployeeEntityResponsibility}) {
     const { fields, initialValues, validationSchema, handleSubmit } = useSucursalFromItemController(item);
     const t = useTranslations();
-
-    const formRef = useRef(null)
-    const { formStatus } = useFormStatus()
+ 
     const { currentEntity } = useEntity()
-
-    const handleExternalSubmit = () => {
-        if (formRef.current) {
-            (formRef.current as any).submitForm()
-        }
-    }
-
+ 
 
     return (
 
@@ -39,11 +31,7 @@ export default function SucursalFromItem({item}:{item: EmployeeEntityResponsibil
                 <Typography component="span" textTransform={'uppercase'}>{currentEntity?.entity?.name}</Typography>
                 <Typography color='textSecondary' component="span" >{item.branch?.name}</Typography>
 
-                <SassButton
-                    disabled={!formStatus?.isValid || formStatus?.isSubmitting}
-                    onClick={handleExternalSubmit}
-                    variant='contained'
-                > {t('core.button.saveChanges')}</SassButton>
+                
             </AccordionSummary>
             <AccordionDetails>
                 <GenericForm<Partial<any>>
@@ -53,9 +41,9 @@ export default function SucursalFromItem({item}:{item: EmployeeEntityResponsibil
                     onSubmit={(values) => handleSubmit(values)}
                     fields={fields as FormField[]}
                     enableReinitialize
-                    activateWatchStatus
-                    hideBtn
-                    formRef={formRef}
+                    activateWatchStatus={false}
+                    hideBtn={false}
+                    
                 />
             </AccordionDetails>
         </Accordion>
