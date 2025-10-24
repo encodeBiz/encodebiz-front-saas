@@ -1,11 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // SelectCreatableInput.tsx
 import React, { useEffect } from 'react';
-import { TextFieldProps, MenuItem, Select, FormHelperText, FormControl, InputLabel, OutlinedInput, InputAdornment, Autocomplete, createFilterOptions, TextField } from '@mui/material';
+import { TextFieldProps, FormHelperText, FormControl, Autocomplete, createFilterOptions, TextField } from '@mui/material';
 import { FieldProps, useField } from 'formik';
-import { createSlug } from '@/lib/common/String';
-import { Error } from '@mui/icons-material';
-import { useFormStatus } from '@/hooks/useFormStatus';
 
 
 interface CreatableOptions {
