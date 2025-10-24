@@ -18,7 +18,7 @@ import SucursalFromItem from "./SucursalFromItem/SucursalFromItem"
 
 export const Detail = ({ employee, onResend, onSuccess, children }: { employee: IEmployee, onSuccess: () => void, onResend: (v: IEmployee) => void, children: React.ReactNode }) => {
     const t = useTranslations()
-    const { onDelete, deleting, branchList, addEntityResponsibility, entityResponsibilityList } = useEmployeeDetailController()
+    const { onDelete, deleting, branchList, addEntityResponsibility, entityResponsibilityList, jobList } = useEmployeeDetailController()
     const { openModal, open } = useCommonModal()
     const search = useSearchParams()
     const backAction = search.get('back')
@@ -78,7 +78,6 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
                     <DetailText label={t('core.label.status')} value={t('core.label.' + employee?.status)} />
                     <DetailText label={t('core.label.nationalId')} value={employee?.nationalId} />
                     <DetailText label={t('core.label.remoteWork')} value={employee?.enableRemoteWork ? t('core.label.enable') : t('core.label.noenable')} />
-
                 </Box>
 
                 {/* Additional Details */}
@@ -88,7 +87,7 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
                     </Typography>
 
                     {Array.isArray(employee.metadata) && <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} alignItems={'flex-start'} gap={2}>
-                        {employee.metadata.map((e: any, i: number) => <DetailText key={i} label={e.label} value={e.value} orientation="row" />)}
+                        {employee.metadata?.map((e: any, i: number) => <DetailText key={i} label={e.label} value={e.value} orientation="row" />)}
                     </Box>}
                 </Paper></>}
             </Paper>
@@ -105,7 +104,7 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
                         </SassButton>
                     </Box>
                     <Box gap={2} display={'flex'} flexDirection={'column'} mt={2}>
-                        {entityResponsibilityList.map((e, i) => <SucursalFromItem key={i} item={e} />)}
+                        {entityResponsibilityList.sort((a, b) => a.active - b.active)?.map((e, i) => <SucursalFromItem key={i} item={e} jobList={jobList} />)}
                     </Box>
 
                 </Box>
@@ -140,8 +139,8 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
         {open.type === CommonModalType.FORM && <FormModal onSuccess={onSuccess} />}
         {open.type === CommonModalType.INFO && <FormModal onSuccess={onSuccess} />}
 
-        {open.type === CommonModalType.BRANCH_SELECTED && <BranchSelectorModal
-            branchList={branchList.map(e => ({ name: e.name, branchId: e.id as string }))}
+    {open.type === CommonModalType.BRANCH_SELECTED && <BranchSelectorModal type={'selector'}
+            branchList={branchList?.map(e => ({ name: e.name, branchId: e.id as string }))}
             onOKAction={(branchId) => {
                 addEntityResponsibility(branchId.branchId);
             }}

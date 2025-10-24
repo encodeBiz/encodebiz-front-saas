@@ -188,15 +188,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         component: SelectInput,
       },
 
-
-      {
-        name: 'jobTitle',
-        label: t('core.label.jobTitle'),
-        type: 'text',
-        required: false,
-        component: TextInput,
-
-      },
+ 
 
       {
         name: 'nationalId',

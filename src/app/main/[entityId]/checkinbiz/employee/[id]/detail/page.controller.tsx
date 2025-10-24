@@ -7,8 +7,8 @@ import { useEntity } from "@/hooks/useEntity";
 import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { objectToArray } from "@/lib/common/String";
-import { EmployeeEntityResponsibility, IEmployee } from "@/domain/features/checkinbiz/IEmployee";
-import { createEmployee, deleteEmployee, fetch2FAData, fetchEmployee, searchLogs } from "@/services/checkinbiz/employee.service";
+import { EmployeeEntityResponsibility, IEmployee, Job } from "@/domain/features/checkinbiz/IEmployee";
+import { createEmployee, deleteEmployee, fetch2FAData, fetchEmployee, searchJobs, searchLogs } from "@/services/checkinbiz/employee.service";
 import { IChecklog } from "@/domain/features/checkinbiz/IChecklog";
 import { Column } from "@/components/common/table/GenericTable";
 import { CommonModalType } from "@/contexts/commonModalContext";
@@ -79,7 +79,7 @@ export default function useEmployeeDetailController() {
 
 
       await Promise.all(
-        employee.branchId.map(async (branchId) => {
+        employee.branchId?.map(async (branchId) => {
           dataSucursalList.push((await fetchSucursalData(currentEntity?.entity.id as string, branchId as string)))
         })
       );
@@ -170,7 +170,7 @@ export default function useEmployeeDetailController() {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
 
         const data: Array<IChecklog> = await Promise.all(
-          res.map(async (item) => {
+          res?.map(async (item) => {
             const branchId = (await fetchSucursalData(currentEntity?.entity.id as string, item.branchId as string))?.name
             return { ...item, branchId };
           })
@@ -248,12 +248,12 @@ export default function useEmployeeDetailController() {
       setDeleting(true)
       let ids = []
       if (Array.isArray(item)) {
-        ids = (item as Array<IEmployee>).map(e => e.id)
+        ids = (item as Array<IEmployee>)?.map(e => e.id)
       } else {
         ids.push(item.id)
       }
       await Promise.all(
-        ids.map(async (id) => {
+        ids?.map(async (id) => {
           try {
             await deleteEmployee(currentEntity?.entity.id as string, id as string, token, currentLocale)
           } catch (e: any) {
@@ -380,12 +380,32 @@ export default function useEmployeeDetailController() {
     }])
   }
 
+
+  const [jobList, setJobList] = useState<Array<Job>>([])
+  const fetchJobList = async () => {
+    try {
+      setJobList(await searchJobs(currentEntity?.entity.id as string))
+    } catch (error: any) {
+      changeLoaderState({ show: false })
+      showToast(error.message, 'error')
+    }
+    changeLoaderState({ show: false })
+  }
+
+
+  useEffect(() => {
+    if (currentEntity?.entity.id) {
+      fetchJobList()
+    }
+
+  }, [currentEntity?.entity.id, user?.id])
+
   return {
     items, onSort, onRowsPerPageChange, onSuccess,
     onDelete, deleting, topFilter,
     onNext, onBack, onSuccessCreate,
     columns, branchListEmployee, addEntityResponsibility,
-    loading, filterParams, onResend,entityResponsibilityList,
-    initialValues, rowAction, branchList
+    loading, filterParams, onResend, entityResponsibilityList,
+    initialValues, rowAction, branchList, jobList
   }
 }

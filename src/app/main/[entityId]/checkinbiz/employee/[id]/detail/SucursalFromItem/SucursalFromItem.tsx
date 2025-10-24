@@ -1,49 +1,58 @@
 'use client';
-import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Box, FormControlLabel, FormGroup, Switch, Typography } from '@mui/material';
 import { useTranslations } from "next-intl";
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
-import { useFormStatus } from '@/hooks/useFormStatus';
-import { useRef } from 'react';
-import { SassButton } from '@/components/common/buttons/GenericButton';
-import { EmployeeEntityResponsibility } from '@/domain/features/checkinbiz/IEmployee';
+import { EmployeeEntityResponsibility, Job } from '@/domain/features/checkinbiz/IEmployee';
 import useSucursalFromItemController from './SucursalFromItem.controller';
 import { ExpandMoreOutlined } from '@mui/icons-material';
 import { useEntity } from '@/hooks/useEntity';
+import { useRef } from 'react';
 
 
 
-export default function SucursalFromItem({item}:{item: EmployeeEntityResponsibility}) {
-    const { fields, initialValues, validationSchema, handleSubmit } = useSucursalFromItemController(item);
+export default function SucursalFromItem({ item }: { item: EmployeeEntityResponsibility, jobList: Array<Job> }) {
+    const { fields, initialValues, validationSchema, handleSubmit, active, setActive } = useSucursalFromItemController(item);
     const t = useTranslations();
- 
     const { currentEntity } = useEntity()
- 
+
+    
+        const formRef = useRef(null)
+     
+       
 
     return (
 
         <Accordion sx={{ width: '100%' }}>
+            
             <AccordionSummary
                 expandIcon={<ExpandMoreOutlined />}
                 aria-controls="panel1-content"
                 id="panel1-header"
                 sx={{ height: 56 }}
             >
-                <Typography component="span" textTransform={'uppercase'}>{currentEntity?.entity?.name}</Typography>
-                <Typography color='textSecondary' component="span" >{item.branch?.name}</Typography>
+                <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} width={'100%'}>
+                    <Box display={'flex'} flexDirection={'column'}>
+                        <Typography component="span" textTransform={'uppercase'}>{currentEntity?.entity?.name}</Typography>
+                        <Typography color='textSecondary' component="span" >{item.branch?.name}</Typography>
+                    </Box>
+                    <FormGroup>
+                        <FormControlLabel control={<Switch checked={active == 1} onChange={(e) => setActive(e.target.checked ? 1 : 0)} />} label={t('core.label.active')} />
+                    </FormGroup>
+                </Box>
 
-                
             </AccordionSummary>
             <AccordionDetails>
                 <GenericForm<Partial<any>>
-                    column={2}
+                    column={3}
                     initialValues={initialValues}
                     validationSchema={validationSchema}
                     onSubmit={(values) => handleSubmit(values)}
                     fields={fields as FormField[]}
                     enableReinitialize
-                    activateWatchStatus={false}
+                    activateWatchStatus={true}
                     hideBtn={false}
-                    
+                    formRef={formRef}
+
                 />
             </AccordionDetails>
         </Accordion>

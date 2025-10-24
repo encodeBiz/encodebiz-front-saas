@@ -7,7 +7,9 @@ import {
     Box,
     List,
     ListItemButton,
-    ListItemText
+    ListItemText,
+    Autocomplete,
+    TextField
 } from '@mui/material';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
@@ -18,9 +20,9 @@ import { CustomTypography } from '../Text/CustomTypography';
 interface BranchSelectorProps {
     branchList: Array<{ name: string, branchId: string }>
     onOKAction: (event: { name: string, branchId: string }) => void
-
+    type: 'item' | 'selector'
 }
-const BranchSelectorModal = ({ branchList, onOKAction }: BranchSelectorProps): React.JSX.Element => {
+const BranchSelectorModal = ({ branchList, onOKAction, type = 'item' }: BranchSelectorProps): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const t = useTranslations()
     const [branchSelected, setBranchSelected] = useState<{ name: string, branchId: string }>()
@@ -41,14 +43,26 @@ const BranchSelectorModal = ({ branchList, onOKAction }: BranchSelectorProps): R
                 </Box>
             </DialogTitle>
             <DialogContent>
-                <List component="nav" aria-label="main mailbox folders">
+                {type == 'item' && <List component="nav" aria-label="main mailbox folders">
                     {branchList.map((e, i) => <ListItemButton key={i}
                         selected={branchSelected?.branchId === e.branchId}
                         onClick={() => setBranchSelected(e)}
                     >
                         <ListItemText primary={e.name} />
                     </ListItemButton>)}
-                </List>
+                </List>}
+
+                {type == 'selector' && <Autocomplete
+                    disablePortal
+                    disableClearable
+                    options={branchList}
+                    sx={{ width: '100%' }}
+                    onChange={(event: any, newValue: { name: string, branchId: string } | null) => {
+                        setBranchSelected(newValue as { name: string, branchId: string } )
+                    }}
+
+                    renderInput={(params) => <TextField {...params} label={t('checking.titleBranch')} />}
+                />}
             </DialogContent>
             <DialogActions>
                 <SassButton

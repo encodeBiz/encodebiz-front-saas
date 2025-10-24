@@ -3,7 +3,7 @@ import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
-import { EmployeeEntityResponsibility, IEmployee } from "@/domain/features/checkinbiz/IEmployee";
+import { EmployeeEntityResponsibility, IEmployee, Job } from "@/domain/features/checkinbiz/IEmployee";
 import { IChecklog, ICreateLog } from "@/domain/features/checkinbiz/IChecklog";
 import { mapperErrorFromBack } from "@/lib/common/String";
 
@@ -50,6 +50,22 @@ export const search = async (entityId: string, params: SearchParams): Promise<IE
   const result: IEmployee[] = await searchFirestore({
     ...params,
     collection: `${collection.ENTITIES}/${entityId}/${collection.EMPLOYEE}`,
+  });
+
+  return result;
+}
+
+/**
+   * Search employee
+   *
+   * @async
+   * @param {SearchParams} params
+   * @returns {Promise<Iemployee[]>}
+   */
+export const searchJobs = async (entityId: string): Promise<Job[]> => {
+  const result: Job[] = await searchFirestore({
+    ...{ limit: 400 } as any,
+    collection: `${collection.ENTITIES}/${entityId}/${collection.JOBS}`,
   });
 
   return result;
@@ -156,7 +172,7 @@ export const deleteEmployee = async (entityId: string, id: string, token: string
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,locale
+          authorization: `Bearer ${token}`, locale
         },
       });
       const response: any = await httpClientFetchInstance.delete(
@@ -186,7 +202,7 @@ export async function createLog(data: ICreateLog, token: string, locale: any = '
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,locale
+          authorization: `Bearer ${token}`, locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
