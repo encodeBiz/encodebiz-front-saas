@@ -27,14 +27,14 @@ const SelectCreatableInput: React.FC<SelectCreatableInputProps> = ({
   const [field, meta, helper] = useField(props.name);
   const { touched, error } = meta
   const helperText = touched && error;
-  const [value, setValue] = React.useState<CreatableOptions | null>(field.value);
+  const [value, setValue] = React.useState<CreatableOptions | null>(options.find(e => e.label === field.value) ?? null);
 
 
   useEffect(() => {
     if (value !== field.value) {
-      helper.setValue(value)
+      helper.setValue(value?.label)
       if (typeof onHandleChange == 'function') onHandleChange(value)
-    } 
+    }
   }, [value])
 
 
@@ -44,6 +44,7 @@ const SelectCreatableInput: React.FC<SelectCreatableInputProps> = ({
 
     <Autocomplete
       value={value}
+      clearIcon={false}
       onChange={(event, newValue) => {
         if (typeof newValue === 'string') {
           setValue({
@@ -98,10 +99,12 @@ const SelectCreatableInput: React.FC<SelectCreatableInputProps> = ({
           </li>
         );
       }}
-      sx={{ width: 300 }}
+  
       freeSolo
       renderInput={(params) => (
-        <TextField {...params} label={props.label} />
+        <TextField {...params} sx={{
+          width: '100%'
+        }} label={props.label} />
       )}
     />
     <FormHelperText>{helperText as string}</FormHelperText>

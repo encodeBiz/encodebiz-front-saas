@@ -5,7 +5,9 @@ import { collection } from "@/config/collection";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import { EmployeeEntityResponsibility, IEmployee, Job } from "@/domain/features/checkinbiz/IEmployee";
 import { IChecklog, ICreateLog } from "@/domain/features/checkinbiz/IChecklog";
-import { mapperErrorFromBack } from "@/lib/common/String";
+import { mapperErrorFromBack, normalizarString } from "@/lib/common/String";
+import { addDocument } from "@/lib/firebase/firestore/addDocument";
+import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
 
 
 /**
@@ -64,11 +66,53 @@ export const search = async (entityId: string, params: SearchParams): Promise<IE
    */
 export const searchJobs = async (entityId: string): Promise<Job[]> => {
   const result: Job[] = await searchFirestore({
-    ...{ limit: 400 } as any,
+    ...{ limit: 10000 } as any,
     collection: `${collection.ENTITIES}/${entityId}/${collection.JOBS}`,
   });
 
   return result;
+}
+
+/**
+   * Search employee
+   *
+   * @async
+   * @param {SearchParams} params
+   * @returns {Promise<Iemployee[]>}
+   */
+export const addJobs = async (entityId: string, jobName: string, price: number): Promise<void> => {
+  try {
+    const result: Job[] = await searchFirestore({
+      ...{ limit: 10000 } as any,
+      collection: `${collection.ENTITIES}/${entityId}/${collection.JOBS}`,
+    });
+
+    const normalizeJobName = jobName.trim().toLocaleLowerCase()
+    const item = result.find(e => normalizarString(e.job) === normalizarString(normalizeJobName))
+    if (item) {
+      await updateDocument<Job>({
+        collection: `${collection.ENTITIES}/${entityId}/${collection.JOBS}`,
+        data: {
+          job: normalizeJobName,
+          price: parseFloat(`${price}`)
+        },
+        id: item.id as string
+      });
+    } else {
+      await addDocument<Job>({
+        collection: `${collection.ENTITIES}/${entityId}/${collection.JOBS}`,
+        data: {
+          job: normalizeJobName,
+          price: parseFloat(`${price}`)
+        }
+      });
+    }
+
+
+  } catch (error: any) {
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
+  }
+
 }
 
 export async function createEmployee(data: Partial<IEmployee>, token: string, locale: any = 'es') {
@@ -129,7 +173,7 @@ export async function updateEmployee(data: Partial<IEmployee>, token: string, lo
   }
 }
 
-export async function updateBranchEmployee(data: Partial<EmployeeEntityResponsibility>, token: string, locale: any = 'es') {
+export async function handleRespnsability(data: Partial<EmployeeEntityResponsibility>, token: string, locale: any = 'es') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -142,7 +186,7 @@ export async function updateBranchEmployee(data: Partial<EmployeeEntityResponsib
         },
       });
       const response: any = await httpClientFetchInstance.post(
-        process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_UPDATE_EMPLOYEE as string,
+        process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_RESPONSABILITY_HANDLER as string,
         {
           ...data,
         }

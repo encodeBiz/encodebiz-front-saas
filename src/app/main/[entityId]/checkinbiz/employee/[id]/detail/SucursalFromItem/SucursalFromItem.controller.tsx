@@ -2,12 +2,12 @@
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
-import { requiredRule } from '@/config/yupRules';
+import { priceRule, requiredRule } from '@/config/yupRules';
 import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useLayout } from "@/hooks/useLayout";
-import { searchJobs, updateBranchEmployee } from "@/services/checkinbiz/employee.service";
+import { searchJobs, handleRespnsability } from "@/services/checkinbiz/employee.service";
 import { useAppLocale } from "@/hooks/useAppLocale";
 import { EmployeeEntityResponsibility, Job } from "@/domain/features/checkinbiz/IEmployee";
 import TextInput from "@/components/common/forms/fields/TextInput";
@@ -39,7 +39,7 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
   const validationSchema = Yup.object().shape({
     job: requiredRule(t),
     responsibility: requiredRule(t),
-    price: requiredRule(t),
+    price: priceRule(t),
   });
 
   const handleSubmit = async (values: Partial<any>) => {
@@ -57,7 +57,7 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
         active: active,
         entityId: currentEntity?.entity.id
       }
-      await updateBranchEmployee(data, token, currentLocale)
+      await handleRespnsability(data, token, currentLocale)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
 
@@ -118,7 +118,7 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
       component: SelectCreatableInput,
       extraProps: {
         onHandleChange: (data: { label: string, value: any }) => {
-           if (jobList.find(e => e.id === data.value)) {
+           if (jobList.find(e => e.id === data?.value)) {
             const item = jobList.find(e => e.id === data.value)
             setInitialValues({ price: item?.price, responsibility:typeOwner })
           }

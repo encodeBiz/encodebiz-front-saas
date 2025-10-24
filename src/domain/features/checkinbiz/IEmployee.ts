@@ -16,7 +16,11 @@ export interface IEmployee {
     enableRemoteWork?: boolean;
     nationalId: string;
     jobTitle?: string
-    branchId:Array<any>
+    branchId: Array<any>
+
+    price: 0,
+    responsibility: string,
+    job: string
 }
 
 // Consistency first: keys y niveles canonizados
@@ -52,5 +56,5 @@ export interface EmployeeEntityResponsibility {
     active: number;                        // soft-enable/disable
     id?: string,
 
-    branch?:ISucursal
+    branch?: ISucursal
 }

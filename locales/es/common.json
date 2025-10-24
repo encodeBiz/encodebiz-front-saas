@@ -136,6 +136,7 @@
       "nif": "Número de identificación fiscal",
       "inactive": "Inactivo",
       "personalData": "INFORMACIÓN PESONAL",
+      "configData": "CONFIGURACIÓN ADICIONAL",
       "aditionalData": "INFORMACIÓN ADICIONAL",
       "comercialEvent": "INFORMACIÓN DEL EVENTO",
       "brandEvent": "COLORES DE MARCA DEL EVENTO",

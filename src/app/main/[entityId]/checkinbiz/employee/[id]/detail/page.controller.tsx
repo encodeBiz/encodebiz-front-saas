@@ -400,9 +400,21 @@ export default function useEmployeeDetailController() {
 
   }, [currentEntity?.entity.id, user?.id])
 
+  const addResponsabiltyItem = () => {
+    if (entityResponsibilityList.length <= branchList.length) {
+      if (branchList.length === 1) addEntityResponsibility(branchList[0].id as string)
+      else {
+        openModal(CommonModalType.BRANCH_SELECTED)
+      }
+    } else {
+      showToast("Ya tienes todas las sucursales con responsabilidades asociadas", 'info')
+    }
+
+  }
+
   return {
     items, onSort, onRowsPerPageChange, onSuccess,
-    onDelete, deleting, topFilter,
+    onDelete, deleting, topFilter,addResponsabiltyItem,
     onNext, onBack, onSuccessCreate,
     columns, branchListEmployee, addEntityResponsibility,
     loading, filterParams, onResend, entityResponsibilityList,

@@ -18,7 +18,7 @@ import SucursalFromItem from "./SucursalFromItem/SucursalFromItem"
 
 export const Detail = ({ employee, onResend, onSuccess, children }: { employee: IEmployee, onSuccess: () => void, onResend: (v: IEmployee) => void, children: React.ReactNode }) => {
     const t = useTranslations()
-    const { onDelete, deleting, branchList, addEntityResponsibility, entityResponsibilityList, jobList } = useEmployeeDetailController()
+    const { onDelete, deleting, branchList, addEntityResponsibility, entityResponsibilityList, jobList, addResponsabiltyItem } = useEmployeeDetailController()
     const { openModal, open } = useCommonModal()
     const search = useSearchParams()
     const backAction = search.get('back')
@@ -99,7 +99,7 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
                             {t('core.label.sucursalAsigned')}
                         </Typography>
 
-                        <SassButton color="primary" variant="contained" onClick={() => openModal(CommonModalType.BRANCH_SELECTED)}>
+                        <SassButton color="primary" variant="contained" onClick={addResponsabiltyItem}>
                             {t('core.button.addBranch')}
                         </SassButton>
                     </Box>
@@ -139,7 +139,7 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
         {open.type === CommonModalType.FORM && <FormModal onSuccess={onSuccess} />}
         {open.type === CommonModalType.INFO && <FormModal onSuccess={onSuccess} />}
 
-    {open.type === CommonModalType.BRANCH_SELECTED && <BranchSelectorModal type={'selector'}
+        {open.type === CommonModalType.BRANCH_SELECTED && <BranchSelectorModal type={'selector'}
             branchList={branchList?.map(e => ({ name: e.name, branchId: e.id as string }))}
             onOKAction={(branchId) => {
                 addEntityResponsibility(branchId.branchId);
