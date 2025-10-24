@@ -14,11 +14,13 @@ import { DetailText } from "@/components/common/table/DetailText"
 import { ArrowBackOutlined } from "@mui/icons-material"
 import FormModal from "../../edit/FormModal"
 import BranchSelectorModal from "@/components/common/modals/BranchSelector"
-import SucursalFromItem from "./SucursalFromItem/SucursalFromItem"
+import HelpTabs from "@/components/features/dashboard/HelpTabs/HelpTabs"
+import { Branch } from "./Attedance/Branch"
+import { Attedance } from "./Attedance/Attedance"
 
 export const Detail = ({ employee, onResend, onSuccess, children }: { employee: IEmployee, onSuccess: () => void, onResend: (v: IEmployee) => void, children: React.ReactNode }) => {
     const t = useTranslations()
-    const { onDelete, deleting, branchList, addEntityResponsibility, entityResponsibilityList, jobList, addResponsabiltyItem } = useEmployeeDetailController()
+    const { onDelete, deleting, branchList, addEntityResponsibility } = useEmployeeDetailController()
     const { openModal, open } = useCommonModal()
     const search = useSearchParams()
     const backAction = search.get('back')
@@ -92,39 +94,21 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
                 </Paper></>}
             </Paper>
             <Divider />
-            <Paper elevation={0} sx={{ p: 3 }}>
-                <Box sx={{ mt: 2 }}>
-                    <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
-                        <Typography variant="subtitle1" gutterBottom>
-                            {t('core.label.sucursalAsigned')}
-                        </Typography>
 
-                        <SassButton color="primary" variant="contained" onClick={addResponsabiltyItem}>
-                            {t('core.button.addBranch')}
-                        </SassButton>
-                    </Box>
-                    <Box gap={2} display={'flex'} flexDirection={'column'} mt={2}>
-                        {entityResponsibilityList.sort((a, b) => a.active - b.active)?.map((e, i) => <SucursalFromItem key={i} item={e} jobList={jobList} />)}
-                    </Box>
+            <HelpTabs tabs={[
+                {
+                    id: '1',
+                    title: t(`core.label.sucursalAsigned`),
+                    tabContent: <Branch  employee ={employee} />
+                },
+                {
+                    id: '2',
+                    title: t("checklog.list"),
+                    tabContent: <Attedance>{children}</Attedance>
+                },
 
-                </Box>
-            </Paper>
+            ]} />
 
-            <Divider />
-
-
-
-
-            <Divider />
-
-            <Paper elevation={0} sx={{ p: 3 }}>
-                <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
-                    {t("checklog.list")}
-                </Typography>
-
-                {children}
-
-            </Paper>
         </CardContent>
 
         {

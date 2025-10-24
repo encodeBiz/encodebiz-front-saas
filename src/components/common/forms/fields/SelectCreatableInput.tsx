@@ -1,24 +1,17 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-// SelectCreatableInput.tsx
-import React, { useEffect } from 'react';
-import { TextFieldProps, FormHelperText, FormControl, Autocomplete, createFilterOptions, TextField } from '@mui/material';
+ 
+import React from 'react';
+import { TextFieldProps, FormHelperText, FormControl, Autocomplete, TextField } from '@mui/material';
 import { FieldProps, useField } from 'formik';
 
 
-interface CreatableOptions {
-  inputValue?: string;
-  label: string;
-  value?: number;
-}
-
+ 
 
 type SelectCreatableInputProps = FieldProps & TextFieldProps & {
-  options: Array<{ value: any; label: string }>;
+  options: Array<string>;
   onHandleChange: (value: any) => void
 
 };
-const filter = createFilterOptions<CreatableOptions>();
-
+ 
 const SelectCreatableInput: React.FC<SelectCreatableInputProps> = ({
   options,
   onHandleChange,
@@ -27,49 +20,27 @@ const SelectCreatableInput: React.FC<SelectCreatableInputProps> = ({
   const [field, meta, helper] = useField(props.name);
   const { touched, error } = meta
   const helperText = touched && error;
-  const [value, setValue] = React.useState<CreatableOptions | null>(options.find(e => e.label === field.value) ?? null);
-
-
-  useEffect(() => {
-    if (value !== field.value) {
-      helper.setValue(value?.label)
-      if (typeof onHandleChange == 'function') onHandleChange(value)
-    }
-  }, [value])
-
-
 
 
   return (<FormControl required={props.required} sx={{ width: '100%', textAlign: 'left' }} >
 
     <Autocomplete
-      value={value}
+      value={options.find(e => e.toLowerCase() === field.value?.toLowerCase()) ?? ''}
       clearIcon={false}
       onChange={(event, newValue) => {
-        if (typeof newValue === 'string') {
-          setValue({
-            label: newValue,
-          });
-        } else if (newValue && newValue.inputValue) {
-          // Create a new value from the user input
-          setValue({
-            label: newValue.inputValue,
-          });
-        } else {
-          setValue(newValue);
-        }
+
+        helper.setValue(newValue)
+        if (typeof onHandleChange == 'function') onHandleChange(newValue)
       }}
       filterOptions={(options, params) => {
-        const filtered = filter(options, params);
+
+        const filtered = options.filter(e => e?.toLowerCase().startsWith(params.inputValue?.toLowerCase()))
 
         const { inputValue } = params;
         // Suggest the creation of a new value
-        const isExisting = options.some((option) => inputValue === option.label);
+        const isExisting = options.some((option) => inputValue?.toLowerCase() === option?.toLowerCase());
         if (inputValue !== '' && !isExisting) {
-          filtered.push({
-            inputValue,
-            label: `Add "${inputValue}"`,
-          });
+          filtered.push(`Add "${inputValue}"`);
         }
 
         return filtered;
@@ -78,28 +49,28 @@ const SelectCreatableInput: React.FC<SelectCreatableInputProps> = ({
       clearOnBlur
       handleHomeEndKeys
       id="free-solo-with-text-demo"
-      options={options as Array<CreatableOptions>}
+      options={options as Array<string>}
       getOptionLabel={(option) => {
         // Value selected with enter, right from the input
         if (typeof option === 'string') {
           return option;
         }
         // Add "xxx" option created dynamically
-        if (option.inputValue) {
-          return option.inputValue;
+        if (option) {
+          return option;
         }
         // Regular option
-        return option.label;
+        return option;
       }}
       renderOption={(props, option) => {
         const { key, ...optionProps } = props;
         return (
           <li key={key} {...optionProps}>
-            {option.label}
+            {option}
           </li>
         );
       }}
-  
+
       freeSolo
       renderInput={(params) => (
         <TextField {...params} sx={{

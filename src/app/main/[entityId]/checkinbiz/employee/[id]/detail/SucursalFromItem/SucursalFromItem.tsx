@@ -42,6 +42,7 @@ export default function SucursalFromItem({ item }: { item: EmployeeEntityRespons
 
             </AccordionSummary>
             <AccordionDetails>
+                
                 <GenericForm<Partial<any>>
                     column={3}
                     initialValues={initialValues}

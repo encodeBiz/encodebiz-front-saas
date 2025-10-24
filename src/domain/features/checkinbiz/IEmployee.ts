@@ -57,4 +57,6 @@ export interface EmployeeEntityResponsibility {
     id?: string,
 
     branch?: ISucursal
+
+    totalItems?:number
 }

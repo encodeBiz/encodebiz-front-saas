@@ -18,7 +18,7 @@ interface SearchIndexInputProps {
   width?: string,
   value: any
   onChange: (value: any) => void,
-  options: Array<{ label: string, value: string }>
+  options: Array<{ label: string, value: any }>
 }
 
 

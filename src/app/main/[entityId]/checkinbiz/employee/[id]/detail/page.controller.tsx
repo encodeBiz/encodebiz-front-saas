@@ -8,7 +8,7 @@ import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { objectToArray } from "@/lib/common/String";
 import { EmployeeEntityResponsibility, IEmployee, Job } from "@/domain/features/checkinbiz/IEmployee";
-import { createEmployee, deleteEmployee, fetch2FAData, fetchEmployee, searchJobs, searchLogs } from "@/services/checkinbiz/employee.service";
+import { createEmployee, deleteEmployee, fetch2FAData, fetchEmployee, searchJobs, searchLogs, searchResponsability } from "@/services/checkinbiz/employee.service";
 import { IChecklog } from "@/domain/features/checkinbiz/IChecklog";
 import { Column } from "@/components/common/table/GenericTable";
 import { CommonModalType } from "@/contexts/commonModalContext";
@@ -16,7 +16,7 @@ import { useCommonModal } from "@/hooks/useCommonModal";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { format_date, rmNDay } from "@/lib/common/Date";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
-import { fetchSucursal, fetchSucursal as fetchSucursalData, search } from "@/services/checkinbiz/sucursal.service";
+import {   fetchSucursal, fetchSucursal as fetchSucursalData, search } from "@/services/checkinbiz/sucursal.service";
 import { Box } from "@mui/material";
 
 import { DateRangePicker } from "@/app/main/[entityId]/passinbiz/stats/components/filters/fields/DateRangeFilter";
@@ -61,8 +61,7 @@ export default function useEmployeeDetailController() {
     branchId: [],
     metadata: []
   });
-  const [branchListEmployee, setBranchListEmployee] = useState<Array<ISucursal>>()
-
+ 
   const fetchData = async () => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
@@ -75,16 +74,8 @@ export default function useEmployeeDetailController() {
         metadata: objectToArray(employee.metadata ?? {})
       })
 
-      const dataSucursalList: Array<ISucursal> = []
-
-
-      await Promise.all(
-        employee.branchId?.map(async (branchId) => {
-          dataSucursalList.push((await fetchSucursalData(currentEntity?.entity.id as string, branchId as string)))
-        })
-      );
-      setBranchListEmployee(dataSucursalList)
-      changeLoaderState({ show: false })
+   
+       changeLoaderState({ show: false })
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
@@ -392,13 +383,38 @@ export default function useEmployeeDetailController() {
     changeLoaderState({ show: false })
   }
 
+ 
+
+  const [responsabilityLimit, setResponsabilityLimit] = useState(5)
+  const [responsabilityTotal, setResponsabilityTotal] = useState(0)
+  const [responsabilityFilter, setResponsabilityFilter] = useState([
+    { field: 'active', operator: '==', value: 1 }
+  ])
+  const fetchResponsabilityList = async (limit: number = 5) => {
+    try {
+      setResponsabilityLimit(limit)
+      const data: Array<EmployeeEntityResponsibility> = await searchResponsability(currentEntity?.entity.id as string, initialValues.id as string, limit, responsabilityFilter)
+      setEntityResponsibilityListList(data)
+      if (data.length > 0) setResponsabilityTotal(data[0].totalItems as number)
+    } catch (error: any) {
+      changeLoaderState({ show: false })
+      showToast(error.message, 'error')
+    }
+    changeLoaderState({ show: false })
+  }
+
+  const loadMore = () => {
+    fetchResponsabilityList(responsabilityLimit + 5)
+  }
+
 
   useEffect(() => {
-    if (currentEntity?.entity.id) {
+    if (currentEntity?.entity.id && initialValues.id) {
       fetchJobList()
+      fetchResponsabilityList()
     }
 
-  }, [currentEntity?.entity.id, user?.id])
+  }, [currentEntity?.entity.id, user?.id, initialValues.id])
 
   const addResponsabiltyItem = () => {
     if (entityResponsibilityList.length <= branchList.length) {
@@ -414,10 +430,10 @@ export default function useEmployeeDetailController() {
 
   return {
     items, onSort, onRowsPerPageChange, onSuccess,
-    onDelete, deleting, topFilter,addResponsabiltyItem,
+    onDelete, deleting, topFilter, addResponsabiltyItem,
     onNext, onBack, onSuccessCreate,
-    columns, branchListEmployee, addEntityResponsibility,
-    loading, filterParams, onResend, entityResponsibilityList,
-    initialValues, rowAction, branchList, jobList
+    columns, addEntityResponsibility,
+    loading, filterParams, onResend, entityResponsibilityList, responsabilityFilter, setResponsabilityFilter,
+    initialValues, rowAction, branchList, jobList, loadMore, responsabilityTotal, responsabilityLimit
   }
 }

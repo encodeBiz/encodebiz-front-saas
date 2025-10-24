@@ -73,6 +73,22 @@ export const searchJobs = async (entityId: string): Promise<Job[]> => {
   return result;
 }
 
+export const searchResponsability = async (entityId: string, employeeId: string, limit: number, filters: Array<{ field: string, operator: string, value: any }>=[]): Promise<EmployeeEntityResponsibility[]> => {
+  const result: EmployeeEntityResponsibility[] = await searchFirestore({
+    ...{
+      limit: limit,
+      orderBy: 'active',
+      orderDirection: "asc",
+      filters: [...filters, {
+        field: 'employeeId', operator: '==', value: employeeId
+      }]
+    } as any,
+    collection: `${collection.ENTITIES}/${entityId}/${collection.RESPONSABILITY}`,
+  });
+
+  return result;
+}
+
 /**
    * Search employee
    *

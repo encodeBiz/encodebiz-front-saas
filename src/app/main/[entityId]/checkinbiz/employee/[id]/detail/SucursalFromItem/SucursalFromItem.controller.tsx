@@ -24,16 +24,16 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
   const { currentLocale } = useAppLocale()
   const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
-  const [active, setActive] = useState(item.active??1)
-  const [typeOwner, setTypeOwner] = useState(item.responsibility??'worker')
+  const [active, setActive] = useState(item.active ?? 1)
+  const [typeOwner, setTypeOwner] = useState(item.responsibility ?? 'worker')
+  const [jobName, setJobName] = useState(item?.job?.job ?? '')
+
 
   const [initialValues, setInitialValues] = useState<Partial<any>>({
-    job: item?.job?.job ?? '',
+    job: item?.job?.job,
     price: item?.job?.price ?? 0,
     responsibility: item?.responsibility ?? '',
     active: item?.active ?? 1,
-
-
   });
 
   const validationSchema = Yup.object().shape({
@@ -74,6 +74,8 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
   const fetchJobList = async () => {
     try {
       setJobList(await searchJobs(currentEntity?.entity.id as string))
+
+
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
@@ -114,14 +116,11 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
       label: t('core.label.jobTitle'),
       type: 'text',
       required: false,
-      options: [...jobList.map(e => ({ label: e.job, value: e.id }))],
+      options: [...jobList.map(e => e.job.toUpperCase())],
       component: SelectCreatableInput,
       extraProps: {
-        onHandleChange: (data: { label: string, value: any }) => {
-           if (jobList.find(e => e.id === data?.value)) {
-            const item = jobList.find(e => e.id === data.value)
-            setInitialValues({ price: item?.price, responsibility:typeOwner })
-          }
+        onHandleChange: (data: string) => {
+          setJobName(data)
         },
       },
     },
@@ -136,6 +135,16 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
     },
 
   ]
+
+  useEffect(() => {
+    if (jobName) {
+      const item = jobList.find(e => e.job?.toLowerCase() === jobName?.toLowerCase())
+      if (item) {
+        setInitialValues({ price: item?.price, responsibility: typeOwner, job: jobName })
+      }
+    }
+  }, [jobName])
+
 
   return { fields, initialValues, validationSchema, handleSubmit, active, setActive }
 }
