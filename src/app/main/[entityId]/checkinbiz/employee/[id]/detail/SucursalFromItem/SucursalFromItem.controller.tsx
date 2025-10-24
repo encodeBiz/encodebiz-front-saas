@@ -24,9 +24,9 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
   const { currentLocale } = useAppLocale()
   const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
-  const [active, setActive] = useState(item.active)
-  const [typeOwner, setTypeOwner] = useState(item.responsibility)
-  
+  const [active, setActive] = useState(item.active??1)
+  const [typeOwner, setTypeOwner] = useState(item.responsibility??'worker')
+
   const [initialValues, setInitialValues] = useState<Partial<any>>({
     job: item?.job?.job ?? '',
     price: item?.job?.price ?? 0,
@@ -103,9 +103,8 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
       ],
       component: SelectInput,
       extraProps: {
-        onHandleChange: (data: { label: string, value: any }) => {
-          console.log(data);
-          setTypeOwner(data.value)
+        onHandleChange: (data: any) => {
+          setTypeOwner(data)
         },
       },
     },

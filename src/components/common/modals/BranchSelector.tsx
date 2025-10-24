@@ -56,9 +56,10 @@ const BranchSelectorModal = ({ branchList, onOKAction, type = 'item' }: BranchSe
                     disablePortal
                     disableClearable
                     options={branchList}
+                    getOptionLabel={(option) => option.name}
                     sx={{ width: '100%' }}
                     onChange={(event: any, newValue: { name: string, branchId: string } | null) => {
-                        setBranchSelected(newValue as { name: string, branchId: string } )
+                        setBranchSelected(newValue as { name: string, branchId: string })
                     }}
 
                     renderInput={(params) => <TextField {...params} label={t('checking.titleBranch')} />}
