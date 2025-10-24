@@ -179,7 +179,7 @@ const GenericForm = <T extends Record<string, any>>({
       >
         {(formikProps: FormikProps<T>) => (
           <Form noValidate>
-            {/*JSON.stringify(formikProps.errors)*/}
+            {JSON.stringify(formikProps.errors)}
 
             {activateWatchStatus && <FormStatusWatcher />}
             <Grid container spacing={3}>

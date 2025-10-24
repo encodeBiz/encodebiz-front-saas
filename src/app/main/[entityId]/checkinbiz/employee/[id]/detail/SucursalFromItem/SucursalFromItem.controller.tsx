@@ -118,10 +118,9 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
       component: SelectCreatableInput,
       extraProps: {
         onHandleChange: (data: { label: string, value: any }) => {
-          console.log(data);
-          if (jobList.find(e => e.id === data.value)) {
+           if (jobList.find(e => e.id === data.value)) {
             const item = jobList.find(e => e.id === data.value)
-            setInitialValues({ price: item?.price, typeOwner })
+            setInitialValues({ price: item?.price, responsibility:typeOwner })
           }
         },
       },
