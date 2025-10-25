@@ -651,16 +651,15 @@
     "import": "Importar",
     "detailSucursal": "Detalles de empleado",
     "description": "Rellene los campos para registrar el empleado",
-    "maxSelectionBranch":"Ya tienes todas las sucursales con responsabilidades asociadas",
-    "advise":"Este empleado no tiene configurado responsabilidades en las sucursales existentes, esto implicar que no va a poder utilizar correctamente la herramienta de registro de asistencia.",
+    "maxSelectionBranch": "Ya tienes todas las sucursales con responsabilidades asociadas",
+    "advise": "Este empleado no tiene configurado responsabilidades en las sucursales existentes, esto implicar que no va a poder utilizar correctamente la herramienta de registro de asistencia.",
     "deleteConfirmModalTitle": "Eliminar empleado",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el empleado",
-   "deleteConfirmModalTitleResponsability": "Eliminar sucursal",
+    "deleteConfirmModalTitleResponsability": "Eliminar sucursal",
     "deleteConfirmModalTitle2Responsability": "Esta acción no se puede deshacer. Eliminará permanentemente la sucursal",
- 
+    "branchUsed": "La entidad seleccionada ya tiene una configuración de responsabilidad asignadada",
     "breakHelp": "Si esta opción no esta habilitada no se mostrará la accion de marcar el tiempo de descanso en la herramienta y se tomara por defecto con configurado. Por defecto el tiempo de descanso será de 60 minutos.",
     "dayTimeHelp": "Por defecto el horario de marcar el inicio y fin de jornada seria de 8:00 a las 17:00, esta configuración se puede cambiar desde los ajustes, pero sino se configura se tomará como referencia."
- 
   },
   "checklog": {
     "title": "Registros de asistencia",

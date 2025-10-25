@@ -36,6 +36,8 @@ export default function useBranchDetailController(employee: IEmployee) {
 
     const [entityResponsibilityList, setEntityResponsibilityListList] = useState<Array<EmployeeEntityResponsibility>>([])
     const addEntityResponsibility = async (branchId: string) => {
+        const found = entityResponsibilityList.filter(e=>((e.scope as { scope: 'branch'; entityId: string; branchId: string })?.branchId as string) ===branchId).length > 0
+        if(!found){
         setEntityResponsibilityListList([...entityResponsibilityList, {
             employeeId: employee.id as string,
             responsibility: 'worker',
@@ -49,6 +51,9 @@ export default function useBranchDetailController(employee: IEmployee) {
             active: 1,
             branch: await fetchSucursal(currentEntity?.entity.id as string, branchId)
         }])
+        }else{
+            showToast(t('employee.branchUsed'), 'info')
+        }
     }
 
 
@@ -97,7 +102,6 @@ export default function useBranchDetailController(employee: IEmployee) {
     }, [currentEntity?.entity.id, user?.id, employee.id])
 
     const addResponsabiltyItem = () => {
-
 
         if (entityResponsibilityList.length < branchList.length) {
             if (branchList.length === 1) addEntityResponsibility(branchList[0].id as string)
