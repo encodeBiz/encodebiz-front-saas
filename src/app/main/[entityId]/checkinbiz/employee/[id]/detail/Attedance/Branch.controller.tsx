@@ -135,6 +135,7 @@ export default function useBranchDetailController(employee: IEmployee) {
             setDeleting(false)
             showToast(t('core.feedback.success'), 'success');
             closeModal(CommonModalType.DELETE)
+            onEnd()
         } catch (error: any) {
             setDeleting(false)
             showToast(error.message, 'error')
