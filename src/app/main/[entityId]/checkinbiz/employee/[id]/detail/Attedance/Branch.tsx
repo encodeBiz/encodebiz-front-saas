@@ -6,11 +6,15 @@ import SearchFilter from "@/components/common/table/filters/SearchFilter"
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter"
 import useBranchDetailController from "./Branch.controller"
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee"
+import { ISucursal } from "@/domain/features/checkinbiz/ISucursal"
+import ConfirmModal from "@/components/common/modals/ConfirmModal"
+import { useCommonModal } from "@/hooks/useCommonModal"
+import { CommonModalType } from "@/contexts/commonModalContext"
 
 export const Branch = ({ employee }: { employee: IEmployee }) => {
     const t = useTranslations()
-    const { entityResponsibilityList, jobList, branchList, addResponsabiltyItem, responsabilityTotal, responsabilityFilter, setResponsabilityFilter, responsabilityLimit, loadMore } = useBranchDetailController(employee)
-
+    const { deleting, onDelete, entityResponsibilityList, jobList, branchList, addResponsabiltyItem, responsabilityTotal, responsabilityFilter, setResponsabilityFilter, responsabilityLimit, loadMore } = useBranchDetailController(employee)
+    const {  open } = useCommonModal()
 
 
     return <Paper elevation={0} sx={{ p: 3 }}>
@@ -45,7 +49,7 @@ export const Branch = ({ employee }: { employee: IEmployee }) => {
                             setResponsabilityFilter([...responsabilityFilter.filter(e => e.field !== 'branchId')])
 
                     }}
-                    items={branchList.map(e => ({ value: e.id, label: e.name }))}
+                    items={branchList.map((e: ISucursal) => ({ value: e.id, label: e.name }))}
                 />}
             </Box>
             <Box gap={1.5} display={'flex'} flexDirection={'column'}>
@@ -55,6 +59,13 @@ export const Branch = ({ employee }: { employee: IEmployee }) => {
 
 
         </Box>
+
+        {open.type === CommonModalType.DELETE && open.args.responsability && <ConfirmModal
+            isLoading={deleting}
+            title={t('employee.deleteConfirmModalTitleResponsability')}
+            description={t('employee.deleteConfirmModalTitle2Responsability')}
+            onOKAction={(args: { id: string }) => onDelete(args.id)}
+        />}
     </Paper>
 
 }

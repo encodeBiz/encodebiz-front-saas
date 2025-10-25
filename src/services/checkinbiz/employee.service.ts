@@ -73,7 +73,7 @@ export const searchJobs = async (entityId: string): Promise<Job[]> => {
   return result;
 }
 
-export const searchResponsability = async (entityId: string, employeeId: string, limit: number, filters: Array<{ field: string, operator: string, value: any }>=[]): Promise<EmployeeEntityResponsibility[]> => {
+export const searchResponsability = async (entityId: string, employeeId: string, limit: number, filters: Array<{ field: string, operator: string, value: any }> = []): Promise<EmployeeEntityResponsibility[]> => {
   const result: EmployeeEntityResponsibility[] = await searchFirestore({
     ...{
       limit: limit,
@@ -189,7 +189,7 @@ export async function updateEmployee(data: Partial<IEmployee>, token: string, lo
   }
 }
 
-export async function handleRespnsability(data: Partial<EmployeeEntityResponsibility>, token: string, locale: any = 'es') {
+export async function handleRespnsability(data: Partial<EmployeeEntityResponsibility>, token: string, locale: any = 'es', operation: 'post'|'put'|'delete') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -201,7 +201,7 @@ export async function handleRespnsability(data: Partial<EmployeeEntityResponsibi
           locale
         },
       });
-      const response: any = await httpClientFetchInstance.post(
+      const response: any = await httpClientFetchInstance[operation](
         process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_RESPONSABILITY_HANDLER as string,
         {
           ...data,

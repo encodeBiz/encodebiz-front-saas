@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useLayout } from "@/hooks/useLayout";
-import { searchJobs, handleRespnsability } from "@/services/checkinbiz/employee.service";
+import { searchJobs, handleRespnsability, addJobs } from "@/services/checkinbiz/employee.service";
 import { useAppLocale } from "@/hooks/useAppLocale";
 import { EmployeeEntityResponsibility, Job } from "@/domain/features/checkinbiz/IEmployee";
 import TextInput from "@/components/common/forms/fields/TextInput";
@@ -57,7 +57,8 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
         active: active,
         entityId: currentEntity?.entity.id
       }
-      await handleRespnsability(data, token, currentLocale)
+      await handleRespnsability(data, token, currentLocale, !item.id ? 'post' : 'put')
+      addJobs(currentEntity?.entity.id as string, values.job, values.price)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
 

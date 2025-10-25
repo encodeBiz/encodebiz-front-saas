@@ -5,23 +5,25 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useLayout } from "@/hooks/useLayout";
 import { EmployeeEntityResponsibility, IEmployee, Job } from "@/domain/features/checkinbiz/IEmployee";
-import { searchJobs, searchResponsability } from "@/services/checkinbiz/employee.service";
+import { handleRespnsability, searchJobs, searchResponsability } from "@/services/checkinbiz/employee.service";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 import { fetchSucursal, search } from "@/services/checkinbiz/sucursal.service";
 import { useTranslations } from 'next-intl';
+import { useAppLocale } from '@/hooks/useAppLocale';
 
 export default function useBranchDetailController(employee: IEmployee) {
     const { showToast } = useToast()
     const { user } = useAuth()
     const { currentEntity } = useEntity()
-    const { openModal } = useCommonModal()
+    const { openModal, closeModal } = useCommonModal()
     const t = useTranslations()
     const { changeLoaderState } = useLayout()
-
-
+    const { currentLocale } = useAppLocale()
+    const { token } = useAuth()
     const [branchList, setBranchList] = useState<Array<ISucursal>>([])
+ 
     const fetchSucursalList = async () => {
         setBranchList(await search(currentEntity?.entity.id as string, { ...{} as any, limit: 100 }))
     }
@@ -95,9 +97,7 @@ export default function useBranchDetailController(employee: IEmployee) {
     }, [currentEntity?.entity.id, user?.id, employee.id])
 
     const addResponsabiltyItem = () => {
-        
-        console.log(entityResponsibilityList);        
-        console.log(branchList)
+
 
         if (entityResponsibilityList.length < branchList.length) {
             if (branchList.length === 1) addEntityResponsibility(branchList[0].id as string)
@@ -110,9 +110,27 @@ export default function useBranchDetailController(employee: IEmployee) {
 
     }
 
+    const [deleting, setDeleting] = useState(false)
+
+    const onDelete = async (id: string) => {
+        try {
+            setDeleting(true)
+            const data: any = {
+                id
+            }
+            await handleRespnsability(data, token, currentLocale, 'delete')
+            setDeleting(false)
+            showToast(t('core.feedback.success'), 'success');
+             closeModal(CommonModalType.DELETE)
+        } catch (error: any) {
+            setDeleting(false)
+            showToast(error.message, 'error')
+        }
+    };
+
     return {
-        addResponsabiltyItem,
-        addEntityResponsibility,
+        addResponsabiltyItem, deleting,
+        addEntityResponsibility, onDelete,
         entityResponsibilityList, responsabilityFilter, setResponsabilityFilter,
         branchList, jobList, loadMore, responsabilityTotal, responsabilityLimit
     }
