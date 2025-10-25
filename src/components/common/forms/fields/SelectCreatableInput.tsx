@@ -40,7 +40,7 @@ const SelectCreatableInput: React.FC<SelectCreatableInputProps> = ({
         // Suggest the creation of a new value
         const isExisting = options.some((option) => inputValue?.toLowerCase() === option?.toLowerCase());
         if (inputValue !== '' && !isExisting) {
-          filtered.push(`Add "${inputValue}"`);
+          filtered.push(`${inputValue}`);
         }
 
         return filtered;
