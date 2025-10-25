@@ -48,8 +48,8 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
       const data: any = {
         id: item.id,
         employeeId: item.employeeId,
-        level: values.responsibility,
-        scope: 'branch',
+        responsibility: values.responsibility,
+        scope: item.scope,
         job: {
           job: values.job,
           price: values.price,
