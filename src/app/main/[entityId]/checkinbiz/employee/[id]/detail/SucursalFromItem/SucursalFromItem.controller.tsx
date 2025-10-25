@@ -46,6 +46,7 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const data: any = {
+        id: item.id,
         employeeId: item.employeeId,
         level: values.responsibility,
         scope: 'branch',

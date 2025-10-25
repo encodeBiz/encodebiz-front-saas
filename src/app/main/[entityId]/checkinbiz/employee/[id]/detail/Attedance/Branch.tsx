@@ -60,7 +60,7 @@ export const Branch = ({ employee }: { employee: IEmployee }) => {
 
         </Box>
 
-        {open.type === CommonModalType.DELETE && open.args.responsability && <ConfirmModal
+        {open.type === CommonModalType.DELETE && open?.args?.responsability && <ConfirmModal
             isLoading={deleting}
             title={t('employee.deleteConfirmModalTitleResponsability')}
             description={t('employee.deleteConfirmModalTitle2Responsability')}

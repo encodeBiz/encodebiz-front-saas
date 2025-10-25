@@ -32,6 +32,7 @@ export default function SucursalFromItem({ item }: { item: EmployeeEntityRespons
                 expandIcon={<ExpandMoreOutlined />}
                 aria-controls="panel1-content"
                 id="panel1-header"
+                
                 sx={{ height: 56 }}
             >
                 <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} width={'100%'}>
@@ -39,11 +40,11 @@ export default function SucursalFromItem({ item }: { item: EmployeeEntityRespons
                         <Typography component="span" textTransform={'uppercase'}>{currentEntity?.entity?.name}</Typography>
                         <Typography color='textSecondary' component="span" >{item.branch?.name}</Typography>
                     </Box>
-                    <Box display={'flex'} flexDirection={'column'}>
+                    <Box display={'flex'} flexDirection={'row'} gap={2} mr={2}>
                         <FormGroup>
                             <FormControlLabel control={<Switch checked={active == 1} onChange={(e) => setActive(e.target.checked ? 1 : 0)} />} label={t('core.label.active')} />
                         </FormGroup>
-                        <IconButton onClick={() => openModal(CommonModalType.DELETE,{id:item.id, responsability:true})}><TrashIcon /></IconButton>
+                        <IconButton color='error' onClick={() => openModal(CommonModalType.DELETE,{id:item.id, responsability:true})}><TrashIcon /></IconButton>
 
                     </Box>
                 </Box>

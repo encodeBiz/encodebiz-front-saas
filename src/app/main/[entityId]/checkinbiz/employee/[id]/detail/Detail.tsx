@@ -112,7 +112,7 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
         </CardContent>
 
         {
-            open.type === CommonModalType.DELETE && <ConfirmModal
+            open.type === CommonModalType.DELETE  && !open?.args?.responsability && <ConfirmModal
                 isLoading={deleting}
                 title={t('employee.deleteConfirmModalTitle')}
                 description={t('employee.deleteConfirmModalTitle2')}
