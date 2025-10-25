@@ -15,7 +15,7 @@ import SelectInput from "@/components/common/forms/fields/SelectInput";
 import SelectCreatableInput from "@/components/common/forms/fields/SelectCreatableInput";
 
 
-export default function useSucursalFromItemController(item: EmployeeEntityResponsibility) {
+export default function useSucursalFromItemController(item: EmployeeEntityResponsibility, onEnd:()=>void) {
   const t = useTranslations();
   const { showToast } = useToast()
   const { token, user } = useAuth()
@@ -62,6 +62,7 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
       addJobs(currentEntity?.entity.id as string, values.job, values.price)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
+      if(typeof onEnd == 'function') onEnd()
 
     } catch (error: any) {
       changeLoaderState({ show: false })

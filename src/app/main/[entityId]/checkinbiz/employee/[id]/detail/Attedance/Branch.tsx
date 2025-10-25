@@ -1,5 +1,5 @@
 import { SassButton } from "@/components/common/buttons/GenericButton"
-import { Box, Typography, Paper, Alert } from "@mui/material"
+import { Box, Typography, Paper, Alert, CircularProgress } from "@mui/material"
 import { useTranslations } from "next-intl"
 import SucursalFromItem from "../SucursalFromItem/SucursalFromItem"
 import SearchFilter from "@/components/common/table/filters/SearchFilter"
@@ -14,16 +14,19 @@ import BranchSelectorModal from "@/components/common/modals/BranchSelector"
 
 export const Branch = ({ employee }: { employee: IEmployee }) => {
     const t = useTranslations()
-    const { deleting, onDelete, entityResponsibilityList, jobList, branchList,addEntityResponsibility, addResponsabiltyItem, responsabilityTotal, responsabilityFilter, setResponsabilityFilter, responsabilityLimit, loadMore } = useBranchDetailController(employee)
-    const {  open } = useCommonModal()
+    const { deleting, onDelete, onFilter, pending, entityResponsibilityList, jobList, onEnd, branchList, addEntityResponsibility, addResponsabiltyItem, responsabilityTotal, responsabilityFilter, responsabilityLimit, loadMore } = useBranchDetailController(employee)
+    const { open } = useCommonModal()
 
 
     return <Paper elevation={0} sx={{ p: 3 }}>
         <Box gap={2} display={'flex'} flexDirection={'column'} mt={2}>
             <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
-                <Typography variant="subtitle1" gutterBottom textTransform={'uppercase'}>
-                    {t('core.label.sucursalAsigned')}
-                </Typography>
+                <Box display={'flex'} justifyContent={'center'} gap={1} alignItems={'center'}>
+                    <Typography variant="subtitle1" gutterBottom textTransform={'uppercase'}>
+                        {t('core.label.sucursalAsigned')}
+                    </Typography>
+                    {pending && <CircularProgress size={20} color="inherit" />}
+                </Box>
 
                 <SassButton color="primary" variant="contained" onClick={addResponsabiltyItem}>
                     {t('core.button.addBranch')}
@@ -34,7 +37,7 @@ export const Branch = ({ employee }: { employee: IEmployee }) => {
                 <SearchFilter
                     label={t('core.label.status')}
                     value={responsabilityFilter.find(e => e.field === 'active')?.value}
-                    onChange={(value: any) => setResponsabilityFilter([...responsabilityFilter, { field: 'active', operator: '==', value }])}
+                    onChange={(value: any) => onFilter([...responsabilityFilter, { field: 'active', operator: '==', value }])}
                     options={[{ value: 1, label: t('core.label.active') }, { value: 0, label: t('core.label.inactive') }]}
                 />
 
@@ -44,19 +47,16 @@ export const Branch = ({ employee }: { employee: IEmployee }) => {
                     defaultValue={'none'}
                     value={responsabilityFilter.find(e => e.field === 'active')?.value ?? 'none'}
                     onChange={(value: any) => {
-                        if (value)
-                            setResponsabilityFilter([...responsabilityFilter, { field: 'branchId', operator: '==', value }])
-                        else
-                            setResponsabilityFilter([...responsabilityFilter.filter(e => e.field !== 'branchId')])
+                        if (value) onFilter([...responsabilityFilter, { field: 'branchId', operator: '==', value }])
+                        else onFilter([...responsabilityFilter.filter(e => e.field !== 'branchId')])
 
                     }}
                     items={branchList.map((e: ISucursal) => ({ value: e.id, label: e.name }))}
                 />}
             </Box>
             <Box gap={1.5} display={'flex'} flexDirection={'column'}>
-                {entityResponsibilityList.sort((a, b) => a.active - b.active)?.map((e, i) => <SucursalFromItem key={i} item={e} jobList={jobList} />)}
-                  
-                {entityResponsibilityList.length==0 && <Box gap={1.5} display={'flex'} justifyContent={'center'} alignItems={'center'} flexDirection={'column'} p={5}>  <Alert severity="warning">{t('employee.advise')}</Alert></Box>}
+                {entityResponsibilityList.sort((a, b) => a.active - b.active)?.map((e, i) => <SucursalFromItem key={i} item={e} jobList={jobList} onEnd={onEnd} />)}
+                {entityResponsibilityList.length == 0 && <Box gap={1.5} display={'flex'} justifyContent={'center'} alignItems={'center'} flexDirection={'column'} p={5}>  <Alert severity="warning">{t('employee.advise')}</Alert></Box>}
             </Box>
             {responsabilityLimit <= responsabilityTotal && <SassButton variant='outlined' onClick={() => loadMore()} >{t('core.label.moreload')}</SassButton>}
 
@@ -70,7 +70,7 @@ export const Branch = ({ employee }: { employee: IEmployee }) => {
             onOKAction={(args: { id: string }) => onDelete(args.id)}
         />}
 
-         {open.type === CommonModalType.BRANCH_SELECTED && <BranchSelectorModal type={'selector'}
+        {open.type === CommonModalType.BRANCH_SELECTED && <BranchSelectorModal type={'selector'}
             branchList={branchList?.map(e => ({ name: e.name, branchId: e.id as string }))}
             onOKAction={(branchId) => {
                 addEntityResponsibility(branchId.branchId);

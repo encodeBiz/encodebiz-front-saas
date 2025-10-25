@@ -13,8 +13,8 @@ import { CommonModalType } from '@/contexts/commonModalContext';
 
 
 
-export default function SucursalFromItem({ item }: { item: EmployeeEntityResponsibility, jobList: Array<Job> }) {
-    const { fields, initialValues, validationSchema, handleSubmit, active, setActive } = useSucursalFromItemController(item);
+export default function SucursalFromItem({ item, onEnd }: { item: EmployeeEntityResponsibility, jobList: Array<Job>, onEnd:()=>void }) {
+    const { fields, initialValues, validationSchema, handleSubmit, active, setActive } = useSucursalFromItemController(item, onEnd);
     const t = useTranslations();
     const { currentEntity } = useEntity()
 
