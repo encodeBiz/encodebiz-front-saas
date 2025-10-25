@@ -13,14 +13,13 @@ import { useSearchParams } from "next/navigation"
 import { DetailText } from "@/components/common/table/DetailText"
 import { ArrowBackOutlined } from "@mui/icons-material"
 import FormModal from "../../edit/FormModal"
-import BranchSelectorModal from "@/components/common/modals/BranchSelector"
 import HelpTabs from "@/components/features/dashboard/HelpTabs/HelpTabs"
 import { Branch } from "./Attedance/Branch"
 import { Attedance } from "./Attedance/Attedance"
 
 export const Detail = ({ employee, onResend, onSuccess, children }: { employee: IEmployee, onSuccess: () => void, onResend: (v: IEmployee) => void, children: React.ReactNode }) => {
     const t = useTranslations()
-    const { onDelete, deleting, branchList, addEntityResponsibility } = useEmployeeDetailController()
+    const { onDelete, deleting } = useEmployeeDetailController()
     const { openModal, open } = useCommonModal()
     const search = useSearchParams()
     const backAction = search.get('back')
@@ -99,7 +98,7 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
                 {
                     id: '1',
                     title: t(`core.label.sucursalAsigned`),
-                    tabContent: <Branch  employee ={employee} />
+                    tabContent: <Branch employee={employee} />
                 },
                 {
                     id: '2',
@@ -112,7 +111,7 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
         </CardContent>
 
         {
-            open.type === CommonModalType.DELETE  && !open?.args?.responsability && <ConfirmModal
+            open.type === CommonModalType.DELETE && !open?.args?.responsability && <ConfirmModal
                 isLoading={deleting}
                 title={t('employee.deleteConfirmModalTitle')}
                 description={t('employee.deleteConfirmModalTitle2')}
@@ -123,12 +122,7 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
         {open.type === CommonModalType.FORM && <FormModal onSuccess={onSuccess} />}
         {open.type === CommonModalType.INFO && <FormModal onSuccess={onSuccess} />}
 
-        {open.type === CommonModalType.BRANCH_SELECTED && <BranchSelectorModal type={'selector'}
-            branchList={branchList?.map(e => ({ name: e.name, branchId: e.id as string }))}
-            onOKAction={(branchId) => {
-                addEntityResponsibility(branchId.branchId);
-            }}
-        />}
+
 
     </Card >
 

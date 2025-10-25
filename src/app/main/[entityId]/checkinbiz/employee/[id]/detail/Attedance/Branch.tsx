@@ -1,5 +1,5 @@
 import { SassButton } from "@/components/common/buttons/GenericButton"
-import { Box, Typography, Paper } from "@mui/material"
+import { Box, Typography, Paper, Alert } from "@mui/material"
 import { useTranslations } from "next-intl"
 import SucursalFromItem from "../SucursalFromItem/SucursalFromItem"
 import SearchFilter from "@/components/common/table/filters/SearchFilter"
@@ -10,17 +10,18 @@ import { ISucursal } from "@/domain/features/checkinbiz/ISucursal"
 import ConfirmModal from "@/components/common/modals/ConfirmModal"
 import { useCommonModal } from "@/hooks/useCommonModal"
 import { CommonModalType } from "@/contexts/commonModalContext"
+import BranchSelectorModal from "@/components/common/modals/BranchSelector"
 
 export const Branch = ({ employee }: { employee: IEmployee }) => {
     const t = useTranslations()
-    const { deleting, onDelete, entityResponsibilityList, jobList, branchList, addResponsabiltyItem, responsabilityTotal, responsabilityFilter, setResponsabilityFilter, responsabilityLimit, loadMore } = useBranchDetailController(employee)
+    const { deleting, onDelete, entityResponsibilityList, jobList, branchList,addEntityResponsibility, addResponsabiltyItem, responsabilityTotal, responsabilityFilter, setResponsabilityFilter, responsabilityLimit, loadMore } = useBranchDetailController(employee)
     const {  open } = useCommonModal()
 
 
     return <Paper elevation={0} sx={{ p: 3 }}>
         <Box gap={2} display={'flex'} flexDirection={'column'} mt={2}>
             <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
-                <Typography variant="subtitle1" gutterBottom>
+                <Typography variant="subtitle1" gutterBottom textTransform={'uppercase'}>
                     {t('core.label.sucursalAsigned')}
                 </Typography>
 
@@ -54,6 +55,8 @@ export const Branch = ({ employee }: { employee: IEmployee }) => {
             </Box>
             <Box gap={1.5} display={'flex'} flexDirection={'column'}>
                 {entityResponsibilityList.sort((a, b) => a.active - b.active)?.map((e, i) => <SucursalFromItem key={i} item={e} jobList={jobList} />)}
+                  
+                {entityResponsibilityList.length==0 && <Box gap={1.5} display={'flex'} justifyContent={'center'} alignItems={'center'} flexDirection={'column'} p={5}>  <Alert severity="warning">{t('employee.advise')}</Alert></Box>}
             </Box>
             {responsabilityLimit <= responsabilityTotal && <SassButton variant='outlined' onClick={() => loadMore()} >{t('core.label.moreload')}</SassButton>}
 
@@ -65,6 +68,13 @@ export const Branch = ({ employee }: { employee: IEmployee }) => {
             title={t('employee.deleteConfirmModalTitleResponsability')}
             description={t('employee.deleteConfirmModalTitle2Responsability')}
             onOKAction={(args: { id: string }) => onDelete(args.id)}
+        />}
+
+         {open.type === CommonModalType.BRANCH_SELECTED && <BranchSelectorModal type={'selector'}
+            branchList={branchList?.map(e => ({ name: e.name, branchId: e.id as string }))}
+            onOKAction={(branchId) => {
+                addEntityResponsibility(branchId.branchId);
+            }}
         />}
     </Paper>
 
