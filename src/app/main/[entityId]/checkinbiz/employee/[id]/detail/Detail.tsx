@@ -94,7 +94,7 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
             </Paper>
             <Divider />
 
-            <HelpTabs tabs={[
+            <HelpTabs small tabs={[
                 {
                     id: '1',
                     title: t(`core.label.sucursalAsigned`),
