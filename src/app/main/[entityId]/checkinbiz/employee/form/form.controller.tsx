@@ -11,39 +11,40 @@ import { useEntity } from "@/hooks/useEntity";
 import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { ArrayToObject, objectToArray } from "@/lib/common/String";
-import { createEmployee, fetchEmployee, updateEmployee } from "@/services/checkinbiz/employee.service";
+import { addJobs, createEmployee, fetchEmployee, updateEmployee } from "@/services/checkinbiz/employee.service";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
-  import ToggleInput from "@/components/common/forms/fields/ToggleInput";
+import ToggleInput from "@/components/common/forms/fields/ToggleInput";
 import PhoneNumberInput from "@/components/common/forms/fields/PhoneNumberInput";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useAppLocale } from "@/hooks/useAppLocale";
-
+ 
+ 
 
 export default function useFormController(isFromModal: boolean, onSuccess?: () => void) {
   const t = useTranslations();
   const { showToast } = useToast()
   const { navivateTo } = useLayout()
   const { token, user } = useAuth()
-  const { open, closeModal } =  useCommonModal()
-
+  const { open, closeModal } = useCommonModal()
+ 
   const { id } = useParams<{ id: string }>()
   const itemId = isFromModal ? open.args?.id : id
   const { currentLocale } = useAppLocale()
   const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
   const [fields, setFields] = useState<Array<any>>([])
-    
-  const [initialValues, setInitialValues] = useState<Partial<IEmployee>>({
+   const [initialValues, setInitialValues] = useState<Partial<IEmployee>>({
     "fullName": '',
     email: '',
     phone: '',
     role: "internal",
     status: 'active',
     metadata: [],
-    enableRemoteWork: false
+    enableRemoteWork: false,
+ 
   });
 
   const validationSchema = Yup.object().shape({
@@ -58,8 +59,12 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     fullName: requiredRule(t),
     phone: requiredRule(t),
     email: emailRule(t),
+ 
 
   });
+
+ 
+
 
   const handleSubmit = async (values: Partial<IEmployee>, callback?: () => void) => {
     try {
@@ -72,11 +77,16 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         entityId: currentEntity?.entity.id
       }
 
-
+      let response
       if (itemId)
         await updateEmployee(data, token, currentLocale)
-      else
-        await createEmployee(data, token, currentLocale)
+      else {
+        response = await createEmployee(data, token, currentLocale)
+        
+      }
+
+      addJobs(currentEntity?.entity.id as string, data.job as string, data.price as number)
+
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
 
@@ -89,7 +99,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         if (itemId)
           navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${itemId}/detail`)
         else
-          navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee`)
+          navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/employee/${response.employee.id}/detail`)
       }
     } catch (error: any) {
       changeLoaderState({ show: false })
@@ -118,8 +128,6 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
   const inicialize = async () => {
     changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-    
-
     if (!itemId) {
       setInitialValues({
         "fullName": '',
@@ -128,10 +136,13 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         role: "internal",
         status: 'active',
         enableRemoteWork: false,
+        price: 0,
+        responsibility: 'worker',
+        job: '',
         metadata: []
       })
     }
-    setFields([
+     setFields([
       {
         isDivider: true,
         label: t('core.label.personalData'),
@@ -189,14 +200,6 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       },
 
 
-      {
-        name: 'jobTitle',
-        label: t('core.label.jobTitle'),
-        type: 'text',
-        required: false,
-        component: TextInput,
-
-      },
 
       {
         name: 'nationalId',
@@ -212,8 +215,8 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         label: t('core.label.enableRemoteWork'),
         required: false,
         component: ToggleInput,
-
       },
+
       {
         isDivider: true,
         label: t('core.label.aditionalData'),
@@ -232,6 +235,10 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
     changeLoaderState({ show: false })
   }
+
+
+   
+ 
 
   useEffect(() => {
     if (currentEntity?.entity.id) {

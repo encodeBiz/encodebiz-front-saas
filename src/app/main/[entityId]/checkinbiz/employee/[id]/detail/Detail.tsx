@@ -2,25 +2,28 @@ import { SassButton } from "@/components/common/buttons/GenericButton"
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes"
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee"
 import { useLayout } from "@/hooks/useLayout"
-import { Card, Box, Grid, Typography, CardContent, Paper, Divider, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
+import { Card, Box, Grid, Typography, CardContent, Paper, Divider, Stack } from "@mui/material"
 import { useTranslations } from "next-intl"
 import useEmployeeDetailController from "./page.controller"
 import { useCommonModal } from "@/hooks/useCommonModal"
 import ConfirmModal from "@/components/common/modals/ConfirmModal"
 import { CommonModalType } from "@/contexts/commonModalContext"
 import { CustomChip } from "@/components/common/table/CustomChip"
-import { ISucursal } from "@/domain/features/checkinbiz/ISucursal"
 import { useSearchParams } from "next/navigation"
 import { DetailText } from "@/components/common/table/DetailText"
 import { ArrowBackOutlined } from "@mui/icons-material"
 import FormModal from "../../edit/FormModal"
+import HelpTabs from "@/components/features/dashboard/HelpTabs/HelpTabs"
+import { Branch } from "./Attedance/Branch"
+import { Attedance } from "./Attedance/Attedance"
 
-export const Detail = ({ employee, onResend,onSuccess, children }: { employee: IEmployee,onSuccess:()=>void, onResend: (v: IEmployee) => void, children: React.ReactNode }) => {
+export const Detail = ({ employee, onResend, onSuccess, children }: { employee: IEmployee, onSuccess: () => void, onResend: (v: IEmployee) => void, children: React.ReactNode }) => {
     const t = useTranslations()
-    const { onDelete, deleting, branchListEmployee } = useEmployeeDetailController()
+    const { onDelete, deleting } = useEmployeeDetailController()
     const { openModal, open } = useCommonModal()
     const search = useSearchParams()
     const backAction = search.get('back')
+
 
     const { navivateTo } = useLayout()
     return <Card elevation={3} sx={{ width: '100%', margin: 'auto' }}>
@@ -49,7 +52,7 @@ export const Detail = ({ employee, onResend,onSuccess, children }: { employee: I
                 </Grid>
                 <Stack direction={'row'} gap={2}>
 
-                    <SassButton color="primary" variant="contained" onClick={() => openModal(CommonModalType.FORM,{...employee})}>
+                    <SassButton color="primary" variant="contained" onClick={() => openModal(CommonModalType.FORM, { ...employee })}>
                         {t('core.button.edit')}
                     </SassButton>
 
@@ -76,7 +79,6 @@ export const Detail = ({ employee, onResend,onSuccess, children }: { employee: I
                     <DetailText label={t('core.label.status')} value={t('core.label.' + employee?.status)} />
                     <DetailText label={t('core.label.nationalId')} value={employee?.nationalId} />
                     <DetailText label={t('core.label.remoteWork')} value={employee?.enableRemoteWork ? t('core.label.enable') : t('core.label.noenable')} />
-
                 </Box>
 
                 {/* Additional Details */}
@@ -86,78 +88,30 @@ export const Detail = ({ employee, onResend,onSuccess, children }: { employee: I
                     </Typography>
 
                     {Array.isArray(employee.metadata) && <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} alignItems={'flex-start'} gap={2}>
-                        {employee.metadata.map((e: any, i: number) => <DetailText key={i} label={e.label} value={e.value} orientation="row" />)}
+                        {employee.metadata?.map((e: any, i: number) => <DetailText key={i} label={e.label} value={e.value} orientation="row" />)}
                     </Box>}
                 </Paper></>}
             </Paper>
             <Divider />
-            <Paper elevation={0} sx={{ p: 3 }}>
-                <Box sx={{ mt: 2 }}>
-                    <Typography variant="subtitle1" gutterBottom>
-                        {t('core.label.sucursalAsigned')}
-                    </Typography>
-                    <TableContainer component={Paper}>
-                        {Array.isArray(branchListEmployee) && <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell align="left">
-                                        <Typography fontSize={16} color='#76777D' fontWeight={400} variant="subtitle1" minWidth={200}>
-                                            {t('core.label.sucursal')}
-                                        </Typography>
-                                    </TableCell>
-                                    <TableCell align="left">
-                                        <Typography fontSize={16} color='#76777D' fontWeight={400} variant="subtitle1"  >
-                                            {t('core.label.cargo')}
-                                        </Typography>
-                                    </TableCell>
 
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {branchListEmployee.map((e: ISucursal, i: number) => (
-                                    <TableRow
-                                        key={i}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
+            <HelpTabs small tabs={[
+                {
+                    id: '1',
+                    title: t(`core.label.sucursalAsigned`),
+                    tabContent: <Branch employee={employee} />
+                },
+                {
+                    id: '2',
+                    title: t("checklog.list"),
+                    tabContent: <Attedance>{children}</Attedance>
+                },
 
-                                        <TableCell align="left">
-                                            <Typography fontSize={24} color='#1C1B1D' fontWeight={400} variant="body2" minWidth={200}   >
-                                                {e.name}
-                                            </Typography>
-                                        </TableCell>
-                                        <TableCell align="left">
-                                            <Typography fontSize={24} color='#1C1B1D' fontWeight={400} variant="body2" minWidth={200}   >
-                                                {employee.jobTitle}
-                                            </Typography>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>}
-                    </TableContainer>
+            ]} />
 
-                </Box>
-            </Paper>
-
-            <Divider />
-
-
-
-
-            <Divider />
-
-            <Paper elevation={0} sx={{ p: 3 }}>
-                <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
-                    {t("checklog.list")}
-                </Typography>
-
-                {children}
-
-            </Paper>
         </CardContent>
 
         {
-            open.type === CommonModalType.DELETE && <ConfirmModal
+            open.type === CommonModalType.DELETE && !open?.args?.responsability && <ConfirmModal
                 isLoading={deleting}
                 title={t('employee.deleteConfirmModalTitle')}
                 description={t('employee.deleteConfirmModalTitle2')}
@@ -165,7 +119,10 @@ export const Detail = ({ employee, onResend,onSuccess, children }: { employee: I
             />
         }
 
-              {open.type === CommonModalType.FORM && <FormModal onSuccess={onSuccess} />}
+        {open.type === CommonModalType.FORM && <FormModal onSuccess={onSuccess} />}
+        {open.type === CommonModalType.INFO && <FormModal onSuccess={onSuccess} />}
+
+
 
     </Card >
 

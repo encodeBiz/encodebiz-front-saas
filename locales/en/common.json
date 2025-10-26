@@ -977,7 +977,7 @@
   "plan_translation": {
     "checkinbiz": {
       "bronze": {
-        "pricePerUse": "1,50€/Employee per month"
+        "pricePerUse": "2€/Employee per month"
       },
       "enterprise": {
         "pricePerUse": "",

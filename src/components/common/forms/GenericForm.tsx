@@ -30,7 +30,7 @@ const FormStatusWatcher = () => {
   const { updateFromStatus } = useFormStatus()
 
   useEffect(() => {
-    
+
     updateFromStatus({
       isValid,
       isSubmitting,
@@ -180,7 +180,7 @@ const GenericForm = <T extends Record<string, any>>({
         {(formikProps: FormikProps<T>) => (
           <Form noValidate>
             {/*JSON.stringify(formikProps.errors)*/}
-
+            {/*JSON.stringify(formikProps.values)*/}
             {activateWatchStatus && <FormStatusWatcher />}
             <Grid container spacing={3}>
               {fields.map((field, i) => {
@@ -190,10 +190,11 @@ const GenericForm = <T extends Record<string, any>>({
                       expandIcon={<ExpandMoreOutlined />}
                       aria-controls="panel1-content"
                       id="panel1-header"
-                      sx={{ height:56}}
-                    >
-                      <Typography component="span" textTransform={'uppercase'}>{field.label as string}</Typography>
-                      {field.hit && <Typography color='textSecondary' component="span" >{field.hit as string}</Typography>}
+                      sx={{ height: 56 }}
+                    > <Box display={'flex'} flexDirection={'column'}>
+                        <Typography component="span" textTransform={'uppercase'}>{field.label as string}</Typography>
+                        {field.hit && <Typography color='textSecondary' component="span" >{field.hit as string}</Typography>}
+                      </Box>
                     </AccordionSummary>
                     <AccordionDetails>
                       <Box sx={{ width: '100%', p: 4 }}>
@@ -238,7 +239,7 @@ const GenericForm = <T extends Record<string, any>>({
               {linkForm && <Typography variant="body2">
                 <Link style={{ color: theme.palette.primary.main, textDecoration: 'none' }} href="/auth/recovery">{t('core.signup.recovery')}</Link>
               </Typography>}
-               
+
               <Grid sx={{ width: '100%' }}>
                 <Box display="flex" justifyContent="flex-end" gap={2}>
                   {onCancel && (
