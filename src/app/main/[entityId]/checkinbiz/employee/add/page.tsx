@@ -10,6 +10,7 @@ import { useRef } from 'react';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { IEmployee } from '@/domain/features/checkinbiz/IEmployee';
 import useFormController from '../form/form.controller';
+import * as Yup from 'yup';
 
 
 
@@ -53,7 +54,7 @@ export default function AddForm() {
                     <GenericForm<Partial<IEmployee>>
                         column={2}
                         initialValues={initialValues}
-                        validationSchema={validationSchema}
+                        validationSchema={Yup.object().shape(validationSchema)}
                         onSubmit={(values) => handleSubmit(values)}
                         fields={fields as FormField[]}
                         enableReinitialize

@@ -18,6 +18,7 @@ import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { IEmployee } from '@/domain/features/checkinbiz/IEmployee';
 import useFormController from '../form/form.controller';
+import * as Yup from 'yup';
 
 const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSuccess: () => void }): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
@@ -66,7 +67,7 @@ const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSu
                     <GenericForm<Partial<IEmployee>>
                         column={2}
                         initialValues={initialValues}
-                        validationSchema={validationSchema}
+                        validationSchema={Yup.object().shape(validationSchema)}
                         onSubmit={handleModal}
                         fields={fields as FormField[]}
                         submitButtonText={t('core.button.save')}

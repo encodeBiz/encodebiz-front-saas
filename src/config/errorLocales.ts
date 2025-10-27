@@ -63,7 +63,8 @@ export const errorDict: any = {
     "employee/branchId_required": "Se requiere el ID de sucursal",
     "checklog/internal_error": "Error interno del servidor (registro de verificación)",
     "holder/not_found": "No se encuentra el titular",
-    "holder/not_found_applepass": "No se encuentra el Applepass del titular"
+    "holder/not_found_applepass": "No se encuentra el Applepass del titular",
+    "suscription/limit_off": "No puedes realizar esta acción, su plan alcanzó el límite de operaciones permitidas"
 
   },
   en: {
@@ -129,7 +130,8 @@ export const errorDict: any = {
     "employee/branchId_required": "branchId is required",
     "checklog/internal_error": "Internal server error (checklog)",
     "holder/not_found": "Holder not found",
-    "holder/not_found_applepass": "Holder not found applepass"
+    "holder/not_found_applepass": "Holder not found applepass",
+    "suscription/limit_off":"You cannot perform this action, your plan has reached the limit of allowed operations"
 
 
 

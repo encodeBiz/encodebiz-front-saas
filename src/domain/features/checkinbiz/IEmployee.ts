@@ -12,7 +12,20 @@ export interface IEmployee {
     status: "active" | "inactive" | "vacation" | "sick_leave" | "leave_of_absence" | "paternity_leave" | "maternity_leave";
     twoFA?: any,
     createdAt: Date;
-    metadata?: any
+    metadata?: any | {
+
+        address?: {
+            street: string,
+            city: string,
+            country: string,
+            postalCode: string,
+            timeZone: string,
+            geo: {
+                lat: number
+                lng: number
+            }
+        },
+    }
     enableRemoteWork?: boolean;
     nationalId: string;
     jobTitle?: string
@@ -21,6 +34,20 @@ export interface IEmployee {
     price: 0,
     responsibility: string,
     job: string
+
+
+    //by form transform
+    address?: {
+        street: string,
+        city: string,
+        country: string,
+        postalCode: string,
+        timeZone: string,
+        geo: {
+            lat: number
+            lng: number
+        }
+    },
 }
 
 // Consistency first: keys y niveles canonizados
@@ -58,5 +85,5 @@ export interface EmployeeEntityResponsibility {
 
     branch?: ISucursal
 
-    totalItems?:number
+    totalItems?: number
 }

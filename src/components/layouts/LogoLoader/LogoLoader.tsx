@@ -60,7 +60,7 @@ function AnimatedLogo({ color = 'white' }: { color?: 'white' | 'blue' }) {
                 <Image height={400} alt="logo" src={logo['logo_1_' + color]} />
             </div>
             <div className={`${style.images} ${style.img_2} logo_2`}>
-                <Image fill alt="logo" src={logo['logo_2_' + color]} />
+                <Image width={200} height={200} alt="logo" src={logo['logo_2_' + color]} />
             </div>
             <div className={`${style.img_3} logo`}>
                 <Image width={100} height={100} alt="logo" src={logo['logo_3_' + color]} />
