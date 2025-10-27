@@ -20,7 +20,7 @@ import { CustomTypography } from '../Text/CustomTypography';
 interface BranchSelectorProps {
     branchList: Array<{ name: string, branchId: string }>
     onOKAction: (event: { name: string, branchId: string }) => void
-    type: 'item' | 'selector'
+    type?: 'item' | 'selector'
 }
 const BranchSelectorModal = ({ branchList, onOKAction, type = 'item' }: BranchSelectorProps): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
