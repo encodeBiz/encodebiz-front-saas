@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
-import { addressSchema, emailRule, requiredRule, zipCodeRule } from '@/config/yupRules';
+import { addressSchema, emailRule, requiredRule } from '@/config/yupRules';
 import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
@@ -148,10 +148,10 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const remoteFieldHandleValueChanged = (checked: boolean) => {
     if (checked) {
       setFields(prevFields => [
-        ...prevFields.filter(e => e.name !== 'metadata' && e.name !== 'additional_data_section'),
+        ...prevFields.filter(e => e.name !== 'metadata' && e.name !== 'additional_data_section' && e.name !== 'address'),
         {
           name: 'address',
-          label: t('core.label.address'),
+          label: t('employee.enableRemoteWorkData'),
           required: true,
           fullWidth: true,
           component: AddressComplexInput,

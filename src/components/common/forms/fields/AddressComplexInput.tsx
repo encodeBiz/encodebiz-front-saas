@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 // AddressInput.tsx
 "use client";
@@ -52,6 +53,8 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
   const postalCodeField = useField(`${props.name}.postalCode`);
   const streetField = useField(`${props.name}.street`);
 
+
+
   const { token } = useAuth();
 
   const [pending, setPending] = useState(false);
@@ -59,6 +62,12 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
   const [options, setOptions] = useState<Option[]>([]);
   const [selected, setSelected] = useState<Option | null>(null);
   const [countryCode, setCountryCode] = useState("ES");
+
+  useEffect(() => {
+              setCityList(country.find((e: any) => e.name === formStatus?.values?.address?.country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
+  }, [formStatus?.values?.address?.country])
+  
+
 
   // Debounced remote search
   const debouncedSearch = useDebouncedCallback(

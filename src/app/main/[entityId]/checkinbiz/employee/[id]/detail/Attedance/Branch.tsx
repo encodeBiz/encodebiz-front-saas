@@ -28,7 +28,7 @@ export const Branch = ({ employee }: { employee: IEmployee }) => {
                     {pending && <CircularProgress size={20} color="inherit" />}
                 </Box>
 
-                <SassButton color="primary" variant="contained" onClick={addResponsabiltyItem}>
+                <SassButton color="primary" variant="contained" onClick={addResponsabiltyItem} disabled={branchList.length==0}>
                     {t('core.button.addBranch')}
                 </SassButton>
             </Box>
@@ -57,10 +57,10 @@ export const Branch = ({ employee }: { employee: IEmployee }) => {
             <Box gap={1.5} display={'flex'} flexDirection={'column'}>
                 {entityResponsibilityList.sort((a, b) => a.active - b.active)?.map((e, i) => <SucursalFromItem key={i} item={e} jobList={jobList} onEnd={onEnd} />)}
                 {entityResponsibilityList.length == 0 && <Box gap={1.5} display={'flex'} justifyContent={'center'} alignItems={'center'} flexDirection={'column'} p={5}>  <Alert severity="warning">{t('employee.advise')}</Alert></Box>}
+                {branchList.length == 0 && <Box gap={1.5} display={'flex'} justifyContent={'center'} alignItems={'center'} flexDirection={'column'} p={5}>  <Alert severity="warning">{t('employee.noBranch')}</Alert></Box>}
+
             </Box>
             {responsabilityLimit <= responsabilityTotal && <SassButton variant='outlined' onClick={() => loadMore()} >{t('core.label.moreload')}</SassButton>}
-
-
         </Box>
 
         {open.type === CommonModalType.DELETE && open?.args?.responsability && <ConfirmModal

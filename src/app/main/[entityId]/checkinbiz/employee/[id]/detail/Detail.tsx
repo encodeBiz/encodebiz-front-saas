@@ -16,6 +16,7 @@ import FormModal from "../../edit/FormModal"
 import HelpTabs from "@/components/features/dashboard/HelpTabs/HelpTabs"
 import { Branch } from "./Attedance/Branch"
 import { Attedance } from "./Attedance/Attedance"
+import { onGoMap } from "@/lib/common/maps"
 
 export const Detail = ({ employee, onResend, onSuccess, children }: { employee: IEmployee, onSuccess: () => void, onResend: (v: IEmployee) => void, children: React.ReactNode }) => {
     const t = useTranslations()
@@ -24,6 +25,7 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
     const search = useSearchParams()
     const backAction = search.get('back')
 
+ 
 
     const { navivateTo } = useLayout()
     return <Card elevation={3} sx={{ width: '100%', margin: 'auto' }}>
@@ -73,6 +75,10 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
         <CardContent sx={{ p: 0 }}>
 
             <Paper elevation={0} sx={{ p: 3 }}>
+
+                <Typography variant="subtitle1" gutterBottom textTransform={'uppercase'} >
+                    {t('employee.detailSucursal')}
+                </Typography>
                 <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={6} alignItems={'flex-start'}>
                     <DetailText label={t('core.label.email')} value={employee?.email} />
                     <DetailText label={t('core.label.phone')} value={'+' + employee?.phone} />
@@ -81,14 +87,29 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
                     <DetailText label={t('core.label.remoteWork')} value={employee?.enableRemoteWork ? t('core.label.enable') : t('core.label.noenable')} />
                 </Box>
 
+                {employee?.enableRemoteWork && !!employee?.metadata?.find((e: any) => e.label === 'address') && <Paper sx={{ mt: 4 }} elevation={0} >
+                    <Typography variant="subtitle1" gutterBottom textTransform={'uppercase'} >
+                        {t('employee.enableRemoteWorkData')}
+                    </Typography>
+
+                    <DetailText label={t('core.label.address')} value={employee?.metadata?.find((e: any) => e.label === 'address')?.value?.street} orientation="row" >
+                        <Box sx={{ marginLeft: 4, minWidth: 140 }}><SassButton variant="text" onClick={() => onGoMap(employee?.metadata?.find((e: any) => e.label === 'address')?.value.geo.lat, employee?.metadata?.find((e: any) => e.label === 'address')?.value.geo.lng)}> {t('sucursal.map')}</SassButton></Box>
+                    </DetailText>
+                    <DetailText label={t('core.label.timeZone')} value={employee?.metadata?.find((e: any) => e.label === 'address')?.value.timeZone} orientation="row" />
+                    <DetailText label={t('core.label.country')} value={employee?.metadata?.find((e: any) => e.label === 'address')?.value.country} orientation="row" />
+                    <DetailText label={t('core.label.city')} value={employee?.metadata?.find((e: any) => e.label === 'address')?.value.city} orientation="row" />
+
+
+                </Paper>}
+
                 {/* Additional Details */}
-                {Array.isArray(employee.metadata) && employee.metadata.length > 0 && <> <Paper sx={{ mt: 4 }} elevation={0} >
-                    <Typography variant="subtitle1" gutterBottom textTransform={'capitalize'} >
+                {Array.isArray(employee.metadata?.filter((e: any) => e.label !== 'address')) && employee.metadata?.filter((e: any) => e.label !== 'address').length > 0 && <> <Paper sx={{ mt: 8 }} elevation={0} >
+                    <Typography variant="subtitle1" gutterBottom textTransform={'uppercase'} >
                         {t('core.label.aditionalData')}
                     </Typography>
 
                     {Array.isArray(employee.metadata) && <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} alignItems={'flex-start'} gap={2}>
-                        {employee.metadata?.map((e: any, i: number) => <DetailText key={i} label={e.label} value={e.value} orientation="row" />)}
+                        {employee.metadata?.filter(e => e.label !== 'address')?.map((e: any, i: number) => <DetailText key={i} label={e.label} value={e.value} orientation="row" />)}
                     </Box>}
                 </Paper></>}
             </Paper>
