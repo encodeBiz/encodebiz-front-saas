@@ -12,7 +12,7 @@
       "profile": "Profile",
       "setting": "Settings",
       "media": "Media",
-      "logout": "Logout",
+      "logout": "Log out",
       "help": "Help",
       "theme": "Theme",
       "messages": "Messages",
@@ -85,7 +85,7 @@
       "userDeletedTitle": "You have left the entity",
       "userDeletedText": "You have successfully unsubscribed from the entity, please log in to start again",
       "tokenExireTitle": "Session expired",
-      "tokenExireText": "The session has expired, please log in again to access the encodeBiz SaaS panel",
+      "tokenExireText": "Session has expired, please log in again to access the encodeBiz SaaS panel",
       "success": "Operation completed successfully",
       "empthy": "Nothing to show",
       "empthytext": "There are no items to display at this time",
@@ -98,11 +98,11 @@
       "download": "Download",
       "periocity": "Date Range",
       "minutes": "minutes",
-      "periocityTime": "Time Range",
+      "periocityTime": "Time range",
       "create-download": "Create and download",
-      "advance": "ADVANCED SETTINGS",
+      "advance": "ADVANCED CONFIGURATION",
       "dayTimeRange": "Work Schedule",
-      "dayTimeRangeDesc": "By default, the work schedule will be 08:00 to 17:00",
+      "dayTimeRangeDesc": "Default work schedule will be 08:00 to 17:00",
       "enableDayTimeRange": "Enable schedule",
       "startTime": "Start time",
       "endTime": "End time",
@@ -116,8 +116,8 @@
       "sucursalAsigned": "Assigned branch",
       "branch": "Branch",
       "register": "Register",
-      "disable2AF": "You do not have 2FA enabled",
-      "enable2AF": "You have 2FA enabled",
+      "disable2AF": "2FA not enabled",
+      "enable2AF": "2FA enabled",
       "employee": "Employee",
       "vacation": "Vacation",
       "timestamp": "Date/Time",
@@ -136,6 +136,7 @@
       "nif": "Tax identification number",
       "inactive": "Inactive",
       "personalData": "PERSONAL INFORMATION",
+      "configData": "ADDITIONAL CONFIGURATION",
       "aditionalData": "ADDITIONAL INFORMATION",
       "comercialEvent": "EVENT INFORMATION",
       "brandEvent": "EVENT BRAND COLORS",
@@ -155,7 +156,11 @@
       "template": "Template",
       "expo": "Expo",
       "festival": "Festival",
+      "manager": "Manager",
+      "worker": "Worker",
       "rol": "Role",
+      "supervisor": "Supervisor",
+      "responsibility": "Responsibility",
       "enableRemoteWork": "Enable remote work",
       "remoteWork": "Remote work",
       "enableRemoteWorkEnable": "Remote work enabled",
@@ -234,7 +239,7 @@
       "lastName": "Last Name",
       "fullName": "Full Name",
       "password": "Password",
-      "legalEntityName": "Legal Name",
+      "legalEntityName": "Legal Entity Name",
       "companyName": "Company Name",
       "companyEmail": "Company Email",
       "passwordConfirm": "Confirm password",
@@ -292,7 +297,7 @@
       "breakTimeRange": "Break time",
       "yes": "Yes",
       "no": "No",
-      "timeBreakDesc": "By default, the break time will be 60 minutes",
+      "timeBreakDesc": "Default break time will be 60 minutes",
       "timeBreak": "Break time (minutes)"
     },
     "button": {
@@ -311,7 +316,7 @@
       "reactive": "Reactivate",
       "submitting": "Submitting...",
       "submit": "Submit",
-      "send": "Relaunch",
+      "send": "Resend",
       "accept": "Accept",
       "replaceImage": "Replace Image",
       "add": "Add",
@@ -330,19 +335,20 @@
       "saveChanges": "Save",
       "ok": "I understand",
       "configurenow": "Configure",
-      "update": "Update"
+      "update": "Update",
+      "addBranch": "Add branch"
     },
     "formValidatorMessages": {
       "required": "This field is required",
-      "min": "The field value must be greater than ",
-      "max": "The field value must be less than ",
-      "minArray": "You must select at least 1 item",
-      "email": "This field must be a valid email",
-      "password": "Password is too short: must have a minimum of 8 characters.",
+      "min": "Field value must be greater than ",
+      "max": "Field value must be less than ",
+      "minArray": "Must select at least 1 item",
+      "email": "This field must be a valid email address",
+      "password": "Password is too short: must have at least 8 characters.",
       "passwordMatch": "Passwords do not match",
       "acceptTerm": "You must accept the terms and conditions",
-      "avatarUpload": "Select a valid image file.",
-      "avatarMaxSize": "The image is too large. Maximum allowed: 5MB."
+      "avatarUpload": "Please select a valid image file.",
+      "avatarMaxSize": "Image is too large. Maximum allowed: 5MB."
     },
     "signup": {
       "title": "Create an account",
@@ -355,7 +361,7 @@
       "signIn": "Sign in",
       "recovery": "Forgot your password?",
       "complete_profile": "Complete profile",
-      "complete_profile_desc": "Before starting, you must complete your data on the platform and create your first entity. You can modify this data later from the settings"
+      "complete_profile_desc": "Before starting, you must complete your data on the platform and create your first entity, this data can later be modified from the settings"
     },
     "signin": {
       "title": "Sign in",
@@ -370,7 +376,7 @@
     "recovery": {
       "title": "Recover password",
       "signup": "Create account",
-      "subtitle": "Enter the email to recover your access key to EncodeBiz SaaS",
+      "subtitle": "Enter your email to recover your access key to EncodeBiz SaaS",
       "or": "Or",
       "google": "Join with Google",
       "facebook": "Join with Facebook",
@@ -380,12 +386,12 @@
       "signin": "Sign in",
       "modalTitle": "Request sent",
       "modalTitle2": "We will shortly send you instructions to reset your password to your email",
-      "ok": "OK"
+      "ok": "Okay"
     },
     "upload": {
       "title": "Upload CSV file",
       "btn": "Select file",
-      "descFile": "Download the reference file",
+      "descFile": "Download reference file",
       "desc": "Please select a CSV file to preview the content and select it",
       "file": "File",
       "preview": "Preview (first 5 rows)",
@@ -398,11 +404,11 @@
       "stats": "Statistics",
       "card": {
         "title": "Welcome to encodeBiz SaaS",
-        "subtitle": "Register, control and manage accesses in one place, PassBiz ready for you and very soon CheckBiz."
+        "subtitle": "Register, control and manage access in one place, PassBiz ready for you and soon CheckBiz."
       },
       "cardDesc": {
         "title1": "More than software,",
-        "title2": "your partner in digital development",
+        "title2": "your digital development partner",
         "subtitle1": "At Encodebiz we create custom solutions for unique needs.",
         "subtitle2": "If your company requires specialized development, we are ready to make it happen."
       }
@@ -412,7 +418,7 @@
         "card": {
           "title": "Create legal entity",
           "createEntity": "Create entity",
-          "subtitle": "On the platform you can associate multiple entities to the account, but at least one is necessary to start using our products"
+          "subtitle": "On the platform you can associate multiple entities with the account, but at least one is necessary to start using our products"
         }
       }
     }
@@ -425,7 +431,7 @@
       },
       "tab2": {
         "title": "Change Password",
-        "text": "Tap the following button to send you the instructions to change the password"
+        "text": "Click the following button to send you instructions to change your password"
       }
     },
     "sessionLastTime": "Last login"
@@ -438,7 +444,7 @@
         "descriptionAbout": "Complete your company's general data.",
         "title": "Company Data",
         "deleteConfirmModalTitle": "Delete Entity",
-        "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the entity and all its associated settings and purchases",
+        "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the entity and all its associated configurations and purchases",
         "deleteConfirmModalTitle3": "Please enter the following word to continue with the action"
       },
       "tab2": {
@@ -471,12 +477,12 @@
     "presentation": {
       "card1": {},
       "title": "Webhook",
-      "text": "Webhooks associated with the events available in the services."
+      "text": "Webhooks associated with available events in the services."
     },
     "passinbiz": {
       "tab1Title": "How do I start?",
       "tab2Title": "What do we solve?",
-      "stepsTitle": "Setup Guide",
+      "stepsTitle": "Configuration guide",
       "stepsDesc": "Follow the steps in this guide to configure the PassBiz service.",
       "targetTitle": "Solve with PassBiz what was previously a problem:",
       "targetDesc": "Follow the steps in this guide to configure the PassBiz service."
@@ -484,7 +490,7 @@
     "checkinbiz": {
       "tab1Title": "How do I start?",
       "tab2Title": "What do we solve?",
-      "stepsTitle": "Setup Guide",
+      "stepsTitle": "Configuration guide",
       "stepsDesc": "Follow the steps in this guide to configure the PassBiz service.",
       "targetTitle": "Solve with CheckBiz what was previously a problem:",
       "targetDesc": "Follow the steps in this guide to configure the PassBiz service."
@@ -493,8 +499,8 @@
   "salesPlan": {
     "title": "AVAILABLE PLANS",
     "emissionLimit": "Emission limit:",
-    "sinLimit": "No limits",
-    "subTitle": "Choose between the Free, Bronze, or Enterprise version depending on the features you need. Upgrade or change your plan at any time to enhance your experience with PassBiz.",
+    "sinLimit": "Unlimited",
+    "subTitle": "Choose between the Free, Bronze or Enterprise version based on the features you need. Upgrade or change your plan at any time to enhance your experience with PassBiz.",
     "free": "Free",
     "configureLegal": "Company Data",
     "configureBranding": "Visual Identity",
@@ -506,7 +512,7 @@
     "freemium": "Free",
     "branding": "Branding: EncodeBiz default logo and design",
     "brandingCustom": "Branding: Complete pass customization",
-    "cost": "Estimated cost per pass: ~€0.01",
+    "cost": "Estimated cost per pass: ~0.01 €",
     "costEstimated": "Estimated cost: Variable based on usage",
     "selectPlan": "Select Plan",
     "custom": "Custom",
@@ -516,17 +522,17 @@
     "emailSuport": "Email support",
     "emailPrioritySuport": "Priority email support",
     "emailAndPhoneSuport": "Phone and email support",
-    "estimateRange": "Estimated margin per pass: ~€0.49",
+    "estimateRange": "Estimated margin per pass: ~0.49 €",
     "estimateRangeCustom": "Estimated margin: Variable, but with potential to be significant",
     "enterprise": "Enterprise",
     "customerTime": "24/7 customer support",
-    "apiAcces": "API Access",
+    "apiAcces": "API access",
     "customReport": "Custom reports",
     "unlimitedProducts": "Unlimited products",
     "premium": "Premium",
     "price": "Customer price: Free",
-    "priceEmited": "Price per issued pass: €0.50",
-    "priceMonthly": "Monthly price: To be agreed (recommended between €99 and €499)",
+    "priceEmited": "Price per issued pass: 0.50 €",
+    "priceMonthly": "Monthly price: To be agreed (recommended between 99 € and 499 €)",
     "popular": "Most Popular",
     "limit": "Limit: No restrictions",
     "model": "Model: Pay per use",
@@ -540,12 +546,12 @@
     "contract": "Current Plan",
     "renew": "Change plan",
     "del": "Cancel subscription",
-    "feedText1": "The subscription to the plan",
-    "feedText2": "of the service",
-    "feedText3": "has been completed successfully",
+    "feedText1": "Subscription to the",
+    "feedText2": "plan of the",
+    "feedText3": "service has been completed successfully",
     "feedText4": "has been successfully deleted",
     "imageConfirmModalTitle": "Configure your Entity to continue",
-    "imageConfirmModalTitle2": "Before purchasing a plan, complete the pending information in the Entity section of your account:",
+    "imageConfirmModalTitle2": "Before contracting a plan, complete the pending information in the Entity section of your account:",
     "notAllowedPlan": "You must update the legal data of the selected entity before obtaining a plan."
   },
   "terms": {
@@ -571,17 +577,17 @@
     "revokeConfirmModalTitle2": "This action cannot be undone. It will permanently revoke the digital pass(es)",
     "reactiveConfirmModalTitle": "Reactivate digital pass(es)",
     "reactiveConfirmModalTitle2": "This action cannot be undone. It will permanently reactivate the digital pass(es)",
-    "sendConfirmModalTitle": "Relaunch digital pass(es)",
-    "sendConfirmModalTitle2": "This action cannot be undone. It will relaunch the digital pass(es) again",
+    "sendConfirmModalTitle": "Resend digital pass(es)",
+    "sendConfirmModalTitle2": "This action cannot be undone. It will resend the digital pass(es)",
     "archivedConfirmModalTitle": "Archive digital pass(es)",
-    "archivedConfirmModalTitle2": "This action cannot be undone. It will archive the digital pass(es) again",
+    "archivedConfirmModalTitle2": "This action cannot be undone. It will archive the digital pass(es)",
     "filter": {
       "email": "Email",
-      "state": "State"
+      "state": "Status"
     },
     "selectType": "Select pass type",
     "importSCVTitle": "Import CSV",
-    "importSCVText": "You must select the type of digital pass to which you will link the data imported in the file.",
+    "importSCVText": "You must select the type of digital pass to which you will link the imported data in the file.",
     "desc1": "Make sure your file follows this structure: ",
     "desc2": "Include the 3 mandatory columns",
     "desc3": " and that the optional columns follow the format",
@@ -589,7 +595,7 @@
     "desc5": "Only then can we import your data correctly.",
     "desc6": "Drag and drop or upload a CSV file",
     "desc7": "Maximum size 10 MB.",
-    "desc8": "Use this template as a reference",
+    "desc8": "Use this template as reference",
     "desc9": "Expected CSV preview",
     "btn": "Download Template",
     "scvError2": "Some optional fields do not have the proper structure, they must start with auxiliaryFields-",
@@ -619,19 +625,19 @@
   },
   "staff": {
     "title": "Support Staff",
-    "formDesc": "Complete the fields below to create/edit the support staff.",
+    "formDesc": "Complete the fields below to create/edit support staff.",
     "formDesc2": "Associate events to the selected support staff.",
     "list": "Support Staff",
     "add": "Register staff",
     "edit": "Edit",
     "import": "Import",
-    "description2": "Associate or remove events from the support staff",
-    "description": "Fill in the fields to register the support staff",
+    "description2": "Associate or remove events from support staff",
+    "description": "Fill in the fields to register support staff",
     "deleteConfirmModalTitle": "Delete Support Staff",
-    "noEventTitle": "No events",
+    "noEventTitle": "No events exist",
     "noEventText": "The entity currently has no associated events, create the first event now",
     "createEvent": "Create event",
-    "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the support staff and all its settings"
+    "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the support staff and all its configurations"
   },
   "employee": {
     "title": "Employees",
@@ -641,18 +647,25 @@
     "update": "Edit employee",
     "edit": "Edit employee",
     "detail": "Details",
+    "enableRemoteWorkData": "Remote work information",
     "configureDevice": "Configure trusted device",
     "import": "Import",
     "detailSucursal": "Employee details",
+    "noBranch": "No branches created",
     "description": "Fill in the fields to register the employee",
+    "maxSelectionBranch": "You already have all branches with associated responsibilities",
+    "advise": "This employee does not have responsibilities configured in the existing branches, this means they will not be able to use the attendance registration tool correctly.",
     "deleteConfirmModalTitle": "Delete employee",
     "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the employee",
-    "breakHelp": "Si esta opción no esta habilitada no se mostrará la accion de marcar el tiempo de descanso en la herramienta y se tomara por defecto con configurado. Por defecto el tiempo de descanso será de 60 minutos.",
-    "dayTimeHelp": "Por defecto el horario de marcar el inicio y fin de jornada seria de 8:00 a las 17:00, esta configuración se puede cambiar desde los ajustes, pero sino se configura se tomará como referencia."
+    "deleteConfirmModalTitleResponsability": "Delete branch",
+    "deleteConfirmModalTitle2Responsability": "This action cannot be undone. It will permanently delete the branch",
+    "branchUsed": "The selected entity already has a responsibility configuration assigned",
+    "breakHelp": "If this option is not enabled, the action to mark break time will not be shown in the tool and the default configuration will be used. Default break time will be 60 minutes.",
+    "dayTimeHelp": "By default, the start and end workday marking schedule would be from 8:00 to 17:00, this configuration can be changed from the settings, but if not configured, this will be taken as reference."
   },
   "checklog": {
-    "title": "Attendance Records",
-    "list": "Attendance Records",
+    "title": "Attendance records",
+    "list": "Attendance records",
     "formDesc": "Complete the fields below to register the employee."
   },
   "sucursal": {
@@ -663,7 +676,7 @@
     "map": "View on map",
     "ratioHelp": "Maximum distance from the company location where employees can check in.",
     "report": "Generate report",
-    "detailSucursal": "Branch/Project details",
+    "detailSucursal": "Branch/project details",
     "update": "Edit branch/project",
     "edit": "Edit branch/project",
     "import": "Import",
@@ -672,9 +685,9 @@
     "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the branch/project"
   },
   "attendance": {
-    "title": "Attendance Reports",
+    "title": "Attendance reports",
     "formDesc": "Complete the fields below to create/edit an attendance report.",
-    "list": "Attendance Reports",
+    "list": "Attendance reports",
     "add": "Create attendance record",
     "edit": "Edit attendance record",
     "export": "Export attendance reports",
@@ -689,7 +702,7 @@
   "report": {
     "title": "Reports",
     "formDesc": "Complete the fields below to create/edit a report.",
-    "list": "Attendance Reports",
+    "list": "Attendance reports",
     "add": "Create report",
     "export": "Export reports",
     "report": "Generate report",
@@ -701,7 +714,7 @@
     "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the report"
   },
   "media": {
-    "title": "Media",
+    "title": "Multimedia",
     "text1": "Selected files",
     "labelType": "File type",
     "deleteConfirmModalTitle": "Delete file",
@@ -774,20 +787,20 @@
   },
   "webhook": {
     "title": "Webhook",
-    "text": "Webhooks associated with the events available in the services."
+    "text": "Webhooks associated with available events in the services."
   },
   "guestModal": {
-    "title": "You have been invited as a collaborator ",
+    "title": "You have been invited as a collaborator",
     "text1": " As a collaborator you will be able to manage projects, access administrative tools and work together with the assigned team.",
-    "text2": " Please configure the account information and add a password",
+    "text2": " Please configure your account information and add a password",
     "btn": "Configure account"
   },
   "cards": {
     "card1": {
       "text1": "Welcome to encodeBiz SaaS",
       "text2": "A platform created to centralize all your digital services in one place.",
-      "text3": "At encodeBiz we turn your ideas into digital solutions. When our services don't cover all your needs, we create what your business requires, tailored to you.",
-      "start": "Start"
+      "text3": "At encodeBiz we turn your ideas into digital solutions. When our services don't cover all your needs, we create what your business requires, customized for you.",
+      "start": "Get Started"
     },
     "card2": {
       "text1": "First, configure your entity",
@@ -796,7 +809,7 @@
       "text4": "Personalize the experience",
       "text5": "with your organization's corporate identity in any service.",
       "text6": "Centralize information",
-      "text7": " of your entity so that your data is available in all documents and processes on the platform.",
+      "text7": " of your entity so that your data is available in all platform documents and processes.",
       "text8": "Ensure legitimate and transparent use",
       "text9": "of the services, complying with legal and protection requirements",
       "continue": "Continue"
@@ -805,7 +818,7 @@
       "comminsoom": "COMING SOON",
       "text1": "Today with encodeBiz SaaS",
       "text2": "Your first service,",
-      "text3": "SaaS service for",
+      "text3": "SaaS service to",
       "text4": "issue and manage credentials",
       "text5": "and",
       "text6": "event passes",
@@ -830,9 +843,9 @@
     "passesIssued": "Passes Issued",
     "passesIssuedText": "Distribution of issued passes in stacked bars by events or credential",
     "passesIssuedRank": "Passes Issued Ranking",
-    "passesValidation": "Validation: Attempts vs Successes vs Revoked",
+    "passesValidation": "Validation: Attempts vs Successes vs Revoked Validated Passes",
     "passesValidationText": "Distribution of valid, failed and revoked passes in stacked bars by events or credential",
-    "passesValidationRank": "Passes Validated Ranking",
+    "passesValidationRank": "Validated Passes Ranking",
     "cumulativo": "Cumulative",
     "dateRange": "Date Range",
     "passes": "Passes",
@@ -842,16 +855,16 @@
     "attempts": "Attempts",
     "peak": "Peaks",
     "failed": "Failures",
-    "statusPass": "Status",
+    "statusPass": "Statuses",
     "revoked": "Revoked",
     "totalByEvent": "Total by event",
     "validation%": "Validation %",
-    "passesTrend": "Monthly Trend · Credentials/Passes",
+    "passesTrend": "Monthly trend · Credentials/Passes",
     "passesTrendText": "Growth projection.",
     "empthy": "Make your first query",
     "summary": "Summary",
     "series": "Visible series",
-    "empthytext": "Adjust the filters with the parameters you need to graph information"
+    "empthytext": "Adjust the filters with the parameters you require to graph information"
   },
   "checking": {
     "title": "Attendance Control",
@@ -861,118 +874,118 @@
     "endJornada": "End Workday",
     "startDescanso": "Start Break",
     "endDescanso": "End Break",
-    "startJornadaLabel": "Workday Start",
-    "endJornadaLabel": "Workday End",
-    "startDescansoLabel": "Break Start",
-    "endDescansoLabel": "Break End",
+    "startJornadaLabel": "Start Workday",
+    "endJornadaLabel": "End Workday",
+    "startDescansoLabel": "Start Break",
+    "endDescansoLabel": "End Break",
     "titleBranch": "Select the branch",
     "selected": "Select branch",
     "history": "ATTENDANCE HISTORY",
     "noGeo": "Enable geolocation",
     "noGeoBtn": "Enable now",
     "outRadiusTitle": "Out of Zone",
-    "outRadiusText": "It seems you are not within the check-in area. To perform operations with this tool, you must be near the branch or project.",
-    "noGeoText": "It seems you don't have geolocation permission enabled. Please enable it to use this tool"
+    "outRadiusText": "It seems you are not within the check-in area, to perform operations with this tool, you must be near the branch or project.",
+    "noGeoText": "It seems you don't have geolocation permission enabled, enable it to use this tool"
   },
   "twoFactor": {
     "copyCode": "Code copied",
     "newDevice": "New security device",
     "addCode": "Enter the one-time code",
-    "writeCode": "Enter the 6-digit code shown by your authentication app.",
+    "writeCode": "Write the 6-digit code shown by your authentication app.",
     "verifyAndContinue": "Verify and continue",
     "newDeviceMessage": "Trusted device confirmed",
-    "newDeviceMessageText": "This device is now registered as your trusted device.",
+    "newDeviceMessageText": "This device is registered as your trusted device.",
     "configDevice": "Configure security device",
     "step1": "Step 1: Add your authentication app",
-    "step1Text1": "Search for one of the following authentication apps from Apple or Google Store. ",
-    "step1Text2": "You can use Google Authenticator, Microsoft Authenticator, Duo, Authy or another compatible one.",
-    "step1Title1": "Open your authentication app and choose ",
+    "step1Text1": "Search from Apple or Google Store for one of the following authentication apps.",
+    "step1Text2": "You can use Google Authenticator, Microsoft Authenticator, Duo, Authy or other compatible ones.",
+    "step1Title1": "Open your authentication app and choose",
     "step1Title2": "\"Add account\" → \"Scan QR code\".",
     "noScanner": "Can't scan the code?",
     "step2Title1": "Step 2: Enter the one-time code",
-    "step2Text1": "Enter the 6-digit code shown by your authentication app.",
+    "step2Text1": "Write the 6-digit code shown by your authentication app.",
     "step3Title1": "Step 1: Copy and paste this key",
-    "step3Text1": "Paste the key below into your authentication app, such as Google Authenticator, Microsoft Authenticator, Duo, Authy or another compatible one.",
+    "step3Text1": "Paste the key below into your authentication app, such as Google Authenticator, Microsoft Authenticator, Duo, Authy or other compatible ones.",
     "scannerQR": "Prefer to scan a QR?",
     "step4Title1": "Step 2: Enter the one-time code",
-    "step4Text1": "Enter the 6-digit code shown by your authentication app.",
+    "step4Text1": "Write the 6-digit code shown by your authentication app.",
     "copyClave": "Copy key",
     "titleValidate": "Your browser is not trusted",
-    "text1Validate": "To add your browser as a trusted device, enter the 6-digit code shown by your authentication app."
+    "text1Validate": "To add your browser as a trusted device, write the 6-digit code shown by your authentication app."
   },
   "404": {
     "text1": "Page not found",
-    "text2": "We're sorry, the page you are looking for does not exist.",
+    "text2": "Sorry, the page you are looking for does not exist.",
     "text3": " Return to home page"
   },
   "image": {
     "text1": "Incorrect image dimensions",
-    "text2": "It's necessary to adjust the image to the established dimensions as it will be used in the construction of digital passes or standardized templates",
+    "text2": "It is necessary to adjust the image to the established dimensions as it will be used in the construction of digital passes or standardized templates",
     "text3": "Required dimensions: "
   },
   "error": {
-    "report/internal_error": "Error interno",
+    "report/internal_error": "Internal error",
     "auth/invalid-credential": "Incorrect credentials",
-    "auth/email-already-exists": "The email is already in use. Sign in or use a different email.",
-    "auth/email-already-in-use": "The email is already in use. Sign in or use a different email.",
+    "auth/email-already-exists": "Email already in use. Sign in or use a different email.",
+    "auth/email-already-in-use": "Email already in use. Sign in or use a different email.",
     "auth/invalid-email": "Invalid email address. Please enter a valid email address.",
-    "auth/weak-password": "The password is too weak. Choose a stronger password",
+    "auth/weak-password": "Password is too weak. Choose a stronger password",
     "auth/operation-not-allowed": "Email and password authentication is not enabled. Contact technical support",
     "auth/too-many-requests": "Too many requests. Please try again later",
     "auth/user-disabled": "Your account has been disabled. Contact support for assistance",
     "auth/network-request-failed": "Network error. Check your internet connection and try again",
-    "auth/missing-email": "Email is required. Please enter your email.",
-    "auth/missing-password": "Password is required. Please enter your password.",
+    "auth/missing-email": "Email required. Please enter your email.",
+    "auth/missing-password": "Password required. Please enter your password.",
     "unavailable": "Service unavailable. Please try again later",
     "staff/email_already_exists": "Support staff with that email already exists",
     "media/invalid_dimesions": "Invalid dimensions",
-    "auth/invalid_plan": "The Freemium plan cannot create events",
-    "auth/unauthorized": "Unauthorized access to resource",
+    "auth/invalid_plan": "Freemium plan cannot create events",
+    "auth/unauthorized": "Unauthorized resource access",
     "staff/unauthorized": "Support staff access disabled or expired",
     "media/not_found": "File not found",
     "staff/not_found": "Support staff not found",
     "twofactor/invalid_token": "Session has expired",
     "auth/untrusted_device": "Untrusted device. Additional verification required",
     "twofactor/invalid_code": "Invalid TOTP code",
-    "user/not_found": "No user found with that email",
+    "user/not_found": "No user exists with that email",
     "checklog/two_type_followed": "Cannot start workday twice in a row",
     "checklog/out_of_radius": "It seems you are not at the selected branch, you cannot start workday",
-    "stats/range_and_groupBy_tolong": "The data to graph is too extensive. Try selecting a smaller date range or another grouping type",
+    "stats/range_and_groupBy_tolong": "Data to graph is too extensive, try selecting a smaller date range or another grouping type",
     "auth/authentication_already_exists": "",
-    "twofactor/not_activated": "2FA no activado para este Empleado",
+    "twofactor/not_activated": "2FA not activated for this employee",
     "employee/not_found": "Employee not found",
     "entity/not_found": "Entity not found",
-    "payment/pending": "You have pending payments.",
+    "payment/pending": "You have pending payments",
     "event/not_found": "Event not found",
     "event/not_logo": "Event without logo",
-    "media/invalid_meda_type": "`Tipo de media no permitido`",
-    "media/error": "Internal server error (Media Storage)",
+    "media/invalid_meda_type": "Media type not allowed",
+    "media/error": "Internal server error (Media storage)",
     "internal": "Internal server error",
-    "twofactor/unauthorized": "Token 2FA requerido",
+    "twofactor/unauthorized": "2FA token required",
     "subscribe/not_found": "Service not found",
-    "subscribe/internal": "Internal server error (Subscribe)",
+    "subscribe/internal": "Internal server error (Subscription)",
     "sub/bad_request": "Invalid payload",
     "sub/entity_not_found": "Entity not found",
-    "suscription/entity_not_configured": "Entity is not configured",
-    "suscription_checkinbiz/entity_legal_not_configured": "Entity is not configured to Checkbiz, we need legal Information",
+    "suscription/entity_not_configured": "Entity not configured",
+    "suscription_checkinbiz/entity_legal_not_configured": "Entity not configured in Checkbiz; we need legal information",
     "suscription/already_subscribed_into_plan": "Already subscribed",
-    "suscription/ko": "Error in subscription",
-    "subscribe/invalid_entity_service": "Entidad o servicio incorrectos",
+    "suscription/ko": "Subscription error",
+    "subscribe/invalid_entity_service": "Incorrect entity or service",
     "user/internal": "Internal server error (User)",
-    "employee/exist_employee": "An employee with that email or phone number already exists.",
-    "employee/bad_request": "Employee ID is required for deletion.",
-    "checklog/invalid_checkout": "Invalid checkout",
-    "checklog/invalid_checki": "Invalid checkin",
-    "checklog/invalid_restout": "Invalid restout",
-    "checklog/invalid_restin": "Invalid restin",
+    "employee/exist_employee": "Employee with that email or phone number already exists",
+    "employee/bad_request": "Employee ID required for deletion",
+    "checklog/invalid_checkout": "Invalid session end",
+    "checklog/invalid_checki": "Invalid check-in",
+    "checklog/invalid_restout": "Invalid rest out",
+    "checklog/invalid_restin": "Invalid rest in",
     "checklog/unknown_type": "Unknown type",
-    "checklog/invalid": "Checkin related is not found",
-    "checklog/bad_request": "Checklog not found",
+    "checklog/invalid": "Related record not found",
+    "checklog/bad_request": "Check record not found",
     "branch/not_found": "Branch not found",
-    "employee/branchId_required": "branchId is required",
-    "checklog/internal_error": "Internal server error (checklog)",
+    "employee/branchId_required": "Branch ID required",
+    "checklog/internal_error": "Internal server error (check record)",
     "holder/not_found": "Holder not found",
-    "holder/not_found_applepass": "Holder not found applepass"
+    "holder/not_found_applepass": "Holder's Applepass not found"
   },
   "plan_translation": {
     "checkinbiz": {
@@ -990,7 +1003,7 @@
     },
     "passinbiz": {
       "bronze": {
-        "pricePerUse": "0,15€/Pass 0,25€/Credential per month"
+        "pricePerUse": "0.15€/Pass 0.25€/Credential per month"
       },
       "enterprise": {
         "pricePerUse": "",
