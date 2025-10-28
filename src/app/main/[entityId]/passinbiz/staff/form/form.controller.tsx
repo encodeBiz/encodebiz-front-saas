@@ -29,6 +29,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const { navivateTo } = useLayout()
   const { changeLoaderState } = useLayout()
   const { id } = useParams<{ id: string }>()
+   
   const itemId = isFromModal ? open.args?.id : id
 
   const fieldList = [
@@ -198,7 +199,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const staff: IStaff = await fetchStaff(currentEntity?.entity.id as string, itemId)
-      const eventStaffList: Array<IEvent> = await searchEventsByStaff(id)
+      const eventStaffList: Array<IEvent> = await searchEventsByStaff(itemId)
 
       setInitialValues({
         fullName: staff.fullName ?? "",

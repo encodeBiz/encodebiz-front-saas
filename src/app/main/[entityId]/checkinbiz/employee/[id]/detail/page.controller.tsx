@@ -7,8 +7,8 @@ import { useEntity } from "@/hooks/useEntity";
 import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { objectToArray } from "@/lib/common/String";
-import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
-import { createEmployee, deleteEmployee, fetch2FAData, fetchEmployee, searchLogs } from "@/services/checkinbiz/employee.service";
+import { EmployeeEntityResponsibility, IEmployee, Job } from "@/domain/features/checkinbiz/IEmployee";
+import { createEmployee, deleteEmployee, fetch2FAData, fetchEmployee, searchJobs, searchLogs, searchResponsability } from "@/services/checkinbiz/employee.service";
 import { IChecklog } from "@/domain/features/checkinbiz/IChecklog";
 import { Column } from "@/components/common/table/GenericTable";
 import { CommonModalType } from "@/contexts/commonModalContext";
@@ -16,7 +16,7 @@ import { useCommonModal } from "@/hooks/useCommonModal";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { format_date, rmNDay } from "@/lib/common/Date";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
-import { fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucursal.service";
+import {   fetchSucursal, fetchSucursal as fetchSucursalData, search } from "@/services/checkinbiz/sucursal.service";
 import { Box } from "@mui/material";
 
 import { DateRangePicker } from "@/app/main/[entityId]/passinbiz/stats/components/filters/fields/DateRangeFilter";
@@ -61,8 +61,7 @@ export default function useEmployeeDetailController() {
     branchId: [],
     metadata: []
   });
-  const [branchListEmployee, setBranchListEmployee] = useState<Array<ISucursal>>()
-
+ 
   const fetchData = async () => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
@@ -75,16 +74,8 @@ export default function useEmployeeDetailController() {
         metadata: objectToArray(employee.metadata ?? {})
       })
 
-      const dataSucursalList: Array<ISucursal> = []
-
-
-      await Promise.all(
-        employee.branchId.map(async (branchId) => {
-          dataSucursalList.push((await fetchSucursalData(currentEntity?.entity.id as string, branchId as string)))
-        })
-      );
-      setBranchListEmployee(dataSucursalList)
-      changeLoaderState({ show: false })
+   
+       changeLoaderState({ show: false })
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
@@ -170,7 +161,7 @@ export default function useEmployeeDetailController() {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
 
         const data: Array<IChecklog> = await Promise.all(
-          res.map(async (item) => {
+          res?.map(async (item) => {
             const branchId = (await fetchSucursalData(currentEntity?.entity.id as string, item.branchId as string))?.name
             return { ...item, branchId };
           })
@@ -248,12 +239,12 @@ export default function useEmployeeDetailController() {
       setDeleting(true)
       let ids = []
       if (Array.isArray(item)) {
-        ids = (item as Array<IEmployee>).map(e => e.id)
+        ids = (item as Array<IEmployee>)?.map(e => e.id)
       } else {
         ids.push(item.id)
       }
       await Promise.all(
-        ids.map(async (id) => {
+        ids?.map(async (id) => {
           try {
             await deleteEmployee(currentEntity?.entity.id as string, id as string, token, currentLocale)
           } catch (e: any) {
@@ -353,12 +344,96 @@ export default function useEmployeeDetailController() {
 
   const onSuccess = () => fetchData()
 
+  const [branchList, setBranchList] = useState<Array<ISucursal>>([])
+  const fetchSucursalList = async () => {
+    setBranchList(await search(currentEntity?.entity.id as string, { ...{} as any, limit: 100 }))
+  }
+
+  useEffect(() => {
+    fetchSucursalList()
+  }, [])
+
+
+  const [entityResponsibilityList, setEntityResponsibilityListList] = useState<Array<EmployeeEntityResponsibility>>([])
+  const addEntityResponsibility = async (branchId: string) => {
+    setEntityResponsibilityListList([...entityResponsibilityList, {
+      employeeId: initialValues.id as string,
+      responsibility: 'worker',
+      level: 4,
+      scope: { entityId: currentEntity?.entity.id as string, branchId, scope: 'branch' },
+      job: {
+        job: '',
+        price: 0,
+        id: ''
+      },
+      active: 1,
+      branch: await fetchSucursal(currentEntity?.entity.id as string, branchId)
+    }])
+  }
+
+
+  const [jobList, setJobList] = useState<Array<Job>>([])
+  const fetchJobList = async () => {
+    try {
+      setJobList(await searchJobs(currentEntity?.entity.id as string))
+    } catch (error: any) {
+      changeLoaderState({ show: false })
+      showToast(error.message, 'error')
+    }
+    changeLoaderState({ show: false })
+  }
+
+ 
+
+  const [responsabilityLimit, setResponsabilityLimit] = useState(5)
+  const [responsabilityTotal, setResponsabilityTotal] = useState(0)
+  const [responsabilityFilter, setResponsabilityFilter] = useState([
+    { field: 'active', operator: '==', value: 1 }
+  ])
+  const fetchResponsabilityList = async (limit: number = 5) => {
+    try {
+      setResponsabilityLimit(limit)
+      const data: Array<EmployeeEntityResponsibility> = await searchResponsability(currentEntity?.entity.id as string, initialValues.id as string, limit, responsabilityFilter)
+      setEntityResponsibilityListList(data)
+      if (data.length > 0) setResponsabilityTotal(data[0].totalItems as number)
+    } catch (error: any) {
+      changeLoaderState({ show: false })
+      showToast(error.message, 'error')
+    }
+    changeLoaderState({ show: false })
+  }
+
+  const loadMore = () => {
+    fetchResponsabilityList(responsabilityLimit + 5)
+  }
+
+
+  useEffect(() => {
+    if (currentEntity?.entity.id && initialValues.id) {
+      fetchJobList()
+      fetchResponsabilityList()
+    }
+
+  }, [currentEntity?.entity.id, user?.id, initialValues.id])
+
+  const addResponsabiltyItem = () => {
+    if (entityResponsibilityList.length <= branchList.length) {
+      if (branchList.length === 1) addEntityResponsibility(branchList[0].id as string)
+      else {
+        openModal(CommonModalType.BRANCH_SELECTED)
+      }
+    } else {
+      showToast("Ya tienes todas las sucursales con responsabilidades asociadas", 'info')
+    }
+
+  }
+
   return {
-    items, onSort, onRowsPerPageChange,onSuccess,
-    onDelete, deleting, topFilter,
+    items, onSort, onRowsPerPageChange, onSuccess,
+    onDelete, deleting, topFilter, addResponsabiltyItem,
     onNext, onBack, onSuccessCreate,
-    columns, branchListEmployee,
-    loading, filterParams, onResend,
-    initialValues, rowAction
+    columns, addEntityResponsibility,
+    loading, filterParams, onResend, entityResponsibilityList, responsabilityFilter, setResponsabilityFilter,
+    initialValues, rowAction, branchList, jobList, loadMore, responsabilityTotal, responsabilityLimit
   }
 }

@@ -19,11 +19,12 @@ export interface HelpTab {
 
 export interface HelpTabsProps {
   tabs: Array<HelpTab>
+  small?:boolean
   ref?: any
 }
 
 
-const HelpTabs = ({ tabs, ref }: HelpTabsProps) => {
+const HelpTabs = ({ tabs, ref, small=false }: HelpTabsProps) => {
   const [value, setValue] = React.useState(0);
   const theme = useTheme();
 
@@ -35,6 +36,7 @@ const HelpTabs = ({ tabs, ref }: HelpTabsProps) => {
   const CustomTab = (props: any) => (
     <Tab
       {...props}
+      
       icon={props.icon ? props.icon(props) : null}
       iconPosition="start"
       label={
@@ -56,7 +58,7 @@ const HelpTabs = ({ tabs, ref }: HelpTabsProps) => {
         </Box>
       }
       sx={{
-        minHeight: 87,
+        minHeight: !small?87:57,
         padding: theme.spacing(1.5, 2),
         justifyContent: 'flex-start',
         '&.Mui-selected': {
@@ -73,12 +75,13 @@ const HelpTabs = ({ tabs, ref }: HelpTabsProps) => {
     <Paper ref={ref} elevation={0} sx={{
       boxShadow: 'none',
       borderRadius: 1,
-      mt:10   
+      mt:!small?10:2,
+      px:!small?0:2   
     }}>
       <Tabs
         orientation='horizontal'
         value={value}
-        variant='fullWidth'
+        variant={!small?'fullWidth':'standard'}
         onChange={handleChange}
         aria-label="icon position tabs"
         sx={{

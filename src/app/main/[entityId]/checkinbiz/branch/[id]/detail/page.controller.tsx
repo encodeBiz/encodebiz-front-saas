@@ -25,7 +25,7 @@ export default function useEmployeeDetailController() {
     phone: '',
     role: "internal",
     status: 'active',
-    branchId: [],
+    
     metadata: []
   });
 

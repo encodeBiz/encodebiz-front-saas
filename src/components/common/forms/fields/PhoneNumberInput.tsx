@@ -5,7 +5,7 @@ import { countriesCode } from '@/config/constants';
 import { Error, SearchOutlined } from '@mui/icons-material';
 import { extractCountryCode } from '@/lib/common/String';
 import { useTranslations } from 'next-intl';
- 
+
 const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
     ...props
 }) => {
@@ -23,7 +23,7 @@ const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
 
 
     const handlePhoneChange = (event: any) => {
-        const number = event.target.value.replace(/\D/g, ''); // Remove non-digits
+        const number = event.target.value?.replace(/\D/g, ''); // Remove non-digits
         setPhoneNumber(number);
         triggerOnChange(countryCode, number);
     };
@@ -58,9 +58,10 @@ const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
                 input: {
                     endAdornment: helperText && <InputAdornment position="end"><Error color='error' /></InputAdornment>,
                     startAdornment: <InputAdornment position="start">
+
                         <Select
                             value={countryCode}
-
+                          
                             variant="standard"
                             sx={{
                                 '& .MuiSelect-select': {
@@ -86,7 +87,8 @@ const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
                             renderValue={(selected) => '+' + selected}
 
                         >
-                            <ListSubheader sx={{ mb: 2 }}>
+                            
+                            <ListSubheader sx={{ pb: 2 ,pt:2}}>
                                 <TextField autoFocus
                                     placeholder={t("core.label.search")}
                                     value={searchText}
@@ -107,9 +109,9 @@ const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
                                     sx={{ height: 40 }}
                                 />
                             </ListSubheader>
-                            <Box sx={{ maxHeight: 200, overflow: 'scroll' }}>
-                                {codeFiltered.sort((a, b) => a.name.localeCompare(b.name)).map((country) => (
-                                    <MenuItem key={country.isoCode} value={country.dialCode} sx={{ height: 40 }} onClick={() => {
+                        
+                                {codeFiltered.sort((a, b) => a.name.localeCompare(b.name)).map((country, i) => (
+                                    <MenuItem key={i} value={country.dialCode} sx={{ height: 40 }} onClick={() => {
                                         setCountryCode(country.dialCode);
                                         triggerOnChange(country.dialCode, phoneNumber);
                                         setSearchText('')
@@ -130,7 +132,7 @@ const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
                                         </Box>
                                     </MenuItem>
                                 ))}
-                            </Box>
+                             
                         </Select>
                     </InputAdornment>
                 }

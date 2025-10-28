@@ -20,6 +20,8 @@ export const collection = {
     SUCURSAL: 'branches',
     CHECKLOG: 'checklogs',
     CHECKBIZ_REPORT: 'reports',
+    JOBS:'jobs',
+    RESPONSABILITY:'employee_responsibilities'
 
 
 }

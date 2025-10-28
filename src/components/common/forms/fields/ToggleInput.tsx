@@ -1,10 +1,10 @@
 // TextInput.tsx
 import React from 'react';
-import { Box, FormControlLabel, FormHelperText,  Switch  } from '@mui/material';
+import { Box, FormControlLabel, FormHelperText, Switch } from '@mui/material';
 import { FieldProps, useField } from 'formik';
- 
 
-const ToggleInput: React.FC<FieldProps & { label: string, name: string, disabled: boolean }> = ({
+
+const ToggleInput: React.FC<FieldProps & { label: string, name: string, disabled: boolean, onHandleChange: (value: any) => void }> = ({
   ...props
 }) => {
   const [field, meta, helpers] = useField(props.name);
@@ -17,7 +17,10 @@ const ToggleInput: React.FC<FieldProps & { label: string, name: string, disabled
         <Switch
 
           disabled={props.disabled}
-          checked={field.value ?? false} onChange={(e) => helpers.setValue(e.target.checked)} name="gilad" />
+          checked={field.value ?? false} onChange={(e) => {
+            if (typeof props.onHandleChange === 'function') props.onHandleChange(e.target.checked)
+            helpers.setValue(e.target.checked)
+          }} name="gilad" />
       }
 
       label={props.label}

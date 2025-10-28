@@ -3,9 +3,11 @@ import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
-import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
+import { EmployeeEntityResponsibility, IEmployee, Job } from "@/domain/features/checkinbiz/IEmployee";
 import { IChecklog, ICreateLog } from "@/domain/features/checkinbiz/IChecklog";
-import { mapperErrorFromBack } from "@/lib/common/String";
+import { mapperErrorFromBack, normalizarString } from "@/lib/common/String";
+import { addDocument } from "@/lib/firebase/firestore/addDocument";
+import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
 
 
 /**
@@ -53,6 +55,80 @@ export const search = async (entityId: string, params: SearchParams): Promise<IE
   });
 
   return result;
+}
+
+/**
+   * Search employee
+   *
+   * @async
+   * @param {SearchParams} params
+   * @returns {Promise<Iemployee[]>}
+   */
+export const searchJobs = async (entityId: string): Promise<Job[]> => {
+  const result: Job[] = await searchFirestore({
+    ...{ limit: 10000 } as any,
+    collection: `${collection.ENTITIES}/${entityId}/${collection.JOBS}`,
+  });
+
+  return result;
+}
+
+export const searchResponsability = async (entityId: string, employeeId: string, limit: number, filters: Array<{ field: string, operator: string, value: any }> = []): Promise<EmployeeEntityResponsibility[]> => {
+  const result: EmployeeEntityResponsibility[] = await searchFirestore({
+    ...{
+      limit: limit,
+      orderBy: 'active',
+      orderDirection: "asc",
+      filters: [...filters, {
+        field: 'employeeId', operator: '==', value: employeeId
+      }]
+    } as any,
+    collection: `${collection.ENTITIES}/${entityId}/${collection.RESPONSABILITY}`,
+  });
+
+  return result;
+}
+
+/**
+   * Search employee
+   *
+   * @async
+   * @param {SearchParams} params
+   * @returns {Promise<Iemployee[]>}
+   */
+export const addJobs = async (entityId: string, jobName: string, price: number): Promise<void> => {
+  try {
+    const result: Job[] = await searchFirestore({
+      ...{ limit: 10000 } as any,
+      collection: `${collection.ENTITIES}/${entityId}/${collection.JOBS}`,
+    });
+
+    const normalizeJobName = jobName.trim().toLocaleLowerCase()
+    const item = result.find(e => normalizarString(e.job) === normalizarString(normalizeJobName))
+    if (item) {
+      await updateDocument<Job>({
+        collection: `${collection.ENTITIES}/${entityId}/${collection.JOBS}`,
+        data: {
+          job: normalizeJobName,
+          price: parseFloat(`${price}`)
+        },
+        id: item.id as string
+      });
+    } else {
+      await addDocument<Job>({
+        collection: `${collection.ENTITIES}/${entityId}/${collection.JOBS}`,
+        data: {
+          job: normalizeJobName,
+          price: parseFloat(`${price}`)
+        }
+      });
+    }
+
+
+  } catch (error: any) {
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
+  }
+
 }
 
 export async function createEmployee(data: Partial<IEmployee>, token: string, locale: any = 'es') {
@@ -113,7 +189,34 @@ export async function updateEmployee(data: Partial<IEmployee>, token: string, lo
   }
 }
 
+export async function handleRespnsability(data: Partial<EmployeeEntityResponsibility>, token: string, locale: any = 'es', operation: 'post'|'put'|'delete') {
+  try {
+    if (!token) {
+      throw new Error("Error to fetch user auth token");
+    } else {
+      const httpClientFetchInstance: HttpClient = new HttpClient({
+        baseURL: "",
+        headers: {
+          authorization: `Bearer ${token}`,
+          locale
+        },
+      });
+      const response: any = await httpClientFetchInstance[operation](
+        process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_RESPONSABILITY_HANDLER as string,
+        {
+          ...data,
+        }
+      );
+      if (response.errCode && response.errCode !== 200) {
+        throw new Error(response.message);
+      }
 
+      return response;
+    }
+  } catch (error: any) {
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
+  }
+}
 /**
    * Search employee
    *
@@ -129,7 +232,7 @@ export const deleteEmployee = async (entityId: string, id: string, token: string
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,locale
+          authorization: `Bearer ${token}`, locale
         },
       });
       const response: any = await httpClientFetchInstance.delete(
@@ -159,7 +262,7 @@ export async function createLog(data: ICreateLog, token: string, locale: any = '
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,locale
+          authorization: `Bearer ${token}`, locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
