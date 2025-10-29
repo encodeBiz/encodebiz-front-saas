@@ -87,17 +87,17 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
                     <DetailText label={t('core.label.remoteWork')} value={employee?.enableRemoteWork ? t('core.label.enable') : t('core.label.noenable')} />
                 </Box>
 
-                {employee?.enableRemoteWork && !!employee?.metadata?.find((e: any) => e.label === 'address') && <Paper sx={{ mt: 4 }} elevation={0} >
+                {employee?.enableRemoteWork && !!employee?.address && <Paper sx={{ mt: 4 }} elevation={0} >
                     <Typography variant="subtitle1" gutterBottom textTransform={'uppercase'} >
                         {t('employee.enableRemoteWorkData')}
                     </Typography>
 
-                    <DetailText label={t('core.label.address')} value={employee?.metadata?.find((e: any) => e.label === 'address')?.value?.street} orientation="row" >
-                        <Box sx={{ marginLeft: 4, minWidth: 140 }}><SassButton variant="text" onClick={() => onGoMap(employee?.metadata?.find((e: any) => e.label === 'address')?.value.geo.lat, employee?.metadata?.find((e: any) => e.label === 'address')?.value.geo.lng)}> {t('sucursal.map')}</SassButton></Box>
+                    <DetailText label={t('core.label.address')} value={employee?.address?.street} orientation="row" >
+                        <Box sx={{ marginLeft: 4, minWidth: 140 }}><SassButton variant="text" onClick={() => onGoMap(employee?.address?.geo?.lat as number, employee?.address?.geo?.lng  as number)}> {t('sucursal.map')}</SassButton></Box>
                     </DetailText>
-                    <DetailText label={t('core.label.timeZone')} value={employee?.metadata?.find((e: any) => e.label === 'address')?.value.timeZone} orientation="row" />
-                    <DetailText label={t('core.label.country')} value={employee?.metadata?.find((e: any) => e.label === 'address')?.value.country} orientation="row" />
-                    <DetailText label={t('core.label.city')} value={employee?.metadata?.find((e: any) => e.label === 'address')?.value.city} orientation="row" />
+                    <DetailText label={t('core.label.timeZone')} value={employee?.address.timeZone} orientation="row" />
+                    <DetailText label={t('core.label.country')} value={employee?.address.country} orientation="row" />
+                    <DetailText label={t('core.label.city')} value={employee?.address.city} orientation="row" />
 
 
                 </Paper>}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, InputAdornment, ListSubheader, MenuItem, Select, TextField, TextFieldProps, Typography } from '@mui/material';
 import { FieldProps, useField } from 'formik';
 import { countriesCode } from '@/config/constants';
@@ -32,27 +32,23 @@ const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
         helper.setValue(`${code}${number}`)
     };
 
-    const formatPhoneNumber = (number: any) => {
-        if (!number) return '';
-        // Format as (XXX) XXX-XXXX for US numbers
-        if (countryCode === '+1' && number.length <= 10) {
-            const areaCode = number.slice(0, 3);
-            const middle = number.slice(3, 6);
-            const last = number.slice(6, 10);
-            return `(${areaCode}) ${middle}${last ? '-' + last : ''}`;
-        }
-        return number;
-    };
+
+    useEffect(() => {
+        setCountryCode(field.value ? extractCountryCode(field.value)?.code as string : '34')
+        setPhoneNumber(field.value ? extractCountryCode(field.value)?.phone?.replace(/^\+\d+\s?/, '') : '')
+    }, [field.value])
 
 
-    return (
+
+
+    return (<>
         <TextField
             {...field}
             {...props}
             error={!!helperText}
             helperText={helperText as string}
 
-            value={formatPhoneNumber(phoneNumber)}
+            value={phoneNumber}
             onChange={handlePhoneChange}
             slotProps={{
                 input: {
@@ -61,7 +57,7 @@ const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
 
                         <Select
                             value={countryCode}
-                          
+
                             variant="standard"
                             sx={{
                                 '& .MuiSelect-select': {
@@ -87,8 +83,8 @@ const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
                             renderValue={(selected) => '+' + selected}
 
                         >
-                            
-                            <ListSubheader sx={{ pb: 2 ,pt:2}}>
+
+                            <ListSubheader sx={{ pb: 2, pt: 2 }}>
                                 <TextField autoFocus
                                     placeholder={t("core.label.search")}
                                     value={searchText}
@@ -109,17 +105,17 @@ const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
                                     sx={{ height: 40 }}
                                 />
                             </ListSubheader>
-                        
-                                {codeFiltered.sort((a, b) => a.name.localeCompare(b.name)).map((country, i) => (
-                                    <MenuItem key={i} value={country.dialCode} sx={{ height: 40 }} onClick={() => {
-                                        setCountryCode(country.dialCode);
-                                        triggerOnChange(country.dialCode, phoneNumber);
-                                        setSearchText('')
-                                        setCodeFiltered(countriesCode)
 
-                                    }}>
-                                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                            {/** <Image
+                            {codeFiltered.sort((a, b) => a.name.localeCompare(b.name)).map((country, i) => (
+                                <MenuItem key={i} value={country.dialCode} sx={{ height: 40 }} onClick={() => {
+                                    setCountryCode(country.dialCode);
+                                    triggerOnChange(country.dialCode, phoneNumber);
+                                    setSearchText('')
+                                    setCodeFiltered(countriesCode)
+
+                                }}>
+                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                        {/** <Image
                                                 src={`https://flagpedia.net/data/flags/icon/72x54/${country.flag.toLowerCase()}.png`}
                                                 width={40}
                                                 height={40 * 0.75}
@@ -128,17 +124,17 @@ const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
                                                     borderRadius: '2px'
                                                 }}
                                             />*/}
-                                            <Typography variant="body2">{country.phoneCode} {country.name}</Typography>
-                                        </Box>
-                                    </MenuItem>
-                                ))}
-                             
+                                        <Typography variant="body2">{country.phoneCode} {country.name}</Typography>
+                                    </Box>
+                                </MenuItem>
+                            ))}
+
                         </Select>
                     </InputAdornment>
                 }
             }}
         />
-    );
+    </>);
 };
 
 export default PhoneNumberInput;

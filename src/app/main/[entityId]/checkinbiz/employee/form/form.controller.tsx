@@ -78,10 +78,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         ...values,
         "uid": user?.id as string,
         "metadata": {
-          ...ArrayToObject(values.metadata as any),
-          address: {
-            ...values.address
-          }
+          ...ArrayToObject(values.metadata as any),          
         },
         "id": itemId,
         entityId: currentEntity?.entity.id
@@ -123,8 +120,8 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const event: IEmployee = await fetchEmployee(currentEntity?.entity.id as string, itemId)
-      const addressData = event?.metadata?.address
-      delete event?.metadata?.address
+      const addressData = event?.address
+      
       const initialValuesData = {
         ...event,
         metadata: objectToArray(event.metadata)
@@ -171,12 +168,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
       setValidationSchema(prevSchema => ({
         ...prevSchema,
-        /*
-        country: Yup.string().nullable(),
-        city: Yup.string().nullable(),
-        postalCode: Yup.string().nullable(),
-        street: Yup.string().nullable(),
-        */
+        
       }))
     }
   }
