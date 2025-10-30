@@ -1,19 +1,39 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from 'react';
+'use client';
+import { createContext, useContext, useEffect, useState } from "react";
 import { useToast } from "@/hooks/useToast";
+import { useAppLocale } from "@/hooks/useAppLocale";
+import { EmployeeEntityResponsibility, IEmployee, Job } from "@/domain/features/checkinbiz/IEmployee";
+import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
+import { CommonModalType } from "@/contexts/commonModalContext";
 import { useAuth } from "@/hooks/useAuth";
+import { useCommonModal } from "@/hooks/useCommonModal";
 import { useEntity } from "@/hooks/useEntity";
 import { useLayout } from "@/hooks/useLayout";
-import { EmployeeEntityResponsibility, IEmployee, Job } from "@/domain/features/checkinbiz/IEmployee";
-import { handleRespnsability, searchJobs, searchResponsability } from "@/services/checkinbiz/employee.service";
-import { CommonModalType } from "@/contexts/commonModalContext";
-import { useCommonModal } from "@/hooks/useCommonModal";
-import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
+import { searchJobs, searchResponsability, handleRespnsability } from "@/services/checkinbiz/employee.service";
 import { fetchSucursal, search } from "@/services/checkinbiz/sucursal.service";
-import { useTranslations } from 'next-intl';
-import { useAppLocale } from '@/hooks/useAppLocale';
+import { useTranslations } from "next-intl";
 
-export default function useBranchDetailController(employee: IEmployee) {
+interface EmployeeDetailType {
+    addResponsabiltyItem: () => void
+    deleting: boolean
+    onEnd: () => void
+    pending: boolean
+    addEntityResponsibility: (branchId: string) => void
+    onDelete: (id: string) => void
+    onFilter: (filter: Array<{ field: string, operator: string, value: any }>) => void
+    entityResponsibilityList: Array<EmployeeEntityResponsibility>
+    responsabilityFilter: Array<{ field: string, operator: string, value: any }>
+    setResponsabilityFilter: (items: Array<{ field: string, operator: string, value: any }>) => void
+    branchList: Array<ISucursal>
+    jobList: Array<Job>,
+    loadMore: () => void
+    responsabilityTotal: number
+    responsabilityLimit: number
+}
+
+export const EmployeeDetailContext = createContext<EmployeeDetailType | undefined>(undefined);
+export const EmployeeDetailProvider = ({ children, employee }: { children: React.ReactNode, employee: IEmployee }) => {
     const { showToast } = useToast()
     const { user } = useAuth()
     const { currentEntity } = useEntity()
@@ -72,7 +92,7 @@ export default function useBranchDetailController(employee: IEmployee) {
     const [pending, setPending] = useState(false)
     const [responsabilityLimit, setResponsabilityLimit] = useState(5)
     const [responsabilityTotal, setResponsabilityTotal] = useState(0)
-    const [responsabilityFilter, setResponsabilityFilter] = useState([
+    const [responsabilityFilter, setResponsabilityFilter] = useState<Array<{ field: string, operator: string, value: any }>>([
         { field: 'active', operator: '==', value: 1 }
     ])
     const fetchResponsabilityList = async (limit: number = 5, filter: Array<{ field: string, operator: string, value: any }>) => {
@@ -148,10 +168,32 @@ export default function useBranchDetailController(employee: IEmployee) {
         fetchResponsabilityList(5, filter)
     }
 
-    return {
-        addResponsabiltyItem, deleting, onEnd,pending,
-        addEntityResponsibility, onDelete, onFilter,
-        entityResponsibilityList, responsabilityFilter, setResponsabilityFilter,
-        branchList, jobList, loadMore, responsabilityTotal, responsabilityLimit
+
+
+
+
+
+
+    return (
+        <EmployeeDetailContext.Provider  value={{
+            addResponsabiltyItem, deleting, onEnd, pending,
+            addEntityResponsibility, onDelete, onFilter,
+            entityResponsibilityList, responsabilityFilter, setResponsabilityFilter,
+            branchList, jobList, loadMore, responsabilityTotal, responsabilityLimit
+        }}>
+            {children}
+        </EmployeeDetailContext.Provider>
+    );
+};
+
+
+export const useEmployeeDetail = () => {
+    const context = useContext(EmployeeDetailContext);
+    if (!context) {
+        throw new Error("useAuth must be used within an AuthProvider");
     }
-}
+    return context;
+};
+
+
+

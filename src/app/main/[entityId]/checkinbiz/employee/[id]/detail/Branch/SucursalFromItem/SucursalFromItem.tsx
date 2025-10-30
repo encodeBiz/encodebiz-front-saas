@@ -62,6 +62,7 @@ export default function SucursalFromItem({ item, onEnd }: { item: EmployeeEntity
                     activateWatchStatus={true}
                     hideBtn={false}
                     formRef={formRef}
+                    submitButtonText={t('core.button.save')}
 
                 />
             </AccordionDetails>

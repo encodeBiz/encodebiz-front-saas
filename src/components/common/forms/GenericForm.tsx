@@ -176,9 +176,16 @@ const GenericForm = <T extends Record<string, any>>({
         validateOnChange={true}
         innerRef={formRef}
 
+
       >
         {(formikProps: FormikProps<T>) => (
-          <Form noValidate>
+          <Form
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+              }
+            }}
+            noValidate>
             {/*JSON.stringify(formikProps.errors)*/}
             {/*JSON.stringify(formikProps.values)*/}
             {activateWatchStatus && <FormStatusWatcher />}

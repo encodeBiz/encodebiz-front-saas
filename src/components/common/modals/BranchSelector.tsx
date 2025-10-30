@@ -35,7 +35,7 @@ const BranchSelectorModal = ({ branchList, onOKAction, type = 'item' }: BranchSe
             fullWidth
             maxWidth="sm"
             scroll={'paper'}
-            slotProps={{ paper: { sx: { p: 2, borderRadius: 2 } } }}
+            slotProps={{ paper: { sx: { p: 2, borderRadius: 2, minHeight:120 } } }}
         >
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
@@ -57,7 +57,7 @@ const BranchSelectorModal = ({ branchList, onOKAction, type = 'item' }: BranchSe
                     disableClearable
                     options={branchList}
                     getOptionLabel={(option) => option.name}
-                    sx={{ width: '100%' }}
+                    sx={{ width: '100%', zIndex:99999 }}
                     onChange={(event: any, newValue: { name: string, branchId: string } | null) => {
                         setBranchSelected(newValue as { name: string, branchId: string })
                     }}
