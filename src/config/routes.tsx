@@ -39,7 +39,7 @@ const PASSINBIZ = [{
 
 const CHECKINBIZ: any = [, {
     name: 'Dashboard',
-    link: `/${PASSSINBIZ_MODULE_ROUTE}/stats`,
+    link: `/${CHECKINBIZ_MODULE_ROUTE}/stats`,
     subMenu: []
 }, {
         name: 'Employee',

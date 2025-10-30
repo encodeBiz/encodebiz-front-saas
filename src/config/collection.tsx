@@ -21,7 +21,9 @@ export const collection = {
     CHECKLOG: 'checklogs',
     CHECKBIZ_REPORT: 'reports',
     JOBS:'jobs',
-    RESPONSABILITY:'employee_responsibilities'
+    RESPONSABILITY:'employee_responsibilities',
+    BRANCH_PATTER:'checkbiz_branch_patterns'
+
 
 
 }
