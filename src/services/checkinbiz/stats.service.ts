@@ -9,7 +9,7 @@ import { IChecklog } from "@/domain/features/checkinbiz/IChecklog";
 import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
 import { IBranchPattern } from "@/domain/features/checkinbiz/IStats";
 
- 
+
 
 /**
    * Search employee
@@ -18,16 +18,16 @@ import { IBranchPattern } from "@/domain/features/checkinbiz/IStats";
    * @param {SearchParams} params
    * @returns {Promise<Iemployee[]>}
    */
-export const fetchBranchPattern = async (entityId: string, branchId: string): Promise<IBranchPattern[]> => {
+export const fetchBranchPattern = async (entityId: string, branchId: string): Promise<IBranchPattern | null> => {
   const filters = [
     {
-      field: 'branchId',  
+      field: 'branchId',
       operator: '==',
       value: branchId,
     },
 
-      {
-      field: 'entityId',  
+    {
+      field: 'entityId',
       operator: '==',
       value: entityId,
     },
@@ -37,7 +37,7 @@ export const fetchBranchPattern = async (entityId: string, branchId: string): Pr
     filters,
     collection: `${collection.BRANCH_PATTER}`,
   });
-
-  return result;
+  if (result.length > 0)
+    return result[0];
+  return null
 }
- 

@@ -24,7 +24,7 @@ export default function Stats() {
         >
 
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
-            <Typography>Operational Open Data</Typography>
+            <Typography variant='h4' sx={{ width: '100%' }}>Operational Open Data</Typography>
             <StatsPattern />
           </Box>
 

@@ -38,8 +38,7 @@ export function CheckBizStatsProvider({ children }: { children: React.ReactNode 
     }
 
     const updatePatternData = async () => {
-        console.log(branchSelected);
-        
+ 
         if (branchSelected.length == 1)
             setBranchOne(await fetchBranchPattern(currentEntity?.entity?.id as string, branchSelected[0].id as string) as IBranchPattern);
         if (branchSelected.length == 2) {
@@ -51,7 +50,7 @@ export function CheckBizStatsProvider({ children }: { children: React.ReactNode 
         initialize()
     }, [currentEntity?.entity?.id])
 
-  
+
     useEffect(() => {
         updatePatternData()
     }, [branchSelected.length])

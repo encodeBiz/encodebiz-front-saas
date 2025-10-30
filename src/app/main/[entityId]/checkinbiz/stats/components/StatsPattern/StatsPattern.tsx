@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import { IBranchPattern } from '@/domain/features/checkinbiz/IStats';
-import { AccessTime, AccessTimeOutlined } from '@mui/icons-material';
+import { AccessTimeOutlined } from '@mui/icons-material';
 
 export const StatsPatternCards = ({ data }: { data: IBranchPattern }) => {
 
