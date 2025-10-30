@@ -654,7 +654,7 @@
     "noBranch": "No existen sucursales creadas",
     "description": "Rellene los campos para registrar el empleado",
     "maxSelectionBranch": "Ya tienes todas las sucursales con responsabilidades asociadas",
-    "advise": "Este empleado no tiene configurado responsabilidades en las sucursales existentes, esto implicar que no va a poder utilizar correctamente la herramienta de registro de asistencia.",
+    "advise": "Sin sucursal asignada; el registro de asistencia no estará disponible.",
     "deleteConfirmModalTitle": "Eliminar empleado",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el empleado",
     "deleteConfirmModalTitleResponsability": "Eliminar sucursal",
