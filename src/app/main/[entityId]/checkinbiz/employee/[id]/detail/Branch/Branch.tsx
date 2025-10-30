@@ -34,18 +34,18 @@ export const Branch = () => {
             </Box>
 
             <Box display={'flex'} justifyContent={'flex-end'} alignItems={'center'} gap={4}>
-                <SearchFilter
+                <SearchFilter  
                     label={t('core.label.status')}
                     value={responsabilityFilter.find(e => e.field === 'active')?.value}
                     onChange={(value: any) => onFilter([...responsabilityFilter, { field: 'active', operator: '==', value }])}
                     options={[{ value: 1, label: t('core.label.active') }, { value: 0, label: t('core.label.inactive') }]}
                 />
 
-                {branchList.length > 0 && <SelectFilter
-                    first
+                {branchList.length > 0 && <SelectFilter width={200}
+                    first firstText={t('core.label.all')}
                     label={t('core.label.subEntity')}
                     defaultValue={'none'}
-                    value={responsabilityFilter.find((e: { field: string, operator: string, value: any }) => e.field === 'active')?.value ?? 'none'}
+                    value={responsabilityFilter.find((e: { field: string, operator: string, value: any }) => e.field === 'branchId')?.value ?? 'none'}
                     onChange={(value: any) => {
                         if (value) onFilter([...responsabilityFilter, { field: 'branchId', operator: '==', value }])
                         else onFilter([...responsabilityFilter.filter((e: { field: string, operator: string, value: any }) => e.field !== 'branchId')])

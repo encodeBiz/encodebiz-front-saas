@@ -4,12 +4,13 @@ export interface SelectFilterProps {
     value: any,
     first?: boolean
     label?: string
+    firstText?: string
     width?: number
     defaultValue?: any,
     onChange: (value: any) => void,
     items: Array<{ label: string, value: any }>
 }
-export const SelectFilter = ({ defaultValue, value, label, onChange, items, first = true, width=150 }: SelectFilterProps) => {
+export const SelectFilter = ({ defaultValue, value, label, onChange, items, first = true, firstText, width=150 }: SelectFilterProps) => {
     const t = useTranslations()
     return <FormControl size="small" sx={{ width  }}>
         {label && <InputLabel id="gb-label">{label}</InputLabel>}
@@ -27,7 +28,7 @@ export const SelectFilter = ({ defaultValue, value, label, onChange, items, firs
             defaultValue={defaultValue ?? 'none'}
             onChange={(e: any) => onChange(e.target.value)}  >
             {first && <MenuItem key={'none'} value={'none'}>
-                {t('core.label.select')}
+                {firstText?firstText:t('core.label.select')}
             </MenuItem>}
             {items.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
