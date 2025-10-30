@@ -36,6 +36,7 @@ export interface Column<T> {
   align?: 'left' | 'center' | 'right' | 'justify' | 'inherit';
   format?: (value: any, row: T) => React.ReactNode;
   sortable?: boolean;
+  onClick?: (row: T) => void
 }
 
 export interface IRowAction {
@@ -379,14 +380,17 @@ export function GenericTable<T extends Record<string, any>>({
 
                     {columns.map((column) => {
                       const value = row[column.id];
+                      
                       return (
                         <TableCell
+                          onClick={() => column.onClick ? column.onClick(row) : null}
                           sx={!column.format ? {
                             whiteSpace: 'nowrap',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
-                            maxWidth: 200
-                          } : {}}
+                            maxWidth: 200,
+                            cursor: column.onClick ? 'pointer' : 'inherit'
+                          } : {cursor: column.onClick ? 'pointer' : 'inherit'}}
                           key={column.id as string} align={column.align}>
                           {column.format ? column.format(value, row) : <Tooltip title={value}>{value}</Tooltip>}
                         </TableCell>
