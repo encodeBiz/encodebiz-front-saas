@@ -348,7 +348,10 @@
       "passwordMatch": "Passwords do not match",
       "acceptTerm": "You must accept the terms and conditions",
       "avatarUpload": "Please select a valid image file.",
-      "avatarMaxSize": "Image is too large. Maximum allowed: 5MB."
+      "avatarMaxSize": "Image is too large. Maximum allowed: 5MB.",
+      "validZip": "Postal code must be numeric",
+      "minZipCode": "Postal code must be at least 5 digits",
+      "maxZipCode": "Postal code must not exceed 10 digits"
     },
     "signup": {
       "title": "Create an account",

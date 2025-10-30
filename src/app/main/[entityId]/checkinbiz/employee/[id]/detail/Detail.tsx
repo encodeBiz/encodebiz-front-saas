@@ -95,9 +95,7 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
                     <DetailText label={t('core.label.address')} value={employee?.address?.street} orientation="row" >
                         <Box sx={{ marginLeft: 4, minWidth: 140 }}><SassButton variant="text" onClick={() => onGoMap(employee?.address?.geo?.lat as number, employee?.address?.geo?.lng as number)}> {t('sucursal.map')}</SassButton></Box>
                     </DetailText>
-                    <DetailText label={t('core.label.country')} value={employee?.address.country} orientation="row" />
-                    <DetailText label={t('core.label.city')} value={employee?.address.city} orientation="row" />
-
+                    <DetailText label={t('core.label.timeZone')} value={employee?.address.timeZone} orientation="row" />
 
                 </Paper>}
 

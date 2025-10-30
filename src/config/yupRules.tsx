@@ -59,9 +59,9 @@ export const priceRule = (t: any) => Yup.number()
 
 export const zipCodeRule = (t: any) => Yup.string()
     .required(t('core.formValidatorMessages.required'))
-    .matches(/^[0-9]+$/, 'Postal code must be numeric')
-    .min(5, 'Postal code must be at least 5 digits')
-    .max(10, 'Postal code must not exceed 10 digits')
+    .matches(/^[0-9]+$/,  t('core.formValidatorMessages.validZip'))
+    .min(5,  t('core.formValidatorMessages.minZipCode'))
+    .max(10,  t('core.formValidatorMessages.maxZipCode'))
 
 
 export const addressSchema = (t: any) => Yup.object().shape({

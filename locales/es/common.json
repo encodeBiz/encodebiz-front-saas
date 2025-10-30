@@ -348,7 +348,10 @@
       "passwordMatch": "La contraseñas no coinciden",
       "acceptTerm": "Debe aceptar los términos y condiciones",
       "avatarUpload": "Selecciona un archivo de imagen válido.",
-      "avatarMaxSize": "La imagen es demasiado grande. Máximo permitido: 5MB."
+      "avatarMaxSize": "La imagen es demasiado grande. Máximo permitido: 5MB.",
+      "validZip": "El código postal debe ser numérico",
+      "minZipCode": "El código postal debe tener al menos 5 dígitos",
+      "maxZipCode": "El código postal no debe exceder los 10 dígitos"
     },
     "signup": {
       "title": "Crea una cuenta",

@@ -60,7 +60,7 @@ const CustomListItemButton = ({ children, item, subItem = false, handleSubMenuTo
 
       },
       // Styles for the hover state (when not selected)
-      '&:hover':  disableHover ? {} :{
+      '&:hover':  disableHover ? { backgroundColor: 'transparent',    borderRadius: 10,} :{
         backgroundColor: 'action.hover',
         borderRadius: 10,
       },
