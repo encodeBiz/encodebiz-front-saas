@@ -58,7 +58,7 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
         active: active,
         entityId: currentEntity?.entity.id
       }
-      await handleRespnsability(data, token, currentLocale, !item.id ? 'post' : 'put')
+      await handleRespnsability(data, token, currentLocale, !item.id ? 'post' : 'patch')
       if (values.job)
         addJobs(currentEntity?.entity.id as string, values.job, values.price)
       changeLoaderState({ show: false })
