@@ -7,6 +7,8 @@ import { Detail } from './Detail';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import AttendanceFormModal from '../../../attendance/AttendanceFormModal/AttendanceFormModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
+import { EmployeeDetailProvider } from './detail.context';
+import { IEmployee } from '@/domain/features/checkinbiz/IEmployee';
 
 export default function BranchDetail() {
     const { open } = useCommonModal();
@@ -15,32 +17,33 @@ export default function BranchDetail() {
     const { initialValues, items, topFilter, onRowsPerPageChange, onSort,
         onNext, onBack,
         filterParams, rowAction,
-        columns, onSuccessCreate,onSuccess,
+        columns, onSuccessCreate, onSuccess,
         loading, onResend } = useEmployeeDetailController()
     return (
         <Container maxWidth="lg">
+            <EmployeeDetailProvider employee={initialValues as IEmployee}>
+                {initialValues?.id && <Detail onSuccess={onSuccess} onResend={onResend} employee={initialValues as any} >
+                    <GenericTable
+                        data={items}
+                        rowAction={rowAction}
+                        topFilter={topFilter}
+                        columns={columns}
+                        title={''}
+                        keyField="id"
+                        loading={loading}
+                        page={filterParams.currentPage}
+                        rowsPerPage={filterParams.params.limit}
+                        onRowsPerPageChange={onRowsPerPageChange}
+                        onSorteable={onSort}
+                        sort={{ orderBy: filterParams.params.orderBy, orderDirection: filterParams.params.orderDirection }}
+                        onBack={onBack}
+                        onNext={onNext}
 
-            {initialValues?.id && <Detail onSuccess={onSuccess} onResend={onResend} employee={initialValues as any} >
-                <GenericTable
-                    data={items}
-                    rowAction={rowAction}
-                    topFilter={topFilter}
-                    columns={columns}
-                    title={''}
-                    keyField="id"
-                    loading={loading}
-                    page={filterParams.currentPage}
-                    rowsPerPage={filterParams.params.limit}
-                    onRowsPerPageChange={onRowsPerPageChange}
-                    onSorteable={onSort}
-                    sort={{ orderBy: filterParams.params.orderBy, orderDirection: filterParams.params.orderDirection }}
-                    onBack={onBack}
-                    onNext={onNext}
 
 
-
-                />
-            </Detail>}
+                    />
+                </Detail>}
+            </EmployeeDetailProvider>
             {open.type === CommonModalType.CHECKLOGFORM && <AttendanceFormModal onSuccess={onSuccessCreate} />}
         </Container>
     );

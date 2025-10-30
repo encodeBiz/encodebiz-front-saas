@@ -247,7 +247,7 @@ export default function useEmployeeListController() {
 
     <SearchIndexFilter
       type="branch"
-      label={t('core.label.search')}
+      label={t('sucursal.search')}
       onChange={async (value: ISearchIndex) => {
         const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
         if (value?.id) {

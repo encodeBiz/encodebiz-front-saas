@@ -47,7 +47,7 @@ export const ratioLogRule = (t: any) => Yup.number()
 
 export const timeBreakRule = (t: any) => Yup.number()
     .required(t('core.formValidatorMessages.required'))
-    .min(60, t('core.formValidatorMessages.min') + 60)
+    .min(10, t('core.formValidatorMessages.min') + 10)
     .max(60 * 24, t('core.formValidatorMessages.max') + 60 * 24)
 
 
@@ -59,9 +59,9 @@ export const priceRule = (t: any) => Yup.number()
 
 export const zipCodeRule = (t: any) => Yup.string()
     .required(t('core.formValidatorMessages.required'))
-    .matches(/^[0-9]+$/, 'Postal code must be numeric')
-    .min(5, 'Postal code must be at least 5 digits')
-    .max(10, 'Postal code must not exceed 10 digits')
+    .matches(/^[0-9]+$/,  t('core.formValidatorMessages.validZip'))
+    .min(5,  t('core.formValidatorMessages.minZipCode'))
+    .max(10,  t('core.formValidatorMessages.maxZipCode'))
 
 
 export const addressSchema = (t: any) => Yup.object().shape({

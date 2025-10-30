@@ -100,7 +100,7 @@
       "minutes": "minutos",
       "periocityTime": "Rango de tiempo",
       "create-download": "Crear y descargar",
-      "advance": "CONFICURACIÓN AVANZADA",
+      "advance": "CONFIGURACIÓN AVANZADA",
       "dayTimeRange": "Horario de Jornada Laboral",
       "dayTimeRangeDesc": "Por defecto el horario de la Jornada Laboral será 08:00 a 17:00",
       "enableDayTimeRange": "Habilitar horario",
@@ -348,7 +348,10 @@
       "passwordMatch": "La contraseñas no coinciden",
       "acceptTerm": "Debe aceptar los términos y condiciones",
       "avatarUpload": "Selecciona un archivo de imagen válido.",
-      "avatarMaxSize": "La imagen es demasiado grande. Máximo permitido: 5MB."
+      "avatarMaxSize": "La imagen es demasiado grande. Máximo permitido: 5MB.",
+      "validZip": "El código postal debe ser numérico",
+      "minZipCode": "El código postal debe tener al menos 5 dígitos",
+      "maxZipCode": "El código postal no debe exceder los 10 dígitos"
     },
     "signup": {
       "title": "Crea una cuenta",
@@ -647,6 +650,7 @@
     "update": "Editar empleado",
     "edit": "Editar empleado",
     "detail": "Detalles",
+    "search": "Buscar empleado",
     "enableRemoteWorkData": "Información de trabajo remoto",
     "configureDevice": "Configurar dispositivo de confianza",
     "import": "Importar",
@@ -654,7 +658,7 @@
     "noBranch": "No existen sucursales creadas",
     "description": "Rellene los campos para registrar el empleado",
     "maxSelectionBranch": "Ya tienes todas las sucursales con responsabilidades asociadas",
-    "advise": "Este empleado no tiene configurado responsabilidades en las sucursales existentes, esto implicar que no va a poder utilizar correctamente la herramienta de registro de asistencia.",
+    "advise": "Sin sucursal asignada; el registro de asistencia no estará disponible.",
     "deleteConfirmModalTitle": "Eliminar empleado",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el empleado",
     "deleteConfirmModalTitleResponsability": "Eliminar sucursal",
@@ -679,10 +683,13 @@
     "detailSucursal": "Detalles de la sucursal/proyecto",
     "update": "Editar sucursal/proyecto",
     "edit": "Editar sucursal/proyecto",
+    "search": "Buscar sucursal/proyecto",
     "import": "Importar",
     "description": "Rellene los campos para registrar la sucursal/proyecto",
     "deleteConfirmModalTitle": "Eliminar sucursal/proyecto",
-    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente la sucursal/proyecto"
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente la sucursal/proyecto",
+    "freePlanAdviseTitle": "Operación no permitiva",
+    "freePlanAdviseText": "Actualmente tiene contratado para este servicio el plan gratis, para poder crear más sucursales debe actualizar el plan"
   },
   "attendance": {
     "title": "Reportes de asistencia",

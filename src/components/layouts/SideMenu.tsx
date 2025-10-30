@@ -31,14 +31,14 @@ const drawerWidth = 265;
 
 
 
-const CustomListItemButton = ({ children, item, subItem = false, handleSubMenuToggle }: { handleSubMenuToggle?: (menu: any) => void, item: any, subItem?: boolean, children?: any }) => {
+const CustomListItemButton = ({ children, item, subItem = false, handleSubMenuToggle, disableHover = false }: { handleSubMenuToggle?: (menu: any) => void, item: any, disableHover?: boolean, subItem?: boolean, children?: any }) => {
   const pathname = usePathname()
   const t = useTranslations();
   const theme = useTheme();
   const { currentEntity } = useEntity()
   const { navivateTo } = useLayout()
 
-   
+
 
   return <ListItemButton
     sx={{
@@ -48,7 +48,7 @@ const CustomListItemButton = ({ children, item, subItem = false, handleSubMenuTo
         backgroundColor: (theme) => theme.palette.primary.main,
         borderRadius: 10,
         color: 'white',
-        '&:hover': {
+        '&:hover': disableHover ? {} : {
           backgroundColor: 'primary.main',
           borderRadius: 10,
         },
@@ -60,7 +60,7 @@ const CustomListItemButton = ({ children, item, subItem = false, handleSubMenuTo
 
       },
       // Styles for the hover state (when not selected)
-      '&:hover': {
+      '&:hover':  disableHover ? { backgroundColor: 'transparent',    borderRadius: 10,} :{
         backgroundColor: 'action.hover',
         borderRadius: 10,
       },
@@ -123,7 +123,7 @@ export default function SideMenu() {
             width: drawerWidth,
             boxSizing: 'border-box',
           },
-          
+
         }}
         variant="persistent"
         anchor="left"
@@ -145,7 +145,7 @@ export default function SideMenu() {
         </DrawerHeader>
         <Box display={'flex'} width={'100%'} alignItems={'flex-end'} justifyContent={'flex-end'}>
           <IconButton onClick={() => changeLayoutState({ ...layoutState, openDraw: false })}>
-            {theme.direction === 'ltr' ? <MenuOpen sx={{color:'#1C1B1D' }} /> : <Menu sx={{color:'#1C1B1D' }} />}
+            {theme.direction === 'ltr' ? <MenuOpen sx={{ color: '#1C1B1D' }} /> : <Menu sx={{ color: '#1C1B1D' }} />}
           </IconButton>
         </Box>
 
@@ -164,17 +164,17 @@ export default function SideMenu() {
           {menuItemsServices.map((item: any, i: number) => {
             if (item.divider) return null
             else
-              if ((item.subMenu.length == 0 || !entityServiceList.filter(e=>e.active).find(e => e.id === item.id)?.isBillingActive || item.header))
+              if ((item.subMenu.length == 0 || !entityServiceList.filter(e => e.active).find(e => e.id === item.id)?.isBillingActive || item.header))
                 return <ListItem key={i} disablePadding>
                   <CustomListItemButton item={item} />
                 </ListItem>
 
               else
-                if (entityServiceList.filter(e=>e.active).map(e => e.id).includes(item.id)) {
+                if (entityServiceList.filter(e => e.active).map(e => e.id).includes(item.id)) {
                   return <div key={i} >
                     <ListItem disablePadding>
-                      <CustomListItemButton item={item} handleSubMenuToggle={handleSubMenuToggle} >
-                        {openSubMenu.products ? <ExpandLess /> : <ExpandMore />}
+                      <CustomListItemButton item={item} handleSubMenuToggle={handleSubMenuToggle} disableHover={true}>
+                        {openSubMenu[item.id] ? <ExpandLess /> : <ExpandMore />}
                       </CustomListItemButton>
                     </ListItem>
                     <Collapse in={openSubMenu[item.id]} timeout="auto" unmountOnExit>

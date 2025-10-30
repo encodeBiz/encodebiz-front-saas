@@ -348,7 +348,10 @@
       "passwordMatch": "Passwords do not match",
       "acceptTerm": "You must accept the terms and conditions",
       "avatarUpload": "Please select a valid image file.",
-      "avatarMaxSize": "Image is too large. Maximum allowed: 5MB."
+      "avatarMaxSize": "Image is too large. Maximum allowed: 5MB.",
+      "validZip": "Postal code must be numeric",
+      "minZipCode": "Postal code must be at least 5 digits",
+      "maxZipCode": "Postal code must not exceed 10 digits"
     },
     "signup": {
       "title": "Create an account",
@@ -647,6 +650,7 @@
     "update": "Edit employee",
     "edit": "Edit employee",
     "detail": "Details",
+    "search": "Search employee",
     "enableRemoteWorkData": "Remote work information",
     "configureDevice": "Configure trusted device",
     "import": "Import",
@@ -680,9 +684,12 @@
     "update": "Edit branch/project",
     "edit": "Edit branch/project",
     "import": "Import",
+    "search": "Search branch/project",
     "description": "Fill in the fields to register the branch/project",
     "deleteConfirmModalTitle": "Delete branch/project",
-    "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the branch/project"
+    "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the branch/project",
+    "freePlanAdviseTitle": "Operation not permitted",
+    "freePlanAdviseText": "You currently have the free plan for this service. To create more branches, you must upgrade your plan."
   },
   "attendance": {
     "title": "Attendance reports",

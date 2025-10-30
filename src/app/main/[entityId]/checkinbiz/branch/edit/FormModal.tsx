@@ -4,13 +4,11 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    Box,
-     useTheme
+    Box
 } from '@mui/material';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useTranslations } from 'next-intl';
-import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { CustomTypography } from '@/components/common/Text/CustomTypography';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
@@ -22,7 +20,6 @@ import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
 
 const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSuccess: () => void }): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
-    const theme = useTheme()
     const { fields, validationSchema, handleSubmit, initialValues } = useFormController(true, onSuccess);
     const t = useTranslations();
     const formRef = useRef(null)
@@ -34,7 +31,7 @@ const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSu
     };
 
     const handleModal = (values: Partial<ISucursal>) => {
-         setTimeout(() => {
+        setTimeout(() => {
             handleSubmit(values)
         }, 2000);
     }
@@ -62,10 +59,7 @@ const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSu
                     <CustomTypography >{t('sucursal.edit')}</CustomTypography>
                     <CustomTypography sx={{ fontSize: 20 }} >{t('sucursal.formDesc')}</CustomTypography>
                 </Box>
-                <CustomIconBtn
-                    onClick={() => handleClose(null, 'manual')}
-                    color={theme.palette.primary.main}
-                />
+
             </DialogTitle>
             <DialogContent>
                 <BorderBox sx={{ p: 2 }} key={open.open + ''}>
@@ -99,8 +93,8 @@ const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSu
                     color="primary"
                     size='small'
                     variant="contained"
-                 >
-                    {t('core.button.submit')}
+                >
+                    {t('core.button.save')}
                 </SassButton>
             </DialogActions>
         </Dialog>

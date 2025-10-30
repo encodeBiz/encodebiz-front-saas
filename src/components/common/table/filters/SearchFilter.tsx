@@ -8,6 +8,7 @@ import {
   ListItemIcon,
   TextField,
   ListItemText,
+  InputLabel,
 } from "@mui/material";
 import { CheckCircleOutline, SearchOutlined } from "@mui/icons-material";
  
@@ -46,9 +47,10 @@ const SearchFilter: React.FC<SearchIndexInputProps> = ({ onChange, options, valu
   };
   return (
     <FormControl sx={{ width, textAlign: "left" }}>
-
+ 
       <Autocomplete
         options={options}
+        
         value={options.find(e => e.value === value) ?? null}
         inputValue={inputValue}
         onInputChange={handleInputChange}
@@ -56,6 +58,7 @@ const SearchFilter: React.FC<SearchIndexInputProps> = ({ onChange, options, valu
         getOptionLabel={(opt) => (typeof opt === "string" ? opt : opt?.label ?? "")}
         //isOptionEqualToValue={(opt, val) => opt.value === val.value}
         autoHighlight
+        clearIcon={false}
         onClose={() => setOpen(false)}
         open={open}
         renderInput={(params) => (
@@ -74,23 +77,14 @@ const SearchFilter: React.FC<SearchIndexInputProps> = ({ onChange, options, valu
               },
 
             }}
-            slotProps={{
-              input: {
-                ...params.InputProps,
-                startAdornment: <SearchOutlined sx={{ mr: 1 }} />,
-              },
-            }}
+          
 
           />
         )}
 
-        renderOption={(liProps, option, { selected }) => (
+        renderOption={(liProps, option ) => (
           <ListItem {...liProps} key={option.value}>
-            {selected && (
-              <ListItemIcon>
-                <CheckCircleOutline />
-              </ListItemIcon>
-            )}
+           
             <ListItemText key={option.value} primary={option.label} />
           </ListItem>
         )}

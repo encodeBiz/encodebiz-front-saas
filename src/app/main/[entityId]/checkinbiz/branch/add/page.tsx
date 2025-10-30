@@ -11,6 +11,9 @@ import { SassButton } from '@/components/common/buttons/GenericButton';
 import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
 import * as Yup from 'yup';
 import useFormController from '../form/form.controller';
+import InfoModal from '@/components/common/modals/InfoModal';
+import { CommonModalType } from '@/contexts/commonModalContext';
+import { useCommonModal } from '@/hooks/useCommonModal';
 
 
 
@@ -20,7 +23,7 @@ export default function AddForm() {
     const { navivateTo } = useLayout()
     const formRef = useRef(null)
     const { formStatus } = useFormStatus()
-
+    const { open } = useCommonModal()
     const handleExternalSubmit = () => {
         if (formRef.current) {
             (formRef.current as any).submitForm()
@@ -65,6 +68,17 @@ export default function AddForm() {
                     />
                 </Box>
             </HeaderPage>
+
+            {open.type === CommonModalType.INFO && <InfoModal
+                title={t('sucursal.freePlanAdviseTitle')}
+                description={t('sucursal.freePlanAdviseText')}
+                closeBtn
+                onClose={() => {
+                    navivateTo('/checkinbiz/onboarding')
+                }}
+                btnText={t('core.button.upgradeSuscription')}
+                btnCloseText={t('core.button.close')}
+            />}
         </Container>
     );
 }

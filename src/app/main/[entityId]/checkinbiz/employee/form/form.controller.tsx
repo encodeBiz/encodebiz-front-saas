@@ -148,7 +148,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         ...prevFields.filter(e => e.name !== 'metadata' && e.name !== 'additional_data_section' && e.name !== 'address'),
         {
           name: 'address',
-          label: t('employee.enableRemoteWorkData'),
+          label: t('cofe.label.address'),
           required: true,
           fullWidth: true,
           component: AddressComplexInput,

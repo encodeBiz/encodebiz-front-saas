@@ -47,7 +47,7 @@ export default function useEmployeeListController() {
   const t = useTranslations();
   const { id } = useParams<{ id: string }>()
   const { changeLoaderState } = useLayout()
-  const {currentLocale} = useAppLocale()
+  const { currentLocale } = useAppLocale()
   const searchParams = useSearchParams()
   const { token, user } = useAuth()
   const { currentEntity, watchServiceAccess } = useEntity()
@@ -56,7 +56,7 @@ export default function useEmployeeListController() {
   const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<IEmployee[]>([]);
   const [itemsHistory, setItemsHistory] = useState<IEmployee[]>([]);
- 
+
   const [filterParams, setFilterParams] = useState<IFilterParams>({
     filter: { status: 'active', branchId: 'none' },
     startAfter: null,
@@ -314,7 +314,7 @@ export default function useEmployeeListController() {
         entityId: currentEntity?.entity.id as string,
         status: employee.status
       }
-      await updateEmployee(data, token,currentLocale)
+      await updateEmployee(data, token, currentLocale)
       const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
       fetchingData(filterParamsUpdated)
       changeLoaderState({ show: false })
@@ -327,26 +327,27 @@ export default function useEmployeeListController() {
     }
   };
 
-  const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
+  const topFilter = <Box sx={{ display: 'flex', gap: 2,   alignItems: 'flex-end', justifyContent: 'flex-end' }}>
 
     {branchList.length > 0 && <SelectFilter
-      first
-      label={t('core.label.subEntity')}
+      first width={290}
+      label={t("sucursal.list")}
       defaultValue={'none'}
       value={filterParams.filter.branchId}
       onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, branchId: value } })}
       items={branchList.map(e => ({ value: e.id, label: e.name }))}
     />}
-    <SelectFilter first={false}
+    <SelectFilter first={false} width={200}
+      label={t('core.label.status')}
       defaultValue={'active'}
       value={filterParams.filter.status}
       onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, status: value } })}
 
       items={options}
     />
-    <SearchIndexFilter
+    <SearchIndexFilter   
       type="employee"
-      label={t('core.label.search')}
+       label={t('employee.search')}
       onChange={async (value: ISearchIndex) => {
         const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
         if (value?.id) {
@@ -364,7 +365,7 @@ export default function useEmployeeListController() {
     />
   </Box>
 
- 
+
 
 
   const onFilter = (filterParamsData: any) => {

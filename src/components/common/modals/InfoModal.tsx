@@ -23,8 +23,9 @@ interface InfoModalProps {
     onClose?: () => void
     btnText?: string
     extraText?: string
+    btnCloseText?: string
 }
-const InfoModal = ({ title, description, onClose, btnText, closeBtn, centerBtn, extraText,
+const InfoModal = ({ title, description, onClose, btnText, closeBtn, btnCloseText,centerBtn, extraText,
     cancelBtn = true }: InfoModalProps): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const t = useTranslations()
@@ -84,7 +85,7 @@ const InfoModal = ({ title, description, onClose, btnText, closeBtn, centerBtn, 
                         size='small'
 
                     >
-                        {t('core.button.accept')}
+                        {btnCloseText?btnCloseText:t('core.button.accept')}
                     </SassButton>}
 
                     {centerBtn && <SassButton

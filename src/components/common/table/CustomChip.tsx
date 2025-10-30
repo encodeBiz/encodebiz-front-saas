@@ -15,9 +15,10 @@ const colorRepository: any = {
     "default": 'rgba(0, 84, 202, 0.08)',
     "archived": 'rgba(199, 184, 22, 0.63)',
     'gray': 'rgba(121, 123, 125, 0.08)',
+        'disabled': 'rgba(121, 123, 125, 0.08)',
 }
 
-export const CustomChip = ({ label, background = "default", id = '', text = '', ...props }: { label: string; id?: string; text?: string; background?: string; } & any) => {
+export const CustomChip = ({ label, background = "default", id = '', role = 'button', text = '', ...props }: { label: string; id?: string; text?: string; background?: string; role: 'ship' | 'button' } & any) => {
     const { open, openModal } = useCommonModal()
     const t = useTranslations()
     return (<>
@@ -25,12 +26,12 @@ export const CustomChip = ({ label, background = "default", id = '', text = '', 
             key={id}
             label={label}
             variant="outlined"
-            onClick={() => {
+            onClick={role === 'button' ? () => {
                 if (text) openModal(CommonModalType.INFO, { data: id })
-            }}
+            } : null}
             sx={{
                 background: colorRepository[background],
-                borderColor: (theme) => background == "default" ? theme.palette.primary.main : colorRepository[background],
+                borderColor: (theme) => background == "default" ? theme.palette.primary.main :  background == "disabled" ? theme.palette.grey[400]  :colorRepository[background],
                 px: props.size == 'small' ? 0 : 1, py: props.size == 'small' ? 0 : 2,
                 width: 'fit-content',
                 cursor: text ? 'pointer' : 'default',

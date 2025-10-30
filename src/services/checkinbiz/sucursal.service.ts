@@ -62,7 +62,8 @@ export async function createSucursal(data: Partial<ISucursal>, token: string, lo
       return response;
     }
   } catch (error: any) {
-    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
+     
+    throw new Error(mapperErrorFromBack(error?.message as string, true) as string);
   }
 }
 

@@ -14,7 +14,7 @@ import { DetailText } from "@/components/common/table/DetailText"
 import { ArrowBackOutlined } from "@mui/icons-material"
 import FormModal from "../../edit/FormModal"
 import HelpTabs from "@/components/features/dashboard/HelpTabs/HelpTabs"
-import { Branch } from "./Attedance/Branch"
+import { Branch } from "./Branch/Branch"
 import { Attedance } from "./Attedance/Attedance"
 import { onGoMap } from "@/lib/common/maps"
 
@@ -25,7 +25,7 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
     const search = useSearchParams()
     const backAction = search.get('back')
 
- 
+
 
     const { navivateTo } = useLayout()
     return <Card elevation={3} sx={{ width: '100%', margin: 'auto' }}>
@@ -47,8 +47,8 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
                             {employee?.fullName}
                         </Typography>
                         <Box display={'flex'} flexDirection={'row'} gap={1}>
-                            <CustomChip size='small' background={employee?.twoFA ? 'active' : 'revoked'} label={employee?.twoFA ? t('core.label.enable2AF') : t('core.label.disable2AF')} />
-                            <CustomChip size='small' label={employee.enableRemoteWork ? t('core.label.enableRemoteWorkEnable') : t('core.label.enableRemoteWorkDisabled')} />
+                            <CustomChip role='ship' size='small' background={employee?.twoFA ? 'active' : 'disabled'} label={employee?.twoFA ? t('core.label.enable2AF') : t('core.label.disable2AF')} />
+                            <CustomChip role='ship' size='small' background={employee?.enableRemoteWork ? 'active' : 'disabled'} label={employee.enableRemoteWork ? t('core.label.enableRemoteWorkEnable') : t('core.label.enableRemoteWorkDisabled')} />
                         </Box>
                     </Box>
                 </Grid>
@@ -93,12 +93,9 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
                     </Typography>
 
                     <DetailText label={t('core.label.address')} value={employee?.address?.street} orientation="row" >
-                        <Box sx={{ marginLeft: 4, minWidth: 140 }}><SassButton variant="text" onClick={() => onGoMap(employee?.address?.geo?.lat as number, employee?.address?.geo?.lng  as number)}> {t('sucursal.map')}</SassButton></Box>
+                        <Box sx={{ marginLeft: 4, minWidth: 140 }}><SassButton variant="text" onClick={() => onGoMap(employee?.address?.geo?.lat as number, employee?.address?.geo?.lng as number)}> {t('sucursal.map')}</SassButton></Box>
                     </DetailText>
                     <DetailText label={t('core.label.timeZone')} value={employee?.address.timeZone} orientation="row" />
-                    <DetailText label={t('core.label.country')} value={employee?.address.country} orientation="row" />
-                    <DetailText label={t('core.label.city')} value={employee?.address.city} orientation="row" />
-
 
                 </Paper>}
 
@@ -115,11 +112,12 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
             </Paper>
             <Divider />
 
+
             <HelpTabs small tabs={[
                 {
                     id: '1',
                     title: t(`core.label.sucursalAsigned`),
-                    tabContent: <Branch employee={employee} />
+                    tabContent: <Branch  />
                 },
                 {
                     id: '2',
@@ -141,8 +139,7 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
         }
 
         {open.type === CommonModalType.FORM && <FormModal onSuccess={onSuccess} />}
-        {open.type === CommonModalType.INFO && <FormModal onSuccess={onSuccess} />}
-
+ 
 
 
     </Card >
