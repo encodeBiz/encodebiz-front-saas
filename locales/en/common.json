@@ -650,6 +650,7 @@
     "update": "Edit employee",
     "edit": "Edit employee",
     "detail": "Details",
+    "search": "Search employee",
     "enableRemoteWorkData": "Remote work information",
     "configureDevice": "Configure trusted device",
     "import": "Import",

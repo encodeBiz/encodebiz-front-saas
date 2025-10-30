@@ -347,7 +347,7 @@ export default function useEmployeeListController() {
     />
     <SearchIndexFilter   
       type="employee"
-      label={t('core.label.search')}
+       label={t('employee.search')}
       onChange={async (value: ISearchIndex) => {
         const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
         if (value?.id) {
