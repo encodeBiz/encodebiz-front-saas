@@ -683,9 +683,12 @@
     "update": "Edit branch/project",
     "edit": "Edit branch/project",
     "import": "Import",
+    "search": "Search branch/project",
     "description": "Fill in the fields to register the branch/project",
     "deleteConfirmModalTitle": "Delete branch/project",
-    "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the branch/project"
+    "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the branch/project",
+    "freePlanAdviseTitle": "Operation not permitted",
+    "freePlanAdviseText": "You currently have the free plan for this service. To create more branches, you must upgrade your plan."
   },
   "attendance": {
     "title": "Attendance reports",

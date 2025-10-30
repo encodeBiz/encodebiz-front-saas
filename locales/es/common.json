@@ -682,6 +682,8 @@
     "detailSucursal": "Detalles de la sucursal/proyecto",
     "update": "Editar sucursal/proyecto",
     "edit": "Editar sucursal/proyecto",
+    "search": "Buscar sucursal/proyecto",
+
     "import": "Importar",
     "description": "Rellene los campos para registrar la sucursal/proyecto",
     "deleteConfirmModalTitle": "Eliminar sucursal/proyecto",
