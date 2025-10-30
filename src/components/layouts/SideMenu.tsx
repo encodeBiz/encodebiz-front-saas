@@ -174,7 +174,7 @@ export default function SideMenu() {
                   return <div key={i} >
                     <ListItem disablePadding>
                       <CustomListItemButton item={item} handleSubMenuToggle={handleSubMenuToggle} >
-                        {openSubMenu.products ? <ExpandLess /> : <ExpandMore />}
+                        {openSubMenu[item.id] ? <ExpandLess /> : <ExpandMore />}
                       </CustomListItemButton>
                     </ListItem>
                     <Collapse in={openSubMenu[item.id]} timeout="auto" unmountOnExit>
