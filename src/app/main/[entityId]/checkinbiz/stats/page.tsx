@@ -1,5 +1,5 @@
 'use client';
-import { Box, Container } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import { useTranslations } from "next-intl";
 
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
@@ -24,6 +24,7 @@ export default function Stats() {
         >
 
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
+            <Typography>Operational Open Data</Typography>
             <StatsPattern />
           </Box>
 
