@@ -4,14 +4,12 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    Box,
-    useTheme
+    Box 
 } from '@mui/material';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useTranslations } from 'next-intl';
-import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
-import { useFormStatus } from '@/hooks/useFormStatus';
+ import { useFormStatus } from '@/hooks/useFormStatus';
 import { CustomTypography } from '@/components/common/Text/CustomTypography';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
@@ -22,8 +20,7 @@ import * as Yup from 'yup';
 
 const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSuccess: () => void }): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
-    const theme = useTheme()
-    const { fields, validationSchema, handleSubmit, initialValues } = useFormController(true, onSuccess);
+     const { fields, validationSchema, handleSubmit, initialValues } = useFormController(true, onSuccess);
     const t = useTranslations();
     const formRef = useRef(null)
     const handleClose = (event: any, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
@@ -57,10 +54,7 @@ const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSu
                     <CustomTypography >{t('employee.edit')}</CustomTypography>
                     <CustomTypography sx={{ fontSize: 20 }} >{t('employee.formDesc')}</CustomTypography>
                 </Box>
-                <CustomIconBtn
-                    onClick={() => handleClose(null, 'manual')}
-                    color={theme.palette.primary.main}
-                />
+               
             </DialogTitle>
             <DialogContent>
                 <BorderBox sx={{ p: 2 }} key={open.open + ''}>

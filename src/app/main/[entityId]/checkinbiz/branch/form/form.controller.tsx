@@ -36,7 +36,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const [geo, setGeo] = useState<{ lat: number, lng: number }>({ lat: 0, lng: 0 })
   const [cityList, setCityList] = useState<any>(country.find(e => e.name === 'España')?.states.map(e => ({ label: e.name, value: e.name })))
   const [tz, setTz] = useState('')
-  const { open, closeModal } = useCommonModal()
+  const { open, closeModal, openModal } = useCommonModal()
   const { id } = useParams<{ id: string }>()
 
   const itemId = isFromModal ? open.args?.id : id
@@ -145,8 +145,15 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
           navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch`)
       }
     } catch (error: any) {
+      const errorData = JSON.parse(error.message)
+
+      if (errorData.code === 'subscription/limit_off')
+        openModal(CommonModalType.INFO)
+      else
+        showToast(errorData.message, 'error')
+
       changeLoaderState({ show: false })
-      showToast(error.message, 'error')
+
     }
   };
 
