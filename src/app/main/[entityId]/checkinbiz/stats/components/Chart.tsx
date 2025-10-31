@@ -45,8 +45,7 @@ const Chart = () => {
 
 
 
-        console.log(newDataArray);
-
+ 
 
         setChartData(newDataArray)
     }

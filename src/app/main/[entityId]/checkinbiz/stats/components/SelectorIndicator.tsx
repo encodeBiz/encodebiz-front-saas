@@ -2,8 +2,7 @@
 import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from '@mui/material';
 import { useTranslations } from "next-intl";
 
-import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
-import {   useCheckBizStats } from '../context/checkBizStatsContext';
+ import {   useCheckBizStats } from '../context/checkBizStatsContext';
 import { IHeuristicInfo } from '@/domain/features/checkinbiz/IStats';
 import { useAppLocale } from '@/hooks/useAppLocale';
 
