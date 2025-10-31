@@ -21,7 +21,9 @@ export interface EntityFormValues {
     "uid": string
     "name": string
     "active": boolean
-    address: {},
+    address: {
+        street: string
+    },
     //"region": string
     "taxId": string
     language: string
@@ -43,7 +45,7 @@ export const useRegisterController = () => {
         uid: user?.id as string,
         "name": "",
         "active": true,
-        address: {},
+        address: { street: '' },
         //"region": currentEntity?.entity?.legal?.address.region as string | "",
         "taxId": "",
         "legalName": "",
@@ -164,7 +166,7 @@ export const useRegisterController = () => {
 
                 legalName: '',
                 address: {
-
+                    street: ''
                 },
                 taxId: '',
                 language: ''

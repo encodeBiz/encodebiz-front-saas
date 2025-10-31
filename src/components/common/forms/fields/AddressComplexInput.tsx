@@ -75,8 +75,7 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
     async (q: string, code: string) => {
       const query = (q ?? "").trim();
 
-    console.log(sessionToken);
-
+ 
       if (!query || query == inputValue) {
         setOptions([]);
         setPending(false);
@@ -156,7 +155,7 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
 
   return (
     <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
-      {sessionToken}
+       
       <Grid size={{
         xs: 12,
         sm: 12
