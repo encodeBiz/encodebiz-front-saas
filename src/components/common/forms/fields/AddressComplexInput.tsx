@@ -38,6 +38,7 @@ type Option = { id: string; label: string; data: any, autocompleteData: IGeoAuto
 type AutoCompletedInputProps = FieldProps &
   TextFieldProps & {
     onHandleChange: (value: any) => void;
+    
   };
 
 
@@ -74,6 +75,7 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
     async (q: string, code: string) => {
       const query = (q ?? "").trim();
 
+    console.log(sessionToken);
 
       if (!query || query == inputValue) {
         setOptions([]);
@@ -96,7 +98,7 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
       }
     },
     600
-    , [token]
+    , [token, sessionToken]
   );
 
   useEffect(() => {
@@ -128,7 +130,7 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
     setSelected(newOption);
     setOptions([])
     debouncedSearch?.cancel?.();
-
+    
     if (newOption?.autocompleteData) {
       const data: IGeoDetailOutput = (await fetchLocation({ placeId: newOption?.autocompleteData?.placeId, provider: newOption?.autocompleteData?.provider, sessionToken: newOption?.autocompleteData?.sessionToken, action: 'placedetails' } as IGeoInputAutoDetail, token, currentLocale)) as IGeoDetailOutput
 
@@ -154,7 +156,7 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
 
   return (
     <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
-     
+      {sessionToken}
       <Grid size={{
         xs: 12,
         sm: 12
