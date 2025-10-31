@@ -1,5 +1,5 @@
 'use client';
-import { Box, Typography } from '@mui/material';
+import { Box, Divider, Typography } from '@mui/material';
 
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import { IBranchPattern } from '@/domain/features/checkinbiz/IStats';
@@ -7,13 +7,14 @@ import { AccessTimeOutlined, CurrencyExchangeOutlined, PendingActionsOutlined } 
 import { formatDay } from '@/lib/common/Date';
 import { useTranslations } from 'next-intl';
 import { getAverage } from '@/lib/common/String';
- 
-export const StatsPatternCards = ({ data, lineal = false  }: { data: IBranchPattern, lineal?: boolean }) => {
+
+export const StatsPatternCards = ({ data, lineal = false }: { data: IBranchPattern, lineal?: boolean }) => {
     const t = useTranslations()
 
     return (
         <Box display={'flex'} flexDirection={'column'} gap={2} sx={{ width: '100%' }}>
-            <Typography fontWeight={'bold'} variant='body2'>{data.branch?.name}</Typography>
+            <Typography fontSize={22} fontWeight={'bold'} variant='body2' color='textSecondary'>{data.branch?.name}</Typography>
+            <Divider />
             <Box display={'flex'} flexDirection={'row'} gap={2} sx={{ width: '100%' }}>
                 <Box display={'flex'} flexDirection={lineal ? 'column' : 'row'} gap={2} sx={{ width: '100%' }}>
                     <Box display={'flex'} flexDirection={'column'} gap={2}>
@@ -67,7 +68,7 @@ export const StatsPatternCards = ({ data, lineal = false  }: { data: IBranchPatt
                             </Box>
                         </BorderBox>
                     </Box>
-                </Box>              
+                </Box>
             </Box>
         </Box>
     );

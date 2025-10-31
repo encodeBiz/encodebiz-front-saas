@@ -13,7 +13,7 @@ import { SelectorIndicator } from './components/SelectorIndicator';
 
 const Stats = () => {
   const t = useTranslations();
-  const { pending, branchOne } = useCheckBizStats()
+  const { pending, branchOne, branchTwo, heuristicDataOne, heuristicDataTwo } = useCheckBizStats()
 
 
   return (
@@ -33,12 +33,15 @@ const Stats = () => {
           <StatsPattern />
         </Box>}
 
-        {!pending && branchOne && <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }} p={2}>
+        {!pending && heuristicDataOne.length > 0 && <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }} p={2}>
           <Box display={'flex'} justifyContent={'space-between'} alignItems='center' gap={2} sx={{ width: '100%' }}>
             <Typography variant='h6' sx={{ width: '100%' }}>{t('statsCheckbiz.heuristicAnalize')}</Typography>
             <SelectorIndicator />
           </Box>
-          <HeuristicAnalize />
+          <Box display={'flex'} justifyContent={'space-between'} alignItems='center' gap={2} sx={{ width: '100%' }}>
+            {heuristicDataOne.length > 0 && branchOne && <HeuristicAnalize branchPattern={branchOne} data={heuristicDataOne} />}
+            {heuristicDataTwo.length > 0 && branchTwo && <HeuristicAnalize branchPattern={branchTwo} data={heuristicDataTwo} />}
+          </Box>
         </Box>}
 
         {!pending && !branchOne && <Box sx={{ maxWidth: 400, m: 'auto', my: 5 }}><Alert severity="warning">{t('statsCheckbiz.advise')}</Alert></Box>}

@@ -22,8 +22,10 @@ interface ICheckBizStatsProps {
     branchTwo: IBranchPattern | null
 
     pending?: boolean
-    heuristicData: Array<IHeuristicInfo>
-    setHeuristicData:(data: Array<IHeuristicInfo>)=>void
+    heuristicDataOne: Array<IHeuristicInfo>
+    heuristicDataTwo: Array<IHeuristicInfo>
+    setHeuristicDataOne: (data: Array<IHeuristicInfo>) => void
+    setHeuristicDataTwo: (data: Array<IHeuristicInfo>) => void
 }
 
 export const CheckBizStatsContext = createContext<ICheckBizStatsProps | undefined>(undefined);
@@ -36,7 +38,8 @@ export const CheckBizStatsProvider = ({ children }: { children: React.ReactNode 
     const { currentLocale } = useAppLocale()
     const [branchOne, setBranchOne] = useState<IBranchPattern | null>(null);
     const [branchTwo, setBranchTwo] = useState<IBranchPattern | null>(null);
-    const [heuristicData, setHeuristicData] = useState<Array<IHeuristicInfo>>([])
+    const [heuristicDataOne, setHeuristicDataOne] = useState<Array<IHeuristicInfo>>([])
+    const [heuristicDataTwo, setHeuristicDataTwo] = useState<Array<IHeuristicInfo>>([])
 
     const { currentEntity } = useEntity()
 
@@ -64,8 +67,25 @@ export const CheckBizStatsProvider = ({ children }: { children: React.ReactNode 
     }
 
     const fetchHeuristic = async () => {
-        const data: Array<IHeuristicInfo> = await analiziHeuristic(currentEntity?.entity?.id as string, branchSelected[0].id as string, token, currentLocale)
-        setHeuristicData(data.map((e, i) => ({ ...e, active: i < 8 ? true : false })));
+        if (branchSelected.length == 0) {
+            setHeuristicDataOne([])
+            setHeuristicDataTwo([])
+        }
+
+        if (branchSelected.length == 1) {
+            const data: Array<IHeuristicInfo> = await analiziHeuristic(currentEntity?.entity?.id as string, branchSelected[0].id as string, token, currentLocale)
+            setHeuristicDataOne(data.map((e, i) => ({ ...e, active: i < 8 ? true : false })));
+            setHeuristicDataTwo([])
+        }
+
+         if (branchSelected.length == 2) {
+            const data1: Array<IHeuristicInfo> = await analiziHeuristic(currentEntity?.entity?.id as string, branchSelected[0].id as string, token, currentLocale)
+            setHeuristicDataOne(data1.map((e, i) => ({ ...e, active: i < 8 ? true : false })));
+
+            const data2: Array<IHeuristicInfo> = await analiziHeuristic(currentEntity?.entity?.id as string, branchSelected[1].id as string, token, currentLocale)
+            setHeuristicDataTwo(data2.map((e, i) => ({ ...e, active: i < 8 ? true : false })));
+        }
+
     }
     useEffect(() => {
         initialize()
@@ -83,7 +103,7 @@ export const CheckBizStatsProvider = ({ children }: { children: React.ReactNode 
 
 
     return (
-        <CheckBizStatsContext.Provider value={{ heuristicData, setHeuristicData, branchList, branchSelected, setBranchSelected, branchOne, branchTwo, pending }}>
+        <CheckBizStatsContext.Provider value={{ heuristicDataOne, setHeuristicDataOne, heuristicDataTwo, setHeuristicDataTwo, branchList, branchSelected, setBranchSelected, branchOne, branchTwo, pending }}>
             {children}
         </CheckBizStatsContext.Provider>
     );

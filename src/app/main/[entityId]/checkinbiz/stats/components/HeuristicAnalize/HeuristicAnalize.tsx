@@ -1,14 +1,14 @@
 'use client';
-import { Box, Card, CardContent, CardHeader, Typography, useTheme } from '@mui/material';
+import { Box, Card, CardContent, CardHeader, Divider, Typography, useTheme } from '@mui/material';
 
 import { useTranslations } from 'next-intl';
-import { useCheckBizStats } from '../../context/checkBizStatsContext';
 import { useAppLocale } from '@/hooks/useAppLocale';
+import { IBranchPattern, IHeuristicInfo } from '@/domain/features/checkinbiz/IStats';
 
-export const HeuristicAnalize = () => {
+export const HeuristicAnalize = ({ data, branchPattern }: { data: Array<IHeuristicInfo>, branchPattern: IBranchPattern, }) => {
     const t = useTranslations()
     const theme = useTheme()
-    const { heuristicData } = useCheckBizStats()
+
     const { currentLocale } = useAppLocale()
     const getColor = (status: "error" | 'success' | 'warning') => {
         if (status == 'error') return theme.palette.error.main
@@ -17,35 +17,38 @@ export const HeuristicAnalize = () => {
         return theme.palette.primary.main
     }
     return (
-        <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'space-between'} gap={2} sx={{ width: '100%' }}>
+        <Box display={'flex'} flexDirection={'column'} gap={2} sx={{ width: '100%' }}>
+            <Typography fontSize={22} fontWeight={'bold'} variant='body2' color='textSecondary'>{branchPattern.branch?.name}</Typography>
+            <Divider />
+            <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'center'} gap={2} sx={{ width: '100%' }}>
 
-            {heuristicData.filter(e => e.active).map((e, i) => <Card key={i} sx={{ maxWidth: 245, border: `1px solid ${getColor(e.status as "error" | 'success' | 'warning')}` }}>
-                <CardHeader
-                    sx={{ background: getColor(e.status as "error" | 'success' | 'warning'), color: "#FFF", fontSize: 16 }}
-                    action={
-                        <Typography variant="body2" fontSize={18}>{e.value.toFixed(2)}</Typography>
-                    }
-                    title={e.label}
-                />
-                <CardContent>
-                    <Box display={'flex'} flexDirection={'column'} gap={1}>
-                        <Typography variant="body2" fontWeight={'bold'} fontSize={18}>
-                            {e.id}: {e.name[currentLocale as 'es' | 'en']}
-                        </Typography>
+                {data.filter(e => e.active).map((e, i) => <Card key={i} sx={{ maxWidth: 245, border: `1px solid ${getColor(e.status as "error" | 'success' | 'warning')}` }}>
+                    <CardHeader
+                        sx={{ background: getColor(e.status as "error" | 'success' | 'warning'), color: "#FFF", fontSize: 16 }}
+                        action={
+                            <Typography variant="body2" fontSize={18}>{e.value.toFixed(2)}</Typography>
+                        }
+                        title={e.label}
+                    />
+                    <CardContent>
+                        <Box display={'flex'} flexDirection={'column'} gap={1}>
+                            <Typography variant="body2" fontWeight={'bold'} fontSize={18}>
+                                {e.id}: {e.name[currentLocale as 'es' | 'en']}
+                            </Typography>
 
-                        <Typography variant="body2" sx={{ color: 'text.secondary' }} fontSize={18}>
-                            {e.consequence}
-                        </Typography>
+                            <Typography variant="body2" sx={{ color: 'text.secondary' }} fontSize={18}>
+                                {e.consequence}
+                            </Typography>
 
-                        <Typography variant="body2" sx={{ color: 'text.secondary' }} fontSize={18}>
-                            {e.action}
-                        </Typography>
-                    </Box>
-                </CardContent>
+                            <Typography variant="body2" sx={{ color: 'text.secondary' }} fontSize={18}>
+                                {e.action}
+                            </Typography>
+                        </Box>
+                    </CardContent>
 
 
-            </Card>)}
-
+                </Card>)}
+            </Box>
         </Box>
     );
 }
