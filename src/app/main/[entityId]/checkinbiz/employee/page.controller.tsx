@@ -311,8 +311,7 @@ export default function useEmployeeListController() {
   const updateStatus = async (employee: IEmployee) => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const data: IEmployee = {
-        ...employee,
+      const data: Partial<IEmployee> = {         
         "uid": user?.id as string,
         "id": employee.id,
         entityId: currentEntity?.entity.id as string,

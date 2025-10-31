@@ -5,8 +5,10 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
 import { search } from '@/services/checkinbiz/sucursal.service';
 import { useEntity } from '@/hooks/useEntity';
-import { IBranchPattern } from '@/domain/features/checkinbiz/IStats';
-import { fetchBranchPattern } from '@/services/checkinbiz/stats.service';
+import { IBranchPattern, IHeuristicInfo } from '@/domain/features/checkinbiz/IStats';
+import { analiziHeuristic, fetchBranchPattern } from '@/services/checkinbiz/stats.service';
+import { useAuth } from '@/hooks/useAuth';
+import { useAppLocale } from '@/hooks/useAppLocale';
 
 
 
@@ -20,6 +22,8 @@ interface ICheckBizStatsProps {
     branchTwo: IBranchPattern | null
 
     pending?: boolean
+    heuristicData: Array<IHeuristicInfo>
+    setHeuristicData:(data: Array<IHeuristicInfo>)=>void
 }
 
 export const CheckBizStatsContext = createContext<ICheckBizStatsProps | undefined>(undefined);
@@ -28,9 +32,11 @@ export const CheckBizStatsProvider = ({ children }: { children: React.ReactNode 
     const [branchList, setBranchList] = useState<Array<ISucursal>>([])
     const [branchSelected, setBranchSelected] = useState<ISucursal[]>([]);
     const [pending, setPending] = useState(false)
-
+    const { token } = useAuth()
+    const { currentLocale } = useAppLocale()
     const [branchOne, setBranchOne] = useState<IBranchPattern | null>(null);
     const [branchTwo, setBranchTwo] = useState<IBranchPattern | null>(null);
+    const [heuristicData, setHeuristicData] = useState<Array<IHeuristicInfo>>([])
 
     const { currentEntity } = useEntity()
 
@@ -56,19 +62,28 @@ export const CheckBizStatsProvider = ({ children }: { children: React.ReactNode 
         }
         setPending(false)
     }
+
+    const fetchHeuristic = async () => {
+        const data: Array<IHeuristicInfo> = await analiziHeuristic(currentEntity?.entity?.id as string, branchSelected[0].id as string, token, currentLocale)
+        setHeuristicData(data.map((e, i) => ({ ...e, active: i < 8 ? true : false })));
+    }
     useEffect(() => {
         initialize()
     }, [currentEntity?.entity?.id])
 
 
     useEffect(() => {
-        updatePatternData()
-    }, [branchSelected.length])
+        if (currentEntity?.entity?.id) {
+            updatePatternData()
+            if (branchSelected.length > 0)
+                fetchHeuristic()
+        }
+    }, [branchSelected.length, currentEntity?.entity?.id])
 
 
 
     return (
-        <CheckBizStatsContext.Provider value={{ branchList, branchSelected, setBranchSelected, branchOne, branchTwo, pending }}>
+        <CheckBizStatsContext.Provider value={{ heuristicData, setHeuristicData, branchList, branchSelected, setBranchSelected, branchOne, branchTwo, pending }}>
             {children}
         </CheckBizStatsContext.Provider>
     );

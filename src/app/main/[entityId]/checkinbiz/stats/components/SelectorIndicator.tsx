@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 
 import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
 import {   useCheckBizStats } from '../context/checkBizStatsContext';
+import { IHeuristicInfo } from '@/domain/features/checkinbiz/IStats';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -16,16 +17,16 @@ const MenuProps = {
     },
 };
 
-export const SelectorBranch = () => {
+export const SelectorIndicator = () => {
     const t = useTranslations();
-    const { branchList, branchSelected, setBranchSelected } = useCheckBizStats()
+    const { heuristicData, setHeuristicData } = useCheckBizStats()
 
     const getNameById = (id: Array<string>) => {
         const names: Array<string> = []
         id.forEach(element => {
-            const branch = branchList.find(e => e.id === element)
+            const branch = heuristicData.find(e => e.id === element)
             if (branch) {
-                names.push(branch.name)
+                names.push(branch.id)
             }
         });
         return names.join(', ')
@@ -37,24 +38,27 @@ export const SelectorBranch = () => {
                 labelId="demo-multiple-checkbox-label"
                 id="demo-multiple-checkbox"
                 multiple
-                value={branchSelected.map(e => e.id)}
+                value={heuristicData.filter(e=>e.active).map(e => e.id)}
                 onChange={(event: any) => {
-                    const data: Array<ISucursal> = []
+                    const data: Array<IHeuristicInfo> = []
                     if (Array.isArray(event?.target.value)) {
-                        event?.target.value?.forEach((element: string) => {
-                            data.push(branchList.find(e => e.id === element) as ISucursal)
-                        });
-                        setBranchSelected(data)
+                        heuristicData.forEach(element => {
+                            if(event?.target.value?.includes(element.id))
+                                data.push({...element, active: true})
+                            else
+                                data.push({...element, active: false})
+                        });                      
+                        setHeuristicData(data)
                     }
                 }}
                 input={<OutlinedInput label="Tag" />}
                 renderValue={(selected) => getNameById(selected as Array<string>)}
                 MenuProps={MenuProps}
             >
-                {branchList.map((branch: ISucursal) => (
-                    <MenuItem disabled={branchSelected.length >= 2 && !branchSelected.map(e => e.id).includes(branch.id)} key={branch.id} value={branch.id}>
-                        <Checkbox checked={branchSelected.map(e => e.id).includes(branch.id)} />
-                        <ListItemText primary={branch.name} />
+                {heuristicData.map((branch: IHeuristicInfo) => (
+                    <MenuItem  key={branch.id} value={branch.id}>
+                        <Checkbox checked={branch.active} />
+                        <ListItemText primary={branch.label} />
                     </MenuItem>
                 ))}
             </Select>

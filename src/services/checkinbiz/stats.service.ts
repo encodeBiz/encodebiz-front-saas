@@ -8,6 +8,7 @@ import { mapperErrorFromBack } from "@/lib/common/String";
 import { IChecklog } from "@/domain/features/checkinbiz/IChecklog";
 import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
 import { IBranchPattern } from "@/domain/features/checkinbiz/IStats";
+import { fetchSucursal } from "./sucursal.service";
 
 
 
@@ -38,6 +39,41 @@ export const fetchBranchPattern = async (entityId: string, branchId: string): Pr
     collection: `${collection.BRANCH_PATTER}`,
   });
   if (result.length > 0)
-    return result[0];
+    return {
+      ...result[0],
+      branch: await fetchSucursal(result[0].entityId, result[0].branchId)
+    };
   return null
+}
+
+
+export async function analiziHeuristic(entityId: string, branchId: string, token: string, locale: any = 'es') {
+  try {
+    if (!token) {
+      throw new Error("Error to fetch user auth token");
+    } else {
+      const httpClientFetchInstance: HttpClient = new HttpClient({
+        baseURL: "",
+        headers: {
+          authorization: `Bearer ${token}`,locale
+        },
+      });
+      const response: any = await httpClientFetchInstance.post(
+        process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_STATS as string,
+        {
+          entityId, branchId
+        }
+      );
+      if (response.errCode && response.errCode !== 200) {
+        throw new Error(response.message);
+      }
+
+      return response?.results as Array<any>??[];
+    }
+  } catch (error: any) {
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
+  }
+
+
+
 }

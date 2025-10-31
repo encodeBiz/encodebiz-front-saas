@@ -7,6 +7,8 @@ import { CheckBizStatsProvider, useCheckBizStats, } from './context/checkBizStat
 import { SelectorBranch } from './components/Selector';
 import { StatsPattern } from './components/Stats';
 import BoxLoader from '@/components/common/BoxLoader';
+import { HeuristicAnalize } from './components/HeuristicAnalize/HeuristicAnalize';
+import { SelectorIndicator } from './components/SelectorIndicator';
 
 
 const Stats = () => {
@@ -31,7 +33,15 @@ const Stats = () => {
           <StatsPattern />
         </Box>}
 
-        {!pending && !branchOne && <Box sx={{maxWidth:400, m:'auto', my:5}}><Alert severity="warning">{t('statsCheckbiz.advise')}</Alert></Box>}
+        {!pending && branchOne && <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }} p={2}>
+          <Box display={'flex'} justifyContent={'space-between'} alignItems='center' gap={2} sx={{ width: '100%' }}>
+            <Typography variant='h6' sx={{ width: '100%' }}>{t('statsCheckbiz.heuristicAnalize')}</Typography>
+            <SelectorIndicator />
+          </Box>
+          <HeuristicAnalize />
+        </Box>}
+
+        {!pending && !branchOne && <Box sx={{ maxWidth: 400, m: 'auto', my: 5 }}><Alert severity="warning">{t('statsCheckbiz.advise')}</Alert></Box>}
 
       </HeaderPage>
     </Container>

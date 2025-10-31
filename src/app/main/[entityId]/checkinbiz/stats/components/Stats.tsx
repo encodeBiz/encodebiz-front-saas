@@ -9,10 +9,9 @@ export const StatsPattern = () => {
      
  
     return (
-        <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }} p={2}>
-          
-            {branchOne && <StatsPatternCards data={branchOne} />}
-            {branchTwo && <StatsPatternCards data={branchTwo} />}
+        <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }} p={2}>          
+            {branchOne && <StatsPatternCards chart lineal={!!branchTwo} data={branchOne} />}
+            {branchTwo && <StatsPatternCards lineal={!!branchTwo} data={branchTwo} />}
         </Box>
     );
 }

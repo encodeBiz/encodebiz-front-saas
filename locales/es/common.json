@@ -878,11 +878,17 @@
     "operationData": "Datos en operación",
     "loading": "Procesando y preparando datos para mostrar",
     "selected": "Selecione una o dos sucursales",
-    "avgWeekWork":"Promedio de horas semanales",
-    "rentability":"Rentabilidad",
-    "avgStartEnd":"Promedio de inicio/fin de jornada",
-    "avgCostHour":"Costo promedio por hora",
-    "avgCycleCost":"Costo promedio por ciclo"
+    "avgWeekWork": "Promedio de horas semanales",
+    "rentability": "Rentabilidad",
+    "avgStartEnd": "Prom. de inicio/fin",
+    "avgCostHour": "Costo prom. por hora",
+    "avgCycleCost": "Costo prom. por ciclo",
+    "weeklyEndAvg": "Promedio de hora de fin de jornada",
+    "weeklyStartAvg": "Promedio de hora de inicio de jornada",
+    "weeklyWorkAvg": "Promedio de horas trabajadas",
+    "chartTitle":"Comparativa de Horas por Semana",
+    "chartType":"Tipo de gráfica",
+    "heuristicAnalize":"Análisis heurístico"
   },
   "checking": {
     "title": "Control de Asistencia",
