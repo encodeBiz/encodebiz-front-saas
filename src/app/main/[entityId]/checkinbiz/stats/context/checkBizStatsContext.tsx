@@ -16,34 +16,45 @@ interface ICheckBizStatsProps {
     branchSelected: Array<ISucursal>,
     setBranchSelected: (items: Array<ISucursal>) => void
 
-    branchOne: IBranchPattern | undefined
-    branchTwo: IBranchPattern | undefined
+    branchOne: IBranchPattern | null
+    branchTwo: IBranchPattern | null
+
+    pending?: boolean
 }
 
 export const CheckBizStatsContext = createContext<ICheckBizStatsProps | undefined>(undefined);
 
-export const CheckBizStatsProvider= ({ children }: { children: React.ReactNode }) => {
+export const CheckBizStatsProvider = ({ children }: { children: React.ReactNode }) => {
     const [branchList, setBranchList] = useState<Array<ISucursal>>([])
     const [branchSelected, setBranchSelected] = useState<ISucursal[]>([]);
+    const [pending, setPending] = useState(false)
 
-    const [branchOne, setBranchOne] = useState<IBranchPattern>();
-    const [branchTwo, setBranchTwo] = useState<IBranchPattern>();
+    const [branchOne, setBranchOne] = useState<IBranchPattern | null>(null);
+    const [branchTwo, setBranchTwo] = useState<IBranchPattern | null>(null);
 
     const { currentEntity } = useEntity()
+
 
     const initialize = async () => {
         setBranchList(await search(currentEntity?.entity?.id as string, { ...{} as any, limit: 100 }))
     }
 
     const updatePatternData = async () => {
-         
-        if (branchSelected.length == 1){             
+        setPending(true)
+
+        if (branchSelected.length == 0) {
+            setBranchTwo(null)
+            setBranchOne(null)
+        }
+        if (branchSelected.length == 1) {
             setBranchOne(await fetchBranchPattern(currentEntity?.entity?.id as string, branchSelected[0].id as string) as IBranchPattern);
+            setBranchTwo(null)
         }
         if (branchSelected.length == 2) {
             setBranchTwo(await fetchBranchPattern(currentEntity?.entity?.id as string, branchSelected[1].id as string) as IBranchPattern);
             setBranchOne(await fetchBranchPattern(currentEntity?.entity?.id as string, branchSelected[0].id as string) as IBranchPattern);
         }
+        setPending(false)
     }
     useEffect(() => {
         initialize()
@@ -54,10 +65,10 @@ export const CheckBizStatsProvider= ({ children }: { children: React.ReactNode }
         updatePatternData()
     }, [branchSelected.length])
 
-    
+
 
     return (
-        <CheckBizStatsContext.Provider value={{ branchList, branchSelected, setBranchSelected, branchOne, branchTwo }}>
+        <CheckBizStatsContext.Provider value={{ branchList, branchSelected, setBranchSelected, branchOne, branchTwo, pending }}>
             {children}
         </CheckBizStatsContext.Provider>
     );
