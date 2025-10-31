@@ -14,13 +14,41 @@ export interface IAddress {
   resolvedText: string
 
 }
+export interface IGeoInputAutoComplete {
+  "address": string
+  "country": string
+  "action": "autocomplete",
+  "sessionToken": string
+}
 
-export async function fetchLocation(data: {
-  "address": string,
-  "country"?: string,
-  "city"?: string,
-  "zipCode"?: string
-}, token: string, locale: any): Promise<Array<IAddress>> {
+export interface IGeoInputAutoDetail {
+  "placeId": string
+  "provider": "google",
+  "sessionToken": string
+  "action": "placedetails"
+}
+
+export interface IGeoAutoCompleteOutput {
+  addressQuery: string
+  country: string
+  lat: null
+  lng: null
+  placeId: string
+  provider: string
+  resolvedText: string
+  sessionToken: string
+  timeZone: any
+}
+
+export interface IGeoDetailOutput {
+
+  formattedAddress: string
+  lat: number
+  lng: number
+  provider: string
+  timeZone: string
+}
+export async function fetchLocation(data: IGeoInputAutoComplete | IGeoInputAutoDetail, token: string, locale: any): Promise<Array<IGeoAutoCompleteOutput> | IGeoDetailOutput>  {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
@@ -28,11 +56,11 @@ export async function fetchLocation(data: {
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,locale
+          authorization: `Bearer ${token}`, locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
-        process.env.NEXT_PUBLIC_BACKEND_HELPER_MAPBOX as string, data);
+        process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_GEO as string, data);
       if (response.errCode && response.errCode !== 200) {
         throw new Error(response.message);
       }
@@ -48,7 +76,7 @@ export async function fetchLocation(data: {
 export async function fetchIndex(data: {
   "entityId": string,
   "keyword"?: string,
-  type?: "entities" | "users" | "events" | "staff" | "holder" | "employee"| "branch",
+  type?: "entities" | "users" | "events" | "staff" | "holder" | "employee" | "branch",
 
 }): Promise<Array<ISearchIndex>> {
   const filters = []
@@ -81,7 +109,7 @@ export async function sendFormContact(data: ContactFromModel | any, locale: stri
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${data.token}`,locale
+          authorization: `Bearer ${data.token}`, locale
         },
       });
       data.mesagge = data.message

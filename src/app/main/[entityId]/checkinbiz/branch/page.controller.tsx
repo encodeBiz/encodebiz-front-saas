@@ -9,7 +9,7 @@ import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
-import { deleteSucursal, search } from "@/services/checkinbiz/sucursal.service";
+import { deleteSucursal, search, updateSucursal } from "@/services/checkinbiz/sucursal.service";
 import { useLayout } from "@/hooks/useLayout";
 import { DeleteOutline, Edit, ListAltOutlined } from "@mui/icons-material";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
@@ -17,6 +17,7 @@ import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
 import { Box } from "@mui/material";
 import { useAppLocale } from "@/hooks/useAppLocale";
+import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
 
 
 interface IFilterParams {
@@ -43,7 +44,7 @@ export default function useEmployeeListController() {
   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
   const { currentLocale } = useAppLocale()
-  const { navivateTo } = useLayout()
+  const { navivateTo, changeLoaderState } = useLayout()
   const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<ISucursal[]>([]);
   const [itemsHistory, setItemsHistory] = useState<ISucursal[]>([]);
@@ -135,6 +136,10 @@ export default function useEmployeeListController() {
   }
 
 
+  const options = [
+    { label: t('core.label.active'), value: 'active' },
+    { label: t('core.label.inactive'), value: 'inactive' },
+  ]
 
 
 
@@ -143,6 +148,7 @@ export default function useEmployeeListController() {
       id: 'name',
       label: t("core.label.name"),
       minWidth: 170,
+      onClick:  (item: ISucursal) => onDetail(item),
     },
 
     {
@@ -150,11 +156,47 @@ export default function useEmployeeListController() {
       label: t("core.label.address"),
       minWidth: 170,
       format: (value, row) => row.address.street,
+      onClick: (item: ISucursal) => onDetail(item),
+    },
+
+    {
+      id: 'status',
+      label: t("core.label.status"),
+      minWidth: 170,
+      format: (value, row) => <SelectFilter first={false}
+        defaultValue={row.status}
+        value={row.status}
+        onChange={(value: any) => {
+          row.status = value
+          updateStatus(row)
+        }}
+        items={options}
+      />
     },
 
 
-
   ];
+
+  const updateStatus = async (branch: ISucursal) => {
+    try {
+      changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+      const data: Partial<ISucursal> = {
+    
+        "id": branch.id,
+        entityId: currentEntity?.entity.id as string,
+        status: branch.status
+      }
+      await updateSucursal(data, token, currentLocale)
+      const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
+      fetchingData(filterParamsUpdated)
+      changeLoaderState({ show: false })
+      showToast(t('core.feedback.success'), 'success');
+
+    } catch (error: any) {
+      changeLoaderState({ show: false })
+      showToast(error.message, 'error')
+    }
+  };
 
   const fetchingData = (filterParams: IFilterParams) => {
 
@@ -206,6 +248,7 @@ export default function useEmployeeListController() {
 
 
   const onDetail = async (item: any) => {
+     
     navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch/${item.id}/detail`)
   }
 
@@ -265,10 +308,10 @@ export default function useEmployeeListController() {
     />
   </Box>
 
-    const onSuccess = () => {
-      const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
-      fetchingData(filterParamsUpdated)
-    }
+  const onSuccess = () => {
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
+    fetchingData(filterParamsUpdated)
+  }
 
   return {
     items, onSort, onRowsPerPageChange,

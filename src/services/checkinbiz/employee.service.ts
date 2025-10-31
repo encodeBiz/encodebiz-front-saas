@@ -189,7 +189,7 @@ export async function updateEmployee(data: Partial<IEmployee>, token: string, lo
   }
 }
 
-export async function handleRespnsability(data: Partial<EmployeeEntityResponsibility>, token: string, locale: any = 'es', operation: 'post'|'put'|'delete') {
+export async function handleRespnsability(data: Partial<EmployeeEntityResponsibility>, token: string, locale: any = 'es', operation: 'post'|'patch'|'delete') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");

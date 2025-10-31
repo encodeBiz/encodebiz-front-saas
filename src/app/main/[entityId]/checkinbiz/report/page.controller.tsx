@@ -160,9 +160,8 @@ export default function useAttendanceController() {
     ]
     setLoading(true)
 
-
-    //console.log({ ...(filterParams.params as any), filters });
-    
+     
+     
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async res => {
  
       if (res.length !== 0) {
@@ -216,6 +215,7 @@ export default function useAttendanceController() {
 
     {
       id: 'start',
+ 
       label: t("core.label.start"),
       minWidth: 170,
       format: (value, row) => format_date(row.start, 'YYYY-MM-DD')

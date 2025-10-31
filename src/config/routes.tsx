@@ -1,7 +1,7 @@
 import {
- 
+
     MobiledataOffOutlined,
-   
+
 
 } from '@mui/icons-material';
 import BusinessIcon from '@mui/icons-material/Business';
@@ -18,7 +18,7 @@ export const PASSSINBIZ_MODULE_ROUTE = 'passinbiz'
 export const CHECKINBIZ_MODULE_ROUTE = 'checkinbiz'
 
 const PASSINBIZ = [{
-    name: 'Holders',    
+    name: 'Holders',
     link: `/${PASSSINBIZ_MODULE_ROUTE}/holder`,
     subMenu: []
 }, {
@@ -37,24 +37,28 @@ const PASSINBIZ = [{
 }]
 
 
-const CHECKINBIZ: any = [{
-    name: 'Employee',
-  
-    link: `/${CHECKINBIZ_MODULE_ROUTE}/employee`,
+const CHECKINBIZ: any = [, {
+    name: 'Dashboard',
+    link: `/${CHECKINBIZ_MODULE_ROUTE}/stats`,
     subMenu: []
 }, {
-    name: 'Sucursal',  
-    link: `/${CHECKINBIZ_MODULE_ROUTE}/branch`,
-    subMenu: []
-}, {
-    name: 'Attendance',  
-    link: `/${CHECKINBIZ_MODULE_ROUTE}/attendance`,
-    subMenu: []
-}, {
-    name: 'Report',  
-    link: `/${CHECKINBIZ_MODULE_ROUTE}/report`,
-    subMenu: []
-}]
+        name: 'Employee',
+
+        link: `/${CHECKINBIZ_MODULE_ROUTE}/employee`,
+        subMenu: []
+    }, {
+        name: 'Sucursal',
+        link: `/${CHECKINBIZ_MODULE_ROUTE}/branch`,
+        subMenu: []
+    }, {
+        name: 'Attendance',
+        link: `/${CHECKINBIZ_MODULE_ROUTE}/attendance`,
+        subMenu: []
+    }, {
+        name: 'Report',
+        link: `/${CHECKINBIZ_MODULE_ROUTE}/report`,
+        subMenu: []
+    }]
 
 export const menuItemsHome = [{
     id: 'dashboard',
@@ -127,4 +131,4 @@ export const menuItemsGeneral = [
 ]
 
 
-export const PUBLIC_PATH = ['/tools/scanner','/legal/privacy-policy','/legal/terms-and-conditions','/tools/checking']
+export const PUBLIC_PATH = ['/tools/scanner', '/legal/privacy-policy', '/legal/terms-and-conditions', '/tools/checking']

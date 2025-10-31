@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-// AddressInput.tsx
+ 
 "use client";
 import React, { useEffect, useState } from "react";
 import {
@@ -29,22 +29,24 @@ import { useFormStatus } from "@/hooks/useFormStatus";
 import { country } from "@/config/country";
 import { useTranslations } from "next-intl";
 import { useDebouncedCallback } from "../customHooks/useDebounce";
-import { fetchLocation } from "@/services/core/helper.service";
+import { fetchLocation, IGeoAutoCompleteOutput, IGeoDetailOutput, IGeoInputAutoComplete, IGeoInputAutoDetail } from "@/services/core/helper.service";
 import { useAppLocale } from "@/hooks/useAppLocale";
+import { uuidv4 } from "@/lib/common/String";
 
-type Option = { id: string; label: string; data: any };
+type Option = { id: string; label: string; data: any, autocompleteData: IGeoAutoCompleteOutput };
 
 type AutoCompletedInputProps = FieldProps &
   TextFieldProps & {
     onHandleChange: (value: any) => void;
+    
   };
 
 
 const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) => {
   const t = useTranslations();
   const [field, meta, helper] = useField(props.name);
- 
-   const { formStatus } = useFormStatus();
+
+  const { formStatus } = useFormStatus();
   const [cityList, setCityList] = useState<Array<{ label: string, value: string }>>(country.find((e: any) => e.name === field.value?.country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
   const { currentLocale } = useAppLocale();
 
@@ -52,8 +54,7 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
   const cityField = useField(`${props.name}.city`);
   const postalCodeField = useField(`${props.name}.postalCode`);
   const streetField = useField(`${props.name}.street`);
-
-
+  const [sessionToken, setSessionToken] = useState(uuidv4())
 
   const { token } = useAuth();
 
@@ -64,9 +65,9 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
   const [countryCode, setCountryCode] = useState("ES");
 
   useEffect(() => {
-              setCityList(country.find((e: any) => e.name === formStatus?.values?.address?.country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
+    setCityList(country.find((e: any) => e.name === formStatus?.values?.address?.country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
   }, [formStatus?.values?.address?.country])
-  
+
 
 
   // Debounced remote search
@@ -74,7 +75,7 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
     async (q: string, code: string) => {
       const query = (q ?? "").trim();
 
-
+ 
       if (!query || query == inputValue) {
         setOptions([]);
         setPending(false);
@@ -82,12 +83,13 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
       }
       try {
         setPending(true);
-        const data = await fetchLocation({ address: query.toLowerCase(), country: code }, token, currentLocale);
+        const data: Array<IGeoAutoCompleteOutput> = (await fetchLocation({ address: query.toLowerCase(), country: code, sessionToken, action: 'autocomplete' } as IGeoInputAutoComplete, token, currentLocale)) as Array<IGeoAutoCompleteOutput>;
         setOptions(
           data.map((e: any) => ({
             id: `${e.lng}${e.lat}`,
             label: e.resolvedText,
-            data: e,
+            autocompleteData: e,
+            data: e
           }))
         );
       } finally {
@@ -95,7 +97,7 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
       }
     },
     600
-    , [token]
+    , [token, sessionToken]
   );
 
   useEffect(() => {
@@ -123,17 +125,25 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
     }
   }, [formStatus?.values?.address?.country]);
 
-  const handleChange = (_: any, newOption: Option | null) => {
+  const handleChange = async (_: any, newOption: Option | null) => {
     setSelected(newOption);
     setOptions([])
     debouncedSearch?.cancel?.();
+    
+    if (newOption?.autocompleteData) {
+      const data: IGeoDetailOutput = (await fetchLocation({ placeId: newOption?.autocompleteData?.placeId, provider: newOption?.autocompleteData?.provider, sessionToken: newOption?.autocompleteData?.sessionToken, action: 'placedetails' } as IGeoInputAutoDetail, token, currentLocale)) as IGeoDetailOutput
 
-    helper.setValue({
-      ...(field.value ?? {}),
-      street: newOption?.label,
-      geo: { lat: newOption?.data?.lat as number, lng: newOption?.data?.lng as number },
-      timeZone: newOption?.data?.timeZone as string
-    })
+      helper.setValue({
+        ...(field.value ?? {}),
+        street: newOption?.label,
+        geo: { lat: data?.lat as number, lng: data?.lng as number },
+        timeZone: data?.timeZone as string
+      })
+
+    }
+
+
+
 
   };
 
@@ -145,6 +155,7 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
 
   return (
     <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
+       
       <Grid size={{
         xs: 12,
         sm: 12
@@ -227,7 +238,7 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
         </FormControl>
       </Box>
 
-    
+
       <Box sx={{ display: 'flex', gap: 2, flexDirection: 'row' }}>
         <TextField
           label={t('core.label.postalCode')}
@@ -272,10 +283,11 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
             renderInput={(params) => (
               <TextField required={props.required}
                 {...params}
-                label={props.label}
+                label={t("core.label.address")}
                 placeholder={t("core.label.typingAddress")}
                 error={!!(streetField[1].touched && streetField[1].error)}
                 helperText={streetField[1].touched && streetField[1].error}
+                onFocus={() => setSessionToken(uuidv4())}
                 slotProps={{
                   input: {
                     ...params.InputProps,
@@ -309,7 +321,7 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
 
           {streetField[1].touched && streetField[1].error && <FormHelperText sx={{
             ml: 2,
-            color:   streetField[1].error ? 'error.main' : 'text.secondary'
+            color: streetField[1].error ? 'error.main' : 'text.secondary'
           }}>
             {streetField[1].error}
           </FormHelperText>}    </FormControl>

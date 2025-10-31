@@ -183,6 +183,24 @@ export class HttpClient {
       ...config,
     });
   }
+  
+
+   /**
+   * patch request
+   *
+   * @template T
+   * @param {string} url
+   * @param {?*} [data]
+   * @param {?RequestInit} [config]
+   * @returns {Promise<T>}
+   */
+  patch<T>(url: string, data?: any, config?: RequestInit): Promise<T> {
+    return this.request<T>("PATCH", url, {
+      body: JSON.stringify(data),
+      ...config,
+    });
+  }
+  
 
   /**
    * Delete request

@@ -16030,7 +16030,7 @@
 {
     "code2": "ES",
     "code3": "ESP",
-    "name": "España",
+    "name": "Spain",
     "capital": "Madrid",
     "region": "Europe",
     "subregion": "Southern Europe",
@@ -17819,7 +17819,7 @@
     "code2": "TT",
     "code3": "TTO",
     "name": "Trinidad and Tobago",
-    "capital": "Port of España",
+    "capital": "Port of Spain",
     "region": "Americas",
     "subregion": "Caribbean",
     "states": [
@@ -17860,7 +17860,7 @@
         },
         {
             "code": "POS",
-            "name": "Port of España",
+            "name": "Port of Spain",
             "subdivision": null
         },
         {

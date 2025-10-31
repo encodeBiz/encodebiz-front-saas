@@ -181,6 +181,7 @@ export default function useEmployeeListController() {
       id: 'fullName',
       label: t("core.label.name"),
       minWidth: 170,
+      onClick: (item: IEmployee) => onDetail(item),
       format: (value, row) => <Box>
         <div style={{ display: "flex", alignItems: 'center', cursor: 'help', gap: 4 }}>
           <Tooltip title={row.enableRemoteWork ? t('core.label.enableRemoteWorkEnable') : t('core.label.enableRemoteWorkDisabled')}>
@@ -196,12 +197,15 @@ export default function useEmployeeListController() {
       id: 'email',
       label: t("core.label.email"),
       minWidth: 170,
+      onClick: (item: IEmployee) => onDetail(item)
     },
 
     {
       id: 'phone',
       label: t("core.label.phone"),
       minWidth: 170,
+      onClick: (item: IEmployee) => onDetail(item)
+
     },
 
 
@@ -307,8 +311,7 @@ export default function useEmployeeListController() {
   const updateStatus = async (employee: IEmployee) => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const data: IEmployee = {
-        ...employee,
+      const data: Partial<IEmployee> = {         
         "uid": user?.id as string,
         "id": employee.id,
         entityId: currentEntity?.entity.id as string,
@@ -327,7 +330,7 @@ export default function useEmployeeListController() {
     }
   };
 
-  const topFilter = <Box sx={{ display: 'flex', gap: 2,   alignItems: 'flex-end', justifyContent: 'flex-end' }}>
+  const topFilter = <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-end', justifyContent: 'flex-end' }}>
 
     {branchList.length > 0 && <SelectFilter
       first width={290}
@@ -345,9 +348,9 @@ export default function useEmployeeListController() {
 
       items={options}
     />
-    <SearchIndexFilter   
+    <SearchIndexFilter
       type="employee"
-       label={t('employee.search')}
+      label={t('employee.search')}
       onChange={async (value: ISearchIndex) => {
         const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
         if (value?.id) {

@@ -61,7 +61,8 @@ function buildMonthlyRows(month?: Record<string, TrendBucket>) {
     const totalPasses = rows.reduce((s, r) => s + r.passes, 0);
     const totalCredentials = rows.reduce((s, r) => s + r.credentials, 0);
     const passPerCredential = totalCredentials > 0 ? +((totalPasses / totalCredentials).toFixed(2)) : null;
-
+ 
+    
     return { rows, kpis: { totalPasses, totalCredentials, passPerCredential } };
 }
 
