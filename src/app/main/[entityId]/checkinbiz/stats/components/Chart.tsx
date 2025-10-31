@@ -2,13 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useCheckBizStats } from '../context/checkBizStatsContext';
-import { fetchSucursal } from '@/services/checkinbiz/sucursal.service';
-import { useEntity } from '@/hooks/useEntity';
-import { FormControl, InputLabel, Select, MenuItem, Box, Typography } from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, Box, Typography, useTheme } from '@mui/material';
 import { useTranslations } from 'next-intl';
 
 const Chart = () => {
     const t = useTranslations()
+    const theme = useTheme()
     const { branchOne, branchTwo } = useCheckBizStats()
     const [type, setType] = useState('weeklyWorkAvg')
     const [chartData, setChartData] = useState([
@@ -20,18 +19,8 @@ const Chart = () => {
         { day: 'Sábado' },
         { day: 'Domingo' }
     ])
-    const { currentEntity } = useEntity()
     const updateChartData = async () => {
         const newDataArray: Array<any> = []
-        if (!!branchOne) {
-
-            chartData.forEach((element, index) => {
-                newDataArray.push({
-                    day: element.day,
-                    [branchOne.branch?.name as string]: (branchOne as any)[type][index] ?? 0
-                })
-            });
-        }
 
         if (!!branchOne && !!branchTwo) {
 
@@ -42,7 +31,19 @@ const Chart = () => {
                     [branchTwo.branch?.name as string]: (branchTwo as any)[type][index] ?? 0
                 })
             });
+        } else {
+            if (!!branchOne) {
+
+                chartData.forEach((element, index) => {
+                    newDataArray.push({
+                        day: element.day,
+                        [branchOne.branch?.name as string]: (branchOne as any)[type][index] ?? 0
+                    })
+                });
+            }
         }
+
+
 
         console.log(newDataArray);
 
@@ -72,13 +73,13 @@ const Chart = () => {
                     <YAxis label={{ value: 'Horas', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Legend />
-                    {Object.keys(chartData[0]).filter(e => e !== 'day').map((e, i) => <Line key={i} type="monotone" dataKey={e} stroke="#8884d8" name={e} />)}
+                    {Object.keys(chartData[0]).filter(e => e !== 'day').map((e, i) => <Line key={i} type="monotone" dataKey={e} stroke={i == 0 ? theme.palette.primary.main : theme.palette.error.main} name={e} />)}
 
                 </LineChart>
             </ResponsiveContainer>
 
-            <Box display={'flex'} flexDirection={'column'}>
-                <FormControl >
+            <Box display={'flex'} flexDirection={'column'} alignItems={'flex-end'}>
+                <FormControl  sx={{ m: 1, width: 340 }}>
                     <InputLabel id="demo-simple-select-label">{t('statsCheckbiz.chartType')}</InputLabel>
                     <Select
                         labelId="demo-simple-select-label"

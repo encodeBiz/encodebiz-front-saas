@@ -7,9 +7,8 @@ import { AccessTimeOutlined, CurrencyExchangeOutlined, PendingActionsOutlined } 
 import { formatDay } from '@/lib/common/Date';
 import { useTranslations } from 'next-intl';
 import { getAverage } from '@/lib/common/String';
-import Chart from '../Chart';
-
-export const StatsPatternCards = ({ data, lineal = false, chart = false }: { data: IBranchPattern, lineal?: boolean, chart?: boolean }) => {
+ 
+export const StatsPatternCards = ({ data, lineal = false  }: { data: IBranchPattern, lineal?: boolean }) => {
     const t = useTranslations()
 
     return (
@@ -68,11 +67,7 @@ export const StatsPatternCards = ({ data, lineal = false, chart = false }: { dat
                             </Box>
                         </BorderBox>
                     </Box>
-                </Box>
-
-                {chart && <Box display={'flex'} flexDirection={'column'} gap={2} minWidth={'50%'} flex={1}>
-                    <Chart />
-                </Box>}
+                </Box>              
             </Box>
         </Box>
     );

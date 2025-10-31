@@ -1,12 +1,7 @@
-import { SearchParams } from "@/domain/core/firebase/firestore";
-import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
+ import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
-import { getOne } from "@/lib/firebase/firestore/readDocument";
-import { IReport } from "@/domain/features/checkinbiz/IReport";
 import { mapperErrorFromBack } from "@/lib/common/String";
-import { IChecklog } from "@/domain/features/checkinbiz/IChecklog";
-import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
 import { IBranchPattern } from "@/domain/features/checkinbiz/IStats";
 import { fetchSucursal } from "./sucursal.service";
 
