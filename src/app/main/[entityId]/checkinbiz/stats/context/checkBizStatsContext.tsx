@@ -22,14 +22,12 @@ interface ICheckBizStatsProps {
 
 export const CheckBizStatsContext = createContext<ICheckBizStatsProps | undefined>(undefined);
 
-
-
-export function CheckBizStatsProvider({ children }: { children: React.ReactNode }) {
+export const CheckBizStatsProvider= ({ children }: { children: React.ReactNode }) => {
     const [branchList, setBranchList] = useState<Array<ISucursal>>([])
-    const [branchSelected, setBranchSelected] = React.useState<ISucursal[]>([]);
+    const [branchSelected, setBranchSelected] = useState<ISucursal[]>([]);
 
-    const [branchOne, setBranchOne] = React.useState<IBranchPattern>();
-    const [branchTwo, setBranchTwo] = React.useState<IBranchPattern>();
+    const [branchOne, setBranchOne] = useState<IBranchPattern>();
+    const [branchTwo, setBranchTwo] = useState<IBranchPattern>();
 
     const { currentEntity } = useEntity()
 
@@ -38,9 +36,10 @@ export function CheckBizStatsProvider({ children }: { children: React.ReactNode 
     }
 
     const updatePatternData = async () => {
- 
-        if (branchSelected.length == 1)
+         
+        if (branchSelected.length == 1){             
             setBranchOne(await fetchBranchPattern(currentEntity?.entity?.id as string, branchSelected[0].id as string) as IBranchPattern);
+        }
         if (branchSelected.length == 2) {
             setBranchTwo(await fetchBranchPattern(currentEntity?.entity?.id as string, branchSelected[1].id as string) as IBranchPattern);
             setBranchOne(await fetchBranchPattern(currentEntity?.entity?.id as string, branchSelected[0].id as string) as IBranchPattern);
@@ -54,6 +53,8 @@ export function CheckBizStatsProvider({ children }: { children: React.ReactNode 
     useEffect(() => {
         updatePatternData()
     }, [branchSelected.length])
+
+    
 
     return (
         <CheckBizStatsContext.Provider value={{ branchList, branchSelected, setBranchSelected, branchOne, branchTwo }}>

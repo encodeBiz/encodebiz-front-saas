@@ -16,7 +16,7 @@ const MenuProps = {
     },
 };
 
-const Selector = () => {
+export const SelectorBranch = () => {
     const t = useTranslations();
     const { branchList, branchSelected, setBranchSelected } = useCheckBizStats()
 
@@ -63,4 +63,4 @@ const Selector = () => {
 }
 
 
-export const SelectorBranch = () => <CheckBizStatsProvider><Selector /></CheckBizStatsProvider>
+ 
