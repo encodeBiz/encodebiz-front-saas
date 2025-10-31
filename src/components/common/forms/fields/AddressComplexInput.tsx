@@ -154,7 +154,7 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
 
   return (
     <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
-      {sessionToken}
+     
       <Grid size={{
         xs: 12,
         sm: 12

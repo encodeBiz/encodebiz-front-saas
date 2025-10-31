@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
-import { ratioLogRule, requiredRule, timeBreakRule } from '@/config/yupRules';
+import { addressSchema, ratioLogRule, requiredRule, timeBreakRule } from '@/config/yupRules';
 import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
@@ -22,6 +22,7 @@ import TimeInput from "@/components/common/forms/fields/TimeInput";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useAppLocale } from "@/hooks/useAppLocale";
+import AddressComplexInput from "@/components/common/forms/fields/AddressComplexInput";
 
 
 export default function useFormController(isFromModal: boolean, onSuccess?: () => void) {
@@ -33,9 +34,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
   const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
-  const [geo, setGeo] = useState<{ lat: number, lng: number }>({ lat: 0, lng: 0 })
-  const [cityList, setCityList] = useState<any>(country.find(e => e.name === 'España')?.states.map(e => ({ label: e.name, value: e.name })))
-  const [tz, setTz] = useState('')
+
   const { open, closeModal, openModal } = useCommonModal()
   const { id } = useParams<{ id: string }>()
 
@@ -79,13 +78,10 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         })
       )
       .nullable(),
-    street: requiredRule(t),
-    country: requiredRule(t),
-    city: requiredRule(t),
+    address: addressSchema(t),
     name: requiredRule(t),
     nif: requiredRule(t),
-    postalCode: requiredRule(t),
-    status: requiredRule(t),
+     status: requiredRule(t),
     ratioChecklog: ratioLogRule(t),
     startTime: requiredRule(t),
     endTime: requiredRule(t),
@@ -105,15 +101,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         nif: values.nif,
         "metadata": ArrayToObject(values.metadata as any),
         "id": itemId,
-        address: {
-          "country": values.country,
-          "city": values.city,
-          geo,
-          postalCode: values.postalCode,
-          region: values.region,
-          street: values.street,
-          timeZone: tz
-        },
+        address: values.address,
         entityId: currentEntity?.entity.id as string,
         advance: {
           "enableDayTimeRange": values.enableDayTimeRange,
@@ -177,45 +165,12 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       component: TextInput,
     },
     {
-      name: 'country',
-      label: t('core.label.country'),
-      extraProps: {
-        onHandleChange: (value: any) => {
-          setCityList(country.find((e: any) => e.name === value)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
-        },
-      },
-      component: SelectInput,
-      options: country.map(e => ({ label: e.name, value: e.name }))
-    },
-    {
-      name: 'city',
-      label: t('core.label.city'),
-      component: SelectInput,
-      options: cityList
-    },
-
-    {
-      name: 'postalCode',
-      label: t('core.label.postalCode'),
-      component: TextInput,
+      name: 'address',
+      label: t('core.label.address'),
+      required: true,
       fullWidth: true,
-
+      component: AddressComplexInput,
     },
-
-    {
-      name: 'street',
-      label: t('core.label.street'),
-      type: 'textarea',
-      fullWidth: true,
-      component: AddressInput,
-      extraProps: {
-        onHandleChange: (data: { lat: number, lng: number, timeZone: string }) => {
-          setGeo({ lat: data.lat, lng: data.lng })
-          setTz(data.timeZone)
-        },
-      },
-    },
-
     {
       name: 'disableRatioChecklog',
       label: t('core.label.disableRatioChecklog'),
@@ -320,9 +275,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const sucursal: ISucursal = await fetchSucursal(currentEntity?.entity.id as string, itemId)
-      setCityList(country.find((e: any) => e.name === sucursal.address.country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
-      setGeo({ lat: sucursal.address.geo.lat, lng: sucursal.address.geo.lng })
-      setTz(sucursal.address?.timeZone as string)
+
 
       const startTime = new Date()
       startTime.setMinutes(sucursal?.advance?.startTimeWorkingDay?.minute ?? 0)
@@ -333,12 +286,10 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       endTime.setHours(sucursal?.advance?.endTimeWorkingDay?.hour ?? 0)
 
       setInitialValues({
-        "country": sucursal.address.country,
-        "city": sucursal.address.city,
-        geo: { lat: sucursal.address.geo.lat, lng: sucursal.address.geo.lng },
+        address: sucursal.address,
+
         postalCode: sucursal.address.postalCode,
-        region: sucursal.address.region,
-        street: sucursal.address.street,
+
         status: sucursal.status,
         ratioChecklog: sucursal.ratioChecklog,
         name: sucursal.name,

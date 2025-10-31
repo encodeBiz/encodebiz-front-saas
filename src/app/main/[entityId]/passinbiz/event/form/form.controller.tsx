@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
-import { requiredRule } from '@/config/yupRules';
+import { addressSchema, requiredRule } from '@/config/yupRules';
 import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
@@ -25,6 +25,7 @@ import { Timestamp } from "firebase/firestore";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useAppLocale } from "@/hooks/useAppLocale";
+import AddressComplexInput from "@/components/common/forms/fields/AddressComplexInput";
 
 
 export default function useFormController(isFromModal: boolean, onSuccess?: () => void) {
@@ -37,21 +38,16 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const { id } = useParams<{ id: string }>()
   const itemId = isFromModal ? open.args?.id : id
   const { currentEntity, watchServiceAccess } = useEntity()
-  const [geo, setGeo] = useState<{ lat: number, lng: number }>({ lat: 0, lng: 0 })
-  const [timeZone, setTimeZone] = useState('')
-  const [cityList, setCityList] = useState<any>(country.find(e => e.name === 'España')?.states.map(e => ({ label: e.name, value: e.name })))
-  const [countrySelected, setCountrySelected] = useState<any>('España')
+
   const { changeLoaderState } = useLayout()
   const [initialValues, setInitialValues] = useState<Partial<IEvent>>({
     "name": '',
     "description": '',
-    "address": '',
+ 
     "language": 'ES',
     "date": null,
     "endDate": null,
-    "location": '',
-    "country": '',
-    "city": '',
+  
     "template": 'default',
     "logoUrl": '',
     "imageUrl": '',
@@ -70,9 +66,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     //description: requiredRule(t),
     date: requiredRule(t),
     endDate: requiredRule(t),
-    city: requiredRule(t),
-    country: requiredRule(t),
-    address: requiredRule(t),
+    address: addressSchema(t),
     imageUrl: requiredRule(t),
     logoUrl: requiredRule(t),
     template: requiredRule(t),
@@ -83,15 +77,14 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const handleSubmit = async (values: Partial<IEvent>) => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const codeLocale = country.find(e => e.name === countrySelected)?.code2
+      const codeLocale = country.find(e => e.name === values.address?.country)?.code2
       const data: Partial<IEvent> = {
         "uid": user?.id as string,
-        geo, timeZone,
+        address: values.address,
         "createdBy": user?.id as string,
         "name": values.name,
         "description": values.description,
-        "location": `${values.city}+++${values.country}`,
-        "address": `${values.address as string}`,
+
         "entityId": currentEntity?.entity?.id as string,
         "colorPrimary": values.colorPrimary,
         "colorAccent": values.colorAccent,
@@ -164,39 +157,11 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     },
 
     {
-      name: 'country',
-      label: t('core.label.country'),
-      extraProps: {
-        onHandleChange: (value: any) => {
-          setCityList(country.find((e: any) => e.name === value)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
-          setCountrySelected(value)
-
-        },
-      },
-      component: SelectInput,
-      options: country.map(e => ({ label: e.name, value: e.name }))
-    },
-    {
-      name: 'city',
-      label: t('core.label.city'),
-      component: SelectInput,
-      options: cityList,
-
-    },
-    {
       name: 'address',
       label: t('core.label.address'),
-      type: 'text',
       required: true,
       fullWidth: true,
-      component: AddressInput,
-      extraProps: {
-        onHandleChange: (data: { lat: number, lng: number, timeZone: string }) => {
-          setGeo({ lat: data.lat, lng: data.lng })
-          setTimeZone(data.timeZone)
-        },
-      },
-
+      component: AddressComplexInput,
     },
 
 
@@ -288,30 +253,19 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, itemId)
-       
-      const location = event.location.split('+++')
-      setGeo(event.geo)
-      setTimeZone(event.timeZone as string)
-      let countryCurrent = 'España'
-      let city = 'Madrid'
-      if (location.length === 2) {
-        countryCurrent = location[1]
-        city = location[0]
-        setCityList(country.find((e: any) => e.name === countryCurrent)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
 
-      }
+      const location = event.location.split('+++')
 
 
       setInitialValues({
         ...event,
         date: (event.date instanceof Timestamp) ? event.date.toDate() : new Date(event.date),
         endDate: (event.endDate instanceof Timestamp) ? event.endDate.toDate() : new Date(event.endDate),
-        country: countryCurrent, city,
         metadata: objectToArray(event.metadata)
       })
 
 
-      setCountrySelected(country)
+    
       changeLoaderState({ show: false })
     } catch (error: any) {
       changeLoaderState({ show: false })
