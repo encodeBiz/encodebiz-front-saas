@@ -167,3 +167,12 @@ export function extractCountryCode(phoneNumber: string) {
 
     return fallbackMatch ? fallbackMatch[1] : null;
 }
+
+export function getAverage(numbers: Array<number>): number {
+    if (!Array.isArray(numbers) || numbers.length === 0) {
+        return 0;
+    }
+    
+    const sum = numbers.reduce((acc, curr) => acc + curr, 0);
+    return sum / numbers.length;
+}

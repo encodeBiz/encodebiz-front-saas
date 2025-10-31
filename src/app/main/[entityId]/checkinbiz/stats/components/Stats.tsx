@@ -12,7 +12,6 @@ export const StatsPattern = () => {
         <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }} p={2}>
           
             {branchOne && <StatsPatternCards data={branchOne} />}
-
             {branchTwo && <StatsPatternCards data={branchTwo} />}
         </Box>
     );

@@ -877,7 +877,12 @@
     "advise": "No exiten datos para mostrar, debe seccionar al menos una sucursal para mostrar los datos estadistivos y de predicción",
     "operationData": "Datos en operación",
     "loading": "Procesando y preparando datos para mostrar",
-    "selected": "Selecione una o dos sucursales"
+    "selected": "Selecione una o dos sucursales",
+    "avgWeekWork":"Promedio de horas semanales",
+    "rentability":"Rentabilidad",
+    "avgStartEnd":"Promedio de inicio/fin de jornada",
+    "avgCostHour":"Costo promedio por hora",
+    "avgCycleCost":"Costo promedio por ciclo"
   },
   "checking": {
     "title": "Control de Asistencia",

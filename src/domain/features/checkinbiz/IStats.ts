@@ -19,7 +19,19 @@ export interface IBranchPattern {
     "timeZone": string
     "totalItems": number
     "last": string
+
+    "avgCostHour": number,
+    "avgCycleCost": number,
+    "avgEffectiveCost": number,
+    "efficiency": number,
+    "cycleTime": number,
+    costTrend: any
+    costVariance: number
+    effectiveRealCost: number
 }
+
+
+
 
 
 
