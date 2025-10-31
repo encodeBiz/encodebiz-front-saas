@@ -1,12 +1,11 @@
 'use client';
 import { Box, Card, CardContent, CardHeader, Divider, Typography, useTheme } from '@mui/material';
 
-import { useTranslations } from 'next-intl';
 import { useAppLocale } from '@/hooks/useAppLocale';
 import { IBranchPattern, IHeuristicInfo } from '@/domain/features/checkinbiz/IStats';
 
 export const HeuristicAnalize = ({ data, branchPattern }: { data: Array<IHeuristicInfo>, branchPattern: IBranchPattern, }) => {
-    const t = useTranslations()
+
     const theme = useTheme()
 
     const { currentLocale } = useAppLocale()
