@@ -873,6 +873,23 @@
     "series": "Series visibles",
     "empthytext": "Ajusta los filtros con los parámetros que requieras para gráficar información"
   },
+  "statsCheckbiz": {
+    "advise": "No exiten datos para mostrar, debe seccionar al menos una sucursal para mostrar los datos estadistivos y de predicción",
+    "operationData": "Datos en operación",
+    "loading": "Procesando y preparando datos para mostrar",
+    "selected": "Selecione una o dos sucursales",
+    "avgWeekWork": "Promedio de horas semanales",
+    "rentability": "Rentabilidad",
+    "avgStartEnd": "Prom. de inicio/fin",
+    "avgCostHour": "Costo prom. por hora",
+    "avgCycleCost": "Costo prom. por ciclo",
+    "weeklyEndAvg": "Promedio de hora de fin de jornada",
+    "weeklyStartAvg": "Promedio de hora de inicio de jornada",
+    "weeklyWorkAvg": "Promedio de horas trabajadas",
+    "chartTitle":"Comparativa de Horas por Semana",
+    "chartType":"Tipo de gráfica",
+    "heuristicAnalize":"Análisis heurístico"
+  },
   "checking": {
     "title": "Control de Asistencia",
     "logDay": "Registro de Jornada",

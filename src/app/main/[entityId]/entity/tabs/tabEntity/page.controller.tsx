@@ -10,15 +10,14 @@ import { SxProps, Theme } from '@mui/material';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { useToast } from '@/hooks/useToast';
 import SelectInput from '@/components/common/forms/fields/SelectInput';
-import { country } from '@/config/country';
 import { formatDate } from '@/lib/common/Date';
 import { createSlug } from '@/lib/common/String';
 import { fetchEntity, updateEntity } from '@/services/core/entity.service';
-import { requiredRule } from '@/config/yupRules';
+import { addressSchema, requiredRule } from '@/config/yupRules';
 import { useLayout } from '@/hooks/useLayout';
 import IEntity from '@/domain/core/auth/IEntity';
-import AddressInput from '@/components/common/forms/fields/AddressInput';
 import { useAppLocale } from '@/hooks/useAppLocale';
+import AddressComplexInput from '@/components/common/forms/fields/AddressComplexInput';
 
 
 
@@ -26,10 +25,7 @@ export interface EntityUpdatedFormValues {
     "uid": string
     "name": string
     "active": boolean
-    "street": string
-    "country": string
-    "city": string
-    "postalCode": string
+ 
     //"region": string
     "taxId": string
     legalName: string
@@ -57,23 +53,19 @@ export type TabItem = {
 export const useSettingEntityController = () => {
     const t = useTranslations();
     const { currentEntity } = useEntity();
-    const [geo, setGeo] = useState<{ lat: number, lng: number }>({ lat: 0, lng: 0 })
-    const [timeZone, setTimeZone] = useState('')
+
     const { changeLoaderState } = useLayout()
     const { user, token } = useAuth();
     const { showToast } = useToast()
     const [pending, setPending] = useState(false)
-    const [cityList, setCityList] = useState<any>([])
+
     const { currentLocale } = useAppLocale()
 
-    const [initialValues, setInitialValues] = useState<EntityUpdatedFormValues>({
+    const [initialValues, setInitialValues] = useState<any>({
         uid: currentEntity?.entity?.id as string ?? "",
         "name": currentEntity?.entity?.name as string ?? "",
         "active": currentEntity?.entity?.active as boolean ?? true,
-        "street": currentEntity?.entity?.legal?.address.street as string ?? "",
-        "country": currentEntity?.entity?.legal?.address.country as string ?? "",
-        "city": currentEntity?.entity?.legal?.address.city as string ?? "",
-        "postalCode": currentEntity?.entity?.legal?.address.postalCode as string ?? "",
+        "address": currentEntity?.entity?.legal?.address,
         "taxId": currentEntity?.entity?.legal?.taxId as string ?? "",
         "legalName": currentEntity?.entity?.legal?.legalName as string ?? "",
         billingEmail: currentEntity?.entity?.billingEmail as string ?? "",
@@ -82,13 +74,13 @@ export const useSettingEntityController = () => {
 
     const validationSchema = Yup.object().shape({
         name: requiredRule(t),
-        street: requiredRule(t),
-        country: requiredRule(t),
-        city: requiredRule(t),
-        postalCode: requiredRule(t),
+
         taxId: requiredRule(t),
         legalName: requiredRule(t),
         language: requiredRule(t),
+
+        address: addressSchema(t),
+
 
     });
 
@@ -141,50 +133,13 @@ export const useSettingEntityController = () => {
             type: 'email',
             component: TextInput,
         },
+       
         {
-            isDivider: true,
+            name: 'address',
             label: t('core.label.addressData'),
-        },
-
-        {
-            name: 'country',
-            label: t('core.label.country'),
-            extraProps: {
-                onHandleChange: (value: any) => {
-                    setCityList(country.find((e: any) => e.name === value)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
-                },
-            },
-            component: SelectInput,
-            options: country.map(e => ({ label: e.name, value: e.name }))
-        },
-        {
-            name: 'city',
-            label: t('core.label.city'),
-            component: SelectInput,
-            options: cityList
-        },
-        {
-            name: 'postalCode',
-            label: t('core.label.postalCode'),
-            component: TextInput,
+            required: true,
             fullWidth: true,
-            options: cityList
-        },
-        {
-            name: 'street',
-            label: t('core.label.street'),
-            type: 'textarea',
-            fullWidth: true,
-            component: AddressInput,
-            extraProps: {
-                onHandleChange: (data: { lat: number, lng: number, timeZone: string }) => {
-                    setGeo({
-                        lat: data.lat,
-                        lng: data.lng,
-                    })
-                    setTimeZone(data.timeZone)
-                },
-            },
+            component: AddressComplexInput,
         },
 
 
@@ -196,7 +151,7 @@ export const useSettingEntityController = () => {
 
 
 
-    const setEntityDataAction = async (values: EntityUpdatedFormValues) => {
+    const setEntityDataAction = async (values: any) => {
         try {
 
             setPending(true)
@@ -209,15 +164,7 @@ export const useSettingEntityController = () => {
                 "legal": {
                     "legalName": values.legalName,
                     "taxId": values.taxId,
-                    "address": {
-                        geo,
-                        "street": values.street,
-                        "city": values.city,
-                        "postalCode": values.postalCode,
-                        "country": values.country,
-                        timeZone
-
-                    }
+                    "address": values.address
                 },
                 "active": true
             }
@@ -248,18 +195,13 @@ export const useSettingEntityController = () => {
                 uid: entity?.id as string ?? "",
                 "name": entity?.name as string ?? "",
                 "active": entity?.active as boolean ?? true,
-                "street": entity?.legal?.address.street as string ?? "",
-                "country": entity?.legal?.address.country as string ?? "",
-                "city": entity?.legal?.address.city as string ?? "",
-                "postalCode": entity?.legal?.address.postalCode as string ?? "",
+                "address": entity?.legal?.address,
                 "taxId": entity?.legal?.taxId as string ?? "",
                 "legalName": entity?.legal?.legalName as string ?? "",
                 "language": entity?.language as any,
                 billingEmail: entity?.billingEmail as string ?? user?.email as string ?? ''
             })
-            setCityList(country.find(e => e.name === entity?.legal?.address.country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
-            setGeo(entity.legal?.address?.geo as { lat: number, lng: number })
-            setTimeZone(entity.legal?.address?.timeZone as string)
+
         } catch (error) {
             if (error instanceof Error) {
                 showToast(error.message, 'error');

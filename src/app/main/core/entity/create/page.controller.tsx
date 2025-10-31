@@ -1,7 +1,6 @@
 'use client'
 import SelectInput from '@/components/common/forms/fields/SelectInput';
 import TextInput from '@/components/common/forms/fields/TextInput';
-import { country } from '@/config/country';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useToast } from '@/hooks/useToast';
@@ -10,22 +9,21 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'nextjs-toploader/app';
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
-import { requiredRule } from '@/config/yupRules';
+import { addressSchema, requiredRule } from '@/config/yupRules';
 import { MAIN_ROUTE } from '@/config/routes';
 import { createSlug } from '@/lib/common/String';
-import AddressInput from '@/components/common/forms/fields/AddressInput';
 import { useLayout } from '@/hooks/useLayout';
 import { useAppLocale } from '@/hooks/useAppLocale';
+import AddressComplexInput from '@/components/common/forms/fields/AddressComplexInput';
 
 
 export interface EntityFormValues {
     "uid": string
     "name": string
     "active": boolean
-    "street": string
-    "country": string
-    "city": string
-    "postalCode": string
+    address: {
+        street: string
+    },
     //"region": string
     "taxId": string
     language: string
@@ -40,37 +38,29 @@ export const useRegisterController = () => {
     const { changeCurrentEntity } = useEntity()
     const { push } = useRouter()
     const { currentLocale } = useAppLocale()
-    const [cityList, setCityList] = useState<any>([])
-    const [geo, setGeo] = useState<{ lat: number, lng: number }>({ lat: 0, lng: 0 })
-    const [timeZone, setTimeZone] = useState('')
+
 
     const { changeLoaderState } = useLayout()
     const [initialValues, setInitialValues] = useState<EntityFormValues>({
         uid: user?.id as string,
         "name": "",
         "active": true,
-        "street": "",
-        "country": "",
-        "city": "",
-        "postalCode": "",
+        address: { street: '' },
         //"region": currentEntity?.entity?.legal?.address.region as string | "",
         "taxId": "",
         "legalName": "",
         billingEmail: user?.email as string | "",
-        "language":""
+        "language": ""
     });
     const validationSchema = Yup.object().shape({
         name: requiredRule(t),
-        street: requiredRule(t),
-        country: requiredRule(t),
-        city: requiredRule(t),
-        postalCode: requiredRule(t),
+        address: addressSchema(t),
         language: requiredRule(t),
         taxId: requiredRule(t),
         legalName: requiredRule(t),
 
     });
-    const handleCreateEntity = async (values: EntityFormValues) => {
+    const handleCreateEntity = async (values: any) => {
         try {
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
 
@@ -83,15 +73,7 @@ export const useRegisterController = () => {
                 "legal": {
                     "legalName": values.legalName,
                     "taxId": values.taxId,
-                    "address": {
-                        geo,
-                        "street": values.street,
-                        "city": values.city,
-                        "postalCode": values.postalCode,
-                        "country": values.country,
-                        timeZone
-
-                    }
+                    "address": values.address
                 },
                 "active": true
             }
@@ -163,49 +145,12 @@ export const useRegisterController = () => {
         },
 
         {
-            name: 'country',
-            label: t('core.label.country'),
-            extraProps: {
-                onHandleChange: (value: any) => {
-                    setCityList(country.find((e: any) => e.name === value)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])
-                },
-            },
-            component: SelectInput,
-            options: country.map(e => ({ label: e.name, value: e.name }))
-        },
-        {
-            name: 'city',
-            label: t('core.label.city'),
-            component: SelectInput,
-            options: cityList
-        },
-
-        {
-            name: 'postalCode',
-            label: t('core.label.postalCode'),
-            component: TextInput,
+            name: 'address',
+            label: t('core.label.addressData'),
+            required: true,
             fullWidth: true,
-            options: cityList
+            component: AddressComplexInput,
         },
-
-        {
-            name: 'street',
-            label: t('core.label.street'),
-            type: 'textarea',
-            fullWidth: true,
-            component: AddressInput,
-            extraProps: {
-                onHandleChange: (data: { lat: number, lng: number, timeZone: string }) => {
-                    setGeo({
-                        lat: data.lat,
-                        lng: data.lng,
-                    })
-                    setTimeZone(data.timeZone)
-                },
-            },
-        },
-
-
 
 
     ];
@@ -218,13 +163,13 @@ export const useRegisterController = () => {
                 "name": '',
                 "billingEmail": user?.email as string,
                 "active": true,
-                city: '',
-                country: '',
+
                 legalName: '',
-                postalCode: '',
-                street: '',
+                address: {
+                    street: ''
+                },
                 taxId: '',
-                language:''
+                language: ''
             })
         }
         return () => { }

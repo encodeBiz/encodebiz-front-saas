@@ -180,8 +180,8 @@ export default function useEmployeeListController() {
   const updateStatus = async (branch: ISucursal) => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const data: ISucursal = {
-        ...branch,
+      const data: Partial<ISucursal> = {
+    
         "id": branch.id,
         entityId: currentEntity?.entity.id as string,
         status: branch.status

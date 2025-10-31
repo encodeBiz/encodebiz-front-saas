@@ -7,7 +7,7 @@ export interface IEvent {
     "endDate": any
     "location": string
     dateLabel: string
-    address: string
+
     "template": "default" | "vip" | "expo" | "festival"
     status?: "draft" | "published" | "archived";
     "logoUrl": string
@@ -19,9 +19,21 @@ export interface IEvent {
     assignedStaff: string[]
     "isPublished": boolean
     "metadata": any
-    geo: { lat: number, lng: number }
-    "city"?: string
-    "timeZone"?: string
-    "country"?: string
+
+
     language?: string
+
+
+    address: {
+        street: string,
+        city: string,
+        country: string,
+        postalCode: string,
+        region: string,
+        timeZone: string,
+        geo: {
+            lat: number
+            lng: number
+        }
+    },
 }
