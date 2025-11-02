@@ -9,6 +9,7 @@ import { IBranchPattern, IHeuristicInfo } from '@/domain/features/checkinbiz/ISt
 import { analiziHeuristic, fetchBranchPattern } from '@/services/checkinbiz/stats.service';
 import { useAuth } from '@/hooks/useAuth';
 import { useAppLocale } from '@/hooks/useAppLocale';
+import { set } from 'lodash';
 
 
 
@@ -26,6 +27,9 @@ interface ICheckBizStatsProps {
     heuristicDataTwo: Array<IHeuristicInfo>
     setHeuristicDataOne: (data: Array<IHeuristicInfo>) => void
     setHeuristicDataTwo: (data: Array<IHeuristicInfo>) => void
+
+    cardIndicatorSelected: Array<string>
+    setCardIndicatorSelected: (data: Array<string>) => void
 }
 
 export const CheckBizStatsContext = createContext<ICheckBizStatsProps | undefined>(undefined);
@@ -33,7 +37,13 @@ export const CheckBizStatsContext = createContext<ICheckBizStatsProps | undefine
 export const CheckBizStatsProvider = ({ children }: { children: React.ReactNode }) => {
     const [branchList, setBranchList] = useState<Array<ISucursal>>([])
     const [branchSelected, setBranchSelected] = useState<ISucursal[]>([]);
-    const [pending, setPending] = useState(false)
+    const [cardIndicatorSelected, setCardIndicatorSelected] = useState<string[]>(['avgStartEnd',
+        'avgCycleCost',
+        'avgCostHour',
+        'avgWeekWork',
+        'rentability',]);
+
+    const [pending, setPending] = useState(true)
     const { token } = useAuth()
     const { currentLocale } = useAppLocale()
     const [branchOne, setBranchOne] = useState<IBranchPattern | null>(null);
@@ -45,7 +55,10 @@ export const CheckBizStatsProvider = ({ children }: { children: React.ReactNode 
 
 
     const initialize = async () => {
-        setBranchList(await search(currentEntity?.entity?.id as string, { ...{} as any, limit: 100 }))
+        const branchList = await search(currentEntity?.entity?.id as string, { ...{} as any, limit: 100 })
+        setBranchList(branchList)
+        if (branchList.length > 0) setBranchSelected([branchList[0]])
+        else setPending(false)
     }
 
     const updatePatternData = async () => {
@@ -78,7 +91,7 @@ export const CheckBizStatsProvider = ({ children }: { children: React.ReactNode 
             setHeuristicDataTwo([])
         }
 
-         if (branchSelected.length == 2) {
+        if (branchSelected.length == 2) {
             const data1: Array<IHeuristicInfo> = await analiziHeuristic(currentEntity?.entity?.id as string, branchSelected[0].id as string, token, currentLocale)
             setHeuristicDataOne(data1.map((e, i) => ({ ...e, active: i < 8 ? true : false })));
 
@@ -103,7 +116,7 @@ export const CheckBizStatsProvider = ({ children }: { children: React.ReactNode 
 
 
     return (
-        <CheckBizStatsContext.Provider value={{ heuristicDataOne, setHeuristicDataOne, heuristicDataTwo, setHeuristicDataTwo, branchList, branchSelected, setBranchSelected, branchOne, branchTwo, pending }}>
+        <CheckBizStatsContext.Provider value={{ cardIndicatorSelected, setCardIndicatorSelected, heuristicDataOne, setHeuristicDataOne, heuristicDataTwo, setHeuristicDataTwo, branchList, branchSelected, setBranchSelected, branchOne, branchTwo, pending }}>
             {children}
         </CheckBizStatsContext.Provider>
     );

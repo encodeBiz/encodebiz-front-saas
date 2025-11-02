@@ -44,7 +44,9 @@ const BoxLoader: React.FC<PageLoaderProps> = ({
     height: '80%',
     backgroundColor: 'rgba(255, 255, 255, 0.08)' ,
     zIndex: 1,
-    color: theme.palette.text.secondary
+    color: theme.palette.text.secondary,
+    paddingBottom:5,
+    paddingTop:5
 
   };
 

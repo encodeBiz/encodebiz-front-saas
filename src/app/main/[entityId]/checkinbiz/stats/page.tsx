@@ -44,8 +44,7 @@ const Stats = () => {
           </Box>
         </Box>}
 
-        {!pending && !branchOne && <Box sx={{ maxWidth: 400, m: 'auto', my: 5 }}><Alert severity="warning">{t('statsCheckbiz.advise')}</Alert></Box>}
-
+ 
       </HeaderPage>
     </Container>
 
