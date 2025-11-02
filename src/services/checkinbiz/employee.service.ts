@@ -73,6 +73,26 @@ export const searchJobs = async (entityId: string): Promise<Job[]> => {
   return result;
 }
 
+
+/**
+   * Search employee
+   *
+   * @async
+   * @param {SearchParams} params
+   * @returns {Promise<Iemployee[]>}
+   */
+export const searchResponsabilityByBranch = async (entityId: string, branchId: string, params: SearchParams): Promise<EmployeeEntityResponsibility[]> => {
+  const result: EmployeeEntityResponsibility[] = await searchFirestore({
+    ...params,
+    filters: [...(params.filters ?? []), {
+      field: 'scope.branchId', operator: '==', value: branchId
+    }],
+    collection: `${collection.ENTITIES}/${entityId}/${collection.RESPONSABILITY}`,
+  });
+
+  return result;
+}
+
 export const searchResponsability = async (entityId: string, employeeId: string, limit: number, filters: Array<{ field: string, operator: string, value: any }> = []): Promise<EmployeeEntityResponsibility[]> => {
   const result: EmployeeEntityResponsibility[] = await searchFirestore({
     ...{
@@ -189,7 +209,7 @@ export async function updateEmployee(data: Partial<IEmployee>, token: string, lo
   }
 }
 
-export async function handleRespnsability(data: Partial<EmployeeEntityResponsibility>, token: string, locale: any = 'es', operation: 'post'|'patch'|'delete') {
+export async function handleRespnsability(data: Partial<EmployeeEntityResponsibility>, token: string, locale: any = 'es', operation: 'post' | 'patch' | 'delete') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");

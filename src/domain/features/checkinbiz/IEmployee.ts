@@ -86,4 +86,6 @@ export interface EmployeeEntityResponsibility {
     branch?: ISucursal
 
     totalItems?: number
+
+    employee?:IEmployee
 }
