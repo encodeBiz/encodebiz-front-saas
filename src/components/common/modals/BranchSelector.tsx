@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
     Dialog,
     DialogActions,
@@ -26,6 +26,22 @@ const BranchSelectorModal = ({ branchList, onOKAction, type = 'item' }: BranchSe
     const { open, closeModal } = useCommonModal()
     const t = useTranslations()
     const [branchSelected, setBranchSelected] = useState<{ name: string, branchId: string }>()
+    const [openDialog, setOpenDialog] = useState(false);
+    const [selectOpen, setSelectOpen] = useState(false);
+    const dialogRef = useRef(null);
+
+    useEffect(() => {
+        if (openDialog && dialogRef.current) {
+            const dialogPaper = (dialogRef.current as any).querySelector('.MuiDialog-paper');
+            if (dialogPaper) {
+                if (selectOpen) {
+                    dialogPaper.style.minHeight = '400px';
+                } else {
+                    dialogPaper.style.minHeight = 'auto';
+                }
+            }
+        }
+    }, [selectOpen, openDialog]);
     return (
         <Dialog
             open={open.open}
@@ -33,9 +49,16 @@ const BranchSelectorModal = ({ branchList, onOKAction, type = 'item' }: BranchSe
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
             fullWidth
+            ref={dialogRef}
             maxWidth="sm"
-            scroll={'paper'}
-            slotProps={{ paper: { sx: { p: 2, borderRadius: 2, minHeight:150 } } }}
+            sx={{
+                '& .MuiDialog-paper': {
+                    transition: 'min-height 0.3s ease-in-out',
+                    minHeight: selectOpen ? '400px' : 'auto',
+                    maxHeight: selectOpen ? '80vh' : 'auto',
+                    overflow: 'visible'
+                }
+            }}
         >
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
@@ -53,11 +76,14 @@ const BranchSelectorModal = ({ branchList, onOKAction, type = 'item' }: BranchSe
                 </List>}
 
                 {type == 'selector' && <Autocomplete
+                    open={selectOpen}
+                    onOpen={() => setSelectOpen(true)}
+                    onClose={() => setSelectOpen(false)}
                     disablePortal
                     disableClearable
                     options={branchList}
                     getOptionLabel={(option) => option.name}
-                    sx={{ width: '100%', zIndex:99999 }}
+                    sx={{ width: '100%', zIndex: 99999 }}
                     onChange={(event: any, newValue: { name: string, branchId: string } | null) => {
                         setBranchSelected(newValue as { name: string, branchId: string })
                     }}
