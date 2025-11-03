@@ -1,0 +1,186 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useTranslations } from "next-intl";
+import { useEffect, useState } from 'react';
+import * as Yup from 'yup';
+import { priceRule, requiredRule } from '@/config/yupRules';
+import { useToast } from "@/hooks/useToast";
+import { useAuth } from "@/hooks/useAuth";
+import { useEntity } from "@/hooks/useEntity";
+import { useLayout } from "@/hooks/useLayout";
+import { searchJobs, handleRespnsability, addJobs, deleteJobs } from "@/services/checkinbiz/employee.service";
+import { useAppLocale } from "@/hooks/useAppLocale";
+import TextInput from "@/components/common/forms/fields/TextInput";
+import SelectInput from "@/components/common/forms/fields/SelectInput";
+import SelectCreatableInput from "@/components/common/forms/fields/SelectCreatableInput";
+import { useParams } from "next/navigation";
+import { Job } from "@/domain/features/checkinbiz/IEmployee";
+import ToggleInput from "@/components/common/forms/fields/ToggleInput";
+import SearchIndexFilterInput from "@/components/common/forms/fields/SearchFilterInput";
+import { useCommonModal } from "@/hooks/useCommonModal";
+import { CommonModalType } from "@/contexts/commonModalContext";
+
+
+export default function useFormLinkController(onSuccess: () => void) {
+    const t = useTranslations();
+    const { showToast } = useToast()
+    const { token, user } = useAuth()
+    const { id } = useParams<{ id: string }>()
+    const { closeModal } = useCommonModal()
+    const { currentLocale } = useAppLocale()
+    const { currentEntity } = useEntity()
+    const { changeLoaderState } = useLayout()
+    const [active, setActive] = useState(1)
+    const [typeOwner, setTypeOwner] = useState('worker')
+    const [jobName, setJobName] = useState('')
+
+
+
+    const [initialValues, setInitialValues] = useState<Partial<any>>({
+        job: '',
+        price: 0,
+        responsibility: '',
+        active: 1,
+    });
+
+    const validationSchema = Yup.object().shape({
+        job: requiredRule(t),
+        responsibility: requiredRule(t),
+        price: priceRule(t),
+    });
+
+    const handleSubmit = async (values: Partial<any>) => {
+        try {
+            changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+            const data: any = {
+                id: `${id}_${currentEntity?.entity.id}_${values.employeeId}`,
+                employeeId: values.employeeId,
+                responsibility: values.responsibility,
+                scope: { entityId: currentEntity?.entity.id as string, branchId: id, scope: 'branch' },
+                job: {
+                    job: values.job,
+                    price: values.price,
+                },
+                assignedBy: user?.uid as string,
+                active: active,
+                entityId: currentEntity?.entity.id
+            }
+            if (typeof data.id === 'number') {
+                delete data.id
+            }
+            await handleRespnsability(data, token, currentLocale, 'post')
+            if (values.job)
+                addJobs(currentEntity?.entity.id as string, values.job, values.price)
+            changeLoaderState({ show: false })
+            showToast(t('core.feedback.success'), 'success');
+            if (typeof onSuccess == 'function') onSuccess()
+            closeModal(CommonModalType.FORM)
+
+        } catch (error: any) {
+            changeLoaderState({ show: false })
+            showToast(error.message, 'error')
+        }
+    };
+
+
+
+
+    const [jobList, setJobList] = useState<Array<Job>>([])
+    const fetchJobList = async () => {
+        try {
+            setJobList(await searchJobs(currentEntity?.entity.id as string))
+
+
+        } catch (error: any) {
+            changeLoaderState({ show: false })
+            showToast(error.message, 'error')
+        }
+        changeLoaderState({ show: false })
+    }
+
+
+    useEffect(() => {
+        if (currentEntity?.entity.id) {
+            fetchJobList()
+        }
+    }, [currentEntity?.entity.id, user?.id])
+
+
+    const fields = [
+        {
+            name: 'employeeId',
+            label: t('core.label.employee'),
+            type: 'text',
+            required: true,
+            fullWidth: true,
+            component: SearchIndexFilterInput,
+             extraProps: {
+                linkToCreate:true
+            },
+        },
+        {
+            name: 'responsibility',
+            label: t('core.label.responsibility'),
+            required: false,
+            options: [
+                { label: t('core.label.owner'), value: 'owner' },
+                { label: t('core.label.manager'), value: 'manager' },
+                { label: t('core.label.supervisor'), value: 'supervisor' },
+                { label: t('core.label.worker'), value: 'worker' }
+            ],
+            component: SelectInput,
+            extraProps: {
+                onHandleChange: (data: any) => {
+                    setTypeOwner(data)
+                },
+            },
+        },
+
+        {
+            name: 'job',
+            label: t('core.label.jobTitle'),
+            type: 'text',
+            required: false,
+            options: [...jobList.map(e => e.job.toUpperCase())],
+            component: SelectCreatableInput,
+            extraProps: {
+                onHandleChange: (data: string) => {
+                    setJobName(data)
+                },
+
+                onDeleteItem: (data: string) => {
+                    setJobList(prev => [...prev.filter(e => e.job.toLowerCase().trim() !== data.toLocaleLowerCase().trim())])
+                    deleteJobs(currentEntity?.entity?.id as string, data)
+                },
+            },
+        },
+
+
+        {
+            name: 'price',
+            label: t('core.label.price'),
+            type: 'number',
+            required: true,
+            component: TextInput,
+        },
+
+        {
+            name: 'active',
+            label: t('core.label.active'),
+            required: true,
+            component: ToggleInput,
+        },
+
+    ]
+
+    useEffect(() => {
+        if (jobName) {
+            const itemData = jobList.find(e => e.job?.toLowerCase() === jobName?.toLowerCase())
+            if (itemData) {
+                setInitialValues({ price: itemData?.price, responsibility: typeOwner, job: jobName })
+            }
+        }
+    }, [jobName])
+
+
+    return { fields, initialValues, validationSchema, handleSubmit, active, setActive }
+}

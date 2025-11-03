@@ -35,7 +35,7 @@ const BranchSelectorModal = ({ branchList, onOKAction, type = 'item' }: BranchSe
             fullWidth
             maxWidth="sm"
             scroll={'paper'}
-            slotProps={{ paper: { sx: { p: 2, borderRadius: 2, minHeight:120 } } }}
+            slotProps={{ paper: { sx: { p: 2, borderRadius: 2, minHeight:150 } } }}
         >
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>

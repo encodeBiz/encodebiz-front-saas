@@ -77,8 +77,8 @@ const Stats = () => {
           </Box>}
 
 
-          {!pending && heuristicAnalizeError && <Box display={'flex'} justifyContent={'center'} alignItems={'center'} p={2} pb={4} textAlign={'center'}>
-            <Typography variant='body1' sx={{ width: '60%', margin:'auto' }} color='textSecondary'>
+          {!pending && heuristicAnalizeError && <Box display={'flex'} justifyContent={'center'} alignItems={'center'} p={2} pb={4} textAlign={'center'}  sx={{ width: '60%', margin:'auto' }}>
+            <Typography variant='body1' color='textSecondary'>
               {heuristicAnalizeError}
             </Typography>
           </Box>}

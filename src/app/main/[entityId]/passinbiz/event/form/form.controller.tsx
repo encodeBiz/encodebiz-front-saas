@@ -77,13 +77,13 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const codeLocale = country.find(e => e.name === values.address?.country)?.code2
-      const data: Partial<IEvent> = {
+      const data: Partial<IEvent |any> = {
         "uid": user?.id as string,
         address: values.address,
         "createdBy": user?.id as string,
         "name": values.name,
         "description": values.description,
-
+        "location":`${values.address?.city},${values.address?.country}`,        
         "entityId": currentEntity?.entity?.id as string,
         "colorPrimary": values.colorPrimary,
         "colorAccent": values.colorAccent,

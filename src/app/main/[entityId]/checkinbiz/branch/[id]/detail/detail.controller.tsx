@@ -62,7 +62,7 @@ export default function useEmployeeResponsabilityController(branchId: string) {
       filters: [],
       startAfter: null,
       limit: 5,
-      orderBy: 'createdAt',
+      orderBy: 'assignedAt',
       orderDirection: 'desc',
     }
   })
@@ -176,7 +176,7 @@ export default function useEmployeeResponsabilityController(branchId: string) {
       label: t("core.label.responsibility"),
       minWidth: 170,
       onClick: (item: EmployeeEntityResponsibility) => onDetail(item),
-      format: (value, row) => row.responsibility
+      format: (value, row) => t("core.label."+row.responsibility)
     },
 
     {
@@ -184,7 +184,7 @@ export default function useEmployeeResponsabilityController(branchId: string) {
       label: t("core.label.job"),
       minWidth: 170,
       onClick: (item: EmployeeEntityResponsibility) => onDetail(item),
-      format: (value, row) => row.job.name
+      format: (value, row) => row.job?.job
     },
 
 
@@ -207,29 +207,22 @@ export default function useEmployeeResponsabilityController(branchId: string) {
   ];
 
   const fetchingData = (filterParams: IFilterParams) => {
-    const filters = []
-    if (id) {
-      filters.push({
-        field: 'branchId',
-        operator: 'array-contains',
-        value: id
-      })
-    }
+ 
     setLoading(true)
 
 
-    if (filterParams.params.filters.find((e: any) => e.field === 'branchId' && e.value === 'none'))
-      filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "branchId")
+   
 
 
-
-    searchResponsabilityByBranch(currentEntity?.entity.id as string, branchId, { ...(filterParams.params as any), filters: [...filterParams.params.filters, ...filters] }).then(async data => {
+    searchResponsabilityByBranch(currentEntity?.entity.id as string, branchId, { ...(filterParams.params as any), filters: [...filterParams.params.filters] }).then(async data => {
       const res: Array<any> = await Promise.all(
         data.map(async (item) => {
           const employee = (await fetchEmployeeData(currentEntity?.entity.id as string, item.employeeId as string))?.fullName
           return { ...item, employee };
         })
       );
+
+       
 
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
@@ -319,7 +312,7 @@ export default function useEmployeeResponsabilityController(branchId: string) {
 
 
 
-  const onSuccess = () => {
+  const onSuccessResponsability = () => {
     const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
     setFilterParams(filterParamsUpdated)
     fetchingData(filterParamsUpdated)
@@ -327,7 +320,7 @@ export default function useEmployeeResponsabilityController(branchId: string) {
 
   return {
     items, onSort, onRowsPerPageChange,
-    onEdit, onSuccess,
+    onEdit, onSuccessResponsability,
     onNext, onBack,
     columns, rowAction,
     loading, filterParams,

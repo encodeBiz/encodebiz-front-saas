@@ -13,9 +13,7 @@ import { useLayout } from "@/hooks/useLayout";
 import { searchJobs, searchResponsability, handleRespnsability } from "@/services/checkinbiz/employee.service";
 import { fetchSucursal, search } from "@/services/checkinbiz/sucursal.service";
 import { useTranslations } from "next-intl";
-import { collection } from "@/config/collection";
-import { generateUniqueId } from "@/lib/firebase/firestore/generateId";
-
+ 
 interface EmployeeDetailType {
     addResponsabiltyItem: () => void
     deleting: boolean
@@ -73,7 +71,7 @@ export const EmployeeDetailProvider = ({ children, employee }: { children: React
                 },
                 active: 1,
                 branch,
-                id: `${branchId}_${currentEntity?.entity.id}_${generateUniqueId(`${collection.ENTITIES}/${currentEntity?.entity.id}/${collection.RESPONSABILITY}`)}`,
+                id: `${branchId}_${currentEntity?.entity.id}_${employee.id}`,
                 open: true,
                 assignedAt: new Date()
             }, ...prevEntityResponsibilityList])

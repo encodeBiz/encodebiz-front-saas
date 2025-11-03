@@ -94,6 +94,7 @@
     "label": {
       "today": "Hoy",
       "start": "Inicio",
+      "linkToCreateEmployee":"Crear empleado",
       "end": "Fin",
       "download": "Descargar",
       "periocity": "Rango de Fecha",
@@ -675,6 +676,9 @@
   },
   "sucursal": {
     "title": "Sucursales/Proyectos",
+    "addEmployee":"Vincular empleado",
+    "linkEmployee":"Vincular empleado",    
+    "linkEmployeeDesc":"Completa los campos a continuación para  vincular sucursal/proyecto",
     "formDesc": "Completa los campos a continuación para registrar la sucursal/proyecto.",
     "list": "Sucursales/Proyectos",
     "add": "Agregar sucursal/proyecto",
