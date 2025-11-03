@@ -63,7 +63,7 @@ const Stats = () => {
                 <Box display={'flex'} flexDirection={'column'} gap={4} padding={4}>
                   <SelectorCard />
                   <SelectorIndicator />
-                  <SelectorChart/>
+                  <SelectorChart />
                 </Box>
               </Popover>
             </Box>
@@ -78,10 +78,10 @@ const Stats = () => {
 
 
           {!pending && heuristicAnalizeError && <Box display={'flex'} justifyContent={'center'} alignItems={'center'} p={2} pb={4} textAlign={'center'}>
-            <Typography variant='body1' sx={{ width: '80%' }} color='textSecondary'>
-            {heuristicAnalizeError}
+            <Typography variant='body1' sx={{ width: '60%', margin:'auto' }} color='textSecondary'>
+              {heuristicAnalizeError}
             </Typography>
-            </Box>}
+          </Box>}
           {!pending && heuristicDataOne.length > 0 && <Box display={'flex'} justifyContent={'space-between'} alignItems='center' gap={2} sx={{ width: '100%' }}>
 
 

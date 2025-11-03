@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useCheckBizStats } from '../context/checkBizStatsContext';
-import { FormControl, InputLabel, Select, MenuItem, Box, Typography, useTheme } from '@mui/material';
+import {  Box, Typography, useTheme } from '@mui/material';
 import { useTranslations } from 'next-intl';
 
 const Chart = () => {

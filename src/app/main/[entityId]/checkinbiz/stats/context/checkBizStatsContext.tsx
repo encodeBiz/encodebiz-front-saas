@@ -9,8 +9,7 @@ import { IBranchPattern, IHeuristicInfo } from '@/domain/features/checkinbiz/ISt
 import { analiziHeuristic, fetchBranchPattern } from '@/services/checkinbiz/stats.service';
 import { useAuth } from '@/hooks/useAuth';
 import { useAppLocale } from '@/hooks/useAppLocale';
-import { set } from 'lodash';
-import { errorDict } from '@/config/errorLocales';
+ import { errorDict } from '@/config/errorLocales';
 
 
 
