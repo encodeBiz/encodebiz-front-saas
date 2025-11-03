@@ -21,7 +21,7 @@ import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
 
 
 interface IFilterParams {
-
+  filter: { status: string },
   params: {
     orderBy: string,
     orderDirection: 'desc' | 'asc',
@@ -49,11 +49,12 @@ export default function useEmployeeListController() {
   const [items, setItems] = useState<ISucursal[]>([]);
   const [itemsHistory, setItemsHistory] = useState<ISucursal[]>([]);
   const [filterParams, setFilterParams] = useState<IFilterParams>({
+    filter: { status: 'active' },
     startAfter: null,
     currentPage: 0,
     total: 0,
     params: {
-      filters: [],
+      filters: [{ field: 'status', operator: '==', value: 'active' }],
       startAfter: null,
       limit: 5,
       orderBy: 'createdAt',
@@ -148,7 +149,7 @@ export default function useEmployeeListController() {
       id: 'name',
       label: t("core.label.name"),
       minWidth: 170,
-      onClick:  (item: ISucursal) => onDetail(item),
+      onClick: (item: ISucursal) => onDetail(item),
     },
 
     {
@@ -181,7 +182,7 @@ export default function useEmployeeListController() {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const data: Partial<ISucursal> = {
-    
+
         "id": branch.id,
         entityId: currentEntity?.entity.id as string,
         status: branch.status
@@ -248,7 +249,7 @@ export default function useEmployeeListController() {
 
 
   const onDetail = async (item: any) => {
-     
+
     navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch/${item.id}/detail`)
   }
 
@@ -283,10 +284,29 @@ export default function useEmployeeListController() {
     }
   }
 
+  const onFilter = (filterParamsData: any) => {
+
+    const filterData: Array<{ field: string, operator: any, value: any }> = []
+    const filter = filterParamsData.filter
+    Object.keys(filter).forEach((key) => {
+      filterData.push({ field: key, operator: '==', value: filter[key] })
+    })
+    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null, filters: filterData }, filter: filter }
+    setFilterParams(filterParamsUpdated)
+    fetchingData(filterParamsUpdated)
+  }
 
 
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
 
+
+
+    <SelectFilter first={false}
+      label={t('core.label.status')} width={200}
+      value={filterParams.filter.status}
+      onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, status: value } })} 
+       items={options}
+    />
 
     <SearchIndexFilter
       type="branch"

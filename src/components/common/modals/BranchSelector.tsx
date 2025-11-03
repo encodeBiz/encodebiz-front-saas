@@ -27,7 +27,7 @@ const BranchSelectorModal = ({ branchList, onOKAction, type = 'item' }: BranchSe
     const { open, closeModal } = useCommonModal()
     const t = useTranslations()
     const [branchSelected, setBranchSelected] = useState<{ name: string, branchId: string }>()
-    const [openDialog, setOpenDialog] = useState(false);
+    const [openDialog] = useState(false);
     const [selectOpen, setSelectOpen] = useState(false);
     const dialogRef = useRef(null);
 

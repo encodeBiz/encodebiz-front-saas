@@ -114,8 +114,7 @@ export const EmployeeDetailProvider = ({ children, employee }: { children: React
                 })
             }
 
-            console.log(filterData);
-
+ 
             setPending(true)
             setResponsabilityLimit(limit)
             const data: Array<EmployeeEntityResponsibility> = await searchResponsability(currentEntity?.entity.id as string, employee.id as string, limit, filterData)
