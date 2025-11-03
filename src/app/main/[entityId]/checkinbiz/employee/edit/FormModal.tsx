@@ -91,7 +91,7 @@ const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSu
                     size='small'
                     variant="contained"
                 >
-                    {t('core.button.submit')}
+                    {t('core.button.save')}
                 </SassButton>
             </DialogActions>
         </Dialog>

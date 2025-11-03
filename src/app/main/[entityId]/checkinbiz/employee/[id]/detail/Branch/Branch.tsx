@@ -2,7 +2,6 @@ import { SassButton } from "@/components/common/buttons/GenericButton"
 import { Box, Typography, Paper, Alert, CircularProgress } from "@mui/material"
 import { useTranslations } from "next-intl"
 import SucursalFromItem from "./SucursalFromItem/SucursalFromItem"
-import SearchFilter from "@/components/common/table/filters/SearchFilter"
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter"
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal"
 import ConfirmModal from "@/components/common/modals/ConfirmModal"
@@ -35,20 +34,21 @@ export const Branch = () => {
             </Box>
 
             <Box display={'flex'} justifyContent={'flex-end'} alignItems={'center'} gap={4}>
-                <SearchFilter  
-                    label={t('core.label.status')}
+            
+                <SelectFilter  
+                    label={t('core.label.status')} width={200}
                     value={responsabilityFilter.find(e => e.field === 'active')?.value}
-                    onChange={(value: any) => onFilter([...responsabilityFilter, { field: 'active', operator: '==', value }])}
-                    options={[{ value: 1, label: t('core.label.active') }, { value: 0, label: t('core.label.inactive') }]}
+                    onChange={(value: any) => onFilter([...responsabilityFilter.filter(e=>e.field!=='active'), { field: 'active', operator: '==', value }])}
+                    items={[{ value: 1, label: t('core.label.active') }, { value: 0, label: t('core.label.inactive') }]}
                 />
 
                 {branchList.length > 0 && <SelectFilter width={200}
                     first firstText={t('core.label.all')}
-                    label={t('core.label.subEntity')}
+                    label={t("sucursal.list")}
                     defaultValue={'none'}
                     value={responsabilityFilter.find((e: { field: string, operator: string, value: any }) => e.field === 'branchId')?.value ?? 'none'}
                     onChange={(value: any) => {
-                        if (value) onFilter([...responsabilityFilter, { field: 'branchId', operator: '==', value }])
+                        if (value) onFilter([...responsabilityFilter.filter(e=>e.field!=='branchId'), { field: 'branchId', operator: '==', value }])
                         else onFilter([...responsabilityFilter.filter((e: { field: string, operator: string, value: any }) => e.field !== 'branchId')])
 
                     }}
