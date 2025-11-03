@@ -31,7 +31,7 @@ const BranchSelectorModal = ({ branchList, onOKAction, type = 'item' }: BranchSe
     const dialogRef = useRef(null);
 
     useEffect(() => {
-        if (openDialog && dialogRef.current) {
+        if (openDialog && dialogRef.current &&  type == 'selector') {
             const dialogPaper = (dialogRef.current as any).querySelector('.MuiDialog-paper');
             if (dialogPaper) {
                 if (selectOpen) {
@@ -65,7 +65,7 @@ const BranchSelectorModal = ({ branchList, onOKAction, type = 'item' }: BranchSe
                     <CustomTypography >{t('checking.titleBranch')}</CustomTypography>
                 </Box>
             </DialogTitle>
-            <DialogContent>
+            <DialogContent >
                 {type == 'item' && <List component="nav" aria-label="main mailbox folders">
                     {branchList.map((e, i) => <ListItemButton key={i}
                         selected={branchSelected?.branchId === e.branchId}
@@ -75,7 +75,7 @@ const BranchSelectorModal = ({ branchList, onOKAction, type = 'item' }: BranchSe
                     </ListItemButton>)}
                 </List>}
 
-                {type == 'selector' && <Autocomplete
+                {type == 'selector' && <Box sx={{ pt: 1 }}><Autocomplete
                     open={selectOpen}
                     onOpen={() => setSelectOpen(true)}
                     onClose={() => setSelectOpen(false)}
@@ -89,7 +89,7 @@ const BranchSelectorModal = ({ branchList, onOKAction, type = 'item' }: BranchSe
                     }}
 
                     renderInput={(params) => <TextField {...params} label={t('checking.titleBranch')} />}
-                />}
+                /></Box>}
             </DialogContent>
             <DialogActions>
                 <SassButton
