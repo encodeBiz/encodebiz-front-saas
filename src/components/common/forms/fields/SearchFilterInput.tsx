@@ -10,6 +10,9 @@ import {
   ListItemText,
   CircularProgress,
   InputAdornment,
+  Typography,
+  useTheme,
+  Box,
 } from "@mui/material";
 import { CheckCircleOutline, Error, SearchOutlined } from "@mui/icons-material";
 import { fetchIndex } from "@/services/core/helper.service";
@@ -19,6 +22,9 @@ import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { useDebouncedCallback } from "../../forms/customHooks/useDebounce";
 import { normalizarString } from "@/lib/common/String";
 import { useField } from "formik";
+import Link from "next/link";
+import { useLayout } from "@/hooks/useLayout";
+import { SassButton } from "../../buttons/GenericButton";
 
 type Option = { id: string; label: string; data: ISearchIndex };
 
@@ -28,6 +34,7 @@ interface SearchIndexFilterInputProps {
   width?: any,
   name: string
   onChange: (value: any) => void,
+  linkToCreate?: boolean
 }
 
 const getDataLabel = (data: ISearchIndex, type: "entities" | "users" | "events" | "staff" | "holder" | "employee" | "branch") => {
@@ -54,10 +61,12 @@ const getDataLabel = (data: ISearchIndex, type: "entities" | "users" | "events" 
 }
 
 
-const SearchIndexFilterInput: React.FC<SearchIndexFilterInputProps> = ({ typeIndex = 'employee', name, label, width = '100%' }) => {
+const SearchIndexFilterInput: React.FC<SearchIndexFilterInputProps> = ({ typeIndex = 'employee', linkToCreate, name, label, width = '100%' }) => {
   const t = useTranslations();
   const { currentEntity } = useEntity()
+  const { navivateTo } = useLayout()
 
+  const theme = useTheme()
   const [pending, setPending] = useState(false);
   const [inputValue, setInputValue] = useState<string>("");
   const [options, setOptions] = useState<Option[]>([]);
@@ -126,7 +135,7 @@ const SearchIndexFilterInput: React.FC<SearchIndexFilterInputProps> = ({ typeInd
     debouncedSearch(newInput);
   };
   return (
-    <FormControl sx={{ width: width, textAlign: "left" }}>
+    <FormControl sx={{ width: width, textAlign: "left", display: 'flex', flexDirection: 'row', gap: 2 }}>
 
       <Autocomplete<Option, false, false, false>
         options={options}
@@ -175,9 +184,11 @@ const SearchIndexFilterInput: React.FC<SearchIndexFilterInputProps> = ({ typeInd
           </ListItem>
         )}
         sx={{
+          width: '100%',
           "& .MuiAutocomplete-inputRoot": { padding: "8px" },
         }}
       />
+      <SassButton sx={{ width: 200, height: 50 }} variant="outlined" onClick={() => navivateTo('/checkinbiz/employee/add')}>{t('core.label.linkToCreateEmployee')}</SassButton>
     </FormControl>
   );
 };

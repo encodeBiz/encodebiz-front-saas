@@ -118,7 +118,7 @@ const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type, la
     debouncedSearch(newInput);
   };
   return (
-    <FormControl sx={{ width: width,  textAlign: "left" }}>
+    <FormControl sx={{    textAlign: "left" }}>
 
       <Autocomplete<Option, false, false, false>
         options={options}

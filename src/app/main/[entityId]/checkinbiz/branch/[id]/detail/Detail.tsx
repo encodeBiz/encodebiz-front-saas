@@ -7,10 +7,11 @@ import { ISucursal } from "@/domain/features/checkinbiz/ISucursal"
 import { useCommonModal } from "@/hooks/useCommonModal"
 import { useLayout } from "@/hooks/useLayout"
 import { onGoMap } from "@/lib/common/maps"
-import { ArrowBackOutlined } from "@mui/icons-material"
+import { Add, ArrowBackOutlined } from "@mui/icons-material"
 import { Card, Box, Grid, Typography, CardContent, Paper, Divider, Stack } from "@mui/material"
 import { useTranslations } from "next-intl"
 import FormModal from "../../edit/FormModal"
+import FormLink from "./components/FormLink"
 
 export const Detail = ({ branch, onSuccess, children }: { branch: ISucursal, children: React.ReactNode, onSuccess: () => void }) => {
     const t = useTranslations()
@@ -52,7 +53,7 @@ export const Detail = ({ branch, onSuccess, children }: { branch: ISucursal, chi
         <CardContent sx={{ p: 0 }}>
             <Paper elevation={0} sx={{ p: 3 }}>
                 <Box display={'flex'} justifyContent={'space-between'} alignItems={'flex-start'}>
-                    <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={0} alignItems={'flex-start'}>
+                    <Box display={'flex'} flexDirection={'column'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={0} alignItems={'flex-start'}>
                         <DetailText label={t('core.label.ratioChecklog2')} value={branch?.ratioChecklog + ' ' + t('core.label.meters')} orientation="row" help={t('sucursal.ratioHelp')} />
                         <DetailText label={t('core.label.address')} value={branch?.address?.street} orientation="row" >
                             <Box sx={{ marginLeft: 4, minWidth: 140 }}><SassButton variant="text" onClick={() => onGoMap(branch.address.geo.lat, branch.address.geo.lng)}> {t('sucursal.map')}</SassButton></Box>
@@ -71,7 +72,7 @@ export const Detail = ({ branch, onSuccess, children }: { branch: ISucursal, chi
 
                     {branch?.advance && <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={4} alignItems={'flex-start'}>
                         <DetailText help={t('employee.dayTimeHelp')} label={t('core.label.enableDayTimeRange')} value={branch?.advance?.enableDayTimeRange ? t('core.label.enable') : t('core.label.noenable')} />
-                        <DetailText  label={t('core.label.dayTimeRange')} value={((branch?.advance?.startTimeWorkingDay?.hour as number)<10?'0'+branch?.advance?.startTimeWorkingDay?.hour:branch?.advance?.startTimeWorkingDay?.hour)+ ':' + ((branch?.advance?.startTimeWorkingDay?.minute as number)<10?'0'+branch?.advance?.startTimeWorkingDay?.minute:branch?.advance?.startTimeWorkingDay?.minute) + ' - ' + ((branch?.advance?.endTimeWorkingDay?.hour as number)<10?'0'+branch?.advance?.endTimeWorkingDay?.hour:branch?.advance?.endTimeWorkingDay?.hour)+ ':' + ((branch?.advance?.endTimeWorkingDay?.minute as number)<10?'0'+branch?.advance?.endTimeWorkingDay?.minute:branch?.advance?.endTimeWorkingDay?.minute)} />
+                        <DetailText label={t('core.label.dayTimeRange')} value={((branch?.advance?.startTimeWorkingDay?.hour as number) < 10 ? '0' + branch?.advance?.startTimeWorkingDay?.hour : branch?.advance?.startTimeWorkingDay?.hour) + ':' + ((branch?.advance?.startTimeWorkingDay?.minute as number) < 10 ? '0' + branch?.advance?.startTimeWorkingDay?.minute : branch?.advance?.startTimeWorkingDay?.minute) + ' - ' + ((branch?.advance?.endTimeWorkingDay?.hour as number) < 10 ? '0' + branch?.advance?.endTimeWorkingDay?.hour : branch?.advance?.endTimeWorkingDay?.hour) + ':' + ((branch?.advance?.endTimeWorkingDay?.minute as number) < 10 ? '0' + branch?.advance?.endTimeWorkingDay?.minute : branch?.advance?.endTimeWorkingDay?.minute)} />
                         <DetailText help={t('employee.breakHelp')} label={t('core.label.disableBreak')} value={branch?.advance?.disableBreak ? t('core.label.yes') : t('core.label.no')} />
                         <DetailText label={t('core.label.breakTimeRange')} value={branch?.advance?.timeBreak + ' ' + t('core.label.minutes')} />
 
@@ -98,13 +99,20 @@ export const Detail = ({ branch, onSuccess, children }: { branch: ISucursal, chi
                     <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
                         {t("employee.list")}
                     </Typography>
-                  
+
+                    <SassButton
+                        onClick={() => {
+                          openModal(CommonModalType.FORM, {id:'responsability'})  
+                        }}
+                        variant='contained'
+                        startIcon={<Add />}
+                    >{t('sucursal.addEmployee')}</SassButton>
                 </Box>
                 {children}
 
             </Paper>
         </CardContent>
-        {open.type === CommonModalType.FORM && <FormModal onSuccess={onSuccess} />}
+        {open.type === CommonModalType.FORM && open.args?.id!=='responsability' && <FormModal onSuccess={onSuccess} />}
 
     </Card>
 

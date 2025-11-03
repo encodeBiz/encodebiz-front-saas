@@ -4,7 +4,7 @@ import { ISucursal } from "./ISucursal"
 export interface IBranchPattern {
     "id": string
     "updatedAt": Timestamp
-    "reliability": number
+    "rentability": number
     "entityId": string
     "createdAt": Timestamp
     "dataPoints": number
@@ -25,6 +25,7 @@ export interface IBranchPattern {
     "avgCostHour": number,
     "avgCycleCost": number,
     "avgEffectiveCost": number,
+    avgCostEfficiency: number,
     "efficiency": number,
     "cycleTime": number,
     costTrend: any

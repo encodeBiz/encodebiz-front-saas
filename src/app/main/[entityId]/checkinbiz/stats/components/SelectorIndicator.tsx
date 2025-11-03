@@ -1,5 +1,5 @@
 'use client';
-import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from '@mui/material';
+import { Box, Checkbox, FormControl, InputLabel, ListItemText, MenuItem, OutlinedInput, Select, Typography } from '@mui/material';
 import { useTranslations } from "next-intl";
 
 import { useCheckBizStats } from '../context/checkBizStatsContext';
@@ -31,9 +31,11 @@ export const SelectorIndicator = () => {
         });
         return names.join(', ')
     }
-    return (
+    return (<Box>
+        <Typography color='textSecondary' variant='body1'>{t('statsCheckbiz.selectedIndicator')}</Typography>
         <FormControl sx={{ m: 1, width: 300 }}>
-            <InputLabel id="demo-multiple-checkbox-label">{t('statsCheckbiz.selected')}</InputLabel>
+            <InputLabel id="demo-multiple-checkbox-label">{t('core.label.select')}</InputLabel>
+
             <Select
                 labelId="demo-multiple-checkbox-label"
                 id="demo-multiple-checkbox"
@@ -74,6 +76,7 @@ export const SelectorIndicator = () => {
                 ))}
             </Select>
         </FormControl>
+    </Box>
     );
 }
 

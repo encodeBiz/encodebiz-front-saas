@@ -8,6 +8,7 @@ import { IChecklog, ICreateLog } from "@/domain/features/checkinbiz/IChecklog";
 import { mapperErrorFromBack, normalizarString } from "@/lib/common/String";
 import { addDocument } from "@/lib/firebase/firestore/addDocument";
 import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
+import { deleteDocument } from "@/lib/firebase/firestore/deleteDocument";
 
 
 /**
@@ -73,7 +74,40 @@ export const searchJobs = async (entityId: string): Promise<Job[]> => {
   return result;
 }
 
+
+/**
+   * Search employee
+   *
+   * @async
+   * @param {SearchParams} params
+   * @returns {Promise<Iemployee[]>}
+   */
+export const searchResponsabilityByBranch = async (entityId: string, branchId: string, params: SearchParams): Promise<EmployeeEntityResponsibility[]> => {
+  
+  console.log({
+    ...params,
+    filters: [...(params.filters ?? []), {
+      field: 'scope.branchId', operator: '==', value: branchId
+    }],
+    collection: `${collection.ENTITIES}/${entityId}/${collection.RESPONSABILITY}`,
+  });
+  
+  
+  const result: EmployeeEntityResponsibility[] = await searchFirestore({
+    ...params,
+    
+    filters: [...(params.filters ?? []), {
+      field: 'scope.branchId', operator: '==', value: branchId
+    }],
+    collection: `${collection.ENTITIES}/${entityId}/${collection.RESPONSABILITY}`,
+  });
+
+  return result;
+}
+
 export const searchResponsability = async (entityId: string, employeeId: string, limit: number, filters: Array<{ field: string, operator: string, value: any }> = []): Promise<EmployeeEntityResponsibility[]> => {
+
+
   const result: EmployeeEntityResponsibility[] = await searchFirestore({
     ...{
       limit: limit,
@@ -125,6 +159,27 @@ export const addJobs = async (entityId: string, jobName: string, price: number):
     }
 
 
+  } catch (error: any) {
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
+  }
+
+}
+
+
+export const deleteJobs = async (entityId: string, jobName: string): Promise<void> => {
+  try {
+    const result: Job[] = await searchFirestore({
+      ...{ limit: 10000 } as any,
+      collection: `${collection.ENTITIES}/${entityId}/${collection.JOBS}`,
+    });
+
+    const item: Job = result.find(e => e.job.toLocaleLowerCase().trim() === jobName.toLocaleLowerCase().trim()) as Job
+    if (item) {
+      await deleteDocument({
+        collection: `${collection.ENTITIES}/${entityId}/${collection.JOBS}`,
+        id: item.id as string
+      });
+    }
   } catch (error: any) {
     throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }
@@ -189,7 +244,7 @@ export async function updateEmployee(data: Partial<IEmployee>, token: string, lo
   }
 }
 
-export async function handleRespnsability(data: Partial<EmployeeEntityResponsibility>, token: string, locale: any = 'es', operation: 'post'|'patch'|'delete') {
+export async function handleRespnsability(data: Partial<EmployeeEntityResponsibility>, token: string, locale: any = 'es', operation: 'post' | 'patch' | 'delete') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");

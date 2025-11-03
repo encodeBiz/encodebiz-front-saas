@@ -95,12 +95,11 @@ export default function usePricingCardController(id: string, name: string, fromS
         if (name === 'freemium') {
             subcribeAction()
         } else {
-            if (!currentEntity || !currentEntity?.entity?.billingEmail || !currentEntity?.entity?.legal?.legalName || !currentEntity?.entity?.legal?.taxId   || !currentEntity?.entity?.branding || !Array.isArray(currentEntity?.entity?.billingConfig?.payment_method) || currentEntity?.entity?.billingConfig?.payment_method?.length===0) {
+            if (!currentEntity || !currentEntity?.entity?.billingEmail || !currentEntity?.entity?.legal?.legalName || !currentEntity?.entity?.legal?.taxId   || (!currentEntity?.entity?.branding && fromService!=='checkinbiz') || !Array.isArray(currentEntity?.entity?.billingConfig?.payment_method) || currentEntity?.entity?.billingConfig?.payment_method?.length===0) {
                 openModal(CommonModalType.BILLING)
             } else {
                 if (entitySuscription.filter(e => e.plan === id && e.serviceId === fromService).length === 0) {
-                    if (name === 'enterprise' && payPerUse) {
-                      
+                    if (name === 'enterprise' && payPerUse) {                      
                         openModal(CommonModalType.CONTACT);
                     } else {
                         subcribeAction()

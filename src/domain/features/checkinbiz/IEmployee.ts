@@ -79,11 +79,15 @@ export interface EmployeeEntityResponsibility {
     scope: ResponsibilityScope;             // entity o branch
     job: Job;
     assignedBy?: string;                  // uid o employeeId del asignador
-    assignedAt?: string;                     // ISO string
+    assignedAt?: any;                     // ISO string
     active: number;                        // soft-enable/disable
     id?: string,
 
     branch?: ISucursal
 
     totalItems?: number
+
+    employee?:IEmployee
+
+    open?:boolean
 }

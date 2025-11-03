@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { CardContent, Typography, Box, List, ListItem, ListItemIcon, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -60,7 +61,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
         const data: Array<{ text: string, link: string }> = []
         if (id !== 'fremium' && currentEntity?.entity.id) {
             if (!currentEntity.entity.legal?.legalName) data.push({ text: t('salesPlan.configureLegal'), link: '/entity?tab=company' })
-            if (!currentEntity.entity.branding?.textColor) data.push({ text: t('salesPlan.configureBranding'), link: '/entity?tab=branding' })
+            if (!currentEntity.entity.branding?.textColor && fromService!=='checkinbiz') data.push({ text: t('salesPlan.configureBranding'), link: '/entity?tab=branding' })
             if (!currentEntity?.entity?.billingConfig || currentEntity?.entity?.billingConfig?.payment_method?.length === 0) data.push({ text: t('salesPlan.configureBilling'), link: '/entity?tab=billing' })
         }
         setItems(data)

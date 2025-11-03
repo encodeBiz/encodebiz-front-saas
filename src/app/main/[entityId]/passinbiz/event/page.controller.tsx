@@ -163,6 +163,7 @@ export default function useIEventListController() {
       id: 'address',
       label: t("core.label.address"),
       minWidth: 170,
+      format: (value, row) => (typeof row.address === 'string') ? row.address : row.address?.street
     },
     {
       id: 'status',

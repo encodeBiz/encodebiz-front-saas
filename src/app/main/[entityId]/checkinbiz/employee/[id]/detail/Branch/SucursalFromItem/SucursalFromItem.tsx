@@ -13,26 +13,24 @@ import { CommonModalType } from '@/contexts/commonModalContext';
 
 
 
-export default function SucursalFromItem({ item, onEnd }: { item: EmployeeEntityResponsibility, jobList: Array<Job>, onEnd:()=>void }) {
+export default function SucursalFromItem({ item, onEnd }: { item: EmployeeEntityResponsibility, jobList: Array<Job>, onEnd: () => void }) {
     const { fields, initialValues, validationSchema, handleSubmit, active, setActive } = useSucursalFromItemController(item, onEnd);
     const t = useTranslations();
     const { currentEntity } = useEntity()
-
     const { openModal } = useCommonModal()
-
     const formRef = useRef(null)
 
 
 
     return (
 
-        <Accordion sx={{ width: '100%' }}>
+        <Accordion sx={{ width: '100%' }} defaultExpanded={item.open}>
 
             <AccordionSummary
                 expandIcon={<ExpandMoreOutlined />}
                 aria-controls="panel1-content"
                 id="panel1-header"
-                
+
                 sx={{ height: 56 }}
             >
                 <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} width={'100%'}>
@@ -44,7 +42,7 @@ export default function SucursalFromItem({ item, onEnd }: { item: EmployeeEntity
                         <FormGroup>
                             <FormControlLabel control={<Switch checked={active == 1} onChange={(e) => setActive(e.target.checked ? 1 : 0)} />} label={t('core.label.active')} />
                         </FormGroup>
-                        <IconButton color='error' onClick={() => openModal(CommonModalType.DELETE,{id:item.id, responsability:true})}><TrashIcon /></IconButton>
+                        <IconButton color='error' onClick={() => openModal(CommonModalType.DELETE, { id: item.id, responsability: true })}><TrashIcon /></IconButton>
 
                     </Box>
                 </Box>

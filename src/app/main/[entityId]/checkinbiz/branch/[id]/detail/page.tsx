@@ -2,25 +2,30 @@
 import { Container } from '@mui/material';
 
 import { GenericTable } from "@/components/common/table/GenericTable";
-import useEmployeeListController from '../../../employee/page.controller';
 import useEmployeeDetailController from './page.controller';
 import { Detail } from './Detail';
- 
-export default function BranchDetail() {
+import useEmployeeResponsabilityController from './detail.controller';
+import { useParams } from 'next/navigation';
+import FormLink from './components/FormLink';
+import { CommonModalType } from '@/contexts/commonModalContext';
+import { useCommonModal } from '@/hooks/useCommonModal';
 
+export default function BranchDetail() {
+    const { initialValues, rowAction, onSuccess } = useEmployeeDetailController()
+    const { id } = useParams<{ id: string }>()
+    const { open } = useCommonModal()
     const {
         items, onRowsPerPageChange, onSort,
         onNext, onBack,
         filterParams,
-        columns, 
-        loading } = useEmployeeListController();
+        columns, onSuccessResponsability,
+        loading } = useEmployeeResponsabilityController(id);
 
-    const { initialValues, rowAction , onSuccess} = useEmployeeDetailController()
 
     return (
         <Container maxWidth="lg">
 
-            {initialValues?.id && <Detail branch={initialValues as any}  onSuccess={onSuccess} >
+            {initialValues?.id && <Detail branch={initialValues as any} onSuccess={onSuccess} >
                 <GenericTable
                     data={items}
                     rowAction={rowAction}
@@ -41,7 +46,7 @@ export default function BranchDetail() {
                 />
             </Detail>}
 
-
+            {open.type === CommonModalType.FORM && open.args?.id === 'responsability' && <FormLink onSuccess={onSuccessResponsability} />}
 
         </Container>
     );

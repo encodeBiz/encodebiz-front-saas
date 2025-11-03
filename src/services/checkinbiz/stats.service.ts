@@ -66,7 +66,7 @@ export async function analiziHeuristic(entityId: string, branchId: string, token
       return response?.results as Array<any>??[];
     }
   } catch (error: any) {
-    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
+    throw new Error(mapperErrorFromBack(error?.message as string, true) as string);
   }
 
 

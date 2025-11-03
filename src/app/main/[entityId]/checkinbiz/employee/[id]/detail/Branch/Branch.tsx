@@ -11,6 +11,7 @@ import { CommonModalType } from "@/contexts/commonModalContext"
 import BranchSelectorModal from "@/components/common/modals/BranchSelector"
 import { EmployeeEntityResponsibility } from "@/domain/features/checkinbiz/IEmployee"
 import { useEmployeeDetail } from "../detail.context"
+import { Timestamp } from "firebase/firestore"
 
 export const Branch = () => {
     const t = useTranslations()
@@ -55,7 +56,7 @@ export const Branch = () => {
                 />}
             </Box>
             <Box gap={1.5} display={'flex'} flexDirection={'column'}>
-                {entityResponsibilityList.sort((a: EmployeeEntityResponsibility, b: EmployeeEntityResponsibility) => a.active - b.active)?.map((e, i) => <SucursalFromItem key={i} item={e} jobList={jobList} onEnd={onEnd} />)}
+                {entityResponsibilityList.sort((a: EmployeeEntityResponsibility, b: EmployeeEntityResponsibility) => (b.assignedAt instanceof Timestamp?(b.assignedAt as Timestamp).toDate():b.assignedAt) -  (a.assignedAt instanceof Timestamp?(a.assignedAt as Timestamp).toDate():a.assignedAt)).sort((a: EmployeeEntityResponsibility, b: EmployeeEntityResponsibility) => a.active - b.active)?.map((e, i) => <SucursalFromItem key={e.id} item={e} jobList={jobList} onEnd={onEnd} />)}
                 {entityResponsibilityList.length == 0 && <Box gap={1.5} display={'flex'} justifyContent={'center'} alignItems={'center'} flexDirection={'column'} p={5}>  <Alert severity="warning">{t('employee.advise')}</Alert></Box>}
                 {branchList.length == 0 && <Box gap={1.5} display={'flex'} justifyContent={'center'} alignItems={'center'} flexDirection={'column'} p={5}>  <Alert severity="warning">{t('employee.noBranch')}</Alert></Box>}
 

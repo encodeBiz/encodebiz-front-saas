@@ -303,9 +303,9 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
 
               />
             )}
-
+            
             renderOption={(liProps, option, { selected }) => (
-              <ListItem {...liProps} key={option.id}>
+              <ListItem {...liProps} key={option.data.placeId}>
                 {selected && (
                   <ListItemIcon>
                     <CheckCircleOutline />

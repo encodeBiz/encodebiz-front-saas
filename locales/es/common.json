@@ -94,10 +94,12 @@
     "label": {
       "today": "Hoy",
       "start": "Inicio",
+      "linkToCreateEmployee":"Crear empleado",
       "end": "Fin",
       "download": "Descargar",
       "periocity": "Rango de Fecha",
       "minutes": "minutos",
+      "job":"Ocupación",
       "periocityTime": "Rango de tiempo",
       "create-download": "Crear y descargar",
       "advance": "CONFIGURACIÓN AVANZADA",
@@ -674,6 +676,9 @@
   },
   "sucursal": {
     "title": "Sucursales/Proyectos",
+    "addEmployee":"Vincular empleado",
+    "linkEmployee":"Vincular empleado",    
+    "linkEmployeeDesc":"Completa los campos a continuación para  vincular sucursal/proyecto",
     "formDesc": "Completa los campos a continuación para registrar la sucursal/proyecto.",
     "list": "Sucursales/Proyectos",
     "add": "Agregar sucursal/proyecto",
@@ -879,16 +884,33 @@
     "loading": "Procesando y preparando datos para mostrar",
     "selected": "Selecione una o dos sucursales",
     "avgWeekWork": "Promedio de horas semanales",
+    "avgWeekWorkHelp": "Hora promedio de inicio y fin de jornada (en formato decimal)",
     "rentability": "Rentabilidad",
+    "rentabilityHelp": "Nivel de confianza del patrón (0 a 1)",
     "avgStartEnd": "Prom. de inicio/fin",
-    "avgCostHour": "Costo prom. por hora",
-    "avgCycleCost": "Costo prom. por ciclo",
+    "avgStartEndHelp": "Hora promedio de inicio y fin de jornada (en formato decimal)",
+    "avgCostHour": "Costo  por hora",
+    "avgCostHourHelp": "Costo promedio por hora calculado mediante EMA (suavizado heurístico)",
+
+    "avgEffectiveCost": "Costo por efectividad",
+    "avgEffectiveCostHelp": "Costo promedio ponderado por efectividad",
+
+    "avgCostEfficiency":"Costo + productividad",
+    "avgCostEfficiencyHelp":"Relación entre costo y productividad (mayor = más eficiente)",
+    "dataPoints":"Observaciones",
+    "dataPointsHelp":" Número de observaciones registradas",
+
+    "selectedCards":"Seleccione que indicadores mostrar",
+
+    "avgCycleCost": "Costo por ciclo",
+    "avgCycleCostHelp": "Costo promedio por ciclo de producción o actividad",
     "weeklyEndAvg": "Promedio de hora de fin de jornada",
     "weeklyStartAvg": "Promedio de hora de inicio de jornada",
     "weeklyWorkAvg": "Promedio de horas trabajadas",
-    "chartTitle":"Comparativa de Horas por Semana",
-    "chartType":"Tipo de gráfica",
-    "heuristicAnalize":"Análisis heurístico"
+    "chartTitle": "Comparativa de Horas por Semana",
+    "chartType": "Tipo de gráfica",
+    "heuristicAnalize": "Análisis de predicción en operaciones",
+    "selectedIndicator":"Seleccione los indicadores a mostrar"
   },
   "checking": {
     "title": "Control de Asistencia",
