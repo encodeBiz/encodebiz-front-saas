@@ -7,18 +7,20 @@ import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useLayout } from "@/hooks/useLayout";
-import { searchJobs, handleRespnsability, addJobs } from "@/services/checkinbiz/employee.service";
+import { searchJobs, handleRespnsability, addJobs, deleteJobs } from "@/services/checkinbiz/employee.service";
 import { useAppLocale } from "@/hooks/useAppLocale";
 import { EmployeeEntityResponsibility, Job } from "@/domain/features/checkinbiz/IEmployee";
 import TextInput from "@/components/common/forms/fields/TextInput";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import SelectCreatableInput from "@/components/common/forms/fields/SelectCreatableInput";
+import { useParams } from "next/navigation";
 
 
 export default function useSucursalFromItemController(item: EmployeeEntityResponsibility, onEnd: () => void) {
   const t = useTranslations();
   const { showToast } = useToast()
   const { token, user } = useAuth()
+  const { id } = useParams<{ id: string }>()
 
   const itemId = item.id
   const { currentLocale } = useAppLocale()
@@ -27,6 +29,7 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
   const [active, setActive] = useState(item.active ?? 1)
   const [typeOwner, setTypeOwner] = useState(item.responsibility ?? 'worker')
   const [jobName, setJobName] = useState(item?.job?.job ?? '')
+
 
 
   const [initialValues, setInitialValues] = useState<Partial<any>>({
@@ -47,7 +50,7 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const data: any = {
         id: item.id,
-        employeeId: item.employeeId,
+        employeeId: item.employeeId ?? id,
         responsibility: values.responsibility,
         scope: item.scope,
         job: {
@@ -56,7 +59,11 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
         },
         assignedBy: user?.uid as string,
         active: active,
+
         entityId: currentEntity?.entity.id
+      }
+      if (typeof data.id === 'number') {
+        delete data.id
       }
       await handleRespnsability(data, token, currentLocale, !item.id ? 'post' : 'patch')
       if (values.job)
@@ -126,6 +133,11 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
         onHandleChange: (data: string) => {
           setJobName(data)
         },
+
+        onDeleteItem: (data: string) => {
+          setJobList(prev => [...prev.filter(e => e.job.toLowerCase().trim() !== data.toLocaleLowerCase().trim())])
+          deleteJobs(currentEntity?.entity?.id as string, data)
+        },
       },
     },
 
@@ -142,9 +154,9 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
 
   useEffect(() => {
     if (jobName) {
-      const item = jobList.find(e => e.job?.toLowerCase() === jobName?.toLowerCase())
-      if (item) {
-        setInitialValues({ price: item?.price, responsibility: typeOwner, job: jobName })
+      const itemData = jobList.find(e => e.job?.toLowerCase() === jobName?.toLowerCase())
+      if (itemData) {
+        setInitialValues({ price: itemData?.price, responsibility: typeOwner, job: jobName })
       }
     }
   }, [jobName])

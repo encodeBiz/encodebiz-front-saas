@@ -98,6 +98,7 @@
       "download": "Descargar",
       "periocity": "Rango de Fecha",
       "minutes": "minutos",
+      "job":"Ocupación",
       "periocityTime": "Rango de tiempo",
       "create-download": "Crear y descargar",
       "advance": "CONFIGURACIÓN AVANZADA",
@@ -904,7 +905,8 @@
     "weeklyWorkAvg": "Promedio de horas trabajadas",
     "chartTitle": "Comparativa de Horas por Semana",
     "chartType": "Tipo de gráfica",
-    "heuristicAnalize": "Análisis heurístico"
+    "heuristicAnalize": "Análisis de predicción en operaciones",
+    "selectedIndicator":"Seleccione los indicadores a mostrar"
   },
   "checking": {
     "title": "Control de Asistencia",

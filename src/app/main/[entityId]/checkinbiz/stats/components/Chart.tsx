@@ -8,8 +8,8 @@ import { useTranslations } from 'next-intl';
 const Chart = () => {
     const t = useTranslations()
     const theme = useTheme()
-    const { branchOne, branchTwo } = useCheckBizStats()
-    const [type, setType] = useState('weeklyWorkAvg')
+    const { branchOne, branchTwo , type} = useCheckBizStats()
+
     const [chartData, setChartData] = useState([
         { day: 'Lunes' },
         { day: 'Martes' },
@@ -77,22 +77,7 @@ const Chart = () => {
                 </LineChart>
             </ResponsiveContainer>
 
-            <Box display={'flex'} flexDirection={'column'} alignItems={'flex-end'}>
-                <FormControl  sx={{ m: 1, width: 340 }}>
-                    <InputLabel id="demo-simple-select-label">{t('statsCheckbiz.chartType')}</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={type}
-                        label="Age"
-                        onChange={e => setType(e.target.value)}
-                    >
-                        <MenuItem value={'weeklyStartAvg'}>{t('statsCheckbiz.weeklyStartAvg')}</MenuItem>
-                        <MenuItem value={'weeklyEndAvg'}>{t('statsCheckbiz.weeklyEndAvg')}</MenuItem>
-                        <MenuItem value={'weeklyWorkAvg'}>{t('statsCheckbiz.weeklyWorkAvg')}</MenuItem>
-                    </Select>
-                </FormControl>
-            </Box>
+           
         </Box>
     );
 };

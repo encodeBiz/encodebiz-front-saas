@@ -1,5 +1,5 @@
 'use client';
-import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from '@mui/material';
+import { Box, Checkbox, FormControl, InputLabel, ListItemText, MenuItem, OutlinedInput, Select, Typography } from '@mui/material';
 import { useTranslations } from "next-intl";
 
 import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
@@ -41,16 +41,17 @@ export const SelectorCard = () => {
         });
         return names.join(', ')
     }
-    return (
+    return (<Box>
+        <Typography color='textSecondary' variant='body1'>{t('statsCheckbiz.selectedCards')}</Typography>
         <FormControl sx={{ m: 1, width: 300 }}>
-            <InputLabel id="demo-multiple-checkbox-label">{t('statsCheckbiz.selectedCards')}</InputLabel>
+            <InputLabel id="demo-multiple-checkbox-label">{t('core.label.select')}</InputLabel>
             <Select
                 labelId="demo-multiple-checkbox-label"
                 id="demo-multiple-checkbox"
                 multiple
                 value={cardIndicatorSelected}
                 onChange={(event: any) => {
-
+                    localStorage.setItem('cardIndicatorSelected', JSON.stringify(event?.target.value))
                     setCardIndicatorSelected(event?.target.value)
 
                 }}
@@ -66,6 +67,7 @@ export const SelectorCard = () => {
                 ))}
             </Select>
         </FormControl>
+    </Box>
     );
 }
 

@@ -8,8 +8,7 @@ import { useEffect, useState } from "react";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { EmployeeEntityResponsibility, IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import { searchResponsabilityByBranch, updateEmployee } from "@/services/checkinbiz/employee.service";
-import { search as searchBranch } from "@/services/checkinbiz/sucursal.service";
-import { fetchEmployee as fetchEmployeeData } from "@/services/checkinbiz/employee.service";
+ import { fetchEmployee as fetchEmployeeData } from "@/services/checkinbiz/employee.service";
 
 import { useLayout } from "@/hooks/useLayout";
 import { useParams, useSearchParams } from "next/navigation";
@@ -17,7 +16,6 @@ import { ListAltOutlined, SignalWifi4Bar, SignalWifi4BarLockOutlined } from "@mu
 import { decodeFromBase64 } from "@/lib/common/base64";
 import { Box, Tooltip } from "@mui/material";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
-import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useAppLocale } from "@/hooks/useAppLocale";
@@ -61,7 +59,7 @@ export default function useEmployeeResponsabilityController(branchId: string) {
     currentPage: 0,
     total: 0,
     params: {
-      filters: [{ field: 'status', operator: '==', value: 'active' }],
+      filters: [],
       startAfter: null,
       limit: 5,
       orderBy: 'createdAt',
@@ -70,7 +68,6 @@ export default function useEmployeeResponsabilityController(branchId: string) {
   })
   const { openModal } = useCommonModal()
 
-  const [branchList, setBranchList] = useState<Array<ISucursal>>([])
 
   const rowAction: Array<IRowAction> = id ? [] : [
 
@@ -174,6 +171,22 @@ export default function useEmployeeResponsabilityController(branchId: string) {
 
     },
 
+    {
+      id: 'responsibility',
+      label: t("core.label.responsibility"),
+      minWidth: 170,
+      onClick: (item: EmployeeEntityResponsibility) => onDetail(item),
+      format: (value, row) => row.responsibility
+    },
+
+    {
+      id: 'job',
+      label: t("core.label.job"),
+      minWidth: 170,
+      onClick: (item: EmployeeEntityResponsibility) => onDetail(item),
+      format: (value, row) => row.job.name
+    },
+
 
     {
       id: 'status',
@@ -274,9 +287,6 @@ export default function useEmployeeResponsabilityController(branchId: string) {
     }
   }
 
-  const fetchSucursal = async () => {
-    setBranchList(await searchBranch(currentEntity?.entity.id as string, { ...{} as any, limit: 100 }))
-  }
 
 
 
@@ -289,7 +299,7 @@ export default function useEmployeeResponsabilityController(branchId: string) {
 
   useEffect(() => {
     if (currentEntity?.entity?.id) {
-      fetchSucursal()
+
       if (searchParams.get('params') && localStorage.getItem('employeeIndex'))
         inicializeFilter(searchParams.get('params') as string)
       else

@@ -8,6 +8,7 @@ import { IChecklog, ICreateLog } from "@/domain/features/checkinbiz/IChecklog";
 import { mapperErrorFromBack, normalizarString } from "@/lib/common/String";
 import { addDocument } from "@/lib/firebase/firestore/addDocument";
 import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
+import { deleteDocument } from "@/lib/firebase/firestore/deleteDocument";
 
 
 /**
@@ -94,6 +95,8 @@ export const searchResponsabilityByBranch = async (entityId: string, branchId: s
 }
 
 export const searchResponsability = async (entityId: string, employeeId: string, limit: number, filters: Array<{ field: string, operator: string, value: any }> = []): Promise<EmployeeEntityResponsibility[]> => {
+
+
   const result: EmployeeEntityResponsibility[] = await searchFirestore({
     ...{
       limit: limit,
@@ -145,6 +148,27 @@ export const addJobs = async (entityId: string, jobName: string, price: number):
     }
 
 
+  } catch (error: any) {
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
+  }
+
+}
+
+
+export const deleteJobs = async (entityId: string, jobName: string): Promise<void> => {
+  try {
+    const result: Job[] = await searchFirestore({
+      ...{ limit: 10000 } as any,
+      collection: `${collection.ENTITIES}/${entityId}/${collection.JOBS}`,
+    });
+
+    const item: Job = result.find(e => e.job.toLocaleLowerCase().trim() === jobName.toLocaleLowerCase().trim()) as Job
+    if (item) {
+      await deleteDocument({
+        collection: `${collection.ENTITIES}/${entityId}/${collection.JOBS}`,
+        id: item.id as string
+      });
+    }
   } catch (error: any) {
     throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
   }

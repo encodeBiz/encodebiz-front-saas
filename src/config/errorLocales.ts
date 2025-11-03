@@ -64,7 +64,8 @@ export const errorDict: any = {
     "checklog/internal_error": "Error interno del servidor (registro de verificación)",
     "holder/not_found": "No se encuentra el titular",
     "holder/not_found_applepass": "No se encuentra el Applepass del titular",
-    "subscription/limit_off": "No puedes realizar esta acción, su plan alcanzó el límite de operaciones permitidas"
+    "subscription/limit_off": "No puedes realizar esta acción, su plan alcanzó el límite de operaciones permitidas",
+    "analyze/insufficient_data":"No existen suficiente información recopilada para mostrar un analisis detallado de los indicadores de predicción del estado de las operaciones"
 
   },
   en: {
@@ -131,7 +132,8 @@ export const errorDict: any = {
     "checklog/internal_error": "Internal server error (checklog)",
     "holder/not_found": "Holder not found",
     "holder/not_found_applepass": "Holder not found applepass",
-    "subscription/limit_off":"You cannot perform this action, your plan has reached the limit of allowed operations"
+    "subscription/limit_off":"You cannot perform this action, your plan has reached the limit of allowed operations",
+    "analyze/insufficient_data":"There is not enough information available to provide a detailed analysis of the predictive indicators of the state of operations."
  
 
   }

@@ -13,6 +13,8 @@ import { useLayout } from "@/hooks/useLayout";
 import { searchJobs, searchResponsability, handleRespnsability } from "@/services/checkinbiz/employee.service";
 import { fetchSucursal, search } from "@/services/checkinbiz/sucursal.service";
 import { useTranslations } from "next-intl";
+import { collection } from "@/config/collection";
+import { generateUniqueId } from "@/lib/firebase/firestore/generateId";
 
 interface EmployeeDetailType {
     addResponsabiltyItem: () => void
@@ -58,7 +60,8 @@ export const EmployeeDetailProvider = ({ children, employee }: { children: React
     const addEntityResponsibility = async (branchId: string) => {
         const found = entityResponsibilityList.filter(e => ((e.scope as { scope: 'branch'; entityId: string; branchId: string })?.branchId as string) === branchId).length > 0
         if (!found) {
-            setEntityResponsibilityListList([...entityResponsibilityList, {
+            const branch = await fetchSucursal(currentEntity?.entity.id as string, branchId)
+            setEntityResponsibilityListList((prevEntityResponsibilityList) => [{
                 employeeId: employee.id as string,
                 responsibility: 'worker',
                 level: 4,
@@ -69,8 +72,11 @@ export const EmployeeDetailProvider = ({ children, employee }: { children: React
                     id: ''
                 },
                 active: 1,
-                branch: await fetchSucursal(currentEntity?.entity.id as string, branchId)
-            }])
+                branch,
+                id: `${branchId}_${currentEntity?.entity.id}_${generateUniqueId(`${collection.ENTITIES}/${currentEntity?.entity.id}/${collection.RESPONSABILITY}`)}`,
+                open: true,
+                assignedAt: new Date()
+            }, ...prevEntityResponsibilityList])
         } else {
             showToast(t('employee.branchUsed'), 'info')
         }
@@ -175,7 +181,7 @@ export const EmployeeDetailProvider = ({ children, employee }: { children: React
 
 
     return (
-        <EmployeeDetailContext.Provider  value={{
+        <EmployeeDetailContext.Provider value={{
             addResponsabiltyItem, deleting, onEnd, pending,
             addEntityResponsibility, onDelete, onFilter,
             entityResponsibilityList, responsabilityFilter, setResponsabilityFilter,

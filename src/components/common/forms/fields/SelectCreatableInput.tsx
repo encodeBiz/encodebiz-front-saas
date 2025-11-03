@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useEffect, useState } from 'react';
-import { TextFieldProps, FormHelperText, FormControl, Autocomplete, TextField } from '@mui/material';
+import { TextFieldProps, FormHelperText, FormControl, Autocomplete, TextField, Box, IconButton } from '@mui/material';
 import { FieldProps, useField } from 'formik';
 import { useTranslations } from 'next-intl';
+import { DeleteOutline } from '@mui/icons-material';
 
 
 
@@ -11,12 +12,14 @@ import { useTranslations } from 'next-intl';
 type SelectCreatableInputProps = FieldProps & TextFieldProps & {
   options: Array<string>;
   onHandleChange: (value: any) => void
+  onDeleteItem: (value: any) => void
 
 };
 
 const SelectCreatableInput: React.FC<SelectCreatableInputProps> = ({
   options,
   onHandleChange,
+  onDeleteItem,
   ...props
 }) => {
   const [field, meta, helper] = useField(props.name);
@@ -29,11 +32,11 @@ const SelectCreatableInput: React.FC<SelectCreatableInputProps> = ({
   useEffect(() => {
     setItems([...options])
   }, [options.length])
-  
+
 
 
   return (<FormControl required={props.required} sx={{ width: '100%', textAlign: 'left' }} >
-  
+
     <Autocomplete
       value={items.find(e => e?.toLowerCase() === field.value?.toLowerCase()) ?? ''}
       clearIcon={false}
@@ -90,7 +93,14 @@ const SelectCreatableInput: React.FC<SelectCreatableInputProps> = ({
         const { key, ...optionProps } = props;
         return (
           <li key={key} {...optionProps}>
-            {option}
+            <Box display={'flex'} justifyContent={'space-between'} width={'100%'}>
+              {option}
+
+              {typeof onDeleteItem === 'function' && <IconButton onClick={(event) => {
+                event.stopPropagation();
+                onDeleteItem(option)
+              }}><DeleteOutline /></IconButton>}
+            </Box>
           </li>
         );
       }}
