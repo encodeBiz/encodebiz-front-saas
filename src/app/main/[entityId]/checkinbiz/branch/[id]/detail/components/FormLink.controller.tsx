@@ -126,9 +126,7 @@ export default function useFormLinkController(onSuccess: () => void) {
             required: true,
             fullWidth: true,
             component: SearchIndexFilterInput,
-            extraProps: {
-                linkToCreate: true
-            },
+            
         },
         {
             name: 'responsibility',
@@ -189,7 +187,7 @@ export default function useFormLinkController(onSuccess: () => void) {
         if (jobName) {
             const itemData = jobList.find(e => e.job?.toLowerCase() === jobName?.toLowerCase())
             if (itemData) {
-                setInitialValues({ price: itemData?.price, responsibility: typeOwner, job: jobName })
+                setInitialValues({ ...formStatus?.values, price: itemData?.price, responsibility: typeOwner, job: jobName })
             }
         }
     }, [jobName])

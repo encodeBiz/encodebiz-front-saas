@@ -188,7 +188,7 @@ const SearchIndexFilterInput: React.FC<SearchIndexFilterInputProps> = ({ typeInd
           "& .MuiAutocomplete-inputRoot": { padding: "8px" },
         }}
       />
-      <SassButton sx={{ width: 200, height: 50 }} variant="outlined" onClick={() => navivateTo('/checkinbiz/employee/add')}>{t('core.label.linkToCreateEmployee')}</SassButton>
+     {linkToCreate &&  <SassButton sx={{ width: 200, height: 50 }} variant="outlined" onClick={() => navivateTo('/checkinbiz/employee/add')}>{t('core.label.linkToCreateEmployee')}</SassButton>}
     </FormControl>
   );
 };
