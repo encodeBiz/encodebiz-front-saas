@@ -84,13 +84,6 @@ export const searchJobs = async (entityId: string): Promise<Job[]> => {
    */
 export const searchResponsabilityByBranch = async (entityId: string, branchId: string, params: SearchParams): Promise<EmployeeEntityResponsibility[]> => {
   
-  console.log({
-    ...params,
-    filters: [...(params.filters ?? []), {
-      field: 'scope.branchId', operator: '==', value: branchId
-    }],
-    collection: `${collection.ENTITIES}/${entityId}/${collection.RESPONSABILITY}`,
-  });
   
   
   const result: EmployeeEntityResponsibility[] = await searchFirestore({

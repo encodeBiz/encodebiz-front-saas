@@ -2,8 +2,7 @@
 import { Box, Checkbox, FormControl, InputLabel, ListItemText, MenuItem, OutlinedInput, Select, Typography } from '@mui/material';
 import { useTranslations } from "next-intl";
 
-import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
-import { useCheckBizStats } from '../context/checkBizStatsContext';
+ import { useCheckBizStats } from '../context/checkBizStatsContext';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;

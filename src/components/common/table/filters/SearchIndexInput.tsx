@@ -51,7 +51,7 @@ const getDataLabel = (data: ISearchIndex, type: "entities" | "users" | "events" 
 }
 
 
-const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type, label, width='100%' }) => {
+const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type, label  }) => {
   const t = useTranslations();
   const { currentEntity } = useEntity()
 

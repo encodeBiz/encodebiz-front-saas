@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react';
 import {
     Dialog,
@@ -26,12 +27,12 @@ const BranchSelectorModal = ({ branchList, onOKAction, type = 'item' }: BranchSe
     const { open, closeModal } = useCommonModal()
     const t = useTranslations()
     const [branchSelected, setBranchSelected] = useState<{ name: string, branchId: string }>()
-    const [openDialog, setOpenDialog] = useState(false);
+    const [openDialog] = useState(false);
     const [selectOpen, setSelectOpen] = useState(false);
     const dialogRef = useRef(null);
 
     useEffect(() => {
-        if (openDialog && dialogRef.current) {
+        if (openDialog && dialogRef.current &&  type == 'selector') {
             const dialogPaper = (dialogRef.current as any).querySelector('.MuiDialog-paper');
             if (dialogPaper) {
                 if (selectOpen) {
@@ -65,7 +66,7 @@ const BranchSelectorModal = ({ branchList, onOKAction, type = 'item' }: BranchSe
                     <CustomTypography >{t('checking.titleBranch')}</CustomTypography>
                 </Box>
             </DialogTitle>
-            <DialogContent>
+            <DialogContent >
                 {type == 'item' && <List component="nav" aria-label="main mailbox folders">
                     {branchList.map((e, i) => <ListItemButton key={i}
                         selected={branchSelected?.branchId === e.branchId}
@@ -75,7 +76,7 @@ const BranchSelectorModal = ({ branchList, onOKAction, type = 'item' }: BranchSe
                     </ListItemButton>)}
                 </List>}
 
-                {type == 'selector' && <Autocomplete
+                {type == 'selector' && <Box sx={{ pt: 1 }}><Autocomplete
                     open={selectOpen}
                     onOpen={() => setSelectOpen(true)}
                     onClose={() => setSelectOpen(false)}
@@ -89,7 +90,7 @@ const BranchSelectorModal = ({ branchList, onOKAction, type = 'item' }: BranchSe
                     }}
 
                     renderInput={(params) => <TextField {...params} label={t('checking.titleBranch')} />}
-                />}
+                /></Box>}
             </DialogContent>
             <DialogActions>
                 <SassButton

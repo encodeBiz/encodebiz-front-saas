@@ -13,7 +13,7 @@ import { useLayout } from "@/hooks/useLayout";
 import { searchJobs, searchResponsability, handleRespnsability } from "@/services/checkinbiz/employee.service";
 import { fetchSucursal, search } from "@/services/checkinbiz/sucursal.service";
 import { useTranslations } from "next-intl";
- 
+
 interface EmployeeDetailType {
     addResponsabiltyItem: () => void
     deleting: boolean
@@ -101,9 +101,23 @@ export const EmployeeDetailProvider = ({ children, employee }: { children: React
     ])
     const fetchResponsabilityList = async (limit: number = 5, filter: Array<{ field: string, operator: string, value: any }>) => {
         try {
+            let filterData = filter
+            if (filter.find(e => e.field === 'active' && e.value === 'none'))
+                filterData = filterData.filter(e => e.field !== 'active')
+            if (filter.find(e => e.field === 'branchId' && e.value === 'none'))
+                filterData = filterData.filter(e => e.field !== 'branchId')
+
+            if (filter.find(e => e.field === 'branchId' && e.value !== 'none')) {
+                filterData = filterData.filter(e => e.field !== 'branchId')
+                filterData.push({
+                    field: 'scope.branchId', operator: '==', value: filter.find(e => e.field === 'branchId' && e.value !== 'none')?.value
+                })
+            }
+
+ 
             setPending(true)
             setResponsabilityLimit(limit)
-            const data: Array<EmployeeEntityResponsibility> = await searchResponsability(currentEntity?.entity.id as string, employee.id as string, limit, filter)
+            const data: Array<EmployeeEntityResponsibility> = await searchResponsability(currentEntity?.entity.id as string, employee.id as string, limit, filterData)
             const items: Array<EmployeeEntityResponsibility> = await Promise.all(data.map(async e => {
                 const branch = await fetchSucursal(e.scope.entityId, (e.scope as any).branchId)
                 return { ...e, branch }

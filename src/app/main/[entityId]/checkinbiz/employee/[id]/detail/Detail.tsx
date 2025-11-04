@@ -84,8 +84,7 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
                     <DetailText label={t('core.label.phone')} value={'+' + employee?.phone} />
                     <DetailText label={t('core.label.status')} value={t('core.label.' + employee?.status)} />
                     <DetailText label={t('core.label.nationalId')} value={employee?.nationalId} />
-                    <DetailText label={t('core.label.remoteWork')} value={employee?.enableRemoteWork ? t('core.label.enable') : t('core.label.noenable')} />
-                </Box>
+                 </Box>
 
                 {employee?.enableRemoteWork && !!employee?.address && <Paper sx={{ mt: 4 }} elevation={0} >
                     <Typography variant="subtitle1" gutterBottom textTransform={'uppercase'} >

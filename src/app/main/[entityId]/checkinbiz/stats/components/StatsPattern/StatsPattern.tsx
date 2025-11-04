@@ -4,7 +4,7 @@ import { Box, Divider, Tooltip, Typography } from '@mui/material';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import { IBranchPattern } from '@/domain/features/checkinbiz/IStats';
 import { AccessTimeOutlined, CalendarMonth, CallMissedOutgoingOutlined, GrainOutlined, Grid4x4Outlined, HelpOutline, PendingActionsOutlined, RefreshOutlined } from '@mui/icons-material';
-import { decimalAHorasMinutos, formatDay } from '@/lib/common/Date';
+import { decimalAHorasMinutos } from '@/lib/common/Date';
 import { useTranslations } from 'next-intl';
 import { getAverage } from '@/lib/common/String';
 import { useCheckBizStats } from '../../context/checkBizStatsContext';

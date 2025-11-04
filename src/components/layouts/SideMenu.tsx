@@ -40,13 +40,14 @@ const CustomListItemButton = ({ children, item, subItem = false, handleSubMenuTo
 
 
 
-  return <ListItemButton
+  return <ListItemButton disableRipple={disableHover}
     sx={{
       mx: 2,
       height: 56,
       '&.Mui-selected': {
         backgroundColor: (theme) => theme.palette.primary.main,
         borderRadius: 10,
+        
         color: 'white',
         '&:hover': disableHover ? {} : {
           backgroundColor: 'primary.main',

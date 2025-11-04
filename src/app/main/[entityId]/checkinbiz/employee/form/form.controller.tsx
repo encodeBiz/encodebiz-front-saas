@@ -62,6 +62,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     phone: '',
     role: "internal",
     status: 'active',
+    nationalId:'N/A',
     metadata: [],
     enableRemoteWork: false,
 
@@ -181,6 +182,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         email: '',
         phone: '',
         role: "internal",
+        nationalId:'N/A',
         status: 'active',
         enableRemoteWork: false,
         metadata: [],
