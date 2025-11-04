@@ -19,8 +19,7 @@ interface EmployeeDetailType {
     deleting: boolean
     onEnd: () => void
     pending: boolean
-    addEntityResponsibility: (branchId: string) => void
-    onDelete: (id: string) => void
+     onDelete: (id: string) => void
     onFilter: (filter: Array<{ field: string, operator: string, value: any }>) => void
     entityResponsibilityList: Array<EmployeeEntityResponsibility>
     responsabilityFilter: Array<{ field: string, operator: string, value: any }>
@@ -55,30 +54,7 @@ export const EmployeeDetailProvider = ({ children, employee }: { children: React
 
 
     const [entityResponsibilityList, setEntityResponsibilityListList] = useState<Array<EmployeeEntityResponsibility>>([])
-    const addEntityResponsibility = async (branchId: string) => {
-        const found = entityResponsibilityList.filter(e => ((e.scope as { scope: 'branch'; entityId: string; branchId: string })?.branchId as string) === branchId).length > 0
-        if (!found) {
-            const branch = await fetchSucursal(currentEntity?.entity.id as string, branchId)
-            setEntityResponsibilityListList((prevEntityResponsibilityList) => [{
-                employeeId: employee.id as string,
-                responsibility: 'worker',
-                level: 4,
-                scope: { entityId: currentEntity?.entity.id as string, branchId, scope: 'branch' },
-                job: {
-                    job: '',
-                    price: 0,
-                    id: ''
-                },
-                active: 1,
-                branch,
-                id: `${branchId}_${currentEntity?.entity.id}_${employee.id}`,
-                open: true,
-                assignedAt: new Date()
-            }, ...prevEntityResponsibilityList])
-        } else {
-            showToast(t('employee.branchUsed'), 'info')
-        }
-    }
+
 
 
     const [jobList, setJobList] = useState<Array<Job>>([])
@@ -114,7 +90,7 @@ export const EmployeeDetailProvider = ({ children, employee }: { children: React
                 })
             }
 
- 
+
             setPending(true)
             setResponsabilityLimit(limit)
             const data: Array<EmployeeEntityResponsibility> = await searchResponsability(currentEntity?.entity.id as string, employee.id as string, limit, filterData)
@@ -150,13 +126,10 @@ export const EmployeeDetailProvider = ({ children, employee }: { children: React
 
     const addResponsabiltyItem = () => {
 
-        if (entityResponsibilityList.length < branchList.length) {
-            if (branchList.length === 1) addEntityResponsibility(branchList[0].id as string)
-            else {
-                openModal(CommonModalType.BRANCH_SELECTED)
-            }
-        } else {    
-            openModal(CommonModalType.INFO, {id:'maxSelectionBranch'})
+        if (entityResponsibilityList.length < branchList.length && branchList.length != 0) {
+            openModal(CommonModalType.BRANCH_SELECTED)
+        } else {
+            openModal(CommonModalType.INFO, { id: 'maxSelectionBranch' })
         }
 
     }
@@ -195,7 +168,7 @@ export const EmployeeDetailProvider = ({ children, employee }: { children: React
     return (
         <EmployeeDetailContext.Provider value={{
             addResponsabiltyItem, deleting, onEnd, pending,
-            addEntityResponsibility, onDelete, onFilter,
+             onDelete, onFilter,
             entityResponsibilityList, responsabilityFilter, setResponsabilityFilter,
             branchList, jobList, loadMore, responsabilityTotal, responsabilityLimit
         }}>

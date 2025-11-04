@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useLayout } from "@/hooks/useLayout";
-import { searchJobs, handleRespnsability, addJobs, deleteJobs, searchResponsability } from "@/services/checkinbiz/employee.service";
+import { searchJobs, handleRespnsability, addJobs, deleteJobs, searchResponsability, searchResponsabilityByBranch } from "@/services/checkinbiz/employee.service";
 import { useAppLocale } from "@/hooks/useAppLocale";
 import TextInput from "@/components/common/forms/fields/TextInput";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
@@ -15,9 +15,10 @@ import SelectCreatableInput from "@/components/common/forms/fields/SelectCreatab
 import { useParams } from "next/navigation";
 import { EmployeeEntityResponsibility, Job } from "@/domain/features/checkinbiz/IEmployee";
 import ToggleInput from "@/components/common/forms/fields/ToggleInput";
-import SearchIndexFilterInput from "@/components/common/forms/fields/SearchFilterInput";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
+import { search } from "@/services/checkinbiz/sucursal.service";
+import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 import { useFormStatus } from "@/hooks/useFormStatus";
 
 
@@ -35,7 +36,16 @@ export default function useFormLinkController(onSuccess: () => void) {
     const [jobName, setJobName] = useState('')
     const { formStatus } = useFormStatus()
 
+    const [branchList, setBranchList] = useState<Array<ISucursal>>([])
 
+    const fetchSucursalList = async () => {
+        setBranchList(await search(currentEntity?.entity.id as string, { ...{} as any, limit: 100 }))
+    }
+
+    useEffect(() => {
+        if (currentEntity?.entity.id)
+            fetchSucursalList()
+    }, [currentEntity?.entity.id])
 
     const [initialValues, setInitialValues] = useState<Partial<any>>({
         job: '',
@@ -54,20 +64,18 @@ export default function useFormLinkController(onSuccess: () => void) {
         try {
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
 
-
-            const listOfResponsability: Array<EmployeeEntityResponsibility> = await searchResponsability(currentEntity?.entity.id as string, values.employeeId, { limit: 1, filters: [{ field: 'scope.branchId', operator: '==', value: id }] } as any)
+            const listOfResponsability: Array<EmployeeEntityResponsibility> = await searchResponsabilityByBranch(currentEntity?.entity.id as string, values.branchId, { limit: 1, filters: [{ field: 'employeeId', operator: '==', value: id }] } as any)
             if (listOfResponsability.length > 0) {
-                showToast(t('sucursal.employeeUsed'), 'info')
-                  formStatus?.setSubmitting(false)
+                showToast(t('employee.branchUsed'), 'info')
                 changeLoaderState({ show: false })
+                formStatus?.setSubmitting(false)
             } else {
-
-
+                changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
                 const data: any = {
-                    id: `${id}_${currentEntity?.entity.id}_${values.employeeId}`,
-                    employeeId: values.employeeId,
+                    id: `${values.branchId}_${currentEntity?.entity.id}_${id}`,
+                    employeeId: id,
                     responsibility: values.responsibility,
-                    scope: { entityId: currentEntity?.entity.id as string, branchId: id, scope: 'branch' },
+                    scope: { entityId: currentEntity?.entity.id as string, branchId: values.branchId, scope: 'branch' },
                     job: {
                         job: values.job,
                         price: values.price,
@@ -120,15 +128,13 @@ export default function useFormLinkController(onSuccess: () => void) {
 
     const fields = [
         {
-            name: 'employeeId',
-            label: t('core.label.employee'),
+            name: 'branchId',
+            label: t('core.label.sucursal'),
             type: 'text',
             required: true,
             fullWidth: true,
-            component: SearchIndexFilterInput,
-            extraProps: {
-                linkToCreate: true
-            },
+            component: SelectInput,
+            options: [...branchList.map(e => ({ label: e.name, value: e.id }))]
         },
         {
             name: 'responsibility',
@@ -187,9 +193,10 @@ export default function useFormLinkController(onSuccess: () => void) {
 
     useEffect(() => {
         if (jobName) {
+
             const itemData = jobList.find(e => e.job?.toLowerCase() === jobName?.toLowerCase())
             if (itemData) {
-                setInitialValues({ price: itemData?.price, responsibility: typeOwner, job: jobName })
+                setInitialValues({ ...formStatus?.values, price: itemData?.price, responsibility: typeOwner, job: jobName })
             }
         }
     }, [jobName])

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { EmployeeEntityResponsibility, IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import { searchResponsabilityByBranch, updateEmployee } from "@/services/checkinbiz/employee.service";
- import { fetchEmployee as fetchEmployeeData } from "@/services/checkinbiz/employee.service";
+import { fetchEmployee as fetchEmployeeData, search as searchEmployee } from "@/services/checkinbiz/employee.service";
 
 import { useLayout } from "@/hooks/useLayout";
 import { useParams, useSearchParams } from "next/navigation";
@@ -176,7 +176,7 @@ export default function useEmployeeResponsabilityController(branchId: string) {
       label: t("core.label.responsibility"),
       minWidth: 170,
       onClick: (item: EmployeeEntityResponsibility) => onDetail(item),
-      format: (value, row) => t("core.label."+row.responsibility)
+      format: (value, row) => t("core.label." + row.responsibility)
     },
 
     {
@@ -207,11 +207,11 @@ export default function useEmployeeResponsabilityController(branchId: string) {
   ];
 
   const fetchingData = (filterParams: IFilterParams) => {
- 
+
     setLoading(true)
 
 
-   
+
 
 
     searchResponsabilityByBranch(currentEntity?.entity.id as string, branchId, { ...(filterParams.params as any), filters: [...filterParams.params.filters] }).then(async data => {
@@ -222,7 +222,7 @@ export default function useEmployeeResponsabilityController(branchId: string) {
         })
       );
 
-       
+
 
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
@@ -318,10 +318,26 @@ export default function useEmployeeResponsabilityController(branchId: string) {
     fetchingData(filterParamsUpdated)
   }
 
+
+  const addResponsabiltyItem = async () => {
+    let totalEmployee = 0
+    const employeeList = await searchEmployee(currentEntity?.entity.id as any, { limit: 1 } as any)
+    if (employeeList.length > 0) totalEmployee = employeeList[0].totalItems as number
+    let totalAssigned = 0
+    if (items.length > 0) totalAssigned = items[0].totalItems as number
+    if (totalAssigned < totalEmployee || totalEmployee != 0) {
+      openModal(CommonModalType.FORM, { id: 'responsability' })
+    } else {
+      openModal(CommonModalType.INFO, { id: 'maxSelectionBranch' })
+    }
+
+  }
+
+
   return {
     items, onSort, onRowsPerPageChange,
     onEdit, onSuccessResponsability,
-    onNext, onBack,
+    onNext, onBack, addResponsabiltyItem,
     columns, rowAction,
     loading, filterParams,
 
