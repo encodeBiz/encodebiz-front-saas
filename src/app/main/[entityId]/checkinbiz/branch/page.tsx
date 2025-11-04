@@ -8,9 +8,10 @@ import { Add } from '@mui/icons-material';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
-import { useLayout } from '@/hooks/useLayout';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import FormModal from './edit/FormModal';
+import InfoModal from '@/components/common/modals/InfoModal';
+import { useLayout } from '@/hooks/useLayout';
 
 export default function SucursalList() {
   const t = useTranslations();
@@ -18,7 +19,7 @@ export default function SucursalList() {
     items, rowAction, onRowsPerPageChange, onSort,
     onNext, onBack, onDelete, deleting,
     filterParams, topFilter,
-    columns,  onSuccess,
+    columns, onSuccess, addBranch,
     loading } = useSucursalListController();
   const { navivateTo } = useLayout()
   const { open } = useCommonModal()
@@ -28,9 +29,9 @@ export default function SucursalList() {
         title={t("sucursal.list")}
         actions={
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
-             
+
             <SassButton
-              onClick={() => navivateTo(`/checkinbiz/branch/add`)}
+              onClick={addBranch}
               variant='contained'
               startIcon={<Add />}
             >{t('sucursal.add')}</SassButton>
@@ -65,7 +66,18 @@ export default function SucursalList() {
         onOKAction={(args: { data: any }) => onDelete(args.data)}
       />}
 
-      {open.type === CommonModalType.FORM && <FormModal onSuccess={onSuccess}/>}
+      {open.type === CommonModalType.FORM && <FormModal onSuccess={onSuccess} />}
+
+      {open.type === CommonModalType.INFO && open.args?.id === 'maxAddBranch' && <InfoModal
+        title={t('sucursal.freePlanAdviseTitle')}
+        description={t('sucursal.freePlanAdviseText')}
+        btnText={t('sucursal.freePlanAdviseBtn')}
+        onClose={() => {
+          navivateTo('/checkinbiz/onboarding')
+        }}
+        btnFill
+        closeIcon
+      />}
     </Container>
   );
 }

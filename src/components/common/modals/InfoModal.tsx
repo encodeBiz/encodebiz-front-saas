@@ -6,29 +6,34 @@ import {
     DialogContentText,
     DialogTitle,
     Box,
-    Typography
+    Typography,
+    useTheme
 } from '@mui/material';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useTranslations } from 'next-intl';
 import { SassButton } from '../buttons/GenericButton';
 import { CustomTypography } from '../Text/CustomTypography';
+import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 
 interface InfoModalProps {
     title: string
     description: string
     cancelBtn?: boolean
     closeBtn?: boolean
+    closeIcon?: boolean
     centerBtn?: boolean
+    btnFill?: boolean
     onClose?: () => void
     btnText?: string
     extraText?: string
     btnCloseText?: string
 }
-const InfoModal = ({ title, description, onClose, btnText, closeBtn, btnCloseText,centerBtn, extraText,
+const InfoModal = ({ title, description, onClose, btnText, closeBtn, btnCloseText, centerBtn, extraText,closeIcon=false,btnFill=false,
     cancelBtn = true }: InfoModalProps): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const t = useTranslations()
+    const theme = useTheme()
     // Handler for closing the dialog
 
     const handleClose = (event: any, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
@@ -55,7 +60,10 @@ const InfoModal = ({ title, description, onClose, btnText, closeBtn, btnCloseTex
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
                     <CustomTypography >{title}</CustomTypography>
                 </Box>
-
+                {closeIcon && <CustomIconBtn
+                    onClick={() => closeModal(CommonModalType.INFO)}
+                    color={theme.palette.primary.main}
+                />}
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description" sx={{ mb: 3 }}>
@@ -70,7 +78,7 @@ const InfoModal = ({ title, description, onClose, btnText, closeBtn, btnCloseTex
 
                     {cancelBtn && <SassButton
                         color="primary"
-                        variant="outlined"
+                        variant={btnFill?"contained":"outlined"}
                         onClick={(e) => handleClose(e, 'manual')}
                         size='small'
 
@@ -85,7 +93,7 @@ const InfoModal = ({ title, description, onClose, btnText, closeBtn, btnCloseTex
                         size='small'
 
                     >
-                        {btnCloseText?btnCloseText:t('core.button.accept')}
+                        {btnCloseText ? btnCloseText : t('core.button.accept')}
                     </SassButton>}
 
                     {centerBtn && <SassButton

@@ -48,6 +48,8 @@ export interface IEmployee {
             lng: number
         }
     },
+
+       totalItems?: number
 }
 
 // Consistency first: keys y niveles canonizados

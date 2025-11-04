@@ -10,12 +10,13 @@ import { useLayout } from '@/hooks/useLayout';
 import FormModal from './edit/FormModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useCommonModal } from '@/hooks/useCommonModal';
+import InfoModal from '@/components/common/modals/InfoModal';
 
 export default function EmployeeList() {
   const t = useTranslations();
   const {
     items, rowAction, onRowsPerPageChange, onSort,
-    onNext, onBack,
+    onNext, onBack, addEmployee,
     filterParams, topFilter,
     columns, onSuccess,
     loading } = useEmployeeListController();
@@ -29,7 +30,7 @@ export default function EmployeeList() {
         actions={
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
             <SassButton
-              onClick={() => navivateTo(`/checkinbiz/employee/add`)}
+              onClick={addEmployee}
               variant='contained'
               startIcon={<Add />}
             >{t('employee.add')}</SassButton>
@@ -57,6 +58,16 @@ export default function EmployeeList() {
       </HeaderPage>
       {open.type === CommonModalType.FORM && <FormModal onSuccess={onSuccess} />}
 
+      {open.type === CommonModalType.INFO && open.args?.id === 'maxAddEmployee' && <InfoModal
+        title={t('employee.freePlanAdviseTitle')}
+        description={t('employee.freePlanAdviseText')}
+        btnText={t('employee.freePlanAdviseBtn')}
+        onClose={() => {
+          navivateTo('/checkinbiz/onboarding')
+        }}
+        btnFill
+        closeIcon
+      />}
     </Container>
   );
 }
