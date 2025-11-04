@@ -17,6 +17,7 @@ import HelpTabs from "@/components/features/dashboard/HelpTabs/HelpTabs"
 import { Branch } from "./Branch/Branch"
 import { Attedance } from "./Attedance/Attedance"
 import { onGoMap } from "@/lib/common/maps"
+import InfoModal from "@/components/common/modals/InfoModal"
 
 export const Detail = ({ employee, onResend, onSuccess, children }: { employee: IEmployee, onSuccess: () => void, onResend: (v: IEmployee) => void, children: React.ReactNode }) => {
     const t = useTranslations()
@@ -84,7 +85,7 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
                     <DetailText label={t('core.label.phone')} value={'+' + employee?.phone} />
                     <DetailText label={t('core.label.status')} value={t('core.label.' + employee?.status)} />
                     <DetailText label={t('core.label.nationalId')} value={employee?.nationalId} />
-                 </Box>
+                </Box>
 
                 {employee?.enableRemoteWork && !!employee?.address && <Paper sx={{ mt: 4 }} elevation={0} >
                     <Typography variant="subtitle1" gutterBottom textTransform={'uppercase'} >
@@ -116,7 +117,7 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
                 {
                     id: '1',
                     title: t(`core.label.sucursalAsigned`),
-                    tabContent: <Branch  />
+                    tabContent: <Branch />
                 },
                 {
                     id: '2',
@@ -129,7 +130,7 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
         </CardContent>
 
         {
-            open.type === CommonModalType.DELETE && !open?.args?.responsability && <ConfirmModal
+            open.type === CommonModalType.DELETE && !open?.args?.responsability   && <ConfirmModal
                 isLoading={deleting}
                 title={t('employee.deleteConfirmModalTitle')}
                 description={t('employee.deleteConfirmModalTitle2')}
@@ -138,7 +139,17 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
         }
 
         {open.type === CommonModalType.FORM && <FormModal onSuccess={onSuccess} />}
- 
+        {open.type === CommonModalType.INFO && open.args?.id === 'maxSelectionBranch' && <InfoModal
+            title={t('employee.linkToBranchNotTitle')}
+            description={t('employee.linkToBranchNotText')}
+            btnText={t('employee.linkToBranchNotBtn')}
+            onClose={() => {
+                navivateTo('/checkinbiz/branch')
+            }}
+         btnFill
+            closeIcon
+        />}
+
 
 
     </Card >

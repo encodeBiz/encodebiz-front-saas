@@ -44,6 +44,7 @@ export default function useEmployeeListController() {
   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
   const { currentLocale } = useAppLocale()
+  const { entitySuscription } = useEntity()
   const { navivateTo, changeLoaderState } = useLayout()
   const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<ISucursal[]>([]);
@@ -304,8 +305,8 @@ export default function useEmployeeListController() {
     <SelectFilter first={false}
       label={t('core.label.status')} width={200}
       value={filterParams.filter.status}
-      onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, status: value } })} 
-       items={options}
+      onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, status: value } })}
+      items={options}
     />
 
     <SearchIndexFilter
@@ -333,10 +334,18 @@ export default function useEmployeeListController() {
     fetchingData(filterParamsUpdated)
   }
 
+  const addBranch = () => {    
+    if (items.length > 0 && entitySuscription.find(e => e.serviceId === "checkinbiz" && e.plan === "freemium")) {
+      openModal(CommonModalType.INFO, { id: 'maxAddBranch' })
+    } else {
+      navivateTo(`/checkinbiz/branch/add`)
+    }
+  }
+
   return {
     items, onSort, onRowsPerPageChange,
     onEdit, onSuccess,
-    onNext, onBack,
+    onNext, onBack, addBranch,
     columns, rowAction, onDelete, topFilter,
     loading, deleting, filterParams,
 

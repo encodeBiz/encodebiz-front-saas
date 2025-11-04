@@ -667,7 +667,19 @@
     "deleteConfirmModalTitle2Responsability": "Esta acción no se puede deshacer. Eliminará permanentemente la sucursal",
     "branchUsed": "La entidad seleccionada ya tiene una configuración de responsabilidad asignadada",
     "breakHelp": "Si esta opción no esta habilitada no se mostrará la accion de marcar el tiempo de descanso en la herramienta y se tomara por defecto con configurado. Por defecto el tiempo de descanso será de 60 minutos.",
-    "dayTimeHelp": "Por defecto el horario de marcar el inicio y fin de jornada seria de 8:00 a las 17:00, esta configuración se puede cambiar desde los ajustes, pero sino se configura se tomará como referencia."
+    "dayTimeHelp": "Por defecto el horario de marcar el inicio y fin de jornada seria de 8:00 a las 17:00, esta configuración se puede cambiar desde los ajustes, pero sino se configura se tomará como referencia.",
+
+    "linkToBranchNotTitle": "No hay más sucursales disponibles",
+    "linkToBranchNotText": "Agrega una nueva Sucursal / Proyecto para asignar a este empleado.",
+    "linkToBranchNotBtn": "Agregar Sucursal / Proyecto",
+
+     "freePlanAdviseTitle": "Límite alcanzado en el plan gratuito",
+    "freePlanAdviseBtn":"Actualziar plan",
+    "freePlanAdviseText": "Tu plan actual permite asignar hasta 10 empleados por Sucursal / Proyecto. Actualiza tu plan para agregar más empleados."
+ 
+   
+  
+    
   },
   "checklog": {
     "title": "Registros de asistencia",
@@ -693,8 +705,9 @@
     "description": "Rellene los campos para registrar la sucursal/proyecto",
     "deleteConfirmModalTitle": "Eliminar sucursal/proyecto",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente la sucursal/proyecto",
-    "freePlanAdviseTitle": "Operación no permitiva",
-    "freePlanAdviseText": "Actualmente tiene contratado para este servicio el plan gratis, para poder crear más sucursales debe actualizar el plan"
+    "freePlanAdviseTitle": "Límite alcanzado en el plan gratuito",
+    "freePlanAdviseBtn":"Actualziar plan",
+    "freePlanAdviseText": "Tu plan actual permite creer una Sucursal / Proyecto. Actualiza tu plan para agregar más sucursales/proyectos."
   },
   "attendance": {
     "title": "Reportes de asistencia",

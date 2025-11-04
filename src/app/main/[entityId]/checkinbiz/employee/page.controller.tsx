@@ -50,7 +50,7 @@ export default function useEmployeeListController() {
   const { currentLocale } = useAppLocale()
   const searchParams = useSearchParams()
   const { token, user } = useAuth()
-  const { currentEntity, watchServiceAccess } = useEntity()
+  const { currentEntity, watchServiceAccess, entitySuscription } = useEntity()
   const { showToast } = useToast()
   const { navivateTo } = useLayout()
   const [loading, setLoading] = useState<boolean>(true);
@@ -311,7 +311,7 @@ export default function useEmployeeListController() {
   const updateStatus = async (employee: IEmployee) => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const data: Partial<IEmployee> = {         
+      const data: Partial<IEmployee> = {
         "uid": user?.id as string,
         "id": employee.id,
         entityId: currentEntity?.entity.id as string,
@@ -396,9 +396,17 @@ export default function useEmployeeListController() {
     fetchingData(filterParamsUpdated)
   }
 
+  const addEmployee = () => {
+    if (items.length > 0 && (items[0]?.totalItems as number) >= 10 && entitySuscription.find(e => e.serviceId === "checkinbiz" && e.plan === "freemium")) {
+      openModal(CommonModalType.INFO, { id: 'maxAddEmployee' })
+    } else {
+      navivateTo(`/checkinbiz/employee/add`)
+    }
+  }
+
   return {
     items, onSort, onRowsPerPageChange,
-    onEdit, onSuccess,
+    onEdit, onSuccess, addEmployee,
     onNext, onBack,
     columns, rowAction, topFilter,
     loading, filterParams,

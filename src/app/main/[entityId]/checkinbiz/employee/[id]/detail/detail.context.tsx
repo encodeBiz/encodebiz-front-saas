@@ -155,8 +155,8 @@ export const EmployeeDetailProvider = ({ children, employee }: { children: React
             else {
                 openModal(CommonModalType.BRANCH_SELECTED)
             }
-        } else {
-            showToast(t('employee.maxSelectionBranch'), 'info')
+        } else {    
+            openModal(CommonModalType.INFO, {id:'maxSelectionBranch'})
         }
 
     }
