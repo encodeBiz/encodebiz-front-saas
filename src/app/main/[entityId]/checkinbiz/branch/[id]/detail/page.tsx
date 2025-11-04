@@ -16,7 +16,7 @@ export default function BranchDetail() {
     const { open } = useCommonModal()
     const {
         items, onRowsPerPageChange, onSort,
-        onNext, onBack,
+        onNext, onBack,addResponsabiltyItem,
         filterParams,
         columns, onSuccessResponsability,
         loading } = useEmployeeResponsabilityController(id);
@@ -25,7 +25,7 @@ export default function BranchDetail() {
     return (
         <Container maxWidth="lg">
 
-            {initialValues?.id && <Detail branch={initialValues as any} onSuccess={onSuccess} >
+            {initialValues?.id && <Detail addResponsabiltyItem={addResponsabiltyItem} branch={initialValues as any} onSuccess={onSuccess} >
                 <GenericTable
                     data={items}
                     rowAction={rowAction}

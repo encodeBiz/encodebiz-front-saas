@@ -11,8 +11,9 @@ import { Add, ArrowBackOutlined } from "@mui/icons-material"
 import { Card, Box, Grid, Typography, CardContent, Paper, Divider, Stack } from "@mui/material"
 import { useTranslations } from "next-intl"
 import FormModal from "../../edit/FormModal"
- 
-export const Detail = ({ branch, onSuccess, children }: { branch: ISucursal, children: React.ReactNode, onSuccess: () => void }) => {
+import InfoModal from "@/components/common/modals/InfoModal"
+
+export const Detail = ({ branch, onSuccess, addResponsabiltyItem, children }: {addResponsabiltyItem:()=>void, branch: ISucursal, children: React.ReactNode, onSuccess: () => void }) => {
     const t = useTranslations()
     const { navivateTo } = useLayout()
     const { openModal, open } = useCommonModal()
@@ -100,9 +101,7 @@ export const Detail = ({ branch, onSuccess, children }: { branch: ISucursal, chi
                     </Typography>
 
                     <SassButton
-                        onClick={() => {
-                          openModal(CommonModalType.FORM, {id:'responsability'})  
-                        }}
+                        onClick={addResponsabiltyItem}
                         variant='contained'
                         startIcon={<Add />}
                     >{t('sucursal.addEmployee')}</SassButton>
@@ -111,7 +110,18 @@ export const Detail = ({ branch, onSuccess, children }: { branch: ISucursal, chi
 
             </Paper>
         </CardContent>
-        {open.type === CommonModalType.FORM && open.args?.id!=='responsability' && <FormModal onSuccess={onSuccess} />}
+        {open.type === CommonModalType.FORM && open.args?.id !== 'responsability' && <FormModal onSuccess={onSuccess} />}
+
+        {open.type === CommonModalType.INFO && open.args?.id === 'maxSelectionEmployee' && <InfoModal
+            title={t('branch.linkToEmployeeNotTitle')}
+            description={t('employee.linkToEmployeeNotText')}
+            btnText={t('employee.linkToEmployeeNotBtn')}
+            onClose={() => {
+                navivateTo('/checkinbiz/employee')
+            }}
+            btnFill
+            closeIcon
+        />}
 
     </Card>
 

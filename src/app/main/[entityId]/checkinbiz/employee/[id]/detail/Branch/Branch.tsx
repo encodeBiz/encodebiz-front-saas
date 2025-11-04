@@ -11,10 +11,11 @@ import BranchSelectorModal from "@/components/common/modals/BranchSelector"
 import { EmployeeEntityResponsibility } from "@/domain/features/checkinbiz/IEmployee"
 import { useEmployeeDetail } from "../detail.context"
 import { Timestamp } from "firebase/firestore"
+import FormLink from "../FormLink/FormLink"
 
 export const Branch = () => {
     const t = useTranslations()
-    const { deleting, onDelete, onFilter, pending, entityResponsibilityList, jobList, onEnd, branchList, addEntityResponsibility, addResponsabiltyItem, responsabilityTotal, responsabilityFilter, responsabilityLimit, loadMore } = useEmployeeDetail()
+    const { deleting, onDelete, onFilter, pending, entityResponsibilityList, jobList, onEnd, branchList, addResponsabiltyItem, responsabilityTotal, responsabilityFilter, responsabilityLimit, loadMore } = useEmployeeDetail()
     const { open } = useCommonModal()
 
 
@@ -29,7 +30,7 @@ export const Branch = () => {
                 </Box>
 
                 <SassButton color="primary" variant="contained" onClick={addResponsabiltyItem} disabled={branchList.length == 0}>
-                    {t('core.button.addBranch')}
+                    {t('employee.linkBranch')}
                 </SassButton>
             </Box>
 
@@ -71,12 +72,7 @@ export const Branch = () => {
             onOKAction={(args: { id: string }) => onDelete(args.id)}
         />}
 
-        {open.type === CommonModalType.BRANCH_SELECTED && <BranchSelectorModal type={'selector'}
-            branchList={branchList?.map(e => ({ name: e.name, branchId: e.id as string }))}
-            onOKAction={(branchId) => {
-                addEntityResponsibility(branchId.branchId);
-            }}
-        />}
+        {open.type === CommonModalType.BRANCH_SELECTED && <FormLink  onSuccess={onEnd} />}
     </Paper>
 
 }
