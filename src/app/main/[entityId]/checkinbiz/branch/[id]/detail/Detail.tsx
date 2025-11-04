@@ -11,8 +11,7 @@ import { Add, ArrowBackOutlined } from "@mui/icons-material"
 import { Card, Box, Grid, Typography, CardContent, Paper, Divider, Stack } from "@mui/material"
 import { useTranslations } from "next-intl"
 import FormModal from "../../edit/FormModal"
-import FormLink from "./components/FormLink"
-
+ 
 export const Detail = ({ branch, onSuccess, children }: { branch: ISucursal, children: React.ReactNode, onSuccess: () => void }) => {
     const t = useTranslations()
     const { navivateTo } = useLayout()

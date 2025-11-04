@@ -14,8 +14,7 @@ import { CustomTypography } from '@/components/common/Text/CustomTypography';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { SassButton } from '@/components/common/buttons/GenericButton';
-import * as Yup from 'yup';
- import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
+import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
 import useFormLinkController from './FormLink.controller';
 
 const FormLink = ({ onSuccess }: { employeeId?: string, branchId?: string, onSuccess: () => void }): React.JSX.Element => {
