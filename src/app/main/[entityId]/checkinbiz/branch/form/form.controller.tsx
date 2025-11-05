@@ -14,7 +14,7 @@ import { createSucursal, fetchSucursal, updateSucursal } from "@/services/checki
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
- 
+
 import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 import ToggleInput from "@/components/common/forms/fields/ToggleInput";
 import TimeInput from "@/components/common/forms/fields/TimeInput";
@@ -38,6 +38,10 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const { id } = useParams<{ id: string }>()
 
   const itemId = isFromModal ? open.args?.id : id
+  const [enableDayTimeRange, setEnableDayTimeRange] = useState(false)
+  const [disableBreak, setDisableBreak] = useState(false)
+  const [disableRatioChecklog, setDisableRatioChecklog] = useState(false)
+
 
   const startTime = new Date()
   startTime.setMinutes(0)
@@ -80,7 +84,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     address: addressSchema(t),
     name: requiredRule(t),
     nif: requiredRule(t),
-     status: requiredRule(t),
+    status: requiredRule(t),
     ratioChecklog: ratioLogRule(t),
     startTime: requiredRule(t),
     endTime: requiredRule(t),
@@ -148,7 +152,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const fields = [
     {
       isDivider: true,
-      label: t('core.label.subEntityData'),
+      label: t('sucursal.formFirstSectionTitle'),
     },
     {
       name: 'name',
@@ -165,18 +169,17 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     },
     {
       name: 'address',
-      label: t('core.label.address'),
+      label: t('sucursal.address'),
       required: true,
       fullWidth: true,
       component: AddressComplexInput,
     },
-    {
-      name: 'disableRatioChecklog',
-      label: t('core.label.disableRatioChecklog'),
-      required: false,
-      component: ToggleInput,
 
+    {
+      isDivider: true,
+      label: t('core.label.ratioChecklogTitle'),
     },
+
 
     {
       name: 'ratioChecklog',
@@ -186,7 +189,15 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
 
     },
-
+    {
+      name: 'disableRatioChecklog',
+      label: disableRatioChecklog ? t('core.label.disableRatioChecklogD') : t('core.label.disableRatioChecklogE'),
+      required: false,
+      component: ToggleInput,
+      extraProps: {
+        onHandleChange: setDisableRatioChecklog
+      },
+    },
     {
       name: 'status',
       label: t('core.label.status'),
@@ -209,13 +220,12 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       column: 3,
       label: t('core.label.dayTimeRange'),
       hit: t('core.label.dayTimeRangeDesc'),
+      extraProps: {
+        alertMessage: enableDayTimeRange ? t('sucursal.dayTimeRangeAlertMessageE') : t('sucursal.dayTimeRangeAlertMessageD'),
+        alertSeverity: enableDayTimeRange ? 'primary' : 'disabled',
+      },
       fieldList: [
-        {
-          name: 'enableDayTimeRange',
-          label: t('core.label.enableDayTimeRange'),
-          component: ToggleInput,
-          required: true,
-        },
+
         {
           name: 'startTime',
           label: t('core.label.startTime'),
@@ -228,6 +238,15 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
           component: TimeInput,
           required: true,
         },
+        {
+          name: 'enableDayTimeRange',
+          label: enableDayTimeRange ? t('sucursal.dayTimeRangeEnableText') : t('sucursal.dayTimeRangeDisabledText'),
+          component: ToggleInput,
+          required: true,
+          extraProps: {
+            onHandleChange: setEnableDayTimeRange
+          },
+        },
       ]
     },
 
@@ -236,19 +255,27 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       column: 3,
       hit: t('core.label.timeBreakDesc'),
       label: t('core.label.breakTimeRange'),
+      extraProps: {
+        alertMessage: disableBreak ? t('sucursal.disableBreakAlertMessageE') : t('sucursal.disableBreakAlertMessageD'),
+        alertSeverity: disableBreak ? 'primary' : 'disabled',
+      },
       fieldList: [
-        {
-          name: 'disableBreak',
-          label: t('core.label.disableBreak'),
-          component: ToggleInput,
-          required: true,
-        },
+
         {
           name: 'timeBreak',
           label: t('core.label.timeBreak'),
           component: TextInput,
           type: 'number',
           required: true,
+        },
+        {
+          name: 'disableBreak',
+          label: disableBreak ? t('sucursal.dayTimeRangeEnableText') : t('sucursal.dayTimeRangeDisabledText'),
+          component: ToggleInput,
+          required: true,
+          extraProps: {
+            onHandleChange: setDisableBreak
+          },
         },
 
       ]
@@ -283,7 +310,9 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       const endTime = new Date()
       endTime.setMinutes(sucursal?.advance?.endTimeWorkingDay?.minute ?? 0)
       endTime.setHours(sucursal?.advance?.endTimeWorkingDay?.hour ?? 0)
-
+      setEnableDayTimeRange(sucursal?.advance?.enableDayTimeRange ?? false)
+      setDisableBreak(sucursal?.advance?.disableBreak ?? false)
+      setDisableRatioChecklog((sucursal?.disableRatioChecklog ?? false))
       setInitialValues({
         address: sucursal.address,
 

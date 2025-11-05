@@ -13,7 +13,7 @@ import { useTranslations } from "next-intl"
 import FormModal from "../../edit/FormModal"
 import InfoModal from "@/components/common/modals/InfoModal"
 
-export const Detail = ({ branch, onSuccess, addResponsabiltyItem, children }: {addResponsabiltyItem:()=>void, branch: ISucursal, children: React.ReactNode, onSuccess: () => void }) => {
+export const Detail = ({ branch, onSuccess, addResponsabiltyItem, children }: { addResponsabiltyItem: () => void, branch: ISucursal, children: React.ReactNode, onSuccess: () => void }) => {
     const t = useTranslations()
     const { navivateTo } = useLayout()
     const { openModal, open } = useCommonModal()
@@ -58,7 +58,7 @@ export const Detail = ({ branch, onSuccess, addResponsabiltyItem, children }: {a
                         <DetailText label={t('core.label.address')} value={branch?.address?.street} orientation="row" >
                             <Box sx={{ marginLeft: 4, minWidth: 140 }}><SassButton variant="text" onClick={() => onGoMap(branch.address.geo.lat, branch.address.geo.lng)}> {t('sucursal.map')}</SassButton></Box>
                         </DetailText>
-                        <DetailText label={t('core.label.timeZone')} value={branch?.address?.timeZone} orientation="row" />
+                        {/** <DetailText label={t('core.label.timeZone')} value={branch?.address?.timeZone} orientation="row" />*/}
 
                     </Box>
                 </Box>
@@ -71,11 +71,15 @@ export const Detail = ({ branch, onSuccess, addResponsabiltyItem, children }: {a
                 <Box display={'flex'} justifyContent={'space-between'} alignItems={'flex-start'}>
 
                     {branch?.advance && <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={4} alignItems={'flex-start'}>
-                        <DetailText help={t('employee.dayTimeHelp')} label={t('core.label.enableDayTimeRange')} value={branch?.advance?.enableDayTimeRange ? t('core.label.enable') : t('core.label.noenable')} />
-                        <DetailText label={t('core.label.dayTimeRange')} value={((branch?.advance?.startTimeWorkingDay?.hour as number) < 10 ? '0' + branch?.advance?.startTimeWorkingDay?.hour : branch?.advance?.startTimeWorkingDay?.hour) + ':' + ((branch?.advance?.startTimeWorkingDay?.minute as number) < 10 ? '0' + branch?.advance?.startTimeWorkingDay?.minute : branch?.advance?.startTimeWorkingDay?.minute) + ' - ' + ((branch?.advance?.endTimeWorkingDay?.hour as number) < 10 ? '0' + branch?.advance?.endTimeWorkingDay?.hour : branch?.advance?.endTimeWorkingDay?.hour) + ':' + ((branch?.advance?.endTimeWorkingDay?.minute as number) < 10 ? '0' + branch?.advance?.endTimeWorkingDay?.minute : branch?.advance?.endTimeWorkingDay?.minute)} />
-                        <DetailText help={t('employee.breakHelp')} label={t('core.label.disableBreak')} value={branch?.advance?.disableBreak ? t('core.label.yes') : t('core.label.no')} />
-                        <DetailText label={t('core.label.breakTimeRange')} value={branch?.advance?.timeBreak + ' ' + t('core.label.minutes')} />
-
+                        <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'}   alignItems={'flex-start'}>
+                            <DetailText orientation="row" label={t('core.label.dayTimeRange')} value={((branch?.advance?.startTimeWorkingDay?.hour as number) < 10 ? '0' + branch?.advance?.startTimeWorkingDay?.hour : branch?.advance?.startTimeWorkingDay?.hour) + ':' + ((branch?.advance?.startTimeWorkingDay?.minute as number) < 10 ? '0' + branch?.advance?.startTimeWorkingDay?.minute : branch?.advance?.startTimeWorkingDay?.minute) + ' - ' + ((branch?.advance?.endTimeWorkingDay?.hour as number) < 10 ? '0' + branch?.advance?.endTimeWorkingDay?.hour : branch?.advance?.endTimeWorkingDay?.hour) + ':' + ((branch?.advance?.endTimeWorkingDay?.minute as number) < 10 ? '0' + branch?.advance?.endTimeWorkingDay?.minute : branch?.advance?.endTimeWorkingDay?.minute)} />
+                            <DetailText help={branch?.advance?.enableDayTimeRange ? t('sucursal.dayTimeRangeAlertMessageE') : t('sucursal.dayTimeRangeAlertMessageD')} label={branch?.advance?.enableDayTimeRange ? t('sucursal.dayTimeRangeEnableText') : t('sucursal.dayTimeRangeDisabledText')} />
+                        </Box>
+                       
+                        <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'}  alignItems={'flex-start'}>
+                            <DetailText orientation="row" label={t('core.label.breakTimeRange')} value={branch?.advance?.timeBreak + ' ' + t('core.label.minutes')} />
+                            <DetailText help={branch?.advance?.disableBreak ? t('sucursal.disableBreakAlertMessageE') : t('sucursal.disableBreakAlertMessageD')} label={!branch?.advance?.disableBreak ? t('sucursal.dayTimeRangeEnableText') : t('sucursal.dayTimeRangeDisabledText')} />
+                        </Box>
                     </Box>}
                 </Box>
 
