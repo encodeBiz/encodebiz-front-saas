@@ -47,7 +47,7 @@ export const useRegisterController = () => {
         "active": true,
         address: { street: '' },
         //"region": currentEntity?.entity?.legal?.address.region as string | "",
-        "taxId": "",
+        "taxId": "N/A",
         "legalName": "",
         billingEmail: user?.email as string | "",
         "language": ""
@@ -168,7 +168,7 @@ export const useRegisterController = () => {
                 address: {
                     street: ''
                 },
-                taxId: '',
+                taxId: 'N/A',
                 language: ''
             })
         }
