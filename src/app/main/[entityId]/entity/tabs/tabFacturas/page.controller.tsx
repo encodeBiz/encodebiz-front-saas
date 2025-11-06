@@ -62,7 +62,7 @@ export const useFacturaController = () => {
             label: t('core.button.download'),
             allowItem: () => true,
             showBulk: false,
-            onPress: (item: StripeInvoice) => item.inviceData.invoice_pdf ? window.open(item.inviceData.invoice_pdf, '_blank') : showToast(t('entity.tabs.tab5.message'),'info'),
+            onPress: (item: StripeInvoice) => item.inviceData?.invoice_pdf ? window.open(item.inviceData?.invoice_pdf, '_blank') : showToast(t('entity.tabs.tab5.message'),'info'),
             bulk: false
         },
 
