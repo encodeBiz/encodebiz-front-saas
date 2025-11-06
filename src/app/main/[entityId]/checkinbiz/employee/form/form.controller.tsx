@@ -10,7 +10,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useParams } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
-import { ArrayToObject, objectToArray } from "@/lib/common/String";
+import { ArrayToObject, excludeKeyOfObject, objectToArray } from "@/lib/common/String";
 import { createEmployee, fetchEmployee, updateEmployee } from "@/services/checkinbiz/employee.service";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
@@ -54,7 +54,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     email: emailRule(t),
   })
 
- 
+
   const [fields, setFields] = useState<Array<any>>([])
   const [initialValues, setInitialValues] = useState<Partial<IEmployee>>({
     "fullName": '',
@@ -62,7 +62,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     phone: '',
     role: "internal",
     status: 'active',
-    nationalId:'N/A',
+    nationalId: 'N/A',
     metadata: [],
     enableRemoteWork: false,
 
@@ -79,7 +79,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         ...values,
         "uid": user?.id as string,
         "metadata": {
-          ...ArrayToObject(values.metadata as any),          
+          ...ArrayToObject(values.metadata as any),
         },
         "id": itemId,
         entityId: currentEntity?.entity.id
@@ -122,12 +122,12 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const event: IEmployee = await fetchEmployee(currentEntity?.entity.id as string, itemId)
       const addressData = event?.address
-      
+
       const initialValuesData = {
         ...event,
         metadata: objectToArray(event.metadata)
       }
-      if (event.enableRemoteWork) {      
+      if (event.enableRemoteWork) {
         Object.assign(initialValuesData, {
           address: addressData
         })
@@ -165,11 +165,11 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     else {
       setFields(prevFields => [
         ...prevFields.filter(f => !['address'].includes(f.name))
-      ])
+      ])    
+     
 
       setValidationSchema(prevSchema => ({
-        ...prevSchema,
-        
+        ...excludeKeyOfObject(prevSchema, 'address'),
       }))
     }
   }
@@ -182,7 +182,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         email: '',
         phone: '',
         role: "internal",
-        nationalId:'N/A',
+        nationalId: 'N/A',
         status: 'active',
         enableRemoteWork: false,
         metadata: [],

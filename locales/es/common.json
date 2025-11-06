@@ -611,7 +611,7 @@
   },
   "event": {
     "title": "Eventos",
-    "formDesc": "Completa los campos a continuación para crear/editar el event.",
+    "formDesc": "Completa los campos a continuación para crear/editar el evento",
     "formDesc2": "Asocia personal de apoyo al evento seleccionado.",
     "list": "Eventos",
     "add": "Crear evento",
