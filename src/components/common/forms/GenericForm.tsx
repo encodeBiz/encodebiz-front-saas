@@ -7,6 +7,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Alert,
   Box,
 
   Grid,
@@ -20,7 +21,7 @@ import { useFormStatus } from '@/hooks/useFormStatus';
 import { BorderBox } from '../tabs/BorderBox';
 import { SassButton } from '../buttons/GenericButton';
 import Link from 'next/link';
-import { ExpandMoreOutlined } from '@mui/icons-material';
+import { ExpandMoreOutlined, InfoOutline } from '@mui/icons-material';
 
 
 // A component that watches the form state
@@ -217,7 +218,13 @@ const GenericForm = <T extends Record<string, any>>({
                               return <FieldItem key={index + '-' + i} field={fieldInner} i={index} disabled={disabled} column={field.column ? field.column : column} formikProps={formikProps} />
                             })
                           }
+
+
                         </Grid>
+
+                        {field.extraProps?.alertMessage && <Alert key={field.name} sx={{borderRadius:2, mt: 2,color:'#FFF', bgcolor: theme => field.extraProps?.alertSeverity==='disabled' ? theme.palette.grey[800] :theme.palette[(field.extraProps?.alertSeverity as 'primary')??'primary'].main  }} icon={<InfoOutline sx={{color:'#FFF'}} />} >
+                          {field.extraProps?.alertMessage}
+                        </Alert>}
                       </Box>
                     </AccordionDetails>
                   </Accordion>

@@ -49,7 +49,7 @@ const Stats = () => {
               <Typography variant='h6' sx={{ width: '100%' }}>{t('statsCheckbiz.operationData')}</Typography>
             </Box>
             <Box>
-              <IconButton onClick={handleClick}><SettingsOutlined /></IconButton>
+              <IconButton onClick={handleClick}><SettingsOutlined sx={{fontSize:40}} color='primary' /></IconButton>
               <Popover
                 id={id}
                 open={open}

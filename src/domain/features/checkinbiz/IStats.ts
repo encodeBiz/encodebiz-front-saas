@@ -4,7 +4,7 @@ import { ISucursal } from "./ISucursal"
 export interface IBranchPattern {
     "id": string
     "updatedAt": Timestamp
-    "rentability": number
+    "reliability": number
     "entityId": string
     "createdAt": Timestamp
     "dataPoints": number
@@ -13,6 +13,8 @@ export interface IBranchPattern {
     "stdEndHour": number
     "avgEndHour": number
     "avgStartHour": number
+    totalCost: number
+
     "source": "init_config" | string
     "weeklyEndAvg": Array<number | null>
     "weeklyStartAvg": Array<number | null>

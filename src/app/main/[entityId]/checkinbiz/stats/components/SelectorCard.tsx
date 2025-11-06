@@ -24,7 +24,7 @@ export const SelectorCard = () => {
         'avgCycleCost',
         'avgCostHour',
         'avgWeekWork',
-        'rentability',
+        'reliability',
         'avgEffectiveCost',
         'dataPoints',
         'avgCostEfficiency'

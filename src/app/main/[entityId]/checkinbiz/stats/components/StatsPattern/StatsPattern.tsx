@@ -3,7 +3,7 @@ import { Box, Divider, Tooltip, Typography } from '@mui/material';
 
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import { IBranchPattern } from '@/domain/features/checkinbiz/IStats';
-import { AccessTimeOutlined, CalendarMonth, CallMissedOutgoingOutlined, GrainOutlined, Grid4x4Outlined, HelpOutline, PendingActionsOutlined, RefreshOutlined } from '@mui/icons-material';
+import { AccessTimeOutlined, CalendarMonth, CallMissedOutgoingOutlined, FunctionsOutlined, GrainOutlined, Grid4x4Outlined, HelpOutline, PendingActionsOutlined, RefreshOutlined } from '@mui/icons-material';
 import { decimalAHorasMinutos } from '@/lib/common/Date';
 import { useTranslations } from 'next-intl';
 import { getAverage } from '@/lib/common/String';
@@ -58,11 +58,11 @@ export const StatsPatternCards = ({ data, lineal = false }: { data: IBranchPatte
     },
 
     {
-        id: 'rentability',
-        label: t('statsCheckbiz.rentability'),
-        data: `${((data.rentability ?? 0)?.toFixed(2))}`,
-        help: t('statsCheckbiz.rentabilityHelp'),
-         icon: <GrainOutlined style={{ fontSize: 30 }} />
+        id: 'reliability',
+        label: t('statsCheckbiz.reliability'),
+        data: `${((data.reliability ?? 0)?.toFixed(2))}`,
+        help: t('statsCheckbiz.reliabilityHelp'),
+        icon: <GrainOutlined style={{ fontSize: 30 }} />
 
     },
 
@@ -72,6 +72,15 @@ export const StatsPatternCards = ({ data, lineal = false }: { data: IBranchPatte
         data: `${((data.dataPoints ?? 0)?.toFixed(0))}`,
         help: t('statsCheckbiz.dataPointsHelp'),
         icon: <Grid4x4Outlined style={{ fontSize: 30 }} />
+
+    },
+
+    {
+        id: 'totalCost',
+        label: t('statsCheckbiz.totalCost'),
+        data: `${((data.totalCost ?? 0)?.toFixed(2))}`,
+        help: t('statsCheckbiz.totalCostHelp'),
+        icon: <FunctionsOutlined style={{ fontSize: 30 }} />
 
     },
     ]

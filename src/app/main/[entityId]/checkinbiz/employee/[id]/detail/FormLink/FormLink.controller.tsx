@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useLayout } from "@/hooks/useLayout";
-import { searchJobs, handleRespnsability, addJobs, deleteJobs, searchResponsability, searchResponsabilityByBranch } from "@/services/checkinbiz/employee.service";
+import { searchJobs, handleRespnsability, addJobs, deleteJobs, searchResponsabilityByBranch } from "@/services/checkinbiz/employee.service";
 import { useAppLocale } from "@/hooks/useAppLocale";
 import TextInput from "@/components/common/forms/fields/TextInput";
 import SelectInput from "@/components/common/forms/fields/SelectInput";

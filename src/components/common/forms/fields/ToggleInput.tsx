@@ -13,6 +13,8 @@ const ToggleInput: React.FC<FieldProps & { label: string, name: string, disabled
   return (<Box display={'flex'} justifyItems={'center'} alignItems={'center'} >
 
     <FormControlLabel
+      labelPlacement="start"
+
       control={
         <Switch
 

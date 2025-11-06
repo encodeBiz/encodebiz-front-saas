@@ -81,7 +81,7 @@ export const CheckBizStatsProvider = ({ children }: { children: React.ReactNode 
             'avgCycleCost',
             'avgCostHour',
             'avgWeekWork',
-            'rentability'])
+            'reliability'])
         setPending(false)
     }
 
