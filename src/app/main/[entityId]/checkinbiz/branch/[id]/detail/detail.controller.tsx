@@ -160,14 +160,16 @@ export default function useEmployeeResponsabilityController(branchId: string) {
       id: 'email',
       label: t("core.label.email"),
       minWidth: 170,
-      onClick: (item: EmployeeEntityResponsibility) => onDetail(item.employee)
+      onClick: (item: EmployeeEntityResponsibility) => onDetail(item.employee),
+      format: (value, row) => row.employee?.email
     },
 
     {
       id: 'phone',
       label: t("core.label.phone"),
       minWidth: 170,
-      onClick: (item: EmployeeEntityResponsibility) => onDetail(item)
+      onClick: (item: EmployeeEntityResponsibility) => onDetail(item),
+      format: (value, row) => row.employee?.phone
 
     },
 
@@ -193,10 +195,10 @@ export default function useEmployeeResponsabilityController(branchId: string) {
       label: t("core.label.status"),
       minWidth: 170,
       format: (value, row) => <SelectFilter first={false}
-        defaultValue={row.status}
-        value={row.status}
+        defaultValue={row.employee?.status}
+        value={row.employee?.status}
         onChange={(value: any) => {
-          row.status = value
+          row.employee.status = value
           updateStatus(row)
         }}
         items={options}
@@ -217,12 +219,10 @@ export default function useEmployeeResponsabilityController(branchId: string) {
     searchResponsabilityByBranch(currentEntity?.entity.id as string, branchId, { ...(filterParams.params as any), filters: [...filterParams.params.filters] }).then(async data => {
       const res: Array<any> = await Promise.all(
         data.map(async (item) => {
-          const employee = (await fetchEmployeeData(currentEntity?.entity.id as string, item.employeeId as string))?.fullName
+          const employee = (await fetchEmployeeData(currentEntity?.entity.id as string, item.employeeId as string))
           return { ...item, employee };
         })
-      );
-
-
+      );    
 
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
