@@ -302,7 +302,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const sucursal: ISucursal = await fetchSucursal(currentEntity?.entity.id as string, itemId)
 
-
+       
       const startTime = new Date()
       startTime.setMinutes(sucursal?.advance?.startTimeWorkingDay?.minute ?? 0)
       startTime.setHours(sucursal?.advance?.startTimeWorkingDay?.hour ?? 0)
@@ -321,7 +321,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         status: sucursal.status,
         ratioChecklog: sucursal.ratioChecklog,
         name: sucursal.name,
-        nif: sucursal.nif,
+        nif: sucursal.nif??'N/A',
         metadata: objectToArray(sucursal.metadata),
         "enableDayTimeRange": sucursal?.advance?.enableDayTimeRange,
         "startTime": startTime,

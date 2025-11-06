@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
- 
+
 "use client";
 import React, { useEffect, useState } from "react";
 import {
@@ -38,7 +38,7 @@ type Option = { id: string; label: string; data: any, autocompleteData: IGeoAuto
 type AutoCompletedInputProps = FieldProps &
   TextFieldProps & {
     onHandleChange: (value: any) => void;
-    
+
   };
 
 
@@ -75,7 +75,7 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
     async (q: string, code: string) => {
       const query = (q ?? "").trim();
 
- 
+
       if (!query || query == inputValue) {
         setOptions([]);
         setPending(false);
@@ -129,7 +129,7 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
     setSelected(newOption);
     setOptions([])
     debouncedSearch?.cancel?.();
-    
+
     if (newOption?.autocompleteData) {
       const data: IGeoDetailOutput = (await fetchLocation({ placeId: newOption?.autocompleteData?.placeId, provider: newOption?.autocompleteData?.provider, sessionToken: newOption?.autocompleteData?.sessionToken, action: 'placedetails' } as IGeoInputAutoDetail, token, currentLocale)) as IGeoDetailOutput
 
@@ -155,7 +155,7 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
 
   return (
     <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
-       
+
       <Grid size={{
         xs: 12,
         sm: 12
@@ -164,9 +164,8 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
       </Grid>
       <Box sx={{ display: 'flex', gap: 2, flexDirection: 'row' }}>
         <FormControl required={props.required} sx={{ width: '100%', textAlign: 'left' }} >
-          <InputLabel id="demo-simple-select-required-label">{t('core.label.country')}</InputLabel>
-          <Select
-            name="country"
+          <InputLabel id="country-label"  >{t('core.label.country')}</InputLabel>
+          <Select labelId="country-label"
             disabled={props.disabled}
             label={t('core.label.country')}
             error={!!(countryField[1].touched && countryField[1].error)}
@@ -184,7 +183,7 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
             }}
 
             input={
-              <OutlinedInput label={props.label}
+              <OutlinedInput label={t('core.label.country')}
                 endAdornment={(countryField[1].touched && countryField[1].error) ?
                   <InputAdornment sx={{ mr: 2 }} position="end"><Error color='error' /></InputAdornment>
                   : undefined}
@@ -220,7 +219,7 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
             }}
 
             input={
-              <OutlinedInput label={props.label}
+              <OutlinedInput label={t('core.label.city')}
                 endAdornment={(cityField[1].touched && cityField[1].error) ?
                   <InputAdornment sx={{ mr: 2 }} position="end"><Error color='error' /></InputAdornment>
                   : undefined}
@@ -303,7 +302,7 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
 
               />
             )}
-            
+
             renderOption={(liProps, option, { selected }) => (
               <ListItem {...liProps} key={option.data.placeId}>
                 {selected && (
