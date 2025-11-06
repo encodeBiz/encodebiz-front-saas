@@ -57,12 +57,12 @@ export const useFacturaController = () => {
     const rowAction: Array<IRowAction> = [
         {
             actionBtn: true,
-            color: 'error',
+            color: 'primary',
             icon: <DownloadOutlined color="primary" />,
             label: t('core.button.download'),
             allowItem: () => true,
             showBulk: false,
-            onPress: (item:StripeInvoice) => window.open(item.inviceData.invoice_pdf,'_blank'),
+            onPress: (item: StripeInvoice) => item.inviceData.invoice_pdf ? window.open(item.inviceData.invoice_pdf, '_blank') : showToast(t('entity.tabs.tab5.message'),'info'),
             bulk: false
         },
 
@@ -109,19 +109,19 @@ export const useFacturaController = () => {
             id: 'id',
             label: t("core.label.number"),
             minWidth: 170,
-           format: (value, row) => <Typography sx={{ textTransform: 'uppercase' }}>{row.inviceData.number}</Typography>,
+            format: (value, row) => <Typography sx={{ textTransform: 'uppercase' }}>{row.inviceData?.number ?? ' - '}</Typography>,
         },
         {
-            id: 'id',
+            id: 'createdAt',
             label: t("core.label.date"),
             minWidth: 170,
             format: (value, row) => <Typography sx={{ textTransform: 'capitalize' }}>{formatDateInSpanish(row.createdAt)}</Typography>,
         },
         {
-            id: 'id',
+            id: 'inviceData',
             label: t("core.label.price"),
             minWidth: 170,
-            format: (value, row) => <Typography sx={{ textTransform: 'capitalize' }}>{row.inviceData.total}€</Typography>,
+            format: (value, row) => <Typography sx={{ textTransform: 'capitalize' }}>{row.inviceData?.total ? row.inviceData?.total + '€' : ' - '}</Typography>,
         },
         {
             id: 'status',
@@ -133,6 +133,7 @@ export const useFacturaController = () => {
     const fetchingData = (filterParams: IFilterParams) => {
         setLoading(true)
         fetchInvoicesByEntity(currentEntity?.entity.id as string, { ...(filterParams.params as any) }).then(async res => {
+
             if (res.length !== 0) {
                 setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
                 setItems(res)

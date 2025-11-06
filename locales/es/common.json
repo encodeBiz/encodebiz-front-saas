@@ -411,7 +411,7 @@
       "stats": "Estadísticas",
       "card": {
         "title": "Bienvenido a encodeBiz SaaS",
-        "subtitle": "Registra, controla y gestiona accesos en un solo lugar, PassBiz listo para ti y muy pronto CheckBiz."
+        "subtitle": "Registra, controla y gestiona accesos en un solo lugar, PassBiz y CheckBiz listos para ti."
       },
       "cardDesc": {
         "title1": "Más que un software,",
@@ -421,6 +421,7 @@
       }
     },
     "entity": {
+      
       "create": {
         "card": {
           "title": "Crear entidad legal",
@@ -472,12 +473,11 @@
       },
       "tab5": {
         "title": "Facturas",
-        "btn": "Configurar Billing"
+        "message": "La factura aun no esta lista para descargar"
       },
       "tab6": {
-        "title": "Colaboradores",
-        "btn": "Configurar Billing"
-      }
+        "title": "Colaboradores"
+       }
     }
   },
   "onboarding": {

@@ -249,7 +249,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   }
 
   if (currentEntity?.entity.id && user?.id && !eventData.loaded) inicializeEvent()
-  if (currentEntity?.entity.id && user?.id && !loadForm && eventData.loaded) inicializeField()
+  if (currentEntity?.entity.id && user?.id && !loadForm && eventData.loaded && itemId) inicializeField()
 
   return { fields, initialValues, validationSchema, handleSubmit }
 }

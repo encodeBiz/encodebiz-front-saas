@@ -5,15 +5,12 @@ import {
     DialogContent,
     DialogTitle,
     Box,
-    useTheme,
-    FormControlLabel,
-    Switch
+      
 } from '@mui/material';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useTranslations } from 'next-intl';
-import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
-
+ 
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { CustomTypography } from '@/components/common/Text/CustomTypography';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
@@ -24,8 +21,7 @@ import { IChecklog } from '@/domain/features/checkinbiz/IChecklog';
 
 const ReportFormModal = ({ onSuccess }: { onSuccess: () => void }): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
-    const theme = useTheme()
-    const { fields, validationSchema, setDinamicDataAction, initialValues, download, setDownload } = useReportFormModalController(onSuccess);
+     const { fields, validationSchema, setDinamicDataAction, initialValues  } = useReportFormModalController(onSuccess);
     const t = useTranslations();
 
     const handleClose = (event: any, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
@@ -61,10 +57,7 @@ const ReportFormModal = ({ onSuccess }: { onSuccess: () => void }): React.JSX.El
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
                     <CustomTypography >{t('report.report')}</CustomTypography>
                 </Box>
-                <CustomIconBtn
-                    onClick={() => handleClose(null, 'manual')}
-                    color={theme.palette.primary.main}
-                />
+                
             </DialogTitle>
             <DialogContent>
                 <BorderBox sx={{ p: 2 }}>
@@ -84,16 +77,7 @@ const ReportFormModal = ({ onSuccess }: { onSuccess: () => void }): React.JSX.El
             </DialogContent>
             <DialogActions>
 
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={download}
-                            onChange={(e) => setDownload(e.target.checked)}
-                        />
-                    }
-
-                    label={t('core.label.download')}
-                />
+                
                 <SassButton
                     color="primary"
                     variant="outlined"
