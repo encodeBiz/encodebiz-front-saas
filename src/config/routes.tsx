@@ -37,11 +37,11 @@ const PASSINBIZ = [{
 }]
 
 
-const CHECKINBIZ: any = [, {
+const CHECKINBIZ: any = [/*{
     name: 'Dashboard',
     link: `/${CHECKINBIZ_MODULE_ROUTE}/stats`,
     subMenu: []
-}, {
+},*/ {
         name: 'Employee',
 
         link: `/${CHECKINBIZ_MODULE_ROUTE}/employee`,
