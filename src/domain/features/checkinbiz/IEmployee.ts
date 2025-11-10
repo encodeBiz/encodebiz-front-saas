@@ -92,4 +92,6 @@ export interface EmployeeEntityResponsibility {
     employee?:IEmployee
 
     open?:boolean
+
+    metadata: any
 }

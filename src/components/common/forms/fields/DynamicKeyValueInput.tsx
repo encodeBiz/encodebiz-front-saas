@@ -15,7 +15,7 @@ export type DynamicFields = Array<DynamicField>;
 
 const emptyItem = { label: '', value: '' };
 
-const DynamicKeyValueInput: React.FC<FieldProps> = ({ ...props }) => {
+const DynamicKeyValueInput: React.FC<FieldProps & { onHandleChange: (data: any) => void }> = ({ ...props }) => {
 
     const [field, , helper] = useField(props);
 
@@ -25,11 +25,14 @@ const DynamicKeyValueInput: React.FC<FieldProps> = ({ ...props }) => {
     const handleAdd = () => {
         const newFields = [...field.value, { ...emptyItem }];
         helper.setValue(newFields)
+        if (typeof props?.onHandleChange === 'function') props.onHandleChange(newFields)
     };
 
     const handleRemove = (index: number) => {
         const newFields = field.value?.filter((_: any, i: number) => i !== index);
         helper.setValue([...newFields])
+        if (typeof props?.onHandleChange === 'function') props.onHandleChange(newFields)
+
     };
 
     const handleChange = (index: number, key: keyof DynamicField) => (
@@ -38,13 +41,14 @@ const DynamicKeyValueInput: React.FC<FieldProps> = ({ ...props }) => {
         const newFields = [...field.value];
         newFields[index][key] = e.target.value;
         helper.setValue(newFields)
+        if (typeof props?.onHandleChange === 'function') props.onHandleChange(newFields)
 
     };
 
 
 
     return (
-        <Box sx={{ display: 'flex', gap: 2, mb: 2, flexDirection:'column', alignItems: 'flex-start' }}>
+        <Box sx={{ display: 'flex', gap: 2, mb: 2, flexDirection: 'column', alignItems: 'flex-start' }}>
 
             {(field.value as Array<{ label: string, value: string }>)?.map((item, index) => (
                 <Box key={index} sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'center', width: '100%' }}>
@@ -66,7 +70,7 @@ const DynamicKeyValueInput: React.FC<FieldProps> = ({ ...props }) => {
                         color="primary"
                         onClick={() => handleRemove(index)}
                         variant="contained"
-                        
+
                     >
                         {<DeleteForeverIcon />}
                     </Button>
@@ -74,8 +78,8 @@ const DynamicKeyValueInput: React.FC<FieldProps> = ({ ...props }) => {
                         color="primary"
                         onClick={() => handleAdd()}
                         variant="contained"
-                       
-                        >
+
+                    >
                         {<Add />}
                     </Button>}
                 </Box>

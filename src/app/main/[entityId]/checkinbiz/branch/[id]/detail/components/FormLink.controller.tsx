@@ -19,6 +19,8 @@ import SearchIndexFilterInput from "@/components/common/forms/fields/SearchFilte
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useFormStatus } from "@/hooks/useFormStatus";
+import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
+import { ArrayToObject } from "@/lib/common/String";
 
 
 export default function useFormLinkController(onSuccess: () => void) {
@@ -34,6 +36,7 @@ export default function useFormLinkController(onSuccess: () => void) {
     const [typeOwner, setTypeOwner] = useState('worker')
     const [jobName, setJobName] = useState('')
     const { formStatus } = useFormStatus()
+    const [metadata, setMetadata] = useState([])
 
 
 
@@ -42,6 +45,7 @@ export default function useFormLinkController(onSuccess: () => void) {
         price: 0,
         responsibility: '',
         active: 1,
+        metadata: []
     });
 
     const validationSchema = Yup.object().shape({
@@ -58,7 +62,7 @@ export default function useFormLinkController(onSuccess: () => void) {
             const listOfResponsability: Array<EmployeeEntityResponsibility> = await searchResponsability(currentEntity?.entity.id as string, values.employeeId, { limit: 1, filters: [{ field: 'scope.branchId', operator: '==', value: id }] } as any)
             if (listOfResponsability.length > 0) {
                 showToast(t('sucursal.employeeUsed'), 'info')
-                  formStatus?.setSubmitting(false)
+                formStatus?.setSubmitting(false)
                 changeLoaderState({ show: false })
             } else {
 
@@ -71,6 +75,9 @@ export default function useFormLinkController(onSuccess: () => void) {
                     job: {
                         job: values.job,
                         price: values.price,
+                    },
+                    "metadata": {
+                        ...ArrayToObject(values.metadata as any),
                     },
                     assignedBy: user?.uid as string,
                     active: active,
@@ -126,7 +133,7 @@ export default function useFormLinkController(onSuccess: () => void) {
             required: true,
             fullWidth: true,
             component: SearchIndexFilterInput,
-            
+
         },
         {
             name: 'responsibility',
@@ -181,13 +188,32 @@ export default function useFormLinkController(onSuccess: () => void) {
             component: ToggleInput,
         },
 
+        {
+            isDivider: true,
+            name: 'additional_data_section',
+            label: t('core.label.aditionalData'),
+        },
+        {
+            name: 'metadata',
+            label: t('core.label.setting'),
+            type: 'text',
+            required: true,
+            fullWidth: true,
+            component: DynamicKeyValueInput,
+            extraProps: {
+                onHandleChange: (data: any) => {
+                    setMetadata(data)
+                },
+            },
+        }
+
     ]
 
     useEffect(() => {
         if (jobName) {
             const itemData = jobList.find(e => e.job?.toLowerCase() === jobName?.toLowerCase())
             if (itemData) {
-                setInitialValues({ ...formStatus?.values, price: itemData?.price, responsibility: typeOwner, job: jobName })
+                setInitialValues({ ...formStatus?.values, price: itemData?.price, responsibility: typeOwner, job: jobName, metadata })
             }
         }
     }, [jobName])

@@ -14,6 +14,8 @@ import TextInput from "@/components/common/forms/fields/TextInput";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import SelectCreatableInput from "@/components/common/forms/fields/SelectCreatableInput";
 import { useParams } from "next/navigation";
+import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
+import { ArrayToObject, objectToArray } from "@/lib/common/String";
 
 
 export default function useSucursalFromItemController(item: EmployeeEntityResponsibility, onEnd: () => void) {
@@ -29,7 +31,7 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
   const [active, setActive] = useState(item.active ?? 1)
   const [typeOwner, setTypeOwner] = useState(item.responsibility ?? 'worker')
   const [jobName, setJobName] = useState(item?.job?.job ?? '')
-
+  const [metadata, setMetadata] = useState(objectToArray(item.metadata??{})??[])
 
 
   const [initialValues, setInitialValues] = useState<Partial<any>>({
@@ -37,6 +39,7 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
     price: item?.job?.price ?? 0,
     responsibility: item?.responsibility ?? '',
     active: item?.active ?? 1,
+    metadata: objectToArray(item?.metadata??{})??[]
   });
 
   const validationSchema = Yup.object().shape({
@@ -59,7 +62,9 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
         },
         assignedBy: user?.uid as string,
         active: active,
-
+        "metadata": {
+          ...ArrayToObject(values.metadata as any),
+        },
         entityId: currentEntity?.entity.id
       }
       if (typeof data.id === 'number') {
@@ -150,13 +155,32 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
       component: TextInput,
     },
 
+    {
+      isDivider: true,
+      name: 'additional_data_section',
+      label: t('core.label.aditionalData'),
+    },
+    {
+      name: 'metadata',
+      label: t('core.label.setting'),
+      type: 'text',
+      required: true,
+      fullWidth: true,
+      component: DynamicKeyValueInput,
+       extraProps: {
+        onHandleChange: (data: any) => {
+          setMetadata(data)
+        },        
+      },
+    }
+
   ]
 
   useEffect(() => {
     if (jobName) {
       const itemData = jobList.find(e => e.job?.toLowerCase() === jobName?.toLowerCase())
       if (itemData) {
-        setInitialValues({ price: itemData?.price, responsibility: typeOwner, job: jobName })
+        setInitialValues({ price: itemData?.price, responsibility: typeOwner, job: jobName, metadata })
       }
     }
   }, [jobName])

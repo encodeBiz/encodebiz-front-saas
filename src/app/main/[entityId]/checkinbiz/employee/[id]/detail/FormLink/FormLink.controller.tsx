@@ -20,6 +20,8 @@ import { CommonModalType } from "@/contexts/commonModalContext";
 import { search } from "@/services/checkinbiz/sucursal.service";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 import { useFormStatus } from "@/hooks/useFormStatus";
+import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
+import { ArrayToObject } from "@/lib/common/String";
 
 
 export default function useFormLinkController(onSuccess: () => void) {
@@ -35,6 +37,7 @@ export default function useFormLinkController(onSuccess: () => void) {
     const [typeOwner, setTypeOwner] = useState('worker')
     const [jobName, setJobName] = useState('')
     const { formStatus } = useFormStatus()
+    const [metadata, setMetadata] = useState([])
 
     const [branchList, setBranchList] = useState<Array<ISucursal>>([])
 
@@ -52,6 +55,7 @@ export default function useFormLinkController(onSuccess: () => void) {
         price: 0,
         responsibility: '',
         active: 1,
+        metadata: []
     });
 
     const validationSchema = Yup.object().shape({
@@ -79,6 +83,9 @@ export default function useFormLinkController(onSuccess: () => void) {
                     job: {
                         job: values.job,
                         price: values.price,
+                    },
+                    "metadata": {
+                        ...ArrayToObject(values.metadata as any),
                     },
                     assignedBy: user?.uid as string,
                     active: active,
@@ -189,6 +196,25 @@ export default function useFormLinkController(onSuccess: () => void) {
             component: ToggleInput,
         },
 
+        {
+            isDivider: true,
+            name: 'additional_data_section',
+            label: t('core.label.aditionalData'),
+        },
+        {
+            name: 'metadata',
+            label: t('core.label.setting'),
+            type: 'text',
+            required: true,
+            fullWidth: true,
+            component: DynamicKeyValueInput,
+            extraProps: {
+                onHandleChange: (data: any) => {
+                    setMetadata(data)
+                },
+            },
+        }
+
     ]
 
     useEffect(() => {
@@ -196,7 +222,7 @@ export default function useFormLinkController(onSuccess: () => void) {
 
             const itemData = jobList.find(e => e.job?.toLowerCase() === jobName?.toLowerCase())
             if (itemData) {
-                setInitialValues({ ...formStatus?.values, price: itemData?.price, responsibility: typeOwner, job: jobName })
+                setInitialValues({ ...formStatus?.values, price: itemData?.price, responsibility: typeOwner, job: jobName, metadata })
             }
         }
     }, [jobName])

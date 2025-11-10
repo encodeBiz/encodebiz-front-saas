@@ -7,13 +7,17 @@ import { ISucursal } from "@/domain/features/checkinbiz/ISucursal"
 import { useCommonModal } from "@/hooks/useCommonModal"
 import { useLayout } from "@/hooks/useLayout"
 import { onGoMap } from "@/lib/common/maps"
-import { Add, ArrowBackOutlined } from "@mui/icons-material"
+import { ArrowBackOutlined } from "@mui/icons-material"
 import { Card, Box, Grid, Typography, CardContent, Paper, Divider, Stack } from "@mui/material"
 import { useTranslations } from "next-intl"
 import FormModal from "../../edit/FormModal"
 import InfoModal from "@/components/common/modals/InfoModal"
+import { EmployeeList } from "./components/EmployeeList"
+import HelpTabs from "@/components/features/dashboard/HelpTabs/HelpTabs"
+import { PanelStats } from "../../../stats/components/PanelStats"
+import { CheckBizStatsProvider } from "../../../stats/context/checkBizStatsContext"
 
-export const Detail = ({ branch, onSuccess, addResponsabiltyItem, children }: { addResponsabiltyItem: () => void, branch: ISucursal, children: React.ReactNode, onSuccess: () => void }) => {
+export const Detail = ({ branch, onSuccess, children }: { addResponsabiltyItem: () => void, branch: ISucursal, children: React.ReactNode, onSuccess: () => void }) => {
     const t = useTranslations()
     const { navivateTo } = useLayout()
     const { openModal, open } = useCommonModal()
@@ -71,12 +75,12 @@ export const Detail = ({ branch, onSuccess, addResponsabiltyItem, children }: { 
                 <Box display={'flex'} justifyContent={'space-between'} alignItems={'flex-start'}>
 
                     {branch?.advance && <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={4} alignItems={'flex-start'}>
-                        <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'}   alignItems={'flex-start'}>
+                        <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'} alignItems={'flex-start'}>
                             <DetailText orientation="row" label={t('core.label.dayTimeRange')} value={((branch?.advance?.startTimeWorkingDay?.hour as number) < 10 ? '0' + branch?.advance?.startTimeWorkingDay?.hour : branch?.advance?.startTimeWorkingDay?.hour) + ':' + ((branch?.advance?.startTimeWorkingDay?.minute as number) < 10 ? '0' + branch?.advance?.startTimeWorkingDay?.minute : branch?.advance?.startTimeWorkingDay?.minute) + ' - ' + ((branch?.advance?.endTimeWorkingDay?.hour as number) < 10 ? '0' + branch?.advance?.endTimeWorkingDay?.hour : branch?.advance?.endTimeWorkingDay?.hour) + ':' + ((branch?.advance?.endTimeWorkingDay?.minute as number) < 10 ? '0' + branch?.advance?.endTimeWorkingDay?.minute : branch?.advance?.endTimeWorkingDay?.minute)} />
                             <DetailText help={branch?.advance?.enableDayTimeRange ? t('sucursal.dayTimeRangeAlertMessageE') : t('sucursal.dayTimeRangeAlertMessageD')} label={branch?.advance?.enableDayTimeRange ? t('sucursal.dayTimeRangeEnableText') : t('sucursal.dayTimeRangeDisabledText')} />
                         </Box>
-                       
-                        <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'}  alignItems={'flex-start'}>
+
+                        <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'} alignItems={'flex-start'}>
                             <DetailText orientation="row" label={t('core.label.breakTimeRange')} value={branch?.advance?.timeBreak + ' ' + t('core.label.minutes')} />
                             <DetailText help={branch?.advance?.disableBreak ? t('sucursal.disableBreakAlertMessageE') : t('sucursal.disableBreakAlertMessageD')} label={!branch?.advance?.disableBreak ? t('sucursal.dayTimeRangeEnableText') : t('sucursal.dayTimeRangeDisabledText')} />
                         </Box>
@@ -98,21 +102,23 @@ export const Detail = ({ branch, onSuccess, addResponsabiltyItem, children }: { 
 
             <Divider />
 
-            <Paper elevation={0} sx={{ p: 3 }}>
-                <Box display={'flex'} justifyContent={'space-between'} alignContent={'center'} mb={2}>
-                    <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
-                        {t("employee.list")}
-                    </Typography>
+            {branch?.id && <HelpTabs small tabs={[
 
-                    <SassButton
-                        onClick={addResponsabiltyItem}
-                        variant='contained'
-                        startIcon={<Add />}
-                    >{t('sucursal.addEmployee')}</SassButton>
-                </Box>
-                {children}
+                {
+                    id: '2',
+                    title: t("employee.list"),
+                    tabContent: <EmployeeList>{children}</EmployeeList>
+                },
 
-            </Paper>
+                {
+                    id: '1',
+                    title: t(`sucursal.panel`),
+                    tabContent: <CheckBizStatsProvider><PanelStats branchId={branch?.id} /></CheckBizStatsProvider>
+                },
+
+            ]} />}
+
+
         </CardContent>
         {open.type === CommonModalType.FORM && open.args?.id !== 'responsability' && <FormModal onSuccess={onSuccess} />}
 
