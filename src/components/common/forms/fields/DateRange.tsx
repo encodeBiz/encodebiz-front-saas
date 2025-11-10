@@ -18,8 +18,7 @@ import { useField } from "formik";
 
 
 export const DateRange = ({
-    width = '450px',
-    filter = true,
+     filter = true,
     name
 }: {
     width?: string

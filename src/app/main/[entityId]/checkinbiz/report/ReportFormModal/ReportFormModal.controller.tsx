@@ -1,8 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslations } from "next-intl";
 import * as Yup from 'yup';
-import { requiredRule } from '@/config/yupRules';
-import { useToast } from "@/hooks/useToast";
+ import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 import { useLayout } from "@/hooks/useLayout";
 import { useCommonModal } from "@/hooks/useCommonModal";
@@ -13,7 +12,7 @@ import { search } from "@/services/checkinbiz/sucursal.service";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { createReport } from "@/services/checkinbiz/report.service";
 import { IReport } from "@/domain/features/checkinbiz/IReport";
-import { format_date, getDateRange } from "@/lib/common/Date";
+import { format_date } from "@/lib/common/Date";
 import { useAppLocale } from "@/hooks/useAppLocale";
 import { DateRange } from "@/components/common/forms/fields/DateRange";
 
