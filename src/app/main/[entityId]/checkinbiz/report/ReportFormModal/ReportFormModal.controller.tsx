@@ -15,6 +15,7 @@ import { createReport } from "@/services/checkinbiz/report.service";
 import { IReport } from "@/domain/features/checkinbiz/IReport";
 import { format_date, getDateRange } from "@/lib/common/Date";
 import { useAppLocale } from "@/hooks/useAppLocale";
+import { DateRange } from "@/components/common/forms/fields/DateRange";
 
 interface ReportOutput {
 
@@ -48,26 +49,24 @@ export default function useAttendanceFormModalController(onSuccess: () => void) 
   })
   const [download, setDownload] = useState(false)
   const [branchList, setBranchList] = useState<Array<any>>([])
-  const validationSchema = Yup.object().shape({
-    periocity: requiredRule(t),
-  });
+  const validationSchema = Yup.object().shape({});
 
 
 
   const setDinamicDataAction = async (values: Partial<{
     branchId: string,
-    periocity: 'today' | 'week' | 'month' | 'year',
+    periocity: { start: any, end: any }
   }>) => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const dateRange = getDateRange(values.periocity as 'today' | 'week' | 'month' | 'year')
+      const dateRange: { start: any, end: any } = values?.periocity as { start: any, end: any }
       const data: Partial<IReport> = {
         entityId: currentEntity?.entity?.id as string,
         start: format_date(dateRange.start, 'YYYY-MM-DD'),
         end: format_date(dateRange.end, 'YYYY-MM-DD'),
       }
       if (values.branchId !== 'none') Object.assign(data, { branchId: values.branchId })
-      const response: ReportOutput = await createReport(data, token,currentLocale)
+      const response: ReportOutput = await createReport(data, token, currentLocale)
       if (download)
         window.open(response.reporData.ref.url, '_blank')
 
@@ -83,22 +82,20 @@ export default function useAttendanceFormModalController(onSuccess: () => void) 
 
 
   const fields = [
+
+
     {
       name: 'periocity',
       label: t('core.label.periocity'),
-      component: SelectInput,
-      options: [        
-        { value: 'today' as string, label: t('core.label.today') },
-        { value: 'week' as string, label: t('core.label.thisWeek') },
-        { value: 'month' as string, label: t('core.label.thisMonth') },
-        { value: 'year' as string, label: t('core.label.thisYear') }
-      ]
+      component: DateRange,
+      fullWidth: true
     },
 
     {
       name: 'branchId',
       label: t('core.label.sucursal'),
       component: SelectInput,
+      fullWidth: true,
       options: [{ value: 'none', label: t('core.label.all') },
       ...branchList
       ]

@@ -26,7 +26,8 @@ const DateInput: React.FC<FieldProps & TextFieldProps> = ({
     return (<LocalizationProvider dateAdapter={AdapterDayjs} localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}>
     <FormControlLabel
       control={
-        <DateTimePicker label={props.label} localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}
+        <DateTimePicker 
+          label={props.label} localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}
           minDateTime={props.name === 'endDate'?dayjs(props.name === 'endDate' ? new Date(formStatus?.values?.date) ?? new Date() : new Date()):undefined}
           defaultValue={field.value?dayjs(field.value ?? new Date()):null}
           value={field.value?dayjs(field.value ?? new Date()):null}
