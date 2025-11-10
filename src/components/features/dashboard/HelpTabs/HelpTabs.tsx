@@ -19,12 +19,12 @@ export interface HelpTab {
 
 export interface HelpTabsProps {
   tabs: Array<HelpTab>
-  small?:boolean
+  small?: boolean
   ref?: any
 }
 
 
-const HelpTabs = ({ tabs, ref, small=false }: HelpTabsProps) => {
+const HelpTabs = ({ tabs, ref, small = false }: HelpTabsProps) => {
   const [value, setValue] = React.useState(0);
   const theme = useTheme();
 
@@ -36,9 +36,10 @@ const HelpTabs = ({ tabs, ref, small=false }: HelpTabsProps) => {
   const CustomTab = (props: any) => (
     <Tab
       {...props}
-      
+
       icon={props.icon ? props.icon(props) : null}
       iconPosition="start"
+
       label={
         <Box sx={{
           display: 'flex',
@@ -46,49 +47,75 @@ const HelpTabs = ({ tabs, ref, small=false }: HelpTabsProps) => {
           alignItems: 'flex-start',
           textTransform: 'none',
           textAlign: 'left',
-        
+
 
         }}>
-          <Typography fontFamily={karla.style.fontFamily} variant="h4" sx={{ fontWeight: 400, fontSize: 22, marginLeft: 1 }}>
+          {small ? props.maintext : <Typography fontFamily={karla.style.fontFamily} variant="h4" sx={{ fontWeight: 400, fontSize: 22, marginLeft: 1 }}>
             {props.maintext}
-          </Typography>
+          </Typography>}
           {props.subtext && <Typography variant="body1" color="text.secondary">
             {props.subtext}
           </Typography>}
         </Box>
       }
       sx={{
-        minHeight: !small?87:57,
+        minHeight: !small ? 87 : 57,
         padding: theme.spacing(1.5, 2),
         justifyContent: 'flex-start',
         '&.Mui-selected': {
           backgroundColor: theme.palette.background.paper,
         },
         borderBottom: `1px solid ${theme.palette.divider}`,
+        ...(small ? {        
+          minWidth: 200,
+          borderBottomWidth: 1,
+          borderBottomStyle: 'solid',
+          borderBottomColor: 'secondary.main',
+          '&.Mui-disabled': {
+            color: 'secondary.main',
+          }
+        } : {})
+
       }}
     />
   );
 
-
+  const color = 'primary'
   return (
 
     <Paper ref={ref} elevation={0} sx={{
       boxShadow: 'none',
       borderRadius: 1,
-      mt:!small?10:2,
-      px:!small?0:2   
+      mt: !small ? 10 : 2,
+      px: !small ? 0 : 2
     }}>
       <Tabs
         orientation='horizontal'
         value={value}
-        variant={!small?'fullWidth':'standard'}
+        variant={!small ? 'fullWidth' : 'standard'}
         onChange={handleChange}
         aria-label="icon position tabs"
-        sx={{
+        sx={small ? {
+          '& .MuiTab-root': {
+            textTransform: 'none',
+            fontWeight: 600,
+            fontSize: '1rem',
+            minHeight: 48,
+            color: 'text.secondary',
+            '&.Mui-selected': {
+              color: `${color}.main`,
+            },
+          },
           '& .MuiTabs-indicator': {
-            height: 3,
-          }
-        }}
+            backgroundColor: `${color}.main`,
+          },
+          '& .MuiTabs-disabled': {
+            backgroundColor: `${color}.secondary`,
+            color: 'text.disabled',
+          },
+          mb: 3,
+          justifyContent: 'left',
+        } : {}}
       >
         {tabs.map((e, i) => <CustomTab key={i}
           icon={e.icon}

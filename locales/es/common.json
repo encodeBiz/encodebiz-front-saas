@@ -685,7 +685,7 @@
     "formDesc": "Completa los campos a continuación para registrar el empleado."
   },
   "sucursal": {
-
+    "panel":"Comportamiento operacional",
     "title": "Sucursales/Proyectos",
     "formFirstSectionTitle":"DATOS DE LA SUCURSAL / PROYECTO",
     "address":"DATOS DE UBICACIÓN",

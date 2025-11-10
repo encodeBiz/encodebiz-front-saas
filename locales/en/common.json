@@ -684,6 +684,7 @@
     "formDesc": "Complete the fields below to register the employee."
   },
   "sucursal": {
+    "panel": "Operational behavior",
     "title": "Branches/Projects",
     "formFirstSectionTitle":"BRANCH / PROJECT DATA",
     "address":"LOCATION DATA",

@@ -9,7 +9,7 @@ import { IBranchPattern, IHeuristicInfo } from '@/domain/features/checkinbiz/ISt
 import { analiziHeuristic, fetchBranchPattern } from '@/services/checkinbiz/stats.service';
 import { useAuth } from '@/hooks/useAuth';
 import { useAppLocale } from '@/hooks/useAppLocale';
- import { errorDict } from '@/config/errorLocales';
+import { errorDict } from '@/config/errorLocales';
 
 
 
@@ -18,7 +18,7 @@ interface ICheckBizStatsProps {
     branchList: Array<ISucursal>
     branchSelected: Array<ISucursal>,
     setBranchSelected: (items: Array<ISucursal>) => void
-
+    initialize: (branchId: string | null) => void
     branchOne: IBranchPattern | null
     branchTwo: IBranchPattern | null
 
@@ -32,7 +32,7 @@ interface ICheckBizStatsProps {
     setCardIndicatorSelected: (data: Array<string>) => void
     heuristicAnalizeError: string
     type: string
-    setType:(type: string)=>void
+    setType: (type: string) => void
 }
 
 export const CheckBizStatsContext = createContext<ICheckBizStatsProps | undefined>(undefined);
@@ -54,10 +54,18 @@ export const CheckBizStatsProvider = ({ children }: { children: React.ReactNode 
     const { currentEntity } = useEntity()
 
 
-    const initialize = async () => {
+    const initialize = async (branchId?: string | null) => {
         const branchList = await search(currentEntity?.entity?.id as string, { ...{} as any, limit: 100 })
         setBranchList(branchList)
-        if (branchList.length > 0) setBranchSelected([branchList[0]])
+
+        if (branchList.length > 0) {
+            if (branchId) {
+                setBranchSelected([branchList.find(e => e.id === branchId) as ISucursal])
+            }
+            else {
+                setBranchSelected([branchList[0]])
+            }
+        }
         else setPending(false)
     }
 
@@ -116,9 +124,6 @@ export const CheckBizStatsProvider = ({ children }: { children: React.ReactNode 
 
 
     }
-    useEffect(() => {
-        initialize()
-    }, [currentEntity?.entity?.id])
 
 
     useEffect(() => {
@@ -132,7 +137,7 @@ export const CheckBizStatsProvider = ({ children }: { children: React.ReactNode 
 
 
     return (
-        <CheckBizStatsContext.Provider value={{type, setType, heuristicAnalizeError, cardIndicatorSelected, setCardIndicatorSelected, heuristicDataOne, setHeuristicDataOne, heuristicDataTwo, setHeuristicDataTwo, branchList, branchSelected, setBranchSelected, branchOne, branchTwo, pending }}>
+        <CheckBizStatsContext.Provider value={{ initialize, type, setType, heuristicAnalizeError, cardIndicatorSelected, setCardIndicatorSelected, heuristicDataOne, setHeuristicDataOne, heuristicDataTwo, setHeuristicDataTwo, branchList, branchSelected, setBranchSelected, branchOne, branchTwo, pending }}>
             {children}
         </CheckBizStatsContext.Provider>
     );
