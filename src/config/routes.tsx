@@ -37,28 +37,28 @@ const PASSINBIZ = [{
 }]
 
 
-const CHECKINBIZ: any = [/*{
+const CHECKINBIZ: any = [{
     name: 'Dashboard',
     link: `/${CHECKINBIZ_MODULE_ROUTE}/stats`,
     subMenu: []
-},*/ {
-        name: 'Employee',
+}, {
+    name: 'Employee',
 
-        link: `/${CHECKINBIZ_MODULE_ROUTE}/employee`,
-        subMenu: []
-    }, {
-        name: 'Sucursal',
-        link: `/${CHECKINBIZ_MODULE_ROUTE}/branch`,
-        subMenu: []
-    }, {
-        name: 'Attendance',
-        link: `/${CHECKINBIZ_MODULE_ROUTE}/attendance`,
-        subMenu: []
-    }, {
-        name: 'Report',
-        link: `/${CHECKINBIZ_MODULE_ROUTE}/report`,
-        subMenu: []
-    }]
+    link: `/${CHECKINBIZ_MODULE_ROUTE}/employee`,
+    subMenu: []
+}, {
+    name: 'Sucursal',
+    link: `/${CHECKINBIZ_MODULE_ROUTE}/branch`,
+    subMenu: []
+}, {
+    name: 'Attendance',
+    link: `/${CHECKINBIZ_MODULE_ROUTE}/attendance`,
+    subMenu: []
+}, {
+    name: 'Report',
+    link: `/${CHECKINBIZ_MODULE_ROUTE}/report`,
+    subMenu: []
+}]
 
 export const menuItemsHome = [{
     id: 'dashboard',

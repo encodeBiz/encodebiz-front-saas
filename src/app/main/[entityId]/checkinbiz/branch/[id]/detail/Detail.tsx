@@ -7,7 +7,7 @@ import { ISucursal } from "@/domain/features/checkinbiz/ISucursal"
 import { useCommonModal } from "@/hooks/useCommonModal"
 import { useLayout } from "@/hooks/useLayout"
 import { onGoMap } from "@/lib/common/maps"
-import { Add, ArrowBackOutlined } from "@mui/icons-material"
+import { ArrowBackOutlined } from "@mui/icons-material"
 import { Card, Box, Grid, Typography, CardContent, Paper, Divider, Stack } from "@mui/material"
 import { useTranslations } from "next-intl"
 import FormModal from "../../edit/FormModal"
@@ -17,7 +17,7 @@ import HelpTabs from "@/components/features/dashboard/HelpTabs/HelpTabs"
 import { PanelStats } from "../../../stats/components/PanelStats"
 import { CheckBizStatsProvider } from "../../../stats/context/checkBizStatsContext"
 
-export const Detail = ({ branch, onSuccess, addResponsabiltyItem, children }: { addResponsabiltyItem: () => void, branch: ISucursal, children: React.ReactNode, onSuccess: () => void }) => {
+export const Detail = ({ branch, onSuccess, children }: { addResponsabiltyItem: () => void, branch: ISucursal, children: React.ReactNode, onSuccess: () => void }) => {
     const t = useTranslations()
     const { navivateTo } = useLayout()
     const { openModal, open } = useCommonModal()
