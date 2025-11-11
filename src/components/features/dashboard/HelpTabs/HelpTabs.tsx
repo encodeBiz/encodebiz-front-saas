@@ -60,7 +60,7 @@ const HelpTabs = ({ tabs, ref, small = false }: HelpTabsProps) => {
       }
       sx={{
         minHeight: !small ? 87 : 57,
-        padding: theme.spacing(1.5, 2),
+        padding: !small?theme.spacing(1.5, 2):0,
         justifyContent: 'flex-start',
         '&.Mui-selected': {
           backgroundColor: theme.palette.background.paper,

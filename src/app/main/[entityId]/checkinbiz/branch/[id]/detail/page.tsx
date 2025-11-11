@@ -24,6 +24,7 @@ export default function BranchDetail() {
 
     return (
         <Container maxWidth="lg">
+            
 
             {initialValues?.id && <Detail addResponsabiltyItem={addResponsabiltyItem} branch={initialValues as any} onSuccess={onSuccess} >
                 <GenericTable

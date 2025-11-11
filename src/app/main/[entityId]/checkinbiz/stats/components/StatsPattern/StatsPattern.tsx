@@ -94,7 +94,7 @@ export const StatsPatternCards = ({ data, lineal = false }: { data: IBranchPatte
                     <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} gap={2}>
                         {indicatorList.map((e, i) => {
                             if (cardIndicatorSelected.includes(e.id))
-                                return <BorderBox key={i} sx={{ padding: 2, position: 'relative', width: 220 }}>
+                                return <BorderBox key={i} sx={{ padding: 2, position: 'relative', width: 200 }}>
                                     <Box display={'flex'} flexDirection={'row'} justifyContent={'flex-start'} alignItems={'center'} gap={2}>
                                         <Box display={'flex'} flexDirection={'column'} >
                                             <Typography sx={{ fontSize: 20 }}>{e.label}</Typography>
