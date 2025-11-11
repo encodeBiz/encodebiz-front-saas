@@ -104,7 +104,7 @@ export async function createEntity(data: EntityFormValues | any, token: string, 
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,locale
+          authorization: `Bearer ${token}`, locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -126,16 +126,18 @@ export async function createEntity(data: EntityFormValues | any, token: string, 
 }
 
 export async function updateExtraEntity(
-  data: Partial<IEntity> | any 
+  data: Partial<IEntity> | any
 
 ) {
-  await updateDocument<IEntity>({
-    collection: collection.ENTITIES,
-    data: {
-      language: data.language,
-    },
-    id: data.id as string,
-  });
+  if (data.id) {
+    await updateDocument<IEntity>({
+      collection: collection.ENTITIES,
+      data: {
+        language: data.language,
+      },
+      id: data.id as string,
+    });
+  }
 }
 
 export async function updateEntity(
@@ -149,7 +151,7 @@ export async function updateEntity(
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          token: `Bearer ${token}`,locale
+          token: `Bearer ${token}`, locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -178,7 +180,7 @@ export async function updateEntityBranding(
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          token: `Bearer ${token}`,locale
+          token: `Bearer ${token}`, locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -255,7 +257,7 @@ export async function assignedUserToEntity(data: IAssing, token: string, locale:
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,locale
+          authorization: `Bearer ${token}`, locale
         },
       });
       const response: any = await httpClientFetchInstance.post(

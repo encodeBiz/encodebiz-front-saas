@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
@@ -29,7 +30,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const { navivateTo } = useLayout()
   const { changeLoaderState } = useLayout()
   const { id } = useParams<{ id: string }>()
-   
+
   const itemId = isFromModal ? open.args?.id : id
 
   const fieldList = [
@@ -59,7 +60,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       component: SelectMultipleInput,
       extraProps: {
         onHandleChange: (value: any) => {
-          onChangeType(value)
+          setTypeValue(value)
         },
       }
     },
@@ -78,18 +79,16 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
   });
 
-  const [loadForm, setLoadForm] = useState(false)
   const [fields, setFields] = useState<any[]>([...fieldList])
-  const [eventData, setEventData] = useState<{ loaded: boolean, eventList: Array<IEvent> }>({ loaded: false, eventList: [] })
-
-
+  const [eventList, setEventList] = useState<Array<IEvent>>([])
+  const [typeValue, setTypeValue] = useState<Array<"event" | "credential">>([])
 
 
 
   const onChangeType = async (typeValue: Array<'credential' | 'event'>) => {
 
-    if (typeValue.includes('event')) {
-      if (eventData.eventList.length === 0) {
+    if (typeValue?.includes('event')) {
+      if (eventList.length === 0) {
         openModal(CommonModalType.INFO)
       }
       setFields([...fieldList,
@@ -98,7 +97,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         label: t('core.label.event'),
         type: 'text',
         required: true,
-        options: [...eventData.eventList.map(e => ({ label: e.name, value: e.id }))],
+        options: [...eventList.map(e => ({ label: e.name, value: e.id }))],
         component: SelectMultipleInput,
       }
       ])
@@ -208,8 +207,8 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         eventList: eventStaffList.map(e => e.id),
         ...staff
       })
-
-      onChangeType(staff.allowedTypes)
+      setTypeValue(staff.allowedTypes)
+      //onChangeType(staff.allowedTypes)
       changeLoaderState({ show: false })
     } catch (error: any) {
       changeLoaderState({ show: false })
@@ -220,21 +219,23 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   useEffect(() => {
     if (currentEntity?.entity.id && user?.id) {
       watchServiceAccess('passinbiz')
+      fetchEventList()
+      setFields(fieldList)
     }
-  }, [currentEntity?.entity.id, watchServiceAccess, user?.id])
 
-
-
-  const inicializeField = async () => {
-    setFields(fieldList)
-    setLoadForm(true)
-
-
-    if (currentEntity?.entity.id && user?.id && itemId)
+    if (currentEntity?.entity.id && user?.id && itemId) {
       fetchData()
-  }
-  const inicializeEvent = async () => {
-    const eventList = await search(currentEntity?.entity.id as string, {
+    }
+  }, [currentEntity?.entity.id, user?.id, itemId])
+
+
+  useEffect(() => {
+    onChangeType(typeValue as Array<'credential' | 'event'>)
+  }, [typeValue])
+
+
+  const fetchEventList = async () => {
+    const list = await search(currentEntity?.entity.id as string, {
       ...{
         filters: [
           {
@@ -244,12 +245,10 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
           }
         ]
       } as any, limit: 100
-    })
-    setEventData({ loaded: true, eventList })
+    }) 
+    setEventList(list)
   }
 
-  if (currentEntity?.entity.id && user?.id && !eventData.loaded) inicializeEvent()
-  if (currentEntity?.entity.id && user?.id && !loadForm && eventData.loaded && itemId) inicializeField()
 
   return { fields, initialValues, validationSchema, handleSubmit }
 }

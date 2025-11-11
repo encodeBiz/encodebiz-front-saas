@@ -38,8 +38,8 @@ const FormEntityPage = () => {
                             disabled={!formStatus?.isValid || formStatus?.isSubmitting}
                             onClick={handleExternalSubmit}
                             variant='contained'
-                            startIcon={<SaveOutlined />}
-                        > {t('core.button.saveChanges')}</SassButton>
+                          
+                        > {t('core.button.save')}</SassButton>
                     </Box>
                 }
             >
@@ -52,7 +52,8 @@ const FormEntityPage = () => {
                         fields={fields as FormField[]}
                         activateWatchStatus
                         hideBtn
-                        formRef={formRef}                        
+                        formRef={formRef}  
+                        submitButtonText={t('core.button.save')}              
                     />
                 </Box>
             </HeaderPage>
