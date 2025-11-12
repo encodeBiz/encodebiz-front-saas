@@ -76,7 +76,7 @@ const BranchSelectorModal = ({ branchList, onOKAction, type = 'item' }: BranchSe
                     </ListItemButton>)}
                 </List>}
 
-                {type == 'selector' && <Box sx={{ pt: 1 }}><Autocomplete
+                {type == 'selector' && <Box sx={{ pt: 1 }}><Autocomplete noOptionsText={t('core.label.noOptionsText')}
                     open={selectOpen}
                     onOpen={() => setSelectOpen(true)}
                     onClose={() => setSelectOpen(false)}

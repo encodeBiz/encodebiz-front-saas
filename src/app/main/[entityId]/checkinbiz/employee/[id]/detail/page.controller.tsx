@@ -366,6 +366,7 @@ export default function useEmployeeDetailController() {
         price: 0,
         id: ''
       },
+      metadata:[],
       active: 1,
       branch: await fetchSucursal(currentEntity?.entity.id as string, branchId)
     }])

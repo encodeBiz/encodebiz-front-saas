@@ -189,6 +189,7 @@
       "guest": "Invitado",
       "select": "Seleccionar",
       "typePass": "Tipo de pase",
+      "noOptionsText":"Sin opciones para seleccionar",
       "credencial": "Credenciales",
       "event": "Evento",
       "passStatus": "Estado del pase",
@@ -648,6 +649,7 @@
   },
   "employee": {
     "title": "Empleados",
+    "workProfile": "Perfil laboral",
     "formDesc": "Completa los campos a continuación para registrar el empleado.",
     "list": "Empleados",
     "add": "Crear empleado",

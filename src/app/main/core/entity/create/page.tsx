@@ -10,7 +10,6 @@ import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { useTranslations } from 'next-intl';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import { SassButton } from '@/components/common/buttons/GenericButton';
-import { SaveOutlined } from '@mui/icons-material';
 import { useFormStatus } from '@/hooks/useFormStatus';
 
 
@@ -38,8 +37,8 @@ const FormEntityPage = () => {
                             disabled={!formStatus?.isValid || formStatus?.isSubmitting}
                             onClick={handleExternalSubmit}
                             variant='contained'
-                            startIcon={<SaveOutlined />}
-                        > {t('core.button.saveChanges')}</SassButton>
+                          
+                        > {t('core.button.save')}</SassButton>
                     </Box>
                 }
             >
@@ -52,7 +51,8 @@ const FormEntityPage = () => {
                         fields={fields as FormField[]}
                         activateWatchStatus
                         hideBtn
-                        formRef={formRef}                        
+                        formRef={formRef}  
+                        submitButtonText={t('core.button.save')}              
                     />
                 </Box>
             </HeaderPage>

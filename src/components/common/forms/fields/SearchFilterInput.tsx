@@ -139,6 +139,7 @@ const SearchIndexFilterInput: React.FC<SearchIndexFilterInputProps> = ({ typeInd
 
       <Autocomplete<Option, false, false, false>
         options={options}
+        noOptionsText={t('core.label.noOptionsText')}
         value={selected}
         inputValue={inputValue}
         onInputChange={handleInputChange}

@@ -142,6 +142,7 @@ const CSVConfigModal = ({ open, onClose, onConfirm }: ICSVConfigModal) => {
             onChange={(event, newValue) => setEventSelected(newValue as IEvent)}
             value={eventSelected}
             isOptionEqualToValue={(option, value) => option.id === value.id}
+            noOptionsText={t('core.label.noOptionsText')}
           />}
 
 

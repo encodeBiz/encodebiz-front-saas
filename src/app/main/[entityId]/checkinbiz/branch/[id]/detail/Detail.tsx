@@ -17,7 +17,7 @@ import HelpTabs from "@/components/features/dashboard/HelpTabs/HelpTabs"
 import { PanelStats } from "../../../stats/components/PanelStats"
 import { CheckBizStatsProvider } from "../../../stats/context/checkBizStatsContext"
 
-export const Detail = ({ branch, onSuccess, children }: { addResponsabiltyItem: () => void, branch: ISucursal, children: React.ReactNode, onSuccess: () => void }) => {
+export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { addResponsabiltyItem: () => void, branch: ISucursal, children: React.ReactNode, onSuccess: () => void }) => {
     const t = useTranslations()
     const { navivateTo } = useLayout()
     const { openModal, open } = useCommonModal()
@@ -107,13 +107,13 @@ export const Detail = ({ branch, onSuccess, children }: { addResponsabiltyItem: 
                 {
                     id: '2',
                     title: t("employee.list"),
-                    tabContent: <EmployeeList>{children}</EmployeeList>
+                    tabContent: <EmployeeList addResponsabiltyItem={addResponsabiltyItem} >{children}</EmployeeList>
                 },
 
                 {
                     id: '1',
                     title: t(`sucursal.panel`),
-                    tabContent: <CheckBizStatsProvider><PanelStats branchId={branch?.id} /></CheckBizStatsProvider>
+                    tabContent: <CheckBizStatsProvider><PanelStats type="branch" branchId={branch?.id} /></CheckBizStatsProvider>
                 },
 
             ]} />}

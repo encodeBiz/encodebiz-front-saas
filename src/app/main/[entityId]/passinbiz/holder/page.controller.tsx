@@ -150,20 +150,20 @@ export default function useHolderListController() {
 
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
 
-    <SelectFilter
+    <SelectFilter label={t('core.label.typePass')}
       defaultValue={'none'}
       value={filterParams.filter.type}
       onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, type: value } })}
       items={holderType}
     />
-    {filterParams.filter.type == 'event' && <SelectFilter
+    {filterParams.filter.type == 'event' && <SelectFilter label={t('core.label.event')}
       value={filterParams.filter.parentId}
       onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, parentId: value } })}
       items={eventList.map(e => ({ label: e.name, value: e.id }))}
     />}
 
     <SelectFilter first={false}
-      defaultValue={'active'}
+      defaultValue={'active'} label={t('core.label.status')}
       value={filterParams.filter.passStatus}
       onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, passStatus: value } })}
       items={holderState}
