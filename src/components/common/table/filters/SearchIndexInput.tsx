@@ -131,7 +131,7 @@ const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type, la
         filterOptions={(x) => x} // no filtres en cliente si ya filtras en servidor
         loading={pending}
         open={options.length > 0}
-
+        noOptionsText={t('core.label.noOptionsText')}
         renderInput={(params) => (
           <TextField
             {...params}

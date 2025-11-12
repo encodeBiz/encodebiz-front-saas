@@ -189,6 +189,7 @@
       "guest": "Guest",
       "select": "Select",
       "typePass": "Pass type",
+      "noOptionsText":"Not options",
       "credencial": "Credentials",
       "event": "Event",
       "passStatus": "Pass status",

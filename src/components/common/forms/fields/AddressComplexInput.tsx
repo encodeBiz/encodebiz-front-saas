@@ -278,7 +278,7 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
             filterOptions={(x) => x} // no filtres en cliente si ya filtras en servidor
             loading={pending}
             open={options.length > 0}
-
+            noOptionsText={t('core.label.noOptionsText')}
             renderInput={(params) => (
               <TextField required={props.required}
                 {...params}

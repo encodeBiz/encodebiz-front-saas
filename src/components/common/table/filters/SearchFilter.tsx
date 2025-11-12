@@ -8,6 +8,7 @@ import {
   TextField,
   ListItemText,
 } from "@mui/material";
+import { useTranslations } from "next-intl";
  
 type Option = { label: string, value: string }
 
@@ -24,7 +25,7 @@ const SearchFilter: React.FC<SearchIndexInputProps> = ({ onChange, options, valu
  
   const [inputValue, setInputValue] = useState<string>("");
   const [open, setOpen] = useState(false)
-
+  const t = useTranslations()
 
 
 
@@ -47,7 +48,7 @@ const SearchFilter: React.FC<SearchIndexInputProps> = ({ onChange, options, valu
  
       <Autocomplete
         options={options}
-        
+        noOptionsText={t('core.label.noOptionsText')}
         value={options.find(e => e.value === value) ?? null}
         inputValue={inputValue}
         onInputChange={handleInputChange}

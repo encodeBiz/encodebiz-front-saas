@@ -189,6 +189,7 @@
       "guest": "Invitado",
       "select": "Seleccionar",
       "typePass": "Tipo de pase",
+      "noOptionsText":"Sin opciones para seleccionar",
       "credencial": "Credenciales",
       "event": "Evento",
       "passStatus": "Estado del pase",
