@@ -17,7 +17,7 @@ import { useEntity } from "@/hooks/useEntity";
 
 
 
-export const PanelStats = ({ branchId }: { branchId?: string }) => {
+export const PanelStats = ({ branchId, employeeId, type }: { type?: 'employee' | 'branch' , branchId?: string | null, employeeId?: string | null }) => {
   const t = useTranslations();
   const { currentEntity } = useEntity()
   const { pending, branchOne, heuristicAnalizeError, branchTwo, heuristicDataOne, heuristicDataTwo, initialize } = useCheckBizStats()
@@ -36,7 +36,7 @@ export const PanelStats = ({ branchId }: { branchId?: string }) => {
 
 
   useEffect(() => {
-    initialize(branchId ? branchId : null)
+    initialize(branchId ? branchId : null, employeeId ? employeeId : null, type as  'employee' | 'branch' )
   }, [branchId, currentEntity?.entity?.id])
 
   const InnetContent = () => <>

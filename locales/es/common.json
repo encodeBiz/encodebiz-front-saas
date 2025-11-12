@@ -648,6 +648,7 @@
   },
   "employee": {
     "title": "Empleados",
+    "workProfile": "Perfil laboral",
     "formDesc": "Completa los campos a continuación para registrar el empleado.",
     "list": "Empleados",
     "add": "Crear empleado",

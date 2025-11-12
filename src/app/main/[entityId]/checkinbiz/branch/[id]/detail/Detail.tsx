@@ -113,7 +113,7 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
                 {
                     id: '1',
                     title: t(`sucursal.panel`),
-                    tabContent: <CheckBizStatsProvider><PanelStats branchId={branch?.id} /></CheckBizStatsProvider>
+                    tabContent: <CheckBizStatsProvider><PanelStats type="branch" branchId={branch?.id} /></CheckBizStatsProvider>
                 },
 
             ]} />}

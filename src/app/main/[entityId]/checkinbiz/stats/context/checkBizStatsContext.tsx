@@ -18,7 +18,7 @@ interface ICheckBizStatsProps {
     branchList: Array<ISucursal>
     branchSelected: Array<ISucursal>,
     setBranchSelected: (items: Array<ISucursal>) => void
-    initialize: (branchId: string | null) => void
+    initialize: (branchId: string | null, employeeId: string | null, type: 'employee' | 'branch') => void
     branchOne: IBranchPattern | null
     branchTwo: IBranchPattern | null
 
@@ -54,7 +54,7 @@ export const CheckBizStatsProvider = ({ children }: { children: React.ReactNode 
     const { currentEntity } = useEntity()
 
 
-    const initialize = async (branchId?: string | null) => {
+    const initialize = async (branchId?: string | null, employeeId?: string | null, type?: 'employee' | 'branch') => {
         const branchList = await search(currentEntity?.entity?.id as string, { ...{} as any, limit: 100 })
         setBranchList(branchList)
 
@@ -71,7 +71,7 @@ export const CheckBizStatsProvider = ({ children }: { children: React.ReactNode 
 
     const updatePatternData = async () => {
         setPending(true)
-
+         
         if (branchSelected.length == 0) {
             setBranchTwo(null)
             setBranchOne(null)
@@ -94,6 +94,7 @@ export const CheckBizStatsProvider = ({ children }: { children: React.ReactNode 
     }
 
     const fetchHeuristic = async () => {
+        
         if (branchSelected.length == 0) {
             setHeuristicDataOne([])
             setHeuristicDataTwo([])

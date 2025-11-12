@@ -18,6 +18,8 @@ import { Branch } from "./Branch/Branch"
 import { Attedance } from "./Attedance/Attedance"
 import { onGoMap } from "@/lib/common/maps"
 import InfoModal from "@/components/common/modals/InfoModal"
+import { CheckBizStatsProvider } from "../../../stats/context/checkBizStatsContext"
+import { PanelStats } from "../../../stats/components/PanelStats"
 
 export const Detail = ({ employee, onResend, onSuccess, children }: { employee: IEmployee, onSuccess: () => void, onResend: (v: IEmployee) => void, children: React.ReactNode }) => {
     const t = useTranslations()
@@ -124,6 +126,12 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
                     title: t("checklog.list"),
                     tabContent: <Attedance>{children}</Attedance>
                 },
+                 {
+                    id: '2',
+                    title: t("employee.workProfile"),
+                    tabContent: <CheckBizStatsProvider><PanelStats type='employee' employeeId={employee?.id} /></CheckBizStatsProvider>
+                },
+
 
             ]} />
 
