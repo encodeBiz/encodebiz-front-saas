@@ -22,7 +22,10 @@ export const CustomIconBtn = ({ onClick, disabled = false, sx = {}, bgColor='rgb
         color,
         width: 44,
         height: 44,
-        borderRadius: '50%'
+        borderRadius: '50%',
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center'
     }}>
     {icon}
 </IconButton>

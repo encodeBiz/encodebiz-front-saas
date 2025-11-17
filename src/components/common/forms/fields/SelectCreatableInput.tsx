@@ -4,10 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { TextFieldProps, FormHelperText, FormControl, Autocomplete, TextField, Box, IconButton } from '@mui/material';
 import { FieldProps, useField } from 'formik';
 import { useTranslations } from 'next-intl';
-import { DeleteOutline } from '@mui/icons-material';
-
-
-
+import { CancelOutlined } from '@mui/icons-material';
 
 type SelectCreatableInputProps = FieldProps & TextFieldProps & {
   options: Array<string>;
@@ -93,13 +90,13 @@ const SelectCreatableInput: React.FC<SelectCreatableInputProps> = ({
         const { key, ...optionProps } = props;
         return (
           <li key={key} {...optionProps}>
-            <Box display={'flex'} justifyContent={'space-between'} width={'100%'}>
+            <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} width={'100%'}>
               {option}
 
               {typeof onDeleteItem === 'function' && <IconButton onClick={(event) => {
                 event.stopPropagation();
                 onDeleteItem(option)
-              }}><DeleteOutline /></IconButton>}
+              }}><CancelOutlined /></IconButton>}
             </Box>
           </li>
         );

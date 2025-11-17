@@ -681,9 +681,9 @@
     "linkToBranchNotTitle": "No hay sucursales disponibles",
     "linkToBranchNotText": "Crea una nueva Sucursal / Proyecto para asignar a este empleado.",
     "linkToBranchNotBtn": "Crear Sucursal / Proyecto",
-    "freePlanAdviseTitle": "Límite alcanzado en el plan gratuito",
-    "freePlanAdviseBtn": "Actualziar plan",
-    "freePlanAdviseText": "Tu plan actual permite asignar hasta 10 empleados por Sucursal / Proyecto. Actualiza tu plan para agregar más empleados."
+    "freePlanAdviseTitle": "Acción no disponible",
+    "freePlanAdviseBtn": "Actualizar plan",
+    "freePlanAdviseText": "Tu plan actual es el gratuito. Para crear más Sucursales / Proyectos, actualiza tu suscripción."
   },
   "checklog": {
     "title": "Registros de asistencia",

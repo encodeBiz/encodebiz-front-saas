@@ -135,11 +135,14 @@ const UserAssignment = ({ project, onAssign, onRemove, proccesing = false }: Use
 
                                             />}
                                             {
-                                                ((collaborator.role === 'admin'  ) || (collaborator.role === 'owner' &&  collaborator.status === 'invited')) && (
+                                                ((collaborator.role === 'admin') || (collaborator.role === 'owner' && collaborator.status === 'invited')) && (
                                                     <CustomIconBtn
                                                         onClick={() => openModal(CommonModalType.COLABORATOR, { data: collaborator.user.uid })}
                                                         icon={<TrashIcon />}
                                                         color={theme.palette.primary.main}
+                                                        sx={{
+                                                            paddingLeft:1.5
+                                                        }}
                                                     />
                                                 )
                                             }
@@ -171,10 +174,7 @@ const UserAssignment = ({ project, onAssign, onRemove, proccesing = false }: Use
                         <Typography variant='body1'>{t('colaborators.addText')}</Typography>
                     </Box>
 
-                    <CustomIconBtn
-                        onClick={handleClose}
-                        color={theme.palette.primary.main}
-                    />
+
                 </DialogTitle>
                 <DialogContent>
                     <BorderBox sx={{ mt: 2, p: 4 }}>
@@ -204,16 +204,24 @@ const UserAssignment = ({ project, onAssign, onRemove, proccesing = false }: Use
                         </FormControl>
                     </BorderBox>
                 </DialogContent>
-                <DialogActions>
-
-                    <SassButton
-                        onClick={handleAssign}
-                        variant="contained"
-                        size='small'
-                        disabled={!email || !selectedRole}
-                    >
-                        {t('core.button.add')}
-                    </SassButton>
+                <DialogActions >
+                    <Box display={'flex'} gap={2}>
+                        <SassButton
+                            onClick={handleClose}
+                            variant="outlined"
+                            size='small'
+                        >
+                            {t('core.button.cancel')}
+                        </SassButton>
+                        <SassButton
+                            onClick={handleAssign}
+                            variant="contained"
+                            size='small'
+                            disabled={!email || !selectedRole}
+                        >
+                            {t('core.button.save')}
+                        </SassButton>
+                    </Box>
                 </DialogActions>
             </Dialog>
 

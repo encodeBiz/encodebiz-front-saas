@@ -16,7 +16,6 @@ import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import { CustomTypography } from '@/components/common/Text/CustomTypography';
 import { useEntity } from '@/hooks/useEntity';
-import { CancelOutlined, SendOutlined } from '@mui/icons-material';
 import { useFormStatus } from '@/hooks/useFormStatus';
 import useAddWebHookController from './AddWebHook.controller';
 import { IWebHook } from '@/domain/core/integration/IWebHook';
