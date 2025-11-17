@@ -28,7 +28,8 @@ const AccountPreferencesPage = () => {
 
             {open.open && open?.args?.id==='recovery' && open.type == CommonModalType.INFO && <InfoModal
                 title={t('core.recovery.modalTitle')}
-                description={t('core.recovery.modalTitle2')}             
+                description={t('core.recovery.modalTitle2')}    
+                closeIcon={false}    btnFill     
                 onClose={() => {
                     closeModal(CommonModalType.INFO)
                 }}

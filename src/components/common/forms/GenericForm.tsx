@@ -100,6 +100,8 @@ const FieldItem = ({ field, i, formikProps, column, disabled }: { field: FormFie
     sm: 12
   }} key={i} sx={{ width: '100%', position: 'relative', top: 10, mt: 2 }}>
     <Typography variant='subtitle1' textTransform={'uppercase'}>{field.label as string}</Typography>
+   {field.hit}
+
   </Grid>
   else
     return (

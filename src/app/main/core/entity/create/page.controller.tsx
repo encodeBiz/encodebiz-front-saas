@@ -140,11 +140,6 @@ export const useRegisterController = () => {
             component: TextInput,
         },
         {
-            isDivider: true,
-            label: t('core.label.address'),
-        },
-
-        {
             name: 'address',
             label: t('core.label.addressData'),
             required: true,

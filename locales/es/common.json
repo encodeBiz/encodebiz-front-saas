@@ -78,7 +78,7 @@
       "loader": "Cargando sesión de usuario",
       "loaderChangeEntity": "Cambiando entidad",
       "loaderAction": "Procesando información",
-      "mediaModaltitle": "Selector de Medias",
+      "mediaModaltitle": "Selector de recursos",
       "loaderActionBilling": "Accediendo a la información de tu pasarela de pago"
     },
     "feedback": {
@@ -218,7 +218,7 @@
       "date": "Fecha",
       "date-hour": "Fecha/Hora",
       "medida": "Medida recomendada",
-      "colorText": "Color de texto",
+      "colorText": "Color de texto principal",
       "colorBrand": "COLORES DE MARCA",
       "resourcesGraph": "RECURSOS GRÁFICOS",
       "colorBg": "Color de fondo",
@@ -275,8 +275,8 @@
       "addNew": "Crear campo personalizado",
       "country": "País",
       "backgroundColor": "Color de fondo",
-      "labelColor": "Color de etiqueta",
-      "textColor": "Color de texto",
+      "labelColor": "Color de títulos",
+      "textColor": "Color de texto principal",
       "stripImageUrl": "Imagen de tira",
       "iconUrl": "Icono",
       "address": "Dirección",
@@ -460,6 +460,10 @@
         "title": "Identidad visual",
         "btn": "Eliminar Entidad",
         "titleAbout": "Acerca de tu empresa",
+        "titleAboutText":"Los cambios en colores o recursos no se guardan automáticamente. Pulsa ",
+        "titleAboutText1":"Guardar",
+        "titleAboutText2":" para aplicarlos a tu marca.",
+
         "descriptionAbout": "Completa la información de la marca"
       },
       "tab3": {
@@ -847,9 +851,9 @@
       "text4": "Personalizar la experiencia",
       "text5": "con la identidad corporativa de tu organización en cualquier servicio.",
       "text6": "Centralizar la información",
-      "text7": " de tu entidad para que sus datos estén disponibles en todos los documentos y procesos de la plataforma.",
+      "text7": " de tu entidad para que tus datos estén disponibles en todos los documentos y procesos de la plataforma.",
       "text8": "Asegurar un uso legítimo y transparente",
-      "text9": "de los servicios, cumpliendo con los requisitos legales y de protección",
+      "text9": "de los servicios, cumpliendo con los requisitos legales y de protección.",
       "continue": "Continuar"
     },
     "card3": {
@@ -990,7 +994,7 @@
   },
   "image": {
     "text1": "Dimensiones de la imagen incorrecta",
-    "text2": "Es necesario ajustar la imagen a las dimensiones establecidas ya que esta va hacer utilizada en la construcción de pases digitales o plantillas estandarizadas",
+    "text2": "Las dimensiones de la imagen no cumplen con los requisitos requeridos para la construcción de pases digitales o plantillas estandarizadas",
     "text3": "Dimensiones requeridas: "
   },
   "error": {

@@ -5,7 +5,7 @@ import { useState, ReactNode, useEffect, useCallback } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useEntity } from '@/hooks/useEntity';
 import { useTranslations } from 'next-intl';
-import { SxProps, Theme } from '@mui/material';
+import { Box, SxProps, Theme, Typography } from '@mui/material';
 import ColorPickerInput from '@/components/common/forms/fields/ColorPickerInput';
 import { useToast } from '@/hooks/useToast';
 import { formatDate } from '@/lib/common/Date';
@@ -14,6 +14,7 @@ import ImageUploadInput from '@/components/common/forms/fields/ImageUploadInput'
 import { requiredRule } from '@/config/yupRules';
 import { useLayout } from '@/hooks/useLayout';
 import { useAppLocale } from '@/hooks/useAppLocale';
+import { InfoOutline } from '@mui/icons-material';
 
 
 
@@ -86,6 +87,8 @@ export const useSettingEntityController = () => {
         {
             isDivider: true,
             label: t('core.label.colorBrand'),
+            hit: <Box display={'flex'} justifyContent={'flex-start'} alignItems={'center'} gap={1}><InfoOutline /><Typography color='textSecondary' component="span" >{t('entity.tabs.tab2.titleAboutText')} <strong>{t('entity.tabs.tab2.titleAboutText1')}</strong> {t('entity.tabs.tab2.titleAboutText2')}</Typography></Box>,
+
         },
 
         {
@@ -117,6 +120,8 @@ export const useSettingEntityController = () => {
         {
             isDivider: true,
             label: t('core.label.resourcesGraph'),
+            hit: <Box display={'flex'} justifyContent={'center'} alignItems={'flex-start'} gap={1}><InfoOutline /><Typography color='textSecondary' component="span" >{t('entity.tabs.tab2.titleAboutText')} <strong>{t('entity.tabs.tab2.titleAboutText1')}</strong> {t('entity.tabs.tab2.titleAboutText2')}</Typography></Box>,
+
         },
         {
             isGroup: true,
@@ -129,7 +134,7 @@ export const useSettingEntityController = () => {
                     required: true,
                     type: 'logo'
                 },
-                 {
+                {
                     name: 'icon2Url',
                     label: t('core.label.iconx2'),
                     component: ImageUploadInput,
@@ -151,7 +156,7 @@ export const useSettingEntityController = () => {
                     type: 'icon'
                 },
 
-               
+
             ]
 
         }
