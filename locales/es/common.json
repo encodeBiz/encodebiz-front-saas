@@ -647,7 +647,7 @@
     "description": "Rellene los campos para registrar el personal de apoyo",
     "deleteConfirmModalTitle": "Eliminar Personal de Apoyo",
     "noEventTitle": "No existen eventos",
-    "noEventText": "La entidad no tiene eventos asociados actualmente, cree el primer evento ahora",
+    "noEventText": "La entidad no tiene eventos asociados actualmente, cree el primer evento.",
     "createEvent": "Crear evento",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el personal de apoyo y todas sus configuraciones"
   },

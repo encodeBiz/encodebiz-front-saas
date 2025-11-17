@@ -173,7 +173,7 @@ export default function useHolderController() {
         } as any, limit: 100
       })
 
-      if (eventList.length === 0) {
+      if (eventList.length !== 0) {
         openModal(CommonModalType.INFO)
       }
       const fieldList = fields.filter(e => e.name !== 'thumbnail')

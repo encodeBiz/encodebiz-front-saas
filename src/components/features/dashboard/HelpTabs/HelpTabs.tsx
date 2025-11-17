@@ -92,7 +92,7 @@ const HelpTabs = ({ tabs, ref, small = false }: HelpTabsProps) => {
       <Tabs
         orientation='horizontal'
         value={value}
-        variant={!small ? 'fullWidth' : 'standard'}
+        variant={'fullWidth'}
         onChange={handleChange}
         aria-label="icon position tabs"
         sx={small ? {

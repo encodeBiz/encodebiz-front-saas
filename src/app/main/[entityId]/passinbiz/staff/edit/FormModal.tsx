@@ -5,12 +5,10 @@ import {
     DialogContent,
     DialogTitle,
     Box,
-    useTheme
 } from '@mui/material';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useTranslations } from 'next-intl';
-import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { CustomTypography } from '@/components/common/Text/CustomTypography';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
@@ -21,7 +19,6 @@ import useFormController from '../form/form.controller';
 
 const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSuccess: () => void }): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
-    const theme = useTheme()
     const { fields, validationSchema, handleSubmit, initialValues } = useFormController(true, onSuccess);
     const t = useTranslations();
     const formRef = useRef(null)
@@ -53,13 +50,10 @@ const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSu
         >
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
-                    <CustomTypography >{t('event.edit')}</CustomTypography>
-                    <CustomTypography sx={{ fontSize: 20 }} >{t('event.formDesc')}</CustomTypography>
+                    <CustomTypography >{t('staff.edit')}</CustomTypography>
+                    <CustomTypography sx={{ fontSize: 20 }} >{t('staff.formDesc')}</CustomTypography>
                 </Box>
-                <CustomIconBtn
-                    onClick={() => handleClose(null, 'manual')}
-                    color={theme.palette.primary.main}
-                />
+
             </DialogTitle>
             <DialogContent>
                 <BorderBox sx={{ p: 2 }} key={open.open + ''}>
@@ -96,7 +90,7 @@ const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSu
                     size='small'
                     variant="contained"
                 >
-                    {t('core.button.submit')}
+                    {t('core.button.save')}
                 </SassButton>
             </DialogActions>
         </Dialog>

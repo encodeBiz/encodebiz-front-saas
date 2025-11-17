@@ -6,12 +6,11 @@ import {
     DialogTitle,
     Box,
     CircularProgress,
-    useTheme
+
 } from '@mui/material';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useTranslations } from 'next-intl';
-import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
@@ -25,7 +24,6 @@ import { IWebHook } from '@/domain/core/integration/IWebHook';
 
 const AddWebHook = (): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
-    const theme = useTheme()
     const [isLoading, setIsLoading] = useState(false)
     const { fields, validationSchema, setDinamicDataAction } = useAddWebHookController();
     const t = useTranslations();
@@ -69,17 +67,14 @@ const AddWebHook = (): React.JSX.Element => {
                     <CustomTypography >{t('contact.title')}</CustomTypography>
                 </Box>
 
-                <CustomIconBtn
-                    onClick={() => handleClose(null, 'manual')}
-                    color={theme.palette.primary.main}
-                />
+
             </DialogTitle>
             <DialogContent>
                 <BorderBox sx={{ p: 2 }}>
                     <GenericForm<Partial<IWebHook>>
                         column={2}
                         initialValues={{
-                            "url":'',
+                            "url": '',
                             "subscribedEvents": [],
                             "enabled": true,
                             "version": "2025-08-01",
@@ -104,7 +99,6 @@ const AddWebHook = (): React.JSX.Element => {
                     onClick={(e) => handleClose(e, 'manual')}
                     disabled={isLoading}
                     size='small'
-                    startIcon={<CancelOutlined />}
 
                 >
                     {t('core.button.cancel')}
@@ -115,7 +109,7 @@ const AddWebHook = (): React.JSX.Element => {
                     color="primary"
                     size='small'
                     variant="contained"
-                    startIcon={isLoading ? <CircularProgress size={20} /> : <SendOutlined />}
+                    startIcon={isLoading ? <CircularProgress size={20} /> : null}
                 >
                     {t('core.button.submit')}
                 </SassButton>

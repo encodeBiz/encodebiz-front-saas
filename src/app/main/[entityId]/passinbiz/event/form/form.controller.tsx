@@ -253,16 +253,12 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, itemId)
 
- 
-
       setInitialValues({
         ...event,
         date: (event.date instanceof Timestamp) ? event.date.toDate() : new Date(event.date),
         endDate: (event.endDate instanceof Timestamp) ? event.endDate.toDate() : new Date(event.endDate),
         metadata: objectToArray(event.metadata)
       })
-
-
     
       changeLoaderState({ show: false })
     } catch (error: any) {
