@@ -183,3 +183,5 @@ export function excludeKeyOfObject(obj: any, key: string) {
     delete result[key]
     return result;
 }
+
+export const clamp = (value: number, min: number = 0, max: number = 100) => Math.min(max, Math.max(min, value))

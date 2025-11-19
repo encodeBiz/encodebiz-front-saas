@@ -1,0 +1,86 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import BoxLoader from "@/components/common/BoxLoader";
+import HeaderPage from "@/components/features/dashboard/HeaderPage/HeaderPage";
+import { SettingsOutlined } from "@mui/icons-material";
+import { Container, Box, Typography, IconButton, Popover } from "@mui/material";
+import { useTranslations } from "next-intl";
+import React from "react";
+import { useDashboard } from "../context/dashboardContext";
+import { SelectorBranch } from "./common/Selector";
+import { SelectorChart } from "./common/SelectorChart";
+import NestedSelectWithCheckmarks from "./common/Preference/NestedSelectWithCheckmarks";
+import { BaseButton } from "@/components/common/buttons/BaseButton";
+import { SassButton } from "@/components/common/buttons/GenericButton";
+import { OperatingHours } from "./cards/OperatingHours";
+
+export const PanelStats = () => {
+  const t = useTranslations();
+  const { pending, branchPatternList, cardIndicatorSelected } = useDashboard()
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
+
+
+  const InnetContent = () => <Box sx={{ minHeight: 600, p:4 }}>
+    <SelectorBranch />
+    {pending && <BoxLoader message={t('statsCheckbiz.loading')} />}
+
+    {branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour'].includes(e)).length > 0 && <Box>
+      <OperatingHours />
+    </Box>}
+
+
+    {branchPatternList.length == 0 && <Typography variant="body1">    Debes seleccionar al menos una sucursal/proyecto para ver estadísticas.</Typography>}
+
+
+
+
+  </Box>
+  return (
+
+    <Container maxWidth="lg">
+      <HeaderPage
+        title={t("layout.side.menu.Stats")}
+        actions={
+          <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2}  >
+            <Box display={'flex'} justifyContent={'space-between'} width={'250px'}>
+              <Box>
+                <SassButton variant="text" onClick={handleClick} startIcon={<SettingsOutlined sx={{ fontSize: 20 }} color='primary' />}>
+                  <Typography sx={{ marginLeft: 1 }} variant="body1" color="primary">{t('statsCheckbiz.configPanel')}</Typography>
+                </SassButton>
+                <Popover
+                  id={id}
+                  open={open}
+                  anchorEl={anchorEl}
+                  onClose={handleClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  }}
+                >
+                  <Box display={'flex'} flexDirection={'column'} gap={4} padding={4}>
+                    <Box display={'flex'} flexDirection={'column'} textAlign={'center'}>
+                      <Typography variant="body1">{t('statsCheckbiz.configPanel')}</Typography>
+                    </Box>
+                    <NestedSelectWithCheckmarks />
+                    <SelectorChart />
+                  </Box>
+                </Popover>
+              </Box>
+            </Box>
+          </Box>
+        }
+      > <InnetContent /></HeaderPage>
+    </Container>
+
+  );
+}

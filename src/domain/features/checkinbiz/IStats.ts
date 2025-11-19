@@ -14,16 +14,13 @@ export interface IBranchPattern {
     "avgEndHour": number
     "avgStartHour": number
     totalCost: number
-
     "source": "init_config" | string
     "weeklyEndAvg": Array<number | null>
     "weeklyStartAvg": Array<number | null>
     "weeklyWorkAvg": Array<number | null>
-
     "timeZone": string
     "totalItems": number
     "last": string
-
     "avgCostHour": number,
     "avgCycleCost": number,
     "avgEffectiveCost": number,
@@ -33,7 +30,6 @@ export interface IBranchPattern {
     costTrend: any
     costVariance: number
     effectiveRealCost: number
-
     branch?: ISucursal
 }
 
