@@ -5,12 +5,10 @@ import {
     DialogContent,
     DialogTitle,
     Box,
-    useTheme
 } from '@mui/material';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useTranslations } from 'next-intl';
-import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { CustomTypography } from '@/components/common/Text/CustomTypography';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
@@ -18,10 +16,9 @@ import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import useFormController from '../form/form.controller';
 import { IEvent } from '@/domain/features/passinbiz/IEvent';
- 
+
 const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSuccess: () => void }): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
-    const theme = useTheme()
     const { fields, validationSchema, handleSubmit, initialValues } = useFormController(true, onSuccess);
     const t = useTranslations();
     const formRef = useRef(null)
@@ -56,10 +53,7 @@ const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSu
                     <CustomTypography >{t('event.edit')}</CustomTypography>
                     <CustomTypography sx={{ fontSize: 20 }} >{t('event.formDesc')}</CustomTypography>
                 </Box>
-                <CustomIconBtn
-                    onClick={() => handleClose(null, 'manual')}
-                    color={theme.palette.primary.main}
-                />
+
             </DialogTitle>
             <DialogContent>
                 <BorderBox sx={{ p: 2 }} key={open.open + ''}>
@@ -96,7 +90,7 @@ const FormModal = ({ onSuccess }: { employeeId?: string, branchId?: string, onSu
                     size='small'
                     variant="contained"
                 >
-                    {t('core.button.submit')}
+                    {t('core.button.save')}
                 </SassButton>
             </DialogActions>
         </Dialog>
