@@ -3,7 +3,7 @@ import { Container, Box } from '@mui/material';
 import { useTranslations } from "next-intl";
 import useHolderListController from './page.controller';
 import { GenericTable } from "@/components/common/table/GenericTable";
-import { Add, ArchiveOutlined, ArrowUpward } from '@mui/icons-material';
+import { Add, ArchiveOutlined } from '@mui/icons-material';
 import { PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { useEntity } from '@/hooks/useEntity';
@@ -41,8 +41,7 @@ export default function HolderList() {
               <SassButton
                 onClick={() => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/onboarding?to=plans`)}
                 variant='contained'
-                color='warning'
-                startIcon={<ArrowUpward />}
+                color='warning'              
               > {t('core.button.upgrade')}</SassButton>
             }
           </Box>

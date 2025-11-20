@@ -9,7 +9,6 @@ import { IEvent } from '@/domain/features/passinbiz/IEvent';
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { useRef } from 'react';
 import { SassButton } from '@/components/common/buttons/GenericButton';
-import { ArrowLeftOutlined, SaveOutlined } from '@mui/icons-material';
 import { useLayout } from '@/hooks/useLayout';
 
 
@@ -17,10 +16,10 @@ import { useLayout } from '@/hooks/useLayout';
 export default function EventForm() {
   const { fields, initialValues, validationSchema, setDinamicDataAction } = useStaffController();
   const t = useTranslations();
-const { navivateTo } = useLayout()
+  const { navivateTo } = useLayout()
   const formRef = useRef(null)
   const { formStatus } = useFormStatus()
- 
+
   const handleExternalSubmit = () => {
     if (formRef.current) {
       (formRef.current as any).submitForm()
@@ -38,14 +37,12 @@ const { navivateTo } = useLayout()
               disabled={formStatus?.isSubmitting}
               onClick={() => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event`)}
               variant='outlined'
-              startIcon={<ArrowLeftOutlined />}
             > {t('core.button.cancel')}</SassButton>
             <SassButton
               disabled={!formStatus?.isValid || formStatus?.isSubmitting}
               onClick={handleExternalSubmit}
               variant='contained'
-              startIcon={<SaveOutlined />}
-            > {t('core.button.saveChanges')}</SassButton>
+            > {t('core.button.save')}</SassButton>
           </Box>
         }
       >

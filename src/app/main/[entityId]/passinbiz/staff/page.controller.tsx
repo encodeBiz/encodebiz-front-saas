@@ -217,7 +217,7 @@ export default function useStaffListController() {
       id: 'allowedTypes',
       label: t("core.label.typeStaff"),
       minWidth: 170,
-      format: (value) => value.join(', ')
+      format: (value) => value?.map((e:any)=>t('core.label.'+e)).join(', ')
     },
 
   ];

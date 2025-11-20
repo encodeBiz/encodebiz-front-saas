@@ -174,7 +174,7 @@ export default function useFormLinkController(onSuccess: () => void) {
                 },
 
                 onDeleteItem: (data: string) => {
-                    setJobList(prev => [...prev.filter(e => e.job.toLowerCase().trim() !== data.toLocaleLowerCase().trim())])
+                    setJobList(prev => [...prev.filter(e => e.job.toLowerCase().trim() !== data.toLowerCase().trim())])
                     deleteJobs(currentEntity?.entity?.id as string, data)
                 },
             },

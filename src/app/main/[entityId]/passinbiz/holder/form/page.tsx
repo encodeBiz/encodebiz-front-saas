@@ -77,7 +77,10 @@ export default function HolderForm() {
           closeModal(CommonModalType.INFO)
           navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/event/add`)
         }}
-        closeBtn
+        closeIcon
+        cancelBtn
+        btnFill
+        closeBtn={false}
 
       />}
     </Container>

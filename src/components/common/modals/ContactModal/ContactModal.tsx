@@ -5,13 +5,11 @@ import {
     DialogContent,
     DialogTitle,
     Box,
-    CircularProgress,
-    useTheme
+    CircularProgress
 } from '@mui/material';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useTranslations } from 'next-intl';
-import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import { SassButton } from '../../buttons/GenericButton';
 import { CustomTypography } from '../../Text/CustomTypography';
 import { ContactFromModel, IContact } from '@/domain/core/IContact';
@@ -24,7 +22,6 @@ import { BorderBox } from '../../tabs/BorderBox';
 
 const ContactModalModal = ({ subject, role = 'entity' }: { subject: string, role?: 'user' | 'entity' }): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
-    const theme = useTheme()
     const [isLoading, setIsLoading] = useState(false)
     const { fields, validationSchema, setDinamicDataAction } = useFormContactController();
     const t = useTranslations();
@@ -69,10 +66,7 @@ const ContactModalModal = ({ subject, role = 'entity' }: { subject: string, role
                     <CustomTypography >{t('contact.title')}</CustomTypography>
                 </Box>
 
-                <CustomIconBtn
-                    onClick={() => handleClose(null, 'manual')}
-                    color={theme.palette.primary.main}
-                />
+                 
             </DialogTitle>
             <DialogContent>
                 <BorderBox sx={{ p: 2 }}>

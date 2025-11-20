@@ -20,6 +20,7 @@ export default function FormContact() {
   const t = useTranslations();
   const { user } = useAuth()
   const { currentEntity } = useEntity()
+   
  
   const { formStatus } = useFormStatus()
   const { open } = useCommonModal()
@@ -53,7 +54,7 @@ export default function FormContact() {
               "subject": t('contact.test1'),
               "message": '',
               "email": user?.email as string,
-              "phone": user?.phoneNumber as string,
+              "phone": !!user?.phoneNumber && user?.phoneNumber!='-'?user?.phoneNumber:'',
               "name": currentEntity?.entity.name as string,
             }}
             validationSchema={validationSchema}

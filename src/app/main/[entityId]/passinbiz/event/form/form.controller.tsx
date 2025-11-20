@@ -20,7 +20,7 @@ import { ArrayToObject, objectToArray } from "@/lib/common/String";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { country } from "@/config/country";
 import { formatLocalDateTime } from "@/lib/common/Date";
- import { Timestamp } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useAppLocale } from "@/hooks/useAppLocale";
@@ -42,17 +42,17 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const [initialValues, setInitialValues] = useState<Partial<IEvent>>({
     "name": '',
     "description": '',
- 
+
     "language": 'ES',
     "date": null,
     "endDate": null,
-  
+
     "template": 'default',
     "logoUrl": '',
     "imageUrl": '',
     assignedStaff: [],
-    "colorPrimary": '',
-    "colorAccent": '',
+    "colorAccent": "#476BE7" as string,
+    "colorPrimary": "#000000" as string,
     'status': 'published',
     metadata: []
   });
@@ -77,13 +77,13 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const codeLocale = country.find(e => e.name === values.address?.country)?.code2
-      const data: Partial<IEvent |any> = {
+      const data: Partial<IEvent | any> = {
         "uid": user?.id as string,
         address: values.address,
         "createdBy": user?.id as string,
         "name": values.name,
         "description": values.description,
-        "location":`${values.address?.city},${values.address?.country}`,        
+        "location": `${values.address?.city},${values.address?.country}`,
         "entityId": currentEntity?.entity?.id as string,
         "colorPrimary": values.colorPrimary,
         "colorAccent": values.colorAccent,
@@ -225,7 +225,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       options: [
         { value: 'draft', label: t('core.label.draft') },
         { value: 'published', label: t('core.label.published') },
-        { value: 'archived', label: t('core.label.archived') },
+        ...(itemId ? [{ value: 'archived', label: t('core.label.archived') }] : [])
       ],
       component: SelectInput,
     },
@@ -253,8 +253,6 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const event: IEvent = await fetchEvent(currentEntity?.entity.id as string, itemId)
 
- 
-
       setInitialValues({
         ...event,
         date: (event.date instanceof Timestamp) ? event.date.toDate() : new Date(event.date),
@@ -262,8 +260,6 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         metadata: objectToArray(event.metadata)
       })
 
-
-    
       changeLoaderState({ show: false })
     } catch (error: any) {
       changeLoaderState({ show: false })
