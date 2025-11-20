@@ -191,7 +191,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
                 if (errorData.code === 'auth/untrusted_device') {
                     openModal(CommonModalType.ADDDEVICE2AF)
                 } else {
-                    showToast(errorData.message, 'error')
+                    showToast(t('error.' + errorData.code), 'error')
                 }
             }
 
@@ -222,7 +222,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     }
 
     const fetchEntityData = async () => {
-        setEntity(await fetchEntity(sessionData?.entityId as string,currentLocale))
+        setEntity(await fetchEntity(sessionData?.entityId as string, currentLocale))
     }
 
     const fetchEmployeeData = async () => {
