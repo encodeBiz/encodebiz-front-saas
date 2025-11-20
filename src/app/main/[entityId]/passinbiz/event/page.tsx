@@ -41,8 +41,7 @@ export default function HolderList() {
               <SassButton
                 onClick={() => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/onboarding?to=plans`)}
                 variant='contained'
-                color='warning'
-                startIcon={<ArrowUpward />}
+                color='warning'              
               > {t('core.button.upgrade')}</SassButton>
             }
           </Box>
