@@ -19,8 +19,7 @@ export const OperatingHours = () => {
         data: Array<any>
     }>({ branch: [], data: [] })
     const buildBranch = () => {
-        console.log('buildBranch');
-        console.log(chartData);
+     
         const branchData: Array<{ key: string, name: string, color: string }> = []
         branchPatternList.forEach(element => {
             branchData.push(
@@ -33,8 +32,7 @@ export const OperatingHours = () => {
         })
     }
     const buildData = () => {
-        console.log('buildData');
-        console.log(chartData);
+ 
         const data: Array<any> = []
         cardIndicatorSelected.filter(e => itemInThisCats.includes(e)).forEach(indicator => {
             const items = { category: indicator }
@@ -66,7 +64,7 @@ export const OperatingHours = () => {
     }, [cardIndicatorSelected.length])
 
      useEffect(() => {
-        console.log('OK');        
+        console.log('OperatingHours');        
     }, [])
 
 

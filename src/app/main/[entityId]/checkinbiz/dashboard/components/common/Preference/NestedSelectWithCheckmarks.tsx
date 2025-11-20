@@ -16,7 +16,7 @@ import { useDashboard } from '../../../context/dashboardContext';
 
 const NestedSelectWithCheckmarks = () => {
     const t = useTranslations()
-    const { cardIndicatorSelected, setCardIndicatorSelected, preferenceItems } = useDashboard()
+    const { cardIndicatorSelected, git, preferenceItems } = useDashboard()
 
 
 
