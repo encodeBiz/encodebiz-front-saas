@@ -184,4 +184,11 @@ export function excludeKeyOfObject(obj: any, key: string) {
     return result;
 }
 
-export const clamp = (value: number, min: number = 0, max: number = 100) => Math.min(max, Math.max(min, value))
+export const clamp = (value: number, min = 0, max = 100) =>
+    Math.max(min, Math.min(max, value));
+
+export const normalizeInverse = (val: number, min: number, max: number) =>
+    clamp(100 - ((val - min) / (max - min)) * 100);
+
+export const normalizeDirect = (val: number, min: number, max: number) =>
+    clamp(((val - min) / (max - min)) * 100);

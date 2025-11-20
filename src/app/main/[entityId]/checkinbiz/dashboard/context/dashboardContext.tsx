@@ -39,7 +39,7 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
     const [branchList, setBranchList] = useState<Array<ISucursal>>([])
     const [branchSelected, setBranchSelected] = useState<ISucursal[]>([]);
     const [branchPatternList, setbranchPatternList] = useState<Array<IDataSet>>([])
-    const [cardIndicatorSelected, setCardIndicatorSelected] = useState<Array<string>>([]);
+    const [cardIndicatorSelected, setCardIndicatorSelected] = useState<Array<string>>(['avgStartHour_avgEndHour','stdStartHour_stdEndHour']);
     const [type, setType] = useState('weeklyWorkAvg')
     const [pending, setPending] = useState(true)
 
@@ -49,7 +49,7 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
     const initialize = async () => {
         setPending(true)
         const branchList = await search(currentEntity?.entity?.id as string, { ...{} as any, limit: 100 })
-        setBranchList(branchList)
+        setBranchList(branchList)   
         setPending(false)
     }
 
@@ -62,6 +62,7 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
                 color: colors[i]
             })
         }))
+        console.log(branchPatternListData);        
         setbranchPatternList(branchPatternListData)
     }
 
