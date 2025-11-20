@@ -14,6 +14,7 @@ import { OperatingHours } from "./cards/OperatingHours";
 import { TempActivity } from "./cards/TempActivity";
 import { useEntity } from "@/hooks/useEntity";
 import { DataReliability } from "./cards/DataReliability";
+import { OperatingCosts } from "./cards/OperatingCosts";
 
 export const PanelStats = () => {
   const t = useTranslations();
@@ -52,7 +53,7 @@ export const PanelStats = () => {
     </Box>}
 
     {branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['avgCostHour', 'avgCycleCost', 'avgCostEfficiency', 'effectiveRealCost'].includes(e)).length > 0 && <Box display={'flex'} flexDirection={'column'} gap={4}>
-      <OperatingHours />
+      <OperatingCosts />
      </Box>}
 
     {branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['reliability', 'dataPoints'].includes(e)).length > 0 && <Box display={'flex'} flexDirection={'column'} gap={4}>

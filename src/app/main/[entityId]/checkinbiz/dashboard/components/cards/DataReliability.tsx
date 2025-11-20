@@ -29,10 +29,9 @@ export const DataReliability = () => {
             branchPatternList.forEach(branchPattern => {
                 let value = 0
                 if (indicator === 'reliability')
-                    value = clamp(branchPattern.pattern?.reliability)
+                    value = branchPattern.normalized.confiabilidad.confidence
                 if (indicator === 'dataPoints')
-                    value = clamp(branchPattern.pattern?.dataPoints)
-
+                    value = branchPattern.normalized.confiabilidad.observations
 
                 Object.assign(items, { [indicator]: value })
             });
@@ -53,7 +52,7 @@ export const DataReliability = () => {
 
 
 
-    return <BorderBox sx={{p:4}}>
+    return <BorderBox sx={{ p: 4 }}>
         <Typography variant="h6">Confiabilidad del Dato</Typography>
         <Typography variant="body1">
             Comparación de la calidad y estabilidad del dato operativo entre sucursales/proyectos.  Los valores se normalizan en una escala 0–100, donde los más altos indican mayor consistencia, menor variabilidad y datos más fiables para la toma de decisiones.

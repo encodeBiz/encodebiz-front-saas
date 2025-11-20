@@ -34,13 +34,13 @@ export const OperatingCosts = () => {
             branchPatternList.forEach(branchPattern => {
                 let value = 0
                 if (indicator === 'avgCostHour')
-                    value = clamp(branchPattern.pattern?.avgCostHour)
+                    value = branchPattern.normalized.costes.costHour
                 if (indicator === 'avgCycleCost')
-                    value = clamp(branchPattern.pattern?.avgCycleCost)
+                    value = branchPattern.normalized.costes.costCycle
                 if (indicator === 'avgCostEfficiency')
-                    value = clamp(branchPattern.pattern?.avgCostEfficiency)
+                    value = branchPattern.normalized.costes.costEfficiency
                 if (indicator === 'effectiveRealCost')
-                    value = clamp(branchPattern.pattern?.effectiveRealCost)
+                    value = branchPattern.normalized.costes.costEffective
 
 
                 Object.assign(items, { [branchPattern.branch.name.toLowerCase()]: value })
