@@ -4,7 +4,7 @@ import HeaderPage from "@/components/features/dashboard/HeaderPage/HeaderPage";
 import { SettingsOutlined } from "@mui/icons-material";
 import { Container, Box, Typography, IconButton, Popover } from "@mui/material";
 import { useTranslations } from "next-intl";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDashboard } from "../context/dashboardContext";
 import { SelectorBranch } from "./common/Selector";
 import { SelectorChart } from "./common/SelectorChart";
@@ -12,11 +12,23 @@ import NestedSelectWithCheckmarks from "./common/Preference/NestedSelectWithChec
 import { BaseButton } from "@/components/common/buttons/BaseButton";
 import { SassButton } from "@/components/common/buttons/GenericButton";
 import { OperatingHours } from "./cards/OperatingHours";
+import { TempActivity } from "./cards/TempActivity";
+import { useEntity } from "@/hooks/useEntity";
+import { DataReliability } from "./cards/DataReliability";
 
 export const PanelStats = () => {
   const t = useTranslations();
-  const { pending, branchPatternList, cardIndicatorSelected } = useDashboard()
+  const { pending, branchPatternList, cardIndicatorSelected, initialize } = useDashboard()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+  const { currentEntity } = useEntity()
+
+  useEffect(() => {
+    if (currentEntity?.entity?.id) {
+      initialize()
+    }
+  }, [currentEntity?.entity?.id])
+
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -28,18 +40,31 @@ export const PanelStats = () => {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
+  const handleSave = () => {}
 
 
-  const InnetContent = () => <Box sx={{ minHeight: 600, p:4 }}>
+  const InnetContent = () => <Box sx={{ minHeight: 600, p: 4 }}>
     <SelectorBranch />
     {pending && <BoxLoader message={t('statsCheckbiz.loading')} />}
 
-    {branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour'].includes(e)).length > 0 && <Box>
+    {branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour'].includes(e)).length > 0 && <Box display={'flex'} flexDirection={'column'} gap={4}>
       <OperatingHours />
+      <TempActivity />
     </Box>}
 
+    {branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['avgCostHour', 'avgCycleCost', 'avgCostEfficiency', 'effectiveRealCost'].includes(e)).length > 0 && <Box display={'flex'} flexDirection={'column'} gap={4}>
+      <OperatingHours />
+     </Box>}
 
-    {branchPatternList.length == 0 && <Typography variant="body1">    Debes seleccionar al menos una sucursal/proyecto para ver estadísticas.</Typography>}
+    {branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['reliability', 'dataPoints'].includes(e)).length > 0 && <Box display={'flex'} flexDirection={'column'} gap={4}>
+      <DataReliability />
+     </Box>}
+
+
+    {branchPatternList.length == 0 && 
+    <Box display={'flex'} justifyContent={'center'} alignItems={'center'} sx={{ minHeight: 400, p: 4 }}>
+      <Typography variant="body1">    Debes seleccionar al menos una sucursal/proyecto para ver estadísticas.</Typography>
+    </Box>}
 
 
 
@@ -73,6 +98,11 @@ export const PanelStats = () => {
                     </Box>
                     <NestedSelectWithCheckmarks />
                     <SelectorChart />
+                  </Box>
+
+                   <Box display={'flex'} justifyContent={'flex-end'} flexDirection={'row'} gap={1} padding={4}>
+                    <SassButton onClick={handleClose} variant="outlined" color="primary">{t('core.button.cancel')}</SassButton>
+                    <SassButton onClick={handleSave} variant="contained" color="primary">{t('core.button.save')}</SassButton>
                   </Box>
                 </Popover>
               </Box>

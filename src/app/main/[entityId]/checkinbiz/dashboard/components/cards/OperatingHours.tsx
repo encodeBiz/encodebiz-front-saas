@@ -6,7 +6,7 @@ import { CustomizableGroupedBarChart } from "../common/chart/GroupedBarChart";
 import { useEffect, useState } from "react";
 import { clamp } from "@/lib/common/String";
 
- 
+
 
 
 
@@ -18,15 +18,20 @@ export const OperatingHours = () => {
         branch: Array<{ key: string, name: string, color: string }>
         data: Array<any>
     }>({ branch: [], data: [] })
-    const buildData = () => {
+    const buildBranch = () => {
         const branchData: Array<{ key: string, name: string, color: string }> = []
         branchPatternList.forEach(element => {
             branchData.push(
                 { key: element.branch.name.toLowerCase(), name: element.branch.name, color: element.color }
             )
         });
-
-        const chartData: Array<any> = []
+        setChartData({
+            ...chartData,
+            branch: branchData
+        })
+    }
+    const buildData = () => {
+        const data: Array<any> = []
         cardIndicatorSelected.filter(e => itemInThisCats.includes(e)).forEach(indicator => {
             const items = { category: indicator }
             branchPatternList.forEach(branchPattern => {
@@ -39,25 +44,26 @@ export const OperatingHours = () => {
 
                 Object.assign(items, { [branchPattern.branch.name.toLowerCase()]: value })
             });
-            chartData.push(items)
+            data.push(items)
         });
 
         setChartData({
-            branch: branchData,
-            data: chartData
+            ...chartData,
+            data
         })
-
-      
-
     }
 
     useEffect(() => {
-        buildData()
+        buildBranch()
     }, [branchPatternList.length])
 
+    useEffect(() => {
+        buildData()
+    }, [cardIndicatorSelected.length])
 
- 
-    return <BorderBox sx={{p:4}}>
+
+
+    return <BorderBox sx={{ p: 4 }}>
         <Typography variant="h6">Horarios Operativos</Typography>
         <Typography variant="body1">
             Comparación del comportamiento horario entre sucursales/proyectos.  Los valores se normalizan en una escala 0–100,

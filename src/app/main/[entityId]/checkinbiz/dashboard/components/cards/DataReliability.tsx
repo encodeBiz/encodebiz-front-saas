@@ -8,7 +8,7 @@ import { clamp } from "@/lib/common/String"
 
 
 export const DataReliability = () => {
-    const itemInThisCats = ['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour']
+    const itemInThisCats = ['reliability', 'dataPoints']
     // Colors for the bars
     const { cardIndicatorSelected, branchPatternList } = useDashboard()
     const [chartData, setChartData] = useState<{
@@ -28,10 +28,10 @@ export const DataReliability = () => {
             const items = { category: indicator }
             branchPatternList.forEach(branchPattern => {
                 let value = 0
-                if (indicator === 'avgStartHour_avgEndHour')
-                    value = clamp(branchPattern.pattern.avgStartHour - branchPattern.pattern.avgEndHour)
-                if (indicator === 'stdStartHour_stdEndHour')
-                    value = clamp(branchPattern.pattern.stdStartHour - branchPattern.pattern.stdEndHour)
+                if (indicator === 'reliability')
+                    value = clamp(branchPattern.pattern?.reliability)
+                if (indicator === 'dataPoints')
+                    value = clamp(branchPattern.pattern?.dataPoints)
 
 
                 Object.assign(items, { [indicator]: value })

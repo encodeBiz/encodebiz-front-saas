@@ -90,9 +90,7 @@ export const CustomizableGroupedBarChart = ({
                 backgroundColor: 'background.paper'
             }}
         >
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>
-                {title}
-            </Typography>
+         
 
             <ResponsiveContainer width="100%" height={height}>
                 <BarChart
@@ -125,7 +123,7 @@ export const CustomizableGroupedBarChart = ({
                     />
                     {entities.map((entity: { key: string, name: string, color: string }, index: number) => (
                         <Bar
-                            width={20}
+                            maxBarSize={25}
                             key={entity.key + '-' + index}
                             dataKey={entity.key}
                             name={entity.name}

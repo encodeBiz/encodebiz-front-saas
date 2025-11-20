@@ -7,52 +7,64 @@ import { CustomizableGroupedBarChart } from "../common/chart/GroupedBarChart";
 import { clamp } from "@/lib/common/String";
 
 export const OperatingCosts = () => {
-    const itemInThisCats = ['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour']
+
+    const itemInThisCats = ['avgCostHour', 'avgCycleCost', 'avgCostEfficiency', 'effectiveRealCost']
     // Colors for the bars
     const { cardIndicatorSelected, branchPatternList } = useDashboard()
     const [chartData, setChartData] = useState<{
         branch: Array<{ key: string, name: string, color: string }>
         data: Array<any>
     }>({ branch: [], data: [] })
-    const buildData = () => {
+    const buildBranch = () => {
         const branchData: Array<{ key: string, name: string, color: string }> = []
         branchPatternList.forEach(element => {
             branchData.push(
-                { key: element.branch.name, name: element.branch.name, color: element.color }
+                { key: element.branch.name.toLowerCase(), name: element.branch.name, color: element.color }
             )
         });
-
-        const chartData: Array<any> = []
+        setChartData({
+            ...chartData,
+            branch: branchData
+        })
+    }
+    const buildData = () => {
+        const data: Array<any> = []
         cardIndicatorSelected.filter(e => itemInThisCats.includes(e)).forEach(indicator => {
             const items = { category: indicator }
             branchPatternList.forEach(branchPattern => {
                 let value = 0
-                if (indicator === 'avgStartHour_avgEndHour')
-                    value = clamp(branchPattern.pattern.avgStartHour - branchPattern.pattern.avgEndHour)
-                if (indicator === 'stdStartHour_stdEndHour')
-                    value = clamp(branchPattern.pattern.stdStartHour - branchPattern.pattern.stdEndHour)
+                if (indicator === 'avgCostHour')
+                    value = clamp(branchPattern.pattern?.avgCostHour)
+                if (indicator === 'avgCycleCost')
+                    value = clamp(branchPattern.pattern?.avgCycleCost)
+                if (indicator === 'avgCostEfficiency')
+                    value = clamp(branchPattern.pattern?.avgCostEfficiency)
+                if (indicator === 'effectiveRealCost')
+                    value = clamp(branchPattern.pattern?.effectiveRealCost)
 
 
-                Object.assign(items, { [indicator]: value })
+                Object.assign(items, { [branchPattern.branch.name.toLowerCase()]: value })
             });
-            chartData.push(items)
+            data.push(items)
         });
 
         setChartData({
-            branch: branchData,
-            data: chartData
+            ...chartData,
+            data
         })
-
-
     }
 
     useEffect(() => {
-        buildData()
+        buildBranch()
     }, [branchPatternList.length])
 
+    useEffect(() => {
+        buildData()
+    }, [cardIndicatorSelected.length])
 
 
-    return <BorderBox sx={{p:4}}>
+
+    return <BorderBox sx={{ p: 4 }}>
         <Typography variant="h6">Costes Operativos</Typography>
         <Typography variant="body1">
             Comparación del rendimiento económico entre sucursales/proyectos.

@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { BorderBox } from "@/components/common/tabs/BorderBox";
 import { Typography } from "@mui/material";
 import { useDashboard } from "../../context/dashboardContext";

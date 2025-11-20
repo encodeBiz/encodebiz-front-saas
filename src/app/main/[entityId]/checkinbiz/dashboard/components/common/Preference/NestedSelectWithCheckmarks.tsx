@@ -73,33 +73,33 @@ const NestedSelectWithCheckmarks = () => {
             !isCategoryAllSelected(categoryChildren);
     };
 
-    return (<Box>
-        <Typography color='textSecondary' variant='body1'>{t('statsCheckbiz.operativeData')}</Typography>
-        <FormControl fullWidth>
+    const mapperValue = (selected: Array<string>) => {
+        return selected.filter(e=>e!==undefined).map((value) => {
+            // Find the item name from the nested structure
+            let itemName = value;
+            preferenceItems.forEach((category: {
+                name: string,
+                children: Array<{ name: string, value: string }>
+            }) => {
+                const found = category.children.find(child => child.value === value);
+                if (found) itemName = found.name;
+            });
+            return (
+                itemName + ','
+            );
+        })
+
+    }
+    return (<Box >
+        <Typography textTransform={'uppercase'} color='textSecondary' variant='body1'>{t('statsCheckbiz.operativeData')}</Typography>
+        <FormControl sx={{ m: 1, width: 340 }}>
             <InputLabel>{t('statsCheckbiz.operativeDataLabel')}</InputLabel>
             <Select
                 multiple
                 label={t('statsCheckbiz.operativeDataLabel')}
                 value={cardIndicatorSelected}
                 onChange={handleChange}
-                renderValue={(selected) => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                        {selected.map((value) => {
-                            // Find the item name from the nested structure
-                            let itemName = value;
-                            preferenceItems.forEach((category: {
-                                name: string,
-                                children: Array<{ name: string, value: string }>
-                            }) => {
-                                const found = category.children.find(child => child.value === value);
-                                if (found) itemName = found.name;
-                            });
-                            return (
-                                <Chip key={value} label={itemName} size="small" />
-                            );
-                        })}
-                    </Box>
-                )}
+                renderValue={(selected) => mapperValue(selected).join(',')}
                 MenuProps={{
                     PaperProps: {
                         style: {

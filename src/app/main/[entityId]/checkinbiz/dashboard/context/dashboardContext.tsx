@@ -29,6 +29,8 @@ interface IDashboardProps {
 
     type: string
     setType: (type: string) => void
+
+    initialize: () => void
 }
 
 export const DashboardContext = createContext<IDashboardProps | undefined>(undefined);
@@ -64,15 +66,8 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
     }
 
 
-
     useEffect(() => {
-        if (currentEntity?.entity?.id) {
-            initialize()
-        }
-    }, [currentEntity?.entity?.id])
-
-
-    useEffect(() => {
+       
         if (currentEntity?.entity?.id) {
             onSelectedBranch()
         }
@@ -110,7 +105,7 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
 
 
     return (
-        <DashboardContext.Provider value={{preferenceItems, type, setType, branchPatternList, cardIndicatorSelected, setCardIndicatorSelected, branchList, branchSelected, setBranchSelected, pending }}>
+        <DashboardContext.Provider value={{ initialize , preferenceItems, type, setType, branchPatternList, cardIndicatorSelected, setCardIndicatorSelected, branchList, branchSelected, setBranchSelected, pending }}>
             {children}
         </DashboardContext.Provider>
     );

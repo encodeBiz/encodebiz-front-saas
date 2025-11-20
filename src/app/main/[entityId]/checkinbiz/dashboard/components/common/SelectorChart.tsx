@@ -7,7 +7,7 @@ export const SelectorChart = () => {
     const { type, setType } = useDashboard()
     return (
         <Box>
-            <Typography color='textSecondary' variant='body1'>{t('statsCheckbiz.tempActiviy')}</Typography >
+            <Typography textTransform={'uppercase'} color='textSecondary' variant='body1'>{t('statsCheckbiz.tempActiviy')}</Typography >
             <FormControl sx={{ m: 1, width: 340 }}>
                 <InputLabel id="demo-simple-select-label">{t('statsCheckbiz.tempActiviyLabel')}</InputLabel>
                 <Select
