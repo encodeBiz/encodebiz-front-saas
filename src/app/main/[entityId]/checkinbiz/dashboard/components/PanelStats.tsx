@@ -2,15 +2,14 @@
 import BoxLoader from "@/components/common/BoxLoader";
 import HeaderPage from "@/components/features/dashboard/HeaderPage/HeaderPage";
 import { SettingsOutlined } from "@mui/icons-material";
-import { Container, Box, Typography, IconButton, Popover } from "@mui/material";
+import { Container, Box, Typography, Popover } from "@mui/material";
 import { useTranslations } from "next-intl";
 import React, { useEffect } from "react";
 import { useDashboard } from "../context/dashboardContext";
 import { SelectorBranch } from "./common/Selector";
 import { SelectorChart } from "./common/SelectorChart";
 import NestedSelectWithCheckmarks from "./common/Preference/NestedSelectWithCheckmarks";
-import { BaseButton } from "@/components/common/buttons/BaseButton";
-import { SassButton } from "@/components/common/buttons/GenericButton";
+ import { SassButton } from "@/components/common/buttons/GenericButton";
 import { OperatingHours } from "./cards/OperatingHours";
 import { TempActivity } from "./cards/TempActivity";
 import { useEntity } from "@/hooks/useEntity";
@@ -61,7 +60,7 @@ export const PanelStats = () => {
      </Box>}
 
 
-    {branchPatternList.length == 0 && 
+    {branchPatternList.length == 0 && !pending &&
     <Box display={'flex'} justifyContent={'center'} alignItems={'center'} sx={{ minHeight: 400, p: 4 }}>
       <Typography variant="body1">    Debes seleccionar al menos una sucursal/proyecto para ver estadísticas.</Typography>
     </Box>}

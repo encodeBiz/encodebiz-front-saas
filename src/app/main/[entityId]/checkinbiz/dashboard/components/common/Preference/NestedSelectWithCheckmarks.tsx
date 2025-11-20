@@ -7,7 +7,6 @@ import {
     Checkbox,
     ListItemText,
     ListItemIcon,
-    Chip,
     Box,
     Typography
 } from '@mui/material';

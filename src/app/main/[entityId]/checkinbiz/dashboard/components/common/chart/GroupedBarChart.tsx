@@ -20,7 +20,6 @@ import {
 
 export const CustomizableGroupedBarChart = ({
     data = [],
-    title = 'Customizable Grouped Bar Chart',
     height = 400,
     entities = []
 }: any) => {

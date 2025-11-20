@@ -19,6 +19,8 @@ export const OperatingHours = () => {
         data: Array<any>
     }>({ branch: [], data: [] })
     const buildBranch = () => {
+        console.log('buildBranch');
+        console.log(chartData);
         const branchData: Array<{ key: string, name: string, color: string }> = []
         branchPatternList.forEach(element => {
             branchData.push(
@@ -31,6 +33,8 @@ export const OperatingHours = () => {
         })
     }
     const buildData = () => {
+        console.log('buildData');
+        console.log(chartData);
         const data: Array<any> = []
         cardIndicatorSelected.filter(e => itemInThisCats.includes(e)).forEach(indicator => {
             const items = { category: indicator }
@@ -61,6 +65,10 @@ export const OperatingHours = () => {
         buildData()
     }, [cardIndicatorSelected.length])
 
+     useEffect(() => {
+        console.log('OK');        
+    }, [])
+
 
 
     return <BorderBox sx={{ p: 4 }}>
@@ -69,7 +77,7 @@ export const OperatingHours = () => {
             Comparación del comportamiento horario entre sucursales/proyectos.  Los valores se normalizan en una escala 0–100,
             donde los más altos indican mayor estabilidad operativa, mejor organización del tiempo y un reparto de horas más consistente.
         </Typography>
-
+ 
         <CustomizableGroupedBarChart
             data={chartData.data}
             title="Quarterly Business Metrics"
