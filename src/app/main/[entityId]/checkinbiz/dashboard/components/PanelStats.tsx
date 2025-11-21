@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import BoxLoader from "@/components/common/BoxLoader";
 import HeaderPage from "@/components/features/dashboard/HeaderPage/HeaderPage";
-import { SettingsOutlined } from "@mui/icons-material";
-import { Container, Box, Typography, Popover } from "@mui/material";
+import { InfoOutline, SettingsOutlined } from "@mui/icons-material";
+import { Container, Box, Typography, Popover, IconButton } from "@mui/material";
 import { useTranslations } from "next-intl";
 import React, { useEffect } from "react";
 import { useDashboard } from "../context/dashboardContext";
 import { SelectorBranch } from "./common/Selector";
 import { SelectorChart } from "./common/SelectorChart";
 import NestedSelectWithCheckmarks from "./common/Preference/NestedSelectWithCheckmarks";
- import { SassButton } from "@/components/common/buttons/GenericButton";
+import { SassButton } from "@/components/common/buttons/GenericButton";
 import { OperatingHours } from "./cards/OperatingHours";
 import { TempActivity } from "./cards/TempActivity";
 import { useEntity } from "@/hooks/useEntity";
@@ -40,7 +40,10 @@ export const PanelStats = () => {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
-  const handleSave = () => {}
+  const handleSave = () => {
+    localStorage.setItem('PANEL_CHECKBIZ_CHART', JSON.stringify(cardIndicatorSelected))
+    handleClose()
+  }
 
 
   const InnetContent = () => <Box sx={{ minHeight: 600, p: 4 }}>
@@ -54,17 +57,17 @@ export const PanelStats = () => {
 
     {branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['avgCostHour', 'avgCycleCost', 'avgCostEfficiency', 'effectiveRealCost'].includes(e)).length > 0 && <Box display={'flex'} flexDirection={'column'} gap={4}>
       <OperatingCosts />
-     </Box>}
+    </Box>}
 
     {branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['reliability', 'dataPoints'].includes(e)).length > 0 && <Box display={'flex'} flexDirection={'column'} gap={4}>
       <DataReliability />
-     </Box>}
+    </Box>}
 
 
     {branchPatternList.length == 0 && !pending &&
-    <Box display={'flex'} justifyContent={'center'} alignItems={'center'} sx={{ minHeight: 400, p: 4 }}>
-      <Typography variant="body1">    Debes seleccionar al menos una sucursal/proyecto para ver estadísticas.</Typography>
-    </Box>}
+      <Box display={'flex'} justifyContent={'center'} alignItems={'center'} sx={{ minHeight: 400, p: 4 }}>
+        <Typography variant="body1">    Debes seleccionar al menos una sucursal/proyecto para ver estadísticas.</Typography>
+      </Box>}
 
 
 
@@ -74,12 +77,19 @@ export const PanelStats = () => {
 
     <Container maxWidth="lg">
       <HeaderPage
-        title={t("layout.side.menu.Stats")}
+        title={
+          <Box display={'flex'} gap={1} justifyItems={'center'} alignItems={'center'}> 
+            <Typography variant="h4" component="h1" align="center" sx={{ mb: 0, textAlign: 'left' }}>
+              {t("statsCheckbiz.stats")}
+            </Typography>
+            <IconButton><InfoOutline sx={{ fontSize: 25 }} /></IconButton>
+          </Box>
+        }
         actions={
-          <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2}  >
-            <Box display={'flex'} justifyContent={'space-between'} width={'250px'}>
+          <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2}>
+            <Box display={'flex'} justifyContent={'space-between'}    >
               <Box>
-                <SassButton variant="text" onClick={handleClick} startIcon={<SettingsOutlined sx={{ fontSize: 20 }} color='primary' />}>
+                <SassButton sx={{minWidth:210}} variant="text" onClick={handleClick} startIcon={<SettingsOutlined sx={{ fontSize: 20 }} color='primary' />}>
                   <Typography sx={{ marginLeft: 1 }} variant="body1" color="primary">{t('statsCheckbiz.configPanel')}</Typography>
                 </SassButton>
                 <Popover
@@ -100,7 +110,7 @@ export const PanelStats = () => {
                     <SelectorChart />
                   </Box>
 
-                   <Box display={'flex'} justifyContent={'flex-end'} flexDirection={'row'} gap={1} padding={4}>
+                  <Box display={'flex'} justifyContent={'flex-end'} flexDirection={'row'} gap={1} padding={4}>
                     <SassButton onClick={handleClose} variant="outlined" color="primary">{t('core.button.cancel')}</SassButton>
                     <SassButton onClick={handleSave} variant="contained" color="primary">{t('core.button.save')}</SassButton>
                   </Box>

@@ -909,6 +909,7 @@
     "empthytext": "Ajusta los filtros con los parámetros que requieras para gráficar información"
   },
   "statsCheckbiz": {
+    "stats":"Panel Comparativo de Rendimiento",
     "advise": "Debes seleccionar al menos una sucursal/proyecto para ver estadísticas.",
     "operationData": "Datos en operación",
     "configPanel":"Configurar panel",

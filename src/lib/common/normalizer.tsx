@@ -122,6 +122,7 @@ export function normalizeBranchDataset(patterns: IBranchPattern[]) {
 
     return patterns.map(p => ({
         branchId: (p as any).branchId ?? null,
+        pattern:p,
         normalized: NormalizationService.normalize(p, ranges),
     }));
 }

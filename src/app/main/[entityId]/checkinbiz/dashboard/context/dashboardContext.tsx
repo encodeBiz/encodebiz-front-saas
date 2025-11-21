@@ -17,6 +17,16 @@ export interface IDataSet {
     color: '#165BAA' | '#A155B9' | '#F765A3'
 }
 
+export const getTextByKey = (key: string, preferenceItems: Array<{ name: string, children: Array<{ name: string, value: string }> }>) => {
+    let text = key
+    preferenceItems.forEach(element => {
+        element.children.forEach(child => {
+            if (child.value === key) text = child.name
+        });
+    });
+    return text
+}
+
 interface IDashboardProps {
     branchList: Array<ISucursal>
     branchSelected: Array<ISucursal>,
@@ -24,6 +34,7 @@ interface IDashboardProps {
     branchPatternList: Array<{
         branchId: string,
         branch: ISucursal,
+        pattern: IBranchPattern,
         normalized: NormalizedIndicators,
         color: '#165BAA' | '#A155B9' | '#F765A3'
     }>,
@@ -36,6 +47,7 @@ interface IDashboardProps {
         branchId: string,
         branch: ISucursal,
         normalized: NormalizedIndicators,
+        pattern: IBranchPattern,
         color: '#165BAA' | '#A155B9' | '#F765A3'
     }>
     type: string
@@ -52,6 +64,7 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
     const [branchPatternList, setbranchPatternList] = useState<Array<{
         branchId: string,
         branch: ISucursal,
+        pattern: IBranchPattern,
         normalized: NormalizedIndicators,
         color: '#165BAA' | '#A155B9' | '#F765A3'
     }>>([])
@@ -61,10 +74,13 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
     const [normalizedData, setNormalizedData] = useState<Array<{
         branchId: string,
         branch: ISucursal,
+        pattern: IBranchPattern,
         normalized: NormalizedIndicators,
         color: '#165BAA' | '#A155B9' | '#F765A3'
     }>>([])
     const { currentEntity } = useEntity()
+
+
 
 
     const initialize = async () => {
@@ -73,42 +89,40 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
         setBranchList(branchList)
         const branchPatternList: Array<IBranchPattern> = []
         await Promise.all(branchList.map(async (branch) => {
-            branchPatternList.push(await fetchBranchPattern(currentEntity?.entity?.id as string, branch.id as string) as IBranchPattern)
+            const dataPattern = await fetchBranchPattern(currentEntity?.entity?.id as string, branch.id as string) as IBranchPattern
+            if (dataPattern)
+                branchPatternList.push(dataPattern as IBranchPattern)
         }))
         const normalizeData: Array<{
             branchId: string,
+            pattern: IBranchPattern,
             normalized: NormalizedIndicators
         }> = normalizeBranchDataset(branchPatternList)
 
         const branchPatternDataListt: Array<{
             branchId: string,
             branch: ISucursal,
+            pattern: IBranchPattern,
             normalized: NormalizedIndicators
             color: '#165BAA' | '#A155B9' | '#F765A3'
         }> = []
-        await Promise.all(normalizeData.map(async (branch, i) => {
+        await Promise.all(normalizeData.map(async (branch) => {
             branchPatternDataListt.push({
                 branchId: branch.branchId,
+                pattern: branch.pattern,
                 branch: await fetchSucursal(currentEntity?.entity?.id as string, branch.branchId),
                 normalized: branch.normalized,
                 color: '#165BAA'
             })
         }))
         setNormalizedData(branchPatternDataListt)
+        setCardIndicatorSelected(localStorage.getItem('PANEL_CHECKBIZ_CHART') ? JSON.parse(localStorage.getItem('PANEL_CHECKBIZ_CHART') as string) : ['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour'])
+
         setPending(false)
     }
 
     const onSelectedBranch = async () => {
-        const branchPatternListData: Array<IDataSet> = []
-
-        await Promise.all(branchSelected.map(async (branch, i) => {
-            branchPatternListData.push({
-                branch,
-                pattern: await fetchBranchPattern(currentEntity?.entity?.id as string, branch.id as string) as IBranchPattern,
-                color: '#165BAA'
-            })
-        }))
-        console.log(branchPatternListData);
+        console.log(normalizedData.filter(e => branchSelected.map(b => b.id).includes(e.branchId)).map((e, i) => ({ ...e, color: colors[i] })))
         setbranchPatternList(normalizedData.filter(e => branchSelected.map(b => b.id).includes(e.branchId)).map((e, i) => ({ ...e, color: colors[i] })))
     }
 
