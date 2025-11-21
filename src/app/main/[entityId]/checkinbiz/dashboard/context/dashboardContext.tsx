@@ -1,6 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
 import { fetchSucursal, search } from '@/services/checkinbiz/sucursal.service';
@@ -33,7 +32,7 @@ interface IDashboardProps {
     setBranchSelected: (items: Array<ISucursal>) => void
     branchPatternList: Array<{
         branchId: string,
-        branch: ISucursal | null ,
+        branch: ISucursal | null,
         pattern: IBranchPattern,
         normalized: NormalizedIndicators,
         color: '#165BAA' | '#A155B9' | '#F765A3'
@@ -110,23 +109,26 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
             branchPatternDataListt.push({
                 branchId: branch.branchId,
                 pattern: branch.pattern,
-                branch:  branch.branchId?await fetchSucursal(currentEntity?.entity?.id as string, branch.branchId):null,
+                branch: branch.branchId ? await fetchSucursal(currentEntity?.entity?.id as string, branch.branchId) : null,
                 normalized: branch.normalized,
                 color: '#165BAA'
             })
         }))
         setNormalizedData(branchPatternDataListt)
         setCardIndicatorSelected(localStorage.getItem('PANEL_CHECKBIZ_CHART') ? JSON.parse(localStorage.getItem('PANEL_CHECKBIZ_CHART') as string) : ['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour'])
-        setBranchList(branchPatternDataListt.filter(e=>!!e.branch).map(e=>e.branch as ISucursal))
+        setBranchList(branchPatternDataListt.filter(e => !!e.branch).map(e => e.branch as ISucursal))
+        setbranchPatternList(branchPatternDataListt.filter(e => !!e.branch).slice(0, 3))
+        setBranchSelected(branchPatternDataListt.filter(e => !!e.branch).map(e => e.branch as ISucursal).slice(0, 3))
+        console.log(branchPatternDataListt.filter(e => !!e.branch).slice(0, 3));        
         setPending(false)
     }
 
     const onSelectedBranch = async (branchSelected: Array<ISucursal>) => {
-         setbranchPatternList(normalizedData.filter(e => branchSelected.map(b => b.id).includes(e.branchId)).map((e, i) => ({ ...e, color: colors[i] })))
+        setbranchPatternList(normalizedData.filter(e => branchSelected.map(b => b.id).includes(e.branchId)).map((e, i) => ({ ...e, color: colors[i] })))
     }
 
 
-    
+
 
 
     const preferenceItems: Array<{ name: string, children: Array<{ name: string, value: string }> }> = [
@@ -160,7 +162,7 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
 
 
     return (
-        <DashboardContext.Provider value={{onSelectedBranch, initialize, normalizedData, preferenceItems, type, setType, branchPatternList, cardIndicatorSelected, setCardIndicatorSelected, branchList, branchSelected, setBranchSelected, pending }}>
+        <DashboardContext.Provider value={{ onSelectedBranch, initialize, normalizedData, preferenceItems, type, setType, branchPatternList, cardIndicatorSelected, setCardIndicatorSelected, branchList, branchSelected, setBranchSelected, pending }}>
             {children}
         </DashboardContext.Provider>
     );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import {
     Dialog,
     DialogActions,
@@ -17,8 +17,9 @@ import { CustomTypography } from '../Text/CustomTypography';
 import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 
 interface InfoModalProps {
-    title: string
-    description: string
+    title?: string
+    htmlDescription?: ReactNode
+    description?: string
     cancelBtn?: boolean
     closeBtn?: boolean
     closeIcon?: boolean
@@ -29,7 +30,7 @@ interface InfoModalProps {
     extraText?: string
     btnCloseText?: string
 }
-const InfoModal = ({ title, description, onClose, btnText, closeBtn, btnCloseText, centerBtn, extraText,closeIcon=false,btnFill=false,
+const InfoModal = ({ title, description, htmlDescription, onClose, btnText, closeBtn, btnCloseText, centerBtn, extraText, closeIcon = false, btnFill = false,
     cancelBtn = true }: InfoModalProps): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const t = useTranslations()
@@ -56,7 +57,7 @@ const InfoModal = ({ title, description, onClose, btnText, closeBtn, btnCloseTex
             maxWidth="sm"
             slotProps={{ paper: { sx: { p: 2, borderRadius: 2 } } }}
         >
-            <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            {title && <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
                     <CustomTypography >{title}</CustomTypography>
                 </Box>
@@ -64,13 +65,14 @@ const InfoModal = ({ title, description, onClose, btnText, closeBtn, btnCloseTex
                     onClick={() => closeModal(CommonModalType.INFO)}
                     color={theme.palette.primary.main}
                 />}
-            </DialogTitle>
+            </DialogTitle>}
             <DialogContent>
-                <DialogContentText id="alert-dialog-description" sx={{ mb: 3 }}>
+                {(description || extraText) && <DialogContentText id="alert-dialog-description" sx={{ mb: 3 }}>
                     <Typography variant='body1'>{description}</Typography>
                     {extraText && <Typography mt={1} color='primary' variant='body1'>{extraText}</Typography>}
+                </DialogContentText>}
 
-                </DialogContentText>
+                {htmlDescription}
             </DialogContent>
             <DialogActions >
 
@@ -78,7 +80,7 @@ const InfoModal = ({ title, description, onClose, btnText, closeBtn, btnCloseTex
 
                     {cancelBtn && <SassButton
                         color="primary"
-                        variant={btnFill?"contained":"outlined"}
+                        variant={btnFill ? "contained" : "outlined"}
                         onClick={(e) => handleClose(e, 'manual')}
                         size='small'
 

@@ -229,7 +229,7 @@ export default function useAttendanceController() {
 
      {
       id: 'createdAt',
-      label: t("core.label.createdAt"),
+      label: t("core.label.createAt"),
       minWidth: 170,
       format: (value, row) => format_date(row.createdAt, 'YYYY-MM-DD')
     },

@@ -20,7 +20,7 @@ import {
 
 export const CustomizableGroupedBarChart = ({
     data = [],
-    height = 400,
+    height = 300,
     entities = []
 }: any) => {
     const theme = useTheme();
@@ -41,12 +41,11 @@ export const CustomizableGroupedBarChart = ({
         if (active && payload && payload.length) {
             return (
                 <Paper
-                    elevation={3}
+                    elevation={0}
                     sx={{
                         p: 2,
                         backgroundColor: theme.palette.primary.main,
                         color:'#FFF',
-                        border: `1px solid ${theme.palette.divider}`,
                         textAlign:'left'
                     }}
                 >
@@ -88,7 +87,7 @@ export const CustomizableGroupedBarChart = ({
                 p: 3,
                 border: `1px solid ${theme.palette.divider}`,
                 borderRadius: 2,
-                backgroundColor: 'background.paper'
+                backgroundColor: '#FFF'
             }}
         >
          

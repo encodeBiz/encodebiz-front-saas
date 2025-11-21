@@ -54,16 +54,11 @@ export const OperatingHours = () => {
         buildData()
     }, [branchPatternList.length, cardIndicatorSelected.length])
 
-
-
-    useEffect(() => {
-        console.log('OperatingHours')
-    }, [])
+ 
 
 
 
-
-    return <BorderBox >
+    return <BorderBox sx={{background:'#FFF'}} >
         <Box sx={{ p: 4 }}>
             <Typography variant="h6">Horarios Operativos</Typography>
             <Typography variant="body1">

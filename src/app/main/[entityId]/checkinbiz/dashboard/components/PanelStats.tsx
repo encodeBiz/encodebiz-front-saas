@@ -15,6 +15,10 @@ import { TempActivity } from "./cards/TempActivity";
 import { useEntity } from "@/hooks/useEntity";
 import { DataReliability } from "./cards/DataReliability";
 import { OperatingCosts } from "./cards/OperatingCosts";
+import InfoModal from "@/components/common/modals/InfoModal";
+import { useCommonModal } from "@/hooks/useCommonModal";
+import { CommonModalType } from "@/contexts/commonModalContext";
+import { PanelModalInfo } from "./common/PanelModalInfo";
 
 export const PanelStats = () => {
   const t = useTranslations();
@@ -22,7 +26,7 @@ export const PanelStats = () => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const { currentEntity } = useEntity()
   const [preferenceSelected, setPreferenceSelected] = useState(cardIndicatorSelected)
-
+  const { open, openModal, closeModal } = useCommonModal()
   useEffect(() => {
     if (currentEntity?.entity?.id) {
       initialize()
@@ -38,14 +42,14 @@ export const PanelStats = () => {
     setAnchorEl(null);
   };
 
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const openTooltip = Boolean(anchorEl);
+  const id = openTooltip ? 'simple-popover' : undefined;
 
   const handleSave = () => {
     localStorage.setItem('PANEL_CHECKBIZ_CHART', JSON.stringify(preferenceSelected))
     handleClose()
     setCardIndicatorSelected(preferenceSelected)
-  } 
+  }
 
 
   const InnetContent = () => <Box sx={{ minHeight: 600, p: 3 }}>
@@ -77,11 +81,11 @@ export const PanelStats = () => {
     <Container maxWidth="lg">
       <HeaderPage
         title={
-          <Box display={'flex'} gap={1} justifyItems={'center'} alignItems={'center'}>
+          <Box display={'flex'} gap={0.2} justifyItems={'center'} alignItems={'center'}>
             <Typography align="center" sx={{ mb: 0, textAlign: 'left', fontSize: 32 }}>
               {t("statsCheckbiz.stats")}
             </Typography>
-            <IconButton><InfoOutline sx={{ fontSize: 25 }} /></IconButton>
+            <IconButton onClick={() => openModal(CommonModalType.INFO)}><InfoOutline sx={{ fontSize: 25 }} /></IconButton>
           </Box>
         }
         actions={
@@ -93,7 +97,7 @@ export const PanelStats = () => {
                 </SassButton>
                 <Popover
                   id={id}
-                  open={open}
+                  open={openTooltip}
                   anchorEl={anchorEl}
                   onClose={handleClose}
                   anchorOrigin={{
@@ -120,7 +124,11 @@ export const PanelStats = () => {
         }
       > <InnetContent /></HeaderPage>
 
-     
+      {open.type === CommonModalType.INFO   && <InfoModal
+        centerBtn cancelBtn={false} closeBtn={false} closeIcon={false}
+        htmlDescription={<PanelModalInfo/>}
+        onClose={() => closeModal(CommonModalType.INFO)}
+      />}
     </Container>
 
   );
