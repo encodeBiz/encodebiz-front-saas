@@ -61,10 +61,7 @@ export const CheckBizStatsProvider = ({ children }: { children: React.ReactNode 
         if (branchList.length > 0) {
             if (branchId) {
                 setBranchSelected([branchList.find(e => e.id === branchId) as ISucursal])
-            }
-            else {
-                setBranchSelected([branchList[0]])
-            }
+            }            
         }
         else setPending(false)
     }

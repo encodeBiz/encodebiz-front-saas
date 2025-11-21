@@ -909,10 +909,12 @@
     "empthytext": "Ajusta los filtros con los parámetros que requieras para gráficar información"
   },
   "statsCheckbiz": {
-    "advise": "No exiten datos para mostrar, debe seccionar al menos una sucursal para mostrar los datos estadistivos y de predicción",
+    "stats":"Panel Comparativo de Rendimiento",
+    "advise": "Debes seleccionar al menos una sucursal/proyecto para ver estadísticas.",
     "operationData": "Datos en operación",
+    "configPanel":"Configurar panel",
     "loading": "Procesando y preparando datos para mostrar",
-    "selected": "Selecione una o dos sucursales",
+    "selected": "Sucursales/Proyectos a comparar",
     "avgWeekWork": "Promedio de horas semanales",
     "avgWeekWorkHelp": "Hora promedio de inicio y fin de jornada (en formato decimal)",
     "reliability": "Nivel de confianza",
@@ -938,7 +940,12 @@
     "chartTitle": "Comparativa de Horas por Semana",
     "chartType": "Tipo de gráfica",
     "heuristicAnalize": "Análisis de predicción en operaciones",
-    "selectedIndicator": "Seleccione los indicadores a mostrar"
+    "selectedIndicator": "Seleccione los indicadores a mostrar",
+
+    "tempActiviy":"Actividad Temporal",
+    "operativeData":"DATOS OPERATIVOS",
+    "tempActiviyLabel":"Datos de actividad temporal",
+    "operativeDataLabel":"Datos operativos"
   },
   "checking": {
     "title": "Control de Asistencia",

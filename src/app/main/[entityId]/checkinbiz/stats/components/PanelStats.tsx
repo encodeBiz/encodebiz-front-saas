@@ -17,7 +17,7 @@ import { useEntity } from "@/hooks/useEntity";
 
 
 
-export const PanelStats = ({ branchId, employeeId, type }: { type?: 'employee' | 'branch' , branchId?: string | null, employeeId?: string | null }) => {
+export const PanelStats = ({ branchId, employeeId, type }: { type?: 'employee' | 'branch', branchId?: string | null, employeeId?: string | null }) => {
   const t = useTranslations();
   const { currentEntity } = useEntity()
   const { pending, branchOne, heuristicAnalizeError, branchTwo, heuristicDataOne, heuristicDataTwo, initialize } = useCheckBizStats()
@@ -36,36 +36,14 @@ export const PanelStats = ({ branchId, employeeId, type }: { type?: 'employee' |
 
 
   useEffect(() => {
-    initialize(branchId ? branchId : null, employeeId ? employeeId : null, type as  'employee' | 'branch' )
+    initialize(branchId ? branchId : null, employeeId ? employeeId : null, type as 'employee' | 'branch')
   }, [branchId, currentEntity?.entity?.id])
 
-  const InnetContent = () => <>
+  const InnetContent = () => <Box sx={{ minHeight: 600 }}>
+    <SelectorBranch />
     {pending && <BoxLoader message={t('statsCheckbiz.loading')} />}
     {!pending && branchOne && <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }} p={2}>
-      <Box display={'flex'} justifyContent={'space-between'} width={'100%'}>
-        {!pending && !!branchOne && <Box>
-          <Typography variant='h6' sx={{ width: '100%' }}>{t('statsCheckbiz.operationData')}</Typography>
-        </Box>}
-        <Box>
-          <IconButton onClick={handleClick}><SettingsOutlined sx={{ fontSize: 40 }} color='primary' /></IconButton>
-          <Popover
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
-          >
-            <Box display={'flex'} flexDirection={'column'} gap={4} padding={4}>
-              <SelectorCard />
-              <SelectorIndicator />
-              <SelectorChart />
-            </Box>
-          </Popover>
-        </Box>
-      </Box>
+
       <StatsPattern />
     </Box>}
 
@@ -87,7 +65,7 @@ export const PanelStats = ({ branchId, employeeId, type }: { type?: 'employee' |
         {heuristicDataTwo.length > 0 && branchTwo && !heuristicAnalizeError && <HeuristicAnalize branchPattern={branchTwo} data={heuristicDataTwo} />}
       </Box>}
     </Box>
-  </>
+  </Box>
   return (
 
     <Container maxWidth="lg">
@@ -96,7 +74,34 @@ export const PanelStats = ({ branchId, employeeId, type }: { type?: 'employee' |
           title={t("layout.side.menu.Stats")}
           actions={branchId ? null :
             <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
-              <SelectorBranch />
+
+              <Box display={'flex'} justifyContent={'space-between'} width={'100%'}>
+                {!pending && !!branchOne && <Box>
+                  <Typography variant='h6' sx={{ width: '100%' }}>{t('statsCheckbiz.operationData')}</Typography>
+                </Box>}
+                <Box>
+                  <IconButton onClick={handleClick}>
+                    <SettingsOutlined sx={{ fontSize: 20 }} color='primary' />
+                    <Typography sx={{marginLeft:2}} variant="body1" color="primary">{t('statsCheckbiz.configPanel')}</Typography>
+                  </IconButton>
+                  <Popover
+                    id={id}
+                    open={open}
+                    anchorEl={anchorEl}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'left',
+                    }}
+                  >
+                    <Box display={'flex'} flexDirection={'column'} gap={4} padding={4}>
+                      <SelectorCard />
+                      <SelectorIndicator />
+                      <SelectorChart />
+                    </Box>
+                  </Popover>
+                </Box>
+              </Box>
             </Box>
           }
         > <InnetContent /></HeaderPage>}
