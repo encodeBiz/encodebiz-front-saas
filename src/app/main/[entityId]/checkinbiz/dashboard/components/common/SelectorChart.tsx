@@ -1,10 +1,11 @@
 'use client';
 import { Box, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 import { useTranslations } from "next-intl";
-import { useDashboard } from '../../context/dashboardContext';
-export const SelectorChart = () => {
+export const SelectorChart = ({ type, setType }: {
+    type: string
+    setType: (type: string) => void
+}) => {
     const t = useTranslations();
-    const { type, setType } = useDashboard()
     return (
         <Box>
             <Typography textTransform={'uppercase'} color='textSecondary' variant='body1'>{t('statsCheckbiz.tempActiviy')}</Typography >

@@ -12,13 +12,15 @@ import {
 } from '@mui/material';
 import { ExpandMore, ExpandLess } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
-import { useDashboard } from '../../../context/dashboardContext';
+ 
+const NestedSelectWithCheckmarks = ({ value, onChange, preferenceItems }: {
+    value: Array<string>
+    onChange: (data: Array<string>) => void
+    preferenceItems: Array<{ name: string, children: Array<{ name: string, value: string }> }>
 
-const NestedSelectWithCheckmarks = () => {
+}) => {
     const t = useTranslations()
-    const { cardIndicatorSelected, setCardIndicatorSelected, preferenceItems } = useDashboard()
-
-
+ 
 
     const [expandedCategories, setExpandedCategories] = useState<Array<any>>([]);
 
@@ -35,45 +37,45 @@ const NestedSelectWithCheckmarks = () => {
         // If it's a category header click, don't select it
         if ((preferenceItems as any).some((cat: { name: string, value: string }) => cat.name === value)) return;
 
-        setCardIndicatorSelected(value);
+        onChange(value);
     };
 
-    const isSelected = (value: string) => cardIndicatorSelected.includes(value);
+    const isSelected = (v: string) => value.includes(v);
 
     const toggleAllInCategory = (categoryChildren: Array<{ name: string, value: string }>) => {
         const allChildrenValues: Array<string> = categoryChildren.map(child => child.value);
-        const allSelected = allChildrenValues.every(val => cardIndicatorSelected.includes(val));
+        const allSelected = allChildrenValues.every(val => value.includes(val));
 
         if (allSelected) {
             // Remove all children from this category
-            setCardIndicatorSelected(cardIndicatorSelected.filter((val: string) => !allChildrenValues.includes(val)));
+            onChange(value.filter((val: string) => !allChildrenValues.includes(val)));
         } else {
             // Add all children from this category
-            setCardIndicatorSelected(Array.from(new Set([...cardIndicatorSelected, ...allChildrenValues])));
+            onChange(Array.from(new Set([...value, ...allChildrenValues])));
         }
     };
 
     const toggleSubCategory = (item: { name: string, value: string }) => {
-        if (cardIndicatorSelected.find(e => e === item.value)) {
+        if (value.find(e => e === item.value)) {
             // Remove the item from selection
-            setCardIndicatorSelected(cardIndicatorSelected.filter(val => val !== item.value));
+            onChange(value.filter(val => val !== item.value));
         } else {
             // Add the item to selection (deduplicated)
-            setCardIndicatorSelected(Array.from(new Set([...cardIndicatorSelected, item.value])));
+            onChange(Array.from(new Set([...value, item.value])));
         }
     };
 
     const isCategoryAllSelected = (categoryChildren: Array<{ name: string, value: string }>) => {
-        return categoryChildren.every(child => cardIndicatorSelected.includes(child.value));
+        return categoryChildren.every(child => value.includes(child.value));
     };
 
     const isCategoryPartialSelected = (categoryChildren: Array<{ name: string, value: string }>) => {
-        return categoryChildren.some(child => cardIndicatorSelected.includes(child.value)) &&
+        return categoryChildren.some(child => value.includes(child.value)) &&
             !isCategoryAllSelected(categoryChildren);
     };
 
     const mapperValue = (selected: Array<string>) => {
-        return selected.filter(e=>e!==undefined).map((value) => {
+        return selected.filter(e => e !== undefined).map((value) => {
             // Find the item name from the nested structure
             let itemName = value;
             preferenceItems.forEach((category: {
@@ -96,7 +98,7 @@ const NestedSelectWithCheckmarks = () => {
             <Select
                 multiple
                 label={t('statsCheckbiz.operativeDataLabel')}
-                value={cardIndicatorSelected}
+                value={value}
                 onChange={handleChange}
                 renderValue={(selected) => mapperValue(selected).join(',')}
                 MenuProps={{

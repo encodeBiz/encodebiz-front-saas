@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { BorderBox } from "@/components/common/tabs/BorderBox";
-import { Divider, Typography } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import { getTextByKey, useDashboard } from "../../context/dashboardContext";
 import { CustomizableGroupedBarChart } from "../common/chart/GroupedBarChart";
@@ -20,7 +20,7 @@ export const OperatingCosts = () => {
         const branchData: Array<{ key: string, name: string, color: string }> = []
         branchPatternList.forEach(element => {
             branchData.push(
-                { key: element.branch.name.toLowerCase(), name: element.branch.name, color: element.color }
+                { key: element.branch?.name.toLowerCase() as string, name: element.branch?.name as string, color: element.color }
             )
         });
         const data: Array<any> = []
@@ -38,7 +38,7 @@ export const OperatingCosts = () => {
                     value = branchPattern.normalized?.costes?.costEffective ?? 0
 
 
-                Object.assign(items, { [branchPattern.branch.name.toLowerCase()]: value })
+                Object.assign(items, { [branchPattern.branch?.name?.toLowerCase() as string]: value })
             });
             data.push(items)
         });
@@ -56,18 +56,22 @@ export const OperatingCosts = () => {
 
 
 
-    return <BorderBox sx={{ p: 4 }}>
-        <Typography variant="h6">Costes Operativos</Typography>
-        <Typography variant="body1">
-            Comparación del rendimiento económico entre sucursales/proyectos.
-            Los valores se normalizan en una escala 0–100, donde puntuaciones más altas representan un uso más eficiente de los recursos, menores desviaciones y un mejor equilibrio coste-productividad.        </Typography>
+    return <BorderBox  >
+        <Box sx={{ p: 4 }}>
+            <Typography variant="h6">Costes Operativos</Typography>
+            <Typography variant="body1">
+                Comparación del rendimiento económico entre sucursales/proyectos.
+                Los valores se normalizan en una escala 0–100, donde puntuaciones más altas representan un uso más eficiente de los recursos, menores desviaciones y un mejor equilibrio coste-productividad.        </Typography>
+        </Box>
+        <Divider orientation="horizontal" flexItem />
 
-        <Divider flexItem />
-        <CustomizableGroupedBarChart
-            data={chartData.data}
+        <Box sx={{ p: 4 }}>
+            <CustomizableGroupedBarChart
+                data={chartData.data}
 
-            height={350}
-            entities={chartData.branch}
-        />
+                height={350}
+                entities={chartData.branch}
+            />
+        </Box>
     </BorderBox>
 }

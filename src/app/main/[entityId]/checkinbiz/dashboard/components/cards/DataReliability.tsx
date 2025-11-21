@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { BorderBox } from "@/components/common/tabs/BorderBox"
-import { Divider, Typography } from "@mui/material"
+import { Box, Divider, Typography } from "@mui/material"
 import { useState, useEffect } from "react"
 import { getTextByKey, useDashboard } from "../../context/dashboardContext"
 import { CustomizableGroupedBarChart } from "../common/chart/GroupedBarChart"
@@ -18,7 +18,7 @@ export const DataReliability = () => {
         const branchData: Array<{ key: string, name: string, color: string }> = []
         branchPatternList.forEach(element => {
             branchData.push(
-                { key: element.branch.name.toLowerCase(), name: element.branch.name, color: element.color }
+                { key: element.branch?.name.toLowerCase() as string, name: element.branch?.name as string, color: element.color }
             )
         });
 
@@ -32,7 +32,7 @@ export const DataReliability = () => {
                 if (indicator === 'dataPoints')
                     value = branchPattern.normalized?.confiabilidad?.observations ?? 0
 
-                Object.assign(items, { [branchPattern.branch.name.toLowerCase()]: value })
+                Object.assign(items, { [branchPattern.branch?.name.toLowerCase() as string]: value })
             });
             chartData.push(items)
         });
@@ -42,7 +42,7 @@ export const DataReliability = () => {
             data: chartData
         })
 
-       
+
 
     }
 
@@ -52,17 +52,21 @@ export const DataReliability = () => {
 
 
 
-    return <BorderBox sx={{ p: 4 }}>
-        <Typography variant="h6">Confiabilidad del Dato</Typography>
-        <Typography variant="body1">
-            Comparación de la calidad y estabilidad del dato operativo entre sucursales/proyectos.  Los valores se normalizan en una escala 0–100, donde los más altos indican mayor consistencia, menor variabilidad y datos más fiables para la toma de decisiones.
-        </Typography>
-        <Divider flexItem />
-        <CustomizableGroupedBarChart
-            data={chartData.data}
-            
-            height={350}
-            entities={chartData.branch}
-        />
+    return <BorderBox >
+        <Box sx={{ p: 4 }}>
+            <Typography variant="h6">Confiabilidad del Dato</Typography>
+            <Typography variant="body1">
+                Comparación de la calidad y estabilidad del dato operativo entre sucursales/proyectos.  Los valores se normalizan en una escala 0–100, donde los más altos indican mayor consistencia, menor variabilidad y datos más fiables para la toma de decisiones.
+            </Typography>
+        </Box>
+        <Divider orientation="horizontal" flexItem />
+        <Box sx={{ p: 4 }}>
+            <CustomizableGroupedBarChart
+                data={chartData.data}
+
+                height={350}
+                entities={chartData.branch}
+            />
+        </Box>
     </BorderBox>
 }

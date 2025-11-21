@@ -1,57 +1,50 @@
 import { IBranchPattern, NormalizedIndicators, Ranges } from "@/domain/features/checkinbiz/IStats";
 
 export const clamp = (value: number, min = 0, max = 100) =>
-    Math.max(min, Math.min(max, value));
+  Math.max(min, Math.min(max, value));
 
-export const normalizeInverse = (val: number, min: number, max: number) =>
-    clamp(100 - ((val - min) / (max - min)) * 100);
+ 
+export const normalizeDirect = (val: number, min: number, max: number) => {
+  if (max === min) return 50; // neutral si no hay variación
+  return clamp(((val - min) / (max - min)) * 100);
+};
 
-export const normalizeDirect = (val: number, min: number, max: number) =>
-    clamp(((val - min) / (max - min)) * 100);
-// ======================================================================
-//  NormalizationService.ts
-//  Servicio completo de normalización 0–100 para BranchPattern
-// ======================================================================
-
-// ========================================================
-// 1. TIPOS
-// ========================================================
-
-
-
-
-// ========================================================
-// 3. NORMALIZADORES
-// ========================================================
+ 
+export const normalizeInverse = (val: number, min: number, max: number) => {
+  if (max === min) return 50; // neutral
+  return clamp(100 - ((val - min) / (max - min)) * 100);
+};
+ 
+ 
 export function normalizeHorarioStability(stdStart: number, stdEnd: number) {
-    // std en horas → convertir a minutos
-    const varMinutes = (stdStart + stdEnd) * 60;
-    const maxVar = 120; // 2h dispersión = 0/100
+  const varMinutes = (stdStart + stdEnd) * 60;
+  const maxVar = 120; // 2 horas de dispersión = 0/100
 
-    return clamp(100 - (varMinutes / maxVar) * 100);
+  return clamp(100 - (varMinutes / maxVar) * 100);
 }
 
 export function normalizeWeeklyHours(weekly: Array<number | null>) {
-    const valid = weekly.filter(x => typeof x === "number") as number[];
+  const valid = weekly.filter(x => typeof x === "number") as number[];
 
-    if (!valid.length) return 0;
+  if (!valid.length) return 0;
 
-    const hrs = valid.reduce((a, b) => a + b, 0);
+  const hrs = valid.reduce((a, b) => a + b, 0);
 
-    const IDEAL = 42.5;
-    const MAX_DESV = 15;
+  const IDEAL = 42.5;
+  const MAX_DESV = 15;
 
-    return clamp(100 - (Math.abs(hrs - IDEAL) / MAX_DESV) * 100);
+  return clamp(100 - (Math.abs(hrs - IDEAL) / MAX_DESV) * 100);
 }
 
 export function normalizeConfidence(rel: number) {
-    return clamp(rel * 100);
+  return clamp(rel * 100);
 }
 
 export function normalizeObservations(dataPoints: number) {
-    const IDEAL = 50;
-    return clamp((dataPoints / IDEAL) * 100);
+  const IDEAL = 50;
+  return clamp((dataPoints / IDEAL) * 100);
 }
+
 
 
 
@@ -60,7 +53,7 @@ export function normalizeObservations(dataPoints: number) {
 // ========================================================
 export function calculateRanges(patterns: IBranchPattern[]): Ranges {
     const pick = <K extends keyof IBranchPattern>(k: K) =>
-        patterns.map(p => p[k]).filter(x => typeof x === "number") as number[];
+        patterns.map(p => p?p[k]:0).filter(x => typeof x === "number") as number[];
 
     const minMax = (arr: number[]) => ({
         min: Math.min(...arr),
@@ -87,28 +80,29 @@ export function calculateRanges(patterns: IBranchPattern[]): Ranges {
 // ========================================================
 export class NormalizationService {
 
-    static normalize(pattern: IBranchPattern, ranges: Ranges): NormalizedIndicators {
+  static normalize(pattern: IBranchPattern, ranges: Ranges): NormalizedIndicators {
 
-        return {
-            horarios: {
-                stability: normalizeHorarioStability(pattern.stdStartHour, pattern.stdEndHour),
-                weeklyHours: normalizeWeeklyHours(pattern.weeklyWorkAvg),
-            },
+    return {
+      horarios: {
+        stability: parseFloat(normalizeHorarioStability(pattern?.stdStartHour??0, pattern?.stdEndHour??0).toFixed(2)),
+        weeklyHours: parseFloat(normalizeWeeklyHours(pattern?.weeklyWorkAvg??[]).toFixed(2)),
+      },
 
-            costes: {
-                costHour: normalizeInverse(pattern.avgCostHour as number, ranges.minCostHour, ranges.maxCostHour),
-                costCycle: normalizeInverse(pattern.avgCycleCost as number, ranges.minCostCycle, ranges.maxCostCycle),
-                costEffective: normalizeInverse(pattern.avgEffectiveCost as number, ranges.minEffective, ranges.maxEffective),
-                costEfficiency: normalizeDirect(pattern.avgCostEfficiency as number, ranges.minEfficiency, ranges.maxEfficiency),
-            },
+      costes: {
+        costHour: parseFloat(normalizeInverse(pattern?.avgCostHour??0, ranges.minCostHour, ranges.maxCostHour).toFixed(2)),
+        costCycle: parseFloat(normalizeInverse(pattern?.avgCycleCost??0, ranges.minCostCycle, ranges.maxCostCycle).toFixed(2)),
+        costEffective: parseFloat(normalizeInverse(pattern?.avgEffectiveCost??0, ranges.minEffective, ranges.maxEffective).toFixed(2)),
+        costEfficiency: parseFloat(normalizeDirect(pattern?.avgCostEfficiency??0, ranges.minEfficiency, ranges.maxEfficiency).toFixed(2)),
+      },
 
-            confiabilidad: {
-                confidence: normalizeConfidence(pattern.reliability),
-                observations: normalizeObservations(pattern.dataPoints),
-            }
-        };
-    }
+      confiabilidad: {
+        confidence: parseFloat(normalizeConfidence(pattern?.reliability??0).toFixed(2)),
+        observations: parseFloat(normalizeObservations(pattern?.dataPoints??0).toFixed(2)),
+      }
+    };
+  }
 }
+
 
 
 
@@ -121,7 +115,7 @@ export function normalizeBranchDataset(patterns: IBranchPattern[]) {
     const ranges = calculateRanges(patterns);
 
     return patterns.map(p => ({
-        branchId: (p as any).branchId ?? null,
+        branchId: (p as any)?.branchId ?? null,
         pattern:p,
         normalized: NormalizationService.normalize(p, ranges),
     }));
