@@ -43,7 +43,7 @@ export const CustomizableGroupedBarChart = ({
                 <Paper
                     elevation={0}
                     sx={{
-                       
+                        p: 2,
                         backgroundColor: theme.palette.primary.main,
                         color:'#FFF',
                         textAlign:'left'

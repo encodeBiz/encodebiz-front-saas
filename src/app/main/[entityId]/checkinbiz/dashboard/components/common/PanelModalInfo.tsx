@@ -1,9 +1,7 @@
 import { Box, Typography } from "@mui/material"
-import { useTranslations } from "next-intl"
-
+ 
 export const PanelModalInfo = () => {
-    const t = useTranslations()
-
+ 
     return <Box display={'flex'} flexDirection={'column'}>
         <Typography sx={{ fontSize: 26 }}>Ayuda del Panel Comparativo</Typography>
         <br />
