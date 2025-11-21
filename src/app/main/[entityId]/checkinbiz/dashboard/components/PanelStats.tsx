@@ -119,6 +119,8 @@ export const PanelStats = () => {
           </Box>
         }
       > <InnetContent /></HeaderPage>
+
+     
     </Container>
 
   );

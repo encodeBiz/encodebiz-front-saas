@@ -1,12 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Box, Typography, useTheme } from '@mui/material';
-import { useTranslations } from 'next-intl';
+import { Box, useTheme } from '@mui/material';
 import { useDashboard } from '../../context/dashboardContext';
 
 const Chart = () => {
-    const t = useTranslations()
     const theme = useTheme()
     const { branchPatternList, type } = useDashboard()
 
