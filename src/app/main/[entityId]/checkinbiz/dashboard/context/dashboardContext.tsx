@@ -119,7 +119,6 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
         setBranchList(branchPatternDataListt.filter(e => !!e.branch).map(e => e.branch as ISucursal))
         setbranchPatternList(branchPatternDataListt.filter(e => !!e.branch).slice(0, 3))
         setBranchSelected(branchPatternDataListt.filter(e => !!e.branch).map(e => e.branch as ISucursal).slice(0, 3))
-        console.log(branchPatternDataListt.filter(e => !!e.branch).slice(0, 3));        
         setPending(false)
     }
 

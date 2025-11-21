@@ -28,7 +28,7 @@ const Chart = () => {
                 }
                 branchPatternList.forEach(patternData => {
                     Object.assign(item, {
-                        [patternData.branch?.name as string]: (patternData.pattern as any)[type][index] ?? 0
+                        [patternData.branch?.name as string]: parseFloat((patternData.pattern as any)[type][index] ?? 0).toFixed(2)
                     })
                 });
                 newDataArray.push(item)

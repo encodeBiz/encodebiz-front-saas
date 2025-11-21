@@ -84,20 +84,20 @@ export class NormalizationService {
 
     return {
       horarios: {
-        stability: normalizeHorarioStability(pattern?.stdStartHour??0, pattern?.stdEndHour??0),
-        weeklyHours: normalizeWeeklyHours(pattern?.weeklyWorkAvg??[]),
+        stability: parseFloat(normalizeHorarioStability(pattern?.stdStartHour??0, pattern?.stdEndHour??0).toFixed(2)),
+        weeklyHours: parseFloat(normalizeWeeklyHours(pattern?.weeklyWorkAvg??[]).toFixed(2)),
       },
 
       costes: {
-        costHour: normalizeInverse(pattern?.avgCostHour??0, ranges.minCostHour, ranges.maxCostHour),
-        costCycle: normalizeInverse(pattern?.avgCycleCost??0, ranges.minCostCycle, ranges.maxCostCycle),
-        costEffective: normalizeInverse(pattern?.avgEffectiveCost??0, ranges.minEffective, ranges.maxEffective),
-        costEfficiency: normalizeDirect(pattern?.avgCostEfficiency??0, ranges.minEfficiency, ranges.maxEfficiency),
+        costHour: parseFloat(normalizeInverse(pattern?.avgCostHour??0, ranges.minCostHour, ranges.maxCostHour).toFixed(2)),
+        costCycle: parseFloat(normalizeInverse(pattern?.avgCycleCost??0, ranges.minCostCycle, ranges.maxCostCycle).toFixed(2)),
+        costEffective: parseFloat(normalizeInverse(pattern?.avgEffectiveCost??0, ranges.minEffective, ranges.maxEffective).toFixed(2)),
+        costEfficiency: parseFloat(normalizeDirect(pattern?.avgCostEfficiency??0, ranges.minEfficiency, ranges.maxEfficiency).toFixed(2)),
       },
 
       confiabilidad: {
-        confidence: normalizeConfidence(pattern?.reliability??0),
-        observations: normalizeObservations(pattern?.dataPoints??0),
+        confidence: parseFloat(normalizeConfidence(pattern?.reliability??0).toFixed(2)),
+        observations: parseFloat(normalizeObservations(pattern?.dataPoints??0).toFixed(2)),
       }
     };
   }
