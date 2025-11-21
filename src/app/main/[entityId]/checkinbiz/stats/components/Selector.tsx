@@ -34,6 +34,7 @@ export const SelectorBranch = () => {
         <FormControl sx={{ m: 1, width: 300 }}>
             <InputLabel id="demo-multiple-checkbox-label">{t('statsCheckbiz.selected')}</InputLabel>
             <Select
+                label={t('statsCheckbiz.selected')}
                 labelId="demo-multiple-checkbox-label"
                 id="demo-multiple-checkbox"
                 multiple

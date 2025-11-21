@@ -1,5 +1,5 @@
 'use client';
-import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from '@mui/material';
+import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, Select } from '@mui/material';
 import { useTranslations } from "next-intl";
 
 import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
@@ -18,7 +18,7 @@ const MenuProps = {
 
 export const SelectorBranch = () => {
     const t = useTranslations();
-    const { branchList, branchSelected, setBranchSelected } = useDashboard()
+    const { branchList, branchSelected, setBranchSelected, onSelectedBranch } = useDashboard()
 
     const getNameById = (id: Array<string>) => {
         const names: Array<string> = []
@@ -46,9 +46,10 @@ export const SelectorBranch = () => {
                             data.push(branchList.find(e => e.id === element) as ISucursal)
                         });
                         setBranchSelected(data)
+                        onSelectedBranch(data)
                     }
                 }}
-                input={<OutlinedInput label="Tag" />}
+                
                 renderValue={(selected) => getNameById(selected as Array<string>)}
                 MenuProps={MenuProps}
             >

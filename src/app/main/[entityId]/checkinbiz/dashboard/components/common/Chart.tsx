@@ -30,7 +30,7 @@ const Chart = () => {
                 }
                 branchPatternList.forEach(patternData => {
                     Object.assign(item, {
-                        [patternData.branch.name]: (patternData.pattern as any)[type][index] ?? 0
+                        [patternData.branch?.name as string]: (patternData.pattern as any)[type][index] ?? 0
                     })
                 });
                 newDataArray.push(item)
@@ -45,9 +45,7 @@ const Chart = () => {
     }, [branchPatternList.length, type])
     return (
         <Box style={{ width: '100%', height: 400 }} display={'flex'} flexDirection={'column'} gap={2}>
-            <Box display={'flex'} flexDirection={'column'}>
-                <Typography>{t('statsCheckbiz.chartTitle')}</Typography>
-            </Box>
+            
             <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                     data={chartData}

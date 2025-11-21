@@ -44,8 +44,10 @@ export const CustomizableGroupedBarChart = ({
                     elevation={3}
                     sx={{
                         p: 2,
-                        backgroundColor: 'background.paper',
-                        border: `1px solid ${theme.palette.divider}`
+                        backgroundColor: theme.palette.primary.main,
+                        color:'#FFF',
+                        border: `1px solid ${theme.palette.divider}`,
+                        textAlign:'left'
                     }}
                 >
                     <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 'bold' }}>
@@ -56,9 +58,9 @@ export const CustomizableGroupedBarChart = ({
                             key={index}
                             variant="body2"
                             sx={{
-                                color: entry.color,
+                                color: "#FFF",
                                 display: 'flex',
-                                alignItems: 'center'
+                                alignItems: 'flex-start'
                             }}
                         >
                             <Box
