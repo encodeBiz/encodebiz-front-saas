@@ -1,12 +1,17 @@
 'use client';
-import { Box, Card, CardContent, CardHeader, Divider, Typography, useTheme } from '@mui/material';
+import { Box, Card, CardContent, CardHeader, Divider, IconButton, Typography, useTheme } from '@mui/material';
 
 import { useAppLocale } from '@/hooks/useAppLocale';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import { useDashboardBranch } from './DashboardBranchContext';
+import { CommonModalType } from '@/contexts/commonModalContext';
+import { useCommonModal } from '@/hooks/useCommonModal';
+import { InfoOutline } from '@mui/icons-material';
+import InfoModal from '@/components/common/modals/InfoModal';
+import { PanelModalInfo } from './PanelModalInfo';
 
 export const HeuristicAnalize = () => {
-    const {heuristic, cardHeuristicsIndicatorSelected} = useDashboardBranch()
+    const { heuristic, cardHeuristicsIndicatorSelected } = useDashboardBranch()
     const theme = useTheme()
 
     const { currentLocale } = useAppLocale()
@@ -16,10 +21,17 @@ export const HeuristicAnalize = () => {
         if (status == 'success') return theme.palette.success.main
         return theme.palette.primary.main
     }
+    const { open, openModal, closeModal } = useCommonModal()
+
     return (
         <BorderBox sx={{ background: '#FFF' }} >
             <Box sx={{ p: 4 }}>
-                <Typography variant="h6">Indicadores Heurísticos</Typography>
+                <Box display={'flex'} gap={0.2} justifyItems={'center'} alignItems={'center'}>
+                    <Typography align="center" sx={{ mb: 0, textAlign: 'left', fontSize: 32 }}>
+                        Indicadores Heurísticos
+                    </Typography>
+                    <IconButton onClick={() => openModal(CommonModalType.INFO, { id: 'data2' })}><InfoOutline sx={{ fontSize: 25 }} /></IconButton>
+                </Box>
                 <Typography variant="body1">
                     Indicadores que muestran cómo funciona la sucursal en términos de horarios, costes y calidad del dato.
                     Permiten entender la estabilidad operativa, el uso real de los recursos y la fiabilidad de la información registrada.
@@ -54,6 +66,12 @@ export const HeuristicAnalize = () => {
 
 
             </Card>)}
+
+            {open.type === CommonModalType.INFO && open.args?.id === 'data2' && <InfoModal
+                centerBtn cancelBtn={false} closeBtn={false} closeIcon={false}
+                htmlDescription={<PanelModalInfo />}
+                onClose={() => closeModal(CommonModalType.INFO)}
+            />}
         </BorderBox>
 
     );

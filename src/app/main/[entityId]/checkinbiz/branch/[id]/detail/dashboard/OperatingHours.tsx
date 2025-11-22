@@ -2,13 +2,18 @@
 import { BorderBox } from "@/components/common/tabs/BorderBox";
 import { IBranchPattern, NormalizedIndicators } from "@/domain/features/checkinbiz/IStats";
 import { decimalAHorasMinutos } from "@/lib/common/Date";
-import { Box, Divider, Typography } from "@mui/material";
+import { Box, Divider, IconButton, Typography } from "@mui/material";
 
 import { ReactNode } from "react";
-import {  useDashboard } from "../../../../dashboard/context/dashboardContext";
 import { useTranslations } from "next-intl";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
- 
+import { useCommonModal } from "@/hooks/useCommonModal";
+import { CommonModalType } from "@/contexts/commonModalContext";
+import { InfoOutline } from "@mui/icons-material";
+import InfoModal from "@/components/common/modals/InfoModal";
+import { PanelModalInfo } from "./PanelModalInfo";
+import { useDashboardBranch } from "./DashboardBranchContext";
+
 
 const ClockIcon = () => <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
     <mask id="mask0_4216_5577" style={{ maskType: 'alpha' }} maskUnits="userSpaceOnUse" x="0" y="0" width="21" height="21">
@@ -42,6 +47,8 @@ const OkIcon = () => <svg width="21" height="21" viewBox="0 0 21 21" fill="none"
 
 export const OperatingHours = () => {
     const t = useTranslations()
+    const { open, openModal, closeModal } = useCommonModal()
+
     const indicatorList: Array<{
         id: string,
         label: string,
@@ -168,7 +175,7 @@ export const OperatingHours = () => {
 
         ]
     // Colors for the bars
-    const { cardIndicatorSelected, branchPatternList, preferenceItems } = useDashboard()
+    const { cardIndicatorSelected, branchPatternList } = useDashboardBranch()
 
 
 
@@ -180,7 +187,13 @@ export const OperatingHours = () => {
 
     return <BorderBox sx={{ background: '#FFF' }} >
         <Box sx={{ p: 4 }}>
-            <Typography variant="h6">Horarios Operativos</Typography>
+
+            <Box display={'flex'} gap={0.2} justifyItems={'center'} alignItems={'center'}>
+                <Typography align="center" sx={{ mb: 0, textAlign: 'left', fontSize: 32 }}>
+                    Datos Operativos
+                </Typography>
+                <IconButton onClick={() => openModal(CommonModalType.INFO, { id: 'data1' })}><InfoOutline sx={{ fontSize: 25 }} /></IconButton>
+            </Box>
             <Typography variant="body1">
                 Datos que muestran cómo trabaja el empleado en términos de horarios, carga de trabajo y coherencia de sus registros.
                 Ayudan a entender su estabilidad operativa, el uso real de su tiempo y la fiabilidad de la información registrada en sus jornadas.
@@ -192,11 +205,27 @@ export const OperatingHours = () => {
         {indicatorList.filter(e => cardIndicatorSelected.includes(e.id)).map((e, i) => <Box key={i} sx={{
             minWidth: 221, minHeight: 67, borderRadius: 2, border: (theme) => '1px solid ' + theme.palette.primary.main
         }} display={'flex'} flexDirection={'row'} >
-            <Box>{e.icon}</Box>
+            <Box sx={{
+                background: 'rgba(40, 81, 205, 0.1)',
+                borderRadius: 2,
+                width: 42,
+                height: 45,
+                display:'flex',
+                justifyContent:'center',
+                alignItems:'center'
+            }}>{e.icon}</Box>
             <Box display={'flex'} flexDirection={'column'}>
                 <Typography variant="body1">{e.label}</Typography>
                 <Typography variant="body1" sx={{ fontSize: 18 }}>{e.data(branchPatternList[0])}</Typography>
             </Box>
         </Box>)}
+
+        {open.type === CommonModalType.INFO && open.args?.id === 'data1' && <InfoModal
+            centerBtn cancelBtn={false} closeBtn={false} closeIcon={false}
+            htmlDescription={<PanelModalInfo />}
+            onClose={() => closeModal(CommonModalType.INFO)}
+        />}
     </BorderBox>
 }
+
+

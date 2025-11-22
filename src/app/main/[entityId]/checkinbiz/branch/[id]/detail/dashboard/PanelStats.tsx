@@ -2,17 +2,14 @@
 import BoxLoader from "@/components/common/BoxLoader";
 import HeaderPage from "@/components/features/dashboard/HeaderPage/HeaderPage";
 import { useEntity } from "@/hooks/useEntity";
-import { InfoOutline, SettingsOutlined } from "@mui/icons-material";
-import { Container, Box, Typography, Popover, IconButton } from "@mui/material";
+import { SettingsOutlined } from "@mui/icons-material";
+import { Container, Box, Typography, Popover } from "@mui/material";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { OperatingHours } from "./OperatingHours";
-import { TempActivity } from "../../../../dashboard/components/cards/TempActivity";
-import { CommonModalType } from "@/contexts/commonModalContext";
+import { TempActivity } from "./TempActivity";
 import { SassButton } from "@/components/common/buttons/GenericButton";
-import InfoModal from "@/components/common/modals/InfoModal";
-import { PanelModalInfo } from "../../../../dashboard/components/common/PanelModalInfo";
 import NestedSelectWithCheckmarks from "../../../../dashboard/components/common/Preference/NestedSelectWithCheckmarks";
 import { SelectorChart } from "../../../../dashboard/components/common/SelectorChart";
 import { useDashboardBranch } from "./DashboardBranchContext";
@@ -27,7 +24,7 @@ export const PanelStats = () => {
   const [preferenceSelected, setPreferenceSelected] = useState(cardIndicatorSelected)
   const [preferenceHeuristicSelected, setPreferenceHeuristicSelected] = useState(cardHeuristicsIndicatorSelected)
 
-  const { open, openModal, closeModal } = useCommonModal()
+  const { open, closeModal } = useCommonModal()
   useEffect(() => {
     if (currentEntity?.entity?.id) {
       initialize()
@@ -74,14 +71,8 @@ export const PanelStats = () => {
 
     <Container maxWidth="lg">
       <HeaderPage
-        title={
-          <Box display={'flex'} gap={0.2} justifyItems={'center'} alignItems={'center'}>
-            <Typography align="center" sx={{ mb: 0, textAlign: 'left', fontSize: 32 }}>
-              {t("statsCheckbiz.stats")}
-            </Typography>
-            <IconButton onClick={() => openModal(CommonModalType.INFO)}><InfoOutline sx={{ fontSize: 25 }} /></IconButton>
-          </Box>
-        }
+        isForm  
+        title={<></>}
         actions={
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2}>
             <Box display={'flex'} justifyContent={'space-between'}    >
@@ -120,11 +111,7 @@ export const PanelStats = () => {
         }
       > <InnetContent /></HeaderPage>
 
-      {open.type === CommonModalType.INFO && <InfoModal
-        centerBtn cancelBtn={false} closeBtn={false} closeIcon={false}
-        htmlDescription={<PanelModalInfo />}
-        onClose={() => closeModal(CommonModalType.INFO)}
-      />}
+     
     </Container>
 
   );
