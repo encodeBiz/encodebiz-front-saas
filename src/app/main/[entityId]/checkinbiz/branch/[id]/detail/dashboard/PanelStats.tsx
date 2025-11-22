@@ -7,13 +7,13 @@ import { Container, Box, Typography, Popover } from "@mui/material";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 import { useCommonModal } from "@/hooks/useCommonModal";
-import { OperatingHours } from "./OperatingHours";
-import { TempActivity } from "./TempActivity";
+import { OperatingHours } from "./cards/OperatingHours";
+import { TempActivity } from "./cards/TempActivity";
 import { SassButton } from "@/components/common/buttons/GenericButton";
 import NestedSelectWithCheckmarks from "../../../../dashboard/components/common/Preference/NestedSelectWithCheckmarks";
 import { SelectorChart } from "../../../../dashboard/components/common/SelectorChart";
 import { useDashboardBranch } from "./DashboardBranchContext";
-import { HeuristicAnalize } from "./HeuristicAnalize";
+import { HeuristicAnalize } from "./cards/HeuristicAnalize";
 
 
 export const PanelStats = () => {

@@ -49,7 +49,7 @@ export interface IBranchPattern {
 export interface NormalizedIndicators {
   horarios: {
     stability: number;
-    weeklyHours: number;
+    weeklyHours: number; 
   };
 
   costes: {

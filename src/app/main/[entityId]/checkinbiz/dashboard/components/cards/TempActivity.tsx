@@ -1,14 +1,14 @@
 import { BorderBox } from "@/components/common/tabs/BorderBox";
 import { Box, Divider, Typography } from "@mui/material";
 import { useDashboard } from "../../context/dashboardContext";
-import Chart from "../common/Chart";
+import Chart from "../common/chart/Chart";
 
 
 
 
 
 export const TempActivity = () => {
-    const { type } = useDashboard()
+    const { type, branchPatternList } = useDashboard()
     const description: any = {
         "weeklyStartAvg": "Variación diaria de la hora promedio de inicio de la jornada.",
         "weeklyEndAvg": "Variación diaria de la hora promedio de fin de la jornada.",
@@ -26,7 +26,7 @@ export const TempActivity = () => {
         </Box>
         <Divider orientation="horizontal" flexItem />
         <Box sx={{ p: 4 }}>
-            <Chart />
+            <Chart type={type} branchPatternList={branchPatternList} />
         </Box>
     </BorderBox>
 }

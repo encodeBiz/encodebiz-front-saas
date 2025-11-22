@@ -19,6 +19,8 @@ import InfoModal from "@/components/common/modals/InfoModal";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { PanelModalInfo } from "./common/PanelModalInfo";
+import { operationData, tempActivityData } from "@/components/common/help/constants";
+import { InfoHelp } from "@/components/common/help/InfoHelp";
 
 export const PanelStats = () => {
   const t = useTranslations();
@@ -124,9 +126,11 @@ export const PanelStats = () => {
         }
       > <InnetContent /></HeaderPage>
 
-      {open.type === CommonModalType.INFO   && <InfoModal
+      {open.type === CommonModalType.INFO && <InfoModal
         centerBtn cancelBtn={false} closeBtn={false} closeIcon={false}
-        htmlDescription={<PanelModalInfo/>}
+
+        htmlDescription={<InfoHelp title="Ayuda del Panel Comparativo" data={[...tempActivityData(t), ...operationData(t)]} />}
+
         onClose={() => closeModal(CommonModalType.INFO)}
       />}
     </Container>

@@ -129,7 +129,7 @@ export const DashboardBranchProvider = ({ children, branchId }: { children: Reac
         setbranchPatternList(branchPatternDataListt.filter(e => !!e.branch).slice(0, 3))
         setBranchSelected(branchPatternDataListt.filter(e => !!e.branch).map(e => e.branch as ISucursal).slice(0, 3))
         const data: Array<IHeuristicInfo> = await analiziHeuristic(currentEntity?.entity?.id as string, branchId, token, currentLocale)
-        setHeuristic(data.map((e, i) => ({ ...e, active: i < 8 ? true : false })));
+        setHeuristic(data.map((e, i) => ({ ...e, active: true})));
 
 
         setPending(false)

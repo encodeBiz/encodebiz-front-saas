@@ -8,7 +8,7 @@ export interface IReport {
     branch?: string
     employee?: string
     entity?: string
-createdAt?: any;
+    createdAt?: any;
     ref?: {
         url: string
         path: string
