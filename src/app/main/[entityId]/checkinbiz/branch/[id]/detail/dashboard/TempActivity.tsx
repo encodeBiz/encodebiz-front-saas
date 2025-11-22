@@ -1,12 +1,12 @@
 import { BorderBox } from "@/components/common/tabs/BorderBox";
 import { Box, Divider, IconButton, Typography } from "@mui/material";
-import { useDashboard } from "../../../../dashboard/context/dashboardContext";
 import Chart from "./Chart";
 import InfoModal from "@/components/common/modals/InfoModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { InfoOutline } from "@mui/icons-material";
 import { PanelModalInfo } from "./PanelModalInfo";
+import { useDashboardBranch } from "./DashboardBranchContext";
 
 
 
@@ -14,7 +14,7 @@ import { PanelModalInfo } from "./PanelModalInfo";
 
 
 export const TempActivity = () => {
-    const { type } = useDashboard()
+    const { type } = useDashboardBranch()
     const description: any = {
         "weeklyStartAvg": "Variación diaria de la hora promedio de inicio de la jornada.",
         "weeklyEndAvg": "Variación diaria de la hora promedio de fin de la jornada.",

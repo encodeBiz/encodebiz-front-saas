@@ -71,9 +71,8 @@ export const PanelStats = () => {
 
     <Container maxWidth="lg">
       <HeaderPage
-        isForm  
-        title={<></>}
-        actions={
+          
+         actions={
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2}>
             <Box display={'flex'} justifyContent={'space-between'}    >
               <Box>
@@ -96,7 +95,7 @@ export const PanelStats = () => {
                     </Box>
                     <NestedSelectWithCheckmarks preferenceItems={preferenceItems} value={preferenceSelected} onChange={setPreferenceSelected} />
                     <SelectorChart type={type} setType={setType} />
-                    <NestedSelectWithCheckmarks preferenceItems={heuristicsItems} value={preferenceHeuristicSelected} onChange={setPreferenceHeuristicSelected} />
+                    <NestedSelectWithCheckmarks title='INDICADORES HEURÍSTICOS' label='Indicadores heurísticos' preferenceItems={heuristicsItems} value={preferenceHeuristicSelected} onChange={setPreferenceHeuristicSelected} />
 
                   </Box>
 

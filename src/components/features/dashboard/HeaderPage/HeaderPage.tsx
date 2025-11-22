@@ -18,17 +18,17 @@ export default function HeaderPage({ children, title, description, isForm = fals
   const styles = useStyles()
   return (
     <Box  >
-      <Paper elevation={0} sx={{ ...styles.base, background: (theme) => isForm ? theme.palette.background.paper : theme.palette.secondary.main }} >
+      <Paper elevation={0} sx={{ ...styles.base, background: (theme) => isForm || !title ? theme.palette.background.paper : theme.palette.secondary.main }} >
         <Box sx={styles.rootSimple}>
-          <Box pb={5} display={'flex'} flexDirection={'row'} justifyContent={'space-between'} alignItems={'flex-start'} width={'100%'} >
-            <Box display={'flex'} flexDirection={'column'} justifyContent={'space-between'} alignItems={'flex-start'} width={'100%'} >
+          <Box pb={title?5:0} display={'flex'} flexDirection={'row'} justifyContent={title?'space-between':'flex-end'} alignItems={'flex-start'} width={'100%'} >
+            {title && <Box display={'flex'} flexDirection={'column'} justifyContent={'space-between'} alignItems={'flex-start'} width={'100%'} >
               {typeof title === 'string' ? <Typography variant="h4" component="h1" align="center" sx={{ mb: 0, textAlign: 'left' }}>
                 {title}
               </Typography> : title}
               {description && <Typography variant="body1" align="center" sx={{ textAlign: 'left' }}>
                 {description}
               </Typography>}
-            </Box>
+            </Box>}
             {!isForm && <>{actions}</>}
           </Box>
         </Box>

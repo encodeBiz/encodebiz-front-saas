@@ -13,7 +13,9 @@ import {
 import { ExpandMore, ExpandLess } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
  
-const NestedSelectWithCheckmarks = ({ value, onChange, preferenceItems }: {
+const NestedSelectWithCheckmarks = ({ value, onChange, preferenceItems, title, label }: {
+    title?:string,
+    label?:string
     value: Array<string>
     onChange: (data: Array<string>) => void
     preferenceItems: Array<{ name: string, children: Array<{ name: string, value: string }> }>
@@ -92,12 +94,12 @@ const NestedSelectWithCheckmarks = ({ value, onChange, preferenceItems }: {
 
     }
     return (<Box >
-        <Typography textTransform={'uppercase'} color='textSecondary' variant='body1'>{t('statsCheckbiz.operativeData')}</Typography>
+        <Typography textTransform={'uppercase'} color='textSecondary' variant='body1'>{title?title:t('statsCheckbiz.operativeData')}</Typography>
         <FormControl sx={{ m: 1, width: 340 }}>
-            <InputLabel>{t('statsCheckbiz.operativeDataLabel')}</InputLabel>
+            <InputLabel>{label?label:t('statsCheckbiz.operativeDataLabel')}</InputLabel>
             <Select
                 multiple
-                label={t('statsCheckbiz.operativeDataLabel')}
+                label={label?label:t('statsCheckbiz.operativeDataLabel')}
                 value={value}
                 onChange={handleChange}
                 renderValue={(selected) => mapperValue(selected).join(',')}

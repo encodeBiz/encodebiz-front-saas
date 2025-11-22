@@ -74,7 +74,7 @@ export const DashboardBranchProvider = ({ children, branchId }: { children: Reac
         color: '#165BAA' | '#A155B9' | '#F765A3'
     }>>([])
     const [cardIndicatorSelected, setCardIndicatorSelected] = useState<Array<string>>(['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour']);
-    const [cardHeuristicsIndicatorSelected, setCardHeuristicsIndicatorSelected] = useState<Array<string>>(['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour']);
+    const [cardHeuristicsIndicatorSelected, setCardHeuristicsIndicatorSelected] = useState<Array<string>>([]);
     const [heuristic, setHeuristic] = useState<Array<IHeuristicInfo>>([])
     const { token } = useAuth()
     const { currentLocale } = useAppLocale()

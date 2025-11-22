@@ -14,11 +14,20 @@ export const HeuristicAnalize = () => {
     const { heuristic, cardHeuristicsIndicatorSelected } = useDashboardBranch()
     const theme = useTheme()
 
+
+
     const { currentLocale } = useAppLocale()
     const getColor = (status: "error" | 'success' | 'warning') => {
-        if (status == 'error') return theme.palette.error.main
-        if (status == 'warning') return theme.palette.warning.main
-        if (status == 'success') return theme.palette.success.main
+        if (status == 'success') return 'rgba(122, 223, 127, 0.85)'
+        if (status == 'warning') return '#F5B650'
+        if (status == 'error') return 'rgba(177, 35, 33, 0.75)'
+        return theme.palette.primary.main
+    }
+
+    const getTitle = (status: "error" | 'success' | 'warning') => {
+        if (status == 'success') return "BUENO"
+        if (status == 'warning') return "INESTABLE"
+        if (status == 'error') return "CRITICO"
         return theme.palette.primary.main
     }
     const { open, openModal, closeModal } = useCommonModal()
@@ -39,33 +48,35 @@ export const HeuristicAnalize = () => {
             </Box>
 
             <Divider orientation="horizontal" flexItem />
+            <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'space-between'} gap={2} p={3}>
+                {heuristic.filter(e => e.active).map((e, i) => <Card key={i} sx={{ width: 450, border: `1px solid ${getColor(e.status as "error" | 'success' | 'warning')}` }}>
+                   
+                    <CardContent sx={{ background: getColor(e.status as "error" | 'success' | 'warning'), color: "#FFF" }}
+                    >
+                        <Box display={'flex'} flexDirection={'column'} gap={1}>
+                            <Typography variant="body2" fontWeight={'bold'}   fontSize={22}>
+                               {getTitle(e.status as "error" | 'success' | 'warning')}
+                            </Typography>
+                            <Typography variant="body2" fontWeight={'bold'} sx={{ color: 'text.secondary' }} fontSize={18}>
+                                {e.name[currentLocale as 'es' | 'en']}
+                            </Typography>
 
-            {heuristic.filter(e => e.active).map((e, i) => <Card key={i} sx={{ maxWidth: 245, border: `1px solid ${getColor(e.status as "error" | 'success' | 'warning')}` }}>
-                <CardHeader
-                    sx={{ background: getColor(e.status as "error" | 'success' | 'warning'), color: "#FFF", fontSize: 16 }}
-                    action={
-                        <Typography variant="body2" fontSize={18}>{e.value.toFixed(2)}</Typography>
-                    }
-                    title={e.label}
-                />
-                <CardContent>
-                    <Box display={'flex'} flexDirection={'column'} gap={1}>
-                        <Typography variant="body2" fontWeight={'bold'} fontSize={18}>
-                            {e.id}: {e.name[currentLocale as 'es' | 'en']}
-                        </Typography>
+                            <Typography variant="body2" fontSize={18}>
+                                {e.consequence}
+                            </Typography>
 
-                        <Typography variant="body2" sx={{ color: 'text.secondary' }} fontSize={18}>
-                            {e.consequence}
-                        </Typography>
-
-                        <Typography variant="body2" sx={{ color: 'text.secondary' }} fontSize={18}>
-                            {e.action}
-                        </Typography>
-                    </Box>
-                </CardContent>
+                            <Typography variant="caption" sx={{ color: 'text.secondary' }} fontSize={16}>
+                                Recomendación
+                            </Typography>
+                            <Typography variant="body2" sx={{ color: 'text.secondary' }} fontSize={18}>
+                                {e.action}
+                            </Typography>
+                        </Box>
+                    </CardContent>
 
 
-            </Card>)}
+                </Card>)}
+            </Box>
 
             {open.type === CommonModalType.INFO && open.args?.id === 'data2' && <InfoModal
                 centerBtn cancelBtn={false} closeBtn={false} closeIcon={false}

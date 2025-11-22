@@ -83,7 +83,7 @@ export const OperatingHours = () => {
             pattern: IBranchPattern,
             normalized: NormalizedIndicators
             color: '#165BAA' | '#A155B9' | '#F765A3'
-        }) => `${decimalAHorasMinutos(data.normalized.horarios.stability).formatoCorto}}`,
+        }) => `${decimalAHorasMinutos(data.normalized.horarios.stability).formato}`,
         help: t('statsCheckbiz.avgCostHourHelp'),
         icon: <ClockIcon />
     },
@@ -201,24 +201,25 @@ export const OperatingHours = () => {
         </Box>
 
         <Divider orientation="horizontal" flexItem />
-
-        {indicatorList.filter(e => cardIndicatorSelected.includes(e.id)).map((e, i) => <Box key={i} sx={{
-            minWidth: 221, minHeight: 67, borderRadius: 2, border: (theme) => '1px solid ' + theme.palette.primary.main
-        }} display={'flex'} flexDirection={'row'} >
-            <Box sx={{
-                background: 'rgba(40, 81, 205, 0.1)',
-                borderRadius: 2,
-                width: 42,
-                height: 45,
-                display:'flex',
-                justifyContent:'center',
-                alignItems:'center'
-            }}>{e.icon}</Box>
-            <Box display={'flex'} flexDirection={'column'}>
-                <Typography variant="body1">{e.label}</Typography>
-                <Typography variant="body1" sx={{ fontSize: 18 }}>{e.data(branchPatternList[0])}</Typography>
-            </Box>
-        </Box>)}
+        <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'space-between'} gap={2} p={3}>
+            {indicatorList.filter(e => cardIndicatorSelected.includes(e.id)).map((e, i) => <Box key={i} sx={{
+                width: 221, minHeight: 67, borderRadius: 2, border: (theme) => '1px solid ' + theme.palette.primary.main
+            }} display={'flex'} flexDirection={'row'}  alignItems={'center'} gap={2} p={1} px={2} >
+                <Box sx={{
+                    background: 'rgba(40, 81, 205, 0.1)',
+                    borderRadius: 2,
+                    width: 50,
+                    height: 45,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>{e.icon}</Box>
+                <Box display={'flex'} flexDirection={'column'}>
+                    <Typography variant="body1">{e.label}</Typography>
+                    <Typography variant="body1" fontWeight={'bold'} sx={{ fontSize: 18 }}>{e.data(branchPatternList[0])}</Typography>
+                </Box>
+            </Box>)}
+        </Box>
 
         {open.type === CommonModalType.INFO && open.args?.id === 'data1' && <InfoModal
             centerBtn cancelBtn={false} closeBtn={false} closeIcon={false}
