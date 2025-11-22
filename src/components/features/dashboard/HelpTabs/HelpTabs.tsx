@@ -44,9 +44,10 @@ const HelpTabs = ({ tabs, ref, small = false }: HelpTabsProps) => {
         <Box sx={{
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'flex-start',
+          alignItems: small?'center':'flex-start',
           textTransform: 'none',
-          textAlign: 'left',
+          
+          pl:2
 
 
         }}>

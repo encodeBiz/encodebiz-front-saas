@@ -14,8 +14,8 @@ import FormModal from "../../edit/FormModal"
 import InfoModal from "@/components/common/modals/InfoModal"
 import { EmployeeList } from "./components/EmployeeList"
 import HelpTabs from "@/components/features/dashboard/HelpTabs/HelpTabs"
-import { PanelStats } from "../../../stats/components/PanelStats"
-import { CheckBizStatsProvider } from "../../../stats/context/checkBizStatsContext"
+import { DashboardBranchProvider } from "./dashboard/DashboardBranchContext"
+import { PanelStats } from "./dashboard/PanelStats"
 
 export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { addResponsabiltyItem: () => void, branch: ISucursal, children: React.ReactNode, onSuccess: () => void }) => {
     const t = useTranslations()
@@ -113,7 +113,7 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
                 {
                     id: '1',
                     title: t(`sucursal.panel`),
-                    tabContent: <CheckBizStatsProvider><PanelStats type="branch" branchId={branch?.id} /></CheckBizStatsProvider>
+                    tabContent: <DashboardBranchProvider branchId={branch?.id}> <PanelStats /></DashboardBranchProvider>
                 },
 
             ]} />}

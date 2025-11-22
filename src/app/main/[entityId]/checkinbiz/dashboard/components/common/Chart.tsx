@@ -54,7 +54,7 @@ const Chart = () => {
                     <YAxis label={{ value: 'Horas', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Legend />
-                    {Object.keys(chartData[0]).filter(e => e !== 'day').map((e, i) => <Line key={i} type="monotone" dataKey={e} stroke={i == 0 ? theme.palette.primary.main : theme.palette.error.main} name={e} />)}
+                    {Object.keys(chartData[0]).filter(e => e !== 'day').map((e, i) => <Line  strokeWidth={3}  key={i} type="monotone" dataKey={e} stroke={i == 0 ? theme.palette.primary.main : theme.palette.error.main} name={e} />)}
                 </LineChart>
             </ResponsiveContainer>
 
