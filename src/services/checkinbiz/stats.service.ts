@@ -49,7 +49,7 @@ export const fetchBranchPattern = async (entityId: string, branchId: string): Pr
    * @param {SearchParams} params
    * @returns {Promise<Iemployee[]>}
    */
-export const fetchEmployeePattern = async (entityId: string, employeeId: string): Promise<IEmployeePattern | null> => {
+export const fetchEmployeePattern = async (entityId: string, employeeId: string): Promise<Array<IEmployeePattern>> => {
   const filters = [
     {
       field: 'employeeId',
@@ -68,12 +68,7 @@ export const fetchEmployeePattern = async (entityId: string, employeeId: string)
     filters,
     collection: `${collection.EMPLOYEE_PATTER}`,
   });
-  if (result.length > 0)
-    return {
-      ...result[0],
-      branch: await fetchSucursal(result[0].entityId, result[0].branchId)
-    };
-  return null
+  return result
 }
 
 /**
