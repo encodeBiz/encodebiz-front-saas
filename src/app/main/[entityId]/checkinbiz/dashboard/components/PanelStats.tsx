@@ -31,6 +31,12 @@ export const PanelStats = () => {
   const { open, openModal, closeModal } = useCommonModal()
   useEffect(() => {
     if (currentEntity?.entity?.id) {
+      setPreferenceSelected([...cardIndicatorSelected])
+    }
+  }, [currentEntity?.entity?.id, cardIndicatorSelected.length])
+
+  useEffect(() => {
+    if (currentEntity?.entity?.id) {
       initialize()
     }
   }, [currentEntity?.entity?.id])

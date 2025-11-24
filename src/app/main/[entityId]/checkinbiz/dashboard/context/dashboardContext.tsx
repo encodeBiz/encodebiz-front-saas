@@ -4,16 +4,16 @@ import React, { createContext, useContext, useState } from 'react';
 import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
 import { fetchSucursal, search } from '@/services/checkinbiz/sucursal.service';
 import { useEntity } from '@/hooks/useEntity';
-import { IBranchPattern, NormalizedIndicators } from '@/domain/features/checkinbiz/IStats';
+import { ColorBar, colorBarDataset, IBranchPattern, NormalizedIndicators } from '@/domain/features/checkinbiz/IStats';
 import { fetchBranchPattern } from '@/services/checkinbiz/stats.service';
 import { normalizeBranchDataset } from '@/lib/common/normalizer';
 
 
-const colors: Array<'#165BAA' | '#A155B9' | '#F765A3'> = ['#165BAA', '#A155B9', '#F765A3']
+
 export interface IDataSet {
     branch: ISucursal,
     pattern: IBranchPattern,
-    color: '#165BAA' | '#A155B9' | '#F765A3'
+    color: ColorBar
 }
 
 export const getTextByKey = (key: string, preferenceItems: Array<{ name: string, children: Array<{ name: string, value: string }> }>) => {
@@ -35,7 +35,7 @@ interface IDashboardProps {
         branch: ISucursal | null,
         pattern: IBranchPattern,
         normalized: NormalizedIndicators,
-        color: '#165BAA' | '#A155B9' | '#F765A3'
+        color: ColorBar
     }>,
     pending?: boolean
     preferenceItems: Array<{ name: string, children: Array<{ name: string, value: string }> }>
@@ -47,7 +47,7 @@ interface IDashboardProps {
         branch: ISucursal | null,
         normalized: NormalizedIndicators,
         pattern: IBranchPattern,
-        color: '#165BAA' | '#A155B9' | '#F765A3'
+        color: ColorBar
     }>
     type: string
     setType: (type: string) => void
@@ -66,7 +66,7 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
         branch: ISucursal | null,
         pattern: IBranchPattern,
         normalized: NormalizedIndicators,
-        color: '#165BAA' | '#A155B9' | '#F765A3'
+        color: ColorBar
     }>>([])
     const [cardIndicatorSelected, setCardIndicatorSelected] = useState<Array<string>>(['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour']);
     const [type, setType] = useState('weeklyWorkAvg')
@@ -76,7 +76,7 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
         branch: ISucursal | null,
         pattern: IBranchPattern,
         normalized: NormalizedIndicators,
-        color: '#165BAA' | '#A155B9' | '#F765A3'
+        color: ColorBar
     }>>([])
     const { currentEntity } = useEntity()
 
@@ -105,7 +105,7 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
             branch: ISucursal | null,
             pattern: IBranchPattern,
             normalized: NormalizedIndicators
-            color: '#165BAA' | '#A155B9' | '#F765A3'
+            color: ColorBar
         }> = []
 
         await Promise.all(normalizeData.map(async (branch) => {
@@ -114,12 +114,11 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
                 pattern: branch.pattern,
                 branch: branch.branchId ? await fetchSucursal(currentEntity?.entity?.id as string, branch.branchId) : null,
                 normalized: branch.normalized,
-                color: '#165BAA'
+                color: colorBarDataset[0]
             })
         }))
 
-        console.log(branchPatternDataListt);
-        
+         
 
       
 
@@ -132,7 +131,7 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
     }
 
     const onSelectedBranch = async (branchSelected: Array<ISucursal>) => {
-        setbranchPatternList(normalizedData.filter(e => branchSelected.map(b => b.id).includes(e.branchId)).map((e, i) => ({ ...e, color: colors[i] })))
+        setbranchPatternList(normalizedData.filter(e => branchSelected.map(b => b.id).includes(e.branchId)).map((e, i) => ({ ...e, color: colorBarDataset[i] })))
     }
 
 

@@ -23,7 +23,8 @@ const NestedSelectWithCheckmarks = ({ value, onChange, preferenceItems, title, l
 }) => {
     const t = useTranslations()
  
-
+    console.log(value);
+    
     const [expandedCategories, setExpandedCategories] = useState<Array<any>>([]);
 
     const toggleCategory = (categoryName: string) => {
@@ -68,7 +69,7 @@ const NestedSelectWithCheckmarks = ({ value, onChange, preferenceItems, title, l
     };
 
     const isCategoryAllSelected = (categoryChildren: Array<{ name: string, value: string }>) => {
-        return categoryChildren.every(child => value.includes(child.value));
+        return categoryChildren.every(child => value?.includes(child.value));
     };
 
     const isCategoryPartialSelected = (categoryChildren: Array<{ name: string, value: string }>) => {

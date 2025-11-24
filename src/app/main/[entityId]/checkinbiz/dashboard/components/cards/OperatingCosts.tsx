@@ -56,7 +56,7 @@ export const OperatingCosts = () => {
 
 
 
-    return <BorderBox  >
+    return <BorderBox  sx={{background:'#FFF'}} >
         <Box sx={{ p: 4 }}>
             <Typography variant="h6">Costes Operativos</Typography>
             <Typography variant="body1">

@@ -27,7 +27,7 @@ export const DispercionActivity = () => {
     const t = useTranslations()
 
 
-    return <BorderBox>
+    return <BorderBox sx={{background:'#FFF'}} >
         <Box sx={{ p: 4 }}>
 
             <Box display={'flex'} gap={0.2} justifyItems={'center'} alignItems={'center'}>

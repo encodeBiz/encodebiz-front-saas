@@ -52,7 +52,7 @@ export const DataReliability = () => {
 
 
 
-    return <BorderBox >
+    return <BorderBox sx={{background:'#FFF'}} >
         <Box sx={{ p: 4 }}>
             <Typography variant="h6">Confiabilidad del Dato</Typography>
             <Typography variant="body1">
