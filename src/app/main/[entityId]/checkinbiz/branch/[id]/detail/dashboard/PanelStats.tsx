@@ -6,25 +6,22 @@ import { SettingsOutlined } from "@mui/icons-material";
 import { Container, Box, Typography, Popover } from "@mui/material";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
-import { useCommonModal } from "@/hooks/useCommonModal";
-import { OperatingHours } from "./OperatingHours";
-import { TempActivity } from "./TempActivity";
+import { OperatingHours } from "./cards/OperatingHours";
+import { TempActivity } from "./cards/TempActivity";
 import { SassButton } from "@/components/common/buttons/GenericButton";
 import NestedSelectWithCheckmarks from "../../../../dashboard/components/common/Preference/NestedSelectWithCheckmarks";
 import { SelectorChart } from "../../../../dashboard/components/common/SelectorChart";
 import { useDashboardBranch } from "./DashboardBranchContext";
-import { HeuristicAnalize } from "./HeuristicAnalize";
+import { HeuristicAnalize } from "./cards/HeuristicAnalize";
 
 
 export const PanelStats = () => {
   const t = useTranslations();
-  const { pending, branchPatternList,cardHeuristicsIndicatorSelected, setCardHeuristicsIndicatorSelected, cardIndicatorSelected, setCardIndicatorSelected, initialize, preferenceItems, heuristicsItems, type, setType } = useDashboardBranch()
+  const {branchId, pending, branchPatternList,cardHeuristicsIndicatorSelected, setCardHeuristicsIndicatorSelected, cardIndicatorSelected, setCardIndicatorSelected, initialize, preferenceItems, heuristicsItems, type, setType } = useDashboardBranch()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const { currentEntity } = useEntity()
   const [preferenceSelected, setPreferenceSelected] = useState(cardIndicatorSelected)
   const [preferenceHeuristicSelected, setPreferenceHeuristicSelected] = useState(cardHeuristicsIndicatorSelected)
-
-  const { open, closeModal } = useCommonModal()
   useEffect(() => {
     if (currentEntity?.entity?.id) {
       initialize()
@@ -44,10 +41,11 @@ export const PanelStats = () => {
   const id = openTooltip ? 'simple-popover' : undefined;
 
   const handleSave = () => {
-    localStorage.setItem('PANEL_CHECKBIZ_CHART', JSON.stringify(preferenceSelected))
+    localStorage.setItem('PANEL_BRANCH_CHECKBIZ_CHART_'+branchId, JSON.stringify({preferenceSelected, preferenceHeuristicSelected}))
     handleClose()
     setCardIndicatorSelected(preferenceSelected)
     setCardHeuristicsIndicatorSelected(preferenceHeuristicSelected)
+     
   }
 
 
@@ -55,7 +53,7 @@ export const PanelStats = () => {
 
     {pending && <BoxLoader message={t('statsCheckbiz.loading')} />}
 
-    {branchPatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5} pt={5}>
+    {branchPatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5}>
       <OperatingHours />
       <TempActivity />
     </Box>}

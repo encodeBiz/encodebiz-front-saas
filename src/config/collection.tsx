@@ -22,7 +22,9 @@ export const collection = {
     CHECKBIZ_REPORT: 'reports',
     JOBS:'jobs',
     RESPONSABILITY:'employee_responsibilities',
-    BRANCH_PATTER:'checkbiz_branch_patterns'
+    BRANCH_PATTER:'checkbiz_branch_patterns',
+    EMPLOYEE_PATTER:'checkbiz_employee_patterns ',
+    HEURISTIC:'checkbiz_heuristic_indicators'
 
 
 

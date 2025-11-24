@@ -11,8 +11,9 @@ import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { InfoOutline } from "@mui/icons-material";
 import InfoModal from "@/components/common/modals/InfoModal";
-import { PanelModalInfo } from "./PanelModalInfo";
-import { useDashboardBranch } from "./DashboardBranchContext";
+import { useDashboardBranch } from "../DashboardBranchContext";
+import { InfoHelp } from "../../../../../../../../../components/common/help/InfoHelp";
+import { operationData } from "../../../../../../../../../components/common/help/constants";
 
 
 const ClockIcon = () => <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -223,7 +224,7 @@ export const OperatingHours = () => {
 
         {open.type === CommonModalType.INFO && open.args?.id === 'data1' && <InfoModal
             centerBtn cancelBtn={false} closeBtn={false} closeIcon={false}
-            htmlDescription={<PanelModalInfo />}
+                htmlDescription={<InfoHelp title="Ayuda" data={operationData(t)} />}
             onClose={() => closeModal(CommonModalType.INFO)}
         />}
     </BorderBox>

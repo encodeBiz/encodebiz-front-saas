@@ -1,17 +1,17 @@
 'use client';
-import { Box, Card, CardContent, CardHeader, Divider, IconButton, Typography, useTheme } from '@mui/material';
+import { Box, Card, CardContent, Divider, IconButton, Typography, useTheme } from '@mui/material';
 
 import { useAppLocale } from '@/hooks/useAppLocale';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
-import { useDashboardBranch } from './DashboardBranchContext';
+import { useDashboardBranch } from '../DashboardBranchContext';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { InfoOutline } from '@mui/icons-material';
 import InfoModal from '@/components/common/modals/InfoModal';
-import { PanelModalInfo } from './PanelModalInfo';
-
+import { InfoHelp } from '../../../../../../../../../components/common/help/InfoHelp';
+ 
 export const HeuristicAnalize = () => {
-    const { heuristic, cardHeuristicsIndicatorSelected } = useDashboardBranch()
+    const { heuristic, cardHeuristicsIndicatorSelected, heuristicsItems } = useDashboardBranch()
     const theme = useTheme()
 
 
@@ -39,7 +39,7 @@ export const HeuristicAnalize = () => {
                     <Typography align="center" sx={{ mb: 0, textAlign: 'left', fontSize: 32 }}>
                         Indicadores Heurísticos
                     </Typography>
-                    <IconButton onClick={() => openModal(CommonModalType.INFO, { id: 'data2' })}><InfoOutline sx={{ fontSize: 25 }} /></IconButton>
+                    <IconButton onClick={() => openModal(CommonModalType.INFO, { id: 'data3' })}><InfoOutline sx={{ fontSize: 25 }} /></IconButton>
                 </Box>
                 <Typography variant="body1">
                     Indicadores que muestran cómo funciona la sucursal en términos de horarios, costes y calidad del dato.
@@ -49,7 +49,7 @@ export const HeuristicAnalize = () => {
 
             <Divider orientation="horizontal" flexItem />
             <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'space-between'} gap={2} p={3}>
-                {heuristic.filter(e => e.active).map((e, i) => <Card key={i} sx={{ width: 450, border: `1px solid ${getColor(e.status as "error" | 'success' | 'warning')}` }}>
+                {heuristic.filter(e => cardHeuristicsIndicatorSelected.includes(e.id) ).map((e, i) => <Card key={i} sx={{ width: 450, border: `1px solid ${getColor(e.status as "error" | 'success' | 'warning')}` }}>
                    
                     <CardContent sx={{ background: getColor(e.status as "error" | 'success' | 'warning'), color: "#FFF" }}
                     >
@@ -78,9 +78,10 @@ export const HeuristicAnalize = () => {
                 </Card>)}
             </Box>
 
-            {open.type === CommonModalType.INFO && open.args?.id === 'data2' && <InfoModal
+            {open.type === CommonModalType.INFO && open.args?.id === 'data3' && <InfoModal
                 centerBtn cancelBtn={false} closeBtn={false} closeIcon={false}
-                htmlDescription={<PanelModalInfo />}
+                htmlDescription={<InfoHelp title="Ayuda" data={heuristicsItems.map(e=>({head:e.name, items:e.children.map(ch=>({title:ch.name, description:ch.description as string}))
+                }))} />}
                 onClose={() => closeModal(CommonModalType.INFO)}
             />}
         </BorderBox>
