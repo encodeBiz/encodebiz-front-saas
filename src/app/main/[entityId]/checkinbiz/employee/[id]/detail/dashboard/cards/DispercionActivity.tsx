@@ -1,38 +1,44 @@
 import { BorderBox } from "@/components/common/tabs/BorderBox";
-import { Box, Divider, IconButton, Typography } from "@mui/material";
-import InfoModal from "@/components/common/modals/InfoModal";
-import { CommonModalType } from "@/contexts/commonModalContext";
-import { useCommonModal } from "@/hooks/useCommonModal";
-import { InfoOutline } from "@mui/icons-material";
+import { Box, Divider, Typography } from "@mui/material";
 import { useDashboardEmployee } from "../DashboardEmployeeContext";
-import { InfoHelp } from "../../../../../../../../../components/common/help/InfoHelp";
-import { tempActivityData } from "../../../../../../../../../components/common/help/constants";
 import { useTranslations } from "next-intl";
-import Chart from "@/app/main/[entityId]/checkinbiz/dashboard/components/common/chart/Chart";
-
-
-
-
-
+import { useEffect, useState } from "react";
+import { type } from "os";
+import ChartLine from "@/components/common/help/ChartLine";
 
 export const DispercionActivity = () => {
-    const { type, branchPatternList } = useDashboardEmployee()
-
-    const description: any = {
-        "weeklyStartAvg": "Variación diaria de la hora promedio de inicio de la jornada.",
-        "weeklyEndAvg": "Variación diaria de la hora promedio de fin de la jornada.",
-        "weeklyWorkAvg": "Evolución diaria del total promedio de horas trabajadas.",
-    }
-    const { open, openModal, closeModal } = useCommonModal()
+    const { employeePatternList } = useDashboardEmployee()
     const t = useTranslations()
 
+    const [chartData, setChartData] = useState<Array<Record<string, number>>>([])
+    const updateChartData = async () => {
+        const chartDataList: Array<Record<string, number>> = Array(7).fill(0)
+        if (employeePatternList.length > 0) {
+            chartDataList.forEach((_, i) => {
+                const item = {}
+                const employeePattern = employeePatternList[0]
+                const valueStart = parseFloat(`${(employeePattern).pattern.stdStartByDay[i]?.mean ?? 0}`).toFixed(2)
+                const valueEnd = parseFloat(`${(employeePattern).pattern.stdEndByDay[i]?.mean ?? 0}`).toFixed(2)
 
-    return <BorderBox sx={{background:'#FFF'}} >
+                Object.assign(item, {
+                    ['Entrada']: valueStart,
+                    ['Salida']: valueEnd
+                })
+            });
+        }
+        setChartData(chartDataList)
+    }
+    useEffect(() => {
+        updateChartData()
+    }, [employeePatternList.length, type])
+
+
+    return <BorderBox sx={{ background: '#FFF' }} >
         <Box sx={{ p: 4 }}>
 
             <Box display={'flex'} gap={0.2} justifyItems={'center'} alignItems={'center'}>
                 <Typography align="center" sx={{ mb: 0, textAlign: 'left', fontSize: 32 }}>
-                   Dispersión semanal de entrada y salida
+                    Dispersión semanal de entrada y salida
                 </Typography  >
             </Box>
             <Typography variant="body1">
@@ -41,13 +47,8 @@ export const DispercionActivity = () => {
         </Box>
         <Divider orientation="horizontal" flexItem />
         <Box sx={{ p: 4 }}>
-            <Chart type={type} branchPatternList={branchPatternList} />
+            <ChartLine data={chartData} />
         </Box>
 
-        {open.type === CommonModalType.INFO && open.args?.id === 'data2' && <InfoModal
-            centerBtn cancelBtn={false} closeBtn={false} closeIcon={false}
-            htmlDescription={<InfoHelp title="Ayuda" data={tempActivityData(t)} />}
-            onClose={() => closeModal(CommonModalType.INFO)}
-        />}
     </BorderBox>
 }

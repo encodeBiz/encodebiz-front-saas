@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase/firestore";
 import { ISucursal } from "./ISucursal"
 
 export interface IBranchPattern {
@@ -46,47 +47,66 @@ export interface IBranchPattern {
 
 export interface IEmployeePattern {
   "id": string
+  "costTrend": "down" | "up",
+  "netWorkedHours": number,
+  "stdStartHour": number,
+  "promotionScore": number,
+  "stdEndHour": number,
+  "avgStartHour": number,
+  "weeklyWorkAvg": Array<number>,
+  "totalExperienceYears": number,
+  "weeklyStartAvg": Array<number>,
+  "avgCycleCost": number,
+  "weeklyEndAvg": Array<number>,
+  "avgEffectiveCost": number,
+  "updatedAt": any,
+  "experienceByResponsibility": Array<{
+    "totalHours": number,
+    "years": number,
+    "responsibility": string
+  }>,
+  "stdEndByDay": Array<{
+    "m2": number,
+    "count": number,
+    "mean": number,
+    "std": number
+  }>,
+  "skillLevel": number,
+  "efficiencyIndex": number,
+  "branchId": string,
+  "source": string,
+  "reliability": number,
+  "costVariance": number,
+  "effectiveRealCost": number,
+  "dataPoints": number,
+  "entityId": string,
+  "avgCostEfficiency": number,
+  "employeeId": string,
+  "avgEndHour": number,
+  "avgCostHour": number,
+  "experienceByJob": Array<
+    {
+      "firstWorked": Timestamp,
+      "nameJob": string,
+      "avgPrice": number,
+      "lastWorked": Timestamp,
+      "totalHours": number
+    }
+  >,
+  "avgLevel": number,
+  "timeZone": string,
+  "stdStartByDay": Array<{
+    "m2": number,
+    "count": number,
+    "mean": number,
+    "std": number
+  }>,
+  "totalCost": number,
+  "totalItems": number,
+  "last": string
 
-  branchId: string;
-  entityId: string;
-  timeZone: string;
-
-  // Medias globales
-  avgStartHour: number; // ej. 8.50 = 08:30
-  avgEndHour: number; // ej. 17.00
-
-  // Desviaciones iniciales (afinables luego)
-  stdStartHour: number; // ej. 0.25 (~15 min)
-  stdEndHour: number; // ej. 0.25
-  // ej. 0.25
-  startMean?: number
-  startM2?: number
-  startCount?: number
-  endMean?: number
-  endM2?: number
-  avgCostHour?: number,
-  avgCycleCost?: number,
-  avgEffectiveCost?: number,
-  avgCostEfficiency?: number,
-  totalCost?: number,
-  effectiveRealCost?: number,
-  // Fiabilidad y conteo
-  reliability: number; // 0..1
-  dataPoints: number; // nº sesiones observadas
-
-  // Perfiles por día (dom→sab)
-  weeklyStartAvg: Array<number | null>;
-  weeklyEndAvg: Array<number | null>;
-  weeklyWorkAvg: Array<number | null>;
-  costVariance?: number;
-  costTrend?: "up" | "down" | "-"
-  // Metadatos
-  source: "init_config" | "update";
-  createdAt: Date;
-  updatedAt: Date;
-
-  branch?: ISucursal
 }
+
 
 
 export interface NormalizedIndicators {

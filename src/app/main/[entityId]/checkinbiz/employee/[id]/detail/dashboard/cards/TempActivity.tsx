@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { BorderBox } from "@/components/common/tabs/BorderBox";
 import { Box, Divider, IconButton, Typography } from "@mui/material";
 import InfoModal from "@/components/common/modals/InfoModal";
@@ -6,9 +7,14 @@ import { useCommonModal } from "@/hooks/useCommonModal";
 import { InfoOutline } from "@mui/icons-material";
 import { useDashboardEmployee } from "../DashboardEmployeeContext";
 import { InfoHelp } from "../../../../../../../../../components/common/help/InfoHelp";
-import { tempActivityData } from "../../../../../../../../../components/common/help/constants";
+import { descriptionTypeActivity, tempActivityData } from "../../../../../../../../../components/common/help/constants";
 import { useTranslations } from "next-intl";
-import Chart from "@/app/main/[entityId]/checkinbiz/dashboard/components/common/chart/Chart";
+import Chart from "@/app/main/[entityId]/checkinbiz/dashboard/components/common/chart/ChartActivity";
+import { useEffect, useState } from "react";
+import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
+import { IEmployeePattern } from "@/domain/features/checkinbiz/IStats";
+import ChartActivity from "@/app/main/[entityId]/checkinbiz/dashboard/components/common/chart/ChartActivity";
+import ChartLine from "@/components/common/help/ChartLine";
 
 
 
@@ -16,15 +22,30 @@ import Chart from "@/app/main/[entityId]/checkinbiz/dashboard/components/common/
 
 
 export const TempActivity = () => {
-    const { type, branchPatternList } = useDashboardEmployee()
-
-    const description: any = {
-        "weeklyStartAvg": "Variación diaria de la hora promedio de inicio de la jornada.",
-        "weeklyEndAvg": "Variación diaria de la hora promedio de fin de la jornada.",
-        "weeklyWorkAvg": "Evolución diaria del total promedio de horas trabajadas.",
-    }
+    const { type, employeePatternList } = useDashboardEmployee()
+ 
     const { open, openModal, closeModal } = useCommonModal()
     const t = useTranslations()
+
+     const [chartData, setChartData] = useState<Array<Record<string, number>>>([])
+        const updateChartData = async () => {
+            const chartDataList: Array<Record<string, number>> = Array(7).fill(0)
+            if (employeePatternList.length > 0) {
+                chartDataList.forEach((_, i) => {
+                    const item = {}
+                    employeePatternList.forEach((patternEmployee: {pattern: IEmployeePattern,employeeId: string, employee: IEmployee}) => {
+                        const value = parseFloat(`${(patternEmployee as any).pattern[type][i]}`).toFixed(2)
+                        Object.assign(item, {
+                            [patternEmployee.employee?.fullName as string]: value
+                        })
+                    });
+                });
+            }
+            setChartData(chartDataList)
+        }
+        useEffect(() => {
+            updateChartData()
+        }, [employeePatternList.length, type])
 
 
     return <BorderBox sx={{background:'#FFF'}} >
@@ -37,12 +58,12 @@ export const TempActivity = () => {
                 <IconButton onClick={() => openModal(CommonModalType.INFO, { id: 'data2' })}><InfoOutline sx={{ fontSize: 25 }} /></IconButton>
             </Box>
             <Typography variant="body1">
-                {description[type]}
+                {descriptionTypeActivity(t)[type]}              
             </Typography>
         </Box>
         <Divider orientation="horizontal" flexItem />
         <Box sx={{ p: 4 }}>
-            <Chart type={type} branchPatternList={branchPatternList} />
+            <ChartLine data={chartData} />
         </Box>
 
         {open.type === CommonModalType.INFO && open.args?.id === 'data2' && <InfoModal

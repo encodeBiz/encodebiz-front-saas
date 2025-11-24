@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { BorderBox } from "@/components/common/tabs/BorderBox";
 import { Box, Divider, IconButton, Typography } from "@mui/material";
 import InfoModal from "@/components/common/modals/InfoModal";
@@ -6,9 +7,12 @@ import { useCommonModal } from "@/hooks/useCommonModal";
 import { InfoOutline } from "@mui/icons-material";
 import { useDashboardBranch } from "../DashboardBranchContext";
 import { InfoHelp } from "../../../../../../../../../components/common/help/InfoHelp";
-import { tempActivityData } from "../../../../../../../../../components/common/help/constants";
+import { descriptionTypeActivity, tempActivityData } from "../../../../../../../../../components/common/help/constants";
 import { useTranslations } from "next-intl";
-import Chart from "@/app/main/[entityId]/checkinbiz/dashboard/components/common/chart/Chart";
+import Chart from "@/app/main/[entityId]/checkinbiz/dashboard/components/common/chart/ChartActivity";
+import { useEffect, useState } from "react";
+import { IBranchPattern, IEmployeePattern } from "@/domain/features/checkinbiz/IStats";
+import ChartLine from "@/components/common/help/ChartLine";
 
 
 
@@ -18,16 +22,33 @@ import Chart from "@/app/main/[entityId]/checkinbiz/dashboard/components/common/
 export const TempActivity = () => {
     const { type, branchPatternList } = useDashboardBranch()
 
-    const description: any = {
-        "weeklyStartAvg": "Variación diaria de la hora promedio de inicio de la jornada.",
-        "weeklyEndAvg": "Variación diaria de la hora promedio de fin de la jornada.",
-        "weeklyWorkAvg": "Evolución diaria del total promedio de horas trabajadas.",
-    }
+  
     const { open, openModal, closeModal } = useCommonModal()
     const t = useTranslations()
 
 
-    return <BorderBox sx={{background:'#FFF'}} >
+    const [chartData, setChartData] = useState<Array<Record<string, number>>>([])
+    const updateChartData = async () => {
+        const chartDataList: Array<Record<string, number>> = Array(7).fill(0)
+        if (branchPatternList.length > 0) {
+            chartDataList.forEach((_, i) => {
+                const item = {}
+                branchPatternList.map(e => e.pattern).forEach((patternBranch: IBranchPattern) => {
+                    const value = parseFloat(`${(patternBranch as any)[type][i]}`).toFixed(2)
+                    Object.assign(item, {
+                        [(patternBranch as IBranchPattern).branch?.name as string]: value
+                    })
+                });
+            });
+        }
+        setChartData(chartDataList)
+    }
+    useEffect(() => {
+        updateChartData()
+    }, [branchPatternList.length, type])
+
+
+    return <BorderBox sx={{ background: '#FFF' }} >
         <Box sx={{ p: 4 }}>
 
             <Box display={'flex'} gap={0.2} justifyItems={'center'} alignItems={'center'}>
@@ -37,12 +58,12 @@ export const TempActivity = () => {
                 <IconButton onClick={() => openModal(CommonModalType.INFO, { id: 'data2' })}><InfoOutline sx={{ fontSize: 25 }} /></IconButton>
             </Box>
             <Typography variant="body1">
-                {description[type]}
+                {descriptionTypeActivity(t)[type]}
             </Typography>
         </Box>
         <Divider orientation="horizontal" flexItem />
         <Box sx={{ p: 4 }}>
-            <Chart type={type} branchPatternList={branchPatternList} />
+            <ChartLine data={chartData} />
         </Box>
 
         {open.type === CommonModalType.INFO && open.args?.id === 'data2' && <InfoModal

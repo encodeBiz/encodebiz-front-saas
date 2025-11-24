@@ -32,32 +32,20 @@ export const getTextByKey = (key: string, preferenceItems: Array<{ name: string,
 
 interface IDashboardEmployeeProps {
 
-    setBranchSelected: (items: Array<ISucursal>) => void
-    branchPatternList: Array<{
-        branchId: string,
-        branch: ISucursal | null,
+    employeePatternList: Array<{
         pattern: IEmployeePattern,
-        normalized: NormalizedIndicators,
-        color: '#165BAA' | '#A155B9' | '#F765A3'
+        employeeId: string,
+        employee: IEmployee
     }>,
     pending?: boolean
-    preferenceItems: Array<{ name: string, children: Array<{ name: string, value: string }> }>
     heuristicsItems: Array<{ name: string, children: Array<{ name: string, value: string, description: string }> }>
     cardHeuristicsIndicatorSelected: Array<string>
     cardIndicatorSelected: Array<string>
     setCardIndicatorSelected: (data: Array<string>) => void
     setCardHeuristicsIndicatorSelected: (data: Array<string>) => void
-    normalizedData: Array<{
-        branchId: string,
-        branch: ISucursal | null,
-        normalized: NormalizedIndicators,
-        pattern: IEmployeePattern,
-        color: '#165BAA' | '#A155B9' | '#F765A3'
-    }>
     type: string
     setType: (type: string) => void
 
-    onSelectedBranch: (items: Array<ISucursal>) => void
     initialize: () => void
     heuristic: Array<IHeuristicInfo>
     employeeId: string
@@ -89,36 +77,25 @@ const defaultItems2 = [
 export const DashboardEmployeeContext = createContext<IDashboardEmployeeProps | undefined>(undefined);
 
 export const DashboardEmployeeProvider = ({ children, employeeId }: { children: React.ReactNode, employeeId: string }) => {
-    const [branchList, setBranchList] = useState<Array<ISucursal>>([])
-    const [branchSelected, setBranchSelected] = useState<ISucursal[]>([]);
-    const [branchPatternList, setbranchPatternList] = useState<Array<{
-        branchId: string,
-        branch: ISucursal | null,
+
+    const [employeePatternList, setEmployeePatternList] = useState<Array<{
         pattern: IEmployeePattern,
-        normalized: NormalizedIndicators,
-        color: '#165BAA' | '#A155B9' | '#F765A3'
+        employeeId: string,
+        employee: IEmployee
     }>>([])
     const [cardIndicatorSelected, setCardIndicatorSelected] = useState<Array<string>>(['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour']);
     const [cardHeuristicsIndicatorSelected, setCardHeuristicsIndicatorSelected] = useState<Array<string>>([]);
     const [heuristicsItems, setHeuristicsItems] = useState<Array<{ name: string, children: Array<{ name: string, value: string, description: string }> }>>([])
     const [heuristic, setHeuristic] = useState<Array<IHeuristicInfo>>([])
     const [heuristicData, setHeuristicData] = useState<Array<IHeuristicIndicator>>([])
-
-    const { token } = useAuth()
+    const {token} = useAuth()
     const { currentLocale } = useAppLocale()
     const [type, setType] = useState('weeklyWorkAvg')
     const [pending, setPending] = useState(true)
-    const [normalizedData, setNormalizedData] = useState<Array<{
-        branchId: string,
-        branch: ISucursal | null,
-        pattern: IEmployeePattern,
-        normalized: NormalizedIndicators,
-        color: '#165BAA' | '#A155B9' | '#F765A3'
-    }>>([])
+
     const { currentEntity } = useEntity()
 
     const getHead = (heuristicsIndicator: Array<IHeuristicIndicator>, key: string) => {
-
         return (heuristicsIndicator.find(e => e.group.id === key)?.group.label as any)[currentLocale as any]
     }
     const getIndicator = (heuristicsIndicator: Array<IHeuristicIndicator>, key: string) => {
@@ -153,87 +130,31 @@ export const DashboardEmployeeProvider = ({ children, employeeId }: { children: 
     }
     const initialize = async () => {
         setPending(true)
-        const branchList = await search(currentEntity?.entity?.id as string, { ...{} as any, limit: 100 })
         const employee: IEmployee = await fetchEmployee(currentEntity?.entity.id as string, employeeId) as IEmployee
-        setBranchList(branchList.filter(e => employee.branchId.includes(e.id)))
         const branchPatternList: Array<IEmployeePattern> = await fetchEmployeePattern(currentEntity?.entity?.id as string, employeeId as string) as Array<IEmployeePattern>
-        const normalizeData: Array<{
-            branchId: string,
-            pattern: IEmployeePattern,
-            normalized: NormalizedIndicators
-        }> = normalizeBranchDataset(branchPatternList)
-
         buildHeuristicInfo()
-
-
-
-        const branchPatternDataListt: Array<{
-            branchId: string,
-            branch: ISucursal | null,
-            pattern: IEmployeePattern,
-            normalized: NormalizedIndicators
-            color: '#165BAA' | '#A155B9' | '#F765A3'
-        }> = []
-        await Promise.all(normalizeData.map(async (branch) => {
-            branchPatternDataListt.push({
-                branchId: branch.branchId,
-                pattern: branch.pattern,
-                branch: branch.branchId ? await fetchSucursal(currentEntity?.entity?.id as string, branch.branchId) : null,
-                normalized: branch.normalized,
-                color: '#165BAA'
-            })
-        }))
-        setNormalizedData(branchPatternDataListt)
+        console.log(branchPatternList);        
         const KEY = 'PANEL_EMPLOYEE_CHECKBIZ_CHART_' + employeeId
 
         setCardIndicatorSelected(localStorage.getItem(KEY) ? JSON.parse(localStorage.getItem(KEY) as string)?.preferenceSelected ?? [...defaultItems1] : [...defaultItems1])
         setCardHeuristicsIndicatorSelected(localStorage.getItem(KEY) ? JSON.parse(localStorage.getItem(KEY) as string)?.preferenceHeuristicSelected ?? [...defaultItems2] : [...defaultItems2])
 
-        setBranchList(branchPatternDataListt.filter(e => !!e.branch).map(e => e.branch as ISucursal))
-        setbranchPatternList(branchPatternDataListt.filter(e => !!e.branch).slice(0, 3))
-        setBranchSelected(branchPatternDataListt.filter(e => !!e.branch).map(e => e.branch as ISucursal).slice(0, 3))
-        //const data: Array<IHeuristicInfo> = await analiziHeuristic(currentEntity?.entity?.id as string, branchId, token, currentLocale)
-        //setHeuristic(data.map((e) => ({ ...e, active: true })));
+        setEmployeePatternList(branchPatternList.map(e => ({
+            pattern: e,
+            employee,
+            employeeId
+        })))
+        const data: Array<IHeuristicInfo> = await analiziHeuristic(currentEntity?.entity?.id as string, employeeId, token, currentLocale)
+        setHeuristic(data.map((e) => ({ ...e, active: true })));
         setPending(false)
     }
 
-    const onSelectedBranch = async (branchSelected: Array<ISucursal>) => {
-        setbranchPatternList(normalizedData.filter(e => branchSelected.map(b => b.id).includes(e.branchId)).map((e, i) => ({ ...e, color: colors[i] })))
-    }
 
-    const preferenceItems: Array<{ name: string, children: Array<{ name: string, value: string }> }> = [
-        {
-            name: 'Horarios',
-            children: [
-                { name: 'Horario operativo medio', value: 'avgStartHour_avgEndHour' },
-                { name: 'Carga horaria semanal', value: 'stdStartHour_stdEndHour' },
-            ]
-        },
-
-        {
-            name: 'Costes',
-            children: [
-                { name: 'Coste por hora trabajada', value: 'avgCostHour' },
-                { name: 'Coste por jornada', value: 'avgCycleCost' },
-                { name: 'Coste por rendimiento', value: 'avgCostEfficiency' },
-                { name: 'Rendimiento del coste invertido', value: 'effectiveRealCost' },
-
-            ]
-        },
-        {
-            name: 'Confiabilidad del dato',
-            children: [
-                { name: 'Nivel de confiabilidad ', value: 'reliability' },
-                { name: 'Volumen de datos', value: 'dataPoints' },
-            ]
-        },
-
-    ];
 
 
 
     return (
-        <DashboardEmployeeContext.Provider value={{ heuristicData, employeeId, heuristic, cardHeuristicsIndicatorSelected, setCardHeuristicsIndicatorSelected, heuristicsItems, onSelectedBranch, initialize, normalizedData, preferenceItems, type, setType, branchPatternList, cardIndicatorSelected, setCardIndicatorSelected,    setBranchSelected, pending }}>
+        <DashboardEmployeeContext.Provider value={{ employeePatternList, heuristicData, employeeId, heuristic, cardHeuristicsIndicatorSelected, setCardHeuristicsIndicatorSelected, heuristicsItems, initialize, type, setType, cardIndicatorSelected, setCardIndicatorSelected, pending }}>
             {children}
         </DashboardEmployeeContext.Provider>
     );

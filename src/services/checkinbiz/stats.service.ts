@@ -68,7 +68,7 @@ export const fetchEmployeePattern = async (entityId: string, employeeId: string)
     filters,
     collection: `${collection.EMPLOYEE_PATTER}`,
   });
-  return result
+  return result.filter(e=>e.id===`${employeeId}_${entityId}`)
 }
 
 /**

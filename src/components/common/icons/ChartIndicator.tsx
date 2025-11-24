@@ -1,23 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { BorderBox } from "@/components/common/tabs/BorderBox";
-import { ColorBar, IBranchPattern, NormalizedIndicators } from "@/domain/features/checkinbiz/IStats";
-import { decimalAHorasMinutos } from "@/lib/common/Date";
-import { Box, Divider, IconButton, Typography } from "@mui/material";
 
-import { ReactNode } from "react";
-import { useTranslations } from "next-intl";
-import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
-import { useCommonModal } from "@/hooks/useCommonModal";
-import { CommonModalType } from "@/contexts/commonModalContext";
-import { InfoOutline } from "@mui/icons-material";
-import InfoModal from "@/components/common/modals/InfoModal";
-import { useDashboardBranch } from "../DashboardBranchContext";
-import { InfoHelp } from "../../../../../../../../../components/common/help/InfoHelp";
-import { operationData } from "../../../../../../../../../components/common/help/constants";
-import { CardIndicatorData, indicatorList } from "@/components/common/help/CardIndicatorData";
-
-
-const ClockIcon = () => <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+export const ClockIcon = () => <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
     <mask id="mask0_4216_5577" style={{ maskType: 'alpha' }} maskUnits="userSpaceOnUse" x="0" y="0" width="21" height="21">
         <rect width="21" height="21" fill="#D9D9D9" />
     </mask>
@@ -26,7 +8,7 @@ const ClockIcon = () => <svg width="21" height="21" viewBox="0 0 21 21" fill="no
     </g>
 </svg>
 
-const MoneyIcon = () => <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+export const MoneyIcon = () => <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
     <mask id="mask0_4216_5803" style={{ maskType: 'alpha' }} maskUnits="userSpaceOnUse" x="0" y="0" width="21" height="21">
         <rect width="21" height="21" fill="#D9D9D9" />
     </mask>
@@ -35,7 +17,7 @@ const MoneyIcon = () => <svg width="21" height="21" viewBox="0 0 21 21" fill="no
     </g>
 </svg>
 
-const OkIcon = () => <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+export const OkIcon = () => <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
     <mask id="mask0_4216_5837" style={{ maskType: 'alpha' }} maskUnits="userSpaceOnUse" x="0" y="0" width="21" height="21">
         <rect width="21" height="21" fill="#D9D9D9" />
     </mask>
@@ -45,46 +27,11 @@ const OkIcon = () => <svg width="21" height="21" viewBox="0 0 21 21" fill="none"
 </svg>
 
 
-
-
-export const OperatingHours = () => {
-    const t = useTranslations()
-    const { open, openModal, closeModal } = useCommonModal()
-
-   
-    // Colors for the bars
-    const { cardIndicatorSelected, branchPatternList } = useDashboardBranch()
-
-
-
-    return <BorderBox sx={{ background: '#FFF' }} >
-        <Box sx={{ p: 4 }}>
-
-            <Box display={'flex'} gap={0.2} justifyItems={'center'} alignItems={'center'}>
-                <Typography align="center" sx={{ mb: 0, textAlign: 'left', fontSize: 32 }}>
-                    Datos Operativos
-                </Typography>
-                <IconButton onClick={() => openModal(CommonModalType.INFO, { id: 'data1' })}><InfoOutline sx={{ fontSize: 25 }} /></IconButton>
-            </Box>
-            <Typography variant="body1">
-                Datos que muestran cómo trabaja el empleado en términos de horarios, carga de trabajo y coherencia de sus registros.
-                Ayudan a entender su estabilidad operativa, el uso real de su tiempo y la fiabilidad de la información registrada en sus jornadas.
-            </Typography>
-        </Box>
-
-        <Divider orientation="horizontal" flexItem />
-        <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'space-between'} gap={2} p={3}>
-            {indicatorList(t).filter(e=>e.tag.includes('branch')).filter(e => cardIndicatorSelected.includes(e.id)).map((e, i) =>
-                <CardIndicatorData key={i} value={e.data(branchPatternList[0] as any)} icon={e.icon} label={e.label} />
-            )}
-        </Box>
-
-        {open.type === CommonModalType.INFO && open.args?.id === 'data1' && <InfoModal
-            centerBtn cancelBtn={false} closeBtn={false} closeIcon={false}
-            htmlDescription={<InfoHelp title="Ayuda" data={operationData(t)} />}
-            onClose={() => closeModal(CommonModalType.INFO)}
-        />}
-    </BorderBox>
-}
-
-
+export const EmployeeIcon = () => <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_4316_5054" style={{ maskType: 'alpha' }} maskUnits="userSpaceOnUse" x="0" y="0" width="21" height="21">
+<rect width="21" height="21" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_4316_5054)">
+<path d="M3.5 18.375C3.01875 18.375 2.60677 18.2036 2.26406 17.8609C1.92135 17.5182 1.75 17.1062 1.75 16.625V7C1.75 6.51875 1.92135 6.10677 2.26406 5.76406C2.60677 5.42135 3.01875 5.25 3.5 5.25H7V3.5C7 3.01875 7.17135 2.60677 7.51406 2.26406C7.85677 1.92135 8.26875 1.75 8.75 1.75H12.25C12.7312 1.75 13.1432 1.92135 13.4859 2.26406C13.8286 2.60677 14 3.01875 14 3.5V5.25H17.5C17.9813 5.25 18.3932 5.42135 18.7359 5.76406C19.0786 6.10677 19.25 6.51875 19.25 7V10.7406C18.9875 10.551 18.7104 10.387 18.4188 10.2484C18.1271 10.1099 17.8208 9.98958 17.5 9.8875V7H3.5V16.625H9.69062C9.73438 16.9312 9.8 17.2302 9.8875 17.5219C9.975 17.8135 10.0844 18.0979 10.2156 18.375H3.5ZM8.75 5.25H12.25V3.5H8.75V5.25ZM15.75 20.125C14.5396 20.125 13.5078 19.6984 12.6547 18.8453C11.8016 17.9922 11.375 16.9604 11.375 15.75C11.375 14.5396 11.8016 13.5078 12.6547 12.6547C13.5078 11.8016 14.5396 11.375 15.75 11.375C16.9604 11.375 17.9922 11.8016 18.8453 12.6547C19.6984 13.5078 20.125 14.5396 20.125 15.75C20.125 16.9604 19.6984 17.9922 18.8453 18.8453C17.9922 19.6984 16.9604 20.125 15.75 20.125ZM16.1875 15.575V13.125H15.3125V15.925L17.1937 17.8062L17.8062 17.1937L16.1875 15.575Z" fill="#476BE7"/>
+</g>
+</svg>

@@ -3,7 +3,7 @@ import { BorderBox } from "@/components/common/tabs/BorderBox"
 import { Box, Divider, Typography } from "@mui/material"
 import { useState, useEffect } from "react"
 import { getTextByKey, useDashboard } from "../../context/dashboardContext"
-import { CustomizableGroupedBarChart } from "../common/chart/GroupedBarChart"
+import { CustomizableGroupedBarChart } from "../../../../../../../components/common/help/GroupedBarChart"
 import { preferenceDashboardItems } from "@/domain/features/checkinbiz/IStats"
 import { useTranslations } from "next-intl"
 

@@ -14,11 +14,12 @@ import { SelectorChart } from "../../../../dashboard/components/common/SelectorC
 import { HeuristicAnalize } from "./cards/HeuristicAnalize";
 import { useDashboardEmployee } from "./DashboardEmployeeContext";
 import { DispercionActivity } from "./cards/DispercionActivity";
+import { preferenceDashboardItems } from "@/domain/features/checkinbiz/IStats";
 
 
 export const PanelStats = () => {
   const t = useTranslations();
-  const {employeeId, pending, branchPatternList,cardHeuristicsIndicatorSelected, setCardHeuristicsIndicatorSelected, cardIndicatorSelected, setCardIndicatorSelected, initialize, preferenceItems, heuristicsItems, type, setType } = useDashboardEmployee()
+  const { employeeId, employeePatternList, pending, cardHeuristicsIndicatorSelected, setCardHeuristicsIndicatorSelected, cardIndicatorSelected, setCardIndicatorSelected, initialize, heuristicsItems, type, setType } = useDashboardEmployee()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const { currentEntity } = useEntity()
   const [preferenceSelected, setPreferenceSelected] = useState(cardIndicatorSelected)
@@ -42,11 +43,11 @@ export const PanelStats = () => {
   const id = openTooltip ? 'simple-popover' : undefined;
 
   const handleSave = () => {
-    localStorage.setItem('PANEL_EMPLOYEE_CHECKBIZ_CHART_'+employeeId, JSON.stringify({preferenceSelected, preferenceHeuristicSelected}))
+    localStorage.setItem('PANEL_EMPLOYEE_CHECKBIZ_CHART_' + employeeId, JSON.stringify({ preferenceSelected, preferenceHeuristicSelected }))
     handleClose()
     setCardIndicatorSelected(preferenceSelected)
     setCardHeuristicsIndicatorSelected(preferenceHeuristicSelected)
-     
+
   }
 
 
@@ -54,13 +55,19 @@ export const PanelStats = () => {
 
     {pending && <BoxLoader message={t('statsCheckbiz.loading')} />}
 
-    {branchPatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5}>
+    {!pending && employeePatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5}>
       <OperatingHours />
-      <TempActivity />
-      <DispercionActivity/>
     </Box>}
 
-    {branchPatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5} pt={5}>
+    {!pending && employeePatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5}>
+      <TempActivity />
+    </Box>}
+
+    {!pending && employeePatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5}>
+      <DispercionActivity />
+    </Box>}
+
+    {!pending && employeePatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5} pt={5}>
       <HeuristicAnalize />
     </Box>}
 
@@ -71,8 +78,8 @@ export const PanelStats = () => {
 
     <Container maxWidth="lg">
       <HeaderPage
-          
-         actions={
+
+        actions={
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2}>
             <Box display={'flex'} justifyContent={'space-between'}    >
               <Box>
@@ -93,7 +100,7 @@ export const PanelStats = () => {
                     <Box display={'flex'} flexDirection={'column'} textAlign={'center'}>
                       <Typography variant="body1">{t('statsCheckbiz.configPanel')}</Typography>
                     </Box>
-                    <NestedSelectWithCheckmarks preferenceItems={preferenceItems} value={preferenceSelected} onChange={setPreferenceSelected} />
+                    <NestedSelectWithCheckmarks preferenceItems={preferenceDashboardItems(t)} value={preferenceSelected} onChange={setPreferenceSelected} />
                     <SelectorChart type={type} setType={setType} />
                     <NestedSelectWithCheckmarks title='INDICADORES HEURÍSTICOS' label='Indicadores heurísticos' preferenceItems={heuristicsItems} value={preferenceHeuristicSelected} onChange={setPreferenceHeuristicSelected} />
 
@@ -110,7 +117,7 @@ export const PanelStats = () => {
         }
       > <InnetContent /></HeaderPage>
 
-     
+
     </Container>
 
   );

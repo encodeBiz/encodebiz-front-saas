@@ -48,11 +48,11 @@ export const tempActivityData = (t: any) => {
             id: "",
             title: "Promedio de inicio de jornada",
             description: "Hora media a la que suelen comenzar las jornadas laborales. Refleja el comportamiento habitual de inicio a lo largo del tiempo."
-        },{
+        }, {
             id: "",
             title: "Promedio de fin de jornada",
             description: "Hora media a la que suelen terminar las jornadas laborales. Muestra la tendencia general del cierre de la jornada."
-        },{
+        }, {
             id: "",
             title: "Horas trabajadas promedio",
             description: "Número medio de horas efectivas realizadas por jornada. Permite ver si la carga diaria de trabajo es estable o presenta variaciones."
@@ -61,3 +61,10 @@ export const tempActivityData = (t: any) => {
 
     ]
 }
+
+
+export const descriptionTypeActivity = (t: any): any => ({
+    "weeklyStartAvg": "Variación diaria de la hora promedio de inicio de la jornada.",
+    "weeklyEndAvg": "Variación diaria de la hora promedio de fin de la jornada.",
+    "weeklyWorkAvg": "Evolución diaria del total promedio de horas trabajadas.",
+})
