@@ -9,7 +9,8 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import { InfoOutline } from '@mui/icons-material';
 import InfoModal from '@/components/common/modals/InfoModal';
 import { InfoHelp } from '../../../../../../../../../components/common/help/InfoHelp';
- 
+import { karla } from '@/config/fonts/google_fonts';
+
 export const HeuristicAnalize = () => {
     const { heuristic, cardHeuristicsIndicatorSelected, heuristicsItems } = useDashboardBranch()
     const theme = useTheme()
@@ -49,30 +50,43 @@ export const HeuristicAnalize = () => {
 
             <Divider orientation="horizontal" flexItem />
             <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'space-between'} gap={2} p={3}>
-                {heuristic.filter(e => cardHeuristicsIndicatorSelected.includes(e.id) ).map((e, i) => <Card key={i} sx={{ width: 450, border: `1px solid ${getColor(e.status as "error" | 'success' | 'warning')}` }}>
-                   
+                {heuristic.filter(e => cardHeuristicsIndicatorSelected.includes(e.id)).map((e, i) => <Card key={i} sx={{ width: 450, border: `1px solid ${getColor(e.status as "error" | 'success' | 'warning')}` }}>
+
                     <CardContent sx={{ background: getColor(e.status as "error" | 'success' | 'warning'), color: "#FFF" }}
                     >
+
+      
+
+
+
                         <Box display={'flex'} flexDirection={'column'} gap={1}>
-                            <Typography variant="body2" fontWeight={'bold'}   fontSize={22}>
-                               {getTitle(e.status as "error" | 'success' | 'warning')}
-                            </Typography>
-                            <Typography variant="body2" fontWeight={'bold'} sx={{ color: 'text.secondary' }} fontSize={18}>
-                                {e.name[currentLocale as 'es' | 'en']}
-                            </Typography>
-
-                            <Typography variant="body2" fontSize={18}>
-                                {e.consequence}
-                            </Typography>
-
-                            <Typography variant="caption" sx={{ color: 'text.secondary' }} fontSize={16}>
-                                Recomendación
-                            </Typography>
-                            <Typography variant="body2" sx={{ color: 'text.secondary' }} fontSize={18}>
-                                {e.action}
-                            </Typography>
+                            <Box display={'flex'} flexDirection={'column'} gap={0.5}>
+                                <Typography color='#FFF' fontWeight={400}  fontSize={24}>
+                                    {getTitle(e.status as "error" | 'success' | 'warning')}
+                                </Typography>
+                            </Box>
+                            <Box display={'flex'} flexDirection={'column'} gap={0.5}>
+                                <Typography fontFamily={karla.style.fontFamily} color='#1C1B1D' fontWeight={400}  fontSize={22}>
+                                    {e.name[currentLocale as 'es' | 'en']}
+                                </Typography>
+                            </Box>
+                            <Box display={'flex'} flexDirection={'column'} gap={0.5}>
+                                <Typography  fontWeight={500} color='#FFF'  fontSize={16}>
+                                    {e.consequence}
+                                </Typography>
+                            </Box>
+                            <Box display={'flex'} flexDirection={'column'} gap={0.5}>
+                                <Typography variant="caption" sx={{ color: 'text.secondary' }} fontSize={12}>
+                                    Recomendación
+                                </Typography>
+                                <Typography   fontSize={16} fontWeight={500} color='#1C1B1D'>
+                                    {e.action}
+                                </Typography>
+                            </Box>
                         </Box>
                     </CardContent>
+
+
 
 
                 </Card>)}
@@ -80,7 +94,8 @@ export const HeuristicAnalize = () => {
 
             {open.type === CommonModalType.INFO && open.args?.id === 'data3' && <InfoModal
                 centerBtn cancelBtn={false} closeBtn={false} closeIcon={false}
-                htmlDescription={<InfoHelp title="Ayuda" data={heuristicsItems.map(e=>({head:e.name, items:e.children.map(ch=>({title:ch.name, description:ch.description as string}))
+                htmlDescription={<InfoHelp title="Ayuda" data={heuristicsItems.map(e => ({
+                    head: e.name, items: e.children.map(ch => ({ title: ch.name, description: ch.description as string }))
                 }))} />}
                 onClose={() => closeModal(CommonModalType.INFO)}
             />}

@@ -182,5 +182,34 @@ export interface IHeuristicIndicator {
 
 }
 
-export type ColorBar = '#4A8AD4' | '#3A9B94' | '#7BA3C8'  | '#E6F0FA'
-export const colorBarDataset: Array<ColorBar> = [ '#4A8AD4', '#3A9B94' , '#7BA3C8' , '#E6F0FA']
+export type ColorBar = '#4A8AD4' | '#3A9B94' | '#7BA3C8' | '#E6F0FA'
+export const colorBarDataset: Array<ColorBar> = ['#4A8AD4', '#3A9B94', '#7BA3C8', '#E6F0FA']
+
+export const preferenceDashboardItems = (t: any): Array<{ name: string, children: Array<{ name: string, value: string }> }> => [
+  {
+    name: 'Horarios',
+    children: [
+      { name: 'Horario operativo medio', value: 'avgStartHour_avgEndHour' },
+      { name: 'Carga horaria semanal', value: 'stdStartHour_stdEndHour' },
+    ]
+  },
+
+  {
+    name: 'Costes',
+    children: [
+      { name: 'Coste por hora trabajada', value: 'avgCostHour' },
+      { name: 'Coste por jornada', value: 'avgCycleCost' },
+      { name: 'Coste por rendimiento', value: 'avgCostEfficiency' },
+      { name: 'Rendimiento del coste invertido', value: 'effectiveRealCost' },
+
+    ]
+  },
+  {
+    name: 'Confiabilidad del dato',
+    children: [
+      { name: 'Nivel de confiabilidad ', value: 'reliability' },
+      { name: 'Volumen de datos', value: 'dataPoints' },
+    ]
+  },
+
+];

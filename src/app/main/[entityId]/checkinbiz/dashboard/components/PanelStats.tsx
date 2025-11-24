@@ -18,13 +18,13 @@ import { OperatingCosts } from "./cards/OperatingCosts";
 import InfoModal from "@/components/common/modals/InfoModal";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
-import { PanelModalInfo } from "./common/PanelModalInfo";
 import { operationData, tempActivityData } from "@/components/common/help/constants";
 import { InfoHelp } from "@/components/common/help/InfoHelp";
+import { preferenceDashboardItems } from "@/domain/features/checkinbiz/IStats";
 
 export const PanelStats = () => {
   const t = useTranslations();
-  const { pending, branchPatternList, cardIndicatorSelected, setCardIndicatorSelected, initialize, preferenceItems, type, setType } = useDashboard()
+  const { pending, branchPatternList, cardIndicatorSelected, setCardIndicatorSelected, initialize, type, setType } = useDashboard()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const { currentEntity } = useEntity()
   const [preferenceSelected, setPreferenceSelected] = useState(cardIndicatorSelected)
@@ -69,7 +69,7 @@ export const PanelStats = () => {
     </Box>}
 
     {!pending && branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour'].includes(e)).length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5} pt={5}>
-      <OperatingHours />
+      <TempActivity />
     </Box>}
 
     {!pending && branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['avgCostHour', 'avgCycleCost', 'avgCostEfficiency', 'effectiveRealCost'].includes(e)).length > 0 && <Box display={'flex'} flexDirection={'column'} pt={5}>
@@ -120,7 +120,7 @@ export const PanelStats = () => {
                     <Box display={'flex'} flexDirection={'column'} textAlign={'center'}>
                       <Typography variant="body1">{t('statsCheckbiz.configPanel')}</Typography>
                     </Box>
-                    <NestedSelectWithCheckmarks preferenceItems={preferenceItems} value={preferenceSelected} onChange={setPreferenceSelected} />
+                    <NestedSelectWithCheckmarks preferenceItems={preferenceDashboardItems(t)} value={preferenceSelected} onChange={setPreferenceSelected} />
                     <SelectorChart type={type} setType={setType} />
                   </Box>
 

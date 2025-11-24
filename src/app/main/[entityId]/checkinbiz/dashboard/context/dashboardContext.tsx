@@ -38,8 +38,6 @@ interface IDashboardProps {
         color: ColorBar
     }>,
     pending?: boolean
-    preferenceItems: Array<{ name: string, children: Array<{ name: string, value: string }> }>
-
     cardIndicatorSelected: Array<string>
     setCardIndicatorSelected: (data: Array<string>) => void
     normalizedData: Array<{
@@ -136,40 +134,11 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
 
 
 
-
-
-    const preferenceItems: Array<{ name: string, children: Array<{ name: string, value: string }> }> = [
-        {
-            name: 'Horarios',
-            children: [
-                { name: 'Horario operativo medio', value: 'avgStartHour_avgEndHour' },
-                { name: 'Carga horaria semanal', value: 'stdStartHour_stdEndHour' },
-            ]
-        },
-
-        {
-            name: 'Costes',
-            children: [
-                { name: 'Coste por hora trabajada', value: 'avgCostHour' },
-                { name: 'Coste por jornada', value: 'avgCycleCost' },
-                { name: 'Coste por rendimiento', value: 'avgCostEfficiency' },
-                { name: 'Rendimiento del coste invertido', value: 'effectiveRealCost' },
-
-            ]
-        },
-        {
-            name: 'Confiabilidad del dato',
-            children: [
-                { name: 'Nivel de confiabilidad ', value: 'reliability' },
-                { name: 'Volumen de datos', value: 'dataPoints' },
-            ]
-        },
-
-    ];
+ 
 
 
     return (
-        <DashboardContext.Provider value={{ onSelectedBranch, initialize, normalizedData, preferenceItems, type, setType, branchPatternList, cardIndicatorSelected, setCardIndicatorSelected, branchList, branchSelected, setBranchSelected, pending }}>
+        <DashboardContext.Provider value={{ onSelectedBranch, initialize, normalizedData, type, setType, branchPatternList, cardIndicatorSelected, setCardIndicatorSelected, branchList, branchSelected, setBranchSelected, pending }}>
             {children}
         </DashboardContext.Provider>
     );

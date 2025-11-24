@@ -1,11 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Box, useTheme } from '@mui/material';
+import { Box } from '@mui/material';
+import { colorBarDataset } from '@/domain/features/checkinbiz/IStats';
 
 const Chart = ({ type, branchPatternList }: any) => {
-    const theme = useTheme()
-
     const [chartData, setChartData] = useState([
         { day: 'Domingo' },
         { day: 'Lunes' },
@@ -18,9 +17,7 @@ const Chart = ({ type, branchPatternList }: any) => {
     ])
     const updateChartData = async () => {
         const newDataArray: Array<any> = []
-
         if (branchPatternList.length > 0) {
-
             chartData.forEach((element, index) => {
                 const item = {
                     day: element.day
@@ -33,7 +30,7 @@ const Chart = ({ type, branchPatternList }: any) => {
                 newDataArray.push(item)
             });
         }
-
+      
         setChartData(newDataArray)
     }
 
@@ -53,7 +50,7 @@ const Chart = ({ type, branchPatternList }: any) => {
                     <YAxis label={{ value: 'Horas', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Legend />
-                    {Object.keys(chartData[0]).filter(e => e !== 'day').map((e, i) => <Line strokeWidth={3} key={i} type="monotone" dataKey={e} stroke={i == 0 ? theme.palette.primary.main : theme.palette.error.main} name={e} />)}
+                    {Object.keys(chartData[0]).filter(e => e !== 'day').map((e, i) => <Line strokeWidth={3} key={i} type="monotone" dataKey={e} stroke={colorBarDataset[i]} name={e} />)}
                 </LineChart>
             </ResponsiveContainer>
 

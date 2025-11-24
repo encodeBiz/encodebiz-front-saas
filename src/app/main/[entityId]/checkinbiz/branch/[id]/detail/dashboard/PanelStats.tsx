@@ -13,21 +13,29 @@ import NestedSelectWithCheckmarks from "../../../../dashboard/components/common/
 import { SelectorChart } from "../../../../dashboard/components/common/SelectorChart";
 import { useDashboardBranch } from "./DashboardBranchContext";
 import { HeuristicAnalize } from "./cards/HeuristicAnalize";
+import { preferenceDashboardItems } from "@/domain/features/checkinbiz/IStats";
 
 
 export const PanelStats = () => {
   const t = useTranslations();
-  const {branchId, pending, branchPatternList,cardHeuristicsIndicatorSelected, setCardHeuristicsIndicatorSelected, cardIndicatorSelected, setCardIndicatorSelected, initialize, preferenceItems, heuristicsItems, type, setType } = useDashboardBranch()
+  const { branchId, pending, branchPatternList, cardHeuristicsIndicatorSelected, setCardHeuristicsIndicatorSelected, cardIndicatorSelected, setCardIndicatorSelected, initialize, heuristicsItems, type, setType } = useDashboardBranch()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const { currentEntity } = useEntity()
   const [preferenceSelected, setPreferenceSelected] = useState(cardIndicatorSelected)
   const [preferenceHeuristicSelected, setPreferenceHeuristicSelected] = useState(cardHeuristicsIndicatorSelected)
   useEffect(() => {
     if (currentEntity?.entity?.id) {
+      setPreferenceSelected([...cardIndicatorSelected])
+      setPreferenceHeuristicSelected([...cardHeuristicsIndicatorSelected])
+
+    }
+  }, [currentEntity?.entity?.id, cardIndicatorSelected.length])
+
+  useEffect(() => {
+    if (currentEntity?.entity?.id) {
       initialize()
     }
   }, [currentEntity?.entity?.id])
-
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -41,11 +49,10 @@ export const PanelStats = () => {
   const id = openTooltip ? 'simple-popover' : undefined;
 
   const handleSave = () => {
-    localStorage.setItem('PANEL_BRANCH_CHECKBIZ_CHART_'+branchId, JSON.stringify({preferenceSelected, preferenceHeuristicSelected}))
+    localStorage.setItem('PANEL_BRANCH_CHECKBIZ_CHART_' + branchId, JSON.stringify({ preferenceSelected, preferenceHeuristicSelected }))
     handleClose()
     setCardIndicatorSelected(preferenceSelected)
     setCardHeuristicsIndicatorSelected(preferenceHeuristicSelected)
-     
   }
 
 
@@ -53,12 +60,15 @@ export const PanelStats = () => {
 
     {pending && <BoxLoader message={t('statsCheckbiz.loading')} />}
 
-    {branchPatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5}>
+    {!pending && branchPatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5}>
       <OperatingHours />
+    </Box>}
+
+    {!pending && branchPatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5}>
       <TempActivity />
     </Box>}
 
-    {branchPatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5} pt={5}>
+    {!pending && branchPatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5} pt={5}>
       <HeuristicAnalize />
     </Box>}
 
@@ -69,8 +79,8 @@ export const PanelStats = () => {
 
     <Container maxWidth="lg">
       <HeaderPage
-          
-         actions={
+
+        actions={
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2}>
             <Box display={'flex'} justifyContent={'space-between'}    >
               <Box>
@@ -91,7 +101,7 @@ export const PanelStats = () => {
                     <Box display={'flex'} flexDirection={'column'} textAlign={'center'}>
                       <Typography variant="body1">{t('statsCheckbiz.configPanel')}</Typography>
                     </Box>
-                    <NestedSelectWithCheckmarks preferenceItems={preferenceItems} value={preferenceSelected} onChange={setPreferenceSelected} />
+                    <NestedSelectWithCheckmarks preferenceItems={preferenceDashboardItems(t)} value={preferenceSelected} onChange={setPreferenceSelected} />
                     <SelectorChart type={type} setType={setType} />
                     <NestedSelectWithCheckmarks title='INDICADORES HEURÍSTICOS' label='Indicadores heurísticos' preferenceItems={heuristicsItems} value={preferenceHeuristicSelected} onChange={setPreferenceHeuristicSelected} />
 
@@ -108,7 +118,7 @@ export const PanelStats = () => {
         }
       > <InnetContent /></HeaderPage>
 
-     
+
     </Container>
 
   );

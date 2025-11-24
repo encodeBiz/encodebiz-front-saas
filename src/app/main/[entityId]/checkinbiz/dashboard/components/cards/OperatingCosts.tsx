@@ -4,12 +4,15 @@ import { Box, Divider, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import { getTextByKey, useDashboard } from "../../context/dashboardContext";
 import { CustomizableGroupedBarChart } from "../common/chart/GroupedBarChart";
+import { useTranslations } from "next-intl";
+import { preferenceDashboardItems } from "@/domain/features/checkinbiz/IStats";
 
 export const OperatingCosts = () => {
+    const t = useTranslations()
 
     const itemInThisCats = ['avgCostHour', 'avgCycleCost', 'avgCostEfficiency', 'effectiveRealCost']
     // Colors for the bars
-    const { cardIndicatorSelected, branchPatternList, preferenceItems } = useDashboard()
+    const { cardIndicatorSelected, branchPatternList } = useDashboard()
     const [chartData, setChartData] = useState<{
         branch: Array<{ key: string, name: string, color: string }>
         data: Array<any>
@@ -25,7 +28,7 @@ export const OperatingCosts = () => {
         });
         const data: Array<any> = []
         cardIndicatorSelected.filter(e => itemInThisCats.includes(e)).forEach(indicator => {
-            const items = { category: getTextByKey(indicator, preferenceItems) }
+            const items = { category: getTextByKey(indicator, preferenceDashboardItems(t)) }
             branchPatternList.forEach(branchPattern => {
                 let value = 0
                 if (indicator === 'avgCostHour')

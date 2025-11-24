@@ -4,18 +4,17 @@ import React, { createContext, useContext, useState } from 'react';
 import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
 import { fetchSucursal, search } from '@/services/checkinbiz/sucursal.service';
 import { useEntity } from '@/hooks/useEntity';
-import { IBranchPattern, IHeuristicIndicator, IHeuristicInfo, NormalizedIndicators } from '@/domain/features/checkinbiz/IStats';
+import { ColorBar, colorBarDataset, IBranchPattern, IHeuristicIndicator, IHeuristicInfo } from '@/domain/features/checkinbiz/IStats';
 import { analiziHeuristic, fetchBranchPattern, fetchHeuristicsIndicator } from '@/services/checkinbiz/stats.service';
 import { normalizeBranchDataset } from '@/lib/common/normalizer';
 import { useAuth } from '@/hooks/useAuth';
 import { useAppLocale } from '@/hooks/useAppLocale';
 
 
-const colors: Array<'#165BAA' | '#A155B9' | '#F765A3'> = ['#165BAA', '#A155B9', '#F765A3']
 export interface IDataSet {
     branch: ISucursal,
     pattern: IBranchPattern,
-    color: '#165BAA' | '#A155B9' | '#F765A3'
+    color: ColorBar
 }
 
 export const getTextByKey = (key: string, preferenceItems: Array<{ name: string, children: Array<{ name: string, value: string }> }>) => {
@@ -36,11 +35,9 @@ interface IDashboardBranchProps {
         branchId: string,
         branch: ISucursal | null,
         pattern: IBranchPattern,
-        normalized: NormalizedIndicators,
-        color: '#165BAA' | '#A155B9' | '#F765A3'
+        color: ColorBar
     }>,
     pending?: boolean
-    preferenceItems: Array<{ name: string, children: Array<{ name: string, value: string }> }>
     heuristicsItems: Array<{ name: string, children: Array<{ name: string, value: string, description: string }> }>
     cardHeuristicsIndicatorSelected: Array<string>
     cardIndicatorSelected: Array<string>
@@ -49,9 +46,8 @@ interface IDashboardBranchProps {
     normalizedData: Array<{
         branchId: string,
         branch: ISucursal | null,
-        normalized: NormalizedIndicators,
         pattern: IBranchPattern,
-        color: '#165BAA' | '#A155B9' | '#F765A3'
+        color: ColorBar
     }>
     type: string
     setType: (type: string) => void
@@ -94,8 +90,7 @@ export const DashboardBranchProvider = ({ children, branchId }: { children: Reac
         branchId: string,
         branch: ISucursal | null,
         pattern: IBranchPattern,
-        normalized: NormalizedIndicators,
-        color: '#165BAA' | '#A155B9' | '#F765A3'
+        color: ColorBar
     }>>([])
     const [cardIndicatorSelected, setCardIndicatorSelected] = useState<Array<string>>(['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour']);
     const [cardHeuristicsIndicatorSelected, setCardHeuristicsIndicatorSelected] = useState<Array<string>>([]);
@@ -111,13 +106,11 @@ export const DashboardBranchProvider = ({ children, branchId }: { children: Reac
         branchId: string,
         branch: ISucursal | null,
         pattern: IBranchPattern,
-        normalized: NormalizedIndicators,
-        color: '#165BAA' | '#A155B9' | '#F765A3'
+        color: ColorBar
     }>>([])
     const { currentEntity } = useEntity()
 
     const getHead = (heuristicsIndicator: Array<IHeuristicIndicator>, key: string) => {
-
         return (heuristicsIndicator.find(e => e.group.id === key)?.group.label as any)[currentLocale as any]
     }
     const getIndicator = (heuristicsIndicator: Array<IHeuristicIndicator>, key: string) => {
@@ -159,30 +152,23 @@ export const DashboardBranchProvider = ({ children, branchId }: { children: Reac
             const dataPattern = await fetchBranchPattern(currentEntity?.entity?.id as string, branch.id as string) as IBranchPattern
             branchPatternList.push(dataPattern as IBranchPattern)
         }))
-        const normalizeData: Array<{
-            branchId: string,
-            pattern: IBranchPattern,
-            normalized: NormalizedIndicators
-        }> = normalizeBranchDataset(branchPatternList)
+
+        console.log(branchPatternList);        
 
         buildHeuristicInfo()
-
-
 
         const branchPatternDataListt: Array<{
             branchId: string,
             branch: ISucursal | null,
             pattern: IBranchPattern,
-            normalized: NormalizedIndicators
-            color: '#165BAA' | '#A155B9' | '#F765A3'
+            color: ColorBar
         }> = []
-        await Promise.all(normalizeData.map(async (branch) => {
+        await Promise.all(branchPatternList.map(async (pattern, i) => {
             branchPatternDataListt.push({
-                branchId: branch.branchId,
-                pattern: branch.pattern,
-                branch: branch.branchId ? await fetchSucursal(currentEntity?.entity?.id as string, branch.branchId) : null,
-                normalized: branch.normalized,
-                color: '#165BAA'
+                branchId: pattern.branchId,
+                pattern: pattern,
+                branch: pattern.branchId ? await fetchSucursal(currentEntity?.entity?.id as string, pattern.branchId) : null,
+                color: colorBarDataset[i]
             })
         }))
         setNormalizedData(branchPatternDataListt)
@@ -200,42 +186,14 @@ export const DashboardBranchProvider = ({ children, branchId }: { children: Reac
     }
 
     const onSelectedBranch = async (branchSelected: Array<ISucursal>) => {
-        setbranchPatternList(normalizedData.filter(e => branchSelected.map(b => b.id).includes(e.branchId)).map((e, i) => ({ ...e, color: colors[i] })))
+        setbranchPatternList(normalizedData.filter(e => branchSelected.map(b => b.id).includes(e.branchId)))
     }
 
-    const preferenceItems: Array<{ name: string, children: Array<{ name: string, value: string }> }> = [
-        {
-            name: 'Horarios',
-            children: [
-                { name: 'Horario operativo medio', value: 'avgStartHour_avgEndHour' },
-                { name: 'Carga horaria semanal', value: 'stdStartHour_stdEndHour' },
-            ]
-        },
-
-        {
-            name: 'Costes',
-            children: [
-                { name: 'Coste por hora trabajada', value: 'avgCostHour' },
-                { name: 'Coste por jornada', value: 'avgCycleCost' },
-                { name: 'Coste por rendimiento', value: 'avgCostEfficiency' },
-                { name: 'Rendimiento del coste invertido', value: 'effectiveRealCost' },
-
-            ]
-        },
-        {
-            name: 'Confiabilidad del dato',
-            children: [
-                { name: 'Nivel de confiabilidad ', value: 'reliability' },
-                { name: 'Volumen de datos', value: 'dataPoints' },
-            ]
-        },
-
-    ];
-
+   
 
 
     return (
-        <DashboardBranchContext.Provider value={{ heuristicData, branchId, heuristic, cardHeuristicsIndicatorSelected, setCardHeuristicsIndicatorSelected, heuristicsItems, onSelectedBranch, initialize, normalizedData, preferenceItems, type, setType, branchPatternList, cardIndicatorSelected, setCardIndicatorSelected, branchList, branchSelected, setBranchSelected, pending }}>
+        <DashboardBranchContext.Provider value={{ heuristicData, branchId, heuristic, cardHeuristicsIndicatorSelected, setCardHeuristicsIndicatorSelected, heuristicsItems, onSelectedBranch, initialize, normalizedData,   type, setType, branchPatternList, cardIndicatorSelected, setCardIndicatorSelected, branchList, branchSelected, setBranchSelected, pending }}>
             {children}
         </DashboardBranchContext.Provider>
     );
