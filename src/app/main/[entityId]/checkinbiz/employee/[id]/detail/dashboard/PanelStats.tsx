@@ -13,6 +13,7 @@ import NestedSelectWithCheckmarks from "../../../../dashboard/components/common/
 import { SelectorChart } from "../../../../dashboard/components/common/SelectorChart";
 import { HeuristicAnalize } from "./cards/HeuristicAnalize";
 import { useDashboardEmployee } from "./DashboardEmployeeContext";
+import { DispercionActivity } from "./cards/DispercionActivity";
 
 
 export const PanelStats = () => {
@@ -56,6 +57,7 @@ export const PanelStats = () => {
     {branchPatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5}>
       <OperatingHours />
       <TempActivity />
+      <DispercionActivity/>
     </Box>}
 
     {branchPatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5} pt={5}>
