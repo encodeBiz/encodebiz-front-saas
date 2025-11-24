@@ -90,13 +90,15 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
         const branchPatternList: Array<IBranchPattern> = []
         await Promise.all(branchList.map(async (branch) => {
             const dataPattern = await fetchBranchPattern(currentEntity?.entity?.id as string, branch.id as string) as IBranchPattern
-            branchPatternList.push(dataPattern as IBranchPattern)
+            if(dataPattern)
+                branchPatternList.push(dataPattern as IBranchPattern)
         }))
         const normalizeData: Array<{
             branchId: string,
             pattern: IBranchPattern,
             normalized: NormalizedIndicators
         }> = normalizeBranchDataset(branchPatternList)
+             
 
         const branchPatternDataListt: Array<{
             branchId: string,
@@ -105,6 +107,7 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
             normalized: NormalizedIndicators
             color: '#165BAA' | '#A155B9' | '#F765A3'
         }> = []
+
         await Promise.all(normalizeData.map(async (branch) => {
             branchPatternDataListt.push({
                 branchId: branch.branchId,
@@ -114,6 +117,12 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
                 color: '#165BAA'
             })
         }))
+
+        console.log(branchPatternDataListt);
+        
+
+      
+
         setNormalizedData(branchPatternDataListt)
         setCardIndicatorSelected(localStorage.getItem('PANEL_CHECKBIZ_CHART') ? JSON.parse(localStorage.getItem('PANEL_CHECKBIZ_CHART') as string) : ['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour'])
         setBranchList(branchPatternDataListt.filter(e => !!e.branch).map(e => e.branch as ISucursal))
