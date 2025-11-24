@@ -60,6 +60,7 @@ interface IDashboardBranchProps {
     initialize: () => void
     heuristic: Array<IHeuristicInfo>
     branchId: string
+    heuristicData: Array<IHeuristicIndicator>
 
 
 }
@@ -75,13 +76,13 @@ const defaultItems1 = [
     "dataPoints"
 ]
 
-const defaultItems2 =[
-  "CEE",
-  "ECR",
-  "ERP",
-  "OER",
-  "OIR",
-  "PQS"
+const defaultItems2 = [
+    "CEE",
+    "ECR",
+    "ERP",
+    "OER",
+    "OIR",
+    "PQS"
 ]
 
 export const DashboardBranchContext = createContext<IDashboardBranchProps | undefined>(undefined);
@@ -234,7 +235,7 @@ export const DashboardBranchProvider = ({ children, branchId }: { children: Reac
 
 
     return (
-        <DashboardBranchContext.Provider value={{ branchId, heuristic, cardHeuristicsIndicatorSelected, setCardHeuristicsIndicatorSelected, heuristicsItems, onSelectedBranch, initialize, normalizedData, preferenceItems, type, setType, branchPatternList, cardIndicatorSelected, setCardIndicatorSelected, branchList, branchSelected, setBranchSelected, pending }}>
+        <DashboardBranchContext.Provider value={{ heuristicData, branchId, heuristic, cardHeuristicsIndicatorSelected, setCardHeuristicsIndicatorSelected, heuristicsItems, onSelectedBranch, initialize, normalizedData, preferenceItems, type, setType, branchPatternList, cardIndicatorSelected, setCardIndicatorSelected, branchList, branchSelected, setBranchSelected, pending }}>
             {children}
         </DashboardBranchContext.Provider>
     );

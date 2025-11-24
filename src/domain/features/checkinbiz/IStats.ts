@@ -1,4 +1,3 @@
-import { Timestamp } from "firebase/firestore"
 import { ISucursal } from "./ISucursal"
 
 export interface IBranchPattern {
