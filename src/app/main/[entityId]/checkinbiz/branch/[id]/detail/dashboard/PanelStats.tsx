@@ -53,7 +53,7 @@ export const PanelStats = () => {
 
     {pending && <BoxLoader message={t('statsCheckbiz.loading')} />}
 
-    {branchPatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5} pt={5}>
+    {branchPatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5}>
       <OperatingHours />
       <TempActivity />
     </Box>}
