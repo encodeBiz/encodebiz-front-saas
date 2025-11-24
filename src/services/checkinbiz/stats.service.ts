@@ -1,8 +1,8 @@
- import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
+import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { mapperErrorFromBack } from "@/lib/common/String";
-import { IBranchPattern } from "@/domain/features/checkinbiz/IStats";
+import { IBranchPattern, IEmployeePattern, IHeuristicIndicator } from "@/domain/features/checkinbiz/IStats";
 import { fetchSucursal } from "./sucursal.service";
 
 
@@ -42,6 +42,63 @@ export const fetchBranchPattern = async (entityId: string, branchId: string): Pr
 }
 
 
+/**
+   * Search employee
+   *
+   * @async
+   * @param {SearchParams} params
+   * @returns {Promise<Iemployee[]>}
+   */
+export const fetchEmployeePattern = async (entityId: string, employeeId: string): Promise<IEmployeePattern | null> => {
+  const filters = [
+    {
+      field: 'employeeId',
+      operator: '==',
+      value: employeeId,
+    },
+
+    {
+      field: 'entityId',
+      operator: '==',
+      value: entityId,
+    },
+  ];
+  const result: IEmployeePattern[] = await searchFirestore({
+    ...[] as any,
+    filters,
+    collection: `${collection.EMPLOYEE_PATTER}`,
+  });
+  if (result.length > 0)
+    return {
+      ...result[0],
+      branch: await fetchSucursal(result[0].entityId, result[0].branchId)
+    };
+  return null
+}
+
+/**
+   * Search employee
+   *
+   * @async
+   * @param {SearchParams} params
+   * @returns {Promise<Iemployee[]>}
+   */
+export const fetchHeuristicsIndicator = async (): Promise<Array<IHeuristicIndicator>> => {
+  const filters: any = [];
+  return await searchFirestore({
+    ...[] as any,
+    filters,
+    collection: `${collection.HEURISTIC}`,
+    limit: 100
+  }) as Array<IHeuristicIndicator>;
+
+}
+
+
+
+
+
+
 export async function analiziHeuristic(entityId: string, branchId: string, token: string, locale: any = 'es') {
   try {
     if (!token) {
@@ -50,7 +107,7 @@ export async function analiziHeuristic(entityId: string, branchId: string, token
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,locale
+          authorization: `Bearer ${token}`, locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -63,7 +120,7 @@ export async function analiziHeuristic(entityId: string, branchId: string, token
         throw new Error(response.message);
       }
 
-      return response?.results as Array<any>??[];
+      return response?.results as Array<any> ?? [];
     }
   } catch (error: any) {
     throw new Error(mapperErrorFromBack(error?.message as string, true) as string);

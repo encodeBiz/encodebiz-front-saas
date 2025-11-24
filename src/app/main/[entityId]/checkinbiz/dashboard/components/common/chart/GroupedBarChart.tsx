@@ -122,7 +122,7 @@ export const CustomizableGroupedBarChart = ({
                     />
                     {entities.map((entity: { key: string, name: string, color: string }, index: number) => (
                         <Bar
-                            maxBarSize={25}
+                            maxBarSize={35}
                             key={entity.key + '-' + index}
                             dataKey={entity.key}
                             name={entity.name}

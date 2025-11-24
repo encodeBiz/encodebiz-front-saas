@@ -11,7 +11,7 @@ import InfoModal from '@/components/common/modals/InfoModal';
 import { InfoHelp } from '../../../../../../../../../components/common/help/InfoHelp';
  
 export const HeuristicAnalize = () => {
-    const { heuristic, cardHeuristicsIndicatorSelected } = useDashboardBranch()
+    const { heuristic, cardHeuristicsIndicatorSelected, heuristicsItems } = useDashboardBranch()
     const theme = useTheme()
 
 
@@ -49,7 +49,7 @@ export const HeuristicAnalize = () => {
 
             <Divider orientation="horizontal" flexItem />
             <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'space-between'} gap={2} p={3}>
-                {heuristic.filter(e => e.active).map((e, i) => <Card key={i} sx={{ width: 450, border: `1px solid ${getColor(e.status as "error" | 'success' | 'warning')}` }}>
+                {heuristic.filter(e => cardHeuristicsIndicatorSelected.includes(e.id) ).map((e, i) => <Card key={i} sx={{ width: 450, border: `1px solid ${getColor(e.status as "error" | 'success' | 'warning')}` }}>
                    
                     <CardContent sx={{ background: getColor(e.status as "error" | 'success' | 'warning'), color: "#FFF" }}
                     >
@@ -80,7 +80,8 @@ export const HeuristicAnalize = () => {
 
             {open.type === CommonModalType.INFO && open.args?.id === 'data3' && <InfoModal
                 centerBtn cancelBtn={false} closeBtn={false} closeIcon={false}
-                htmlDescription={<InfoHelp title="Ayuda" data={[]} />}
+                htmlDescription={<InfoHelp title="Ayuda" data={heuristicsItems.map(e=>({head:e.name, items:e.children.map(ch=>({title:ch.name, description:ch.description as string}))
+                }))} />}
                 onClose={() => closeModal(CommonModalType.INFO)}
             />}
         </BorderBox>
