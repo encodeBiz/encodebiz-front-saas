@@ -183,4 +183,4 @@ export interface IHeuristicIndicator {
 }
 
 export type ColorBar = '#4A8AD4' | '#3A9B94' | '#7BA3C8'  | '#E6F0FA'
-export const colorBarDataset: Array<ColorBar> = [  '#3A9B94' , '#7BA3C8' , '#E6F0FA', '#4A8AD4']
+export const colorBarDataset: Array<ColorBar> = [ '#4A8AD4', '#3A9B94' , '#7BA3C8' , '#E6F0FA']

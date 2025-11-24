@@ -64,16 +64,19 @@ export const PanelStats = () => {
     <SelectorBranch />
     {pending && <BoxLoader message={t('statsCheckbiz.loading')} />}
 
-    {branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour'].includes(e)).length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5} pt={5}>
+    {!pending &&  branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour'].includes(e)).length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5} pt={5}>
       <OperatingHours />
-      <TempActivity />
     </Box>}
 
-    {branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['avgCostHour', 'avgCycleCost', 'avgCostEfficiency', 'effectiveRealCost'].includes(e)).length > 0 && <Box display={'flex'} flexDirection={'column'} pt={5}>
+    {!pending && branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour'].includes(e)).length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5} pt={5}>
+      <OperatingHours />
+    </Box>}
+
+    {!pending && branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['avgCostHour', 'avgCycleCost', 'avgCostEfficiency', 'effectiveRealCost'].includes(e)).length > 0 && <Box display={'flex'} flexDirection={'column'} pt={5}>
       <OperatingCosts />
     </Box>}
 
-    {branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['reliability', 'dataPoints'].includes(e)).length > 0 && <Box display={'flex'} flexDirection={'column'} pt={5}>
+    {!pending && branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['reliability', 'dataPoints'].includes(e)).length > 0 && <Box display={'flex'} flexDirection={'column'} pt={5}>
       <DataReliability />
     </Box>}
 
