@@ -14,17 +14,16 @@ import { SelectorChart } from "../../../../dashboard/components/common/SelectorC
 import { HeuristicAnalize } from "./cards/HeuristicAnalize";
 import { useDashboardEmployee } from "./DashboardEmployeeContext";
 import { DispercionActivity } from "./cards/DispercionActivity";
-import { preferenceDashboardItems } from "@/domain/features/checkinbiz/IStats";
+import { preferenceDashboardEmployeeItems } from "@/domain/features/checkinbiz/IStats";
 
 
 export const PanelStats = () => {
   const t = useTranslations();
-  const { employeeId, employeePatternList, pending, cardHeuristicsIndicatorSelected, setCardHeuristicsIndicatorSelected, cardIndicatorSelected, setCardIndicatorSelected, initialize, heuristicsItems, type, setType } = useDashboardEmployee()
+  const { employeeId, employeePatternList, pending , cardIndicatorSelected, setCardIndicatorSelected, initialize, type, setType } = useDashboardEmployee()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const { currentEntity } = useEntity()
   const [preferenceSelected, setPreferenceSelected] = useState(cardIndicatorSelected)
-  const [preferenceHeuristicSelected, setPreferenceHeuristicSelected] = useState(cardHeuristicsIndicatorSelected)
-  useEffect(() => {
+   useEffect(() => {
     if (currentEntity?.entity?.id) {
       initialize()
     }
@@ -43,11 +42,10 @@ export const PanelStats = () => {
   const id = openTooltip ? 'simple-popover' : undefined;
 
   const handleSave = () => {
-    localStorage.setItem('PANEL_EMPLOYEE_CHECKBIZ_CHART_' + employeeId, JSON.stringify({ preferenceSelected, preferenceHeuristicSelected }))
+    localStorage.setItem('PANEL_EMPLOYEE_CHECKBIZ_CHART_' + employeeId, JSON.stringify({ preferenceSelected }))
     handleClose()
     setCardIndicatorSelected(preferenceSelected)
-    setCardHeuristicsIndicatorSelected(preferenceHeuristicSelected)
-
+ 
   }
 
 
@@ -100,11 +98,9 @@ export const PanelStats = () => {
                     <Box display={'flex'} flexDirection={'column'} textAlign={'center'}>
                       <Typography variant="body1">{t('statsCheckbiz.configPanel')}</Typography>
                     </Box>
-                    <NestedSelectWithCheckmarks preferenceItems={preferenceDashboardItems(t)} value={preferenceSelected} onChange={setPreferenceSelected} />
+                    <NestedSelectWithCheckmarks preferenceItems={preferenceDashboardEmployeeItems(t)} value={preferenceSelected} onChange={setPreferenceSelected} />
                     <SelectorChart type={type} setType={setType} />
-                    <NestedSelectWithCheckmarks title='INDICADORES HEURÍSTICOS' label='Indicadores heurísticos' preferenceItems={heuristicsItems} value={preferenceHeuristicSelected} onChange={setPreferenceHeuristicSelected} />
-
-                  </Box>
+                   </Box>
 
                   <Box display={'flex'} justifyContent={'flex-end'} flexDirection={'row'} gap={1} padding={4}>
                     <SassButton onClick={handleClose} variant="outlined" color="primary">{t('core.button.cancel')}</SassButton>

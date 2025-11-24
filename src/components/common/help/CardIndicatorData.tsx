@@ -147,7 +147,7 @@ export const indicatorList = (t: any): Array<{
 },
 
 {
-    id: 'effectiveRealCost',
+    id: 'totalCost',
     label: 'Coste acumulado',
     data: (data: {
         branchId: string,
@@ -194,7 +194,7 @@ export const indicatorList = (t: any): Array<{
 },
 
 {
-    id: 'experiencia',
+    id: 'totalExperienceYears',
     label: 'Experiencia total',
     data: (data: {
         branchId: string,
@@ -210,7 +210,7 @@ export const indicatorList = (t: any): Array<{
 },
 
 {
-    id: 'Resp. Principal',
+    id: 'experienceByResponsibility',
     label: 'Resp. Principal',
     data: (data: {
         branchId: string,
@@ -228,7 +228,7 @@ export const indicatorList = (t: any): Array<{
 
 
 {
-    id: 'Ocupación principal',
+    id: 'experienceByJob',
     label: 'Ocupación principal',
     data: (data: {
         branchId: string,

@@ -233,3 +233,42 @@ export const preferenceDashboardItems = (t: any): Array<{ name: string, children
   },
 
 ];
+
+export const preferenceDashboardEmployeeItems = (t: any): Array<{ name: string, children: Array<{ name: string, value: string }> }> => [
+  {
+    name: 'Horarios',
+    children: [
+      { name: 'Horario operativo medio', value: 'avgStartHour_avgEndHour' },
+      { name: 'Dispersión horaria', value: 'stdStartHour_stdEndHour' },
+    ]
+  },
+
+  {
+    name: 'Costes',
+    children: [
+      { name: 'Coste por hora trabajada', value: 'avgCostHour' },
+      { name: 'Coste por jornada', value: 'avgCycleCost' },
+      { name: 'Coste por rendimiento', value: 'avgCostEfficiency' },
+      { name: 'Rendimiento del coste invertido', value: 'effectiveRealCost' },      
+      { name: 'Coste acumulado', value: 'totalCost' },
+
+    ]
+  },
+  {
+    name: 'Confiabilidad del dato',
+    children: [
+      { name: 'Nivel de confiabilidad ', value: 'reliability' },
+      { name: 'Volumen de datos', value: 'dataPoints' },
+    ]
+  },
+
+   {
+    name: 'Experiencia',
+    children: [
+      { name: 'Experiencia total', value: 'totalExperienceYears' },
+      { name: 'Responsabilidad principal', value: 'experienceByResponsibility' },
+      { name: 'Ocupación principal', value: 'experienceByJob' },
+    ]
+  },
+
+];

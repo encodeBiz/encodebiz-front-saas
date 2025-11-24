@@ -9,9 +9,9 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import { InfoOutline } from '@mui/icons-material';
 import InfoModal from '@/components/common/modals/InfoModal';
 import { InfoHelp } from '../../../../../../../../../components/common/help/InfoHelp';
- 
+
 export const HeuristicAnalize = () => {
-    const { heuristic, cardHeuristicsIndicatorSelected, heuristicsItems } = useDashboardEmployee()
+    const { heuristic, heuristicsItems } = useDashboardEmployee()
     const theme = useTheme()
 
 
@@ -37,25 +37,24 @@ export const HeuristicAnalize = () => {
             <Box sx={{ p: 4 }}>
                 <Box display={'flex'} gap={0.2} justifyItems={'center'} alignItems={'center'}>
                     <Typography align="center" sx={{ mb: 0, textAlign: 'left', fontSize: 32 }}>
-                        Indicadores Heurísticos
+                        Evaluación Operativa del Empleado
                     </Typography>
                     <IconButton onClick={() => openModal(CommonModalType.INFO, { id: 'data3' })}><InfoOutline sx={{ fontSize: 25 }} /></IconButton>
                 </Box>
                 <Typography variant="body1">
-                    Indicadores que muestran cómo funciona la sucursal en términos de horarios, costes y calidad del dato.
-                    Permiten entender la estabilidad operativa, el uso real de los recursos y la fiabilidad de la información registrada.
+                    Diagnóstico automático que interpreta el comportamiento real del trabajador y genera conclusiones claras sobre su desempeño, estabilidad y potencial dentro del equipo. Permite identificar talento, riesgos operativos y oportunidades de mejora basadas en datos objetivos.
                 </Typography>
             </Box>
 
             <Divider orientation="horizontal" flexItem />
             <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'space-between'} gap={2} p={3}>
-                {heuristic.filter(e => cardHeuristicsIndicatorSelected.includes(e.id) ).map((e, i) => <Card key={i} sx={{ width: 450, border: `1px solid ${getColor(e.status as "error" | 'success' | 'warning')}` }}>
-                   
+                {heuristic.map((e, i) => <Card key={i} sx={{ width: 450, border: `1px solid ${getColor(e.status as "error" | 'success' | 'warning')}` }}>
+
                     <CardContent sx={{ background: getColor(e.status as "error" | 'success' | 'warning'), color: "#FFF" }}
                     >
                         <Box display={'flex'} flexDirection={'column'} gap={1}>
-                            <Typography variant="body2" fontWeight={'bold'}   fontSize={22}>
-                               {getTitle(e.status as "error" | 'success' | 'warning')}
+                            <Typography variant="body2" fontWeight={'bold'} fontSize={22}>
+                                {getTitle(e.status as "error" | 'success' | 'warning')}
                             </Typography>
                             <Typography variant="body2" fontWeight={'bold'} sx={{ color: 'text.secondary' }} fontSize={18}>
                                 {e.name[currentLocale as 'es' | 'en']}
@@ -80,7 +79,8 @@ export const HeuristicAnalize = () => {
 
             {open.type === CommonModalType.INFO && open.args?.id === 'data3' && <InfoModal
                 centerBtn cancelBtn={false} closeBtn={false} closeIcon={false}
-                htmlDescription={<InfoHelp title="Ayuda" data={heuristicsItems.map(e=>({head:e.name, items:e.children.map(ch=>({title:ch.name, description:ch.description as string}))
+                htmlDescription={<InfoHelp title="Ayuda" data={heuristicsItems.map(e => ({
+                    head: e.name, items: e.children.map(ch => ({ title: ch.name, description: ch.description as string }))
                 }))} />}
                 onClose={() => closeModal(CommonModalType.INFO)}
             />}
