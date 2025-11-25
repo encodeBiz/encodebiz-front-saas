@@ -11,7 +11,7 @@ import { TempActivity } from "./cards/TempActivity";
 import { SassButton } from "@/components/common/buttons/GenericButton";
 import NestedSelectWithCheckmarks from "../../../../panel/components/common/Preference/NestedSelectWithCheckmarks";
 import { SelectorChart } from "../../../../panel/components/common/SelectorChart";
-import { HeuristicAnalize } from "./cards/HeuristicAnalize";
+import { RulesAnalize } from "./cards/RulesAnalize";
 import { useDashboardEmployee } from "./DashboardEmployeeContext";
 import { DispercionActivity } from "./cards/DispercionActivity";
 import { preferenceDashboardEmployeeItems } from "@/domain/features/checkinbiz/IStats";
@@ -71,7 +71,7 @@ export const PanelStats = () => {
     </Box>}
 
     {!pending && employeePatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5} pt={5}>
-      <HeuristicAnalize />
+      <RulesAnalize />
     </Box>}
 
 
