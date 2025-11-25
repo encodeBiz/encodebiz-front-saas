@@ -11,14 +11,17 @@ const ChartActivity = ({ type, branchPatternList }: any) => {
         if (branchPatternList.length > 0) {
             chartDataList.forEach((_, i) => {
                 const item = {}
-                branchPatternList.map((e: any)=>e.pattern).forEach((patternBranch: IBranchPattern | IEmployeePattern) => {
-                    const value = parseFloat(`${(patternBranch as any)[type][i].toFixed(2)}`)
+                branchPatternList.forEach((patternBranch: any) => {
+                    const pattern:  IBranchPattern | IEmployeePattern = patternBranch.pattern                     
+                    const value = parseFloat(`${((pattern as any)[type][i]??0).toFixed(2)}`)
                     Object.assign(item, {
-                        [(patternBranch as IBranchPattern).branch?.name as string]: value
+                        [(pattern as any).branch?.name as string]: value
                     })
                 });
-                chartDataList.push(item)
+                chartDataList.splice(i,1,item)
             });
+            console.log(chartDataList);
+            
         }         
         setChartData(chartDataList)
     }
