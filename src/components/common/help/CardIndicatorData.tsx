@@ -75,7 +75,7 @@ export const indicatorList = (t: any): Array<{
 },
 
 {
-    id: 'dispesion',
+    id: 'stdStartHour_stdEndHour',
     label: 'Dispersión horaria',
     data: (data: {
         branchId: string,
@@ -83,7 +83,7 @@ export const indicatorList = (t: any): Array<{
         pattern: IBranchPattern | IEmployeePattern,
 
         color: '#165BAA' | '#A155B9' | '#F765A3'
-    }) => `${(data.pattern as IEmployeePattern).stdStartHour}h - ${(data.pattern as IEmployeePattern).stdEndHour}h`,
+    }) => `${(data.pattern as IEmployeePattern).stdStartHour.toFixed(2)}h - ${(data.pattern as IEmployeePattern).stdEndHour.toFixed(2)}h`,
     help: t('statsCheckbiz.avgCostHourHelp'),
     icon: <ClockIcon />,
     tag: ['employee'],
@@ -101,7 +101,7 @@ export const indicatorList = (t: any): Array<{
     }) => `${(data.pattern.avgCostHour ?? 0)?.toFixed(2)}`,
     help: t('statsCheckbiz.avgCycleCostHelp'),
     icon: <MoneyIcon />,
-    tag: ['branch'],
+    tag: ['branch', 'employee'],
 },
 {
     id: 'avgCycleCost',
@@ -202,7 +202,7 @@ export const indicatorList = (t: any): Array<{
         pattern: IBranchPattern | IEmployeePattern,
 
         color: '#165BAA' | '#A155B9' | '#F765A3'
-    }) => `${((data.pattern as IEmployeePattern).totalExperienceYears ?? 0)?.toFixed(0)} años`,
+    }) => `${((data.pattern as IEmployeePattern).totalExperienceYears ?? 0)?.toFixed(2)} años`,
     help: t('statsCheckbiz.dataPointsHelp'),
     icon: <EmployeeIcon />,
     tag: ['employee'],
@@ -219,7 +219,7 @@ export const indicatorList = (t: any): Array<{
 
         color: '#165BAA' | '#A155B9' | '#F765A3'
     }) => (data.pattern as IEmployeePattern).experienceByResponsibility.length > 0 ?
-            `${(data.pattern as IEmployeePattern).experienceByResponsibility[0].responsibility} (${((data.pattern as IEmployeePattern).experienceByResponsibility[0].years ?? 0)?.toFixed(0)} años)` : ' - ',
+            `${(data.pattern as IEmployeePattern).experienceByResponsibility[0].responsibility} (${((data.pattern as IEmployeePattern).experienceByResponsibility[0].years ?? 0)?.toFixed(2)} años)` : ' - ',
     help: t('statsCheckbiz.dataPointsHelp'),
     icon: <EmployeeIcon />,
     tag: ['employee'],
@@ -237,7 +237,7 @@ export const indicatorList = (t: any): Array<{
 
         color: '#165BAA' | '#A155B9' | '#F765A3'
     }) => (data.pattern as IEmployeePattern).experienceByJob.length > 0 ?
-            `${(data.pattern as IEmployeePattern).experienceByJob[0].nameJob} (${(((data.pattern as IEmployeePattern).experienceByJob[0].totalHours ?? 0)/(24*260))?.toFixed(0)} años)` : ' - ',
+            `${(data.pattern as IEmployeePattern).experienceByJob[0].nameJob} (${(((data.pattern as IEmployeePattern).experienceByJob[0].totalHours ?? 0)/(24*260))?.toFixed(2)} años)` : ' - ',
     help: t('statsCheckbiz.dataPointsHelp'),
     icon: <EmployeeIcon />,
     tag: ['employee'],

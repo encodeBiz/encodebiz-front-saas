@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState } from 'react';
 import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
 import { useEntity } from '@/hooks/useEntity';
 import { IEmployeePattern, IHeuristicIndicator, IHeuristicInfo } from '@/domain/features/checkinbiz/IStats';
-import { analiziHeuristic, fetchEmployeePattern, fetchHeuristicsIndicator } from '@/services/checkinbiz/stats.service';
+import { fetchHeuristic, fetchEmployeePattern, fetchHeuristicsIndicator } from '@/services/checkinbiz/stats.service';
 import { useAuth } from '@/hooks/useAuth';
 import { useAppLocale } from '@/hooks/useAppLocale';
 import { IEmployee } from '@/domain/features/checkinbiz/IEmployee';
@@ -127,9 +127,11 @@ export const DashboardEmployeeProvider = ({ children, employeeId }: { children: 
             employee,
             employeeId
         })))
-        const data: Array<IHeuristicInfo> = await analiziHeuristic(currentEntity?.entity?.id as string, employeeId, token, currentLocale)
-        console.log(data);
-        setHeuristic(data.map((e) => ({ ...e, active: true })));
+        try {
+            const data: Array<IHeuristicInfo> = await fetchHeuristic(currentEntity?.entity?.id as string, null, employeeId, token, currentLocale)
+            console.log(data);
+            setHeuristic(data.map((e) => ({ ...e, active: true })));
+        } catch{}
         setPending(false)
     }
 

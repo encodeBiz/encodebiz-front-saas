@@ -39,8 +39,12 @@ export const TempActivity = () => {
                             [patternEmployee.employee?.fullName as string]: value
                         })
                     });
+                    chartDataList.splice(i,1,item)
                 });
+                
             }
+            console.log(chartDataList);
+            
             setChartData(chartDataList)
         }
         useEffect(() => {

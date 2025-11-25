@@ -9,6 +9,7 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import { InfoOutline } from '@mui/icons-material';
 import InfoModal from '@/components/common/modals/InfoModal';
 import { InfoHelp } from '../../../../../../../../../components/common/help/InfoHelp';
+import { karla } from '@/config/fonts/google_fonts';
 
 export const HeuristicAnalize = () => {
     const { heuristic, heuristicsItems } = useDashboardEmployee()
@@ -48,28 +49,24 @@ export const HeuristicAnalize = () => {
 
             <Divider orientation="horizontal" flexItem />
             <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'space-between'} gap={2} p={3}>
-                {heuristic.map((e, i) => <Card key={i} sx={{ width: 450, border: `1px solid ${getColor(e.status as "error" | 'success' | 'warning')}` }}>
+                {heuristic.map((e, i) => <Card key={i} sx={{ width: 450, bgcolor: `#B1C5FF` }}>
 
                     <CardContent sx={{ background: getColor(e.status as "error" | 'success' | 'warning'), color: "#FFF" }}
                     >
+                    
+
+
                         <Box display={'flex'} flexDirection={'column'} gap={1}>
-                            <Typography variant="body2" fontWeight={'bold'} fontSize={22}>
-                                {getTitle(e.status as "error" | 'success' | 'warning')}
-                            </Typography>
-                            <Typography variant="body2" fontWeight={'bold'} sx={{ color: 'text.secondary' }} fontSize={18}>
-                                {e.name[currentLocale as 'es' | 'en']}
-                            </Typography>
-
-                            <Typography variant="body2" fontSize={18}>
-                                {e.consequence}
-                            </Typography>
-
-                            <Typography variant="caption" sx={{ color: 'text.secondary' }} fontSize={16}>
-                                Recomendación
-                            </Typography>
-                            <Typography variant="body2" sx={{ color: 'text.secondary' }} fontSize={18}>
-                                {e.action}
-                            </Typography>
+                            <Box display={'flex'} flexDirection={'column'} gap={0.5}>
+                                <Typography color='#1C1B1D' fontWeight={500} fontSize={16}>
+                                    {e.name[currentLocale as 'es' | 'en']}
+                                </Typography>
+                            </Box>
+                            <Box display={'flex'} flexDirection={'column'} gap={0.5}>
+                                <Typography  fontWeight={500} color='#FFF' fontSize={16}>
+                                    {e.consequence}
+                                </Typography>
+                            </Box>
                         </Box>
                     </CardContent>
 

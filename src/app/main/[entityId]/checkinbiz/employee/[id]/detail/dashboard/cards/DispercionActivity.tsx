@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { BorderBox } from "@/components/common/tabs/BorderBox";
 import { Box, Divider, Typography } from "@mui/material";
 import { useDashboardEmployee } from "../DashboardEmployeeContext";
@@ -24,6 +25,8 @@ export const DispercionActivity = () => {
                     ['Entrada']: valueStart,
                     ['Salida']: valueEnd
                 })
+
+                    chartDataList.splice(i,1,item)
             });
         }
         setChartData(chartDataList)

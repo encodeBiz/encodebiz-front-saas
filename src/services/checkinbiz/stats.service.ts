@@ -68,7 +68,7 @@ export const fetchEmployeePattern = async (entityId: string, employeeId: string)
     filters,
     collection: `${collection.EMPLOYEE_PATTER}`,
   });
-  return result.filter(e=>e.id===`${employeeId}_${entityId}`)
+  return result.filter(e => e.id === `${employeeId}_${entityId}`)
 }
 
 /**
@@ -94,11 +94,16 @@ export const fetchHeuristicsIndicator = async (): Promise<Array<IHeuristicIndica
 
 
 
-export async function analiziHeuristic(entityId: string, branchId: string, token: string, locale: any = 'es') {
+export async function fetchHeuristic(entityId: string, branchId: string | null, employeeId: string | null, token: string, locale: any = 'es') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
     } else {
+      const body = {
+        entityId, lang: locale
+      }
+      if (employeeId) Object.assign(body, { employeeId })
+      if (branchId) Object.assign(body, { branchId })
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
@@ -108,7 +113,7 @@ export async function analiziHeuristic(entityId: string, branchId: string, token
       const response: any = await httpClientFetchInstance.post(
         process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_STATS as string,
         {
-          entityId, branchId
+          ...body
         }
       );
       if (response.errCode && response.errCode !== 200) {

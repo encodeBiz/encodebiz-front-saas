@@ -5,7 +5,7 @@ import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
 import { fetchSucursal, search } from '@/services/checkinbiz/sucursal.service';
 import { useEntity } from '@/hooks/useEntity';
 import { ColorBar, colorBarDataset, IBranchPattern, IHeuristicIndicator, IHeuristicInfo } from '@/domain/features/checkinbiz/IStats';
-import { analiziHeuristic, fetchBranchPattern, fetchHeuristicsIndicator } from '@/services/checkinbiz/stats.service';
+import { fetchHeuristic, fetchBranchPattern, fetchHeuristicsIndicator } from '@/services/checkinbiz/stats.service';
 import { normalizeBranchDataset } from '@/lib/common/normalizer';
 import { useAuth } from '@/hooks/useAuth';
 import { useAppLocale } from '@/hooks/useAppLocale';
@@ -180,7 +180,7 @@ export const DashboardBranchProvider = ({ children, branchId }: { children: Reac
         setBranchList(branchPatternDataListt.filter(e => !!e.branch).map(e => e.branch as ISucursal))
         setbranchPatternList(branchPatternDataListt.filter(e => !!e.branch).slice(0, 3))
         setBranchSelected(branchPatternDataListt.filter(e => !!e.branch).map(e => e.branch as ISucursal).slice(0, 3))
-        const data: Array<IHeuristicInfo> = await analiziHeuristic(currentEntity?.entity?.id as string, branchId, token, currentLocale)
+        const data: Array<IHeuristicInfo> = await fetchHeuristic(currentEntity?.entity?.id as string, branchId, null, token, currentLocale)
         setHeuristic(data.map((e) => ({ ...e, active: true })));
         setPending(false)
     }

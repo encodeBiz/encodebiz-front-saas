@@ -39,6 +39,7 @@ export const TempActivity = () => {
                         [(patternBranch as IBranchPattern).branch?.name as string]: value
                     })
                 });
+                    chartDataList.splice(i,1,item)
             });
         }
         setChartData(chartDataList)
