@@ -20,8 +20,7 @@ const ChartActivity = ({ type, branchPatternList }: any) => {
                 });
                 chartDataList.splice(i,1,item)
             });
-            console.log(chartDataList);
-            
+             
         }         
         setChartData(chartDataList)
     }

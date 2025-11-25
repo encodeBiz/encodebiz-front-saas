@@ -9,8 +9,7 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import { InfoOutline } from '@mui/icons-material';
 import InfoModal from '@/components/common/modals/InfoModal';
 import { InfoHelp } from '../../../../../../../../../components/common/help/InfoHelp';
-import EmptyState from '@/components/common/EmptyState/EmptyState';
- 
+  
 export const HeuristicAnalize = () => {
     const { heuristic, heuristicsItems } = useDashboardEmployee()
  
