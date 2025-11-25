@@ -15,6 +15,9 @@ const ChartLine = ({ data, YAxisText = 'Horas' }: { data: Array<Record<string, n
 
     ]
 
+    console.log(data.map(e => ({ day: chartData[data.indexOf(e)].day, ...e })));
+    
+
     return (
         <Box style={{ width: '100%', height: 400 }} display={'flex'} flexDirection={'column'} gap={2}>
 

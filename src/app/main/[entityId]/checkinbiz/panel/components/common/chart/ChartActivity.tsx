@@ -16,6 +16,7 @@ const ChartActivity = ({ type, branchPatternList }: any) => {
                         [(patternBranch as IBranchPattern).branch?.name as string]: value
                     })
                 });
+                chartDataList.push(item)
             });
         }
         setChartData(chartDataList)
