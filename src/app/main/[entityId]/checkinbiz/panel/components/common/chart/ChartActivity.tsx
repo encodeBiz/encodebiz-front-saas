@@ -11,7 +11,7 @@ const ChartActivity = ({ type, branchPatternList }: any) => {
             chartDataList.forEach((_, i) => {
                 const item = {}
                 branchPatternList.forEach((patternBranch: IBranchPattern | IEmployeePattern) => {
-                    const value = parseFloat(`${(patternBranch as any)[type][i]}`).toFixed(2)
+                    const value = parseFloat(`${(patternBranch as any)[type][i].toFixed(2)}`)
                     Object.assign(item, {
                         [(patternBranch as IBranchPattern).branch?.name as string]: value
                     })

@@ -9,11 +9,11 @@ import { useDashboardEmployee } from "../DashboardEmployeeContext";
 import { InfoHelp } from "../../../../../../../../../components/common/help/InfoHelp";
 import { descriptionTypeActivity, tempActivityData } from "../../../../../../../../../components/common/help/constants";
 import { useTranslations } from "next-intl";
-import Chart from "@/app/main/[entityId]/checkinbiz/dashboard/components/common/chart/ChartActivity";
+import Chart from "@/app/main/[entityId]/checkinbiz/panel/components/common/chart/ChartActivity";
 import { useEffect, useState } from "react";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import { IEmployeePattern } from "@/domain/features/checkinbiz/IStats";
-import ChartActivity from "@/app/main/[entityId]/checkinbiz/dashboard/components/common/chart/ChartActivity";
+import ChartActivity from "@/app/main/[entityId]/checkinbiz/panel/components/common/chart/ChartActivity";
 import ChartLine from "@/components/common/help/ChartLine";
 
 

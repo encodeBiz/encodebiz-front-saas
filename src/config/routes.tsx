@@ -38,8 +38,8 @@ const PASSINBIZ = [{
 
 
 const CHECKINBIZ: any = [{
-    name: 'Dashboard',
-    link: `/${CHECKINBIZ_MODULE_ROUTE}/dashboard`,
+    name: 'Panel',
+    link: `/${CHECKINBIZ_MODULE_ROUTE}/panel`,
     subMenu: []
 }, {
     name: 'Employee',

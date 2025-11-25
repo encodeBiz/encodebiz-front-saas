@@ -128,7 +128,7 @@ export const DashboardEmployeeProvider = ({ children, employeeId }: { children: 
             employeeId
         })))
         try {
-            const data: Array<IHeuristicInfo> = await fetchHeuristic(currentEntity?.entity?.id as string, null, employeeId, token, currentLocale)
+            const data: Array<IHeuristicInfo> = await fetchHeuristic(currentEntity?.entity?.id as string, null , employeeId, token, currentLocale)
             console.log(data);
             setHeuristic(data.map((e) => ({ ...e, active: true })));
         } catch{}

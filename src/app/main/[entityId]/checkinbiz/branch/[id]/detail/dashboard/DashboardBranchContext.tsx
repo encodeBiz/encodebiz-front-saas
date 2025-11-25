@@ -153,8 +153,6 @@ export const DashboardBranchProvider = ({ children, branchId }: { children: Reac
             branchPatternList.push(dataPattern as IBranchPattern)
         }))
 
-        console.log(branchPatternList);        
-
         buildHeuristicInfo()
 
         const branchPatternDataListt: Array<{

@@ -1,5 +1,5 @@
 'use client';
-import { Box, Card, CardContent, Divider, IconButton, Typography, useTheme } from '@mui/material';
+import { Box, Card, CardContent, Divider, IconButton, Typography, } from '@mui/material';
 
 import { useAppLocale } from '@/hooks/useAppLocale';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
@@ -9,28 +9,15 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import { InfoOutline } from '@mui/icons-material';
 import InfoModal from '@/components/common/modals/InfoModal';
 import { InfoHelp } from '../../../../../../../../../components/common/help/InfoHelp';
-import { karla } from '@/config/fonts/google_fonts';
-
+ 
 export const HeuristicAnalize = () => {
     const { heuristic, heuristicsItems } = useDashboardEmployee()
-    const theme = useTheme()
-
+ 
 
 
     const { currentLocale } = useAppLocale()
-    const getColor = (status: "error" | 'success' | 'warning') => {
-        if (status == 'success') return 'rgba(122, 223, 127, 0.85)'
-        if (status == 'warning') return '#F5B650'
-        if (status == 'error') return 'rgba(177, 35, 33, 0.75)'
-        return theme.palette.primary.main
-    }
 
-    const getTitle = (status: "error" | 'success' | 'warning') => {
-        if (status == 'success') return "BUENO"
-        if (status == 'warning') return "INESTABLE"
-        if (status == 'error') return "CRITICO"
-        return theme.palette.primary.main
-    }
+
     const { open, openModal, closeModal } = useCommonModal()
 
     return (
@@ -51,11 +38,8 @@ export const HeuristicAnalize = () => {
             <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'space-between'} gap={2} p={3}>
                 {heuristic.map((e, i) => <Card key={i} sx={{ width: 450, bgcolor: `#B1C5FF` }}>
 
-                    <CardContent sx={{ background: getColor(e.status as "error" | 'success' | 'warning'), color: "#FFF" }}
+                    <CardContent sx={{ background: `#B1C5FF`, color: "#FFF" }}
                     >
-                    
-
-
                         <Box display={'flex'} flexDirection={'column'} gap={1}>
                             <Box display={'flex'} flexDirection={'column'} gap={0.5}>
                                 <Typography color='#1C1B1D' fontWeight={500} fontSize={16}>
@@ -63,7 +47,7 @@ export const HeuristicAnalize = () => {
                                 </Typography>
                             </Box>
                             <Box display={'flex'} flexDirection={'column'} gap={0.5}>
-                                <Typography  fontWeight={500} color='#FFF' fontSize={16}>
+                                <Typography fontWeight={500} color='#FFF' fontSize={16}>
                                     {e.consequence}
                                 </Typography>
                             </Box>

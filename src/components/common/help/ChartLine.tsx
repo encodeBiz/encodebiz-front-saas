@@ -3,7 +3,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { Box } from '@mui/material';
 import { colorBarDataset } from '@/domain/features/checkinbiz/IStats';
 
-const ChartLine = ({ data, xAxisWeek = true, YAxisText = 'Horas' }: { data: Array<Record<string, number>>, xAxisWeek?: boolean, YAxisText?: string }) => {
+const ChartLine = ({ data, YAxisText = 'Horas' }: { data: Array<Record<string, number>>, xAxisWeek?: boolean, YAxisText?: string }) => {
     const chartData = [
         { day: 'Domingo' },
         { day: 'Lunes' },
