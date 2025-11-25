@@ -29,6 +29,11 @@ export const PanelStats = () => {
     }
   }, [currentEntity?.entity?.id])
 
+   useEffect(() => {
+      if (currentEntity?.entity?.id) 
+        setPreferenceSelected([...cardIndicatorSelected])
+    }, [currentEntity?.entity?.id, cardIndicatorSelected.length])
+
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
