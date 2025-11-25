@@ -23,7 +23,7 @@ export const collection = {
     JOBS:'jobs',
     RESPONSABILITY:'employee_responsibilities',
     BRANCH_PATTER:'checkbiz_branch_patterns',
-    EMPLOYEE_PATTER:'checkbiz_employee_patterns ',
+    EMPLOYEE_PATTER:'checkbiz_employee_patterns',
     HEURISTIC:'checkbiz_heuristic_indicators'
 
 

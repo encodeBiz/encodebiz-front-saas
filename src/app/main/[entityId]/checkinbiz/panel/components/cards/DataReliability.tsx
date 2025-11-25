@@ -3,13 +3,17 @@ import { BorderBox } from "@/components/common/tabs/BorderBox"
 import { Box, Divider, Typography } from "@mui/material"
 import { useState, useEffect } from "react"
 import { getTextByKey, useDashboard } from "../../context/dashboardContext"
-import { CustomizableGroupedBarChart } from "../common/chart/GroupedBarChart"
+import { CustomizableGroupedBarChart } from "../../../../../../../components/common/help/GroupedBarChart"
+import { preferenceDashboardItems } from "@/domain/features/checkinbiz/IStats"
+import { useTranslations } from "next-intl"
 
 
 export const DataReliability = () => {
     const itemInThisCats = ['reliability', 'dataPoints']
+        const t = useTranslations()
+    
     // Colors for the bars
-    const { cardIndicatorSelected, branchPatternList, preferenceItems } = useDashboard()
+    const { cardIndicatorSelected, branchPatternList } = useDashboard()
     const [chartData, setChartData] = useState<{
         branch: Array<{ key: string, name: string, color: string }>
         data: Array<any>
@@ -24,7 +28,7 @@ export const DataReliability = () => {
 
         const chartData: Array<any> = []
         cardIndicatorSelected.filter(e => itemInThisCats.includes(e)).forEach(indicator => {
-            const items = { category: getTextByKey(indicator, preferenceItems) }
+            const items = { category: getTextByKey(indicator, preferenceDashboardItems(t)) }
             branchPatternList.forEach(branchPattern => {
                 let value = 0
                 if (indicator === 'reliability')
@@ -52,7 +56,7 @@ export const DataReliability = () => {
 
 
 
-    return <BorderBox >
+    return <BorderBox sx={{background:'#FFF'}} >
         <Box sx={{ p: 4 }}>
             <Typography variant="h6">Confiabilidad del Dato</Typography>
             <Typography variant="body1">

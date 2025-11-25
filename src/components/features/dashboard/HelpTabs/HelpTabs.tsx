@@ -45,8 +45,9 @@ const HelpTabs = ({ tabs, ref, small = false }: HelpTabsProps) => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: small?'center':'flex-start',
+          justifyContent: small?'center':'flex-start',
           textTransform: 'none',
-          
+          width:'100%',
           pl:2
 
 

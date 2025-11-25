@@ -21,6 +21,7 @@
     "side": {
       "menu": {
         "Dashboard": "Panel",
+        "Panel": "Panel",
         "Stats": "Estadísticas",
         "Staff": "Personal",
         "Services": "Servicios",

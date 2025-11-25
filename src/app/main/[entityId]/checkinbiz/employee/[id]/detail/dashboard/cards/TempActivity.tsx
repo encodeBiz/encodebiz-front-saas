@@ -5,12 +5,15 @@ import InfoModal from "@/components/common/modals/InfoModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { InfoOutline } from "@mui/icons-material";
-import { useDashboardBranch } from "../DashboardBranchContext";
+import { useDashboardEmployee } from "../DashboardEmployeeContext";
 import { InfoHelp } from "../../../../../../../../../components/common/help/InfoHelp";
 import { descriptionTypeActivity, tempActivityData } from "../../../../../../../../../components/common/help/constants";
 import { useTranslations } from "next-intl";
+import Chart from "@/app/main/[entityId]/checkinbiz/panel/components/common/chart/ChartActivity";
 import { useEffect, useState } from "react";
-import { IBranchPattern } from "@/domain/features/checkinbiz/IStats";
+import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
+import { IEmployeePattern } from "@/domain/features/checkinbiz/IStats";
+import ChartActivity from "@/app/main/[entityId]/checkinbiz/panel/components/common/chart/ChartActivity";
 import ChartLine from "@/components/common/help/ChartLine";
 
 
@@ -19,36 +22,35 @@ import ChartLine from "@/components/common/help/ChartLine";
 
 
 export const TempActivity = () => {
-    const { type, branchPatternList } = useDashboardBranch()
-
-  
+    const { type, employeePatternList } = useDashboardEmployee()
+ 
     const { open, openModal, closeModal } = useCommonModal()
     const t = useTranslations()
 
-
-    const [chartData, setChartData] = useState<Array<Record<string, number>>>([])
-    const updateChartData = async () => {
-        const chartDataList: Array<Record<string, number>> = Array(7).fill(0)
-        if (branchPatternList.length > 0) {
-            chartDataList.forEach((_, i) => {
-                const item = {}
-                branchPatternList.map(e => e.pattern).forEach((patternBranch: IBranchPattern) => {
-                    const value = parseFloat(`${(patternBranch as any)[type][i].toFixed(2)}`)
-                    Object.assign(item, {
-                        [(patternBranch as IBranchPattern).branch?.name as string]: value
-                    })
-                });
+     const [chartData, setChartData] = useState<Array<Record<string, number>>>([])
+        const updateChartData = async () => {
+            const chartDataList: Array<Record<string, number>> = Array(7).fill(0)
+            if (employeePatternList.length > 0) {
+                chartDataList.forEach((_, i) => {
+                    const item = {}
+                    employeePatternList.forEach((patternEmployee: {pattern: IEmployeePattern,employeeId: string, employee: IEmployee}) => {
+                        const value = parseFloat(`${((patternEmployee as any).pattern[type][i] ?? 0).toFixed(2)}`)
+                        Object.assign(item, {
+                            [patternEmployee.employee?.fullName as string]: value
+                        })
+                    });
                     chartDataList.splice(i,1,item)
-            });
+                });                
+            }
+         
+            setChartData(chartDataList)
         }
-        setChartData(chartDataList)
-    }
-    useEffect(() => {
-        updateChartData()
-    }, [branchPatternList.length, type])
+        useEffect(() => {
+            updateChartData()
+        }, [employeePatternList.length, type])
 
 
-    return <BorderBox sx={{ background: '#FFF' }} >
+    return <BorderBox sx={{background:'#FFF'}} >
         <Box sx={{ p: 4 }}>
 
             <Box display={'flex'} gap={0.2} justifyItems={'center'} alignItems={'center'}>
@@ -58,7 +60,7 @@ export const TempActivity = () => {
                 <IconButton onClick={() => openModal(CommonModalType.INFO, { id: 'data2' })}><InfoOutline sx={{ fontSize: 25 }} /></IconButton>
             </Box>
             <Typography variant="body1">
-                {descriptionTypeActivity(t)[type]}
+                {descriptionTypeActivity(t)[type]}              
             </Typography>
         </Box>
         <Divider orientation="horizontal" flexItem />

@@ -25,17 +25,7 @@ export const CustomizableGroupedBarChart = ({
 }: any) => {
     const theme = useTheme();
 
-    const getColor = (colorName: any) => {
-        const colorMap: any = {
-            primary: theme.palette.primary.main,
-            secondary: theme.palette.secondary.main,
-            success: theme.palette.success.main,
-            error: theme.palette.error.main,
-            warning: theme.palette.warning.main,
-            info: theme.palette.info.main,
-        };
-        return colorMap[colorName] || theme.palette.primary.main;
-    };
+  
 
     const CustomTooltip = ({ active, payload, label }: any) => {
         if (active && payload && payload.length) {
@@ -126,7 +116,7 @@ export const CustomizableGroupedBarChart = ({
                             key={entity.key + '-' + index}
                             dataKey={entity.key}
                             name={entity.name}
-                            fill={getColor(entity.color)}
+                            fill={entity.color}
                             radius={[2, 2, 0, 0]}
                         />
                     ))}

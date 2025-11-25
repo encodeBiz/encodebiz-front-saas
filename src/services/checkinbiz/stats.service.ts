@@ -49,7 +49,7 @@ export const fetchBranchPattern = async (entityId: string, branchId: string): Pr
    * @param {SearchParams} params
    * @returns {Promise<Iemployee[]>}
    */
-export const fetchEmployeePattern = async (entityId: string, employeeId: string): Promise<IEmployeePattern | null> => {
+export const fetchEmployeePattern = async (entityId: string, employeeId: string): Promise<Array<IEmployeePattern>> => {
   const filters = [
     {
       field: 'employeeId',
@@ -68,12 +68,7 @@ export const fetchEmployeePattern = async (entityId: string, employeeId: string)
     filters,
     collection: `${collection.EMPLOYEE_PATTER}`,
   });
-  if (result.length > 0)
-    return {
-      ...result[0],
-      branch: await fetchSucursal(result[0].entityId, result[0].branchId)
-    };
-  return null
+  return result.filter(e => e.id === `${employeeId}_${entityId}`)
 }
 
 /**
@@ -99,11 +94,16 @@ export const fetchHeuristicsIndicator = async (): Promise<Array<IHeuristicIndica
 
 
 
-export async function analiziHeuristic(entityId: string, branchId: string, token: string, locale: any = 'es') {
+export async function fetchHeuristic(entityId: string, branchId: string | null, employeeId: string | null, token: string, locale: any = 'es') {
   try {
     if (!token) {
       throw new Error("Error to fetch user auth token");
     } else {
+      const body = {
+        entityId, lang: locale
+      }
+      if (employeeId) Object.assign(body, { employeeId })
+      if (branchId) Object.assign(body, { branchId })
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
@@ -113,7 +113,7 @@ export async function analiziHeuristic(entityId: string, branchId: string, token
       const response: any = await httpClientFetchInstance.post(
         process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_STATS as string,
         {
-          entityId, branchId
+          ...body
         }
       );
       if (response.errCode && response.errCode !== 200) {

@@ -83,8 +83,8 @@ export default function useAttendanceController() {
     Object.keys(filter).forEach((key) => {
       if (key === 'range')
         filterData.push(
-          { field: 'start', operator: '>=', value: filter[key].start },
-          { field: 'start', operator: '<=', value: filter[key].end }
+          { field: 'createdAt', operator: '>=', value: filter[key].start },
+          { field: 'createdAt', operator: '<=', value: filter[key].end }
         )
       else
         filterData.push({ field: key, operator: '==', value: filter[key] })

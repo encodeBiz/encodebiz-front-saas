@@ -6,7 +6,7 @@ import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
 import { search } from '@/services/checkinbiz/sucursal.service';
 import { useEntity } from '@/hooks/useEntity';
 import { IBranchPattern, IHeuristicInfo } from '@/domain/features/checkinbiz/IStats';
-import { analiziHeuristic, fetchBranchPattern } from '@/services/checkinbiz/stats.service';
+import { fetchHeuristic, fetchBranchPattern } from '@/services/checkinbiz/stats.service';
 import { useAuth } from '@/hooks/useAuth';
 import { useAppLocale } from '@/hooks/useAppLocale';
 import { errorDict } from '@/config/errorLocales';
@@ -100,16 +100,16 @@ export const CheckBizStatsProvider = ({ children }: { children: React.ReactNode 
         try {
             setHeuristicAnalizeError('')
             if (branchSelected.length == 1) {
-                const data: Array<IHeuristicInfo> = await analiziHeuristic(currentEntity?.entity?.id as string, branchSelected[0].id as string, token, currentLocale)
+                const data: Array<IHeuristicInfo> = await fetchHeuristic(currentEntity?.entity?.id as string, branchSelected[0].id as string, token, currentLocale)
                 setHeuristicDataOne(data.map((e, i) => ({ ...e, active: i < 8 ? true : false })));
                 setHeuristicDataTwo([])
             }
 
             if (branchSelected.length == 2) {
-                const data1: Array<IHeuristicInfo> = await analiziHeuristic(currentEntity?.entity?.id as string, branchSelected[0].id as string, token, currentLocale)
+                const data1: Array<IHeuristicInfo> = await fetchHeuristic(currentEntity?.entity?.id as string, branchSelected[0].id as string, token, currentLocale)
                 setHeuristicDataOne(data1.map((e, i) => ({ ...e, active: i < 8 ? true : false })));
 
-                const data2: Array<IHeuristicInfo> = await analiziHeuristic(currentEntity?.entity?.id as string, branchSelected[1].id as string, token, currentLocale)
+                const data2: Array<IHeuristicInfo> = await fetchHeuristic(currentEntity?.entity?.id as string, branchSelected[1].id as string, token, currentLocale)
                 setHeuristicDataTwo(data2.map((e, i) => ({ ...e, active: i < 8 ? true : false })));
             }
         } catch (error: any) {
