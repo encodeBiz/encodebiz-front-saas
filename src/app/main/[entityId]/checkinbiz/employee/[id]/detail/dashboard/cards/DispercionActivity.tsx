@@ -18,8 +18,8 @@ export const DispercionActivity = () => {
             chartDataList.forEach((_, i) => {
                 const item = {}
                 const employeePattern = employeePatternList[0]
-                const valueStart = parseFloat(`${(employeePattern).pattern.stdStartByDay[i]?.mean ?? 0}`).toFixed(2)
-                const valueEnd = parseFloat(`${(employeePattern).pattern.stdEndByDay[i]?.mean ?? 0}`).toFixed(2)
+                const valueStart = parseFloat(`${((employeePattern).pattern.stdStartByDay[i]?.mean ?? 0).toFixed(2)}`)
+                const valueEnd = parseFloat(`${((employeePattern).pattern.stdEndByDay[i]?.mean ?? 0).toFixed(2)}`)
 
                 Object.assign(item, {
                     ['Entrada']: valueStart,

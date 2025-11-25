@@ -34,17 +34,15 @@ export const TempActivity = () => {
                 chartDataList.forEach((_, i) => {
                     const item = {}
                     employeePatternList.forEach((patternEmployee: {pattern: IEmployeePattern,employeeId: string, employee: IEmployee}) => {
-                        const value = parseFloat(`${(patternEmployee as any).pattern[type][i]}`).toFixed(2)
+                        const value = parseFloat(`${((patternEmployee as any).pattern[type][i] ?? 0).toFixed(2)}`)
                         Object.assign(item, {
                             [patternEmployee.employee?.fullName as string]: value
                         })
                     });
                     chartDataList.splice(i,1,item)
-                });
-                
+                });                
             }
-            console.log(chartDataList);
-            
+         
             setChartData(chartDataList)
         }
         useEffect(() => {
