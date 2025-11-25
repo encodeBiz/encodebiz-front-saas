@@ -33,7 +33,7 @@ export const TempActivity = () => {
             chartDataList.forEach((_, i) => {
                 const item = {}
                 branchPatternList.map(e => e.pattern).forEach((patternBranch: IBranchPattern) => {
-                    const value = parseFloat(`${(patternBranch as any)[type][i].toFixed(2)}`)
+                    const value = parseFloat(`${((patternBranch as any)[type][i]??0).toFixed(2)}`)
                     Object.assign(item, {
                         [(patternBranch as IBranchPattern).branch?.name as string]: value
                     })

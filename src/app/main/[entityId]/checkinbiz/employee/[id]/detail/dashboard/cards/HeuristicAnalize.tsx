@@ -9,6 +9,7 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import { InfoOutline } from '@mui/icons-material';
 import InfoModal from '@/components/common/modals/InfoModal';
 import { InfoHelp } from '../../../../../../../../../components/common/help/InfoHelp';
+import EmptyState from '@/components/common/EmptyState/EmptyState';
  
 export const HeuristicAnalize = () => {
     const { heuristic, heuristicsItems } = useDashboardEmployee()
@@ -20,6 +21,8 @@ export const HeuristicAnalize = () => {
 
     const { open, openModal, closeModal } = useCommonModal()
 
+    if(heuristic.length===0) return null
+    else
     return (
         <BorderBox sx={{ background: '#FFF' }} >
             <Box sx={{ p: 4 }}>
@@ -36,6 +39,8 @@ export const HeuristicAnalize = () => {
 
             <Divider orientation="horizontal" flexItem />
             <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'space-between'} gap={2} p={3}>
+
+               
                 {heuristic.map((e, i) => <Card key={i} sx={{ width: 450, bgcolor: `#B1C5FF` }}>
 
                     <CardContent sx={{ background: `#B1C5FF`, color: "#FFF" }}
