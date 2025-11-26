@@ -112,7 +112,6 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
           "endTimeWorkingDay": { hour: new Date(values.endTime).getHours(), minute: new Date(values.endTime).getMinutes() },
           "disableBreak": values.disableBreak,
           "timeBreak": values.timeBreak,
-
         }
       }
 
