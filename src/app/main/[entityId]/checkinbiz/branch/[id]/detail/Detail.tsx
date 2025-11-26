@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { SassButton } from "@/components/common/buttons/GenericButton"
 import { CustomChip } from "@/components/common/table/CustomChip"
 import { DetailText } from "@/components/common/table/DetailText"
@@ -14,13 +15,23 @@ import FormModal from "../../edit/FormModal"
 import InfoModal from "@/components/common/modals/InfoModal"
 import { EmployeeList } from "./components/EmployeeList"
 import HelpTabs from "@/components/features/dashboard/HelpTabs/HelpTabs"
-import { DashboardBranchProvider } from "./dashboard/DashboardBranchContext"
 import { PanelStats } from "./dashboard/PanelStats"
+import { useDashboardBranch } from "./dashboard/DashboardBranchContext"
+import { useEffect } from "react"
+import { useEntity } from "@/hooks/useEntity"
 
 export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { addResponsabiltyItem: () => void, branch: ISucursal, children: React.ReactNode, onSuccess: () => void }) => {
     const t = useTranslations()
     const { navivateTo } = useLayout()
     const { openModal, open } = useCommonModal()
+    const { initialize } = useDashboardBranch()
+    const {currentEntity} = useEntity()
+
+    useEffect(() => {
+        if (currentEntity?.entity?.id) {
+          initialize()
+        }
+      }, [currentEntity?.entity?.id])
 
     return <Card elevation={3} sx={{ width: '100%', margin: 'auto' }}>
         {/* Header Section */}
@@ -113,7 +124,7 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
                 {
                     id: '1',
                     title: t(`sucursal.panel`),
-                    tabContent: <DashboardBranchProvider branchId={branch?.id}> <PanelStats /></DashboardBranchProvider>
+                    tabContent:<PanelStats /> 
                 },
 
             ]} />}

@@ -4,11 +4,13 @@ import { Box, Card, CardContent, Divider, Typography, } from '@mui/material';
 import { useAppLocale } from '@/hooks/useAppLocale';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import { useDashboardEmployee } from '../DashboardEmployeeContext';
+import { useTranslations } from 'next-intl';
 
 
 export const RulesAnalize = () => {
     const { heuristic } = useDashboardEmployee()
     const { currentLocale } = useAppLocale()
+    const t = useTranslations()
     if (heuristic.length === 0) return null
     else
         return (
@@ -16,11 +18,11 @@ export const RulesAnalize = () => {
                 <Box sx={{ p: 4 }}>
                     <Box display={'flex'} gap={0.2} justifyItems={'center'} alignItems={'center'}>
                         <Typography align="center" sx={{ mb: 0, textAlign: 'left', fontSize: 32 }}>
-                            Evaluación Operativa del Empleado
+                            {t('employeeDashboard.ruleTitle')}                           
                         </Typography>
                     </Box>
                     <Typography variant="body1">
-                        Diagnóstico automático que interpreta el comportamiento real del trabajador y genera conclusiones claras sobre su desempeño, estabilidad y potencial dentro del equipo. Permite identificar talento, riesgos operativos y oportunidades de mejora basadas en datos objetivos.
+                         {t('employeeDashboard.ruleText')}
                     </Typography>
                 </Box>
 
@@ -35,7 +37,7 @@ export const RulesAnalize = () => {
                             <Box display={'flex'} flexDirection={'column'} gap={2}>
                                 <Box display={'flex'} flexDirection={'column'} gap={0.5}>
                                     <Typography color='#1C1B1D' fontWeight={500} fontSize={16}>
-                                        Candidato a promoción:
+                                       {t('employeeDashboard.toPromo')}:
                                     </Typography>
                                     <Typography color='#1C1B1D' fontWeight={500} fontSize={16}>
                                         {(e.explanation as any)[currentLocale]}

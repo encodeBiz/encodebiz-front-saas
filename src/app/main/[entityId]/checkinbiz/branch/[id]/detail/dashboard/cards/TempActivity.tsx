@@ -50,10 +50,9 @@ export const TempActivity = () => {
 
     return <BorderBox sx={{ background: '#FFF' }} >
         <Box sx={{ p: 4 }}>
-
             <Box display={'flex'} gap={0.2} justifyItems={'center'} alignItems={'center'}>
                 <Typography align="center" sx={{ mb: 0, textAlign: 'left', fontSize: 32 }}>
-                    Actividad temporal
+                    {t("employeeDashboard.tempActivity")} 
                 </Typography  >
                 <IconButton onClick={() => openModal(CommonModalType.INFO, { id: 'data2' })}><InfoOutline sx={{ fontSize: 25 }} /></IconButton>
             </Box>
@@ -68,7 +67,7 @@ export const TempActivity = () => {
 
         {open.type === CommonModalType.INFO && open.args?.id === 'data2' && <InfoModal
             centerBtn cancelBtn={false} closeBtn={false} closeIcon={false}
-            htmlDescription={<InfoHelp title="Ayuda" data={tempActivityData(t)} />}
+            htmlDescription={<InfoHelp title={t("employeeDashboard.help")}  data={tempActivityData(t)} />}
             onClose={() => closeModal(CommonModalType.INFO)}
         />}
     </BorderBox>

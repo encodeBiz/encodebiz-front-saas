@@ -15,7 +15,7 @@ export const TempActivity = () => {
 
     return <BorderBox sx={{ background: '#FFF' }} >
         <Box sx={{ p: 4 }}>
-            <Typography variant="h6">Actividad temporal</Typography>
+            <Typography variant="h6"> {t('employeeDashboard.tempActivity')}</Typography>
             <Typography variant="body1">
                 {descriptionTypeActivity(t)[type]}
             </Typography>

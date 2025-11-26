@@ -23,44 +23,44 @@ import ChartLine from "@/components/common/help/ChartLine";
 
 export const TempActivity = () => {
     const { type, employeePatternList } = useDashboardEmployee()
- 
+
     const { open, openModal, closeModal } = useCommonModal()
     const t = useTranslations()
 
-     const [chartData, setChartData] = useState<Array<Record<string, number>>>([])
-        const updateChartData = async () => {
-            const chartDataList: Array<Record<string, number>> = Array(7).fill(0)
-            if (employeePatternList.length > 0) {
-                chartDataList.forEach((_, i) => {
-                    const item = {}
-                    employeePatternList.forEach((patternEmployee: {pattern: IEmployeePattern,employeeId: string, employee: IEmployee}) => {
-                        const value = parseFloat(`${((patternEmployee as any).pattern[type][i] ?? 0).toFixed(2)}`)
-                        Object.assign(item, {
-                            [patternEmployee.employee?.fullName as string]: value
-                        })
-                    });
-                    chartDataList.splice(i,1,item)
-                });                
-            }
-         
-            setChartData(chartDataList)
+    const [chartData, setChartData] = useState<Array<Record<string, number>>>([])
+    const updateChartData = async () => {
+        const chartDataList: Array<Record<string, number>> = Array(7).fill(0)
+        if (employeePatternList.length > 0) {
+            chartDataList.forEach((_, i) => {
+                const item = {}
+                employeePatternList.forEach((patternEmployee: { pattern: IEmployeePattern, employeeId: string, employee: IEmployee }) => {
+                    const value = parseFloat(`${((patternEmployee as any).pattern[type][i] ?? 0).toFixed(2)}`)
+                    Object.assign(item, {
+                        [patternEmployee.employee?.fullName as string]: value
+                    })
+                });
+                chartDataList.splice(i, 1, item)
+            });
         }
-        useEffect(() => {
-            updateChartData()
-        }, [employeePatternList.length, type])
+
+        setChartData(chartDataList)
+    }
+    useEffect(() => {
+        updateChartData()
+    }, [employeePatternList.length, type])
 
 
-    return <BorderBox sx={{background:'#FFF'}} >
+    return <BorderBox sx={{ background: '#FFF' }} >
         <Box sx={{ p: 4 }}>
 
             <Box display={'flex'} gap={0.2} justifyItems={'center'} alignItems={'center'}>
                 <Typography align="center" sx={{ mb: 0, textAlign: 'left', fontSize: 32 }}>
-                    Actividad temporal
+                    {t('employeeDashboard.tempActivity')}
                 </Typography  >
                 <IconButton onClick={() => openModal(CommonModalType.INFO, { id: 'data2' })}><InfoOutline sx={{ fontSize: 25 }} /></IconButton>
             </Box>
             <Typography variant="body1">
-                {descriptionTypeActivity(t)[type]}              
+                {descriptionTypeActivity(t)[type]}
             </Typography>
         </Box>
         <Divider orientation="horizontal" flexItem />
@@ -70,7 +70,7 @@ export const TempActivity = () => {
 
         {open.type === CommonModalType.INFO && open.args?.id === 'data2' && <InfoModal
             centerBtn cancelBtn={false} closeBtn={false} closeIcon={false}
-            htmlDescription={<InfoHelp title="Ayuda" data={tempActivityData(t)} />}
+            htmlDescription={<InfoHelp title={t("employeeDashboard.help")} data={tempActivityData(t)} />}
             onClose={() => closeModal(CommonModalType.INFO)}
         />}
     </BorderBox>

@@ -59,12 +59,13 @@ export const OperatingCosts = () => {
 
 
 
-    return <BorderBox  sx={{background:'#FFF'}} >
+    return <BorderBox sx={{ background: '#FFF' }} >
         <Box sx={{ p: 4 }}>
-            <Typography variant="h6">Costes Operativos</Typography>
+            <Typography variant="h6">{t('employeeDashboard.costs')}</Typography>
             <Typography variant="body1">
-                Comparación del rendimiento económico entre sucursales/proyectos.
-                Los valores se normalizan en una escala 0–100, donde puntuaciones más altas representan un uso más eficiente de los recursos, menores desviaciones y un mejor equilibrio coste-productividad.        </Typography>
+                {t('employeeDashboard.costsText1')}
+                {t('employeeDashboard.costsText2')}
+            </Typography>
         </Box>
         <Divider orientation="horizontal" flexItem />
 

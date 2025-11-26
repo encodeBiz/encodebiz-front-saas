@@ -15,6 +15,7 @@ import { RulesAnalize } from "./cards/RulesAnalize";
 import { useDashboardEmployee } from "./DashboardEmployeeContext";
 import { DispercionActivity } from "./cards/DispercionActivity";
 import { preferenceDashboardEmployeeItems } from "@/domain/features/checkinbiz/IStats";
+import EmptyState from "@/components/common/EmptyState/EmptyState";
 
 
 export const PanelStats = () => {
@@ -52,6 +53,9 @@ export const PanelStats = () => {
 
   const InnetContent = () => <Box sx={{ minHeight: 600, p: 3 }}>
 
+    {!pending && employeePatternList.length > 0 && <Box display={'flex'} justifyContent={'center'} alignItems={'center'} sx={{ minHeight: 100 }}>
+      <EmptyState text={t('employeeDashboard.emptyPattern')} />
+    </Box>}
     {pending && <BoxLoader message={t('statsCheckbiz.loading')} />}
 
     {!pending && employeePatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5}>

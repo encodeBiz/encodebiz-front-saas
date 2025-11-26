@@ -31,13 +31,13 @@ export const OperatingHours = () => {
 
             <Box display={'flex'} gap={0.2} justifyItems={'center'} alignItems={'center'}>
                 <Typography align="center" sx={{ mb: 0, textAlign: 'left', fontSize: 32 }}>
-                    Datos Operativos
+                    {t('employeeDashboard.hourOperationTitle')}
                 </Typography>
                 <IconButton onClick={() => openModal(CommonModalType.INFO, { id: 'data1' })}><InfoOutline sx={{ fontSize: 25 }} /></IconButton>
             </Box>
             <Typography variant="body1">
-                Datos que muestran cómo trabaja el empleado en términos de horarios, carga de trabajo y coherencia de sus registros.
-                Ayudan a entender su estabilidad operativa, el uso real de su tiempo y la fiabilidad de la información registrada en sus jornadas.
+                {t('employeeDashboard.hourOperationText1')}
+                {t('employeeDashboard.hourOperationText2')}
             </Typography>
         </Box>
 
@@ -50,7 +50,7 @@ export const OperatingHours = () => {
 
         {open.type === CommonModalType.INFO && open.args?.id === 'data1' && <InfoModal
             centerBtn cancelBtn={false} closeBtn={false} closeIcon={false}
-            htmlDescription={<InfoHelp title="Ayuda" data={operationDataEmployee(t)} />}
+            htmlDescription={<InfoHelp title={t("employeeDashboard.help")} data={operationDataEmployee(t)} />}
             onClose={() => closeModal(CommonModalType.INFO)}
         />}
     </BorderBox>

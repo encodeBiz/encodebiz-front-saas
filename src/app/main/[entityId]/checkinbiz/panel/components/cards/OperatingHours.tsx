@@ -57,16 +57,15 @@ export const OperatingHours = () => {
         buildData()
     }, [branchPatternList.length, cardIndicatorSelected.length])
 
- 
 
 
 
-    return <BorderBox sx={{background:'#FFF'}} >
+
+    return <BorderBox sx={{ background: '#FFF' }} >
         <Box sx={{ p: 4 }}>
-            <Typography variant="h6">Horarios Operativos</Typography>
+            <Typography variant="h6">{t('employeeDashboard.hourOperationTitle')}</Typography>
             <Typography variant="body1">
-                Comparación del comportamiento horario entre sucursales/proyectos.  Los valores se normalizan en una escala 0–100,
-                donde los más altos indican mayor estabilidad operativa, mejor organización del tiempo y un reparto de horas más consistente.
+                {t('employeeDashboard.hourText')}
             </Typography>
         </Box>
 
@@ -75,7 +74,6 @@ export const OperatingHours = () => {
         <Box sx={{ p: 4 }}>
             <CustomizableGroupedBarChart
                 data={chartData.data}
-
                 height={350}
                 entities={chartData.branch}
             />
