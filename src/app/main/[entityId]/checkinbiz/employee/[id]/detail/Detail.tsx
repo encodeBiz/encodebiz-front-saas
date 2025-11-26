@@ -18,9 +18,10 @@ import { Branch } from "./Branch/Branch"
 import { Attedance } from "./Attedance/Attedance"
 import { onGoMap } from "@/lib/common/maps"
 import InfoModal from "@/components/common/modals/InfoModal"
- 
-import { DashboardEmployeeProvider } from "./dashboard/DashboardEmployeeContext"
 import { PanelStats } from "./dashboard/PanelStats"
+import { useEffect } from "react"
+import { useDashboardEmployee } from "./dashboard/DashboardEmployeeContext"
+import { useEntity } from "@/hooks/useEntity"
 
 export const Detail = ({ employee, onResend, onSuccess, children }: { employee: IEmployee, onSuccess: () => void, onResend: (v: IEmployee) => void, children: React.ReactNode }) => {
     const t = useTranslations()
@@ -28,6 +29,14 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
     const { openModal, open } = useCommonModal()
     const search = useSearchParams()
     const backAction = search.get('back')
+    const { initialize } = useDashboardEmployee()
+    const {currentEntity} = useEntity()
+
+    useEffect(() => {
+        if (currentEntity?.entity?.id) {
+            initialize()
+        }
+    }, [currentEntity?.entity?.id])
 
 
 
@@ -127,10 +136,10 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
                     title: t("checklog.list"),
                     tabContent: <Attedance>{children}</Attedance>
                 },
-                 {
+                {
                     id: '2',
                     title: t("employee.workProfile"),
-                    tabContent: <DashboardEmployeeProvider employeeId={employee?.id as string}> <PanelStats /></DashboardEmployeeProvider>
+                    tabContent: <PanelStats />
                 },
 
 
@@ -139,7 +148,7 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
         </CardContent>
 
         {
-            open.type === CommonModalType.DELETE && !open?.args?.responsability   && <ConfirmModal
+            open.type === CommonModalType.DELETE && !open?.args?.responsability && <ConfirmModal
                 isLoading={deleting}
                 title={t('employee.deleteConfirmModalTitle')}
                 description={t('employee.deleteConfirmModalTitle2')}
@@ -155,7 +164,7 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
             onClose={() => {
                 navivateTo('/checkinbiz/branch')
             }}
-         btnFill
+            btnFill
             closeIcon
         />}
 

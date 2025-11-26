@@ -199,7 +199,17 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const staff: IStaff = await fetchStaff(currentEntity?.entity.id as string, itemId)
       const eventStaffList: Array<IEvent> = await searchEventsByStaff(itemId)
-
+      setEventList(await search(currentEntity?.entity.id as string, {
+        ...{
+          filters: [
+            {
+              field: 'status',
+              value: 'published',
+              operator: '=='
+            }
+          ]
+        } as any, limit: 100
+      }))
       setInitialValues({
         fullName: staff.fullName ?? "",
         email: staff.email ?? "",
@@ -245,7 +255,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
           }
         ]
       } as any, limit: 100
-    }) 
+    })
     setEventList(list)
   }
 

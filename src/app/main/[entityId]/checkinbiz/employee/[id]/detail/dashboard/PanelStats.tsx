@@ -19,20 +19,16 @@ import { preferenceDashboardEmployeeItems } from "@/domain/features/checkinbiz/I
 
 export const PanelStats = () => {
   const t = useTranslations();
-  const { employeeId, employeePatternList, pending , cardIndicatorSelected, setCardIndicatorSelected, initialize, type, setType } = useDashboardEmployee()
+  const { employeeId, employeePatternList, pending, cardIndicatorSelected, setCardIndicatorSelected, type, setType } = useDashboardEmployee()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const { currentEntity } = useEntity()
   const [preferenceSelected, setPreferenceSelected] = useState(cardIndicatorSelected)
-   useEffect(() => {
-    if (currentEntity?.entity?.id) {
-      initialize()
-    }
-  }, [currentEntity?.entity?.id])
 
-   useEffect(() => {
-      if (currentEntity?.entity?.id) 
-        setPreferenceSelected([...cardIndicatorSelected])
-    }, [currentEntity?.entity?.id, cardIndicatorSelected.length])
+
+  useEffect(() => {
+    if (currentEntity?.entity?.id)
+      setPreferenceSelected([...cardIndicatorSelected])
+  }, [currentEntity?.entity?.id, cardIndicatorSelected.length])
 
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -50,7 +46,7 @@ export const PanelStats = () => {
     localStorage.setItem('PANEL_EMPLOYEE_CHECKBIZ_CHART_' + employeeId, JSON.stringify({ preferenceSelected }))
     handleClose()
     setCardIndicatorSelected(preferenceSelected)
- 
+
   }
 
 
@@ -105,7 +101,7 @@ export const PanelStats = () => {
                     </Box>
                     <NestedSelectWithCheckmarks preferenceItems={preferenceDashboardEmployeeItems(t)} value={preferenceSelected} onChange={setPreferenceSelected} />
                     <SelectorChart type={type} setType={setType} />
-                   </Box>
+                  </Box>
 
                   <Box display={'flex'} justifyContent={'flex-end'} flexDirection={'row'} gap={1} padding={4}>
                     <SassButton onClick={handleClose} variant="outlined" color="primary">{t('core.button.cancel')}</SassButton>
