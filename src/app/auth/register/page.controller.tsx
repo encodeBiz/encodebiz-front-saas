@@ -4,6 +4,7 @@ import PasswordInput from '@/components/common/forms/fields/PasswordInput';
 import PhoneNumberInput from '@/components/common/forms/fields/PhoneNumberInput';
 import SimpleCheckTerm from '@/components/common/forms/fields/SimpleCheckTerm';
 import TextInput from '@/components/common/forms/fields/TextInput';
+import { codeError } from '@/config/errorLocales';
 import { GENERAL_ROUTE, MAIN_ROUTE } from '@/config/routes';
 import { emailRule, passwordRestrictionRule, requiredRule } from '@/config/yupRules';
 import { useAppLocale } from '@/hooks/useAppLocale';
@@ -32,7 +33,7 @@ export const useRegisterController = () => {
     const { changeLoaderState } = useLayout()
     const { updateUserData } = useAuth()
     const { push } = useRouter()
-     const { currentLocale } = useAppLocale()
+    const { currentLocale } = useAppLocale()
     const t = useTranslations()
     const [initialValues] = useState<RegisterFormValues>({
         fullName: '',
@@ -62,7 +63,7 @@ export const useRegisterController = () => {
 
 
 
-    const signInWithEmail = async (values: RegisterFormValues) => {
+    const signInWithEmail = async (values: RegisterFormValues,) => {
         try {
 
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
@@ -78,8 +79,13 @@ export const useRegisterController = () => {
 
             }
         } catch (error: any) {
+            if (error.message.includes('auth/email-already-in-use')) {
+                showToast(codeError[currentLocale]['auth/email-already-in-use'] ? codeError[currentLocale]['auth/email-already-in-use'] : error.message
+                    , 'error')
+            } else {
+                showToast(error.message, 'error')
+            }
             changeLoaderState({ show: false })
-            showToast(error.message, 'error')
         }
     };
 
