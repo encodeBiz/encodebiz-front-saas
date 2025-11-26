@@ -158,6 +158,23 @@ export interface IHeuristicInfo {
   active: boolean
 }
 
+export interface IRulesInfo {
+  "id": string,
+  "severity": "medium",
+  "actions": Array<{
+    "type": string,
+    "label": string,
+    "description": string,
+    "manualDecisionRequired": boolean
+  }>
+  ,
+  "explanation": {
+    "es": string,
+    "en": string
+  }
+}
+
+
 
 export interface IHeuristicIndicator {
 
@@ -249,7 +266,7 @@ export const preferenceDashboardEmployeeItems = (t: any): Array<{ name: string, 
       { name: 'Coste por hora trabajada', value: 'avgCostHour' },
       { name: 'Coste por jornada', value: 'avgCycleCost' },
       { name: 'Coste por rendimiento', value: 'avgCostEfficiency' },
-      { name: 'Rendimiento del coste invertido', value: 'effectiveRealCost' },      
+      { name: 'Rendimiento del coste invertido', value: 'effectiveRealCost' },
       { name: 'Coste acumulado', value: 'totalCost' },
 
     ]
@@ -262,7 +279,7 @@ export const preferenceDashboardEmployeeItems = (t: any): Array<{ name: string, 
     ]
   },
 
-   {
+  {
     name: 'Experiencia',
     children: [
       { name: 'Experiencia total', value: 'totalExperienceYears' },

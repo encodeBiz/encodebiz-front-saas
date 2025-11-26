@@ -110,7 +110,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
                                 <ListItemIcon sx={{ minWidth: 30 }}>
                                     {featuredList[i] ? <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main }} /> : <Cancel fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main }} />}
                                 </ListItemIcon>
-                                <Typography variant="body2">{feature}{feature == t('salesPlan.emissionLimit') && (maxHolders ?? t('salesPlan.sinLimit'))}</Typography>
+                                <Typography variant="body2">{feature}{feature == t('salesPlan.emissionLimit') && (": " +(maxHolders ?? t('salesPlan.sinLimit')))}</Typography>
                             </ListItem>
                         ))}
                     </List>

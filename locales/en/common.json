@@ -505,7 +505,7 @@
   },
   "salesPlan": {
     "title": "AVAILABLE PLANS",
-    "emissionLimit": "Emission limit:",
+    "emissionLimit": "Digital passes",
     "sinLimit": "Unlimited",
     "subTitle": "Choose between the Free, Bronze, or Enterprise version based on the features you need. Upgrade or change your plan at any time to enhance your experience with PassBiz.",
     "free": "Free",

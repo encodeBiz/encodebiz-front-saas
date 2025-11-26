@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState } from 'react';
 
 import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
 import { useEntity } from '@/hooks/useEntity';
-import { IEmployeePattern, IHeuristicIndicator, IHeuristicInfo } from '@/domain/features/checkinbiz/IStats';
+import { IEmployeePattern, IHeuristicIndicator, IRulesInfo } from '@/domain/features/checkinbiz/IStats';
 import { fetchHeuristic, fetchEmployeePattern, fetchHeuristicsIndicator } from '@/services/checkinbiz/stats.service';
 import { useAuth } from '@/hooks/useAuth';
 import { useAppLocale } from '@/hooks/useAppLocale';
@@ -42,7 +42,7 @@ interface IDashboardEmployeeProps {
     setType: (type: string) => void
 
     initialize: () => void
-    heuristic: Array<IHeuristicInfo>
+    heuristic: Array<IRulesInfo>
     employeeId: string
     heuristicData: Array<IHeuristicIndicator>
 
@@ -72,7 +72,7 @@ export const DashboardEmployeeProvider = ({ children, employeeId }: { children: 
     }>>([])
     const [cardIndicatorSelected, setCardIndicatorSelected] = useState<Array<string>>(['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour']);
     const [heuristicsItems, setHeuristicsItems] = useState<Array<{ name: string, children: Array<{ name: string, value: string, description: string }> }>>([])
-    const [heuristic, setHeuristic] = useState<Array<IHeuristicInfo>>([])
+    const [heuristic, setHeuristic] = useState<Array<IRulesInfo>>([])
     const [heuristicData, setHeuristicData] = useState<Array<IHeuristicIndicator>>([])
     const { token } = useAuth()
     const { currentLocale } = useAppLocale()
@@ -128,11 +128,65 @@ export const DashboardEmployeeProvider = ({ children, employeeId }: { children: 
             employeeId
         })))
         try {
-            const data: Array<IHeuristicInfo> = await fetchHeuristic(currentEntity?.entity?.id as string, null , employeeId, token, currentLocale)
-            console.log(data);
-            setHeuristic(data.map((e) => ({ ...e, active: true })));
-        } catch{}
+            const data: Array<IRulesInfo> = await fetchHeuristic(currentEntity?.entity?.id as string, null, employeeId, token, currentLocale)
+            setHeuristic(data);
+        } catch { }
         setPending(false)
+
+        
+    setHeuristic([
+        {
+            "id": "coaching_low_efficiency",
+            "severity": "medium",
+            "actions": [
+                {
+                    "type": "coach",
+                    "label": "Coaching sugerido",
+                    "description": "Revisión operativa recomendada para optimizar el aprovechamiento de la jornada.",
+                    "manualDecisionRequired": true
+                }
+            ],
+            "explanation": {
+                "es": "El patrón refleja un aprovechamiento parcial de la jornada. Se sugiere revisar asignación de tareas y flujos.",
+                "en": "The pattern shows partial workload utilization. Task allocation and workflow review recommended."
+            }
+        },
+        {
+            "id": "coaching_low_efficiency",
+            "severity": "medium",
+            "actions": [
+                {
+                    "type": "coach",
+                    "label": "Coaching sugerido",
+                    "description": "Revisión operativa recomendada para optimizar el aprovechamiento de la jornada.",
+                    "manualDecisionRequired": true
+                }
+            ],
+            "explanation": {
+                "es": "El patrón refleja un aprovechamiento parcial de la jornada. Se sugiere revisar asignación de tareas y flujos.",
+                "en": "The pattern shows partial workload utilization. Task allocation and workflow review recommended."
+            }
+        },
+        {
+            "id": "coaching_low_efficiency",
+            "severity": "medium",
+            "actions": [
+                {
+                    "type": "coach",
+                    "label": "Coaching sugerido",
+                    "description": "Revisión operativa recomendada para optimizar el aprovechamiento de la jornada.",
+                    "manualDecisionRequired": true
+                }
+            ],
+            "explanation": {
+                "es": "El patrón refleja un aprovechamiento parcial de la jornada. Se sugiere revisar asignación de tareas y flujos.",
+                "en": "The pattern shows partial workload utilization. Task allocation and workflow review recommended."
+            }
+        }
+
+
+
+    ])
     }
 
 

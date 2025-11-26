@@ -38,7 +38,7 @@ export default function usePricingCardController(id: string, name: string, fromS
 
                 await subscribeInSassProduct(data, token, currentLocale)
 
-                showToast(`${t('salesPlan.feedText1')} ${id} ${t('salesPlan.feedText2')} ${fromService} ${t('salesPlan.feedText3')}`, 'success');
+                showToast(`${t('salesPlan.feedText1')} ${t('salesPlan.'+id)} ${t('salesPlan.feedText2')} ${fromService==='passinbiz'?'PassBiz':'CheckBiz'} ${t('salesPlan.feedText3')}`, 'success');
                 setLoadingGetPlan(false);
                 changeLoaderState({ show: false })
                 if(fromService === 'passinbiz'){
@@ -69,8 +69,7 @@ export default function usePricingCardController(id: string, name: string, fromS
             changeLoaderState({ show: true, args: { text: t('core.title.loaderActionBilling') } })
 
             await unSubscribeInSassProduct(data, token, currentLocale)
-
-            showToast(`${t('salesPlan.feedText1')} ${fromService} ${t('salesPlan.feedText4')}`, 'success');
+                showToast(`${t('salesPlan.feedText1')} ${t('salesPlan.'+id)} ${t('salesPlan.feedText2')} ${fromService==='passinbiz'?'PassBiz':'CheckBiz'} ${t('salesPlan.feedText4')}`, 'success');
             setLoadingGetPlan(false);
             changeLoaderState({ show: false })
 
