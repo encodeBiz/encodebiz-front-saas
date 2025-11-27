@@ -76,7 +76,7 @@ export default function SucursalList() {
           navivateTo('/checkinbiz/onboarding')
         }}
         btnFill
-        closeIcon
+        closeIcon={false}
       />}
     </Container>
   );
