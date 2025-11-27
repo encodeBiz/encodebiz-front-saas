@@ -16,6 +16,7 @@ import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import logo from '../../../../public/assets/images/logo.svg'
 import Image from 'next/image';
+import { useAppLocale } from '@/hooks/useAppLocale';
 
 
 const SignUpPage = () => {
@@ -23,9 +24,9 @@ const SignUpPage = () => {
     const t = useTranslations()
     const classes = useStyles();
     const theme = useTheme()
-
+ const {currentLocale} = useAppLocale()
     return (
-        <Container style={{ minWidth: 600, maxWidth: 700, width: '100%' }}>
+        <Container style={{ minWidth: 720, maxWidth: 760, width: '100%' }}>
 
             <BorderBox sx={classes.root}>
                 <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'}>

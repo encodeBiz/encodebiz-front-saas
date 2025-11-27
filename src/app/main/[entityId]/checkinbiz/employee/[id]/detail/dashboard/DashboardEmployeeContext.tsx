@@ -122,6 +122,9 @@ export const DashboardEmployeeProvider = ({ children, employeeId }: { children: 
         const KEY = 'PANEL_EMPLOYEE_CHECKBIZ_CHART_' + employeeId
         setCardIndicatorSelected(localStorage.getItem(KEY) ? JSON.parse(localStorage.getItem(KEY) as string)?.preferenceSelected ?? [...defaultItems1] : [...defaultItems1])
 
+        const KEY_TYPE = 'PANEL_EMPLOYEE_CHECKBIZ_CHART_TIME_' + employeeId
+        setType(localStorage.getItem(KEY_TYPE) ? localStorage.getItem(KEY_TYPE) as string : 'weeklyWorkAvg')
+
         setEmployeePatternList(branchPatternList.map(e => ({
             pattern: e,
             employee,
@@ -132,7 +135,7 @@ export const DashboardEmployeeProvider = ({ children, employeeId }: { children: 
             setHeuristic(data);
         } catch { }
         setPending(false)
- 
+
     }
 
 

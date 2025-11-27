@@ -249,8 +249,9 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
               ...(field.value ?? {}),
               postalCode: e.target.value
             })
+            postalCodeField[2].setTouched(true) 
           }}
-          onFocus={() => postalCodeField[2].setTouched(true)}
+          
           disabled={props.disabled || (!formStatus?.values?.address?.country || !formStatus?.values?.address?.city)}
           helperText={postalCodeField[1].touched && postalCodeField[1].error}
           error={!!(postalCodeField[1].touched && postalCodeField[1].error)}

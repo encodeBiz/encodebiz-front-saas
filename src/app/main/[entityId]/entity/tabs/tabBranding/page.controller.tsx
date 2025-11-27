@@ -87,7 +87,7 @@ export const useSettingEntityController = () => {
         {
             isDivider: true,
             label: t('core.label.colorBrand'),
-            hit: <Box display={'flex'} justifyContent={'flex-start'} alignItems={'center'} gap={1}><InfoOutline /><Typography color='textSecondary' component="span" >{t('entity.tabs.tab2.titleAboutText')} <strong>{t('entity.tabs.tab2.titleAboutText1')}</strong> {t('entity.tabs.tab2.titleAboutText2')}</Typography></Box>,
+            hit: <Box display={'flex'} justifyContent={'flex-start'} alignItems={'flex-start'} gap={1}><InfoOutline /><Typography color='textSecondary' component="span" >{t('entity.tabs.tab2.titleAboutText')} <strong>{t('entity.tabs.tab2.titleAboutText1')}</strong> {t('entity.tabs.tab2.titleAboutText2')}</Typography></Box>,
 
         },
 
@@ -120,7 +120,7 @@ export const useSettingEntityController = () => {
         {
             isDivider: true,
             label: t('core.label.resourcesGraph'),
-            hit: <Box display={'flex'} justifyContent={'center'} alignItems={'flex-start'} gap={1}><InfoOutline /><Typography color='textSecondary' component="span" >{t('entity.tabs.tab2.titleAboutText')} <strong>{t('entity.tabs.tab2.titleAboutText1')}</strong> {t('entity.tabs.tab2.titleAboutText2')}</Typography></Box>,
+            hit: <Box display={'flex'} justifyContent={'flex-start'} alignItems={'flex-start'} gap={1}><InfoOutline /><Typography color='textSecondary' component="span" >{t('entity.tabs.tab2.titleAboutText')} <strong>{t('entity.tabs.tab2.titleAboutText1')}</strong> {t('entity.tabs.tab2.titleAboutText2')}</Typography></Box>,
 
         },
         {

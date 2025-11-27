@@ -73,8 +73,7 @@ export const CustomizableGroupedBarChart = ({
     return (
         <Paper
             elevation={0}
-            sx={{
-          
+            sx={{          
                 borderRadius: 2,
                 backgroundColor: '#FFF'
             }}

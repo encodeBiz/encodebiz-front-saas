@@ -105,6 +105,7 @@
     "label": {
       "today": "Hoy",
       "start": "Inicio",
+      "languageNotification":"Idioma de notificaciones",
       "linkToCreateEmployee": "Crear empleado",
       "end": "Fin",
       "download": "Descargar",
@@ -327,6 +328,7 @@
       "upgrade": "Actualizar plan",
       "upgradeSuscription": "Actualizar suscripción",
       "resend": "Reenviar",
+      "archived": "Archivar",
       "back": "Atrás",
       "reactive": "Reactivar",
       "submitting": "Enviando...",
@@ -597,8 +599,8 @@
     "revokeConfirmModalTitle2": "Esta acción no se puede deshacer. Revocará  permanentemente el/los pase(s) digital(es)",
     "reactiveConfirmModalTitle": "Reactivar pase(s) digital(es)",
     "reactiveConfirmModalTitle2": "Esta acción no se puede deshacer. Reactivará permanentemente el/los pase(s) digital(es)",
-    "sendConfirmModalTitle": "Relanzar pase(s) digital(es)",
-    "sendConfirmModalTitle2": "Esta acción no se puede deshacer. Relanzará  el/los pase(s) digital(es) nuevamente",
+    "sendConfirmModalTitle": "Reenviar pase digital",
+    "sendConfirmModalTitle2": "Esta acción no se puede deshacer. Reenviarás el pase digital nuevamente.",
     "archivedConfirmModalTitle": "Archivar pase(s) digital(es)",
     "archivedConfirmModalTitle2": "Esta acción no se puede deshacer. Archivará  el/los pase(s) digital(es) nuevamente",
     "filter": {
@@ -639,8 +641,8 @@
       "description": "Describe las características del evento que deseas crear, y nos pondremos en contacto contigo."
     },
     "info": {
-      "title": "Solicitud enviada.",
-      "description": "La solicitud de evento de prueba ha sido enviada correctamente, nos pondremos en contacto con usted en breve."
+      "title": "Solicitud enviada",
+      "description": "Tu solicitud para el evento de prueba se ha enviado correctamente. En breve te contactaremos."
     }
   },
   "staff": {
@@ -721,9 +723,9 @@
     "description": "Rellene los campos para registrar la sucursal/proyecto",
     "deleteConfirmModalTitle": "Eliminar sucursal/proyecto",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente la sucursal/proyecto",
-    "freePlanAdviseTitle": "Límite alcanzado en el plan gratuito",
+    "freePlanAdviseTitle": "Acción no disponible",
     "freePlanAdviseBtn": "Actualziar plan",
-    "freePlanAdviseText": "Tu plan actual permite creer una Sucursal / Proyecto. Actualiza tu plan para agregar más sucursales/proyectos.",
+    "freePlanAdviseText": "Tu plan actual es el gratuito. Para crear más Sucursales / Proyectos, actualiza tu suscripción.",
     "linkToEmployeeNotTitle": "No hay empleados disponibles",
     "linkToEmployeeNotText": "Crea una nuevo emplado para asignar a esta Sucursal / Proyecto .",
     "disableBreakAlertMessageE": "El sistema de control de descanso aplicará exactamente el tiempo definido. ",
@@ -837,6 +839,7 @@
   },
   "webhook": {
     "title": "Webhook",
+    "create": "Crear Webhook",
     "text": "Webhook asociados a los eventos disponibles en los servicios."
   },
   "guestModal": {
@@ -1077,7 +1080,7 @@
   },
   "image": {
     "text1": "Dimensiones de la imagen incorrecta",
-    "text2": "Las dimensiones de la imagen no cumplen con los requisitos requeridos para la construcción de pases digitales o plantillas estandarizadas",
+    "text2": "Las dimensiones de la imagen no cumplen con los requisitos requeridos para la construcción de pases digitales o plantillas estandarizadas.",
     "text3": "Dimensiones requeridas: "
   },
   "error": {

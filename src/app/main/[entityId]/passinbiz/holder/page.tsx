@@ -84,7 +84,7 @@ export default function HolderList() {
 
 
       {open.type === CommonModalType.DELETE && <ConfirmModal
-        isLoading={revoking}
+        isLoading={revoking} closeIcon={false}
         title={t('holders.revokeConfirmModalTitle')}
         description={t('holders.revokeConfirmModalTitle2')}
         textBtn={t('core.button.revoke')}
@@ -92,29 +92,31 @@ export default function HolderList() {
       />}
 
       {open.type === CommonModalType.REACTIVE && <ConfirmModal
-        isLoading={revoking}
+        isLoading={revoking} closeIcon={false}
         title={t('holders.reactiveConfirmModalTitle')}
         description={t('holders.reactiveConfirmModalTitle2')}
         textBtn={t('core.button.reactive')}
-        icon={<ReplyAllOutlined />}
+        colorBtn='success' 
+      
         onOKAction={(args: { data: any }) => onAction(args.data, 'active', 'pending')}
       />}
 
       {open.type === CommonModalType.SEND && <ConfirmModal
-        isLoading={revoking}
+        isLoading={revoking} closeIcon={false}
         title={t('holders.sendConfirmModalTitle')}
         description={t('holders.sendConfirmModalTitle2')}
-        textBtn={t('core.button.send')}
-        icon={<PanoramaFishEyeOutlined />}
+        textBtn={t('core.button.resend')}
+        colorBtn='success'   
+        
         onOKAction={(args: { data: any }) => onAction(args.data, 'active', 'pending')}
       />}
 
       {open.type === CommonModalType.ARCHIVED && <ConfirmModal
-        isLoading={revoking}
+        isLoading={revoking} closeIcon={false}
         title={t('holders.archivedConfirmModalTitle')}
         description={t('holders.archivedConfirmModalTitle2')}
         textBtn={t('core.label.archivedHolder')}
-        icon={<ArchiveOutlined />}
+        colorBtn='warning'    
         onOKAction={(args: { data: any }) => onAction(args.data, 'archived')}
       />}
     </Container>

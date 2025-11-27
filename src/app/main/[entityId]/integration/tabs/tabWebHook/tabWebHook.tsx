@@ -7,7 +7,6 @@ import { GenericTable } from '@/components/common/table/GenericTable';
 import { Box, Grid } from '@mui/material';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
-import { Add } from '@mui/icons-material';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
@@ -25,8 +24,7 @@ const WebHookTab = () => {
     return (
         <Grid container spacing={1} display={'flex'} flexDirection={'column'} justifyContent="flex-start" pb={10}>
 
-            <HeaderPage
-                 
+            <HeaderPage                 
                 title={t("webhook.title")}
                 description={t("webhook.text")}
                 actions={
@@ -35,7 +33,6 @@ const WebHookTab = () => {
                             onClick={() => openModal(CommonModalType.WEBHOOK)}
                             variant='contained'
                             color='primary'
-                            startIcon={<Add />}
                         > {t('core.button.add')}</SassButton>
                     </Box>
                 }

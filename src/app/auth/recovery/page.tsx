@@ -19,6 +19,7 @@ import { useRouter } from 'nextjs-toploader/app';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import logo from '../../../../public/assets/images/logo.svg'
 import Image from 'next/image';
+import InfoModal from '@/components/common/modals/InfoModal';
 
 
 const RecoveryPage = () => {
@@ -79,12 +80,13 @@ const RecoveryPage = () => {
                 </Box>
             </BorderBox>
 
-            {open.open && <ConfirmModal
+            {open.open && <InfoModal
                 title={t('core.recovery.modalTitle')}
                 description={t('core.recovery.modalTitle2')}
-                textBtn={t('core.recovery.ok')}
+                closeIcon={false}
                 cancelBtn={false}
-                onOKAction={() => {
+                centerBtn
+                onClose={() => {
                     closeModal()
                     push('/auth/login')
                 }}

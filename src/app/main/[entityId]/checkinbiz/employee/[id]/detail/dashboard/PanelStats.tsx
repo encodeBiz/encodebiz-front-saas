@@ -24,12 +24,15 @@ export const PanelStats = () => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const { currentEntity } = useEntity()
   const [preferenceSelected, setPreferenceSelected] = useState(cardIndicatorSelected)
+  const [preferenceTypeSelected, setPreferenceTypeSelected] = useState(type)
 
 
   useEffect(() => {
-    if (currentEntity?.entity?.id)
+    if (currentEntity?.entity?.id) {
       setPreferenceSelected([...cardIndicatorSelected])
-  }, [currentEntity?.entity?.id, cardIndicatorSelected.length])
+      setPreferenceTypeSelected(type)
+    }
+  }, [currentEntity?.entity?.id, cardIndicatorSelected.length, type])
 
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -45,15 +48,16 @@ export const PanelStats = () => {
 
   const handleSave = () => {
     localStorage.setItem('PANEL_EMPLOYEE_CHECKBIZ_CHART_' + employeeId, JSON.stringify({ preferenceSelected }))
+    localStorage.setItem('PANEL_EMPLOYEE_CHECKBIZ_CHART_TIME_' + employeeId, preferenceTypeSelected)
     handleClose()
     setCardIndicatorSelected(preferenceSelected)
-
+    setType(preferenceTypeSelected)
   }
 
 
   const InnetContent = () => <Box sx={{ minHeight: 600, p: 3 }}>
 
-    {!pending && employeePatternList.length > 0 && <Box display={'flex'} justifyContent={'center'} alignItems={'center'} sx={{ minHeight: 100 }}>
+    {!pending && employeePatternList.length == 0 && <Box display={'flex'} justifyContent={'center'} alignItems={'center'} sx={{ minHeight: 100 }}>
       <EmptyState text={t('employeeDashboard.emptyPattern')} />
     </Box>}
     {pending && <BoxLoader message={t('statsCheckbiz.loading')} />}
@@ -104,7 +108,7 @@ export const PanelStats = () => {
                       <Typography variant="body1">{t('statsCheckbiz.configPanel')}</Typography>
                     </Box>
                     <NestedSelectWithCheckmarks preferenceItems={preferenceDashboardEmployeeItems(t)} value={preferenceSelected} onChange={setPreferenceSelected} />
-                    <SelectorChart type={type} setType={setType} />
+                    <SelectorChart type={preferenceTypeSelected} setType={setPreferenceTypeSelected} />
                   </Box>
 
                   <Box display={'flex'} justifyContent={'flex-end'} flexDirection={'row'} gap={1} padding={4}>

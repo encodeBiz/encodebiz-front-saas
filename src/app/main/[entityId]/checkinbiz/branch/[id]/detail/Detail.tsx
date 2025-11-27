@@ -24,14 +24,14 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
     const t = useTranslations()
     const { navivateTo } = useLayout()
     const { openModal, open } = useCommonModal()
-    const { initialize } = useDashboardBranch()
-    const {currentEntity} = useEntity()
+    const { initialize, branchPatternList } = useDashboardBranch()
+    const { currentEntity } = useEntity()
 
     useEffect(() => {
         if (currentEntity?.entity?.id) {
-          initialize()
+            initialize()
         }
-      }, [currentEntity?.entity?.id])
+    }, [currentEntity?.entity?.id])
 
     return <Card elevation={3} sx={{ width: '100%', margin: 'auto' }}>
         {/* Header Section */}
@@ -120,12 +120,13 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
                     title: t("employee.list"),
                     tabContent: <EmployeeList addResponsabiltyItem={addResponsabiltyItem} >{children}</EmployeeList>
                 },
-
-                {
-                    id: '1',
-                    title: t(`sucursal.panel`),
-                    tabContent:<PanelStats /> 
-                },
+                ...(branchPatternList.length > 0 ? [
+                    {
+                        id: '1',
+                        title: t(`sucursal.panel`),
+                        tabContent: <PanelStats />
+                    },
+                ] : [])
 
             ]} />}
 

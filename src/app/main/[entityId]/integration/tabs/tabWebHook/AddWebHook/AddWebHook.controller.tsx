@@ -71,7 +71,6 @@ export default function useAddWebHookController() {
 
 
   useEffect(() => {
-
     if (currentEntity?.entity.id && user?.id) {
       watchServiceAccess('passinbiz')
     }

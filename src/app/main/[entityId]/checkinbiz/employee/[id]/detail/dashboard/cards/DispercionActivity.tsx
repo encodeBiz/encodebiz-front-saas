@@ -50,7 +50,7 @@ export const DispercionActivity = () => {
         </Box>
         <Divider orientation="horizontal" flexItem />
         <Box sx={{ p: 4 }}>
-            <ChartLine data={chartData} />
+            <ChartLine sub={'h'} data={chartData} />
         </Box>
 
     </BorderBox>

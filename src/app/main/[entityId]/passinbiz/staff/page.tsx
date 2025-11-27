@@ -18,7 +18,7 @@ export default function HolderList() {
   const {
     items, rowAction, onRowsPerPageChange, onSort,
     onNext, onBack, onDelete, deleting,
-    filterParams, topFilter,onSuccess,
+    filterParams, topFilter, onSuccess,
     columns,
     loading } = useHolderListController();
   const { open } = useCommonModal()
@@ -65,7 +65,7 @@ export default function HolderList() {
         onOKAction={(args: { data: any }) => onDelete(args.data)}
       />}
 
-            {open.type === CommonModalType.FORM && <FormModal onSuccess={onSuccess} />}
+      {open.type === CommonModalType.FORM && <FormModal onSuccess={onSuccess} />}
 
     </Container>
   );
