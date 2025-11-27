@@ -328,6 +328,7 @@
       "upgrade": "Actualizar plan",
       "upgradeSuscription": "Actualizar suscripción",
       "resend": "Reenviar",
+      "archived": "Archivar",
       "back": "Atrás",
       "reactive": "Reactivar",
       "submitting": "Enviando...",
@@ -598,8 +599,8 @@
     "revokeConfirmModalTitle2": "Esta acción no se puede deshacer. Revocará  permanentemente el/los pase(s) digital(es)",
     "reactiveConfirmModalTitle": "Reactivar pase(s) digital(es)",
     "reactiveConfirmModalTitle2": "Esta acción no se puede deshacer. Reactivará permanentemente el/los pase(s) digital(es)",
-    "sendConfirmModalTitle": "Relanzar pase(s) digital(es)",
-    "sendConfirmModalTitle2": "Esta acción no se puede deshacer. Relanzará  el/los pase(s) digital(es) nuevamente",
+    "sendConfirmModalTitle": "Reenviar pase digital",
+    "sendConfirmModalTitle2": "Esta acción no se puede deshacer. Reenviarás el pase digital nuevamente.",
     "archivedConfirmModalTitle": "Archivar pase(s) digital(es)",
     "archivedConfirmModalTitle2": "Esta acción no se puede deshacer. Archivará  el/los pase(s) digital(es) nuevamente",
     "filter": {
@@ -640,8 +641,8 @@
       "description": "Describe las características del evento que deseas crear, y nos pondremos en contacto contigo."
     },
     "info": {
-      "title": "Solicitud enviada.",
-      "description": "La solicitud de evento de prueba ha sido enviada correctamente, nos pondremos en contacto con usted en breve."
+      "title": "Solicitud enviada",
+      "description": "Tu solicitud para el evento de prueba se ha enviado correctamente. En breve te contactaremos."
     }
   },
   "staff": {

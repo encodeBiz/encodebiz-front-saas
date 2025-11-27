@@ -7,7 +7,6 @@ import { GenericTable } from '@/components/common/table/GenericTable';
 import { Box, Grid } from '@mui/material';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
-import { Add } from '@mui/icons-material';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';

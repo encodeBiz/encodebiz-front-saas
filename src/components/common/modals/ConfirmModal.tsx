@@ -24,15 +24,17 @@ interface ConfirmProps {
     title: string
     label?: string
     textBtn?: string
+    colorBtn?: 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning'
     description: string
     codeValidator?: boolean
+    closeIcon?: boolean
     isLoading?: boolean
     cancelBtn?: boolean
     icon?: React.ReactNode
     onOKAction: (args: any) => void
 
 }
-const ConfirmModal = ({ word, title, label, textBtn, description, isLoading = false, cancelBtn = true, codeValidator = false, onOKAction }: ConfirmProps): React.JSX.Element => {
+const ConfirmModal = ({ word, title, label, textBtn,closeIcon=true, colorBtn, description, isLoading = false, cancelBtn = true, codeValidator = false, onOKAction }: ConfirmProps): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const theme = useTheme()
     const [confirmationText, setConfirmationText] = useState('');
@@ -73,10 +75,10 @@ const ConfirmModal = ({ word, title, label, textBtn, description, isLoading = fa
                     <CustomTypography >{title}</CustomTypography>
                 </Box>
 
-                <CustomIconBtn
+                {closeIcon && <CustomIconBtn
                     onClick={() => handleClose(null, 'manual')}
                     color={theme.palette.primary.main}
-                />
+                />}
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description" sx={{ mb: 3 }}>
@@ -108,7 +110,7 @@ const ConfirmModal = ({ word, title, label, textBtn, description, isLoading = fa
                     onClick={(e) => handleClose(e, 'manual')}
                     disabled={isLoading}
                     size='small'
-                   
+
 
                 >
                     {t('core.button.cancel')}
@@ -116,7 +118,7 @@ const ConfirmModal = ({ word, title, label, textBtn, description, isLoading = fa
                 <SassButton
                     onClick={handleConfirm}
                     disabled={codeValidator && confirmationText !== requiredText}
-                    color="error"
+                    color={colorBtn ? colorBtn : "error"}
                     size='small'
                     variant="contained"
                     startIcon={isLoading ? <CircularProgress size={20} /> : null}

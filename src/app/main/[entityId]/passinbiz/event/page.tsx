@@ -41,7 +41,8 @@ export default function HolderList() {
               <SassButton
                 onClick={() => navivateTo(`/${PASSSINBIZ_MODULE_ROUTE}/onboarding?to=plans`)}
                 variant='contained'
-                color='warning'              
+                color='primary'
+                sx={{width:200}}              
               > {t('core.button.upgrade')}</SassButton>
             }
           </Box>
@@ -73,7 +74,9 @@ export default function HolderList() {
 
       {open.type === CommonModalType.DELETE && <ConfirmModal
         isLoading={deleting}
-        icon={<ArchiveOutlined />}
+        colorBtn='warning'
+        closeIcon={false}
+        textBtn={t('core.button.archived')}
         title={t('event.deleteConfirmModalTitle')}
         description={t('event.deleteConfirmModalTitle2')}
         onOKAction={(args: { data: Array<string> }) => onArchived(args.data as any)}

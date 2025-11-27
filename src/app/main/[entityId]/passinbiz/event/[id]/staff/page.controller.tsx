@@ -50,7 +50,7 @@ export default function useStaffController() {
       if (id) await updateEvent(data, token, currentLocale)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
-      navivateTo(`/passinbiz/event}`)
+      navivateTo(`/passinbiz/event`)
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')

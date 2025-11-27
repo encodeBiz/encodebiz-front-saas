@@ -41,7 +41,7 @@ export default function EventForm() {
               onClick={handleExternalSubmit}
               variant='contained'
               startIcon={<SaveOutlined />}
-            > {t('core.button.saveChanges')}</SassButton>
+            > {t('core.button.save')}</SassButton>
           </Box>
         }
       >
