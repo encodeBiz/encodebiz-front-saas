@@ -83,7 +83,12 @@ export const useRegisterController = () => {
                 showToast(codeError[currentLocale]['auth/email-already-in-use'] ? codeError[currentLocale]['auth/email-already-in-use'] : error.message
                     , 'error')
             } else {
-                showToast(error.message, 'error')
+                if (error.message.includes('auth/email-already-exists')) {
+                    showToast(codeError[currentLocale]['auth/email-already-exists'] ? codeError[currentLocale]['auth/email-already-exists'] : error.message
+                        , 'error')
+                } else {
+                    showToast(error.message, 'error')
+                }
             }
             changeLoaderState({ show: false })
         }

@@ -3,6 +3,7 @@
 
 import PasswordInput from '@/components/common/forms/fields/PasswordInput';
 import TextInput from '@/components/common/forms/fields/TextInput';
+import { codeError } from '@/config/errorLocales';
 import { MAIN_ROUTE, GENERAL_ROUTE } from '@/config/routes';
 import { emailRule, passwordRestrictionRule } from '@/config/yupRules';
 import { CommonModalType } from '@/contexts/commonModalContext';
@@ -66,7 +67,12 @@ export const useRegisterController = () => {
             changeLoaderState({ show: false })
         } catch (error: any) {
             changeLoaderState({ show: false })
-            showToast(error.message, 'error')
+            if (error.message.includes('auth/invalid-credential')) {
+                showToast(codeError[currentLocale]['auth/invalid-credential'] ? codeError[currentLocale]['auth/invalid-credential'] : error.message
+                    , 'error')
+            } else {
+                showToast(error.message, 'error')
+            }
         }
     };
 
@@ -109,7 +115,7 @@ export const useRegisterController = () => {
 
 
 
-    
+
 
 
     return { signInWithGoogle, signInWithEmail, validationSchema, initialValues, fields }

@@ -105,6 +105,7 @@
     "label": {
       "today": "Hoy",
       "start": "Inicio",
+      "languageNotification":"Idioma de notificaciones",
       "linkToCreateEmployee": "Crear empleado",
       "end": "Fin",
       "download": "Descargar",

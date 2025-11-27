@@ -110,7 +110,7 @@ export const useRegisterController = () => {
 
         {
             name: 'language',
-            label: t('core.label.language'),
+            label: t('core.label.languageNotification'),
             component: SelectInput,
             options: [{ label: t('layout.header.spanish'), value: 'ES' }, { label: t('layout.header.english'), value: 'EN' }]
         },

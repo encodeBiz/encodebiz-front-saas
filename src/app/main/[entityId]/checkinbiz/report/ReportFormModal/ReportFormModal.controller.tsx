@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslations } from "next-intl";
 import * as Yup from 'yup';
- import { useToast } from "@/hooks/useToast";
+import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 import { useLayout } from "@/hooks/useLayout";
 import { useCommonModal } from "@/hooks/useCommonModal";
@@ -12,9 +12,10 @@ import { search } from "@/services/checkinbiz/sucursal.service";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { createReport } from "@/services/checkinbiz/report.service";
 import { IReport } from "@/domain/features/checkinbiz/IReport";
-import { format_date } from "@/lib/common/Date";
+import { format_date, getDateRange } from "@/lib/common/Date";
 import { useAppLocale } from "@/hooks/useAppLocale";
 import { DateRange } from "@/components/common/forms/fields/DateRange";
+import { useFormStatus } from "@/hooks/useFormStatus";
 
 interface ReportOutput {
 
@@ -44,11 +45,12 @@ export default function useAttendanceFormModalController(onSuccess: () => void) 
   const { closeModal } = useCommonModal()
   const [initialValues] = useState<Partial<any>>({
     branchId: 'none',
-    periocity: '',
+    periocity: { start: getDateRange('year')?.start, end: getDateRange('year')?.end },
   })
   const [download, setDownload] = useState(false)
   const [branchList, setBranchList] = useState<Array<any>>([])
   const validationSchema = Yup.object().shape({});
+    const { formStatus } = useFormStatus()
 
 
 
@@ -76,6 +78,7 @@ export default function useAttendanceFormModalController(onSuccess: () => void) 
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
+      formStatus?.setSubmitting(false)
     }
   };
 

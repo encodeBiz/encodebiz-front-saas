@@ -48,12 +48,12 @@ export default function useAttendanceController() {
     params: {
       filters: [
         { field: 'status', operator: '==', value: 'active' },
-        { field: 'start', operator: '>=', value: getDateRange('year').start },
-        { field: 'start', operator: '<=', value: getDateRange('year').end }
+        { field: 'createdAt', operator: '>=', value: getDateRange('year').start },
+        { field: 'createdAt', operator: '<=', value: getDateRange('year').end }
       ],
       startAfter: null,
       limit: 5,
-      orderBy: 'start',
+      orderBy: 'createdAt',
       orderDirection: 'desc',
     }
   })
@@ -229,6 +229,7 @@ export default function useAttendanceController() {
 
      {
       id: 'createdAt',
+      sortable: true,
       label: t("core.label.createAt"),
       minWidth: 170,
       format: (value, row) => format_date(row.createdAt, 'YYYY-MM-DD')
