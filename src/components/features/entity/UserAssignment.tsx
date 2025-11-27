@@ -36,10 +36,6 @@ import { TrashIcon } from '@/components/common/icons/TrashIcon';
 import { CustomTypography } from '@/components/common/Text/CustomTypography';
 import { CustomChip } from '@/components/common/table/CustomChip';
 
-const roleOptions = [
-    { value: 'admin', label: 'Adminstrador' },
-    { value: 'owner', label: 'Propietario' },
-];
 export interface EntityCollaboratorData {
     id: string
     owner: ICollaborator
@@ -75,6 +71,12 @@ const UserAssignment = ({ project, onAssign, onRemove, proccesing = false }: Use
     const t = useTranslations()
     const { openModal, closeModal, open } = useCommonModal()
     const theme = useTheme()
+
+    
+const roleOptions = [
+    { value: 'admin', label: t('core.label.admin') },
+    { value: 'owner', label: t('core.label.owner') },
+];
 
     const handleOpen = () => setOpenModalAdd(true);
     const handleClose = () => {
