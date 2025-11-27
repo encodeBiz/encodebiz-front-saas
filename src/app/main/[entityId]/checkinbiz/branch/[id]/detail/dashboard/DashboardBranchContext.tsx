@@ -171,9 +171,12 @@ export const DashboardBranchProvider = ({ children, branchId }: { children: Reac
         }))
         setNormalizedData(branchPatternDataListt)
         const KEY = 'PANEL_BRANCH_CHECKBIZ_CHART_' + branchId
-
         setCardIndicatorSelected(localStorage.getItem(KEY) ? JSON.parse(localStorage.getItem(KEY) as string)?.preferenceSelected ?? [...defaultItems1] : [...defaultItems1])
         setCardHeuristicsIndicatorSelected(localStorage.getItem(KEY) ? JSON.parse(localStorage.getItem(KEY) as string)?.preferenceHeuristicSelected ?? [...defaultItems2] : [...defaultItems2])
+
+        const KEY_TYPE = 'PANEL_BRANCH_CHECKBIZ_CHART_TIME_' + branchId
+        setType(localStorage.getItem(KEY_TYPE) ? localStorage.getItem(KEY_TYPE) as string : 'weeklyWorkAvg')
+
 
         setBranchList(branchPatternDataListt.filter(e => !!e.branch).map(e => e.branch as ISucursal))
         setbranchPatternList(branchPatternDataListt.filter(e => !!e.branch).slice(0, 3))
@@ -187,11 +190,11 @@ export const DashboardBranchProvider = ({ children, branchId }: { children: Reac
         setbranchPatternList(normalizedData.filter(e => branchSelected.map(b => b.id).includes(e.branchId)))
     }
 
-   
+
 
 
     return (
-        <DashboardBranchContext.Provider value={{ heuristicData, branchId, heuristic, cardHeuristicsIndicatorSelected, setCardHeuristicsIndicatorSelected, heuristicsItems, onSelectedBranch, initialize, normalizedData,   type, setType, branchPatternList, cardIndicatorSelected, setCardIndicatorSelected, branchList, branchSelected, setBranchSelected, pending }}>
+        <DashboardBranchContext.Provider value={{ heuristicData, branchId, heuristic, cardHeuristicsIndicatorSelected, setCardHeuristicsIndicatorSelected, heuristicsItems, onSelectedBranch, initialize, normalizedData, type, setType, branchPatternList, cardIndicatorSelected, setCardIndicatorSelected, branchList, branchSelected, setBranchSelected, pending }}>
             {children}
         </DashboardBranchContext.Provider>
     );

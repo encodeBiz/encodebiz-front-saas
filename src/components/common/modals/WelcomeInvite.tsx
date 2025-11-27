@@ -61,8 +61,6 @@ const WelcomeInviteModal = (): React.JSX.Element => {
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
                         <CustomTypography >{t('guestModal.title')}</CustomTypography>
                     </Box>
-
-
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description" sx={{ mb: 3 }}>

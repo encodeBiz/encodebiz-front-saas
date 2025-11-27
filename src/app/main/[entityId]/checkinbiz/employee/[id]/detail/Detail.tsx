@@ -29,8 +29,8 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
     const { openModal, open } = useCommonModal()
     const search = useSearchParams()
     const backAction = search.get('back')
-    const { initialize } = useDashboardEmployee()
-    const {currentEntity} = useEntity()
+    const { initialize, employeePatternList } = useDashboardEmployee()
+    const { currentEntity } = useEntity()
 
     useEffect(() => {
         if (currentEntity?.entity?.id) {
@@ -136,11 +136,13 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
                     title: t("checklog.list"),
                     tabContent: <Attedance>{children}</Attedance>
                 },
-                {
-                    id: '2',
-                    title: t("employee.workProfile"),
-                    tabContent: <PanelStats />
-                },
+                ...(employeePatternList.length > 0 ? [
+                    {
+                        id: '2',
+                        title: t("employee.workProfile"),
+                        tabContent: <PanelStats />
+                    }
+                ] : [])
 
 
             ]} />

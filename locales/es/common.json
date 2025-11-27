@@ -838,6 +838,7 @@
   },
   "webhook": {
     "title": "Webhook",
+    "create": "Crear Webhook",
     "text": "Webhook asociados a los eventos disponibles en los servicios."
   },
   "guestModal": {
@@ -1078,7 +1079,7 @@
   },
   "image": {
     "text1": "Dimensiones de la imagen incorrecta",
-    "text2": "Las dimensiones de la imagen no cumplen con los requisitos requeridos para la construcción de pases digitales o plantillas estandarizadas",
+    "text2": "Las dimensiones de la imagen no cumplen con los requisitos requeridos para la construcción de pases digitales o plantillas estandarizadas.",
     "text3": "Dimensiones requeridas: "
   },
   "error": {

@@ -23,15 +23,18 @@ export const PanelStats = () => {
   const { currentEntity } = useEntity()
   const [preferenceSelected, setPreferenceSelected] = useState(cardIndicatorSelected)
   const [preferenceHeuristicSelected, setPreferenceHeuristicSelected] = useState(cardHeuristicsIndicatorSelected)
+  const [preferenceTypeSelected, setPreferenceTypeSelected] = useState(type)
+
   useEffect(() => {
     if (currentEntity?.entity?.id) {
       setPreferenceSelected([...cardIndicatorSelected])
       setPreferenceHeuristicSelected([...cardHeuristicsIndicatorSelected])
+      setPreferenceTypeSelected(type)
 
     }
-  }, [currentEntity?.entity?.id, cardIndicatorSelected.length])
+  }, [currentEntity?.entity?.id, cardIndicatorSelected.length, type])
 
-  
+
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -46,9 +49,12 @@ export const PanelStats = () => {
 
   const handleSave = () => {
     localStorage.setItem('PANEL_BRANCH_CHECKBIZ_CHART_' + branchId, JSON.stringify({ preferenceSelected, preferenceHeuristicSelected }))
+    localStorage.setItem('PANEL_BRANCH_CHECKBIZ_CHART_TIME_' + branchId, preferenceTypeSelected)
+
     handleClose()
     setCardIndicatorSelected(preferenceSelected)
     setCardHeuristicsIndicatorSelected(preferenceHeuristicSelected)
+    setType(preferenceTypeSelected)
   }
 
 
@@ -98,7 +104,7 @@ export const PanelStats = () => {
                       <Typography variant="body1">{t('statsCheckbiz.configPanel')}</Typography>
                     </Box>
                     <NestedSelectWithCheckmarks preferenceItems={preferenceDashboardItems(t)} value={preferenceSelected} onChange={setPreferenceSelected} />
-                    <SelectorChart type={type} setType={setType} />
+                    <SelectorChart type={preferenceTypeSelected} setType={setPreferenceTypeSelected} />
                     <NestedSelectWithCheckmarks title='INDICADORES HEURÍSTICOS' label='Indicadores heurísticos' preferenceItems={heuristicsItems} value={preferenceHeuristicSelected} onChange={setPreferenceHeuristicSelected} />
 
                   </Box>

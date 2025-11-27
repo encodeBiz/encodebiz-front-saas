@@ -35,18 +35,18 @@ export const RulesAnalize = () => {
                         <CardContent sx={{ background: `#B1C5FF`, color: "#FFF" }}
                         >
                             <Box display={'flex'} flexDirection={'column'} gap={2}>
-                                <Box display={'flex'} flexDirection={'column'} gap={0.5}>
+                               {e.actions.map((a, x) =>  <Box key={x} display={'flex'} flexDirection={'column'} gap={0.5}>
                                     <Typography color='#1C1B1D' fontWeight={500} fontSize={16}>
-                                       {t('employeeDashboard.toPromo')}:
+                                       {a.label}:
                                     </Typography>
                                     <Typography color='#1C1B1D' fontWeight={500} fontSize={16}>
+                                        {a.description}
+                                    </Typography>
+                                </Box>)}
+                                <Box display={'flex'} flexDirection={'column'} gap={0.5}>
+                                    <Typography fontWeight={500} color='#FFF' fontSize={16}>
                                         {(e.explanation as any)[currentLocale]}
                                     </Typography>
-                                </Box>
-                                <Box display={'flex'} flexDirection={'column'} gap={0.5}>
-                                    {e.actions.map((a, x) => <Typography key={x} fontWeight={500} color='#FFF' fontSize={16}>
-                                        {a.description}
-                                    </Typography>)}
                                 </Box>
                             </Box>
                         </CardContent>

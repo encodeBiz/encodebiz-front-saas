@@ -63,7 +63,7 @@ const AddWebHook = (): React.JSX.Element => {
         >
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
-                    <CustomTypography >{t('contact.title')}</CustomTypography>
+                    <CustomTypography >{t('webhook.create')}</CustomTypography>
                 </Box>
 
 
@@ -76,7 +76,7 @@ const AddWebHook = (): React.JSX.Element => {
                             "url": '',
                             "subscribedEvents": [],
                             "enabled": true,
-                            "version": "2025-08-01",
+                            "version": `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`,
                             entityId: currentEntity?.entity?.id
 
                         }}
@@ -110,7 +110,7 @@ const AddWebHook = (): React.JSX.Element => {
                     variant="contained"
                     startIcon={isLoading ? <CircularProgress size={20} /> : null}
                 >
-                    {t('core.button.submit')}
+                    {t('core.button.save')}
                 </SassButton>
             </DialogActions>
         </Dialog>
