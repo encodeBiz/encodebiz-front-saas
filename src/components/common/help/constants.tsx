@@ -1,112 +1,106 @@
 export const operationData = (t: any) => {
-
     return [{
-        head: "Datos Operativos",
+        head: t('employeeDashboard.operationalDataHead'),
         items: [{
             id: "stability",
-            title: "Horario operativo medio",
-            description: "Horario habitual de inicio y fin según el comportamiento real de la sucursal. El sistema analiza las jornadas completas y obtiene un patrón horario estable."
+            title: t('employeeDashboard.stability'),
+            description: t('employeeDashboard.stabilityDesc')
         }, {
             id: "weeklyHours",
-            title: "Carga horaria semanal",
-            description: "Cantidad de horas trabajadas por semana. Los valores se basan en la tendencia real del funcionamiento semanal."
+            title: t('employeeDashboard.weeklyHours'),
+            description: t('employeeDashboard.weeklyHoursDesc')
         }, {
             id: "costHour",
-            title: "Coste por hora trabajada",
-            description: "Coste medio asociado a cada hora efectiva de actividad real."
+            title: t('employeeDashboard.costHour'),
+            description: t('employeeDashboard.costHourDesc')
         }, {
             id: "costCycle",
-            title: "Coste por jornada",
-            description: "Coste aproximado de un día completo de actividad, según el comportamiento real de la sucursal."
+            title: t('employeeDashboard.costCycle'),
+            description: t('employeeDashboard.costCycleDesc')
         }, {
             id: "costEffective",
-            title: "Coste por rendimiento",
-            description: "Medida estándar que resume la estabilidad y eficiencia de la jornada real. Permite comparar sucursales según cómo funcionan, independientemente de su actividad."
+            title: t('employeeDashboard.costEffective'),
+            description: t('employeeDashboard.costEffectiveDesc')
         }, {
             id: "costEfficiency",
-            title: "Rendimiento del coste invertido",
-            description: "Mide cómo rinde el dinero invertido teniendo en cuenta patrón horario, regularidad y estabilidad. Un valor alto indica buen aprovechamiento operativo del coste."
+            title: t('employeeDashboard.costEfficiency'),
+            description: t('employeeDashboard.costEfficiencyDesc')
         }, {
             id: "confidence",
-            title: "Nivel de confiabilidad",
-            description: "Nivel de fiabilidad del patrón según cantidad y consistencia de los datos analizados."
+            title: t('employeeDashboard.confidence'),
+            description: t('employeeDashboard.confidenceDesc')
         }, {
             id: "observations",
-            title: "Volumen de datos",
-            description: "Número de jornadas laborales válidas utilizadas para construir la tendencia operativa."
+            title: t('employeeDashboard.observations'),
+            description: t('employeeDashboard.observationsDesc')
         }]
-    },
-
-    ]
+    }]
 }
-export const operationDataEmployee = (t: any) => {
 
+export const operationDataEmployee = (t: any) => {
     return [{
-        head: "Datos Operativos",
+        head: t('employeeDashboard.operationalDataHead'),
         items: [{
             id: "stability",
-            title: "Horario operativo medio",
-            description: "Horario habitual de inicio y fin según el comportamiento real de la sucursal. El sistema analiza las jornadas completas y obtiene un patrón horario estable."
+            title: t('employeeDashboard.stability'),
+            description: t('employeeDashboard.stabilityDesc')
         }, {
             id: "weeklyHours",
-            title: "Dispersión horaria",
-            description: "Dispersión horaria promedio de la entrada y la salida del empleado para medir puntualidad, confiabilidad y constancia."
+            title: t('employeeDashboard.hourDispersion'),
+            description: t('employeeDashboard.hourDispersionDesc')
         }, {
             id: "costHour",
-            title: "Coste por hora trabajada",
-            description: "Coste medio asociado a cada hora efectiva de actividad real."
+            title: t('employeeDashboard.costHour'),
+            description: t('employeeDashboard.costHourDesc')
         }, {
             id: "costCycle",
-            title: "Coste por jornada",
-            description: "Coste aproximado de un día completo de actividad, según el comportamiento real de la sucursal."
+            title: t('employeeDashboard.costCycle'),
+            description: t('employeeDashboard.costCycleDesc')
         }, {
             id: "costEffective",
-            title: "Coste por rendimiento",
-            description: "Medida estándar que resume la estabilidad y eficiencia de la jornada real. Permite comparar sucursales según cómo funcionan, independientemente de su actividad."
+            title: t('employeeDashboard.costEffective'),
+            description: t('employeeDashboard.costEffectiveDesc')
         }, {
             id: "costEfficiency",
-            title: "Rendimiento del coste invertido",
-            description: "Mide cómo rinde el dinero invertido teniendo en cuenta patrón horario, regularidad y estabilidad. Un valor alto indica buen aprovechamiento operativo del coste."
+            title: t('employeeDashboard.costEfficiency'),
+            description: t('employeeDashboard.costEfficiencyDesc')
         }, {
             id: "totalCost",
-            title: "Coste acumulado",
-            description: "Coste total estimado generado por las jornadas analizadas, considerando patrón horario, regularidad y estabilidad del comportamiento."
-        },{
+            title: t('employeeDashboard.totalCost'),
+            description: t('employeeDashboard.totalCostDesc')
+        }, {
             id: "confidence",
-            title: "Nivel de confiabilidad",
-            description: "Nivel de fiabilidad del patrón según cantidad y consistencia de los datos analizados."
+            title: t('employeeDashboard.confidence'),
+            description: t('employeeDashboard.confidenceDesc')
         }, {
             id: "observations",
-            title: "Volumen de datos",
-            description: "Número de jornadas laborales válidas utilizadas para construir la tendencia operativa."
+            title: t('employeeDashboard.observations'),
+            description: t('employeeDashboard.observationsDesc')
         }]
-    },]
+    }]
 }
-export const tempActivityData = (t: any) => {
 
+export const tempActivityData = (t: any) => {
     return [{
-        head: "Datos de Actividad Temporal",
+        head: t('employeeDashboard.tempActivityHead'),
         items: [{
             id: "",
-            title: "Promedio de inicio de jornada",
-            description: "Hora media a la que suelen comenzar las jornadas laborales. Refleja el comportamiento habitual de inicio a lo largo del tiempo."
+            title: t('employeeDashboard.tempActivity1'),
+            description: t('employeeDashboard.tempActivity1Desc')
         }, {
             id: "",
-            title: "Promedio de fin de jornada",
-            description: "Hora media a la que suelen terminar las jornadas laborales. Muestra la tendencia general del cierre de la jornada."
+            title: t('employeeDashboard.tempActivity2'),
+            description: t('employeeDashboard.tempActivity2Desc')
         }, {
             id: "",
-            title: "Horas trabajadas promedio",
-            description: "Número medio de horas efectivas realizadas por jornada. Permite ver si la carga diaria de trabajo es estable o presenta variaciones."
+            title: t('employeeDashboard.tempActivity3'),
+            description: t('employeeDashboard.tempActivity3Desc')
         }]
-    },
-
-    ]
+    }]
 }
 
-
 export const descriptionTypeActivity = (t: any): any => ({
-    "weeklyStartAvg": "Variación diaria de la hora promedio de inicio de la jornada.",
-    "weeklyEndAvg": "Variación diaria de la hora promedio de fin de la jornada.",
-    "weeklyWorkAvg": "Evolución diaria del total promedio de horas trabajadas.",
+    "weeklyStartAvg": t('employeeDashboard.tempActivity11'),
+    "weeklyEndAvg":  t('employeeDashboard.tempActivity22'),
+    "weeklyWorkAvg": t('employeeDashboard.tempActivity33'),
 })

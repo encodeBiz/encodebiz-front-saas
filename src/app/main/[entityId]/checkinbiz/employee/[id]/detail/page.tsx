@@ -9,6 +9,7 @@ import AttendanceFormModal from '../../../attendance/AttendanceFormModal/Attenda
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { EmployeeDetailProvider } from './detail.context';
 import { IEmployee } from '@/domain/features/checkinbiz/IEmployee';
+import { DashboardEmployeeProvider } from './dashboard/DashboardEmployeeContext';
 
 export default function BranchDetail() {
     const { open } = useCommonModal();
@@ -22,7 +23,7 @@ export default function BranchDetail() {
     return (
         <Container maxWidth="lg">
             <EmployeeDetailProvider employee={initialValues as IEmployee}>
-                {initialValues?.id && <Detail onSuccess={onSuccess} onResend={onResend} employee={initialValues as any} >
+                {initialValues?.id && <DashboardEmployeeProvider employeeId={initialValues?.id as string}><Detail onSuccess={onSuccess} onResend={onResend} employee={initialValues as any} >
                     <GenericTable
                         data={items}
                         rowAction={rowAction}
@@ -42,7 +43,7 @@ export default function BranchDetail() {
 
 
                     />
-                </Detail>}
+                </Detail></DashboardEmployeeProvider>}
             </EmployeeDetailProvider>
             {open.type === CommonModalType.CHECKLOGFORM && <AttendanceFormModal onSuccess={onSuccessCreate} />}
         </Container>

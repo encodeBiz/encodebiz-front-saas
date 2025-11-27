@@ -132,61 +132,7 @@ export const DashboardEmployeeProvider = ({ children, employeeId }: { children: 
             setHeuristic(data);
         } catch { }
         setPending(false)
-
-        
-    setHeuristic([
-        {
-            "id": "coaching_low_efficiency",
-            "severity": "medium",
-            "actions": [
-                {
-                    "type": "coach",
-                    "label": "Coaching sugerido",
-                    "description": "Revisión operativa recomendada para optimizar el aprovechamiento de la jornada.",
-                    "manualDecisionRequired": true
-                }
-            ],
-            "explanation": {
-                "es": "El patrón refleja un aprovechamiento parcial de la jornada. Se sugiere revisar asignación de tareas y flujos.",
-                "en": "The pattern shows partial workload utilization. Task allocation and workflow review recommended."
-            }
-        },
-        {
-            "id": "coaching_low_efficiency",
-            "severity": "medium",
-            "actions": [
-                {
-                    "type": "coach",
-                    "label": "Coaching sugerido",
-                    "description": "Revisión operativa recomendada para optimizar el aprovechamiento de la jornada.",
-                    "manualDecisionRequired": true
-                }
-            ],
-            "explanation": {
-                "es": "El patrón refleja un aprovechamiento parcial de la jornada. Se sugiere revisar asignación de tareas y flujos.",
-                "en": "The pattern shows partial workload utilization. Task allocation and workflow review recommended."
-            }
-        },
-        {
-            "id": "coaching_low_efficiency",
-            "severity": "medium",
-            "actions": [
-                {
-                    "type": "coach",
-                    "label": "Coaching sugerido",
-                    "description": "Revisión operativa recomendada para optimizar el aprovechamiento de la jornada.",
-                    "manualDecisionRequired": true
-                }
-            ],
-            "explanation": {
-                "es": "El patrón refleja un aprovechamiento parcial de la jornada. Se sugiere revisar asignación de tareas y flujos.",
-                "en": "The pattern shows partial workload utilization. Task allocation and workflow review recommended."
-            }
-        }
-
-
-
-    ])
+ 
     }
 
 

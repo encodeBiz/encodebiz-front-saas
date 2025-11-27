@@ -58,16 +58,15 @@ export const DataReliability = () => {
 
     return <BorderBox sx={{background:'#FFF'}} >
         <Box sx={{ p: 4 }}>
-            <Typography variant="h6">Confiabilidad del Dato</Typography>
+            <Typography variant="h6">{t('employeeDashboard.dataConfiability')}</Typography>
             <Typography variant="body1">
-                Comparación de la calidad y estabilidad del dato operativo entre sucursales/proyectos.  Los valores se normalizan en una escala 0–100, donde los más altos indican mayor consistencia, menor variabilidad y datos más fiables para la toma de decisiones.
+                {t('employeeDashboard.dataConfiabilityText')}
             </Typography>
         </Box>
         <Divider orientation="horizontal" flexItem />
         <Box sx={{ p: 4 }}>
             <CustomizableGroupedBarChart
                 data={chartData.data}
-
                 height={350}
                 entities={chartData.branch}
             />

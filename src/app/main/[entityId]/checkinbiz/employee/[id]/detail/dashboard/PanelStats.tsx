@@ -15,24 +15,21 @@ import { RulesAnalize } from "./cards/RulesAnalize";
 import { useDashboardEmployee } from "./DashboardEmployeeContext";
 import { DispercionActivity } from "./cards/DispercionActivity";
 import { preferenceDashboardEmployeeItems } from "@/domain/features/checkinbiz/IStats";
+import EmptyState from "@/components/common/EmptyState/EmptyState";
 
 
 export const PanelStats = () => {
   const t = useTranslations();
-  const { employeeId, employeePatternList, pending , cardIndicatorSelected, setCardIndicatorSelected, initialize, type, setType } = useDashboardEmployee()
+  const { employeeId, employeePatternList, pending, cardIndicatorSelected, setCardIndicatorSelected, type, setType } = useDashboardEmployee()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const { currentEntity } = useEntity()
   const [preferenceSelected, setPreferenceSelected] = useState(cardIndicatorSelected)
-   useEffect(() => {
-    if (currentEntity?.entity?.id) {
-      initialize()
-    }
-  }, [currentEntity?.entity?.id])
 
-   useEffect(() => {
-      if (currentEntity?.entity?.id) 
-        setPreferenceSelected([...cardIndicatorSelected])
-    }, [currentEntity?.entity?.id, cardIndicatorSelected.length])
+
+  useEffect(() => {
+    if (currentEntity?.entity?.id)
+      setPreferenceSelected([...cardIndicatorSelected])
+  }, [currentEntity?.entity?.id, cardIndicatorSelected.length])
 
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -50,12 +47,15 @@ export const PanelStats = () => {
     localStorage.setItem('PANEL_EMPLOYEE_CHECKBIZ_CHART_' + employeeId, JSON.stringify({ preferenceSelected }))
     handleClose()
     setCardIndicatorSelected(preferenceSelected)
- 
+
   }
 
 
   const InnetContent = () => <Box sx={{ minHeight: 600, p: 3 }}>
 
+    {!pending && employeePatternList.length > 0 && <Box display={'flex'} justifyContent={'center'} alignItems={'center'} sx={{ minHeight: 100 }}>
+      <EmptyState text={t('employeeDashboard.emptyPattern')} />
+    </Box>}
     {pending && <BoxLoader message={t('statsCheckbiz.loading')} />}
 
     {!pending && employeePatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5}>
@@ -105,7 +105,7 @@ export const PanelStats = () => {
                     </Box>
                     <NestedSelectWithCheckmarks preferenceItems={preferenceDashboardEmployeeItems(t)} value={preferenceSelected} onChange={setPreferenceSelected} />
                     <SelectorChart type={type} setType={setType} />
-                   </Box>
+                  </Box>
 
                   <Box display={'flex'} justifyContent={'flex-end'} flexDirection={'row'} gap={1} padding={4}>
                     <SassButton onClick={handleClose} variant="outlined" color="primary">{t('core.button.cancel')}</SassButton>

@@ -75,9 +75,10 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const handleSubmit = async (values: Partial<IEmployee>, callback?: () => void) => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+      delete values.createdAt
       const data = {
         ...values,
-        "uid": user?.id as string,
+         "uid": user?.id as string,
         "metadata": {
           ...ArrayToObject(values.metadata as any),
         },

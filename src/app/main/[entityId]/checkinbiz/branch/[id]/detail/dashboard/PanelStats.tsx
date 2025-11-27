@@ -18,7 +18,7 @@ import { preferenceDashboardItems } from "@/domain/features/checkinbiz/IStats";
 
 export const PanelStats = () => {
   const t = useTranslations();
-  const { branchId, pending, branchPatternList, cardHeuristicsIndicatorSelected, setCardHeuristicsIndicatorSelected, cardIndicatorSelected, setCardIndicatorSelected, initialize, heuristicsItems, type, setType } = useDashboardBranch()
+  const { branchId, pending, branchPatternList, cardHeuristicsIndicatorSelected, setCardHeuristicsIndicatorSelected, cardIndicatorSelected, setCardIndicatorSelected, heuristicsItems, type, setType } = useDashboardBranch()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const { currentEntity } = useEntity()
   const [preferenceSelected, setPreferenceSelected] = useState(cardIndicatorSelected)
@@ -31,11 +31,7 @@ export const PanelStats = () => {
     }
   }, [currentEntity?.entity?.id, cardIndicatorSelected.length])
 
-  useEffect(() => {
-    if (currentEntity?.entity?.id) {
-      initialize()
-    }
-  }, [currentEntity?.entity?.id])
+  
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);

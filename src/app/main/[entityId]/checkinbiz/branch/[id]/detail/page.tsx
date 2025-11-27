@@ -9,6 +9,7 @@ import { useParams } from 'next/navigation';
 import FormLink from './components/FormLink';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useCommonModal } from '@/hooks/useCommonModal';
+import { DashboardBranchProvider } from './dashboard/DashboardBranchContext';
 
 export default function BranchDetail() {
     const { initialValues, rowAction, onSuccess } = useEmployeeDetailController()
@@ -16,7 +17,7 @@ export default function BranchDetail() {
     const { open } = useCommonModal()
     const {
         items, onRowsPerPageChange, onSort,
-        onNext, onBack,addResponsabiltyItem,
+        onNext, onBack, addResponsabiltyItem,
         filterParams,
         columns, onSuccessResponsability,
         loading } = useEmployeeResponsabilityController(id);
@@ -24,9 +25,7 @@ export default function BranchDetail() {
 
     return (
         <Container maxWidth="lg">
-            
-
-            {initialValues?.id && <Detail addResponsabiltyItem={addResponsabiltyItem} branch={initialValues as any} onSuccess={onSuccess} >
+            {initialValues?.id && <DashboardBranchProvider branchId={id}> <Detail addResponsabiltyItem={addResponsabiltyItem} branch={initialValues as any} onSuccess={onSuccess} >
                 <GenericTable
                     data={items}
                     rowAction={rowAction}
@@ -45,7 +44,7 @@ export default function BranchDetail() {
 
 
                 />
-            </Detail>}
+            </Detail></DashboardBranchProvider>}
 
             {open.type === CommonModalType.FORM && open.args?.id === 'responsability' && <FormLink onSuccess={onSuccessResponsability} />}
 

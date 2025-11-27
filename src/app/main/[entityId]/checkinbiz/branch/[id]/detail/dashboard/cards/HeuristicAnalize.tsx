@@ -10,11 +10,12 @@ import { InfoOutline } from '@mui/icons-material';
 import InfoModal from '@/components/common/modals/InfoModal';
 import { InfoHelp } from '../../../../../../../../../components/common/help/InfoHelp';
 import { karla } from '@/config/fonts/google_fonts';
+import { useTranslations } from 'next-intl';
 
 export const HeuristicAnalize = () => {
     const { heuristic, cardHeuristicsIndicatorSelected, heuristicsItems } = useDashboardBranch()
     const theme = useTheme()
-
+    const t = useTranslations()
 
 
     const { currentLocale } = useAppLocale()
@@ -38,13 +39,13 @@ export const HeuristicAnalize = () => {
             <Box sx={{ p: 4 }}>
                 <Box display={'flex'} gap={0.2} justifyItems={'center'} alignItems={'center'}>
                     <Typography align="center" sx={{ mb: 0, textAlign: 'left', fontSize: 32 }}>
-                        Indicadores Heurísticos
+                        {t('employeeDashboard.heuristicTitle')}
                     </Typography>
                     <IconButton onClick={() => openModal(CommonModalType.INFO, { id: 'data3' })}><InfoOutline sx={{ fontSize: 25 }} /></IconButton>
                 </Box>
                 <Typography variant="body1">
-                    Indicadores que muestran cómo funciona la sucursal en términos de horarios, costes y calidad del dato.
-                    Permiten entender la estabilidad operativa, el uso real de los recursos y la fiabilidad de la información registrada.
+                    {t('employeeDashboard.heuristicText1')}
+                    {t('employeeDashboard.heuristicText2')}
                 </Typography>
             </Box>
 
@@ -55,31 +56,31 @@ export const HeuristicAnalize = () => {
                     <CardContent sx={{ background: getColor(e.status as "error" | 'success' | 'warning'), color: "#FFF" }}
                     >
 
-      
+
 
 
 
                         <Box display={'flex'} flexDirection={'column'} gap={1}>
                             <Box display={'flex'} flexDirection={'column'} gap={0.5}>
-                                <Typography color='#FFF' fontWeight={400}  fontSize={24}>
+                                <Typography color='#FFF' fontWeight={400} fontSize={24}>
                                     {getTitle(e.status as "error" | 'success' | 'warning')}
                                 </Typography>
                             </Box>
                             <Box display={'flex'} flexDirection={'column'} gap={0.5}>
-                                <Typography fontFamily={karla.style.fontFamily} color='#1C1B1D' fontWeight={400}  fontSize={22}>
+                                <Typography fontFamily={karla.style.fontFamily} color='#1C1B1D' fontWeight={400} fontSize={22}>
                                     {e.name[currentLocale as 'es' | 'en']}
                                 </Typography>
                             </Box>
                             <Box display={'flex'} flexDirection={'column'} gap={0.5}>
-                                <Typography  fontWeight={500} color='#FFF'  fontSize={16}>
+                                <Typography fontWeight={500} color='#FFF' fontSize={16}>
                                     {e.consequence}
                                 </Typography>
                             </Box>
                             <Box display={'flex'} flexDirection={'column'} gap={0.5}>
                                 <Typography variant="caption" sx={{ color: 'text.secondary' }} fontSize={12}>
-                                    Recomendación
+                                    {t('employeeDashboard.recomedation')}
                                 </Typography>
-                                <Typography   fontSize={16} fontWeight={500} color='#1C1B1D'>
+                                <Typography fontSize={16} fontWeight={500} color='#1C1B1D'>
                                     {e.action}
                                 </Typography>
                             </Box>
@@ -94,7 +95,7 @@ export const HeuristicAnalize = () => {
 
             {open.type === CommonModalType.INFO && open.args?.id === 'data3' && <InfoModal
                 centerBtn cancelBtn={false} closeBtn={false} closeIcon={false}
-                htmlDescription={<InfoHelp title="Ayuda" data={heuristicsItems.map(e => ({
+                htmlDescription={<InfoHelp title={t("employeeDashboard.help")}  data={heuristicsItems.map(e => ({
                     head: e.name, items: e.children.map(ch => ({ title: ch.name, description: ch.description as string }))
                 }))} />}
                 onClose={() => closeModal(CommonModalType.INFO)}

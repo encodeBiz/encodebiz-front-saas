@@ -101,7 +101,7 @@ const NestedSelectWithCheckmarks = ({ value, onChange, preferenceItems, title, l
                 label={label?label:t('statsCheckbiz.operativeDataLabel')}
                 value={value}
                 onChange={handleChange}
-                renderValue={(selected) => mapperValue(selected).join(',')}
+                renderValue={(selected) => mapperValue(selected).join('')}
                 MenuProps={{
                     PaperProps: {
                         style: {

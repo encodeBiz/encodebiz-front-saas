@@ -18,8 +18,8 @@ export const DispercionActivity = () => {
             chartDataList.forEach((_, i) => {
                 const item = {}
                 const employeePattern = employeePatternList[0]
-                const valueStart = parseFloat(`${((employeePattern).pattern.stdStartByDay[i]?.mean ?? 0).toFixed(2)}`)
-                const valueEnd = parseFloat(`${((employeePattern).pattern.stdEndByDay[i]?.mean ?? 0).toFixed(2)}`)
+                const valueStart = parseFloat(`${((employeePattern).pattern.stdStartByDay[i]?.std ?? 0).toFixed(2)}`)
+                const valueEnd = parseFloat(`${((employeePattern).pattern.stdEndByDay[i]?.std ?? 0).toFixed(2)}`)
 
                 Object.assign(item, {
                     ['Entrada']: valueStart,
@@ -41,11 +41,11 @@ export const DispercionActivity = () => {
 
             <Box display={'flex'} gap={0.2} justifyItems={'center'} alignItems={'center'}>
                 <Typography align="center" sx={{ mb: 0, textAlign: 'left', fontSize: 32 }}>
-                    Dispersión semanal de entrada y salida
+                        {t('employeeDashboard.dispertionTitle')}
                 </Typography  >
             </Box>
             <Typography variant="body1">
-                Comparativa semanal de dispersión, muestra el nivel de variabilidad real en los horarios de entrada y salida del empleado a lo largo de la semana.
+                {t('employeeDashboard.dispertionText')}
             </Typography>
         </Box>
         <Divider orientation="horizontal" flexItem />

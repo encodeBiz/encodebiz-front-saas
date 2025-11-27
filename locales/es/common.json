@@ -62,6 +62,16 @@
     }
   },
   "core": {
+    "days": {
+      "sunday": "Domingo",
+      "monday": "Lunes",
+      "tuesday": "Martes",
+      "wednesday": "Miércoles",
+      "thursday": "Jueves",
+      "friday": "Viernes",
+      "saturday": "Sábado",
+      "time":"Horas"
+    },
     "table": {
       "selected": "Seleccionado",
       "nofile": "No existen archivos disponibles",
@@ -168,7 +178,6 @@
       "remoteWork": "Trabajo remoto",
       "enableRemoteWorkEnable": "Trabajo remoto habilitado",
       "enableRemoteWorkDisabled": "Trabajo remoto deshabilitado",
-
       "ratioChecklogTitle": "CONDIGURACIÓN OPERATIVA",
       "disableRatioChecklog": "Desabilitar zona de chequeo",
       "disableRatioChecklogE": "Zona de chequeo activa",
@@ -190,7 +199,7 @@
       "guest": "Invitado",
       "select": "Seleccionar",
       "typePass": "Tipo de pase",
-      "noOptionsText":"Sin opciones para seleccionar",
+      "noOptionsText": "Sin opciones para seleccionar",
       "credencial": "Credenciales",
       "event": "Evento",
       "passStatus": "Estado del pase",
@@ -423,7 +432,6 @@
       }
     },
     "entity": {
-      
       "create": {
         "card": {
           "title": "Crear entidad legal",
@@ -461,10 +469,9 @@
         "title": "Identidad visual",
         "btn": "Eliminar Entidad",
         "titleAbout": "Acerca de tu empresa",
-        "titleAboutText":"Los cambios en colores o recursos no se guardan automáticamente. Pulsa ",
-        "titleAboutText1":"Guardar",
-        "titleAboutText2":" para aplicarlos a tu marca.",
-
+        "titleAboutText": "Los cambios en colores o recursos no se guardan automáticamente. Pulsa ",
+        "titleAboutText1": "Guardar",
+        "titleAboutText2": " para aplicarlos a tu marca.",
         "descriptionAbout": "Completa la información de la marca"
       },
       "tab3": {
@@ -483,7 +490,7 @@
       },
       "tab6": {
         "title": "Colaboradores"
-       }
+      }
     }
   },
   "onboarding": {
@@ -692,10 +699,10 @@
     "formDesc": "Completa los campos a continuación para registrar el empleado."
   },
   "sucursal": {
-    "panel":"Comportamiento operacional",
+    "panel": "Comportamiento operacional",
     "title": "Sucursales/Proyectos",
-    "formFirstSectionTitle":"DATOS DE LA SUCURSAL / PROYECTO",
-    "address":"DATOS DE UBICACIÓN",
+    "formFirstSectionTitle": "DATOS DE LA SUCURSAL / PROYECTO",
+    "address": "DATOS DE UBICACIÓN",
     "addEmployee": "Agregar empleado",
     "linkEmployee": "Agregar empleado",
     "linkEmployeeDesc": "Completa los campos a continuación para  vincular el empleado a esta sucursal/proyecto",
@@ -910,10 +917,10 @@
     "empthytext": "Ajusta los filtros con los parámetros que requieras para gráficar información"
   },
   "statsCheckbiz": {
-    "stats":"Panel Comparativo de Rendimiento",
+    "stats": "Panel Comparativo de Rendimiento",
     "advise": "Debes seleccionar al menos una sucursal/proyecto para ver estadísticas.",
     "operationData": "Datos en operación",
-    "configPanel":"Configurar panel",
+    "configPanel": "Configurar panel",
     "loading": "Procesando y preparando datos para mostrar",
     "selected": "Sucursales/Proyectos a comparar",
     "avgWeekWork": "Promedio de horas semanales",
@@ -942,11 +949,79 @@
     "chartType": "Tipo de gráfica",
     "heuristicAnalize": "Análisis de predicción en operaciones",
     "selectedIndicator": "Seleccione los indicadores a mostrar",
-
-    "tempActiviy":"Actividad Temporal",
-    "operativeData":"DATOS OPERATIVOS",
-    "tempActiviyLabel":"Datos de actividad temporal",
-    "operativeDataLabel":"Datos operativos"
+    "tempActiviy": "Actividad Temporal",
+    "operativeData": "DATOS OPERATIVOS",
+    "tempActiviyLabel": "Datos de actividad temporal",
+    "operativeDataLabel": "Datos operativos"
+  },
+  "employeeDashboard": {
+    "emptyPattern": "No hay patrones de asistencia disponibles para mostrar en el perfil del empleado",
+    "dispertionTitle": " Dispersión semanal de entrada y salida",
+    "dispertionText": "Comparativa semanal de dispersión, muestra el nivel de variabilidad real en los horarios de entrada y salida del empleado a lo largo de la semana.",
+    "hourOperationTitle": "Datos Operativos",
+    "hourOperationText1": "Datos que muestran cómo trabaja el empleado en términos de horarios, carga de trabajo y coherencia de sus registros.",
+    "hourOperationText2": "Ayudan a entender su estabilidad operativa, el uso real de su tiempo y la fiabilidad de la información registrada en sus jornadas.",
+    "card1": "Horario operativo medio",
+    "card2": "Carga horaria semanal'",
+    "card3": "Dispersión horaria",
+    "card4": "Coste por hora trabajada",
+    "card5": "Coste por jornada",
+    "card6": "Coste por rendimiento",
+    "card7": "Rendimiento del coste invertido",
+    "card8": "Coste acumulado",
+    "card9": "Nivel de confiabilidad",
+    "card10": "Volumen de datos",
+    "card11": "Experiencia total",
+    "card12": "Resp. Principal",
+    "card13": "Ocupación principal",
+    "ruleTitle": "Evaluación Operativa del Empleado",
+    "ruleText": "Diagnóstico automático que interpreta el comportamiento real del trabajador y genera conclusiones claras sobre su desempeño, estabilidad y potencial dentro del equipo. Permite identificar talento, riesgos operativos y oportunidades de mejora basadas en datos objetivos.",
+    "toPromo": "Candidato a promoción",
+    "tempActivity": "Actividad temporal",
+    "tempActivity11": "Variación diaria de la hora promedio de inicio de la jornada.",
+    "tempActivity22": "Variación diaria de la hora promedio de fin de la jornada.",
+    "tempActivity33": "Evolución diaria del total promedio de horas trabajadas.",
+    "operationalDataHead": "Datos Operativos",
+    "stability": "Horario operativo medio",
+    "stabilityDesc": "Horario habitual de inicio y fin según el comportamiento real de la sucursal. El sistema analiza las jornadas completas y obtiene un patrón horario estable.",
+    "weeklyHours": "Carga horaria semanal",
+    "weeklyHoursDesc": "Cantidad de horas trabajadas por semana. Los valores se basan en la tendencia real del funcionamiento semanal.",
+    "hourDispersion": "Dispersión horaria",
+    "hourDispersionDesc": "Dispersión horaria promedio de la entrada y la salida del empleado para medir puntualidad, confiabilidad y constancia.",
+    "costHour": "Coste por hora trabajada",
+    "costHourDesc": "Coste medio asociado a cada hora efectiva de actividad real.",
+    "costCycle": "Coste por jornada",
+    "costCycleDesc": "Coste aproximado de un día completo de actividad, según el comportamiento real de la sucursal.",
+    "costEffective": "Coste por rendimiento",
+    "costEffectiveDesc": "Medida estándar que resume la estabilidad y eficiencia de la jornada real. Permite comparar sucursales según cómo funcionan, independientemente de su actividad.",
+    "costEfficiency": "Rendimiento del coste invertido",
+    "costEfficiencyDesc": "Mide cómo rinde el dinero invertido teniendo en cuenta patrón horario, regularidad y estabilidad. Un valor alto indica buen aprovechamiento operativo del coste.",
+    "totalCost": "Coste acumulado",
+    "totalCostDesc": "Coste total estimado generado por las jornadas analizadas, considerando patrón horario, regularidad y estabilidad del comportamiento.",
+    "confidence": "Nivel de confiabilidad",
+    "confidenceDesc": "Nivel de fiabilidad del patrón según cantidad y consistencia de los datos analizados.",
+    "observations": "Volumen de datos",
+    "observationsDesc": "Número de jornadas laborales válidas utilizadas para construir la tendencia operativa.",
+    "tempActivityHead": "Datos de Actividad Temporal",
+    "tempActivity1": "Promedio de inicio de jornada",
+    "tempActivity1Desc": "Hora media a la que suelen comenzar las jornadas laborales. Refleja el comportamiento habitual de inicio a lo largo del tiempo.",
+    "tempActivity2": "Promedio de fin de jornada",
+    "tempActivity2Desc": "Hora media a la que suelen terminar las jornadas laborales. Muestra la tendencia general del cierre de la jornada.",
+    "tempActivity3": "Horas trabajadas promedio",
+    "tempActivity3Desc": "Número medio de horas efectivas realizadas por jornada. Permite ver si la carga diaria de trabajo es estable o presenta variaciones.",
+    "recomedation": "Recomendación",
+    "heuristicTitle": "Indicadores Heurísticos",
+    "heuristicText1": "Indicadores que muestran cómo funciona la sucursal en términos de horarios, costes y calidad del dato.",
+    "heuristicText2": "Permiten entender la estabilidad operativa, el uso real de los recursos y la fiabilidad de la información registrada.",
+    "help": "Ayuda",
+    "hourText": "Comparación del comportamiento horario entre sucursales/proyectos.  Los valores se normalizan en una escala 0–100, donde los más altos indican mayor estabilidad operativa, mejor organización del tiempo y un reparto de horas más consistente.",
+    "dataConfiability": "Confiabilidad del Dato",
+    "dataConfiabilityText": "Comparación de la calidad y estabilidad del dato operativo entre sucursales/proyectos.  Los valores se normalizan en una escala 0–100, donde los más altos indican mayor consistencia, menor variabilidad y datos más fiables para la toma de decisiones.",
+    "costs": "Costes Operativos",
+    "costsText1": "Comparación del rendimiento económico entre sucursales/proyectos.",
+    "costsText2": "Los valores se normalizan en una escala 0–100, donde puntuaciones más altas representan un uso más eficiente de los recursos, menores desviaciones y un mejor equilibrio coste-productividad.",
+    "": "",
+    "": ""
   },
   "checking": {
     "title": "Control de Asistencia",
@@ -1068,7 +1143,7 @@
     "checklog/internal_error": "Error interno del servidor (registro de verificación)",
     "holder/not_found": "No se encuentra el titular",
     "holder/not_found_applepass": "No se encuentra el Applepass del titular",
-    "employee/not_resposibility":"No tienes responsabilidades asignada en esta sucursal/proyecto"
+    "employee/not_resposibility": "No tienes responsabilidades asignada en esta sucursal/proyecto"
   },
   "plan_translation": {
     "checkinbiz": {

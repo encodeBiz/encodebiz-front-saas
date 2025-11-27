@@ -49,7 +49,7 @@ export const indicatorList = (t: any): Array<{
 }> => [{
     tag: ['employee', 'branch'],
     id: 'avgStartHour_avgEndHour',
-    label: 'Horario operativo medio',
+    label: t('employeeDashboard.card1'),
     data: (data: {
         branchId: string,
         branch: ISucursal | null,
@@ -62,7 +62,7 @@ export const indicatorList = (t: any): Array<{
 },
 {
     id: 'stdStartHour_stdEndHour',
-    label: 'Carga horaria semanal',
+    label: t('employeeDashboard.card2'),
     data: (data: {
         branchId: string,
         branch: ISucursal | null,
@@ -76,7 +76,7 @@ export const indicatorList = (t: any): Array<{
 
 {
     id: 'stdStartHour_stdEndHour',
-    label: 'Dispersión horaria',
+    label: t('employeeDashboard.card3'),
     data: (data: {
         branchId: string,
         branch: ISucursal | null,
@@ -91,7 +91,7 @@ export const indicatorList = (t: any): Array<{
 
 {
     id: 'avgCostHour',
-    label: 'Coste por hora trabajada',
+    label: t('employeeDashboard.card4'),
     data: (data: {
         branchId: string,
         branch: ISucursal | null,
@@ -105,7 +105,7 @@ export const indicatorList = (t: any): Array<{
 },
 {
     id: 'avgCycleCost',
-    label: 'Coste por jornada',
+    label: t('employeeDashboard.card5'),
     data: (data: {
         branchId: string,
         branch: ISucursal | null,
@@ -118,7 +118,7 @@ export const indicatorList = (t: any): Array<{
 },
 {
     id: 'avgCostEfficiency',
-    label: 'Coste por rendimiento',
+    label: t('employeeDashboard.card6'),
     data: (data: {
         branchId: string,
         branch: ISucursal | null,
@@ -133,7 +133,7 @@ export const indicatorList = (t: any): Array<{
 
 {
     id: 'effectiveRealCost',
-    label: 'Rendimiento del coste invertido',
+    label: t('employeeDashboard.card7'),
     data: (data: {
         branchId: string,
         branch: ISucursal | null,
@@ -148,7 +148,7 @@ export const indicatorList = (t: any): Array<{
 
 {
     id: 'totalCost',
-    label: 'Coste acumulado',
+    label: t('employeeDashboard.card8'),
     data: (data: {
         branchId: string,
         branch: ISucursal | null,
@@ -163,7 +163,8 @@ export const indicatorList = (t: any): Array<{
 
 {
     id: 'reliability',
-    label: 'Nivel de confiabilidad',
+
+    label: t('employeeDashboard.card9'),
     data: (data: {
         branchId: string,
         branch: ISucursal | null,
@@ -179,7 +180,8 @@ export const indicatorList = (t: any): Array<{
 
 {
     id: 'dataPoints',
-    label: 'Volumen de datos',
+    label: t('employeeDashboard.card10'),
+
     data: (data: {
         branchId: string,
         branch: ISucursal | null,
@@ -195,7 +197,8 @@ export const indicatorList = (t: any): Array<{
 
 {
     id: 'totalExperienceYears',
-    label: 'Experiencia total',
+    label: t('employeeDashboard.card11'),
+
     data: (data: {
         branchId: string,
         branch: ISucursal | null,
@@ -211,7 +214,8 @@ export const indicatorList = (t: any): Array<{
 
 {
     id: 'experienceByResponsibility',
-    label: 'Resp. Principal',
+    label: t('employeeDashboard.card12'),
+
     data: (data: {
         branchId: string,
         branch: ISucursal | null,
@@ -219,7 +223,7 @@ export const indicatorList = (t: any): Array<{
 
         color: '#165BAA' | '#A155B9' | '#F765A3'
     }) => (data.pattern as IEmployeePattern).experienceByResponsibility.length > 0 ?
-            `${(data.pattern as IEmployeePattern).experienceByResponsibility[0].responsibility} (${((data.pattern as IEmployeePattern).experienceByResponsibility[0].years ?? 0)?.toFixed(2)} años)` : ' - ',
+            `${t('core.label.' + (data.pattern as IEmployeePattern).experienceByResponsibility[0].responsibility)} (${((data.pattern as IEmployeePattern).experienceByResponsibility[0].years ?? 0)?.toFixed(2)} años)` : ' - ',
     help: t('statsCheckbiz.dataPointsHelp'),
     icon: <EmployeeIcon />,
     tag: ['employee'],
@@ -229,7 +233,7 @@ export const indicatorList = (t: any): Array<{
 
 {
     id: 'experienceByJob',
-    label: 'Ocupación principal',
+    label: t('employeeDashboard.card13'),
     data: (data: {
         branchId: string,
         branch: ISucursal | null,
@@ -237,7 +241,7 @@ export const indicatorList = (t: any): Array<{
 
         color: '#165BAA' | '#A155B9' | '#F765A3'
     }) => (data.pattern as IEmployeePattern).experienceByJob.length > 0 ?
-            `${(data.pattern as IEmployeePattern).experienceByJob[0].nameJob} (${(((data.pattern as IEmployeePattern).experienceByJob[0].totalHours ?? 0)/(24*260))?.toFixed(2)} años)` : ' - ',
+            `${(data.pattern as IEmployeePattern).experienceByJob[0].nameJob} (${(((data.pattern as IEmployeePattern).experienceByJob[0].totalHours ?? 0) / (24 * 260))?.toFixed(2)} años)` : ' - ',
     help: t('statsCheckbiz.dataPointsHelp'),
     icon: <EmployeeIcon />,
     tag: ['employee'],
