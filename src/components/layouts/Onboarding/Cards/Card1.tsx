@@ -10,7 +10,7 @@ export const Card1 = ({handleNext}: any) => {
 
     return <Box display={'flex'} flexDirection={"row"} p={2}  >
     
-    <Box width={'55%'} display={'flex'} flexDirection={"column"} gap={10} justifyContent={'space-between'} alignItems={'flex-start'} >
+    <Box width={'55%'} display={'flex'} flexDirection={"column"} gap={8} justifyContent={'space-between'} alignItems={'flex-start'} >
         <Image
             width={220}
             height={73}
