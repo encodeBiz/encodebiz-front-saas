@@ -20,8 +20,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "EncodeBiz Platform SaaS",
-    description: "EncodeBiz Platform SaaS",
+    title: "EncodeBiz Platform",
+    description: "EncodeBiz Platform",
 };
 
 export default async function RootLayout({

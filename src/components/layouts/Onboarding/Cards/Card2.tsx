@@ -33,7 +33,9 @@ export const Card2 = ({ handleNext }: any) => {
                 <Box sx={{ position: 'relative' }}>
                     <PaletteOutlined sx={{ position: 'absolute', top: -20, left: -20, color: '#FFF', background: (theme) => theme.palette.primary.main, p: 1, fontSize: 40, borderRadius: '50%' }} />
                     <BorderBox sx={{ p: 4, fontFamily: karla.style.fontFamily }}>
-                        <span style={{ color: theme.palette.primary.main }}> {t('cards.card2.text4')}</span> {t('cards.card2.text5')}
+                        <span style={{ color: theme.palette.primary.main, fontSize: 22 }}> {t('cards.card2.text4')}</span>
+                         <br />
+                         {t('cards.card2.text5')}
                     </BorderBox>
 
                 </Box>
@@ -41,14 +43,19 @@ export const Card2 = ({ handleNext }: any) => {
                     <TextSnippetOutlined sx={{ position: 'absolute', top: -20, left: -20, color: '#FFF', background: (theme) => theme.palette.primary.main, p: 1, fontSize: 40, borderRadius: '50%' }} />
 
                     <BorderBox sx={{ p: 4 }}>
-                        <span style={{ color: theme.palette.primary.main }}>{t('cards.card2.text6')}</span>{t('cards.card2.text7')}
+                        <span style={{ color: theme.palette.primary.main, fontSize: 22 }}>{t('cards.card2.text6')}</span>
+                        <br />
+                        {t('cards.card2.text7')}
+
                     </BorderBox>
                 </Box>
-                <Box sx={{ position: 'relative', fontFamily: karla.style.fontFamily }}>
+                <Box sx={{ position: 'relative', fontFamily: karla.style.fontFamily  }}>
                     <HealthAndSafetyOutlined sx={{ position: 'absolute', top: -20, left: -20, color: '#FFF', background: (theme) => theme.palette.primary.main, p: 1, fontSize: 40, borderRadius: '50%' }} />
 
                     <BorderBox sx={{ p: 4 }}>
-                        <span style={{ color: theme.palette.primary.main }}> {t('cards.card2.text8')}</span> {t('cards.card2.text9')}
+                        <span style={{ color: theme.palette.primary.main, fontSize: 22 }}> {t('cards.card2.text8')}</span>
+                          <br />
+                         {t('cards.card2.text9')}
                     </BorderBox>
                 </Box>
             </Box>

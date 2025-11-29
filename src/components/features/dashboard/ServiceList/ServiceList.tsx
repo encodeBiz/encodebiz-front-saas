@@ -12,6 +12,7 @@ import checkbiz from '../../../../../public/assets/images/service-logo/icono-che
 import Image from 'next/image';
  
 import { useLayout } from '@/hooks/useLayout';
+import { Divider } from '@mui/material';
 
 const icons = {
     'checkinbiz': checkbiz,
@@ -42,6 +43,7 @@ const ServiceList = () => {
                             <Box sx={styles.iconContainer} >
                                 <Image src={icons[card.id]} width={card.id == 'checkinbiz'?70:70} height={card.id == 'checkinbiz'?76:70} alt='' />
                             </Box>
+                            <Divider flexItem orientation='horizontal' />
                             <Box sx={styles.textContainer} >
                                 <Typography textTransform={'uppercase'} variant="h5" component="div">
                                     {card.name}
@@ -50,7 +52,6 @@ const ServiceList = () => {
                                     {card?.description ? (card?.description as any)[currentLocale] : ''}
                                 </Typography>
                             </Box>
-
                         </CardContent>
                     </Card>
 

@@ -2,7 +2,7 @@
   "locale": "es",
   "layout": {
     "header": {
-      "title": "EncodeBiz-SaaS",
+      "title": "encodeBiz",
       "language": "Idioma",
       "english": "Inglés",
       "spanish": "Español",
@@ -53,7 +53,7 @@
       }
     },
     "footer": {
-      "copyright": "encodeBiz Saas.",
+      "copyright": "encodeBiz.",
       "web": "Nuestra Web",
       "contactUs": "Contáctenos",
       "whatsApp": "WhatsApp",
@@ -96,7 +96,7 @@
       "userDeletedTitle": "Has abandonado la entidad",
       "userDeletedText": "Te has dado de baja de la entidad exitosamente, por favor inicie sesión para comenzar de nuevo",
       "tokenExireTitle": "La sesión ha caducado",
-      "tokenExireText": "La sesión ha caducado, por favor inicie sesión nuevamente para acceder al panel de encodeBiz SaaS",
+      "tokenExireText": "La sesión ha caducado, por favor inicie sesión nuevamente para acceder al panel de encodeBiz ",
       "success": "La operación se realizó exitosamente",
       "empthy": "Nada que mostrar",
       "empthytext": "No existen elementos para mostrar en este momento",
@@ -373,7 +373,7 @@
     "signup": {
       "title": "Crea una cuenta",
       "signup": "Crear cuenta",
-      "subtitle": "Tu panel único para gestionar los servicios de encodeBiz SaaS.",
+      "subtitle": "Tu panel único para gestionar los servicios de encodeBiz .",
       "or": "O",
       "google": "Unete con Google",
       "facebook": "Unete con Facebook",
@@ -386,7 +386,7 @@
     "signin": {
       "title": "Iniciar sesión",
       "signup": "Iniciar sesión",
-      "subtitle": "Accede a tu panel de encodeBiz SaaS",
+      "subtitle": "Accede a tu panel de encodeBiz ",
       "or": "O",
       "google": "Unete con Google",
       "facebook": "Unete con Facebook",
@@ -396,7 +396,7 @@
     "recovery": {
       "title": "Recuperar contraseña",
       "signup": "Crear cuenta",
-      "subtitle": "Introduzca el correo electrónico para recuperar su clave de acceso a EncodeBiz SaaS",
+      "subtitle": "Introduzca el correo electrónico para recuperar su clave de acceso a encodeBiz",
       "or": "O",
       "google": "Unete con Google",
       "facebook": "Unete con Facebook",
@@ -423,8 +423,8 @@
       "overview": "Descripción general",
       "stats": "Estadísticas",
       "card": {
-        "title": "Bienvenido a encodeBiz SaaS",
-        "subtitle": "Registra, controla y gestiona accesos en un solo lugar, PassBiz y CheckBiz listos para ti."
+        "title": "Tu operación, en una sola plataforma",
+        "subtitle": "encodeBiz es la plataforma donde construimos tecnología que conecta, ordena y potencia el funcionamiento real de tu empresa."
       },
       "cardDesc": {
         "title1": "Más que un software,",
@@ -825,7 +825,7 @@
     "title2": "Métodos de Pago",
     "test1": "Solicito realizar una prueba de evento",
     "test2": "Solicito plan enterprise",
-    "test3": "Contactar con EncodeBiz SaaS"
+    "test3": "Contactar con encodeBiz"
   },
   "integration": {
     "title": "Integraciones",
@@ -850,40 +850,46 @@
   },
   "cards": {
     "card1": {
-      "text1": "Bienvenido a encodeBiz SaaS",
-      "text2": "Una plataforma creada para centralizar todos tus servicios digitales en un único lugar.",
-      "text3": "En encodeBiz convertimos tus ideas en soluciones digitales. Cuando nuestros servicios no cubren todas tus necesidades, creamos a tu medida lo que tu negocio requiere.",
+      "text1": "Un entorno diseñado para tu operación",
+      "text2": "EncodeBiz reúne en un entorno único la tecnología que hace funcionar tu empresa.",
+      "text3": "Procesos más claros, datos conectados y una base digital preparada para crecer con tus servicios.",
       "start": "Comenzar"
     },
     "card2": {
       "text1": "Primero, configura tu entidad",
-      "text2": "Antes de elegir un servicio y plan te recomendamos completar la configuración de tu entidad.",
-      "text3": "Esto nos permite,",
+      "text2": "Antes de activar cualquiera de los servicios de encodeBiz, necesitamos completar la configuración de tu entidad. Esto garantiza que cada módulo funcione con los datos correctos y adaptados a tu organización.",
+      "text3": "Configurar tu entidad te permite:",
       "text4": "Personalizar la experiencia",
-      "text5": "con la identidad corporativa de tu organización en cualquier servicio.",
+      "text5": "Aplicar la identidad corporativa de tu organización en todos los servicios y módulos, asegurando una experiencia coherente para tu equipo.",
       "text6": "Centralizar la información",
-      "text7": " de tu entidad para que tus datos estén disponibles en todos los documentos y procesos de la plataforma.",
+      "text7": "Unificar los datos clave de tu entidad para que estén disponibles en documentos, procesos, reportes y configuraciones de cada servicio que actives.",
       "text8": "Asegurar un uso legítimo y transparente",
-      "text9": "de los servicios, cumpliendo con los requisitos legales y de protección.",
+      "text9": "Cumplir con los requisitos legales y de protección de datos, asegurando que cada servicio funcione de forma transparente y conforme a la normativa.",
       "continue": "Continuar"
     },
     "card3": {
       "comminsoom": "MUY PRONTO",
-      "text1": "Hoy con encodeBiz SaaS",
+      "text1": "El ecosistema de soluciones de encodeBiz",
       "text2": "Tu primer servicio,",
-      "text3": "Servicio SaaS para",
-      "text4": "emitir y gestionar credenciales",
-      "text5": "y",
-      "text6": "pases de eventos",
-      "text7": "digitales desde un único panel.",
+      "text3": "",
+      "text4": "El sistema para emitir y gestionar credenciales digitales y accesos en un entorno unificado.",
+      "text5": "Permitirá crear credenciales, gestionar accesos y controlar eventos con seguridad y validación digital inmediata.",
+      "text6": "",
+      "text7": "",
+      "allow":"Permitirá:",
       "text8": "Emitir credenciales digitales para empleados, estudiantes o clientes.",
-      "text9": "Crear y gestionar eventos con pases para asistentes y staff.",
-      "text10": " Controlar accesos de forma segura y en tiempo real.",
+      "text9": "Crear y administrar eventos con pases para asistentes y staff.",
+      "text10": "Controlar accesos con validación en tiempo real.",
       "text11": "Servicio de control y gestión de asistencia.",
-      "text12": " Registra entradas y salidas con geolocalización",
-      "text13": ", organiza equipos y proyectos, y genera reportes en tiempo real.",
+      "text12": "La solución que analiza y estructura el comportamiento laboral real de tus equipos.",
+      "text13": "Obtiene los registros de jornada, los valida con contexto operativo y genera trazabilidad clara para apoyar decisiones en tiempo real.",
       "text14": "Ir a Configurar Entidad",
-      "text15": "Configurar mas tarde"
+      "text15": "Configurar mas tarde",
+
+      "text16": "Registrar jornadas con geolocalización y validar su contexto.",
+      "text17": "Entender patrones laborales y dinámicas de trabajo.",
+      "text18": "Visualizar equipos, proyectos y horarios con estructura real.",
+      "text19": "Generar reportes y datos accionables en tiempo real."
     }
   },
   "stats": {

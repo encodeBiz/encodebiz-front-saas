@@ -46,7 +46,6 @@ const Checking = () => {
                     height: 89,
                     left: 0,
                     bottom: 0,
-                    /* E-SAAS/sys/light/on-primary-fixed */
                     background: '#001946',
                     display: 'flex',
                     flexDirection: 'row',
