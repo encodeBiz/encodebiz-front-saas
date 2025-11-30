@@ -22,6 +22,8 @@ import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useAppLocale } from "@/hooks/useAppLocale";
 import AddressComplexInput from "@/components/common/forms/fields/AddressComplexInput";
+import { Alert, Box, Typography } from "@mui/material";
+import { InfoOutline } from "@mui/icons-material";
 
 
 export default function useFormController(isFromModal: boolean, onSuccess?: () => void) {
@@ -220,8 +222,25 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       label: t('core.label.dayTimeRange'),
       hit: t('core.label.dayTimeRangeDesc'),
       extraProps: {
-        alertMessage: enableDayTimeRange ? t('sucursal.dayTimeRangeAlertMessageE') : t('sucursal.dayTimeRangeAlertMessageD'),
-        alertSeverity: enableDayTimeRange ? 'primary' : 'disabled',
+        alertMessage: <Box>
+          <Alert sx={{ borderRadius: 2, mt: 2, color: '#FFF', bgcolor: theme => enableDayTimeRange ? theme.palette.primary.main : theme.palette.grey[800] }} icon={<InfoOutline sx={{ color: '#FFF' }} />} >
+            {enableDayTimeRange ? <>
+              <Typography>{t('sucursal.fieldHelp12')} <strong>{t('sucursal.fieldHelp13')}</strong>{t('sucursal.fieldHelp14')}</Typography>
+              <ul>
+                <li><Typography>{t('sucursal.fieldHelp15')}<strong>{t('sucursal.fieldHelp16')}</strong> {t('sucursal.fieldHelp17')}</Typography></li>
+                <li><Typography>{t('sucursal.fieldHelp18')} <strong>{t('sucursal.fieldHelp19')}</strong>.</Typography></li>
+                <li><Typography>{t('sucursal.fieldHelp20')}<strong>{t('sucursal.fieldHelp16')}</strong>{t('sucursal.fieldHelp21')}</Typography></li>
+              </ul>
+            </> : <>
+              <Typography>{t('sucursal.fieldHelp22')}<strong>{t('sucursal.fieldHelp23')}</strong>.</Typography>
+              <ul>
+                <li><Typography>{t('sucursal.fieldHelp24')}<strong> {t('sucursal.fieldHelp25')}</strong>.</Typography></li>
+                <li><Typography>{t('sucursal.fieldHelp26')} <strong>{t('sucursal.fieldHelp27')}</strong>.</Typography></li>
+              </ul>
+            </>}
+          </Alert>
+        </Box>
+
       },
       fieldList: [
 
@@ -255,8 +274,20 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       hit: t('core.label.timeBreakDesc'),
       label: t('core.label.breakTimeRange'),
       extraProps: {
-        alertMessage: disableBreak ? t('sucursal.disableBreakAlertMessageE') : t('sucursal.disableBreakAlertMessageD'),
-        alertSeverity: disableBreak ? 'primary' : 'disabled',
+        //alertMessage: disableBreak ? t('sucursal.disableBreakAlertMessageE') : t('sucursal.disableBreakAlertMessageD'),
+        //alertSeverity: disableBreak ? 'primary' : 'disabled',
+
+        alertMessage: <Box>
+          <Alert sx={{ borderRadius: 2, mt: 2, color: '#FFF', bgcolor: theme => disableBreak ? theme.palette.primary.main : theme.palette.grey[800] }} icon={<InfoOutline sx={{ color: '#FFF' }} />} >
+            {disableBreak ? <><Typography>{t('sucursal.fieldHelp1')} <strong>{t('sucursal.fieldHelp2')}</strong>{t('sucursal.fieldHelp3')}</Typography>
+              <Typography>{t('sucursal.fieldHelp4')}<strong>{t('sucursal.fieldHelp5')}</strong>{t('sucursal.fieldHelp6')}</Typography>
+              <Typography>{t('sucursal.fieldHelp7')}</Typography>
+            </> : <>
+              <Typography>{t('sucursal.fieldHelp8')} <strong>{t('sucursal.fieldHelp9')}</strong>{t('sucursal.fieldHelp10')}</Typography>
+              <Typography>{t('sucursal.fieldHelp11')}</Typography>
+            </>}
+          </Alert>
+        </Box>
       },
       fieldList: [
 
@@ -269,7 +300,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         },
         {
           name: 'disableBreak',
-          label: disableBreak ? t('sucursal.dayTimeRangeEnableText') : t('sucursal.dayTimeRangeDisabledText'),
+          label: disableBreak ? t('sucursal.breakEnableText') : t('sucursal.breakDisabledText'),
           component: ToggleInput,
           required: true,
           extraProps: {
@@ -301,7 +332,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const sucursal: ISucursal = await fetchSucursal(currentEntity?.entity.id as string, itemId)
 
-       
+
       const startTime = new Date()
       startTime.setMinutes(sucursal?.advance?.startTimeWorkingDay?.minute ?? 0)
       startTime.setHours(sucursal?.advance?.startTimeWorkingDay?.hour ?? 0)
@@ -320,7 +351,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         status: sucursal.status,
         ratioChecklog: sucursal.ratioChecklog,
         name: sucursal.name,
-        nif: sucursal.nif??'N/A',
+        nif: sucursal.nif ?? 'N/A',
         metadata: objectToArray(sucursal.metadata),
         "enableDayTimeRange": sucursal?.advance?.enableDayTimeRange,
         "startTime": startTime,
