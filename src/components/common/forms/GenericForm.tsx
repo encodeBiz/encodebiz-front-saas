@@ -223,10 +223,8 @@ const GenericForm = <T extends Record<string, any>>({
 
 
                         </Grid>
-
-                        {field.extraProps?.alertMessage && <Alert key={field.name} sx={{borderRadius:2, mt: 2,color:'#FFF', bgcolor: theme => field.extraProps?.alertSeverity==='disabled' ? theme.palette.grey[800] :theme.palette[(field.extraProps?.alertSeverity as 'primary')??'primary'].main  }} icon={<InfoOutline sx={{color:'#FFF'}} />} >
-                          {field.extraProps?.alertMessage}
-                        </Alert>}
+                        {field.extraProps?.alertMessage}
+                     
                       </Box>
                     </AccordionDetails>
                   </Accordion>

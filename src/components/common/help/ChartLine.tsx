@@ -4,7 +4,7 @@ import { Box, Typography, useTheme } from '@mui/material';
 import { colorBarDataset } from '@/domain/features/checkinbiz/IStats';
 import { useTranslations } from 'next-intl';
 
-const ChartLine = ({ data, sub }: {sub:string, data: Array<Record<string, number>>, xAxisWeek?: boolean, YAxisText?: string }) => {
+const ChartLine = ({ data, sub }: {sub?:string, data: Array<Record<string, number>>, xAxisWeek?: boolean, YAxisText?: string }) => {
     const t = useTranslations();
     const theme = useTheme()
     const chartData = [
@@ -51,7 +51,7 @@ const ChartLine = ({ data, sub }: {sub:string, data: Array<Record<string, number
                                     borderRadius: 1
                                 }}
                             />
-                            {entry.name}: {entry.value}{sub}
+                            {entry.name}: {entry.value}{sub?sub:''}
                         </Typography>
                     ))}
                 </Box>
