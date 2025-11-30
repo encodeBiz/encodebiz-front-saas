@@ -766,10 +766,7 @@
     "fieldHelp24":"Tiempo trabajado antes o después del horario:",
     "fieldHelp25":"se suma como extra",
     "fieldHelp26":"Retrasos o salidas anticipadas:",
-    "fieldHelp27":"se descuentan",
-    "fieldHelp28":"",
-    "fieldHelp29":"",
-    "fieldHelp30":""
+    "fieldHelp27":"se descuentan"
 
   },
   "attendance": {

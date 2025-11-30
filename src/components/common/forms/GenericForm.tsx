@@ -21,7 +21,7 @@ import { useFormStatus } from '@/hooks/useFormStatus';
 import { BorderBox } from '../tabs/BorderBox';
 import { SassButton } from '../buttons/GenericButton';
 import Link from 'next/link';
-import { ExpandMoreOutlined, InfoOutline } from '@mui/icons-material';
+import { ExpandMoreOutlined } from '@mui/icons-material';
 
 
 // A component that watches the form state
