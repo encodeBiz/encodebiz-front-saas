@@ -2,7 +2,7 @@
   "locale": "en",
   "layout": {
     "header": {
-      "title": "EncodeBiz-SaaS",
+      "title": "encodeBiz",
       "language": "Language",
       "english": "English",
       "spanish": "Spanish",
@@ -53,7 +53,7 @@
       }
     },
     "footer": {
-      "copyright": "encodeBiz Saas.",
+      "copyright": "encodeBiz.",
       "web": "Our Website",
       "contactUs": "Contact Us",
       "whatsApp": "WhatsApp",
@@ -96,7 +96,7 @@
       "userDeletedTitle": "You have left the entity",
       "userDeletedText": "You have successfully unsubscribed from the entity, please log in to start again",
       "tokenExireTitle": "Session expired",
-      "tokenExireText": "Session has expired, please log in again to access the encodeBiz SaaS panel",
+      "tokenExireText": "Session has expired, please log in again to access the encodeBiz  panel",
       "success": "Operation completed successfully",
       "empthy": "Nothing to show",
       "empthytext": "There are no items to display at this time",
@@ -373,7 +373,7 @@
     "signup": {
       "title": "Create an account",
       "signup": "Create account",
-      "subtitle": "Your single panel to manage encodeBiz SaaS services.",
+      "subtitle": "Your single panel to manage encodeBiz  services.",
       "or": "Or",
       "google": "Join with Google",
       "facebook": "Join with Facebook",
@@ -386,7 +386,7 @@
     "signin": {
       "title": "Sign in",
       "signup": "Sign in",
-      "subtitle": "Access your encodeBiz SaaS panel",
+      "subtitle": "Access your encodeBiz  panel",
       "or": "Or",
       "google": "Join with Google",
       "facebook": "Join with Facebook",
@@ -396,7 +396,7 @@
     "recovery": {
       "title": "Recover password",
       "signup": "Create account",
-      "subtitle": "Enter your email to recover your access key to EncodeBiz SaaS",
+      "subtitle": "Enter your email to recover your access key to encodeBiz ",
       "or": "Or",
       "google": "Join with Google",
       "facebook": "Join with Facebook",
@@ -423,7 +423,7 @@
       "overview": "Overview",
       "stats": "Statistics",
       "card": {
-        "title": "Welcome to encodeBiz SaaS",
+        "title": "Welcome to encodeBiz ",
         "subtitle": "Register, control and manage access in one place, PassBiz and CheckBiz ready for you."
       },
       "cardDesc": {
@@ -825,7 +825,7 @@
     "title2": "Payment Methods",
     "test1": "I request to test an event",
     "test2": "I request enterprise plan",
-    "test3": "Contact EncodeBiz SaaS"
+    "test3": "Contact encodeBiz "
   },
   "integration": {
     "title": "Integrations",
@@ -850,7 +850,7 @@
   },
   "cards": {
     "card1": {
-      "text1": "Welcome to encodeBiz SaaS",
+      "text1": "Welcome to encodeBiz ",
       "text2": "A platform created to centralize all your digital services in one place.",
       "text3": "At encodeBiz we turn your ideas into digital solutions. When our services don't cover all your needs, we create what your business requires, tailored to you.",
       "start": "Get Started"
@@ -869,9 +869,9 @@
     },
     "card3": {
       "comminsoom": "COMING SOON",
-      "text1": "Today with encodeBiz SaaS",
+      "text1": "Today with encodeBiz ",
       "text2": "Your first service,",
-      "text3": "SaaS service for",
+      "text3": " service for",
       "text4": "issuing and managing credentials",
       "text5": "and",
       "text6": "event passes",

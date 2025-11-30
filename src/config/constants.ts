@@ -1,4 +1,4 @@
-export const AppName = 'EncodeBiz SaaS Platform'
+export const AppName = 'encodeBiz Platform'
 
 
 // src/data/chartData.ts

@@ -2,7 +2,7 @@
   "locale": "fr",
   "layout": {
     "header": {
-      "title": "Plateforme SaaS EncodeBiz",
+      "title": "Plateforme EncodeBiz",
       "language": "Langue",
       "english": "Anglais",
       "spanish": "Espagnol",
@@ -148,7 +148,7 @@
     "signup": {
       "title": "Créer un compte",
       "signup": "Créer un compte",
-      "subtitle": "Créez un compte et rejoignez EncodeBiz SaaS",
+      "subtitle": "Créez un compte et rejoignez encodeBiz",
       "or": "Ou",
       "google": "Rejoindre avec Google",
       "facebook": "Rejoindre avec Facebook",
@@ -160,7 +160,7 @@
     "signin": {
       "title": "Se connecter",
       "signup": "Se connecter",
-      "subtitle": "Connectez-vous et rejoignez EncodeBiz SaaS",
+      "subtitle": "Connectez-vous et rejoignez encodeBiz",
       "or": "Ou",
       "google": "Rejoindre avec Google",
       "facebook": "Rejoindre avec Facebook",
@@ -184,7 +184,7 @@
         "btn1": "Plus d'informations",
         "btn2": "Services",
         "btn3": "Plans",
-        "title": "Bienvenue sur EncodeBiz SaaS",
+        "title": "Bienvenue sur encodeBiz",
         "subtitle": "Sur cette plateforme, vous pouvez faire plusieurs choses intéressantes"
       }
     },

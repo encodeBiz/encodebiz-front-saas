@@ -19,7 +19,7 @@ export const useStyles = (): Record<string, SxProps<Theme>> => ({
     justifyContent: 'center',
     gap: 2,
     p: 1,
-    px: 2,
+    px: 0,
     textAlign: 'center',
     cursor: 'pointer'
   },
@@ -42,6 +42,7 @@ export const useStyles = (): Record<string, SxProps<Theme>> => ({
     display:'flex',
     flexDirection:'column',
     gap:1,
+    px:4,
     justifyContent:'flex-start',
     alignItems:'flex-start',
     textAlign:'left',
