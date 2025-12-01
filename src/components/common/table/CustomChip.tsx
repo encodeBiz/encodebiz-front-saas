@@ -16,7 +16,11 @@ const colorRepository: any = {
     "default": 'rgba(0, 84, 202, 0.08)',
     "archived": 'rgba(199, 184, 22, 0.63)',
     'gray': 'rgba(121, 123, 125, 0.08)',
-        'disabled': 'rgba(121, 123, 125, 0.08)',
+    'disabled': 'rgba(121, 123, 125, 0.08)',
+    "pending": 'rgba(122, 166, 223, 0.65)',
+    "resolved": 'rgba(122, 223, 127, 0.65)',
+    "in_review": 'rgba(177, 35, 33, 0.65)',
+    'rejected': 'rgba(121, 123, 125, 0.08)',
 }
 
 export const CustomChip = ({ label, background = "default", id = '', role = 'button', text = '', ...props }: { label: string; id?: string; text?: string; background?: string; role: 'ship' | 'button' } & any) => {

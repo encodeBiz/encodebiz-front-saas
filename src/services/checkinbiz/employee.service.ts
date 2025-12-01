@@ -9,6 +9,7 @@ import { mapperErrorFromBack, normalizarString } from "@/lib/common/String";
 import { addDocument } from "@/lib/firebase/firestore/addDocument";
 import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
 import { deleteDocument } from "@/lib/firebase/firestore/deleteDocument";
+import { IIssue } from "@/domain/features/checkinbiz/IIssue";
 
 
 /**
@@ -461,17 +462,26 @@ export const searchLogs = async (entityId: string, params: SearchParams): Promis
 }
 
 
-export const getIssues = async (entityId: string, employeeId: string, branchId: string, params: SearchParams): Promise<IChecklog[]> => {
+export const getIssues = async (entityId: string, employeeId: string,   params: SearchParams): Promise<IIssue[]> => {
 
-  const result: IChecklog[] = await searchFirestore({
+  console.log({
     ...params,
     filters: [
       ...params.filters ? params.filters : [],
       { field: 'employeeId', operator: '==', value: employeeId },
-      { field: 'branchId', operator: '==', value: branchId },
       { field: 'entityId', operator: '==', value: entityId }
     ],
-    collection: `${collection.ENTITIES}/issues`,
+    collection: `${collection.ISSUES}`,
+  });
+  
+  const result: IIssue[] = await searchFirestore({
+    ...params,
+    filters: [
+      ...params.filters ? params.filters : [],
+      { field: 'employeeId', operator: '==', value: employeeId },
+      { field: 'entityId', operator: '==', value: entityId }
+    ],
+    collection: `${collection.ISSUES}`,
   });
 
   return result;

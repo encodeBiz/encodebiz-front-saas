@@ -1,5 +1,9 @@
+import { ISucursal } from "./ISucursal"
+
 export interface IIssue {
     branchId: string
+    branch?: ISucursal
+
     comments: string
     createdAt: any
     employeeId: string
@@ -12,8 +16,8 @@ export interface IIssue {
         longiude: number
     }
     responseCount: number
-    state: string
-    toRole: "supervisor"
+    state: 'resolved' | "in_review" | "pending"
+    toRole: "worker" | "supervisor"
     type: string
     userId: string
 }
