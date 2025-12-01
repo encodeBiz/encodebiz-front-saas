@@ -463,16 +463,7 @@ export const searchLogs = async (entityId: string, params: SearchParams): Promis
 
 
 export const getIssues = async (entityId: string, employeeId: string,   params: SearchParams): Promise<IIssue[]> => {
-
-  console.log({
-    ...params,
-    filters: [
-      ...params.filters ? params.filters : [],
-      { field: 'employeeId', operator: '==', value: employeeId },
-      { field: 'entityId', operator: '==', value: entityId }
-    ],
-    collection: `${collection.ISSUES}`,
-  });
+ 
   
   const result: IIssue[] = await searchFirestore({
     ...params,

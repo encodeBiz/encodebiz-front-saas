@@ -8,12 +8,7 @@ import {
     DialogContent,
     DialogTitle,
     Paper,
-    Table,
-    TableBody,
-    TableCell,
     TableContainer,
-    TableHead,
-    TableRow,
     Typography,
     useMediaQuery,
     useTheme
@@ -23,13 +18,11 @@ import {
 
 import { useTranslations } from 'next-intl';
 
-import { DateRangePicker } from '@/app/main/[entityId]/passinbiz/stats/components/filters/fields/DateRangeFilter';
 import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import EmptyState from '@/components/common/EmptyState/EmptyState';
-import { IChecklog } from '@/domain/features/checkinbiz/IChecklog';
-import { format_date, rmNDay } from '@/lib/common/Date';
+import { format_date } from '@/lib/common/Date';
 import { useCheck } from '../page.context';
-import { getEmplyeeLogs, getIssues } from '@/services/checkinbiz/employee.service';
+import { getIssues } from '@/services/checkinbiz/employee.service';
 import { useToast } from '@/hooks/useToast';
 import { fetchSucursal, search } from '@/services/checkinbiz/sucursal.service';
 import { useCommonModal } from '@/hooks/useCommonModal';
