@@ -26,6 +26,7 @@ const CompleteProfilePage = () => {
             (formRef.current as any).submitForm()
         }
     }
+    
     return (
         <Container maxWidth="xl">
             <HeaderPage
