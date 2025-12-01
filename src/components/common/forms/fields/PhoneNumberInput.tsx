@@ -109,7 +109,7 @@ const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
                             {codeFiltered.sort((a, b) => a.name.localeCompare(b.name)).map((country, i) => (
                                 <MenuItem key={i} value={country.dialCode} sx={{ height: 40 }} onClick={() => {
                                     setCountryCode(country.dialCode);
-                                    triggerOnChange(country.dialCode, phoneNumber);
+                                    triggerOnChange(country.dialCode, phoneNumber as any);
                                     setSearchText('')
                                     setCodeFiltered(countriesCode)
 

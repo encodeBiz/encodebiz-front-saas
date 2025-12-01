@@ -137,35 +137,39 @@ export const mapperErrorFromBack = (message: string, getCode = false): string =>
 
 export function extractCountryCode(phoneNumber: string) {
     // Remove all non-digit characters except +
-    const cleaned = '+' + phoneNumber.replace(/[^\d+]/g, '');
-    // Common country code patterns
-    const countryCodePatterns = [...countriesCode.map(e => '/^\/+' + e.dialCode + '(\d+)$/')]
+    const cleaned = phoneNumber.replace(/[^\d+]/g, '');
+    
+    // Ensure it starts with +
+    const normalizedPhone = cleaned.startsWith('+') ? cleaned : '+' + cleaned;
+    
+    // Get all country codes sorted by length (longest first) to match correctly
+    const countryCodePatterns = countriesCode
+        .sort((a, b) => b.dialCode.length - a.dialCode.length)
+        .map(e => e.dialCode);
 
-
-
-    for (const pattern of countryCodePatterns) {
-        const match = cleaned.match(pattern);
-        if (match) {
-
+    // Try to match against country codes
+    for (const code of countryCodePatterns) {
+        if (normalizedPhone.startsWith('+' + code)) {
+            const phoneWithoutCode = normalizedPhone.substring(('+' + code).length);
             return {
-                code: cleaned.replace(match[1], ''),
-                phone: match[1]
-            }
+                code: code,
+                phone: phoneWithoutCode.replace(/[^\d]/g, '') // Remove non-digit characters from phone
+            };
         }
     }
 
-
-    // Fallback: extract + followed by 1-3 digits
-    const fallbackMatch: any = cleaned.match(/^\+(\d{1,2})/);
-
+    // Fallback: extract + followed by 1-3 digits for simple cases like +1
+    const fallbackMatch = normalizedPhone.match(/^\+(\d{1,3})/);
     if (fallbackMatch) {
+        const code = fallbackMatch[1];
+        const phoneWithoutCode = normalizedPhone.substring(('+' + code).length);
         return {
-            code: fallbackMatch[1],
-            phone: phoneNumber.substring(fallbackMatch[1].length)
-        }
+            code: code,
+            phone: phoneWithoutCode.replace(/[^\d]/g, '')
+        };
     }
 
-    return fallbackMatch ? fallbackMatch[1] : null;
+    return null;
 }
 
 export function getAverage(numbers: Array<number>): number {
