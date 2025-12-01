@@ -3,6 +3,7 @@ import * as Yup from 'yup';
 
 export const requiredRule = (t: any) => Yup.string().required(t('core.formValidatorMessages.required'))
 export const optionalRule = () => Yup.string().optional()
+export const maxLengthRule = (t: any, max:number) => Yup.string().max(max, t('core.formValidatorMessages.maxLength') + max)
 
 export const passwordRestrictionRule = (t: any, min: number = 8) => Yup.string()
     .required(t('core.formValidatorMessages.required'))

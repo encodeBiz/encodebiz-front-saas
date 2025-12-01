@@ -105,6 +105,7 @@
     "label": {
       "today": "Hoy",
       "start": "Inicio",
+      "reason":"Motivos del cambio",
       "languageNotification":"Idioma de notificaciones",
       "linkToCreateEmployee": "Crear empleado",
       "end": "Fin",
@@ -133,6 +134,7 @@
       "disable2AF": "No tiene habilitado 2AF",
       "enable2AF": "Tiene habilitado 2AF",
       "employee": "Empleado",
+      "pending-employee-validation":"Pendiente a validación",
       "vacation": "Vacaciones",
       "timestamp": "Fecha/hora",
       "sick_leave": "Baja por enfermedad",
@@ -359,6 +361,7 @@
       "required": "Este campo es requerido",
       "min": "EL valor del campo debe ser mayor a ",
       "max": "EL valor del campo debe ser menor a ",
+      "maxLength": "La cantidad de caracteres debe ser menor a ",
       "minArray": "Debe seleccionar al menos 1 elemento",
       "email": "Este campo es debe ser un correo electrónico válido",
       "password": "La contraseña es demasiado corta: debe tener un mínimo de 8 caracteres.",

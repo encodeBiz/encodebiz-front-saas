@@ -83,12 +83,12 @@ export const searchJobs = async (entityId: string): Promise<Job[]> => {
    * @returns {Promise<Iemployee[]>}
    */
 export const searchResponsabilityByBranch = async (entityId: string, branchId: string, params: SearchParams): Promise<EmployeeEntityResponsibility[]> => {
-  
-  
-  
+
+
+
   const result: EmployeeEntityResponsibility[] = await searchFirestore({
     ...params,
-    
+
     filters: [...(params.filters ?? []), {
       field: 'scope.branchId', operator: '==', value: branchId
     }],
@@ -455,6 +455,36 @@ export const searchLogs = async (entityId: string, params: SearchParams): Promis
   const result: IChecklog[] = await searchFirestore({
     ...params,
     collection: `${collection.ENTITIES}/${entityId}/${collection.CHECKLOG}`,
+  });
+
+  return result;
+}
+
+
+export const getIssues = async (entityId: string, employeeId: string, branchId: string, params: SearchParams): Promise<IChecklog[]> => {
+
+  const result: IChecklog[] = await searchFirestore({
+    ...params,
+    filters: [
+      ...params.filters ? params.filters : [],
+      { field: 'employeeId', operator: '==', value: employeeId },
+      { field: 'branchId', operator: '==', value: branchId },
+      { field: 'entityId', operator: '==', value: entityId }
+    ],
+    collection: `${collection.ENTITIES}/issues`,
+  });
+
+  return result;
+}
+
+export const getIssuesResponsesLists = async (issuesId: string, params: SearchParams): Promise<IChecklog[]> => {
+
+  const result: IChecklog[] = await searchFirestore({
+    ...params,
+    filters: [
+      ...params.filters ? params.filters : [],
+    ],
+    collection: `${collection.ENTITIES}/issues/${issuesId}/responses`,
   });
 
   return result;

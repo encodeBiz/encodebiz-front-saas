@@ -108,8 +108,7 @@ export const useUserAccountController = () => {
     ];
 
 
-    console.log(initialValues);
-    
+     
 
 
     const setUserDataAction = async (values: UserFormValues) => {

@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 
 
 const colorRepository: any = {
+    'pending-employee-validation': '#F4AA32',
     "failed": '#F4AA32',
     "active": 'rgba(122, 223, 127, 0.65)',
     "valid": 'rgba(122, 223, 127, 0.65)',
