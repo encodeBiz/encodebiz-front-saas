@@ -4,6 +4,7 @@ import { CommonModalType } from '@/contexts/commonModalContext';
 import IEntity from '@/domain/core/auth/IEntity';
 import { IChecklog, ICreateLog } from '@/domain/features/checkinbiz/IChecklog';
 import { IEmployee } from '@/domain/features/checkinbiz/IEmployee';
+import { IIssue } from '@/domain/features/checkinbiz/IIssue';
 import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
 import { useAppLocale } from '@/hooks/useAppLocale';
 import { useCommonModal } from '@/hooks/useCommonModal';
@@ -54,6 +55,8 @@ interface CheckType {
     currentBranch: ISucursal | undefined
     hanldeSelectedBranch: (sucursalId: string) => void
     handleRequestLocation: () => void
+    issueList: Array<IIssue>
+    setIssueList:(issueList: Array<IIssue>) => void
 }
 
 
@@ -83,6 +86,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
 
     const [branchList, setBranchList] = useState<Array<{ name: string, branchId: string }>>([])
     const [sessionData, setSessionData] = useState<{ employeeId: string, entityId: string, branchId: string, }>()
+    const [issueList, setIssueList] = useState<Array<IIssue>>([])
 
 
 
@@ -256,7 +260,7 @@ export function CheckProvider({ children }: { children: React.ReactNode }) {
     const handleRequestLocation = async () => await requestLocation()
 
     return (
-        <CheckContext.Provider value={{
+        <CheckContext.Provider value={{ issueList, setIssueList,
             pendingStatus, currentBranch, hanldeSelectedBranch,
             setSessionData, sessionData, setToken, handleRequestLocation,
             entity, employee, branchList, token,
