@@ -224,28 +224,27 @@ export const colorBarDataset: Array<ColorBar> = ['#4A8AD4', '#3A9B94', '#7BA3C8'
 
 export const preferenceDashboardItems = (t: any): Array<{ name: string, children: Array<{ name: string, value: string }> }> => [
   {
-    name: 'Horarios',
+    name: t('employeeDashboard.schedules'),
     children: [
-      { name: 'Horario operativo medio', value: 'avgStartHour_avgEndHour' },
-      { name: 'Carga horaria semanal', value: 'stdStartHour_stdEndHour' },
+      { name: t('employeeDashboard.avgOperatingSchedule'), value: 'avgStartHour_avgEndHour' },
+      { name: t('employeeDashboard.weeklyWorkload'), value: 'stdStartHour_stdEndHour' },
     ]
   },
 
   {
-    name: 'Costes',
+    name: t('employeeDashboard.cost'),
     children: [
-      { name: 'Coste por hora trabajada', value: 'avgCostHour' },
-      { name: 'Coste por jornada', value: 'avgCycleCost' },
-      { name: 'Coste por rendimiento', value: 'avgCostEfficiency' },
-      { name: 'Rendimiento del coste invertido', value: 'effectiveRealCost' },
-
+      { name: t('employeeDashboard.costPerHourWorked'), value: 'avgCostHour' },
+      { name: t('employeeDashboard.costPerShift'), value: 'avgCycleCost' },
+      { name: t('employeeDashboard.costByPerformance'), value: 'avgCostEfficiency' },
+      { name: t('employeeDashboard.performanceOfInvestedCost'), value: 'effectiveRealCost' },
     ]
   },
   {
-    name: 'Confiabilidad del dato',
+    name: t('employeeDashboard.dataReliability'),
     children: [
-      { name: 'Nivel de confiabilidad ', value: 'reliability' },
-      { name: 'Volumen de datos', value: 'dataPoints' },
+      { name: t('employeeDashboard.reliabilityLevel'), value: 'reliability' },
+      { name: t('employeeDashboard.dataVolume'), value: 'dataPoints' },
     ]
   },
 
@@ -253,38 +252,37 @@ export const preferenceDashboardItems = (t: any): Array<{ name: string, children
 
 export const preferenceDashboardEmployeeItems = (t: any): Array<{ name: string, children: Array<{ name: string, value: string }> }> => [
   {
-    name: 'Horarios',
+    name: t('employeeDashboard.schedules'),
     children: [
-      { name: 'Horario operativo medio', value: 'avgStartHour_avgEndHour' },
-      { name: 'Dispersión horaria', value: 'stdStartHour_stdEndHour' },
+      { name: t('employeeDashboard.avgOperatingSchedule'), value: 'avgStartHour_avgEndHour' },
+      { name: t('employeeDashboard.hourDispersion1'), value: 'stdStartHour_stdEndHour' },
     ]
   },
 
   {
-    name: 'Costes',
+    name: t('employeeDashboard.cost'),
     children: [
-      { name: 'Coste por hora trabajada', value: 'avgCostHour' },
-      { name: 'Coste por jornada', value: 'avgCycleCost' },
-      { name: 'Coste por rendimiento', value: 'avgCostEfficiency' },
-      { name: 'Rendimiento del coste invertido', value: 'effectiveRealCost' },
-      { name: 'Coste acumulado', value: 'totalCost' },
-
+      { name: t('employeeDashboard.costPerHourWorked'), value: 'avgCostHour' },
+      { name: t('employeeDashboard.costPerShift'), value: 'avgCycleCost' },
+      { name: t('employeeDashboard.costByPerformance'), value: 'avgCostEfficiency' },
+      { name: t('employeeDashboard.performanceOfInvestedCost'), value: 'effectiveRealCost' },
+      { name: t('employeeDashboard.accumulatedCost'), value: 'totalCost' },
     ]
   },
   {
-    name: 'Confiabilidad del dato',
+    name: t('employeeDashboard.dataReliability'),
     children: [
-      { name: 'Nivel de confiabilidad ', value: 'reliability' },
-      { name: 'Volumen de datos', value: 'dataPoints' },
+      { name: t('employeeDashboard.reliabilityLevel'), value: 'reliability' },
+      { name: t('employeeDashboard.dataVolume'), value: 'dataPoints' },
     ]
   },
 
   {
-    name: 'Experiencia',
+    name: t('employeeDashboard.experience'),
     children: [
-      { name: 'Experiencia total', value: 'totalExperienceYears' },
-      { name: 'Responsabilidad principal', value: 'experienceByResponsibility' },
-      { name: 'Ocupación principal', value: 'experienceByJob' },
+      { name: t('employeeDashboard.totalExperience'), value: 'totalExperienceYears' },
+      { name: t('employeeDashboard.mainResponsibility'), value: 'experienceByResponsibility' },
+      { name: t('employeeDashboard.mainOccupation'), value: 'experienceByJob' },
     ]
   },
 

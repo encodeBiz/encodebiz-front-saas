@@ -192,7 +192,12 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
             const unsubscribe = subscribeToAuthChanges(watchSesionState);
             return () => unsubscribe();
         }
+
+      
+        
     }, []);
+
+   
 
 
     useEffect(() => {

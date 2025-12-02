@@ -105,11 +105,11 @@
     "label": {
       "today": "Today",
       "start": "Start",
-      "reason":"Reasons for the change",
+      "reason": "Reasons for the change",
       "languageNotification": "Notification language",
       "linkToCreateEmployee": "Create employee",
       "end": "End",
-          "pending-employee-validation":"Pendiente a validación",
+      "pending-employee-validation": "Pendiente a validación",
       "download": "Download",
       "periocity": "Date Range",
       "minutes": "minutes",
@@ -253,7 +253,7 @@
       "description": "Description",
       "message": "Message",
       "all": "All",
-      "uploadResourse": "Upload resource",
+      "uploadResourse": "Upload",
       "lastName": "Last Name",
       "fullName": "Full Name",
       "password": "Password",
@@ -369,7 +369,7 @@
       "avatarUpload": "Select a valid image file.",
       "avatarMaxSize": "Image is too large. Maximum allowed: 5MB.",
       "validZip": "Postal code must be numeric",
-      "minZipCode": "Postal code must have at least 5 digits",
+      "minZipCode": "Postal code must have at least 3 digits",
       "maxZipCode": "Postal code must not exceed 10 digits"
     },
     "signup": {
@@ -411,7 +411,7 @@
       "ok": "OK"
     },
     "upload": {
-      "title": "Upload CSV file",
+      "title": "Upload CSV",
       "btn": "Select file",
       "descFile": "Download reference file",
       "desc": "Please select a CSV file to preview the content and select it",
@@ -1054,8 +1054,25 @@
     "costs": "Operational Costs",
     "costsText1": "Comparison of economic performance between branches/projects.",
     "costsText2": "Values are normalized on a 0-100 scale, where higher scores represent more efficient resource usage, lower deviations and better cost-productivity balance.",
-    "": "",
-    "": ""
+    "helpPanel": "Comparison Panel Help",
+    "schedules": "Schedules",
+    "avgOperatingSchedule": "Average operating schedule",
+    "weeklyWorkload": "Weekly workload",
+    "hourDispersion1": "Hour dispersion",
+    "cost": "Costs",
+    "costPerHourWorked": "Cost per hour worked",
+    "costPerShift": "Cost per shift",
+    "costByPerformance": "Cost by performance",
+    "performanceOfInvestedCost": "Performance of invested cost",
+    "accumulatedCost": "Accumulated cost",
+    "dataReliability": "Data Reliability",
+    "reliabilityLevel": "Reliability level",
+    "dataVolume": "Data volume",
+    "experience": "Experience",
+    "totalExperience": "Total experience",
+    "mainResponsibility": "Main responsibility",
+    "mainOccupation": "Main occupation",
+    "emptyBranch": "You must select at least one branch/project to view statistics."
   },
   "checking": {
     "title": "Attendance Control",

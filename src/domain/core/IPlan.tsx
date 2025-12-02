@@ -9,6 +9,8 @@ export interface IPlan {
     order: number
     highlighted: boolean
     featuredList: boolean[]
+    items_es: string[]
+    items_en: string[]
     description: {
         es: string,
         en: string
@@ -31,6 +33,8 @@ export interface IPlanData {
     order: number
     highlighted: boolean
     featuredList: boolean[]
+      items_es: string[]
+    items_en: string[]
    description: {
         es: string,
         en: string

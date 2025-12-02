@@ -245,11 +245,12 @@ const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) =>
           name="postalCode"
           value={formStatus?.values?.address?.postalCode ?? ``}
           onChange={(e: any) => {
+            postalCodeField[2].setTouched(true) 
+
             helper.setValue({
               ...(field.value ?? {}),
               postalCode: e.target.value
             })
-            postalCodeField[2].setTouched(true) 
           }}
           
           disabled={props.disabled || (!formStatus?.values?.address?.country || !formStatus?.values?.address?.city)}

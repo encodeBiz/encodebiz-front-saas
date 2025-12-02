@@ -45,15 +45,17 @@ export type PricingCardProps = IPlan & {
 
 };
 
-export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthlyPrice, pricePerUse, description, name, maxHolders, features, highlighted = false, fromService, featuredList }) => {
+export const PricingCard: React.FC<PricingCardProps> = (props) => {
     const t = useTranslations();
+    const { id, payPerUse, monthlyPrice, pricePerUse, description, name, highlighted = false, fromService, featuredList } = props;
     const { ubSubcribeAction, handleSubscripe } = usePricingCardController(id as string, name as string, fromService);
     const { navivateTo } = useLayout()
     const { currentLocale } = useAppLocale()
     const { open, closeModal } = useCommonModal()
     const { entitySuscription, currentEntity } = useEntity()
     const [items, setItems] = useState<Array<{ text: string, link: string }>>([])
-     const [price] = useState(payPerUse ? t(pricePerUse) : t(monthlyPrice))
+    const [price] = useState(payPerUse ? t(pricePerUse) : t(monthlyPrice))
+
 
 
 
@@ -61,7 +63,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
         const data: Array<{ text: string, link: string }> = []
         if (id !== 'fremium' && currentEntity?.entity.id) {
             if (!currentEntity.entity.legal?.legalName) data.push({ text: t('salesPlan.configureLegal'), link: '/entity?tab=company' })
-            if (!currentEntity.entity.branding?.textColor && fromService!=='checkinbiz') data.push({ text: t('salesPlan.configureBranding'), link: '/entity?tab=branding' })
+            if (!currentEntity.entity.branding?.textColor && fromService !== 'checkinbiz') data.push({ text: t('salesPlan.configureBranding'), link: '/entity?tab=branding' })
             if (!currentEntity?.entity?.billingConfig || currentEntity?.entity?.billingConfig?.payment_method?.length === 0) data.push({ text: t('salesPlan.configureBilling'), link: '/entity?tab=billing' })
         }
         setItems(data)
@@ -74,7 +76,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
             <CardContent sx={{ display: "flex", padding: 4, flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
                 <Box>
                     <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'} pb={2}>
-                        <Typography variant="h6" fontFamily={karla.style.fontFamily }>
+                        <Typography variant="h6" fontFamily={karla.style.fontFamily}>
                             {t(`salesPlan.${name}`) || name}
                         </Typography>
                         <Typography variant="body1">
@@ -82,7 +84,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
                         </Typography>
                     </Box>
 
-                    <Divider sx={{ background: () => current ? '#4AB84F' :highlighted ? "#FFF" : '#002FB7'}} />
+                    <Divider sx={{ background: () => current ? '#4AB84F' : highlighted ? "#FFF" : '#002FB7' }} />
 
                     <Box py={2}>
                         {!current && <SassButton
@@ -95,7 +97,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
                         >
                             {current ? t("salesPlan.contract") : t("salesPlan.pay")}
                         </SassButton>}
-                        
+
                         {price && name !== 'freemium' && <Typography
                             align='center'
                             variant="h6"                   >
@@ -103,14 +105,14 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
                         </Typography>}
 
                     </Box>
-                    {name !== 'freemium' && <Divider sx={{ background: () => current ? '#4AB84F' : highlighted ? "#FFF" :  '#002FB7' }} />}
+                    {name !== 'freemium' && <Divider sx={{ background: () => current ? '#4AB84F' : highlighted ? "#FFF" : '#002FB7' }} />}
                     <List sx={{ marginTop: "10px" }}>
-                        {(features as Array<string> ?? [])?.map((feature, i) => (
+                        {((props as any)[`items_${currentLocale}`] as Array<string> ?? [])?.map((feature, i) => (
                             <ListItem key={i} disableGutters>
                                 <ListItemIcon sx={{ minWidth: 30 }}>
                                     {featuredList[i] ? <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main }} /> : <Cancel fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main }} />}
                                 </ListItemIcon>
-                                <Typography variant="body2">{feature}{feature == t('salesPlan.emissionLimit') && (": " +(maxHolders ?? t('salesPlan.sinLimit')))}</Typography>
+                                <Typography variant="body2">{feature}</Typography>
                             </ListItem>
                         ))}
                     </List>
@@ -133,7 +135,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
             description={t('salesPlan.imageConfirmModalTitle2')}
             textPoint={items}
             textBtn={t('core.button.configurenow')}
-            type={CommonModalType.BILLING}        
+            type={CommonModalType.BILLING}
             onOKAction={() => {
                 closeModal(CommonModalType.BILLING)
                 if (items.length > 0)
@@ -143,7 +145,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({ id, payPerUse, monthly
             }}
         />}
 
-        {open.type === CommonModalType.CONTACT && <ContactModalModal  subject={t('contact.test2')} />}
+        {open.type === CommonModalType.CONTACT && <ContactModalModal subject={t('contact.test2')} />}
     </>
     );
 };

@@ -83,7 +83,7 @@ export const PanelStats = () => {
 
     {branchPatternList.length == 0 && !pending &&
       <Box display={'flex'} justifyContent={'center'} alignItems={'center'} sx={{ minHeight: 400, p: 4 }}>
-        <Typography variant="body1"> Debes seleccionar al menos una sucursal/proyecto para ver estadísticas.</Typography>
+        <Typography variant="body1">{t('employeeDashboard.emptyBranch')}</Typography>
       </Box>}
 
   </Box>
@@ -138,7 +138,7 @@ export const PanelStats = () => {
       {open.type === CommonModalType.INFO && <InfoModal
         centerBtn cancelBtn={false} closeBtn={false} closeIcon={false}
 
-        htmlDescription={<InfoHelp title="Ayuda del Panel Comparativo" data={[...tempActivityData(t), ...operationData(t)]} />}
+        htmlDescription={<InfoHelp title={t('employeeDashboard.helpPanel')} data={[...tempActivityData(t), ...operationData(t)]} />}
 
         onClose={() => closeModal(CommonModalType.INFO)}
       />}
