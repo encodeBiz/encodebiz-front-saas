@@ -512,16 +512,16 @@
       "tab2Title": "What do we solve?",
       "stepsTitle": "Configuration Guide",
       "stepsDesc": "Follow the steps in this guide to configure the PassBiz service.",
-      "targetTitle": "Solve with PassBiz what used to be a problem:",
+      "targetTitle": "What PassBiz solves:",
       "targetDesc": "Follow the steps in this guide to configure the PassBiz service."
     },
     "checkinbiz": {
       "tab1Title": "How do I start?",
       "tab2Title": "What do we solve?",
       "stepsTitle": "Configuration Guide",
-      "stepsDesc": "Follow the steps in this guide to configure the PassBiz service.",
-      "targetTitle": "Solve with CheckBiz what used to be a problem:",
-      "targetDesc": "Follow the steps in this guide to configure the PassBiz service."
+      "stepsDesc": "Follow the steps in this guide to configure the CheckBiz service.",
+      "targetTitle": "What CheckBiz solves:",
+      "targetDesc": "Follow the steps in this guide to configure the CheckBiz service."
     }
   },
   "salesPlan": {

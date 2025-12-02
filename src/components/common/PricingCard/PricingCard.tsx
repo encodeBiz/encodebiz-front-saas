@@ -92,7 +92,7 @@ export const PricingCard: React.FC<PricingCardProps> = (props) => {
                             fullWidth
                             variant="contained"
                             onClick={() => handleSubscripe(payPerUse)}
-                            disabled={false}
+                            disabled={fromService !== 'checkinbiz'}
 
                         >
                             {current ? t("salesPlan.contract") : t("salesPlan.pay")}

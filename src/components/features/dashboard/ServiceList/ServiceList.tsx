@@ -10,7 +10,7 @@ import { useAppLocale } from '@/hooks/useAppLocale';
 import passnbiz from '../../../../../public/assets/images/service-logo/icono-passbiz.png'
 import checkbiz from '../../../../../public/assets/images/service-logo/icono-checkbiz.png'
 import Image from 'next/image';
- 
+
 import { useLayout } from '@/hooks/useLayout';
 import { Divider } from '@mui/material';
 
@@ -19,16 +19,16 @@ const icons = {
     'passinbiz': passnbiz,
 }
 const ServiceList = () => {
-     const { navivateTo } = useLayout()
+    const { navivateTo } = useLayout()
     const { entityServiceList, entitySuscription } = useEntity()
     const styles = useStyles()
-     const { currentLocale } = useAppLocale()
+    const { currentLocale } = useAppLocale()
     const handleActionClick = (id: any) => {
-        navivateTo(`/${id}/onboarding`)
+      navivateTo(`/${id}/onboarding`)
     };
 
 
-    if (entityServiceList.filter(e => e.active && entitySuscription.filter((es) => es.serviceId === e.id).length === 0).length> 0)
+    if (entityServiceList.filter(e => entitySuscription.filter((es) => es.serviceId === e.id).length === 0).length > 0)
         return (
             <Grid container spacing={4} display={'flex'} flexDirection={{
                 xs: 'column',
@@ -37,11 +37,11 @@ const ServiceList = () => {
                 lg: 'row',
                 xl: 'row',
             }} justifyContent="space-between" marginTop={10}>
-                {entityServiceList.filter(e => e.active && entitySuscription.filter((es) => es.serviceId === e.id).length === 0).map((card) => (
-                    <Card key={card.id} sx={styles.card} style={{ cursor: card.id != 'checkinbiz' ? 'pointer' : 'default' }} onClick={() => card.id != 'checkinbiz' ? handleActionClick(card.id) : null} elevation={0} >
+                {entityServiceList.filter(e => entitySuscription.filter((es) => es.serviceId === e.id).length === 0).map((card) => (
+                    <Card key={card.id} sx={styles.card} style={{ cursor: card.id != 'checkinbiz' ? 'pointer' : 'default' }} onClick={handleActionClick} elevation={0} >
                         <CardContent sx={styles.card}>
                             <Box sx={styles.iconContainer} >
-                                <Image src={icons[card.id]} width={card.id == 'checkinbiz'?70:70} height={card.id == 'checkinbiz'?76:70} alt='' />
+                                <Image src={icons[card.id]} width={card.id == 'checkinbiz' ? 70 : 70} height={card.id == 'checkinbiz' ? 76 : 70} alt='' />
                             </Box>
                             <Divider flexItem orientation='horizontal' />
                             <Box sx={styles.textContainer} >
