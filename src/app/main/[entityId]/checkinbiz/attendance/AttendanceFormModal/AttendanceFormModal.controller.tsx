@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslations } from "next-intl";
-import { requiredRule } from '@/config/yupRules';
+import { maxLengthRule, requiredRule } from '@/config/yupRules';
 import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 import { useLayout } from "@/hooks/useLayout";
@@ -18,17 +18,18 @@ import { useFormStatus } from "@/hooks/useFormStatus";
 import { Timestamp } from "firebase/firestore";
 import { updateChecklog } from "@/services/checkinbiz/report.service";
 import { useAppLocale } from "@/hooks/useAppLocale";
+import TextInput from "@/components/common/forms/fields/TextInput";
 
 
 export default function useAttendanceFormModalController(onSuccess: () => void, employeeId?: string, branchId?: string,) {
   const t = useTranslations();
   const { showToast } = useToast()
-  const { token } = useAuth()
+  const { token, user } = useAuth()
   const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
   const { formStatus } = useFormStatus()
   const { closeModal, open } = useCommonModal()
-  const {currentLocale} = useAppLocale()
+  const { currentLocale } = useAppLocale()
 
 
   const [initialValues, setInitialValues] = useState<Partial<IChecklog>>({
@@ -36,7 +37,8 @@ export default function useAttendanceFormModalController(onSuccess: () => void, 
     branchId: branchId ?? '' as string,
     employeeId: employeeId ?? '' as string,
     type: undefined,
-    timestamp: null
+    timestamp: null,
+    reason: ''
   })
 
   const [branchList, setBranchList] = useState<Array<any>>([])
@@ -45,10 +47,11 @@ export default function useAttendanceFormModalController(onSuccess: () => void, 
     branchId: requiredRule(t),
     type: requiredRule(t),
     timestamp: requiredRule(t),
+    reason: maxLengthRule(t, 400)
   })
 
 
-  const setDinamicDataAction = async (values: Partial<IChecklog>, callback:()=>void) => {
+  const setDinamicDataAction = async (values: Partial<IChecklog>, callback: () => void) => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       if (!open.args?.data) {
@@ -63,6 +66,7 @@ export default function useAttendanceFormModalController(onSuccess: () => void, 
             "lng": branch.address.geo.lng
           },
           timestamp: values.timestamp,
+          updateId: user?.id,
           status: 'valid',
           failedCode: '',
           isAdmin: true
@@ -78,7 +82,8 @@ export default function useAttendanceFormModalController(onSuccess: () => void, 
           id: open.args?.data?.id,
           timestamp: values.timestamp,
           status: values.status as any,
-          failedCode: ''
+          failedCode: '',
+          reason: values.reason
         }
         await updateChecklog(data, token, currentLocale)
 
@@ -89,7 +94,7 @@ export default function useAttendanceFormModalController(onSuccess: () => void, 
       closeModal(CommonModalType.CHECKLOGFORM)
       if (typeof onSuccess === 'function') onSuccess()
       if (typeof callback === 'function') callback()
-        
+
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
@@ -151,6 +156,15 @@ export default function useAttendanceFormModalController(onSuccess: () => void, 
 
       },
 
+      {
+        name: 'reason',
+        label: t('core.label.reason'),
+        type: 'textarea',
+        fullWidth: true,
+        required: true,
+        component: TextInput,
+      },
+
 
     ];
   }
@@ -180,6 +194,7 @@ export default function useAttendanceFormModalController(onSuccess: () => void, 
         ...initialValues,
         status: open.args?.data ? open.args?.data.status : 'valid',
         timestamp: (open.args?.data.timestamp instanceof Timestamp) ? open.args?.data.timestamp.toDate() : new Date(open.args?.data.timestamp),
+        reason: open.args?.data?.reason ?? ''
       })
       setValidationSchema({
         status: requiredRule(t),

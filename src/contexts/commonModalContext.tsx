@@ -10,6 +10,7 @@ export enum CommonModalType {
     FILES = 'FILES',
     GEO = 'GEO',
     SEND = 'SEND',
+    ISSUES="ISSUES",
     BILLING = 'BILLING',
     RECOVERY = 'RECOVERY',
     CONFIG_CSV = 'CONFIG_CSV',

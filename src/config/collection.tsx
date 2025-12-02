@@ -2,6 +2,7 @@ export const collection = {
     //Core
     USER: 'users',
     ENTITIES: 'entities',
+    ISSUES:'issues',
     EMAIL_SENT: 'email-sent',
     USER_ENTITY_ROLES: 'user_entity_roles',
     MEDIA: 'media',

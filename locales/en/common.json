@@ -105,9 +105,11 @@
     "label": {
       "today": "Today",
       "start": "Start",
+      "reason":"Reasons for the change",
       "languageNotification": "Notification language",
       "linkToCreateEmployee": "Create employee",
       "end": "End",
+          "pending-employee-validation":"Pendiente a validación",
       "download": "Download",
       "periocity": "Date Range",
       "minutes": "minutes",

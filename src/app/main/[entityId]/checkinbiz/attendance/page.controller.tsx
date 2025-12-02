@@ -195,7 +195,7 @@ export default function useAttendanceController() {
       id: 'status',
       label: t("core.label.status"),
       minWidth: 170,
-      format: (value, row) => <CustomChip label={t('core.label.' + row.status)} />
+      format: (value, row) => <CustomChip background={row.status==='pending-employee-validation'?row.status:'default'}  label={t('core.label.' + row.status)} />
     },
     {
       id: 'timestamp',
@@ -231,7 +231,7 @@ export default function useAttendanceController() {
       label={t('core.label.status')}
       value={filterParams.filter.status}
       onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, status: value } })}
-      options={[{ value: 'valid' as string, label: t('core.label.valid') }, { value: 'failed' as string, label: t('core.label.failed') }]}
+      options={[{ value: 'valid' as string, label: t('core.label.valid') }, { value: 'failed' as string, label: t('core.label.failed') }, { value: 'pending-employee-validation' as string, label: t('core.label.pending-employee-validation') }]}
     />
 
 
