@@ -24,7 +24,7 @@ export const Card2 = ({ handleNext }: any) => {
                 alt=""
                 src={logo}
             />
-            <Typography marginTop={10} variant="h3">{t('cards.card2.text1')}</Typography>
+            <Typography marginTop={2} variant="h3">{t('cards.card2.text1')}</Typography>
             <Box display={'flex'} flexDirection={"column"} gap={2}>
                 <Typography variant="body1">{t('cards.card2.text2')}</Typography>
                 <Typography variant="body1">{t('cards.card2.text3')}</Typography>
