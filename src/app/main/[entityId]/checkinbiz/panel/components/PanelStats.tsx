@@ -21,12 +21,15 @@ import { CommonModalType } from "@/contexts/commonModalContext";
 import { operationData, tempActivityData } from "@/components/common/help/constants";
 import { InfoHelp } from "@/components/common/help/InfoHelp";
 import { preferenceDashboardItems } from "@/domain/features/checkinbiz/IStats";
+import { useLayout } from "@/hooks/useLayout";
+import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 
 export const PanelStats = () => {
   const t = useTranslations();
   const { pending, branchPatternList, cardIndicatorSelected, setCardIndicatorSelected, initialize, type, setType } = useDashboard()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const { currentEntity } = useEntity()
+  const { navivateTo } = useLayout()
   const [preferenceSelected, setPreferenceSelected] = useState(cardIndicatorSelected)
   const { open, openModal, closeModal } = useCommonModal()
   useEffect(() => {
@@ -64,7 +67,7 @@ export const PanelStats = () => {
     <SelectorBranch />
     {pending && <BoxLoader message={t('statsCheckbiz.loading')} />}
 
-    {!pending &&  branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour'].includes(e)).length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5} pt={5}>
+    {!pending && branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour'].includes(e)).length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5} pt={5}>
       <OperatingHours />
     </Box>}
 
@@ -137,10 +140,18 @@ export const PanelStats = () => {
 
       {open.type === CommonModalType.INFO && <InfoModal
         centerBtn cancelBtn={false} closeBtn={false} closeIcon={false}
-
         htmlDescription={<InfoHelp title={t('employeeDashboard.helpPanel')} data={[...tempActivityData(t), ...operationData(t)]} />}
-
         onClose={() => closeModal(CommonModalType.INFO)}
+      />}
+
+      {open.type === CommonModalType.INFO && open.args.empthy && <InfoModal
+        centerBtn cancelBtn={false} closeBtn={false} closeIcon={false}
+        description={t('employeeDashboard.helpPanelEmpty')}
+        title={t('employeeDashboard.helpPanelEmptyTitle')}
+        onClose={() => {
+          closeModal(CommonModalType.INFO)
+          navivateTo(`${CHECKINBIZ_MODULE_ROUTE}/employee`)
+        }}
       />}
     </Container>
 

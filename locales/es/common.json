@@ -21,6 +21,7 @@
     "side": {
       "menu": {
         "Dashboard": "Panel",
+        "Issue": "Insidencias",
         "Panel": "Panel",
         "Stats": "Estadísticas",
         "Staff": "Personal",
@@ -104,6 +105,7 @@
     },
     "label": {
       "today": "Hoy",
+      "comments": "Comentario",
       "start": "Inicio",
       "rejected": "Rechazado",
       "in_review": "En revisión",
@@ -786,6 +788,19 @@
     "deleteConfirmModalTitle": "Eliminar reporte",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el reporte"
   },
+  "issues": {
+    "title": "Insidencias",
+    "responses":"Respuestas",
+    "formDesc": "Completa los campos a continuación para crear/editar una  incidencia.",
+    "list": "Reportes  de insidencias",
+    "add": "Crear insidencia",
+    "edit": "Editar insidencia",
+     "detailSucursal": "Detalles de insidencia",
+    "update": "Editar insidencia",
+    "description": "Rellene los campos para registrar la insidencia",
+    "deleteConfirmModalTitle": "Eliminar reporte",
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el reporte"
+  },
   "report": {
     "title": "Reportes",
     "formDesc": "Completa los campos a continuación para crear/editar un reporte.",
@@ -1081,8 +1096,10 @@
     "totalExperience": "Experiencia total",
     "mainResponsibility": "Responsabilidad principal",
     "mainOccupation": "Ocupación principal", 
-    "emptyBranch": " Debes seleccionar al menos una sucursal/proyecto para ver estadísticas."
-},
+    "emptyBranch": " Debes seleccionar al menos una sucursal/proyecto para ver estadísticas.",
+    "helpPanelEmpty":"Actualmente no existe suficiente información operativa generada para mostrar en el panel comparativo. Una vez que las sucursales/proyectos seleccionados comiencen a registrar datos de asistencia y operación, podrás visualizar análisis detallados y comparativos aquí.",
+    "helpPanelEmptyTitle":"No existe información para mostrar"
+  },
 "checking": {
   "title": "Control de Asistencia",
   "logDay": "Registro de Jornada",
