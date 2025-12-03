@@ -14,15 +14,12 @@ import { useLayout } from "@/hooks/useLayout";
 import { ListAltOutlined } from "@mui/icons-material";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
-import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
 import { Box } from "@mui/material";
 import { useAppLocale } from "@/hooks/useAppLocale";
-import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
 import { CustomChip } from "@/components/common/table/CustomChip";
 import { format_date } from "@/lib/common/Date";
 import { fetchEmployee, getIssues } from "@/services/checkinbiz/employee.service";
 import SearchFilter from "@/components/common/table/filters/SearchFilter";
-import { DateRangePicker } from "../../passinbiz/stats/components/filters/fields/DateRangeFilter";
 
 
 interface IFilterParams {
@@ -260,7 +257,7 @@ export default function useIIssuesListController() {
 
   const onDetail = async (item: any) => {
 
-    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/branch/${item.id}/detail`)
+    navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/issues/${item.id}/detail`)
   }
 
   const [deleting, setDeleting] = useState(false)

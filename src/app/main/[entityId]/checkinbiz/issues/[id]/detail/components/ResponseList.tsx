@@ -8,7 +8,7 @@ export const ResponseList = ({ children }: { children: React.ReactNode }) => {
     return <Paper elevation={0} sx={{ p: 3 }}>
         <Box display={'flex'} justifyContent={'space-between'} alignContent={'center'} mb={2}>
             <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
-                {t("employee.list")}
+                {t("issues.responses")}
             </Typography>
         </Box>
         {children}

@@ -7,7 +7,6 @@ import { ArrowBackOutlined } from "@mui/icons-material"
 import { Card, Box, Grid, Typography, CardContent, Paper, Divider, Stack } from "@mui/material"
 import { useTranslations } from "next-intl"
 import { ResponseList } from "./components/ResponseList"
-import HelpTabs from "@/components/features/dashboard/HelpTabs/HelpTabs"
 import { IIssue } from "@/domain/features/checkinbiz/IIssue"
 import { format_date } from "@/lib/common/Date"
 
@@ -62,16 +61,7 @@ export const Detail = ({ issue, children }: { issue: IIssue, children: React.Rea
 
             <Divider />
 
-            {issue?.id && <HelpTabs small tabs={[
-
-                {
-                    id: '2',
-                    title: t("issue.responses"),
-                    tabContent: <ResponseList >{children}</ResponseList>
-                },
-
-
-            ]} />}
+            {issue?.id && <ResponseList >{children}</ResponseList>}
 
 
         </CardContent>

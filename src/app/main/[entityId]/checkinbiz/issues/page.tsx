@@ -1,12 +1,10 @@
 'use client';
-import { Container, Box } from '@mui/material';
+import { Container } from '@mui/material';
 import { useTranslations } from "next-intl";
 import useIssuesListController from './page.controller';
 import { GenericTable } from "@/components/common/table/GenericTable";
 import { CommonModalType } from '@/contexts/commonModalContext';
-import { Add } from '@mui/icons-material';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
-import { SassButton } from '@/components/common/buttons/GenericButton';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import { useCommonModal } from '@/hooks/useCommonModal';
 

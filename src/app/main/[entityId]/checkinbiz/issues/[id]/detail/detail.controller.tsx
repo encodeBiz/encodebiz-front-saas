@@ -1,25 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Column, IRowAction } from "@/components/common/table/GenericTable";
-import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useToast } from "@/hooks/useToast";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
-import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
-import { getIssuesResponsesLists, searchResponsabilityByBranch, updateEmployee } from "@/services/checkinbiz/employee.service";
-import { fetchEmployee as fetchEmployeeData, search as searchEmployee } from "@/services/checkinbiz/employee.service";
+import { getIssuesResponsesLists } from "@/services/checkinbiz/employee.service";
+import { fetchEmployee as fetchEmployeeData } from "@/services/checkinbiz/employee.service";
 
-import { useLayout } from "@/hooks/useLayout";
 import { useParams, useSearchParams } from "next/navigation";
-import { ListAltOutlined, SignalWifi4Bar, SignalWifi4BarLockOutlined } from "@mui/icons-material";
 import { decodeFromBase64 } from "@/lib/common/base64";
-import { Avatar, Box, Tooltip } from "@mui/material";
-import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
+import { Avatar, Box } from "@mui/material";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
-import { useAppLocale } from "@/hooks/useAppLocale";
 import { IIssueResponse } from "@/domain/features/checkinbiz/IIssue";
+import { format_date } from "@/lib/common/Date";
 
 
 interface IFilterParams {
@@ -40,17 +34,14 @@ interface IFilterParams {
   startAfter: string | null,
 }
 
-export default function useResponseIssueController(branchId: string) {
+export default function useResponseIssueController() {
   const t = useTranslations();
   const { id } = useParams<{ id: string }>()
-  const { changeLoaderState } = useLayout()
-  const { currentLocale } = useAppLocale()
+ 
   const searchParams = useSearchParams()
-  const { token, user } = useAuth()
-  const { currentEntity, watchServiceAccess } = useEntity()
+   const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
-  const { navivateTo } = useLayout()
-  const [loading, setLoading] = useState<boolean>(true);
+   const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<IIssueResponse[]>([]);
   const [itemsHistory, setItemsHistory] = useState<IIssueResponse[]>([]);
 
@@ -114,7 +105,7 @@ export default function useResponseIssueController(branchId: string) {
       minWidth: 170,
       format: (value, row) => <Box>
         <div style={{ display: "flex", alignItems: 'center', cursor: 'help', gap: 4 }}>
-          <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.dark, width: 45, height: 45 }}>{row.employee?.fullName}</Avatar>
+          <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.dark, width: 45, height: 45 }}>{row.employee?.fullName?.charAt(0)}</Avatar>
           {row.employee?.fullName}
         </div>
       </Box>
@@ -127,6 +118,14 @@ export default function useResponseIssueController(branchId: string) {
       label: t("core.label.message"),
       minWidth: 170,
       format: (value, row: IIssueResponse) => <>{row.message}</>
+
+    },
+
+    {
+      id: 'message',
+      label: t("core.label.message"),
+      minWidth: 170,
+      format: (value, row: IIssueResponse) => <>{format_date(row.createdAt)}</>
 
     },
 
