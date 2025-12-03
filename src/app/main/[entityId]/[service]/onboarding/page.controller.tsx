@@ -47,7 +47,9 @@ export default function useDashboardController() {
           order: element.order,
           description: element.description,
           payPerUse: element.payPerUse,
-          maxHolders: element.maxHolders
+          maxHolders: element.maxHolders,
+          items_es: element.items_es,
+          items_en: element.items_en
         })
       });
 
@@ -98,7 +100,7 @@ export default function useDashboardController() {
     subtitle: t(`onboarding.${service}.targetDesc`),
     data: serviceData?.target ? (serviceData?.target as any)[currentLocale] : []
   }
- 
+
 
 
   return { serviceData, pending, planList, dataTab1, dataTab2 }

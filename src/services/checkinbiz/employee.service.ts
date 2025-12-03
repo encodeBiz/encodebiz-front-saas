@@ -9,7 +9,7 @@ import { mapperErrorFromBack, normalizarString } from "@/lib/common/String";
 import { addDocument } from "@/lib/firebase/firestore/addDocument";
 import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
 import { deleteDocument } from "@/lib/firebase/firestore/deleteDocument";
-import { IIssue } from "@/domain/features/checkinbiz/IIssue";
+import { IIssue, IResponse } from "@/domain/features/checkinbiz/IIssue";
 
 
 /**
@@ -478,14 +478,14 @@ export const getIssues = async (entityId: string, employeeId: string,   params: 
   return result;
 }
 
-export const getIssuesResponsesLists = async (issuesId: string, params: SearchParams): Promise<IChecklog[]> => {
+export const getIssuesResponsesLists = async (issuesId: string, params: SearchParams): Promise<IResponse[]> => {
 
-  const result: IChecklog[] = await searchFirestore({
+  const result: IResponse[] = await searchFirestore({
     ...params,
     filters: [
       ...params.filters ? params.filters : [],
     ],
-    collection: `${collection.ENTITIES}/issues/${issuesId}/responses`,
+    collection: `${collection.ISSUES}/${issuesId}/responses`,
   });
 
   return result;

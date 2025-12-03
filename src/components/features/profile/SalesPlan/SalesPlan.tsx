@@ -18,7 +18,7 @@ export default function SalesPlan({ fromService, salesPlans, ref }: { ref?: any,
                 {t("salesPlan.title")}
             </Typography>
             <Typography sx={{ width: '80%' }} variant="subtitle1" align="center" color="text.secondary" fontFamily={karla.style.fontFamily}>
-                {t("salesPlan.subTitle")}
+                {t("salesPlan.subTitle") +(fromService=='checkinbiz'?'CheckBiz':'PassBiz') +'.'}
             </Typography>
             <br />
             <SalesPlans pricingPlans={salesPlans} fromService={fromService} />

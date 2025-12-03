@@ -80,7 +80,7 @@ const EntityPreferencesPage = () => {
 
 
 
-      <ConfirmModal
+      <ConfirmModal closeIcon={false}
         isLoading={deleting}
         title={t('media.deleteConfirmModalTitle')}
         description={t('media.deleteConfirmModalTitle2')}

@@ -1,3 +1,4 @@
+import { IEmployee } from "./IEmployee"
 import { ISucursal } from "./ISucursal"
 
 export interface IIssue {
@@ -25,6 +26,7 @@ export interface IIssue {
 export interface IResponse {
     createdAt: any
     employeeId: string
+    employee?: IEmployee
     id: string
     issueId: string
     message: string

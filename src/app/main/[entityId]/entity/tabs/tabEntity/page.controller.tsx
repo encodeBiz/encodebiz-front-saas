@@ -19,13 +19,11 @@ import IEntity from '@/domain/core/auth/IEntity';
 import { useAppLocale } from '@/hooks/useAppLocale';
 import AddressComplexInput from '@/components/common/forms/fields/AddressComplexInput';
 
-
-
 export interface EntityUpdatedFormValues {
     "uid": string
     "name": string
     "active": boolean
- 
+
     //"region": string
     "taxId": string
     legalName: string
@@ -133,7 +131,7 @@ export const useSettingEntityController = () => {
             type: 'email',
             component: TextInput,
         },
-       
+
         {
             name: 'address',
             label: t('core.label.addressData'),
@@ -227,10 +225,28 @@ export const useSettingEntityController = () => {
     useEffect(() => {
         if (currentEntity?.entity?.createdAt)
             formatDate(currentEntity.entity.createdAt, t('locale'));
-    }, [currentEntity?.entity.createdAt, t]);
+
+       
+    }, [currentEntity?.entity.createdAt]);
 
 
-
+    /*
+    const updateService = async () => {
+        const serviceSuscription: Array<IService> = await getServices()
+        const passinService = serviceSuscription.find(e => e.id === 'passinbiz') 
+        const plans = await getPlan('passinbiz')        
+        plans.forEach(async element => {
+            await updateDocument<any>({
+                collection: `service/passinbiz/plan`,
+                data: {
+                    items_es: passinService?.featuredList.es,
+                    items_en: passinService?.featuredList.en,
+                },
+                id: element.id,
+            });
+        });
+    }
+    */
 
     return { validationSchema, initialValues, setEntityDataAction, fields, pending }
 }

@@ -61,7 +61,7 @@ export const priceRule = (t: any) => Yup.number()
 export const zipCodeRule = (t: any) => Yup.string()
     .required(t('core.formValidatorMessages.required'))
     .matches(/^[0-9]+$/,  t('core.formValidatorMessages.validZip'))
-    .min(5,  t('core.formValidatorMessages.minZipCode'))
+    .min(3,  t('core.formValidatorMessages.minZipCode'))
     .max(10,  t('core.formValidatorMessages.maxZipCode'))
 
 

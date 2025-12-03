@@ -153,3 +153,22 @@ export const fetchInvoicesByEntity = async (entityId: string, params: SearchPara
 export function watchSubscrptionEntityChange(entityId: string, callback: (type: 'added' | 'removed' | 'modified', doc: any) => void): Unsubscribe {
     return onSnapshotCollection(`${collection.ENTITIES}/${entityId}/subscriptions`, callback)
 }
+
+
+export async function getServices(): Promise<Array<any>> {
+    try {
+        const planDataList = await getAll<any>(`service`);
+        return planDataList;
+    } catch (error: any) {
+        throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
+    }
+}
+
+export async function getPlan(id:string): Promise<Array<any>> {
+    try {
+        const planDataList = await getAll<any>(`service/${id}/plan`);
+        return planDataList;
+    } catch (error: any) {
+        throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
+    }
+}

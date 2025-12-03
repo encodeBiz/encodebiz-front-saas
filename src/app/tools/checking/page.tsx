@@ -21,6 +21,7 @@ import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 import { useStyles } from './page.styles';
 import Issues from './Issues/Issues';
 import { SassButton } from '@/components/common/buttons/GenericButton';
+import IssuesResponse from './IssuesResponse/IssuesResponse';
 
 
 const Checking = () => {
@@ -78,6 +79,8 @@ const Checking = () => {
             />}
             {open.type === CommonModalType.LOGS && <CheckLog />}
             {open.type === CommonModalType.ISSUES && <Issues />}
+            {open.type === CommonModalType.ISSUES_RESPONSE && <IssuesResponse />}
+            
             {open.type === CommonModalType.CONFIG2AF && <ConfigTwoFA />}
             {open.type === CommonModalType.ADDDEVICE2AF && <VerifyTwoFA />}
             {open.type === CommonModalType.INFO && <InfoModal centerBtn cancelBtn={false} closeBtn={false}

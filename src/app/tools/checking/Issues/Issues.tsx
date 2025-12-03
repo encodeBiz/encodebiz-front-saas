@@ -20,7 +20,6 @@ import { useTranslations } from 'next-intl';
 
 import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import EmptyState from '@/components/common/EmptyState/EmptyState';
-import { format_date } from '@/lib/common/Date';
 import { useCheck } from '../page.context';
 import { getIssues } from '@/services/checkinbiz/employee.service';
 import { useToast } from '@/hooks/useToast';
@@ -31,15 +30,12 @@ import SearchFilter from '@/components/common/table/filters/SearchFilter';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
 import { IIssue } from '@/domain/features/checkinbiz/IIssue';
-import { BorderBox } from '@/components/common/tabs/BorderBox';
-import { AccessTime, CalendarToday, HomeWork } from '@mui/icons-material';
-import { CustomChip } from '@/components/common/table/CustomChip';
+import { CardIssue } from './CardIssue';
 const Issues = () => {
-    const { sessionData } = useCheck()
+    const { sessionData, issueList, setIssueList } = useCheck()
     const t = useTranslations()
     const theme = useTheme()
     const [pending, setPending] = useState(false)
-    const [issueList, setIssueList] = useState<Array<IIssue>>([])
     const { showToast } = useToast()
     const { open, closeModal } = useCommonModal()
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -56,8 +52,9 @@ const Issues = () => {
                 filters.push({ field: 'branchId', operator: '==', value: branchId })
 
             const resultList: Array<IIssue> = await getIssues(
-                sessionData?.entityId as string,
-                sessionData?.employeeId as string,
+                "nDON8mv1S1tuPAxx7jQI",
+                "yiu5fWUwqklMbBKoPY1U",//sessionData?.entityId as string,
+                // sessionData?.employeeId as string,
                 {
                     limit,
                     orderBy: 'createdAt',
@@ -108,7 +105,7 @@ const Issues = () => {
     return (
         <Dialog
             open={open.open}
-            onClose={() => closeModal(CommonModalType.LOGS)}
+            onClose={() => closeModal(CommonModalType.ISSUES)}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
             fullWidth
@@ -119,16 +116,16 @@ const Issues = () => {
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', p: 2 }}>
                 <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'flex-start', textAlign: 'left', mt: 4 }}>
                     <Typography variant="body1" fontWeight={'bold'} fontSize={18} > {t('checking.issues')} </Typography>
-                    {pending && <CircularProgress color="inherit" size={20} />}
+                    {pending && issueList.length === 0 && <CircularProgress color="inherit" size={20} />}
                 </Box>
                 <CustomIconBtn
                     sx={{ position: 'absolute', top: 16, right: 26 }}
-                    onClick={() => closeModal(CommonModalType.LOGS)}
+                    onClick={() => closeModal(CommonModalType.ISSUES)}
                     color={theme.palette.primary.main}
                 />
             </DialogTitle>
             <DialogContent  >
-                <Box sx={{ p: 2, pt: 4, position: 'relative', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 6 }}>
+                <Box sx={{  pt: 4, position: 'relative', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 6 }}>
 
                     <Box sx={{
                         display: 'flex',
@@ -165,44 +162,16 @@ const Issues = () => {
                             lg: 'column',
                             xl: 'column',
                         },
-                        gap: 2,
+                        gap: 1,
                         justifyContent: 'flex-end',
                         alignItems: 'flex-end'
                     }}>
 
-                        {issueList.map((row: IIssue, index: number) => (
-                            <BorderBox
-                                key={index}
-                                sx={{ p: 2, width: '100%' }}
-                            >
-                                <Box display={'flex'} flexDirection={'column'}>
-                                    <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'}>
-                                        <Box display={'flex'} flexDirection={'row'} alignItems={'center'} justifyContent={'flex-start'} gap={1}>
-                                            <AccessTime sx={{ color: theme => theme.palette.primary.dark }} />
-                                            <Typography sx={{ fontSize: 14, color: theme => theme.palette.primary.dark }} fontWeight={'bold'} color='primary'>{row.comments}</Typography>
-                                        </Box>
-
-                                        <CustomChip small background={row.state} label={t('core.label.' + row.state)} />
-                                    </Box>
-
-                                    <Box display={'flex'} flexDirection={'row'} alignItems={'center'} justifyContent={'flex-start'} gap={1}>
-                                        <HomeWork sx={{ color: theme => theme.palette.grey[800] }} />
-                                        <Typography sx={{ fontSize: 12, color: theme => theme.palette.grey[800] }}>{row.branch?.name}</Typography>
-                                    </Box>
-
-                                    <Box display={'flex'} flexDirection={'row'} alignItems={'center'} justifyContent={'flex-start'} gap={1}>
-                                        <CalendarToday sx={{ color: theme => theme.palette.grey[800] }} />
-                                        <Typography sx={{ fontSize: 12, color: theme => theme.palette.grey[800] }}>{format_date(row.createdAt)}</Typography>
-                                    </Box>
-                                </Box>
-
-                            </BorderBox>
-                        ))}
+                        {issueList.map((row: IIssue, index: number) => <CardIssue key={index} row={row} />)}
                     </Box>
-                    <TableContainer component={Paper}>
-
-                        {issueList.length === 0 && !pending && <EmptyState />}
-                    </TableContainer>
+                    {issueList.length === 0 && !pending && <TableContainer component={Paper}>
+                        <EmptyState />
+                    </TableContainer>}
                     {pending && <Box sx={{ width: '100%', display: 'flex', gap: 1, alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
                         <CircularProgress color="inherit" size={20} />
                     </Box>}

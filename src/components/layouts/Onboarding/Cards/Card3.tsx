@@ -20,7 +20,7 @@ const ColumnCard = ({ icon, title, text1, text2, items }: { icon: ReactNode, tit
                 </Box>
                 <Box>
                     <Typography variant="body1" fontSize={20} >
-                        <span style={{ color: '#B7C4FF' }}>{text1}</span>
+                        <span style={{ color: '#B7C4FF' }}>{' '}{text1}</span>
                         {text2}
                     </Typography>
                 </Box>
@@ -60,9 +60,8 @@ export const Card3 = ({ handleNext }: any) => {
                 src={logo}
             />
             <Typography marginTop={2} fontSize={28}>{t('cards.card3.text1')}</Typography>
-
-            <br />
-            <Box display={'flex'} flexDirection={"row"} gap={5}  >
+ 
+            <Box display={'flex'} flexDirection={"row"} gap={5} mt={1}>
                 <Box borderRadius={2} width={'100%'} display={'flex'} flexDirection={"row"} gap={2} >
 
                     <ColumnCard
