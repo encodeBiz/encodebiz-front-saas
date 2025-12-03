@@ -195,7 +195,7 @@ export default function useAttendanceController() {
       id: 'status',
       label: t("core.label.status"),
       minWidth: 170,
-      format: (value, row) => <CustomChip background={row.status==='pending-employee-validation'?row.status:'default'}  label={t('core.label.' + row.status)} />
+      format: (value, row) => <CustomChip background={row.status === 'pending-employee-validation' ? row.status : 'default'} label={t('core.label.' + row.status)} />
     },
     {
       id: 'timestamp',
@@ -247,7 +247,8 @@ export default function useAttendanceController() {
             onFilter({ ...filterParams, filter: { ...filterParams.filter, branchId } })
           else
             onFilter({ ...filterParams, filter: { ...filterParams.filter, branchId: 'none' } })
-        }
+        } else onFilter({ ...filterParams, filter: { ...filterParams.filter, branchId: 'none' } })
+
       }}
     />
 
@@ -262,6 +263,9 @@ export default function useAttendanceController() {
             onFilter({ ...filterParams, filter: { ...filterParams.filter, employeeId } })
           else
             onFilter({ ...filterParams, filter: { ...filterParams.filter, employeeId: 'none' } })
+        } else {
+          onFilter({ ...filterParams, filter: { ...filterParams.filter, employeeId: 'none' } })
+
         }
       }}
     />
@@ -290,9 +294,9 @@ export default function useAttendanceController() {
     fetchingData(filterParamsUpdated)
   }
 
- 
 
-  
+
+
 
   useEffect(() => {
     if (currentEntity?.entity?.id) {
@@ -308,7 +312,7 @@ export default function useAttendanceController() {
   }
   return {
     items, onSort, onRowsPerPageChange,
-    topFilter,  
+    topFilter,
     onNext, onBack,
     columns, rowAction, onSuccessCreate,
     loading, filterParams

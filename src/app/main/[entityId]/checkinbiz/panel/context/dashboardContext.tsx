@@ -7,6 +7,8 @@ import { useEntity } from '@/hooks/useEntity';
 import { ColorBar, colorBarDataset, IBranchPattern, NormalizedIndicators } from '@/domain/features/checkinbiz/IStats';
 import { fetchBranchPattern } from '@/services/checkinbiz/stats.service';
 import { normalizeBranchDataset } from '@/lib/common/normalizer';
+import { useCommonModal } from '@/hooks/useCommonModal';
+import { CommonModalType } from '@/contexts/commonModalContext';
 
 
 
@@ -77,6 +79,7 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
         color: ColorBar
     }>>([])
     const { currentEntity } = useEntity()
+    const { openModal } = useCommonModal()
 
 
 
@@ -88,15 +91,20 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
         const branchPatternList: Array<IBranchPattern> = []
         await Promise.all(branchList.map(async (branch) => {
             const dataPattern = await fetchBranchPattern(currentEntity?.entity?.id as string, branch.id as string) as IBranchPattern
-            if(dataPattern)
+            if (dataPattern)
                 branchPatternList.push(dataPattern as IBranchPattern)
         }))
+
+        if (branchPatternList.length === 0)
+            openModal(CommonModalType.INFO, { empthy: true })
+        
+        
         const normalizeData: Array<{
             branchId: string,
             pattern: IBranchPattern,
             normalized: NormalizedIndicators
         }> = normalizeBranchDataset(branchPatternList)
-             
+
 
         const branchPatternDataListt: Array<{
             branchId: string,
@@ -116,9 +124,9 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
             })
         }))
 
-         
 
-      
+
+
 
         setNormalizedData(branchPatternDataListt)
         setCardIndicatorSelected(localStorage.getItem('PANEL_CHECKBIZ_CHART') ? JSON.parse(localStorage.getItem('PANEL_CHECKBIZ_CHART') as string) : ['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour'])
@@ -134,7 +142,7 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
 
 
 
- 
+
 
 
     return (

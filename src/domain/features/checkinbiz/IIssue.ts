@@ -4,7 +4,7 @@ import { ISucursal } from "./ISucursal"
 export interface IIssue {
     branchId: string
     branch?: ISucursal
-
+    employee?: IEmployee
     comments: string
     createdAt: any
     employeeId: string
@@ -23,7 +23,7 @@ export interface IIssue {
     userId: string
 }
 
-export interface IResponse {
+export interface IIssueResponse {
     createdAt: any
     employeeId: string
     employee?: IEmployee

@@ -22,6 +22,7 @@
       "menu": {
         "Dashboard": "Dashboard",
         "Panel": "Panel",
+        "Issue": "Issues",
         "Stats": "Statistics",
         "Staff": "Staff",
         "Services": "Services",
@@ -104,6 +105,7 @@
     },
     "label": {
       "today": "Today",
+      "comments": "Comments",
       "start": "Start",
       "rejected": "Rejected",
       "in_review": "Under review",
@@ -786,6 +788,19 @@
     "deleteConfirmModalTitle": "Delete report",
     "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the report"
   },
+  "issues": {
+    "title": "Issues",
+    "responses": "Responses",
+    "formDesc": "Completa los campos a continuación para crear/editar una  incidencia.",
+    "list": "Reportes  de insidencias",
+    "add": "Crear insidencia",
+    "edit": "Editar insidencia",
+    "detailSucursal": "Detalles de insidencia",
+    "update": "Editar insidencia",
+    "description": "Rellene los campos para registrar la insidencia",
+    "deleteConfirmModalTitle": "Eliminar reporte",
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el reporte"
+  },
   "report": {
     "title": "Reports",
     "formDesc": "Complete the fields below to create/edit a report.",
@@ -1081,7 +1096,9 @@
     "totalExperience": "Total experience",
     "mainResponsibility": "Main responsibility",
     "mainOccupation": "Main occupation",
-    "emptyBranch": "You must select at least one branch/project to see statistics."
+    "emptyBranch": "You must select at least one branch/project to see statistics.",
+    "helpPanelEmpty": "There is currently insufficient operational information generated to display in the comparison panel. Once the selected branches/projects begin to register attendance and operational data, you will be able to view detailed and comparative analyses here.",
+    "helpPanelEmptyTitle": "No information to display"
   },
   "checking": {
     "title": "Attendance Control",

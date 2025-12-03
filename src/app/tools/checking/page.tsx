@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import Check from './Check/Check';
 import { useTranslations } from 'next-intl';
-import { InfoOutline, NorthEastOutlined } from '@mui/icons-material';
+import { NorthEastOutlined } from '@mui/icons-material';
 
 import CheckLog from './CheckLog/CheckLog';
 import { CheckProvider, useCheck } from './page.context';
@@ -19,9 +19,7 @@ import InfoModal from '@/components/common/modals/InfoModal';
 import VerifyTwoFA from './VerifyTwoFA/VerifyTwoFA';
 import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 import { useStyles } from './page.styles';
-import Issues from './Issues/Issues';
 import { SassButton } from '@/components/common/buttons/GenericButton';
-import IssuesResponse from './IssuesResponse/IssuesResponse';
 
 
 const Checking = () => {
@@ -37,11 +35,7 @@ const Checking = () => {
             <Box sx={classes.locale}>
                 <LocaleSwitcher rmText={true} />
             </Box>
-
-
             <Check />
-
-
             <Box
                 sx={{
                     position: 'fixed',
@@ -63,11 +57,7 @@ const Checking = () => {
             >
                 <SassButton fullWidth sx={{ background: '#001946',borderRadius:2 }} variant='contained' startIcon={<NorthEastOutlined />} onClick={() => openModal(CommonModalType.LOGS)} >
                     {t('checking.history')}
-                </SassButton>
-
-                <SassButton fullWidth sx={{ background: '#001946',borderRadius:2 }} variant='contained' startIcon={<InfoOutline />} onClick={() => openModal(CommonModalType.ISSUES)} >
-                    {t('checking.issuesBtn')}
-                </SassButton>
+                </SassButton>               
             </Box>
 
             {open.type === CommonModalType.BRANCH_SELECTED && <BranchSelectorModal
@@ -78,9 +68,7 @@ const Checking = () => {
                 }}
             />}
             {open.type === CommonModalType.LOGS && <CheckLog />}
-            {open.type === CommonModalType.ISSUES && <Issues />}
-            {open.type === CommonModalType.ISSUES_RESPONSE && <IssuesResponse />}
-            
+          
             {open.type === CommonModalType.CONFIG2AF && <ConfigTwoFA />}
             {open.type === CommonModalType.ADDDEVICE2AF && <VerifyTwoFA />}
             {open.type === CommonModalType.INFO && <InfoModal centerBtn cancelBtn={false} closeBtn={false}

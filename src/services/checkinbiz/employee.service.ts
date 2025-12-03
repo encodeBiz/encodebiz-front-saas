@@ -9,7 +9,7 @@ import { mapperErrorFromBack, normalizarString } from "@/lib/common/String";
 import { addDocument } from "@/lib/firebase/firestore/addDocument";
 import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
 import { deleteDocument } from "@/lib/firebase/firestore/deleteDocument";
-import { IIssue, IResponse } from "@/domain/features/checkinbiz/IIssue";
+import { IIssue, IIssueResponse } from "@/domain/features/checkinbiz/IIssue";
 
 
 /**
@@ -462,14 +462,22 @@ export const searchLogs = async (entityId: string, params: SearchParams): Promis
 }
 
 
-export const getIssues = async (entityId: string, employeeId: string,   params: SearchParams): Promise<IIssue[]> => {
- 
+export const getIssues = async (entityId: string, params: SearchParams): Promise<IIssue[]> => {
+
+  console.log({
+    ...params,
+    filters: [
+      ...params.filters ? params.filters : [],
+      { field: 'entityId', operator: '==', value: entityId }
+    ],
+    collection: `${collection.ISSUES}`,
+  });
   
+
   const result: IIssue[] = await searchFirestore({
     ...params,
     filters: [
       ...params.filters ? params.filters : [],
-      { field: 'employeeId', operator: '==', value: employeeId },
       { field: 'entityId', operator: '==', value: entityId }
     ],
     collection: `${collection.ISSUES}`,
@@ -478,9 +486,16 @@ export const getIssues = async (entityId: string, employeeId: string,   params: 
   return result;
 }
 
-export const getIssuesResponsesLists = async (issuesId: string, params: SearchParams): Promise<IResponse[]> => {
+export const fetchIssue = async (id: string): Promise<IIssue> => {
+  return await getOne(
+    `${collection.ISSUES}`,
+    id);
+}
 
-  const result: IResponse[] = await searchFirestore({
+
+export const getIssuesResponsesLists = async (issuesId: string, params: SearchParams): Promise<IIssueResponse[]> => {
+
+  const result: IIssueResponse[] = await searchFirestore({
     ...params,
     filters: [
       ...params.filters ? params.filters : [],
