@@ -52,9 +52,8 @@ const Issues = () => {
                 filters.push({ field: 'branchId', operator: '==', value: branchId })
 
             const resultList: Array<IIssue> = await getIssues(
-                "nDON8mv1S1tuPAxx7jQI",
-                "yiu5fWUwqklMbBKoPY1U",//sessionData?.entityId as string,
-                // sessionData?.employeeId as string,
+                sessionData?.entityId as string,
+                sessionData?.employeeId as string,
                 {
                     limit,
                     orderBy: 'createdAt',
