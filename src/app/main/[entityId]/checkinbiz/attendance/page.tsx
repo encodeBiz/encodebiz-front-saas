@@ -8,16 +8,18 @@ import { SassButton } from '@/components/common/buttons/GenericButton';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import dynamic from "next/dynamic";
- 
+import EmptyList from '@/components/common/EmptyState/EmptyList';
+import emptyImage from '../../../../../../public/assets/images/empty/asistencia.svg';
+
 const AttendanceFormModal = dynamic(() => import("./AttendanceFormModal/AttendanceFormModal").then(mod => mod.default), {
-    ssr: false,
+  ssr: false,
 })
 
 export default function AttendanceList() {
   const t = useTranslations();
   const {
     items, onRowsPerPageChange, onSort,
-    onNext, onBack,
+    onNext, onBack, empthy,
     filterParams, topFilter,
     columns, rowAction, onSuccessCreate,
     loading } = useAttendanceController();
@@ -38,7 +40,14 @@ export default function AttendanceList() {
           </Box>
         }
       >
-        <GenericTable
+        {empthy && !loading &&
+          <EmptyList
+            imageUrl={emptyImage}
+            title={t('employeeDashboard.attendanceNoDataTitle')}
+            description={t('employeeDashboard.attendanceNoDataText')}
+          />}
+
+        {!empthy && <GenericTable
           data={items}
           rowAction={rowAction}
           columns={columns}
@@ -53,7 +62,7 @@ export default function AttendanceList() {
           onBack={onBack}
           onNext={onNext}
           topFilter={topFilter}
-        />
+        />}
       </HeaderPage>
       {open.type === CommonModalType.CHECKLOGFORM && <AttendanceFormModal onSuccess={onSuccessCreate} />}
     </Container>

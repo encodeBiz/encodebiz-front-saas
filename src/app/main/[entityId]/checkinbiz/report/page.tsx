@@ -8,14 +8,16 @@ import { SassButton } from '@/components/common/buttons/GenericButton';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import ReportFormModal from './ReportFormModal/ReportFormModal';
+import EmptyList from '@/components/common/EmptyState/EmptyList';
+import emptyImage from '../../../../../../public/assets/images/empty/reportes.svg';
 
 export default function AttendanceList() {
   const t = useTranslations();
   const {
     items, onRowsPerPageChange, onSort,
-    onNext, onBack,topFilter,
-    filterParams,  
-    columns, rowAction,onSuccessCreate,
+    onNext, onBack, topFilter,
+    filterParams, empthy,
+    columns, rowAction, onSuccessCreate,
     loading } = useAttendanceController();
   const { openModal, open } = useCommonModal()
   return (
@@ -34,7 +36,15 @@ export default function AttendanceList() {
         }
 
       >
-        <GenericTable
+
+        {empthy && !loading &&
+          <EmptyList
+            imageUrl={emptyImage}
+            title={t('employeeDashboard.reportNoDataTitle')}
+            description={t('employeeDashboard.reportNoDataText')}
+          />}
+
+        {!empthy && <GenericTable
           data={items}
           rowAction={rowAction}
           topFilter={topFilter}
@@ -49,9 +59,9 @@ export default function AttendanceList() {
           sort={{ orderBy: filterParams.params.orderBy, orderDirection: filterParams.params.orderDirection }}
           onBack={onBack}
           onNext={onNext}
-      
 
-        />
+
+        />}
       </HeaderPage>
       {open.type === CommonModalType.REPORTFORM && <ReportFormModal onSuccess={onSuccessCreate} />}
 

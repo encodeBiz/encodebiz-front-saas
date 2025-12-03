@@ -24,7 +24,7 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
     const t = useTranslations()
     const { navivateTo } = useLayout()
     const { openModal, open } = useCommonModal()
-    const { initialize, branchPatternList } = useDashboardBranch()
+    const { initialize, branchPatternList, pending } = useDashboardBranch()
     const { currentEntity } = useEntity()
 
     useEffect(() => {
@@ -93,7 +93,7 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
 
                         <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'} alignItems={'flex-start'}>
                             <DetailText orientation="row" label={t('core.label.breakTimeRange')} value={branch?.advance?.timeBreak + ' ' + t('core.label.minutes')} />
-                            <DetailText help={branch?.advance?.disableBreak ? t('sucursal.disableBreakAlertMessageE') : t('sucursal.disableBreakAlertMessageD')} label={!branch?.advance?.disableBreak ? t('sucursal.breakEnableText') : t('sucursal.breakDisabledText')} />
+                            <DetailText help={branch?.advance?.disableBreak ? t('sucursal.disableBreakAlertMessageE') : t('sucursal.disableBreakAlertMessageD')} label={!branch?.advance?.disableBreak ? t('sucursal.breakDisabledText') : t('sucursal.breakEnableText')} />
                         </Box>
                     </Box>}
                 </Box>
@@ -120,7 +120,7 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
                     title: t("employee.list"),
                     tabContent: <EmployeeList addResponsabiltyItem={addResponsabiltyItem} >{children}</EmployeeList>
                 },
-                ...(branchPatternList.length > 0 ? [
+                ...(branchPatternList.length > 0 && !pending ? [
                     {
                         id: '1',
                         title: t(`sucursal.panel`),

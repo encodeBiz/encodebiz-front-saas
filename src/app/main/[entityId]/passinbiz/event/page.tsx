@@ -3,7 +3,7 @@ import { Container, Box } from '@mui/material';
 import { useTranslations } from "next-intl";
 import useHolderListController from './page.controller';
 import { GenericTable } from "@/components/common/table/GenericTable";
-import { Add, ArchiveOutlined } from '@mui/icons-material';
+import { Add } from '@mui/icons-material';
 import { PASSSINBIZ_MODULE_ROUTE } from '@/config/routes';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { useEntity } from '@/hooks/useEntity';

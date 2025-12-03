@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
-import { createEmployee, search, updateEmployee } from "@/services/checkinbiz/employee.service";
+import { createEmployee, emptyEmployee, search, updateEmployee } from "@/services/checkinbiz/employee.service";
 import { search as searchBranch } from "@/services/checkinbiz/sucursal.service";
 import { useLayout } from "@/hooks/useLayout";
 import { useParams, useSearchParams } from "next/navigation";
@@ -54,9 +54,9 @@ export default function useEmployeeListController() {
   const { showToast } = useToast()
   const { navivateTo } = useLayout()
   const [loading, setLoading] = useState<boolean>(true);
+  const [empthy, setEmpthy] = useState(false)
   const [items, setItems] = useState<IEmployee[]>([]);
   const [itemsHistory, setItemsHistory] = useState<IEmployee[]>([]);
-
   const [filterParams, setFilterParams] = useState<IFilterParams>({
     filter: { status: 'active', branchId: 'none' },
     startAfter: null,
@@ -227,7 +227,7 @@ export default function useEmployeeListController() {
 
   ];
 
-  const fetchingData = (filterParams: IFilterParams) => {
+  const fetchingData = async (filterParams: IFilterParams) => {
     const filters = []
     if (id) {
       filters.push({
@@ -242,7 +242,7 @@ export default function useEmployeeListController() {
     if (filterParams.params.filters.find((e: any) => e.field === 'branchId' && e.value === 'none'))
       filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "branchId")
 
-
+    setEmpthy(await emptyEmployee(currentEntity?.entity.id as string))
 
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters: [...filterParams.params.filters, ...filters] }).then(async res => {
       if (res.length !== 0) {
@@ -409,7 +409,7 @@ export default function useEmployeeListController() {
     onEdit, onSuccess, addEmployee,
     onNext, onBack,
     columns, rowAction, topFilter,
-    loading, filterParams,
+    loading, filterParams,empthy
 
   }
 

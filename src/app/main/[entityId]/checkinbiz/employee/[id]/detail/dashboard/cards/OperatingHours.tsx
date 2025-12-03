@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { BorderBox } from "@/components/common/tabs/BorderBox";
 import { Box, Divider, IconButton, Typography } from "@mui/material";
 

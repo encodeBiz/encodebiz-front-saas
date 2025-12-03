@@ -11,6 +11,8 @@ import FormModal from './edit/FormModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import InfoModal from '@/components/common/modals/InfoModal';
+import EmptyList from '@/components/common/EmptyState/EmptyList';
+import emptyImage from '../../../../../../public/assets/images/empty/empleados.svg';
 
 export default function EmployeeList() {
   const t = useTranslations();
@@ -18,7 +20,7 @@ export default function EmployeeList() {
     items, rowAction, onRowsPerPageChange, onSort,
     onNext, onBack, addEmployee,
     filterParams, topFilter,
-    columns, onSuccess,
+    columns, onSuccess, empthy,
     loading } = useEmployeeListController();
   const { navivateTo } = useLayout()
   const { open } = useCommonModal()
@@ -37,7 +39,14 @@ export default function EmployeeList() {
           </Box>
         }
       >
-        <GenericTable
+
+        {empthy && !loading &&
+          <EmptyList
+            imageUrl={emptyImage}
+            title={t('employeeDashboard.employeeNoDataTitle')}
+            description={t('employeeDashboard.employeeNoDataTitle')}
+          />}
+        {!empthy && <GenericTable
           data={items}
           rowAction={rowAction}
           columns={columns}
@@ -54,7 +63,7 @@ export default function EmployeeList() {
           topFilter={topFilter}
 
 
-        />
+        />}
       </HeaderPage>
       {open.type === CommonModalType.FORM && <FormModal onSuccess={onSuccess} />}
 

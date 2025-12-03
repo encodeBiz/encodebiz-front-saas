@@ -13,7 +13,6 @@ import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { useTranslations } from 'next-intl';
 import { useStyles } from './page.styles';
 import LocaleSwitcher from '@/components/common/LocaleSwitcher';
-import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { useRouter } from 'nextjs-toploader/app';
 import { BorderBox } from '@/components/common/tabs/BorderBox';

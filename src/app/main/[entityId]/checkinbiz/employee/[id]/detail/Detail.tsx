@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { SassButton } from "@/components/common/buttons/GenericButton"
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes"
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee"

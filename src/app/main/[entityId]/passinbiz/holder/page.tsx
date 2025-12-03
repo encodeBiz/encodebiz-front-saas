@@ -6,7 +6,7 @@ import { GenericTable } from "@/components/common/table/GenericTable";
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import CSVUploadModal from '@/components/common/modals/CSVUploadModal';
-import { Add, ArchiveOutlined, PanoramaFishEyeOutlined, ReplyAllOutlined, UploadFile } from '@mui/icons-material';
+import { Add, UploadFile } from '@mui/icons-material';
 import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import CSVConfigModal from '@/components/common/modals/CSVConfigModal';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
