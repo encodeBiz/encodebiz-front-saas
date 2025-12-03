@@ -105,7 +105,7 @@ export default function useResponseIssueController() {
       minWidth: 170,
       format: (value, row) => <Box>
         <div style={{ display: "flex", alignItems: 'center', cursor: 'help', gap: 4 }}>
-          <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.dark, width: 45, height: 45 }}>{row.employee?.fullName?.charAt(0)}</Avatar>
+          <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.dark, width: 35, height: 35 }}>{row.employee?.fullName?.charAt(0)}</Avatar>
           {row.employee?.fullName}
         </div>
       </Box>
@@ -133,7 +133,7 @@ export default function useResponseIssueController() {
       id: 'newState',
       label: t("core.label.state"),
       minWidth: 170,
-      format: (value, row) => <>{t("core.label." + row.newState)} {' -> '} {t("core.label." + row.oldState)}</>
+      format: (value, row) => <>{t("core.label." + row.oldState)} {' -> '} {t("core.label." + row.newState)}</>
     },
 
 
