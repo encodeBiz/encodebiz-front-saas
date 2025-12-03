@@ -4,18 +4,16 @@ import { Container } from '@mui/material';
 import { GenericTable } from "@/components/common/table/GenericTable";
 import useEmployeeDetailController from './page.controller';
 import { Detail } from './Detail';
-import { useParams } from 'next/navigation';
 import useResponseIssueController from './detail.controller';
 
 export default function BranchDetail() {
     const { initialValues, rowAction, onSuccess } = useEmployeeDetailController()
-    const { id } = useParams<{ id: string }>()
     const {
         items, onRowsPerPageChange, onSort,
         onNext, onBack,
         filterParams,
         columns,
-        loading } = useResponseIssueController(id);
+        loading } = useResponseIssueController();
 
 
     return (

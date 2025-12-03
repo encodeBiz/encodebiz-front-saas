@@ -42,7 +42,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const itemId = isFromModal ? open.args?.id : id
   const [enableDayTimeRange, setEnableDayTimeRange] = useState(false)
   const [disableBreak, setDisableBreak] = useState(false)
-  const [disableRatioChecklog, setDisableRatioChecklog] = useState(false)
+  const [, setDisableRatioChecklog] = useState(false)
 
 
   const startTime = new Date()
@@ -274,10 +274,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       column: 3,
       hit: t('core.label.timeBreakDesc'),
       label: t('core.label.breakTimeRange'),
-      extraProps: {
-        //alertMessage: disableBreak ? t('sucursal.disableBreakAlertMessageE') : t('sucursal.disableBreakAlertMessageD'),
-        //alertSeverity: disableBreak ? 'primary' : 'disabled',
-
+      extraProps: {       
         alertMessage: <Box>
           <Alert sx={{ borderRadius: 2, mt: 2, color: '#FFF', bgcolor: theme => disableBreak ? theme.palette.primary.main : theme.palette.grey[800] }} icon={<InfoOutline sx={{ color: '#FFF' }} />} >
             {disableBreak ? <><Typography>{t('sucursal.fieldHelp1')} <strong>{t('sucursal.fieldHelp2')}</strong>{t('sucursal.fieldHelp3')}</Typography>

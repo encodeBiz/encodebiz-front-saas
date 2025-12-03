@@ -117,8 +117,7 @@ export function GenericTable<T extends Record<string, any>>({
   onBack,
   onNext,
   rowAction = [],
-  topFilter = <></>,
-  empty
+  topFilter = <></>
 }: GenericTableProps<T>) {
   // State management
   const [order, setOrder] = useState<'asc' | 'desc'>(sort?.orderDirection ?? 'asc');

@@ -16,16 +16,14 @@ import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import logo from '../../../../public/assets/images/logo.svg'
 import Image from 'next/image';
-import { useAppLocale } from '@/hooks/useAppLocale';
-
+ 
 
 const SignUpPage = () => {
     const { initialValues, validationSchema, fields, signInWithEmail } = useRegisterController()
     const t = useTranslations()
     const classes = useStyles();
     const theme = useTheme()
- const {currentLocale} = useAppLocale()
-    return (
+     return (
         <Container style={{ minWidth: 720, maxWidth: 760, width: '100%' }}>
 
             <BorderBox sx={classes.root}>
