@@ -6,7 +6,6 @@ import { fetchSucursal, search } from '@/services/checkinbiz/sucursal.service';
 import { useEntity } from '@/hooks/useEntity';
 import { ColorBar, colorBarDataset, IBranchPattern, IHeuristicIndicator, IHeuristicInfo } from '@/domain/features/checkinbiz/IStats';
 import { fetchHeuristic, fetchBranchPattern, fetchHeuristicsIndicator } from '@/services/checkinbiz/stats.service';
-import { normalizeBranchDataset } from '@/lib/common/normalizer';
 import { useAuth } from '@/hooks/useAuth';
 import { useAppLocale } from '@/hooks/useAppLocale';
 
@@ -144,46 +143,52 @@ export const DashboardBranchProvider = ({ children, branchId }: { children: Reac
         setHeuristicsItems(heuristicsItems.map(e => ({ ...e, children: e.children.map(ch => ({ ...ch, name: getIndicator(heuristicsIndicator, ch.name), description: getIndicatorDesc(heuristicsIndicator, ch.description) })), name: getHead(heuristicsIndicator, e.name) })));
     }
     const initialize = async () => {
-        setPending(true)
-        const branchList = await search(currentEntity?.entity?.id as string, { ...{} as any, limit: 100 })
-        setBranchList(branchList.filter(e => e.id === branchId))
-        const branchPatternList: Array<IBranchPattern> = []
-        await Promise.all(branchList.filter(e => e.id === branchId).map(async (branch) => {
-            const dataPattern = await fetchBranchPattern(currentEntity?.entity?.id as string, branch.id as string) as IBranchPattern
-            branchPatternList.push(dataPattern as IBranchPattern)
-        }))
-
-        buildHeuristicInfo()
-
-        const branchPatternDataListt: Array<{
-            branchId: string,
-            branch: ISucursal | null,
-            pattern: IBranchPattern,
-            color: ColorBar
-        }> = []
-        await Promise.all(branchPatternList.map(async (pattern, i) => {
-            branchPatternDataListt.push({
-                branchId: pattern.branchId,
-                pattern: pattern,
-                branch: pattern.branchId ? await fetchSucursal(currentEntity?.entity?.id as string, pattern.branchId) : null,
-                color: colorBarDataset[i]
-            })
-        }))
-        setNormalizedData(branchPatternDataListt)
-        const KEY = 'PANEL_BRANCH_CHECKBIZ_CHART_' + branchId
-        setCardIndicatorSelected(localStorage.getItem(KEY) ? JSON.parse(localStorage.getItem(KEY) as string)?.preferenceSelected ?? [...defaultItems1] : [...defaultItems1])
-        setCardHeuristicsIndicatorSelected(localStorage.getItem(KEY) ? JSON.parse(localStorage.getItem(KEY) as string)?.preferenceHeuristicSelected ?? [...defaultItems2] : [...defaultItems2])
-
-        const KEY_TYPE = 'PANEL_BRANCH_CHECKBIZ_CHART_TIME_' + branchId
-        setType(localStorage.getItem(KEY_TYPE) ? localStorage.getItem(KEY_TYPE) as string : 'weeklyWorkAvg')
+        try {
 
 
-        setBranchList(branchPatternDataListt.filter(e => !!e.branch).map(e => e.branch as ISucursal))
-        setbranchPatternList(branchPatternDataListt.filter(e => !!e.branch).slice(0, 3))
-        setBranchSelected(branchPatternDataListt.filter(e => !!e.branch).map(e => e.branch as ISucursal).slice(0, 3))
-        const data: Array<IHeuristicInfo> = await fetchHeuristic(currentEntity?.entity?.id as string, branchId, null, token, currentLocale)
-        setHeuristic(data.map((e) => ({ ...e, active: true })));
-        setPending(false)
+            setPending(true)
+            const branchList = await search(currentEntity?.entity?.id as string, { ...{} as any, limit: 100 })
+            setBranchList(branchList.filter(e => e.id === branchId))
+            const branchPatternList: Array<IBranchPattern> = []
+            await Promise.all(branchList.filter(e => e.id === branchId).map(async (branch) => {
+                const dataPattern = await fetchBranchPattern(currentEntity?.entity?.id as string, branch.id as string) as IBranchPattern
+                branchPatternList.push(dataPattern as IBranchPattern)
+            }))
+
+            buildHeuristicInfo()
+
+            const branchPatternDataListt: Array<{
+                branchId: string,
+                branch: ISucursal | null,
+                pattern: IBranchPattern,
+                color: ColorBar
+            }> = []
+            await Promise.all(branchPatternList.map(async (pattern, i) => {
+                branchPatternDataListt.push({
+                    branchId: pattern.branchId,
+                    pattern: pattern,
+                    branch: pattern.branchId ? await fetchSucursal(currentEntity?.entity?.id as string, pattern.branchId) : null,
+                    color: colorBarDataset[i]
+                })
+            }))
+            setNormalizedData(branchPatternDataListt)
+            const KEY = 'PANEL_BRANCH_CHECKBIZ_CHART_' + branchId
+            setCardIndicatorSelected(localStorage.getItem(KEY) ? JSON.parse(localStorage.getItem(KEY) as string)?.preferenceSelected ?? [...defaultItems1] : [...defaultItems1])
+            setCardHeuristicsIndicatorSelected(localStorage.getItem(KEY) ? JSON.parse(localStorage.getItem(KEY) as string)?.preferenceHeuristicSelected ?? [...defaultItems2] : [...defaultItems2])
+
+            const KEY_TYPE = 'PANEL_BRANCH_CHECKBIZ_CHART_TIME_' + branchId
+            setType(localStorage.getItem(KEY_TYPE) ? localStorage.getItem(KEY_TYPE) as string : 'weeklyWorkAvg')
+
+
+            setBranchList(branchPatternDataListt.filter(e => !!e.branch).map(e => e.branch as ISucursal))
+            setbranchPatternList(branchPatternDataListt.filter(e => !!e.branch).slice(0, 3))
+            setBranchSelected(branchPatternDataListt.filter(e => !!e.branch).map(e => e.branch as ISucursal).slice(0, 3))
+            const data: Array<IHeuristicInfo> = await fetchHeuristic(currentEntity?.entity?.id as string, branchId, null, token, currentLocale)
+            setHeuristic(data.map((e) => ({ ...e, active: true })));
+            setPending(false)
+        } catch {
+            setPending(false)
+        }
     }
 
     const onSelectedBranch = async (branchSelected: Array<ISucursal>) => {

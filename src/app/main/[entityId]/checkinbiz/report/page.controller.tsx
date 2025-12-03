@@ -7,7 +7,7 @@ import { IReport } from "@/domain/features/checkinbiz/IReport";
 import { Column, IRowAction } from "@/components/common/table/GenericTable";
 import { format_date, getDateRange } from "@/lib/common/Date";
 import { fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucursal.service";
-import { search, updateReport } from "@/services/checkinbiz/report.service";
+import { emptyReport, search, updateReport } from "@/services/checkinbiz/report.service";
 import { DownloadOutlined } from "@mui/icons-material";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
 import { useLayout } from "@/hooks/useLayout";
@@ -40,6 +40,8 @@ export default function useAttendanceController() {
   const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<IReport[]>([]);
   const [itemsHistory, setItemsHistory] = useState<IReport[]>([]);
+    const [empthy, setEmpthy] = useState(false)
+  
   const [filterParams, setFilterParams] = useState<any>({
     filter: { status: 'active', range: getDateRange('year') },
     startAfter: null,
@@ -152,7 +154,7 @@ export default function useAttendanceController() {
 
 
 
-  const fetchingData = (filterParams: IFilterParams) => {
+  const fetchingData = async (filterParams: IFilterParams) => {
 
 
     const filters = [
@@ -161,6 +163,7 @@ export default function useAttendanceController() {
     setLoading(true)
 
      
+    setEmpthy(await emptyReport(currentEntity?.entity.id as string))
      
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async res => {
  
@@ -282,9 +285,8 @@ export default function useAttendanceController() {
 
   return {
     items, onSort, onRowsPerPageChange,
-
     onNext, onBack, onSuccessCreate,
     columns, rowAction, topFilter,
-    loading, filterParams
+    loading, filterParams, empthy
   }
 }

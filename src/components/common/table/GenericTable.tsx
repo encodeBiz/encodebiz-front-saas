@@ -95,6 +95,7 @@ interface GenericTableProps<T> {
   onSearch?: (text: string) => void
   rowAction?: Array<IRowAction>
   topFilter?: React.ReactNode
+  empty?: React.ReactNode
 }
 
 export function GenericTable<T extends Record<string, any>>({
@@ -116,7 +117,8 @@ export function GenericTable<T extends Record<string, any>>({
   onBack,
   onNext,
   rowAction = [],
-  topFilter = <></>
+  topFilter = <></>,
+  empty
 }: GenericTableProps<T>) {
   // State management
   const [order, setOrder] = useState<'asc' | 'desc'>(sort?.orderDirection ?? 'asc');

@@ -18,7 +18,7 @@ import { preferenceDashboardItems } from "@/domain/features/checkinbiz/IStats";
 
 export const PanelStats = () => {
   const t = useTranslations();
-  const { branchId, pending, branchPatternList, cardHeuristicsIndicatorSelected, setCardHeuristicsIndicatorSelected, cardIndicatorSelected, setCardIndicatorSelected, heuristicsItems, type, setType } = useDashboardBranch()
+  const { branchId, pending, branchPatternList, heuristic, cardHeuristicsIndicatorSelected, setCardHeuristicsIndicatorSelected, cardIndicatorSelected, setCardIndicatorSelected, heuristicsItems, type, setType } = useDashboardBranch()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const { currentEntity } = useEntity()
   const [preferenceSelected, setPreferenceSelected] = useState(cardIndicatorSelected)
@@ -70,7 +70,7 @@ export const PanelStats = () => {
       <TempActivity />
     </Box>}
 
-    {!pending && branchPatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5} pt={5}>
+    {!pending && heuristic.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5} pt={5}>
       <HeuristicAnalize />
     </Box>}
 
@@ -105,7 +105,7 @@ export const PanelStats = () => {
                     </Box>
                     <NestedSelectWithCheckmarks preferenceItems={preferenceDashboardItems(t)} value={preferenceSelected} onChange={setPreferenceSelected} />
                     <SelectorChart type={preferenceTypeSelected} setType={setPreferenceTypeSelected} />
-                    <NestedSelectWithCheckmarks title='INDICADORES HEURÍSTICOS' label='Indicadores heurísticos' preferenceItems={heuristicsItems} value={preferenceHeuristicSelected} onChange={setPreferenceHeuristicSelected} />
+                    {heuristic.length > 0 && <NestedSelectWithCheckmarks title='INDICADORES HEURÍSTICOS' label='Indicadores heurísticos' preferenceItems={heuristicsItems} value={preferenceHeuristicSelected} onChange={setPreferenceHeuristicSelected} />}
 
                   </Box>
 

@@ -102,6 +102,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       const data: ISucursal = {
         name: values.name,
         ratioChecklog: values.ratioChecklog ?? 0,
+        disableRatioChecklog:values.disableRatioChecklog,
         status: values.status,
         nif: values.nif,
         "metadata": ArrayToObject(values.metadata as any),
@@ -192,7 +193,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     },
     {
       name: 'disableRatioChecklog',
-      label: disableRatioChecklog ? t('core.label.disableRatioChecklogD') : t('core.label.disableRatioChecklogE'),
+      label: t('core.label.disableRatioChecklogD') ,
       required: false,
       component: ToggleInput,
       extraProps: {
@@ -347,7 +348,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         address: sucursal.address,
 
         postalCode: sucursal.address.postalCode,
-
+        disableRatioChecklog: sucursal.disableRatioChecklog,
         status: sucursal.status,
         ratioChecklog: sucursal.ratioChecklog,
         name: sucursal.name,

@@ -56,7 +56,17 @@ export const search = async (entityId: string, params: SearchParams): Promise<IE
     collection: `${collection.ENTITIES}/${entityId}/${collection.EMPLOYEE}`,
   });
 
-  return result;
+
+  return result
+}
+
+export const emptyEmployee = async (entityId: string): Promise<boolean> => {
+  const data: IEmployee[] = await searchFirestore({
+    ...{ limit: 1 } as any,
+    collection: `${collection.ENTITIES}/${entityId}/${collection.EMPLOYEE}`,
+  });
+
+  return data.length === 0
 }
 
 /**
@@ -464,7 +474,7 @@ export const searchLogs = async (entityId: string, params: SearchParams): Promis
 
 export const getIssues = async (entityId: string, params: SearchParams): Promise<IIssue[]> => {
 
-  
+
 
   const result: IIssue[] = await searchFirestore({
     ...params,

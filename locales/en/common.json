@@ -190,7 +190,7 @@
       "disableRatioChecklog": "Disable check-in zone",
       "disableRatioChecklogE": "Check-in zone active",
       "disableRatioChecklogD": "Check-in zone deactivated",
-      "price": "Price",
+      "price": "Salary per hour",
       "active": "Active",
       "thumbnail": "Thumbnail image",
       "subject": "Subject",
@@ -1098,7 +1098,15 @@
     "mainOccupation": "Main occupation",
     "emptyBranch": "You must select at least one branch/project to see statistics.",
     "helpPanelEmpty": "There is currently insufficient operational information generated to display in the comparison panel. Once the selected branches/projects begin to register attendance and operational data, you will be able to view detailed and comparative analyses here.",
-    "helpPanelEmptyTitle": "No information to display"
+    "helpPanelEmptyTitle": "No information to display",
+     "panelNoDataTitle": "No data to compare yet",
+    "panelNoDataText": "This view allows you to compare operational, temporal, and heuristic behavior between different branches or projects. Once there is sufficient activity, you will be able to select which branch or project you want to contrast and which indicators to visualize. Until then, it is not possible to generate comparisons.",
+    "employeeNoDataTitle": "You haven't created any employees yet",
+    "employeeNoDataText": "Create your first employee to start organizing your operation. From here, you can manage their basic information and assign them to a branch or project. Once created, this section will display the complete list of your team.",
+    "reportNoDataTitle": "No data to generate a report",
+    "reportNoDataText": "Select a branch/project and a date range to obtain a downloadable report. Generation will only be available when there are sufficient attendance records within the chosen period. Until then, reports cannot be produced.",
+    "attendanceNoDataTitle": "No attendance records yet",
+    "attendanceNoDataText": "Here, the clock-ins and clock-outs linked to each employee and branch/project will be displayed, along with location and schedule validation. Once the first check-ins are registered, you will be able to supervise daily activity and filter by dates, employee, and branch or project."
   },
   "checking": {
     "title": "Attendance Control",

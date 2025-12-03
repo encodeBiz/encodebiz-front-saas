@@ -23,10 +23,11 @@ import { InfoHelp } from "@/components/common/help/InfoHelp";
 import { preferenceDashboardItems } from "@/domain/features/checkinbiz/IStats";
 import { useLayout } from "@/hooks/useLayout";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
-
+import EmptyList from "@/components/common/EmptyState/EmptyList";
+import emptyImage from '../../../../../../../public/assets/images/empty/datos.svg';
 export const PanelStats = () => {
   const t = useTranslations();
-  const { pending, branchPatternList, cardIndicatorSelected, setCardIndicatorSelected, initialize, type, setType } = useDashboard()
+  const { pending, branchPatternList, branchList, cardIndicatorSelected, setCardIndicatorSelected, initialize, type, setType } = useDashboard()
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const { currentEntity } = useEntity()
   const { navivateTo } = useLayout()
@@ -64,7 +65,7 @@ export const PanelStats = () => {
 
 
   const InnetContent = () => <Box sx={{ minHeight: 600, p: 3 }}>
-    <SelectorBranch />
+    {branchList.length > 0 && <SelectorBranch />}
     {pending && <BoxLoader message={t('statsCheckbiz.loading')} />}
 
     {!pending && branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour'].includes(e)).length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5} pt={5}>
@@ -84,10 +85,19 @@ export const PanelStats = () => {
     </Box>}
 
 
-    {branchPatternList.length == 0 && !pending &&
+    {branchList.length > 0 && branchPatternList.length == 0 && !pending &&
       <Box display={'flex'} justifyContent={'center'} alignItems={'center'} sx={{ minHeight: 400, p: 4 }}>
         <Typography variant="body1">{t('employeeDashboard.emptyBranch')}</Typography>
       </Box>}
+
+    {branchList.length == 0 && !pending &&
+      <EmptyList
+        imageUrl={emptyImage}
+        title={t('employeeDashboard.panelNoDataTitle')}
+        description={t('employeeDashboard.panelNoDataText')}
+      />}
+
+
 
   </Box>
   return (
@@ -105,7 +115,7 @@ export const PanelStats = () => {
         actions={
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2}>
             <Box display={'flex'} justifyContent={'space-between'}    >
-              <Box>
+              {branchList.length > 0 && <Box>
                 <SassButton sx={{ minWidth: 210 }} variant="text" onClick={handleClick} startIcon={<SettingsOutlined sx={{ fontSize: 20 }} color='primary' />}>
                   <Typography sx={{ marginLeft: 1 }} variant="body1" color="primary">{t('statsCheckbiz.configPanel')}</Typography>
                 </SassButton>
@@ -132,7 +142,7 @@ export const PanelStats = () => {
                     <SassButton onClick={handleSave} variant="contained" color="primary">{t('core.button.save')}</SassButton>
                   </Box>
                 </Popover>
-              </Box>
+              </Box>}
             </Box>
           </Box>
         }

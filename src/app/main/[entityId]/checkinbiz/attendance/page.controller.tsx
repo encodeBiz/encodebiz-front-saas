@@ -20,6 +20,7 @@ import { Edit, Map } from "@mui/icons-material";
 import { onGoMap } from "@/lib/common/maps";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
+import { emptyChecklog } from "@/services/checkinbiz/report.service";
 
 interface IFilterParams {
   filter: { branchId: string, employeeId: string, status: string, range: { start: any, end: any } | null },
@@ -46,6 +47,8 @@ export default function useAttendanceController() {
   const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<IChecklog[]>([]);
   const [itemsHistory, setItemsHistory] = useState<IChecklog[]>([]);
+  const [empthy, setEmpthy] = useState(false)
+
   const [filterParams, setFilterParams] = useState<any>({
     filter: { branchId: 'none', employeeId: 'none', status: 'valid', range: { start: rmNDay(new Date(), 1), end: new Date() } },
     startAfter: null,
@@ -123,7 +126,7 @@ export default function useAttendanceController() {
 
 
 
-  const fetchingData = (filterParams: IFilterParams) => {
+  const fetchingData = async (filterParams: IFilterParams) => {
 
     if (filterParams.params.filters.find((e: any) => e.field === 'branchId' && e.value === 'none'))
       filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "branchId")
@@ -138,6 +141,7 @@ export default function useAttendanceController() {
     ]
     setLoading(true)
 
+    setEmpthy(await emptyChecklog(currentEntity?.entity.id as string))
 
     searchLogs(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async res => {
       if (res.length !== 0) {
@@ -312,7 +316,7 @@ export default function useAttendanceController() {
   }
   return {
     items, onSort, onRowsPerPageChange,
-    topFilter,
+    topFilter,empthy,
     onNext, onBack,
     columns, rowAction, onSuccessCreate,
     loading, filterParams

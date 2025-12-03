@@ -22,6 +22,14 @@ export const fetchChecklog = async (entityId: string, id: string): Promise<IChec
     id);
 }
 
+export const emptyChecklog = async (entityId: string): Promise<boolean> => {
+  const data: IReport[] = await searchFirestore({
+    ...{ limit: 1 } as any,
+    collection: `${collection.ENTITIES}/${entityId}/${collection.CHECKLOG}`,
+  });
+
+  return data.length === 0
+}
 
 
 /**
@@ -33,7 +41,7 @@ export const fetchChecklog = async (entityId: string, id: string): Promise<IChec
    */
 export const search = async (entityId: string, params: SearchParams): Promise<IReport[]> => {
 
-  
+
   const result: IReport[] = await searchFirestore({
     ...params,
     collection: `${collection.ENTITIES}/${entityId}/${collection.CHECKBIZ_REPORT}`,
@@ -41,6 +49,17 @@ export const search = async (entityId: string, params: SearchParams): Promise<IR
 
   return result;
 }
+
+export const emptyReport = async (entityId: string): Promise<boolean> => {
+  const data: IReport[] = await searchFirestore({
+    ...{ limit: 1 } as any,
+    collection: `${collection.ENTITIES}/${entityId}/${collection.CHECKBIZ_REPORT}`,
+  });
+
+  return data.length === 0
+}
+
+
 
 export async function createReport(data: Partial<IReport>, token: string, locale: any = 'es') {
   try {
@@ -50,7 +69,7 @@ export async function createReport(data: Partial<IReport>, token: string, locale
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,locale
+          authorization: `Bearer ${token}`, locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
@@ -81,7 +100,7 @@ export async function updateChecklog(data: Partial<IChecklog>, token: string, lo
       const httpClientFetchInstance: HttpClient = new HttpClient({
         baseURL: "",
         headers: {
-          authorization: `Bearer ${token}`,locale
+          authorization: `Bearer ${token}`, locale
         },
       });
       const response: any = await httpClientFetchInstance.post(
