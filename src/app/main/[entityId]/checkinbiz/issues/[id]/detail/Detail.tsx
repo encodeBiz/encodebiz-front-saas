@@ -3,16 +3,16 @@ import { DetailText } from "@/components/common/table/DetailText"
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes"
 import { useLayout } from "@/hooks/useLayout"
 import { ArrowBackOutlined } from "@mui/icons-material"
-import { Card, Box, Grid, Typography, CardContent, Paper, Divider, Stack } from "@mui/material"
+import { Card, Box, Grid, Typography, CardContent, Paper, Divider, Stack, Avatar } from "@mui/material"
 import { useTranslations } from "next-intl"
-import { ResponseList } from "./components/ResponseList"
 import { IIssue } from "@/domain/features/checkinbiz/IIssue"
 import { format_date } from "@/lib/common/Date"
+import ReplyThread from "./components/ReplyThread"
 
-export const Detail = ({ issue, children }: { issue: IIssue, children: React.ReactNode, onSuccess: () => void }) => {
+export const Detail = ({ issue }: { issue: IIssue}) => {
     const t = useTranslations()
     const { navivateTo } = useLayout()
- 
+
 
     return <Card elevation={3} sx={{ width: '100%', margin: 'auto' }}>
         {/* Header Section */}
@@ -22,47 +22,29 @@ export const Detail = ({ issue, children }: { issue: IIssue, children: React.Rea
                     <ArrowBackOutlined color="primary" style={{ fontSize: 45, cursor: 'pointer' }} onClick={() => {
                         navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/issues`)
                     }} />
-                    <Box display={'flex'} flexDirection={'column'}>
-                        <Typography variant="h4"   >
-                            {issue?.comments}
-                        </Typography>
-                        <Box display={'flex'} flexDirection={'row'} gap={1}>
-                            <Typography variant="body1"   >
+
+                    <Box display="flex" alignItems="center" mb={2}>
+                        <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main, mr: 2 }}>
+                            {issue.employee?.fullName.charAt(0)}
+                        </Avatar>
+                        <Box>
+                            <Typography variant="subtitle1">
+                                {issue.employee?.fullName}, {issue?.branch?.name}
+                            </Typography>
+                            <Typography variant="caption" color="text.secondary">
                                 {format_date(issue.createdAt)}
                             </Typography>
+                            {' '}
                             <CustomChip role='ship' size='small' background={issue?.state} label={t('core.label.' + issue.state)} />
                         </Box>
-
                     </Box>
                 </Grid>
-                <Stack direction={'row'} gap={2}>
-
-                </Stack>
-
             </Grid>
-
-
         </Box>
 
         <CardContent sx={{ p: 0 }}>
-            <Paper elevation={0} sx={{ p: 3 }}>
-                <Box display={'flex'} justifyContent={'space-between'} alignItems={'flex-start'}>
-                    <Box display={'flex'} flexDirection={'column'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={0} alignItems={'flex-start'}>
-                        <DetailText label={t('core.label.employee')} value={issue?.employee?.fullName} orientation="row" />
-                        <DetailText label={t('core.label.branch')} value={issue?.branch?.name} orientation="row" />
-                    </Box>
-                </Box>
-
-
-            </Paper>
-
-
-
             <Divider />
-
-            {issue?.id && <ResponseList >{children}</ResponseList>}
-
-
+            <ReplyThread />
         </CardContent>
 
 

@@ -503,6 +503,8 @@ export const getIssuesResponsesLists = async (issuesId: string, params: SearchPa
       ...params.filters ? params.filters : [],
     ],
     collection: `${collection.ISSUES}/${issuesId}/responses`,
+    orderBy:'',
+    orderDirection:'desc'
   });
 
   return result;
