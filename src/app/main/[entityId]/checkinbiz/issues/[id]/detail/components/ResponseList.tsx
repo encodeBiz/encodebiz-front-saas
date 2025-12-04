@@ -1,8 +1,9 @@
 
 import { Typography, Paper, Box } from "@mui/material"
 import { useTranslations } from "next-intl"
+import ReplyThread from "./ReplyThread"
 
-export const ResponseList = ({ children }: { children: React.ReactNode }) => {
+export const ResponseList = () => {
     const t = useTranslations()
 
     return <Paper elevation={0} sx={{ p: 3 }}>
@@ -11,7 +12,7 @@ export const ResponseList = ({ children }: { children: React.ReactNode }) => {
                 {t("issues.responses")}
             </Typography>
         </Box>
-        {children}
+        <ReplyThread />
     </Paper>
 
 

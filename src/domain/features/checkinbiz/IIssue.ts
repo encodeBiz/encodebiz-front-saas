@@ -33,4 +33,6 @@ export interface IIssueResponse {
     newState: string
     oldState: string
     userId: string
+
+    totalItems?:number
 }

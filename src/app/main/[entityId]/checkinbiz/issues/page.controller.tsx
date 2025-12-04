@@ -51,12 +51,12 @@ export default function useIIssuesListController() {
   const [items, setItems] = useState<IIssue[]>([]);
   const [itemsHistory, setItemsHistory] = useState<IIssue[]>([]);
   const [filterParams, setFilterParams] = useState<IFilterParams>({
-    filter: { branchId: 'none', employeeId: 'none', state: 'resolved' },
+    filter: { branchId: 'none', employeeId: 'none', state: 'in_review' },
     startAfter: null,
     currentPage: 0,
     total: 0,
     params: {
-      filters: [{ field: 'state', operator: '==', value: 'resolved' }],
+      filters: [{ field: 'state', operator: '==', value: 'in_review' }],
       startAfter: null,
       limit: 5,
       orderBy: 'createdAt',
@@ -140,7 +140,7 @@ export default function useIIssuesListController() {
   const options = [
     { label: t('core.label.resolved'), value: 'resolved' },
     { label: t('core.label.in_review'), value: 'in_review' },
-    { label: t('core.label.pending'), value: 'pending' },
+    { label: t('core.label.rejected'), value: 'rejected' },
   ]
 
 

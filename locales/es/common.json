@@ -21,7 +21,7 @@
     "side": {
       "menu": {
         "Dashboard": "Panel",
-        "Issue": "Insidencias",
+        "Issue": "Incidencias",
         "Panel": "Panel",
         "Stats": "Estadísticas",
         "Staff": "Personal",
@@ -774,9 +774,9 @@
     "fieldHelp27": "se descuentan"
   },
   "attendance": {
-    "title": "Reportes de asistencia",
+    "title": "Asistencias",
     "formDesc": "Completa los campos a continuación para crear/editar un reporte de asistencia.",
-    "list": "Reportes  de asistencia",
+    "list": "Asistencias",
     "add": "Crear registro de asistencia",
     "edit": "Editar registro de asistencia",
     "export": "Exportar reportes de asistencia",
@@ -789,15 +789,15 @@
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el reporte"
   },
   "issues": {
-    "title": "Insidencias",
+    "title": "Incidencias",
     "responses": "Respuestas",
     "formDesc": "Completa los campos a continuación para crear/editar una  incidencia.",
-    "list": "Reportes  de insidencias",
-    "add": "Crear insidencia",
-    "edit": "Editar insidencia",
-    "detailSucursal": "Detalles de insidencia",
-    "update": "Editar insidencia",
-    "description": "Rellene los campos para registrar la insidencia",
+    "list": "Reportes  de incidencias",
+    "add": "Crear incidencia",
+    "edit": "Editar incidencia",
+    "detailSucursal": "Detalles de incidencia",
+    "update": "Editar incidencia",
+    "description": "Rellene los campos para registrar la incidencia",
     "deleteConfirmModalTitle": "Eliminar reporte",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el reporte"
   },
