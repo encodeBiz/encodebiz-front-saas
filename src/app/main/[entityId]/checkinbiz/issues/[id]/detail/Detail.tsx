@@ -9,7 +9,7 @@ import { IIssue } from "@/domain/features/checkinbiz/IIssue"
 import { format_date } from "@/lib/common/Date"
 import ReplyThread from "./components/ReplyThread"
 
-export const Detail = ({ issue }: { issue: IIssue}) => {
+export const Detail = ({ issue }: { issue: IIssue }) => {
     const t = useTranslations()
     const { navivateTo } = useLayout()
 
@@ -43,6 +43,13 @@ export const Detail = ({ issue }: { issue: IIssue}) => {
         </Box>
 
         <CardContent sx={{ p: 0 }}>
+
+            <Box display="flex" flexDirection={'column'} justifyContent="flex-start" alignItems="flex-start" mb={2} p={4} sx={{ bgcolor: (theme) => theme.palette.primary.light }}>
+                <Typography fontWeight={'bold'} variant="subtitle1">
+                    {t("issues.list")}: 
+                </Typography> 
+                {issue.comments}
+            </Box>
             <Divider />
             <ReplyThread />
         </CardContent>

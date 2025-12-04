@@ -11,7 +11,7 @@ export interface IEmployee {
     trustedDevicesId?: string[]; // Para control en checkin
     status: "active" | "inactive" | "vacation" | "sick_leave" | "leave_of_absence" | "paternity_leave" | "maternity_leave";
     twoFA?: any,
-    createdAt: Date;
+    createdAt: any;
     metadata?: any | {
 
         address?: {
