@@ -10,6 +10,7 @@ import { addDocument } from "@/lib/firebase/firestore/addDocument";
 import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
 import { deleteDocument } from "@/lib/firebase/firestore/deleteDocument";
 import { IIssue, IIssueResponse } from "@/domain/features/checkinbiz/IIssue";
+import { Timestamp } from "firebase/firestore";
 
 
 /**
@@ -43,22 +44,6 @@ export const fetch2FAData = async (entityId: string, id: string): Promise<{ twoF
 
 
 
-/**
-   * Search employee
-   *
-   * @async
-   * @param {SearchParams} params
-   * @returns {Promise<Iemployee[]>}
-   */
-export const search = async (entityId: string, params: SearchParams): Promise<IEmployee[]> => {
-  const result: IEmployee[] = await searchFirestore({
-    ...params,
-    collection: `${collection.ENTITIES}/${entityId}/${collection.EMPLOYEE}`,
-  });
-
-
-  return result
-}
 
 export const emptyEmployee = async (entityId: string): Promise<boolean> => {
   const data: IEmployee[] = await searchFirestore({
@@ -503,9 +488,173 @@ export const getIssuesResponsesLists = async (issuesId: string, params: SearchPa
       ...params.filters ? params.filters : [],
     ],
     collection: `${collection.ISSUES}/${issuesId}/responses`,
-    orderBy:'',
-    orderDirection:'desc'
+    orderBy: '',
+    orderDirection: 'desc'
   });
 
   return result;
 }
+
+
+/**
+   * Search employee
+   *
+   * @async
+   * @param {SearchParams} params
+   * @returns {Promise<Iemployee[]>}
+   */
+export const search = async (entityId: string, params: SearchParams): Promise<IEmployee[]> => {
+  const result: IEmployee[] = await searchFirestore({
+    ...params,
+    collection: `${collection.ENTITIES}/${entityId}/${collection.EMPLOYEE}`,
+  });
+
+
+  return result
+}
+
+
+export interface EmployeeStats {
+  year: number;
+  totalEmployees: number;
+  monthlyBreakdown: Array<{
+    month: number;
+    monthName: string;
+    count: number;
+    growthPercentage: number;
+  }>;
+  averagePerMonth: number;
+  peakMonth: {
+    month: number;
+    monthName: string;
+    count: number;
+  };
+  lowestMonth: {
+    month: number;
+    monthName: string;
+    count: number;
+  };
+}
+
+export const getEmployeeStatsByYear = async (
+  entityId: string,
+  year: number,
+  params: SearchParams
+): Promise<EmployeeStats> => {
+  try {
+    // Obtener todos los empleados del año especificado
+    const startDate = new Date(year, 0, 1);
+    const endDate = new Date(year, 11, 31, 23, 59, 59);
+
+    const employees: IEmployee[] = await searchFirestore({
+      ...params,
+      limit: 10000,
+      filters: [
+        ...(params.filters ?? []),
+        {
+          field: 'createdAt',
+          operator: '>=',
+          value: startDate,
+        },
+        {
+          field: 'createdAt',
+          operator: '<=',
+          value: endDate,
+        },
+      ],
+      collection: `${collection.ENTITIES}/${entityId}/${collection.EMPLOYEE}`,
+    });
+
+
+
+    // Agrupar por mes
+    const monthlyData: { [key: number]: number } = {};
+    const months = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+
+    // Inicializar contadores de cada mes
+    for (let i = 0; i < 12; i++) {
+      monthlyData[i] = 0;
+    }
+
+    // Contar empleados por mes
+    employees.forEach((employee) => {
+      if ((employee.createdAt as Timestamp).toDate()) {
+        const createdDate = (employee.createdAt as Timestamp).toDate();
+        const month = createdDate.getMonth();
+        monthlyData[month]++;
+      }
+    });
+    delete monthlyData[12]
+ 
+
+    // Calcular estadísticas mensuales
+    const monthlyBreakdown = Object.entries(monthlyData).map(([monthIndex, count]) => {
+      const month = parseInt(monthIndex);
+      const previousMonth = month > 0 ? monthlyData[month - 1] : 0;
+      const growthPercentage = previousMonth === 0 ? 0 : ((count - previousMonth) / previousMonth) * 100;
+
+      return {
+        month: month + 1,
+        monthName: months[month],
+        count,
+        growthPercentage: Math.round(growthPercentage * 100) / 100,
+      };
+    });
+
+ 
+
+    // Encontrar mes con mayor y menor creación
+    const nonZeroMonths = monthlyBreakdown.filter(m => m.count > 0);
+    const peakMonth = nonZeroMonths.reduce((max, current) =>
+      current.count > max.count ? current : max
+    ) || { month: 0, monthName: 'N/A', count: 0 };
+
+    const lowestMonth = nonZeroMonths.reduce((min, current) =>
+      current.count < min.count ? current : min
+    ) || { month: 0, monthName: 'N/A', count: 0 };
+
+    const totalEmployees = employees.length;
+    const averagePerMonth = Math.round((totalEmployees / 12) * 100) / 100;
+
+    return {
+      year,
+      totalEmployees,
+      monthlyBreakdown,
+      averagePerMonth,
+      peakMonth,
+      lowestMonth,
+    };
+  } catch (error: any) {
+    console.log(error);
+
+    throw new Error(
+      mapperErrorFromBack(error?.message as string, false) as string
+    );
+  }
+};
+
+// Función alternativa para obtener estadísticas de múltiples años
+export const getEmployeeStatsByYearRange = async (
+  entityId: string,
+  startYear: number,
+  endYear: number,
+  params: SearchParams
+): Promise<EmployeeStats[]> => {
+  try {
+    const stats: EmployeeStats[] = [];
+
+    for (let year = startYear; year <= endYear; year++) {
+      const yearStats = await getEmployeeStatsByYear(entityId, year, params);
+      stats.push(yearStats);
+    }
+
+    return stats;
+  } catch (error: any) {
+    throw new Error(
+      mapperErrorFromBack(error?.message as string, false) as string
+    );
+  }
+};

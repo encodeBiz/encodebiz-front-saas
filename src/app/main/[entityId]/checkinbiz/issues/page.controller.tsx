@@ -146,13 +146,7 @@ export default function useIIssuesListController() {
 
 
   const columns: Column<IIssue>[] = [
-    {
-      id: 'comments',
-      label: t("core.label.comments"),
-      minWidth: 170,
-      onClick: (item: IIssue) => onDetail(item),
-    },
-
+  
     {
       id: 'branch',
       label: t("core.label.branch"),

@@ -140,8 +140,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
             })
             setEntityList(updatedList)
             setCurrentEntity(current)
-
-            push(`${pathname.replace(entityId, current.entity.id as string)}`)
+            push(`/${MAIN_ROUTE}/${current.entity.id}/dashboard`)
             await saveStateCurrentEntity(updatedList, currentLocale)
 
             setTimeout(() => {

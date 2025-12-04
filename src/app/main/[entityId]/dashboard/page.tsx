@@ -10,6 +10,7 @@ import { BorderBox } from '@/components/common/tabs/BorderBox';
 import { PassesTrendChart } from '../passinbiz/stats/components/charts/passesTrend/passesTrend';
 import { PassinBizStatsProvider } from '../passinbiz/stats/context/passBizStatsContext';
 import { useEntity } from '@/hooks/useEntity';
+import { EmployeeTrendChart } from '../checkinbiz/panel/components/employeeTrend/employeeTrend';
  
 export default function Dashboard() {
   const t = useTranslations()
@@ -29,6 +30,10 @@ export default function Dashboard() {
 
         {entitySuscription.filter((e) => e.serviceId === "passinbiz").length > 0 && <BorderBox sx={{ width: "100%", p: 2, mt: 10, background: 'white'}}>
           <PassesTrendChart />
+        </BorderBox>}
+
+         {entitySuscription.filter((e) => e.serviceId === "checkinbiz").length > 0 && <BorderBox sx={{ width: "100%", p: 2, mt: 10, background: 'white'}}>
+          <EmployeeTrendChart />
         </BorderBox>}
 
         <ServiceList />
