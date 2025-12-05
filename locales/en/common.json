@@ -798,6 +798,7 @@
     "detailSucursal": "Report details",
     "update": "Edit attendance reports",
     "import": "Import",
+    "requestUpdates":"Solicitudes de cambio",
     "description": "Fill in the fields to register the report",
     "deleteConfirmModalTitle": "Delete report",
     "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the report"

@@ -6,17 +6,17 @@ import { useEntity } from "@/hooks/useEntity";
 import { searchLogs, fetchEmployee as fetchEmployeeData } from "@/services/checkinbiz/employee.service";
 import { IChecklog } from "@/domain/features/checkinbiz/IChecklog";
 import { Column } from "@/components/common/table/GenericTable";
-import { format_date, rmNDay } from "@/lib/common/Date";
+import { format_date, getDateRange } from "@/lib/common/Date";
 import { fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucursal.service";
 
-import { Box } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 
 import { DateRangePicker } from "@/app/main/[entityId]/passinbiz/stats/components/filters/fields/DateRangeFilter";
 import SearchFilter from "@/components/common/table/filters/SearchFilter";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { CustomChip } from "@/components/common/table/CustomChip";
-import { Edit, Map } from "@mui/icons-material";
+import { Edit, Map, TableViewRounded } from "@mui/icons-material";
 import { onGoMap } from "@/lib/common/maps";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
@@ -50,15 +50,15 @@ export default function useAttendanceController() {
   const [empthy, setEmpthy] = useState(false)
 
   const [filterParams, setFilterParams] = useState<any>({
-    filter: { branchId: 'none', employeeId: 'none', status: 'valid', range: { start: rmNDay(new Date(), 1), end: new Date() } },
+    filter: { branchId: 'none', employeeId: 'none', status: 'valid', range: { start: getDateRange('today').start, end: getDateRange('today').end } },
     startAfter: null,
     currentPage: 0,
     total: 0,
     params: {
       filters: [
         { field: 'status', operator: '==', value: 'valid' },
-        { field: 'timestamp', operator: '>=', value: rmNDay(new Date(), 1) },
-        { field: 'timestamp', operator: '<=', value: new Date() }
+        { field: 'timestamp', operator: '>=', value: getDateRange('today').start },
+        { field: 'timestamp', operator: '<=', value: getDateRange('today').end }
       ],
       startAfter: null,
       limit: 5,
@@ -151,7 +151,16 @@ export default function useAttendanceController() {
           res.map(async (item) => {
             const branch = (await fetchSucursalData(currentEntity?.entity.id as string, item.branchId as string))?.name
             const employee = (await fetchEmployeeData(currentEntity?.entity.id as string, item.employeeId as string))?.fullName
-            return { ...item, branch, employee };
+            let requestUpdates: Array<any> = []
+            if (Array.isArray(item.metadata?.requestUpdates) && item.metadata?.requestUpdates.length > 0) {
+              requestUpdates = await Promise.all(
+                item.metadata?.requestUpdates.map(async (e: any) => {
+                  const employee = (await fetchEmployeeData(currentEntity?.entity.id as string, e.updateBy as string))?.fullName ?? ' Supervisor '
+                  return { ...e, employee };
+                })
+              );
+            }
+            return { ...item, requestUpdates, branch, employee };
           })
         );
 
@@ -205,7 +214,13 @@ export default function useAttendanceController() {
       id: 'timestamp',
       label: t("core.label.date-hour"),
       minWidth: 170,
-      format: (value, row) => <>{format_date(row.timestamp, 'DD/MM/YYYY')} {format_date(row.timestamp, 'hh:mm')}</>
+      format: (value, row) => <Box>
+       
+        {format_date(row.timestamp, 'DD/MM/YYYY')} {format_date(row.timestamp, 'hh:mm')}
+         {Array.isArray(row.requestUpdates) && row.requestUpdates.length > 0 && <IconButton onClick={() => {
+          openModal(CommonModalType.INFO, { item: row })
+        }}><TableViewRounded /></IconButton>}
+      </Box>
     },
 
 
@@ -316,7 +331,7 @@ export default function useAttendanceController() {
   }
   return {
     items, onSort, onRowsPerPageChange,
-    topFilter,empthy,
+    topFilter, empthy,
     onNext, onBack,
     columns, rowAction, onSuccessCreate,
     loading, filterParams

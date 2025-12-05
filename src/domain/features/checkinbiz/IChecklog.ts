@@ -1,3 +1,5 @@
+import { IEmployee } from "./IEmployee";
+
 export interface IChecklog {
     id?: string; // uid
     "employeeId": string
@@ -12,9 +14,29 @@ export interface IChecklog {
     userAgent?: any
     status: 'valid' | "failed"
     failedCode?: string
-    metadata?: any
+
     reason?: string
     updateId?: string
+
+    metadata: {
+        requestUpdates?: Array<{
+            createdAt: any
+            id: number
+            previousDate: string
+            previousStatus: string
+            reason: string
+            updateBy: string
+            employee?: IEmployee
+            data: {
+                employeeId: string
+                entityId: string
+                id: string
+                status: string
+                timestamp: any
+            }
+        }>
+    } & any
+
 }
 
 
