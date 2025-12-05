@@ -84,7 +84,7 @@ export default function AttendanceList() {
                   >
                     {e.employee?.fullName}
                   </Typography>
-                  {", "+format_date(e.createdAt)} {',  '}
+                  {""+format_date(e.createdAt)} {',  '}
                   <CustomChip small background={e.status} label={e.previousStatus} />
                 </React.Fragment>
               }></ListItemText>
