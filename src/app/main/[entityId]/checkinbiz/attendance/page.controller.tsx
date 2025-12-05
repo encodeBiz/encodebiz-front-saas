@@ -6,7 +6,7 @@ import { useEntity } from "@/hooks/useEntity";
 import { searchLogs, fetchEmployee as fetchEmployeeData } from "@/services/checkinbiz/employee.service";
 import { IChecklog } from "@/domain/features/checkinbiz/IChecklog";
 import { Column } from "@/components/common/table/GenericTable";
-import { format_date, getDateRange, rmNDay } from "@/lib/common/Date";
+import { format_date, getDateRange } from "@/lib/common/Date";
 import { fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucursal.service";
 
 import { Box, IconButton } from "@mui/material";
@@ -155,7 +155,7 @@ export default function useAttendanceController() {
             if (Array.isArray(item.metadata?.requestUpdates) && item.metadata?.requestUpdates.length > 0) {
               requestUpdates = await Promise.all(
                 item.metadata?.requestUpdates.map(async (e: any) => {
-                  const employee = (await fetchEmployeeData(currentEntity?.entity.id as string, e.updateBy as string))?.fullName ?? ' - '
+                  const employee = (await fetchEmployeeData(currentEntity?.entity.id as string, e.updateBy as string))?.fullName ?? ' Supervisor '
                   return { ...e, employee };
                 })
               );

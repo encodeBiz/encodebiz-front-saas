@@ -1,4 +1,3 @@
-import { string } from "yup";
 import { IEmployee } from "./IEmployee";
 
 export interface IChecklog {
