@@ -1,67 +1,188 @@
-'use client'
+"use client";
 
 import React from 'react';
-import {
-  Container
-} from '@mui/material';
+import { Container } from '@mui/material';
 
-const TerminosCondicionesPage = () => {
-
+const TermsConditionsPage = () => {
   return (
     <>
-
-
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <div className="container">
           <header>
-            <h1>Términos y Condiciones</h1>
-            <p><strong>Última actualización:</strong> 8 de octubre de 2025</p>
+            <h1>Terms and Conditions of Use – EncodeBiz Platform</h1>
+            <p><strong>Last updated:</strong> October 8, 2025</p>
           </header>
 
           <main>
-            <section id="introduccion">
-              <h2>1. Introducción</h2>
-              <p>Bienvenido a [Nombre de la Empresa/Sitio Web]. Al acceder y utilizar nuestro sitio web, usted acepta estar sujeto a los siguientes términos y condiciones. Si no está de acuerdo con alguna parte de estos términos, por favor, no utilice nuestro servicio.</p>
+
+            <section>
+              <h2>1. Identification of the Service Provider</h2>
+              <p>
+                EncodeBiz Platform is operated by ENCODEBIZ SL, located at CALLE ALONDRA, 3. 28025 MADRID, Spain.  
+                Contact email: <a href="mailto:support@encodebiz.com">support@encodebiz.com</a>.
+              </p>
+              <p>
+                These Terms and Conditions govern the access and use of the EncodeBiz platform, available at 
+                <a href="https://saas.encodebiz.com" target="_blank"> https://saas.encodebiz.com</a>,
+                as well as its associated services offered under a Software as a Service (SaaS) model.
+              </p>
             </section>
 
-            <section id="uso-del-servicio">
-              <h2>2. Uso del servicio</h2>
-              <p>El uso de este sitio web está sujeto a las siguientes condiciones:</p>
+            <section>
+              <h2>2. Purpose</h2>
+              <p>
+                These Terms and Conditions set forth the rules that govern the use of the EncodeBiz platform, its 
+                services and features, and the rights and obligations of both the platform provider and its users, 
+                whether registered or not.
+              </p>
+            </section>
+
+            <section>
+              <h2>3. Service Description</h2>
+              <p>
+                EncodeBiz provides a digital environment consisting of SaaS solutions for operational management, 
+                record administration, and issuance/validation of digital credentials.
+              </p>
+              <p>The platform currently includes two main services:</p>
               <ul>
-                <li>El contenido de las páginas de este sitio web es para su información y uso general únicamente. Está sujeto a cambios sin previo aviso.</li>
-                <li>No garantizamos la precisión, actualidad, rendimiento, integridad o adecuación de la información y los materiales encontrados u ofrecidos en este sitio web para un propósito particular.</li>
-                <li>Su uso de cualquier información o material en este sitio web es bajo su propio riesgo, para lo cual no seremos responsables. Será su propia responsabilidad asegurarse de que cualquier producto, servicio o información disponible a través de este sitio web cumpla con sus requisitos específicos.</li>
+                <li><strong>CheckBiz:</strong> management and control of attendance (employees, projects, schedules, check-ins, etc.).</li>
+                <li><strong>PassBiz:</strong> issuance and validation of digital passes compatible with Apple Wallet and Google Wallet.</li>
+              </ul>
+              <p>
+                EncodeBiz is intended for companies, institutions, event organizers, educational centers, sports facilities, 
+                and other professionals who need to digitize attendance control processes, credential issuance, or access validation.
+              </p>
+            </section>
+
+            <section>
+              <h2>4. Conditions of Access and Use</h2>
+              <ul>
+                <li>Access to EncodeBiz requires the creation of an organization account by the responsible user.</li>
+                <li>The service is restricted to users of legal age and with legal capacity to enter into contracts.</li>
+                <li>Users agree to use the services in compliance with applicable laws, ethical principles, public order, and these Terms.</li>
+                <li>Use of the platform for unlawful purposes or in ways that may cause harm to the provider or third parties is strictly prohibited.</li>
               </ul>
             </section>
 
-            <section id="propiedad-intelectual">
-              <h2>3. Propiedad intelectual</h2>
-              <p>Este sitio web contiene material que es propiedad nuestra o nos ha sido otorgado bajo licencia. Este material incluye, pero no se limita a, el diseño, la disposición, el aspecto, la apariencia y los gráficos. La reproducción está prohibida salvo de conformidad con el aviso de derechos de autor, que forma parte de estos términos y condiciones.</p>
+            <section>
+              <h2>5. User Registration</h2>
+              <p>
+                To access personalized services within EncodeBiz, users must register through the designated form, providing true, 
+                updated, and complete information.
+              </p>
+              <p>
+                Each account is personal and non-transferable. Users are responsible for maintaining the confidentiality 
+                of their login credentials.
+              </p>
             </section>
 
-            <section id="enlaces-a-terceros">
-              <h2>4. Enlaces a otros sitios web</h2>
-              <p>De vez en cuando, este sitio web puede incluir enlaces a otros sitios web. Estos enlaces se proporcionan para su conveniencia y para proporcionar información adicional. No significan que respaldamos los sitios web. No tenemos ninguna responsabilidad por el contenido de los sitios web enlazados.</p>
+            <section>
+              <h2>6. Service Model and Pricing</h2>
+              <p>EncodeBiz operates under a SaaS model offering:</p>
+              <ul>
+                <li>Free plans with basic access.</li>
+                <li>Paid or pay-per-use plans providing advanced features, technical support, and increased capacity.</li>
+              </ul>
+              <p>
+                The platform provider reserves the right to modify pricing plans and conditions. Any changes affecting 
+                existing subscriptions will be communicated to active users beforehand.
+              </p>
             </section>
 
-            <section id="limitacion-de-responsabilidad">
-              <h2>5. Limitación de responsabilidad</h2>
-              <p>En la máxima medida permitida por la ley, [Nombre de la Empresa/Sitio Web] no será responsable de ningún daño directo, indirecto, incidental, especial, consecuente o punitivo, incluyendo, pero no limitado a, la pérdida de beneficios, datos, uso, buena voluntad u otras pérdidas intangibles, resultantes de (i) su acceso o uso de nuestro servicio; (ii) cualquier conducta o contenido de cualquier tercero en el servicio.</p>
+            <section>
+              <h2>7. User Responsibility</h2>
+              <p>
+                Users are responsible for the content they upload or register on the platform, as well as for the actions 
+                of authorized members within their organization.
+              </p>
+              <p>
+                The provider shall not be liable for damages arising from improper, illegal, or unauthorized use of the services.
+              </p>
             </section>
 
-            <section id="modificaciones">
-              <h2>6. Modificaciones de los términos</h2>
-              <p>Nos reservamos el derecho, a nuestra entera discreción, de modificar o reemplazar estos Términos en cualquier momento. Si una revisión es material, intentaremos proporcionar un aviso con al menos 30 días de antelación antes de que los nuevos términos entren en vigor.</p>
+            <section>
+              <h2>8. Intellectual Property</h2>
+              <p>
+                All content, trademarks, structures, functionalities, and source code of EncodeBiz are the property of the provider 
+                or are used under the corresponding license.
+              </p>
+              <p>
+                Reproduction, distribution, modification, or exploitation of protected elements without explicit written permission 
+                is strictly prohibited.
+              </p>
             </section>
+
+            <section>
+              <h2>9. Personal Data Protection</h2>
+              <p>
+                EncodeBiz collects and processes personal data in compliance with the General Data Protection Regulation (GDPR) 
+                for EU users and any locally applicable privacy regulations.
+              </p>
+              <p>
+                Personal data collected may include identification data, activity logs, and operational information related to 
+                platform usage.
+              </p>
+              <p>
+                Full details about data processing are available in the Privacy Policy provided on the website.
+              </p>
+            </section>
+
+            <section>
+              <h2>10. Language</h2>
+              <p>
+                These Terms and Conditions are available in Spanish and English. In case of discrepancies between versions, 
+                the Spanish version shall prevail unless otherwise required by applicable law.
+              </p>
+            </section>
+
+            <section>
+              <h2>11. Modifications</h2>
+              <p>
+                The provider may modify these Terms at any time. Changes will be communicated to users through platform notices 
+                or via email to the registered address.
+              </p>
+              <p>
+                Continued use of the services after modifications implies full acceptance of the updated Terms.
+              </p>
+            </section>
+
+            <section>
+              <h2>12. Duration and Termination</h2>
+              <p>
+                These Terms remain in effect as long as the user maintains an active account. Accounts may be cancelled at any time 
+                through the user dashboard.
+              </p>
+              <p>
+                The provider reserves the right to suspend or delete accounts for violations of these Terms or improper use of the service.
+              </p>
+            </section>
+
+            <section>
+              <h2>13. Applicable Law and Jurisdiction</h2>
+              <p>
+                Unless otherwise required by applicable regulations, these Terms shall be governed by the laws of the country 
+                where the platform provider resides.
+              </p>
+              <p>
+                Both parties submit to the competent courts of that location for the resolution of any disputes arising from 
+                the use of the service.
+              </p>
+            </section>
+
+            <section>
+              <h2>14. Contact</h2>
+              <p>
+                For any questions regarding these Terms and Conditions, you may contact us at:<br />
+                <a href="mailto:support@encodebiz.com">support@encodebiz.com</a><br />
+                <a href="https://saas.encodebiz.com" target="_blank">https://saas.encodebiz.com</a>
+              </p>
+            </section>
+
           </main>
-
-          <footer>
-            <p>Para más información, contáctenos en <a href="mailto:contacto@ejemplo.com">contacto@ejemplo.com</a>.</p>
-          </footer>
         </div>
       </Container>
     </>
   );
 };
 
-export default TerminosCondicionesPage
+export default TermsConditionsPage;

@@ -31,8 +31,8 @@ const Footer: React.FC = () => {
           </Typography>
  
 
-          <Link style={{ color: theme.palette.primary.main, textDecoration: 'none' }} href="/legal/privacy-policy"> {t('core.label.accepTerm2')} </Link>
-          <Link style={{ color: theme.palette.primary.main, textDecoration: 'none' }} href="/legal/terms-and-conditions">{t('core.label.accepTerm4')} </Link>
+          <Link style={{ color: theme.palette.primary.main, textDecoration: 'none' }} href="/legal/terms-and-conditions" > {t('core.label.accepTerm2')} </Link>
+          <Link style={{ color: theme.palette.primary.main, textDecoration: 'none' }} href="/legal/privacy-policy">{t('core.label.accepTerm4')} </Link>
         </Box>
       </Container>
     </Box>
