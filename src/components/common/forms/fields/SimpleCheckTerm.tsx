@@ -8,7 +8,7 @@ import { useTranslations } from 'next-intl';
 const SimpleCheckTerm: React.FC<FieldProps & TextFieldProps> = ({
   ...props
 }) => {
-  const [field, meta, helper] = useField(props.name);
+  const [field, meta, helper] = useField(props.name as any);
   const t = useTranslations()
   const { touched, error } = meta
   const helperText = touched && error;

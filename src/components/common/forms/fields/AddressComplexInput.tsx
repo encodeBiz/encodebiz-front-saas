@@ -44,7 +44,7 @@ type AutoCompletedInputProps = FieldProps &
 
 const AddressComplexInput: React.FC<AutoCompletedInputProps> = ({ ...props }) => {
   const t = useTranslations();
-  const [field, meta, helper] = useField(props.name);
+  const [field, meta, helper] = useField(props.name as any);
 
   const { formStatus } = useFormStatus();
   const [cityList, setCityList] = useState<Array<{ label: string, value: string }>>(country.find((e: any) => e.name === field.value?.country)?.states?.map(e => ({ label: e.name, value: e.name })) ?? [])

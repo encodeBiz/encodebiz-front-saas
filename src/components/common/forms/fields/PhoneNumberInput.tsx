@@ -9,7 +9,7 @@ import { useTranslations } from 'next-intl';
 const PhoneNumberInput: React.FC<FieldProps & TextFieldProps> = ({
     ...props
 }) => {
-    const [field, meta, helper] = useField(props.name);
+    const [field, meta, helper] = useField(props.name as any);
     const { touched, error } = meta
     const helperText = touched && error;
     const t = useTranslations()

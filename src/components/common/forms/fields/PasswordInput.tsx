@@ -7,7 +7,7 @@ import { VisibilityOff, Visibility, Error } from '@mui/icons-material';
 const PasswordInput: React.FC<FieldProps & TextFieldProps> = ({
   ...props
 }) => {
-  const [field, meta] = useField(props.name);
+  const [field, meta] = useField(props.name as any);
   const { touched, error } = meta
  
   const [showPassword, setShowPassword] = useState(false);

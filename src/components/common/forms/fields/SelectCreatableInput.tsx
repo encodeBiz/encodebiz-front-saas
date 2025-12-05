@@ -19,7 +19,7 @@ const SelectCreatableInput: React.FC<SelectCreatableInputProps> = ({
   onDeleteItem,
   ...props
 }) => {
-  const [field, meta, helper] = useField(props.name);
+  const [field, meta, helper] = useField(props.name as any);
   const { touched, error } = meta
   const helperText = touched && error;
   const t = useTranslations()

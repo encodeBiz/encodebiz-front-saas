@@ -7,7 +7,7 @@ import Link from 'next/link';
 const SimpleCheck: React.FC<FieldProps & TextFieldProps> = ({
   ...props
 }) => {
-  const [field, , helper] = useField(props.name);
+  const [field, , helper] = useField(props.name as any);
   
 
   return (

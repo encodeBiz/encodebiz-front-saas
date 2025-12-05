@@ -17,7 +17,7 @@ const emptyItem = { label: '', value: '' };
 
 const DynamicKeyValueInput: React.FC<FieldProps & { onHandleChange: (data: any) => void }> = ({ ...props }) => {
 
-    const [field, , helper] = useField(props);
+    const [field, , helper] = useField(props as any);
 
 
     const t = useTranslations();
