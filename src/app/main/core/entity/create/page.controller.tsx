@@ -80,7 +80,7 @@ export const useRegisterController = () => {
             const data: { entity: { id: string } } = await createEntity(createData, token, currentLocale)
 
             if (data.entity.id) {
-                changeCurrentEntity(data.entity.id, user?.id as string, () => {
+                changeCurrentEntity(data.entity.id, user?.id as string,false, () => {
                     showToast(t('core.feedback.success'), 'success');
                     push(`/${MAIN_ROUTE}/${data.entity.id}/dashboard`)
                 })

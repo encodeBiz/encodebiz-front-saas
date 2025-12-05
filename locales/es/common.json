@@ -1121,7 +1121,7 @@
     "reportNoDataText": "Selecciona la sucursal/proyecto y un rango de fechas para obtener un reporte descargable. La generación solo estará disponible cuando existan suficientes registros de asistencia dentro del periodo elegido. Hasta entonces, no se pueden producir reportes.",
     "attendanceNoDataTitle": "Todavía no hay registros de asistencia",
     "attendanceNoDataText": "Aquí se mostrarán las entradas y salidas vinculadas a cada empleado y sucursal/proyecto, junto con la validación del lugar y del horario. Una vez los primeros marcajes sean registrados, podrás supervisar la actividad diaria y filtrar por fechas, empleado y sucursal o proyecto.",
-    "employeeTrend": "Tendenca anual: Empleados",
+    "employeeTrend": "Tendencia anual: Empleados",
     "employeeTrendText": "Comportamiento de registro de empleados",
     "total": "Total",
     "averagePerMonth": "Promedio",

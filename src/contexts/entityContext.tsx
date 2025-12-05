@@ -23,7 +23,7 @@ interface EntityContextType {
     currentEntity: IUserEntity | undefined;
     entityList: Array<IUserEntity> | [];
     setCurrentEntity: (currentEntity: IUserEntity | undefined) => void;
-    changeCurrentEntity: (id: string, userId: string, callback?: () => void) => void;
+    changeCurrentEntity: (id: string, userId: string, refresh: boolean, callback?: () => void) => void;
     refrestList: (userId: string) => void;
     entityServiceList: Array<IService>
     entitySuscription: Array<IEntitySuscription>
@@ -79,7 +79,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
 
                 if (entityId) {
-                    changeCurrentEntity(entityId, userAuth?.uid)
+                    changeCurrentEntity(entityId, userAuth?.uid, false)
                 } else {
                     _currentEntity = entityList.find(e => e.isActive) as IUserEntity
 
@@ -117,7 +117,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
             }
             setEntityList(entityList)
             const entity = entityList.find(e => e.isActive) ?? entityList[0]
-            changeCurrentEntity(entity.entity.id as string, userId)
+            changeCurrentEntity(entity.entity.id as string, userId, false)
 
         } else {
             push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
@@ -125,10 +125,10 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
 
-    const changeCurrentEntity = async (id: string, userId: string, callback?: () => void,) => {
+    const changeCurrentEntity = async (id: string, userId: string, refresh: boolean, callback?: () => void,) => {
         const entityList: Array<IUserEntity> = await fetchUserEntities(userId, currentLocale)
         const current: IUserEntity = entityList.find(e => e.entity.id === id) as IUserEntity
- 
+
         if (current) {
             const updatedList: Array<IUserEntity> = []
             entityList.forEach(element => {
@@ -140,7 +140,11 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
             })
             setEntityList(updatedList)
             setCurrentEntity(current)
-            push(`/${MAIN_ROUTE}/${current.entity.id}/dashboard`)
+            if (refresh)
+                push(`/${MAIN_ROUTE}/${current.entity.id}/dashboard`)
+            else
+                push(`${pathname.replace(entityId, current.entity.id as string)}`)
+
             await saveStateCurrentEntity(updatedList, currentLocale)
 
             setTimeout(() => {
@@ -151,7 +155,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
             if (entityList.length > 0) {
                 setEntityList(entityList)
                 const entity = entityList.find(e => e.isActive) ?? entityList[0]
-                changeCurrentEntity(entity.entity.id as string, userId)
+                changeCurrentEntity(entity.entity.id as string, userId, false)
             } else {
                 push(`/${MAIN_ROUTE}/${GENERAL_ROUTE}/entity/create`)
             }
@@ -192,11 +196,11 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
             return () => unsubscribe();
         }
 
-      
-        
+
+
     }, []);
 
-   
+
 
 
     useEffect(() => {
