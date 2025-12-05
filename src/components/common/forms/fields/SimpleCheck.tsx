@@ -7,7 +7,7 @@ import Link from 'next/link';
 const SimpleCheck: React.FC<FieldProps & TextFieldProps> = ({
   ...props
 }) => {
-  const [field, , helper] = useField(props.name);
+  const [field, , helper] = useField(props.name as any);
   
 
   return (
@@ -22,7 +22,7 @@ const SimpleCheck: React.FC<FieldProps & TextFieldProps> = ({
       }
       label={
         <Typography variant="body2">
-          I agree to the <Link href="#">Terms of Service</Link> and <Link href="#">Privacy Policy</Link>
+          I agree to the <Link href="#">Terms of Service</Link> and <Link href="/legal/privacy-policy" target='_blank'>Privacy Policy</Link>
         </Typography>
       }
       sx={{ mt: 2 }}
