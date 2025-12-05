@@ -32,7 +32,7 @@ const EntitySwitcher: React.FC = () => {
     const newEntityId = entity.entity.id
     if (newEntityId) {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderChangeEntity') } })
-      changeCurrentEntity(newEntityId, user?.id as string, () => changeLoaderState({ show: false }));
+      changeCurrentEntity(newEntityId, user?.id as string,true, () => changeLoaderState({ show: false }));
     }
   };
 

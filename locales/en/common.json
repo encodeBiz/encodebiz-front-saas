@@ -1120,7 +1120,14 @@
     "reportNoDataTitle": "No data to generate a report",
     "reportNoDataText": "Select a branch/project and a date range to obtain a downloadable report. Generation will only be available when there are sufficient attendance records within the chosen period. Until then, reports cannot be produced.",
     "attendanceNoDataTitle": "No attendance records yet",
-    "attendanceNoDataText": "Here, the clock-ins and clock-outs linked to each employee and branch/project will be displayed, along with location and schedule validation. Once the first check-ins are registered, you will be able to supervise daily activity and filter by dates, employee, and branch or project."
+    "attendanceNoDataText": "Here, the clock-ins and clock-outs linked to each employee and branch/project will be displayed, along with location and schedule validation. Once the first check-ins are registered, you will be able to supervise daily activity and filter by dates, employee, and branch or project.",
+    "employeeTrend": "Annual Trend: Employees",
+    "employeeTrendText": "Employee Registration Behavior",
+    "total": "Total",
+    "averagePerMonth": "Average",
+    "totalEmployees": "Total",
+    "peakMonth": "Peak Performance",
+    "lowestMonth": "Lowest Performance"
   },
   "checking": {
     "title": "Attendance Control",
