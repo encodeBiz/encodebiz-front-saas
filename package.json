@@ -33,7 +33,7 @@
     "lodash.debounce": "^4.0.8",
     "lz-string": "^1.5.0",
     "moment": "^2.30.1",
-    "next": "15.3.2",
+    "next": "15.3.6",
     "next-intl": "^4.1.0",
     "nextjs-toploader": "^3.8.16",
     "react": "^19.0.0",
