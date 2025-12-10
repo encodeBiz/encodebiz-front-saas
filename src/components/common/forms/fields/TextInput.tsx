@@ -8,7 +8,7 @@ import { useFormStatus } from '@/hooks/useFormStatus';
 const TextInput: React.FC<FieldProps & TextFieldProps & { afterTextField: string }> = ({
   ...props
 }) => {
-  const [field, meta] = useField(props.name);
+  const [field, meta] = useField(props.name as string);
   const { touched, error } = meta
   const { formStatus } = useFormStatus()
   return (<Box display={'flex'} justifyItems={'center'} alignItems={'center'} >

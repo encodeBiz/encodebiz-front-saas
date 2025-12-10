@@ -17,7 +17,7 @@ import { enUS } from '@mui/x-date-pickers/locales';
 const TimeInput: React.FC<FieldProps & TextFieldProps> = ({
   ...props
 }) => {
-  const [field, meta, helper] = useField(props.name);
+  const [field, meta, helper] = useField(props.name as string);
   const { touched, error } = meta
   const helperText = touched && error;
   const { formStatus } = useFormStatus()

@@ -9,7 +9,7 @@ import { Error, PaletteRounded } from '@mui/icons-material';
 const ColorPickerInput: React.FC<FieldProps & TextFieldProps> = ({
     ...props
 }) => {
-    const [field, meta, helper] = useField(props.name);
+    const [field, meta, helper] = useField(props.name as string);
     const { touched, error } = meta
     const helperText = touched && error;
     const [anchorEl, setAnchorEl] = React.useState<HTMLInputElement | null>(null);
