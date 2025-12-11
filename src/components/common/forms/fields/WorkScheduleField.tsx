@@ -35,7 +35,7 @@ const MINUTES = [0, 15, 30, 45];
 
 // Valores iniciales
 const defaultDaySchedule: WorkDaySchedule = {
-    enabled: false,
+    enabled: true,
     start: { hour: 9, minute: 0 },
     end: { hour: 17, minute: 0 },
 };
@@ -47,7 +47,7 @@ const initialValues: WorkSchedule = {
     thursday: { ...defaultDaySchedule },
     friday: { ...defaultDaySchedule },
     saturday: { ...defaultDaySchedule },
-    sunday: { ...defaultDaySchedule },
+    sunday: { ...defaultDaySchedule, enabled:false },
     notifyBeforeMinutes: 15,
 };
 
