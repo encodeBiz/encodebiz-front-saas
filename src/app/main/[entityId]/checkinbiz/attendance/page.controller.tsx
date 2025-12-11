@@ -146,7 +146,8 @@ export default function useAttendanceController() {
     searchLogs(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async res => {
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
-
+        console.log(res);
+        
         const data: Array<IChecklog> = await Promise.all(
           res.map(async (item) => {
             const branch = (await fetchSucursalData(currentEntity?.entity.id as string, item.branchId as string))?.name
@@ -213,11 +214,11 @@ export default function useAttendanceController() {
     {
       id: 'timestamp',
       label: t("core.label.date-hour"),
-      minWidth: 170,
-      format: (value, row) => <Box>
+      minWidth: 200,
+      format: (value, row) => <Box display={'flex'} alignItems={'center'}>
        
         {format_date(row.timestamp, 'DD/MM/YYYY')} {format_date(row.timestamp, 'hh:mm')}
-         {Array.isArray(row.requestUpdates) && row.requestUpdates.length > 0 && <IconButton onClick={() => {
+         {Array.isArray(row.metadata?.requestUpdates) && row.metadata?.requestUpdates.length > 0 && <IconButton onClick={() => {
           openModal(CommonModalType.INFO, { item: row })
         }}><TableViewRounded /></IconButton>}
       </Box>
