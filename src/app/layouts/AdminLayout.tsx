@@ -85,8 +85,9 @@ function Admin({
         </div>
 
         {/** <CustomFooter /> */}
+        <Footer />
       </Box>
-      <Footer />
+      
     </Box>
 
 
