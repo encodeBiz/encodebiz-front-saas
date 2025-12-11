@@ -796,7 +796,7 @@
     "title": "Asistencias",
     "formDesc": "Completa los campos a continuación para crear/editar un reporte de asistencia.",
     "list": "Asistencias",
-    "requestUpdates":"Updates request",
+    "requestUpdates":"Solicitud de actualizaciones",
     "add": "Crear registro de asistencia",
     "edit": "Editar registro de asistencia",
     "export": "Exportar reportes de asistencia",
