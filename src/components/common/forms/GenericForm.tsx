@@ -93,10 +93,11 @@ const FieldItem = ({ field, i, formikProps, column, disabled }: { field: FormFie
   const isInvalid =
     formikProps.touched[field.name] && Boolean(formikProps.errors[field.name]);
   const errorText = formikProps.errors[field.name];
+  if(field?.extraProps?.hide) return null
   if (field.isDivider) return <Grid size={{
     xs: 12,
     sm: 12
-  }} key={i} sx={{ width: '100%', position: 'relative', top: 10, mt: 2 }}>
+  }} key={i} sx={{ width: '100%', position: 'relative', top: field?.extraProps?.disabledBottomMargin?0:10, mt: field?.extraProps?.disabledBottomMargin?0: 2 }}>
     <Typography variant='subtitle1' textTransform={'uppercase'}>{field.label as string}</Typography>
    {field.hit}
 
@@ -136,7 +137,7 @@ const GenericForm = <T extends Record<string, any>>({
   validationSchema,
   onSubmit,
   fields,
-  title,
+  title, 
   submitButtonText = 'Submit',
   cancelButtonText = 'Cancel',
   onCancel,

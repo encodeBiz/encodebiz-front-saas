@@ -4,7 +4,7 @@ import { CustomChip } from "@/components/common/table/CustomChip"
 import { DetailText } from "@/components/common/table/DetailText"
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes"
 import { CommonModalType } from "@/contexts/commonModalContext"
-import { ISucursal } from "@/domain/features/checkinbiz/ISucursal"
+import { ISucursal, WorkSchedule } from "@/domain/features/checkinbiz/ISucursal"
 import { useCommonModal } from "@/hooks/useCommonModal"
 import { useLayout } from "@/hooks/useLayout"
 import { onGoMap } from "@/lib/common/maps"
@@ -19,6 +19,7 @@ import { PanelStats } from "./dashboard/PanelStats"
 import { useDashboardBranch } from "./dashboard/DashboardBranchContext"
 import { useEffect } from "react"
 import { useEntity } from "@/hooks/useEntity"
+import WorkScheduleDetail from "./components/WorkScheduleDetail"
 
 export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { addResponsabiltyItem: () => void, branch: ISucursal, children: React.ReactNode, onSuccess: () => void }) => {
     const t = useTranslations()
@@ -86,10 +87,10 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
                 <Box display={'flex'} justifyContent={'space-between'} alignItems={'flex-start'}>
 
                     {branch?.advance && <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={4} alignItems={'flex-start'}>
-                        <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'} alignItems={'flex-start'}>
+                        {!branch.advance?.workScheduleEnable && <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'} alignItems={'flex-start'}>
                             <DetailText orientation="row" label={t('core.label.dayTimeRange')} value={((branch?.advance?.startTimeWorkingDay?.hour as number) < 10 ? '0' + branch?.advance?.startTimeWorkingDay?.hour : branch?.advance?.startTimeWorkingDay?.hour) + ':' + ((branch?.advance?.startTimeWorkingDay?.minute as number) < 10 ? '0' + branch?.advance?.startTimeWorkingDay?.minute : branch?.advance?.startTimeWorkingDay?.minute) + ' - ' + ((branch?.advance?.endTimeWorkingDay?.hour as number) < 10 ? '0' + branch?.advance?.endTimeWorkingDay?.hour : branch?.advance?.endTimeWorkingDay?.hour) + ':' + ((branch?.advance?.endTimeWorkingDay?.minute as number) < 10 ? '0' + branch?.advance?.endTimeWorkingDay?.minute : branch?.advance?.endTimeWorkingDay?.minute)} />
                             <DetailText help={branch?.advance?.enableDayTimeRange ? t('sucursal.dayTimeRangeAlertMessageE') : t('sucursal.dayTimeRangeAlertMessageD')} label={branch?.advance?.enableDayTimeRange ? t('sucursal.dayTimeRangeEnableText') : t('sucursal.dayTimeRangeDisabledText')} />
-                        </Box>
+                        </Box>}
 
                         <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'} alignItems={'flex-start'}>
                             <DetailText orientation="row" label={t('core.label.breakTimeRange')} value={branch?.advance?.timeBreak + ' ' + t('core.label.minutes')} />
@@ -97,6 +98,10 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
                         </Box>
                     </Box>}
                 </Box>
+ 
+
+
+
 
                 {Array.isArray(branch.metadata) && branch.metadata.length > 0 && <><Divider /> <Paper sx={{ mt: 4 }} elevation={0} >
                     <Typography variant="subtitle1" gutterBottom textTransform={'capitalize'} >
@@ -108,7 +113,6 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
                     </Box>}
                 </Paper></>}
             </Paper>
-
 
 
             <Divider />
@@ -126,7 +130,20 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
                         title: t(`sucursal.panel`),
                         tabContent: <PanelStats />
                     },
+                ] : []),
+
+                ...(branch.advance?.workScheduleEnable ? [
+                    {
+                        id: '1',
+                        title: t(`core.label.workSchedule`),
+                        tabContent: <WorkScheduleDetail
+                            schedule={branch.advance?.workSchedule as WorkSchedule}
+                            title={t(`core.label.workSchedule`)}
+                            showEmptyDays={true}
+                        />
+                    },
                 ] : [])
+
 
             ]} />}
 

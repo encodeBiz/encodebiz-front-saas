@@ -118,6 +118,11 @@
       "nocard": "No tienes métodos de pago asociado a la entidad, por favor configure al menos uno."
     },
     "label": {
+      "workScheduleEnable":"Habilitar personalización de horarios de jornada",
+      "workScheduleGlobal":"Configuración global",
+      "workScheduleCustom":"Configuración personalizada",
+      "workScheduleNotify":"Notificar antes (minutos)",
+      "workSchedule":"Configuración de jornada",
       "today": "Hoy",
       "comments": "Comentario",
       "start": "Inicio",

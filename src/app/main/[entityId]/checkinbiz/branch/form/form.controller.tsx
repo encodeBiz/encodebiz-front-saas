@@ -24,6 +24,8 @@ import { useAppLocale } from "@/hooks/useAppLocale";
 import AddressComplexInput from "@/components/common/forms/fields/AddressComplexInput";
 import { Alert, Box, Typography } from "@mui/material";
 import { InfoOutline } from "@mui/icons-material";
+import WorkScheduleField from "@/components/common/forms/fields/WorkScheduleField";
+import { useFormStatus } from "@/hooks/useFormStatus";
 
 
 export default function useFormController(isFromModal: boolean, onSuccess?: () => void) {
@@ -38,6 +40,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
   const { open, closeModal, openModal } = useCommonModal()
   const { id } = useParams<{ id: string }>()
+  const { formStatus } = useFormStatus()
 
   const itemId = isFromModal ? open.args?.id : id
   const [enableDayTimeRange, setEnableDayTimeRange] = useState(false)
@@ -102,7 +105,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       const data: ISucursal = {
         name: values.name,
         ratioChecklog: values.ratioChecklog ?? 0,
-        disableRatioChecklog:values.disableRatioChecklog,
+        disableRatioChecklog: values.disableRatioChecklog,
         status: values.status,
         nif: values.nif,
         "metadata": ArrayToObject(values.metadata as any),
@@ -115,6 +118,9 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
           "endTimeWorkingDay": { hour: new Date(values.endTime).getHours(), minute: new Date(values.endTime).getMinutes() },
           "disableBreak": values.disableBreak,
           "timeBreak": values.timeBreak,
+
+          "workScheduleEnable": values.workScheduleEnable,
+          "workSchedule": values.workSchedule,
         }
       }
 
@@ -193,7 +199,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     },
     {
       name: 'disableRatioChecklog',
-      label: t('core.label.disableRatioChecklogD') ,
+      label: t('core.label.disableRatioChecklogD'),
       required: false,
       component: ToggleInput,
       extraProps: {
@@ -244,18 +250,60 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
       },
       fieldList: [
+        {
+          name: 'workScheduleEnable',
+          label: t('core.label.workScheduleEnable'),
+          component: ToggleInput,
+          required: true,
+          fullWidth: true,
+        },
+
+        {
+          isDivider: true,
+          label: t('core.label.workScheduleCustom'),
+          extraProps: {
+            hide: !formStatus?.values?.workScheduleEnable
+          }
+        },
+        {
+          name: 'workSchedule',
+          label: t('core.label.workSchedule'),
+          component: WorkScheduleField,
+          required: true,
+          fullWidth: true,
+          extraProps: {
+            hide: !formStatus?.values?.workScheduleEnable
+          }
+        },
+
+        {
+          isDivider: true,
+          label: t('core.label.workScheduleGlobal'),
+          extraProps: {
+            disabledBottomMargin: true,
+            hide: formStatus?.values?.workScheduleEnable
+
+          },
+        },
 
         {
           name: 'startTime',
           label: t('core.label.startTime'),
           component: TimeInput,
+
           required: true,
+          extraProps: {
+            hide: formStatus?.values?.workScheduleEnable
+          },
         },
         {
           name: 'endTime',
           label: t('core.label.endTime'),
           component: TimeInput,
           required: true,
+          extraProps: {
+            hide: formStatus?.values?.workScheduleEnable
+          },
         },
         {
           name: 'enableDayTimeRange',
@@ -263,9 +311,12 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
           component: ToggleInput,
           required: true,
           extraProps: {
-            onHandleChange: setEnableDayTimeRange
+            onHandleChange: setEnableDayTimeRange,
+            hide: formStatus?.values?.workScheduleEnable
+
           },
         },
+
       ]
     },
 
@@ -274,7 +325,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       column: 3,
       hit: t('core.label.timeBreakDesc'),
       label: t('core.label.breakTimeRange'),
-      extraProps: {       
+      extraProps: {
         alertMessage: <Box>
           <Alert sx={{ borderRadius: 2, mt: 2, color: '#FFF', bgcolor: theme => disableBreak ? theme.palette.primary.main : theme.palette.grey[800] }} icon={<InfoOutline sx={{ color: '#FFF' }} />} >
             {disableBreak ? <><Typography>{t('sucursal.fieldHelp1')} <strong>{t('sucursal.fieldHelp2')}</strong>{t('sucursal.fieldHelp3')}</Typography>
@@ -356,6 +407,8 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         "endTime": endTime,
         "disableBreak": sucursal?.advance?.disableBreak,
         "timeBreak": sucursal?.advance?.timeBreak,
+        workSchedule: sucursal?.advance?.workSchedule,
+        workScheduleEnable: sucursal?.advance?.workScheduleEnable,
 
       })
       changeLoaderState({ show: false })
