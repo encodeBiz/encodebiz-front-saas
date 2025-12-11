@@ -3,18 +3,34 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
-    images: {
-        domains: ['lh3.googleusercontent.com','flagpedia.net', 'flagcdn.com', 'example.com', 'placehold.co', 'storage.googleapis.com', 'firebasestorage.googleapis.com'], // Add your image domains here
+  images: {
+    remotePatterns: [{
+      hostname: 'lh3.googleusercontent.com'
     },
-    env: {
-        DEFAULT_TIMEZONE: 'UTC'
+    {
+      hostname: 'flagpedia.net'
     },
-    async redirects() {
+    {
+      hostname: 'flagcdn.com'
+    }, {
+      hostname: 'example.com'
+    }, {
+      hostname: 'placehold.co'
+    }, {
+      hostname: 'storage.googleapis.com'
+    }, {
+      hostname: 'firebasestorage.googleapis.com'
+    }], // Add your image domains here
+  },
+  env: {
+    DEFAULT_TIMEZONE: 'UTC'
+  },
+  async redirects() {
     return [
       {
-        source: '/',          
+        source: '/',
         destination: '/auth/login',
-        permanent: true, 
+        permanent: true,
       },
     ];
   },

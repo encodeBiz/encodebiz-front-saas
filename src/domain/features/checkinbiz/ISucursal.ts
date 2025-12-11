@@ -28,5 +28,26 @@ export interface ISucursal {
 
     disableBreak: boolean,
     timeBreak: number
-   }
+
+    workScheduleEnable?: boolean;
+    workSchedule?: WorkSchedule;
+
+  }
+}
+
+export interface WorkDaySchedule {
+    enabled: boolean;
+    start: {hour: number; minute: number};
+    end: {hour: number; minute: number};
+}
+
+export interface WorkSchedule {
+    monday?: WorkDaySchedule;
+    tuesday?: WorkDaySchedule;
+    wednesday?: WorkDaySchedule;
+    thursday?: WorkDaySchedule;
+    friday?: WorkDaySchedule;
+    saturday?: WorkDaySchedule;
+    sunday?: WorkDaySchedule;
+    notifyBeforeMinutes?: number;
 }

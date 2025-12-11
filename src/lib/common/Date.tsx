@@ -2,6 +2,7 @@ import { Timestamp } from "firebase/firestore";
 import moment from "moment";
 import { DateTimeFormatOptions } from "next-intl";
 import 'moment/locale/es';
+import dayjs from "dayjs";
 moment.locale('es')
 
 export type FirestoreTimestamp = {
@@ -267,4 +268,23 @@ export function decimalAHorasMinutos(decimal: number) {
         formato: `${horas}h ${minutos}m`,
         formatoCorto: `${horas}:${minutos.toString().padStart(2, '0')}`
     };
+}
+
+
+export function createDayjsTime(hour: number, minute: number, baseDate = null) {
+  let dateObj;
+  
+  if (baseDate) {
+    // Si se proporciona una fecha base
+    dateObj = dayjs(baseDate);
+  } else {
+    // Usar fecha actual
+    dateObj = dayjs();
+  }
+  
+  return dateObj
+    .hour(hour)
+    .minute(minute)
+    .second(0)
+    .millisecond(0);
 }

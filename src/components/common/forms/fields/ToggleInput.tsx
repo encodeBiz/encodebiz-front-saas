@@ -7,7 +7,7 @@ import { FieldProps, useField } from 'formik';
 const ToggleInput: React.FC<FieldProps & { label: string, name: string, disabled: boolean, onHandleChange: (value: any) => void }> = ({
   ...props
 }) => {
-  const [field, meta, helpers] = useField(props.name);
+  const [field, meta, helpers] = useField(props.name as string);
   const { touched, error } = meta
 
   return (<Box display={'flex'} justifyItems={'center'} alignItems={'center'} >

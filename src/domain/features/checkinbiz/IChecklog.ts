@@ -18,7 +18,7 @@ export interface IChecklog {
     reason?: string
     updateId?: string
 
-    metadata: {
+    metadata?: {
         requestUpdates?: Array<{
             createdAt: any
             id: number
