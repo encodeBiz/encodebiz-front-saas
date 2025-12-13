@@ -1,4 +1,5 @@
 import { IEmployee } from "./IEmployee";
+import { ISucursal } from "./ISucursal";
 
 export interface IChecklog {
     id?: string; // uid
@@ -36,7 +37,8 @@ export interface IChecklog {
             }
         }>
     } & any
-
+    branch?: ISucursal
+    employee?: IEmployee
 }
 
 

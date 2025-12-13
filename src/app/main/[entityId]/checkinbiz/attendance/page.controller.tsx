@@ -146,17 +146,17 @@ export default function useAttendanceController() {
     searchLogs(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async res => {
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
-        console.log(res);
-        
+       
         const data: Array<IChecklog> = await Promise.all(
           res.map(async (item) => {
-            const branch = (await fetchSucursalData(currentEntity?.entity.id as string, item.branchId as string))?.name
-            const employee = (await fetchEmployeeData(currentEntity?.entity.id as string, item.employeeId as string))?.fullName
+            const branch = (await fetchSucursalData(currentEntity?.entity.id as string, item.branchId as string))
+            const employee = (await fetchEmployeeData(currentEntity?.entity.id as string, item.employeeId as string))
             let requestUpdates: Array<any> = []
             if (Array.isArray(item.metadata?.requestUpdates) && item.metadata?.requestUpdates.length > 0) {
               requestUpdates = await Promise.all(
                 item.metadata?.requestUpdates.map(async (e: any) => {
-                  const employee = (await fetchEmployeeData(currentEntity?.entity.id as string, e.updateBy as string))?.fullName ?? ' Supervisor '
+                  const employee = (await fetchEmployeeData(currentEntity?.entity.id as string, e.updateBy as string))
+                   
                   return { ...e, employee };
                 })
               );
@@ -191,13 +191,13 @@ export default function useAttendanceController() {
       id: 'branch',
       label: t("core.label.branch"),
       minWidth: 170,
-      format: (value, row) => row.branch
+      format: (value, row) => row.branch?.name
     },
     {
       id: 'employee',
       label: t("core.label.employee"),
       minWidth: 170,
-      format: (value, row) => row.employee
+      format: (value, row) => row.employee?.fullName ?? ' Supervisor '
     },
     {
       id: 'type',

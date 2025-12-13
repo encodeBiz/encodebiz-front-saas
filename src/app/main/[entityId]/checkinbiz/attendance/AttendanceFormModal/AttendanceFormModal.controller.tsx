@@ -96,6 +96,7 @@ export default function useAttendanceFormModalController(onSuccess: () => void, 
       if (typeof callback === 'function') callback()
 
     } catch (error: any) {
+      formStatus?.setSubmitting(false)
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
     }
@@ -190,6 +191,7 @@ export default function useAttendanceFormModalController(onSuccess: () => void, 
 
   useEffect(() => {
     if (open.args?.data) {
+      console.log(open.args?.data);      
       setInitialValues({
         ...initialValues,
         status: open.args?.data ? open.args?.data.status : 'valid',

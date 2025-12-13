@@ -206,7 +206,7 @@ const GenericForm = <T extends Record<string, any>>({
                       </Box>
                     </AccordionSummary>
                     <AccordionDetails>
-                      <Box sx={{ width: '100%', p: 4 }}>
+                      <Box sx={{ width: '100%'}}>
                         <Grid display={'flex'} flexDirection={{
                           xs: 'column',
                           sm: 'column',

@@ -55,6 +55,7 @@ interface WorkScheduleDetailProps {
     title?: string;
     showEmptyDays?: boolean;
     compact?: boolean;
+    notifyBeforeMinutes?:number
 }
 
 // Función para formatear hora
@@ -171,6 +172,7 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
     title = "Horario Laboral",
     showEmptyDays = false,
     compact = false,
+    notifyBeforeMinutes=0
 }) => {
     // Configuración de días
     const daysConfig = [
@@ -275,7 +277,7 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
                             </Stack>
                         </Grid>
                         <Grid  >
-                            {schedule.notifyBeforeMinutes && (
+                            {notifyBeforeMinutes && (
                                 <Stack direction="row" spacing={1} alignItems="center">
                                     <Notifications color="primary" />
                                     <Box>
@@ -283,7 +285,7 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
                                             Notificar antes
                                         </Typography>
                                         <Typography variant="h6" fontWeight="bold">
-                                            {schedule.notifyBeforeMinutes} min
+                                            {notifyBeforeMinutes} min
                                         </Typography>
                                     </Box>
                                 </Stack>
