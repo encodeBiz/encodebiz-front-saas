@@ -26,6 +26,7 @@ import { Alert, Box, Typography } from "@mui/material";
 import { InfoOutline } from "@mui/icons-material";
 import WorkScheduleField from "@/components/common/forms/fields/WorkScheduleField";
 import { useFormStatus } from "@/hooks/useFormStatus";
+import { CheckboxListField } from "@/components/common/forms/fields/CheckboxListField";
 
 
 export default function useFormController(isFromModal: boolean, onSuccess?: () => void) {
@@ -73,8 +74,9 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     endTime: endTime,
     "enableDayTimeRange": false, //poner texto  explicativo en los detalles  y el form
     "disableBreak": false, //poner texto  explicativo en los detalles y el form
-    "timeBreak": 60
-
+    "timeBreak": 60,
+    notifyBeforeMinutes: 15,
+    workScheduleEnable:false
   });
 
   const defaultValidationSchema: any = {
@@ -94,6 +96,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     startTime: requiredRule(t),
     endTime: requiredRule(t),
     timeBreak: timeBreakRule(t),
+    notifyBeforeMinutes: timeBreakRule(t),
   }
   const [validationSchema] = useState(defaultValidationSchema)
 
@@ -118,7 +121,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
           "endTimeWorkingDay": { hour: new Date(values.endTime).getHours(), minute: new Date(values.endTime).getMinutes() },
           "disableBreak": values.disableBreak,
           "timeBreak": values.timeBreak,
-
+          notifyBeforeMinutes: values.notifyBeforeMinutes,
           "workScheduleEnable": values.workScheduleEnable,
           "workSchedule": values.workSchedule,
         }
@@ -252,19 +255,16 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       fieldList: [
         {
           name: 'workScheduleEnable',
-          label: t('core.label.workScheduleEnable'),
-          component: ToggleInput,
+          component: CheckboxListField,
+          options: [
+            { value: true, label: t('core.label.workScheduleByDay') },
+            { value: false, label: t('core.label.workScheduleUniform') },
+          ],
           required: true,
           fullWidth: true,
         },
 
-        {
-          isDivider: true,
-          label: t('core.label.workScheduleCustom'),
-          extraProps: {
-            hide: !formStatus?.values?.workScheduleEnable
-          }
-        },
+
         {
           name: 'workSchedule',
           label: t('core.label.workSchedule'),
@@ -276,15 +276,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
           }
         },
 
-        {
-          isDivider: true,
-          label: t('core.label.workScheduleGlobal'),
-          extraProps: {
-            disabledBottomMargin: true,
-            hide: formStatus?.values?.workScheduleEnable
 
-          },
-        },
 
         {
           name: 'startTime',
@@ -315,6 +307,20 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
             hide: formStatus?.values?.workScheduleEnable
 
           },
+        },
+
+        {
+          isDivider: true,
+          label: t('core.label.adviseWorkDay'),
+          hit: t('core.label.adviseWorkDayText'),
+
+        },
+
+        {
+          name: 'notifyBeforeMinutes',
+          label: t('core.label.minute'),
+          type: 'number',
+          component: TextInput,
         },
 
       ]
@@ -409,6 +415,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         "timeBreak": sucursal?.advance?.timeBreak,
         workSchedule: sucursal?.advance?.workSchedule,
         workScheduleEnable: sucursal?.advance?.workScheduleEnable,
+        notifyBeforeMinutes: sucursal?.advance?.notifyBeforeMinutes,
 
       })
       changeLoaderState({ show: false })

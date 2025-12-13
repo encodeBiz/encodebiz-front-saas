@@ -118,7 +118,8 @@
       "nocard": "No tienes métodos de pago asociado a la entidad, por favor configure al menos uno."
     },
     "label": {
-      "workScheduleEnable":"Habilitar personalización de horarios de jornada",
+      "workScheduleUniform":"Jornada uniforme",
+      "workScheduleByDay":"Jornada por días",
       "workScheduleGlobal":"Configuración global",
       "workScheduleCustom":"Configuración personalizada",
       "workScheduleNotify":"Notificar antes (minutos)",
@@ -140,8 +141,8 @@
       "periocityTime": "Rango de tiempo",
       "create-download": "Crear y descargar",
       "advance": "CONFIGURACIÓN AVANZADA",
-      "dayTimeRange": "Horario de Jornada Laboral",
-      "dayTimeRangeDesc": "Por defecto el horario de la Jornada Laboral será 08:00 a 17:00",
+      "dayTimeRange": "Horario de la jornada",
+      "dayTimeRangeDesc": "Define el horario de trabajo de esta sucursal o proyecto.",
       "enableDayTimeRange": "Habilitar horario",
       "startTime": "Hora de inicio",
       "endTime": "Hora de fin",
@@ -175,6 +176,9 @@
       "ratioChecklog2": "Zona de chequeo permitida",
       "nif": "Número de identificación fiscal",
       "inactive": "Inactivo",
+      "adviseWorkDay": "Aviso de jornada",
+      "minute": "Minutos",
+      "adviseWorkDayText": "Configura con cuánta antelación se avisará al empleado antes de su hora de entrada y de salida.",
       "personalData": "INFORMACIÓN PESONAL",
       "configData": "CONFIGURACIÓN ADICIONAL",
       "aditionalData": "INFORMACIÓN ADICIONAL",
@@ -339,7 +343,7 @@
       "breakTimeRange": "Tiempo de descanso",
       "yes": "Si",
       "no": "No",
-      "timeBreakDesc": "Por defecto el tiempo de descanso será de 60 minutos",
+      "timeBreakDesc": "Define el tiempo de descanso. Por defecto se establece de 60 minutos.",
       "timeBreak": "Tiempo de descanso (minutos)"
     },
     "button": {

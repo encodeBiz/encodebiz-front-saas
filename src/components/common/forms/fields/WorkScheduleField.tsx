@@ -192,52 +192,7 @@ const WorkScheduleField: React.FC<FieldProps & TextFieldProps & { afterTextField
                 </Box>
             ))}
 
-            {/* Notificación previa */}
-            <Box  >
-
-
-                <Grid container alignItems="flex-start" width={'100%'}>
-                    <Grid container alignItems="center" justifyContent={'center'} gap={2}>
-                        <Typography variant="body1" color="text.secondary">
-                            {t('core.label.workScheduleNotify')}
-                        </Typography>
-                        <Field name="notifyBeforeMinutes">
-                            {({ field, meta }: FieldProps) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth
-                                    sx={{ width: 240 }}
-                                    type="number"
-                                     size="small"
-                                    error={meta.touched && !!meta.error}
-                                    helperText={meta.touched && meta.error}
-                                    slotProps={{
-                                        htmlInput: {
-                                            min: 5,
-                                            max: 60,
-                                            step: 5,
-                                        },
-                                        input: touched && error ? {
-                                            endAdornment: <Typography variant="caption" color="text.secondary">
-                                                min
-                                            </Typography>,
-                                        } : {},
-                                    }}
-                                    value={fieldValue.notifyBeforeMinutes}
-                                    onChange={(e) => {
-                                        setFieldValue({
-                                            ...fieldValue,
-                                            notifyBeforeMinutes: parseInt(e.target.value ?? '0')
-                                        });
-                                    }}
-
-                                />
-                            )}
-                        </Field>
-                    </Grid>
-
-                </Grid>
-            </Box>
+            
         </Box>
 
     </Box >

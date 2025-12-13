@@ -31,6 +31,7 @@ export interface ISucursal {
 
     workScheduleEnable?: boolean;
     workSchedule?: WorkSchedule;
+    notifyBeforeMinutes?:number
 
   }
 }
