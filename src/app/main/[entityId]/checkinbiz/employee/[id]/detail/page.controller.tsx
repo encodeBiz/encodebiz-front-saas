@@ -16,7 +16,7 @@ import { useCommonModal } from "@/hooks/useCommonModal";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { format_date, rmNDay } from "@/lib/common/Date";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
-import {   fetchSucursal, fetchSucursal as fetchSucursalData, search } from "@/services/checkinbiz/sucursal.service";
+import { fetchSucursal, fetchSucursal as fetchSucursalData, search } from "@/services/checkinbiz/sucursal.service";
 import { Box } from "@mui/material";
 
 import { DateRangePicker } from "@/app/main/[entityId]/passinbiz/stats/components/filters/fields/DateRangeFilter";
@@ -61,7 +61,7 @@ export default function useEmployeeDetailController() {
     branchId: [],
     metadata: []
   });
- 
+
   const fetchData = async () => {
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
@@ -74,8 +74,8 @@ export default function useEmployeeDetailController() {
         metadata: objectToArray(employee.metadata ?? {})
       })
 
-   
-       changeLoaderState({ show: false })
+
+      changeLoaderState({ show: false })
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
@@ -162,8 +162,8 @@ export default function useEmployeeDetailController() {
 
         const data: Array<IChecklog> = await Promise.all(
           res?.map(async (item) => {
-            const branchId = (await fetchSucursalData(currentEntity?.entity.id as string, item.branchId as string))?.name
-            return { ...item, branchId };
+            const branch = (await fetchSucursalData(currentEntity?.entity.id as string, item.branchId as string))
+            return { ...item, branch };
           })
         );
 
@@ -193,7 +193,7 @@ export default function useEmployeeDetailController() {
       id: 'branchId',
       label: t("core.label.branch"),
       minWidth: 170,
-      format: (value, row) => row.branchId
+      format: (value, row) => row.branch?.name??' - '
     },
     {
       id: 'type',
@@ -366,7 +366,7 @@ export default function useEmployeeDetailController() {
         price: 0,
         id: ''
       },
-      metadata:[],
+      metadata: [],
       active: 1,
       branch: await fetchSucursal(currentEntity?.entity.id as string, branchId)
     }])
@@ -384,7 +384,7 @@ export default function useEmployeeDetailController() {
     changeLoaderState({ show: false })
   }
 
- 
+
 
   const [responsabilityLimit, setResponsabilityLimit] = useState(5)
   const [responsabilityTotal, setResponsabilityTotal] = useState(0)
