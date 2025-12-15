@@ -16,6 +16,8 @@ import SelectCreatableInput from "@/components/common/forms/fields/SelectCreatab
 import { useParams } from "next/navigation";
 import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 import { ArrayToObject, objectToArray } from "@/lib/common/String";
+import ToggleInput from "@/components/common/forms/fields/ToggleInput";
+import WorkScheduleField from "@/components/common/forms/fields/WorkScheduleField";
 
 
 export default function useSucursalFromItemController(item: EmployeeEntityResponsibility, onEnd: () => void) {
@@ -31,7 +33,8 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
   const [active, setActive] = useState(item.active ?? 1)
   const [typeOwner, setTypeOwner] = useState(item.responsibility ?? 'worker')
   const [jobName, setJobName] = useState(item?.job?.job ?? '')
-  const [metadata, setMetadata] = useState(objectToArray(item.metadata??{})??[])
+  const [metadata, setMetadata] = useState(objectToArray(item.metadata ?? {}) ?? [])
+  const [enableDayTimeRange, setEnableDayTimeRange] = useState(false)
 
 
   const [initialValues, setInitialValues] = useState<Partial<any>>({
@@ -39,8 +42,9 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
     price: item?.job?.price ?? 0,
     responsibility: item?.responsibility ?? '',
     active: item?.active ?? 1,
-    metadata: objectToArray(item?.metadata??{})??[]
+    metadata: objectToArray(item?.metadata ?? {}) ?? []
   });
+
 
   const validationSchema = Yup.object().shape({
     job: requiredRule(t),
@@ -65,7 +69,9 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
         "metadata": {
           ...ArrayToObject(values.metadata as any),
         },
-        entityId: currentEntity?.entity.id
+        entityId: currentEntity?.entity.id,
+        workSchedule: values.workSchedule,
+        enableDayTimeRange: values.enableDayTimeRange
       }
       if (typeof data.id === 'number') {
         delete data.id
@@ -157,6 +163,31 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
 
     {
       isDivider: true,
+      label: t('core.label.dayTimeRange'),
+      hit: t('core.label.dayTimeRangeDesc'),
+    },
+    {
+      name: 'enableDayTimeRange',
+      label: enableDayTimeRange ? t('sucursal.dayTimeRangeEnableText') : t('sucursal.dayTimeRangeDisabledText'),
+      component: ToggleInput,
+      required: true,
+      extraProps: {
+        onHandleChange: setEnableDayTimeRange,
+        //hide: formStatus?.values?.workScheduleEnable
+
+      },
+    },
+    {
+      name: 'workSchedule',
+      label: t('core.label.workSchedule'),
+      component: WorkScheduleField,
+      required: true,
+      fullWidth: true,
+
+    },
+
+    {
+      isDivider: true,
       name: 'additional_data_section',
       label: t('core.label.aditionalData'),
     },
@@ -167,10 +198,10 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
       required: true,
       fullWidth: true,
       component: DynamicKeyValueInput,
-       extraProps: {
+      extraProps: {
         onHandleChange: (data: any) => {
           setMetadata(data)
-        },        
+        },
       },
     }
 
