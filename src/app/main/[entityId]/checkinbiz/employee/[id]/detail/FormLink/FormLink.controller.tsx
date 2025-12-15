@@ -217,6 +217,10 @@ export default function useFormLinkController(onSuccess: () => void) {
             component: WorkScheduleField,
             required: true,
             fullWidth: true,
+            extraProps: {
+                enableDayTimeRange: formStatus?.values?.enableDayTimeRange,
+                workScheduleEnable: formStatus?.values?.workScheduleEnable
+            },
 
         },
 

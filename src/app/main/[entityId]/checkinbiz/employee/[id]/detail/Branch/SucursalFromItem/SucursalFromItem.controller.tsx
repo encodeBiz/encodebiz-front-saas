@@ -183,6 +183,10 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
       component: WorkScheduleField,
       required: true,
       fullWidth: true,
+      extraProps: {
+        enableDayTimeRange,
+        workScheduleEnable:true
+      },
 
     },
 
