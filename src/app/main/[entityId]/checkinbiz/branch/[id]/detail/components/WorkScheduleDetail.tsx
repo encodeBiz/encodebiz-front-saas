@@ -26,6 +26,9 @@ import {
 } from '@mui/icons-material';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
+import { DetailText } from '@/components/common/table/DetailText';
+import { useTranslations } from 'next-intl';
 
 // Tipos
 interface Time {
@@ -55,7 +58,8 @@ interface WorkScheduleDetailProps {
     title?: string;
     showEmptyDays?: boolean;
     compact?: boolean;
-    notifyBeforeMinutes?:number
+    notifyBeforeMinutes?: number
+    branch: ISucursal
 }
 
 // Función para formatear hora
@@ -172,9 +176,11 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
     title = "Horario Laboral",
     showEmptyDays = false,
     compact = false,
-    notifyBeforeMinutes=0
+    notifyBeforeMinutes = 0,
+    branch
 }) => {
     // Configuración de días
+    const t = useTranslations()
     const daysConfig = [
         { key: 'monday' as const, label: 'Lunes' },
         { key: 'tuesday' as const, label: 'Martes' },
@@ -227,6 +233,10 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
 
     return (
         <Paper elevation={0} sx={{ p: 3 }}>
+
+
+
+
             <Box sx={{ mb: compact ? 2 : 3 }}>
                 <Stack
                     direction="row"
@@ -237,125 +247,130 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
                     <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
                         {title}
                     </Typography>
-
-                    <Chip
-                        icon={<Today />}
-                        label={`${enabledDaysCount} días`}
-                        color="primary"
-                        variant="outlined"
-                        size={compact ? "small" : "medium"}
-                    />
+                    <Box display={'flex'} alignItems={'center'} gap={2}>
+                        <DetailText help={branch?.advance?.enableDayTimeRange ? t('sucursal.dayTimeRangeAlertMessageE') : t('sucursal.dayTimeRangeAlertMessageD')} label={branch?.advance?.enableDayTimeRange ? t('sucursal.dayTimeRangeEnableText') : t('sucursal.dayTimeRangeDisabledText')} />
+                        {branch.advance?.workScheduleEnable && <Chip
+                            icon={<Today />}
+                            label={`${enabledDaysCount} días`}
+                            color="primary"
+                            variant="outlined"
+                            size={compact ? "small" : "medium"}
+                        />}
+                    </Box>
                 </Stack>
 
                 <Divider sx={{ mt: compact ? 1 : 2 }} />
             </Box>
-
-            {/* Estadísticas rápidas */}
-            {!compact && enabledDaysCount > 0 && (
-                <Paper
-                    elevation={0}
-                    sx={{
-                        p: 2,
-                        mb: 3,
-                        bgcolor: 'primary.light',
-                        background: theme=>theme.palette.secondary.light,
-                        borderRadius: 2
-                    }}
-                >
-                    <Grid container spacing={2}>
-                        <Grid  >
-                            <Stack direction="row" spacing={1} alignItems="center">
-                                <AccessTime color="primary" />
-                                <Box>
-                                    <Typography variant="caption" color="text.secondary">
-                                        Horas semanales
-                                    </Typography>
-                                    <Typography variant="h6" fontWeight="bold">
-                                        {calculateTotalWeeklyHours()}
-                                    </Typography>
-                                </Box>
-                            </Stack>
-                        </Grid>
-                        <Grid  >
-                            {notifyBeforeMinutes && (
+            {!branch.advance?.workScheduleEnable && <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'} alignItems={'flex-start'}>
+                <DetailText orientation="row" label={t('core.label.dayTimeRange')} value={((branch?.advance?.startTimeWorkingDay?.hour as number) < 10 ? '0' + branch?.advance?.startTimeWorkingDay?.hour : branch?.advance?.startTimeWorkingDay?.hour) + ':' + ((branch?.advance?.startTimeWorkingDay?.minute as number) < 10 ? '0' + branch?.advance?.startTimeWorkingDay?.minute : branch?.advance?.startTimeWorkingDay?.minute) + ' - ' + ((branch?.advance?.endTimeWorkingDay?.hour as number) < 10 ? '0' + branch?.advance?.endTimeWorkingDay?.hour : branch?.advance?.endTimeWorkingDay?.hour) + ':' + ((branch?.advance?.endTimeWorkingDay?.minute as number) < 10 ? '0' + branch?.advance?.endTimeWorkingDay?.minute : branch?.advance?.endTimeWorkingDay?.minute)} />
+            </Box>}
+            {branch.advance?.workScheduleEnable && <>
+                {/* Estadísticas rápidas */}
+                {!compact && enabledDaysCount > 0 && (
+                    <Paper
+                        elevation={0}
+                        sx={{
+                            p: 2,
+                            mb: 3,
+                            bgcolor: 'primary.light',
+                            background: theme => theme.palette.secondary.light,
+                            borderRadius: 2
+                        }}
+                    >
+                        <Grid container spacing={2}>
+                            <Grid  >
                                 <Stack direction="row" spacing={1} alignItems="center">
-                                    <Notifications color="primary" />
+                                    <AccessTime color="primary" />
                                     <Box>
                                         <Typography variant="caption" color="text.secondary">
-                                            Notificar antes
+                                            Horas semanales
                                         </Typography>
                                         <Typography variant="h6" fontWeight="bold">
-                                            {notifyBeforeMinutes} min
+                                            {calculateTotalWeeklyHours()}
                                         </Typography>
                                     </Box>
                                 </Stack>
-                            )}
+                            </Grid>
+                            <Grid  >
+                                {notifyBeforeMinutes && (
+                                    <Stack direction="row" spacing={1} alignItems="center">
+                                        <Notifications color="primary" />
+                                        <Box>
+                                            <Typography variant="caption" color="text.secondary">
+                                                Notificar antes
+                                            </Typography>
+                                            <Typography variant="h6" fontWeight="bold">
+                                                {notifyBeforeMinutes} min
+                                            </Typography>
+                                        </Box>
+                                    </Stack>
+                                )}
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </Paper>
-            )}
+                    </Paper>
+                )}
 
-            {/* Lista de días habilitados */}
-            {enabledDaysCount > 0 ? (
-                <>
-                    <Typography
-                        variant={compact ? "body2" : "body1"}
-                        color="text.secondary"
-                        gutterBottom
-                        sx={{ mb: compact ? 1 : 2 }}
+                {/* Lista de días habilitados */}
+                {enabledDaysCount > 0 ? (
+                    <>
+                        <Typography
+                            variant={compact ? "body2" : "body1"}
+                            color="text.secondary"
+                            gutterBottom
+                            sx={{ mb: compact ? 1 : 2 }}
+                        >
+                            Días programados ({enabledDaysCount})
+                        </Typography>
+
+                        <List sx={{ p: 0 }}>
+                            {enabledDays.map((day) => (
+                                <DayScheduleItem
+                                    key={day.key}
+                                    day={day.label}
+                                    schedule={schedule[day.key]}
+                                    compact={compact}
+                                />
+                            ))}
+                        </List>
+                    </>
+                ) : (
+                    <Alert
+                        severity="warning"
+                        icon={<Cancel />}
+                        sx={{ mb: 2 }}
                     >
-                        Días programados ({enabledDaysCount})
-                    </Typography>
+                        <AlertTitle>Sin horario configurado</AlertTitle>
+                        No hay días habilitados en el horario laboral.
+                    </Alert>
+                )}
 
-                    <List sx={{ p: 0 }}>
-                        {enabledDays.map((day) => (
-                            <DayScheduleItem
-                                key={day.key}
-                                day={day.label}
-                                schedule={schedule[day.key]}
-                                compact={compact}
-                            />
-                        ))}
-                    </List>
-                </>
-            ) : (
-                <Alert
-                    severity="warning"
-                    icon={<Cancel />}
-                    sx={{ mb: 2 }}
-                >
-                    <AlertTitle>Sin horario configurado</AlertTitle>
-                    No hay días habilitados en el horario laboral.
-                </Alert>
-            )}
+                {/* Sección de días deshabilitados */}
+                {showEmptyDays && disabledDays.length > 0 && !compact && (
+                    <>
+                        <Divider sx={{ my: 2 }} />
+                        <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            gutterBottom
+                        >
+                            Días no laborables
+                        </Typography>
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                            {disabledDays.map(day => (
+                                <Chip
+                                    key={day}
+                                    label={day}
+                                    size="small"
+                                    variant="outlined"
+                                    color="default"
+                                    icon={<Cancel fontSize="small" />}
+                                />
+                            ))}
+                        </Box>
+                    </>
+                )}
+            </>}
 
-            {/* Sección de días deshabilitados */}
-            {showEmptyDays && disabledDays.length > 0 && !compact && (
-                <>
-                    <Divider sx={{ my: 2 }} />
-                    <Typography
-                        variant="body2"
-                        color="text.secondary"
-                        gutterBottom
-                    >
-                        Días no laborables
-                    </Typography>
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                        {disabledDays.map(day => (
-                            <Chip
-                                key={day}
-                                label={day}
-                                size="small"
-                                variant="outlined"
-                                color="default"
-                                icon={<Cancel fontSize="small" />}
-                            />
-                        ))}
-                    </Box>
-                </>
-            )}
- 
-              
         </Paper>
     );
 };
