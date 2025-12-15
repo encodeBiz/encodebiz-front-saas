@@ -87,10 +87,7 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
                 <Box display={'flex'} justifyContent={'space-between'} alignItems={'flex-start'}>
 
                     {branch?.advance && <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={4} alignItems={'flex-start'}>
-                        {!branch.advance?.workScheduleEnable && <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'} alignItems={'flex-start'}>
-                            <DetailText orientation="row" label={t('core.label.dayTimeRange')} value={((branch?.advance?.startTimeWorkingDay?.hour as number) < 10 ? '0' + branch?.advance?.startTimeWorkingDay?.hour : branch?.advance?.startTimeWorkingDay?.hour) + ':' + ((branch?.advance?.startTimeWorkingDay?.minute as number) < 10 ? '0' + branch?.advance?.startTimeWorkingDay?.minute : branch?.advance?.startTimeWorkingDay?.minute) + ' - ' + ((branch?.advance?.endTimeWorkingDay?.hour as number) < 10 ? '0' + branch?.advance?.endTimeWorkingDay?.hour : branch?.advance?.endTimeWorkingDay?.hour) + ':' + ((branch?.advance?.endTimeWorkingDay?.minute as number) < 10 ? '0' + branch?.advance?.endTimeWorkingDay?.minute : branch?.advance?.endTimeWorkingDay?.minute)} />
-                            <DetailText help={branch?.advance?.enableDayTimeRange ? t('sucursal.dayTimeRangeAlertMessageE') : t('sucursal.dayTimeRangeAlertMessageD')} label={branch?.advance?.enableDayTimeRange ? t('sucursal.dayTimeRangeEnableText') : t('sucursal.dayTimeRangeDisabledText')} />
-                        </Box>}
+                  
 
                         <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'} alignItems={'flex-start'}>
                             <DetailText orientation="row" label={t('core.label.breakTimeRange')} value={branch?.advance?.timeBreak + ' ' + t('core.label.minutes')} />
@@ -132,7 +129,7 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
                     },
                 ] : []),
 
-                ...(branch.advance?.workScheduleEnable ? [
+                ...[
                     {
                         id: '1',
                         title: t(`core.label.workSchedule`),
@@ -140,11 +137,12 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
                             schedule={branch.advance?.workSchedule as WorkSchedule}
                             title={t(`core.label.workSchedule`)}
                             showEmptyDays={true}
+                            branch={branch}
                             notifyBeforeMinutes={branch.advance?.notifyBeforeMinutes as number}
 
                         />
                     },
-                ] : [])
+                ]
 
 
             ]} />}
