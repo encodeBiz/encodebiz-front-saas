@@ -47,114 +47,80 @@ const initialValues: WorkSchedule = {
     thursday: { ...defaultDaySchedule },
     friday: { ...defaultDaySchedule },
     saturday: { ...defaultDaySchedule },
-    sunday: { ...defaultDaySchedule, enabled:false },
+    sunday: { ...defaultDaySchedule, enabled: false },
     notifyBeforeMinutes: 15,
 };
 
-const WorkScheduleField: React.FC<FieldProps & TextFieldProps & { afterTextField: string }> = ({
+const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
+    afterTextField: string,
+
+    enableDayTimeRange: boolean
+    workScheduleEnable: boolean
+
+}> = ({
     ...props
 }) => {
-    const [field, meta, helper] = useField(props.name as string);
-    const { touched, error } = meta
-    const [fieldValue, setFieldValue] = useState<WorkSchedule>(field.value ?? initialValues)
-    const { formStatus } = useFormStatus()
-    const { currentLocale } = useAppLocale()
-    const t = useTranslations()
-    useEffect(() => {
-        helper.setValue(fieldValue)
-    }, [fieldValue])
 
-    useEffect(() => {
-        if (field.value)
-            setFieldValue(field.value)
-    }, [field.value])
+        const { workScheduleEnable, enableDayTimeRange } = props
+        const [field, meta, helper] = useField(props.name as string);
+        const { touched, error } = meta
+        const [fieldValue, setFieldValue] = useState<WorkSchedule>(field.value ?? initialValues)
+        const { currentLocale } = useAppLocale()
+        const t = useTranslations()
+        useEffect(() => {
+            helper.setValue(fieldValue)
+        }, [fieldValue])
 
-    useEffect(() => {
-        console.log(formStatus?.values);
-    }, [formStatus?.values])
-
-    return (<LocalizationProvider dateAdapter={AdapterDayjs} localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}><Box display={'flex'} justifyItems={'center'} alignItems={'center'} >
-        <Box alignItems="flex-start" gap={2} justifyContent={'space-evenly'} display={'flex'} flexDirection={'column'} width={'100%'}>
-            {DAYS.map((day) => (
-                <Box key={day.key} sx={{ mb: 3 }} width={'100%'}>
-                    <Grid spacing={2} alignItems="center" gap={2} justifyContent={'space-between'} display={'flex'} flexDirection={'row'} width={'100%'}>
-                        <Grid display={'flex'} width={'20%'} alignItems="flex-start" justifyContent={'flex-start'} flexDirection={{
-                            xs: 'column',
-                            sm: 'column',
-                            md: 'column',
-                            lg: 'row',
-                            xl: 'row',
-                        }} >
-                            <Field name={`${day.key}.enabled`}>
-                                {({ field }: FieldProps) => (
-                                    <FormControlLabel
-                                        control={
-                                            <Switch
-                                                disabled={!formStatus?.values?.workScheduleEnable}
-                                                checked={fieldValue[day.key]?.enabled}
-                                                onChange={(e) => {
-                                                    setFieldValue({
-                                                        ...fieldValue,
-                                                        [day.key]: {
-                                                            ...fieldValue[day.key],
-                                                            enabled: e.target.checked
-                                                        }
-                                                    });
-                                                }}
-                                                color="primary"
-                                            />
-                                        }
-                                        label={
-                                            <Typography fontWeight="medium">
-                                                {day.label}
-                                            </Typography>
-                                        }
-                                    />
-                                )}
-                            </Field>
-                        </Grid>
+        useEffect(() => {
+            if (field.value)
+                setFieldValue(field.value)
+        }, [field.value])
 
 
 
-                        <Grid display={'flex'} flexDirection={{
-                            xs: 'column',
-                            sm: 'column',
-                            md: 'column',
-                            lg: 'row',
-                            xl: 'row',
-                        }} >
-
-                            <Grid container spacing={1}>
-                                <TimePicker label={t('core.label.startTime')} localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}
-                                    //minTime={dayjs(props.name === 'endTime' ? new Date(formStatus?.values?.startTime) ?? new Date() : new Date())}
-                                    value={createDayjsTime(fieldValue[day.key]?.start?.hour as number, fieldValue[day.key]?.start?.minute as number)}
-                                    defaultValue={createDayjsTime(fieldValue[day.key]?.start?.hour as number, fieldValue[day.key]?.start?.minute as number)}
-                                    onChange={(e) => {
-                                        setFieldValue({
-                                            ...fieldValue,
-                                            [day.key]: {
-                                                ...fieldValue[day.key],
-                                                start: {
-                                                    ...fieldValue[day.key]?.start,
-                                                    minute: e?.toDate().getMinutes(),
-                                                    hour: e?.toDate().getHours()
-                                                }
+        return (<LocalizationProvider dateAdapter={AdapterDayjs} localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}><Box display={'flex'} justifyItems={'center'} alignItems={'center'} >
+            <Box alignItems="flex-start" gap={2} justifyContent={'space-evenly'} display={'flex'} flexDirection={'column'} width={'100%'}>
+                
+                {DAYS.map((day) => (
+                    <Box key={day.key} sx={{ mb: 3 }} width={'100%'}>
+                        <Grid spacing={2} alignItems="center" gap={2} justifyContent={'space-between'} display={'flex'} flexDirection={'row'} width={'100%'}>
+                            <Grid display={'flex'} width={'20%'} alignItems="flex-start" justifyContent={'flex-start'} flexDirection={{
+                                xs: 'column',
+                                sm: 'column',
+                                md: 'column',
+                                lg: 'row',
+                                xl: 'row',
+                            }} >
+                                <Field name={`${day.key}.enabled`}>
+                                    {({ field }: FieldProps) => (
+                                        <FormControlLabel
+                                            control={
+                                                <Switch
+                                                    disabled={!workScheduleEnable}
+                                                    checked={fieldValue[day.key]?.enabled}
+                                                    onChange={(e) => {
+                                                        setFieldValue({
+                                                            ...fieldValue,
+                                                            [day.key]: {
+                                                                ...fieldValue[day.key],
+                                                                enabled: e.target.checked
+                                                            }
+                                                        });
+                                                    }}
+                                                    color="primary"
+                                                />
                                             }
-                                        });
-                                    }}
-                                    disabled={!formStatus?.values?.workScheduleEnable || !formStatus?.values?.enableDayTimeRange || props.disabled || ((props.name === 'endTime' || props.name === 'startTime') && !formStatus?.values?.enableDayTimeRange)}
-                                    sx={{ width: '100%' }}
-                                />
+                                            label={
+                                                <Typography fontWeight="medium">
+                                                    {day.label}
+                                                </Typography>
+                                            }
+                                        />
+                                    )}
+                                </Field>
                             </Grid>
-                        </Grid>
 
-                        <Grid display={'flex'} flexDirection={{
-                            xs: 'column',
-                            sm: 'column',
-                            md: 'column',
-                            lg: 'row',
-                            xl: 'row',
-                        }} >
+
 
                             <Grid display={'flex'} flexDirection={{
                                 xs: 'column',
@@ -163,41 +129,81 @@ const WorkScheduleField: React.FC<FieldProps & TextFieldProps & { afterTextField
                                 lg: 'row',
                                 xl: 'row',
                             }} >
-                                <TimePicker label={t('core.label.endTime')} localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}
-                                    //minTime={dayjs(props.name === 'endTime' ? new Date(formStatus?.values?.startTime) ?? new Date() : new Date())}
-                                    value={createDayjsTime(fieldValue[day.key]?.end?.hour as number, fieldValue[day.key]?.end?.minute as number)}
-                                    defaultValue={createDayjsTime(fieldValue[day.key]?.end?.hour as number, fieldValue[day.key]?.end?.minute as number)}
-                                    onChange={(e) => {
-                                        setFieldValue({
-                                            ...fieldValue,
-                                            [day.key]: {
-                                                ...fieldValue[day.key],
-                                                end: {
-                                                    ...fieldValue[day.key]?.end,
-                                                    minute: e?.toDate().getMinutes(),
-                                                    hour: e?.toDate().getHours()
+
+                                <Grid container spacing={1}>
+                                    <TimePicker label={t('core.label.startTime')} localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}
+                                        //minTime={dayjs(props.name === 'endTime' ? new Date(formStatus?.values?.startTime) ?? new Date() : new Date())}
+                                        value={createDayjsTime(fieldValue[day.key]?.start?.hour as number, fieldValue[day.key]?.start?.minute as number)}
+                                        defaultValue={createDayjsTime(fieldValue[day.key]?.start?.hour as number, fieldValue[day.key]?.start?.minute as number)}
+                                        onChange={(e) => {
+                                            setFieldValue({
+                                                ...fieldValue,
+                                                [day.key]: {
+                                                    ...fieldValue[day.key],
+                                                    start: {
+                                                        ...fieldValue[day.key]?.start,
+                                                        minute: e?.toDate().getMinutes(),
+                                                        hour: e?.toDate().getHours()
+                                                    }
                                                 }
-                                            }
-                                        });
-                                    }}
-                                    disabled={!formStatus?.values?.workScheduleEnable  || !formStatus?.values?.enableDayTimeRange || props.disabled || ((props.name === 'endTime' || props.name === 'startTime') && !formStatus?.values?.enableDayTimeRange)}
-                                    sx={{ width: '100%' }}
-                                />
+                                            });
+                                        }}
+                                        disabled={!workScheduleEnable || enableDayTimeRange || props.disabled || ((props.name === 'endTime' || props.name === 'startTime') && !enableDayTimeRange)}
+                                        sx={{ width: '100%' }}
+                                    />
+                                </Grid>
                             </Grid>
+
+                            <Grid display={'flex'} flexDirection={{
+                                xs: 'column',
+                                sm: 'column',
+                                md: 'column',
+                                lg: 'row',
+                                xl: 'row',
+                            }} >
+
+                                <Grid display={'flex'} flexDirection={{
+                                    xs: 'column',
+                                    sm: 'column',
+                                    md: 'column',
+                                    lg: 'row',
+                                    xl: 'row',
+                                }} >
+                                    <TimePicker label={t('core.label.endTime')} localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}
+                                        //minTime={dayjs(props.name === 'endTime' ? new Date(formStatus?.values?.startTime) ?? new Date() : new Date())}
+                                        value={createDayjsTime(fieldValue[day.key]?.end?.hour as number, fieldValue[day.key]?.end?.minute as number)}
+                                        defaultValue={createDayjsTime(fieldValue[day.key]?.end?.hour as number, fieldValue[day.key]?.end?.minute as number)}
+                                        onChange={(e) => {
+                                            setFieldValue({
+                                                ...fieldValue,
+                                                [day.key]: {
+                                                    ...fieldValue[day.key],
+                                                    end: {
+                                                        ...fieldValue[day.key]?.end,
+                                                        minute: e?.toDate().getMinutes(),
+                                                        hour: e?.toDate().getHours()
+                                                    }
+                                                }
+                                            });
+                                        }}
+                                        disabled={!workScheduleEnable || enableDayTimeRange || props.disabled || ((props.name === 'endTime' || props.name === 'startTime') && !enableDayTimeRange)}
+                                        sx={{ width: '100%' }}
+                                    />
+                                </Grid>
+                            </Grid>
+
+
                         </Grid>
+                        <Divider sx={{ mt: 2 }} />
+                    </Box>
+                ))}
 
 
-                    </Grid>
-                    <Divider sx={{ mt: 2 }} />
-                </Box>
-            ))}
+            </Box>
 
-            
-        </Box>
-
-    </Box >
-    </LocalizationProvider>
-    );
-};
+        </Box >
+        </LocalizationProvider>
+        );
+    };
 
 export default WorkScheduleField;

@@ -76,7 +76,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     "disableBreak": false, //poner texto  explicativo en los detalles y el form
     "timeBreak": 60,
     notifyBeforeMinutes: 15,
-    workScheduleEnable:false
+    workScheduleEnable: false
   });
 
   const defaultValidationSchema: any = {
@@ -272,7 +272,10 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
           required: true,
           fullWidth: true,
           extraProps: {
-            hide: !formStatus?.values?.workScheduleEnable
+            hide: !formStatus?.values?.workScheduleEnable,
+            enableDayTimeRange: formStatus?.values?.enableDayTimeRange,
+            workScheduleEnable: formStatus?.values?.workScheduleEnable
+
           }
         },
 
