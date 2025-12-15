@@ -21,6 +21,8 @@ import { CommonModalType } from "@/contexts/commonModalContext";
 import { useFormStatus } from "@/hooks/useFormStatus";
 import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 import { ArrayToObject } from "@/lib/common/String";
+import WorkScheduleField from "@/components/common/forms/fields/WorkScheduleField";
+import { CheckboxListField } from "@/components/common/forms/fields/CheckboxListField";
 
 
 export default function useFormLinkController(onSuccess: () => void) {
@@ -81,7 +83,9 @@ export default function useFormLinkController(onSuccess: () => void) {
                     },
                     assignedBy: user?.uid as string,
                     active: active,
-                    entityId: currentEntity?.entity.id
+                    entityId: currentEntity?.entity.id,
+                    workSchedule: values.workSchedule,
+                    enableDayTimeRange: values.enableDayTimeRange
                 }
                 if (typeof data.id === 'number') {
                     delete data.id
@@ -188,11 +192,37 @@ export default function useFormLinkController(onSuccess: () => void) {
             component: ToggleInput,
         },
 
+
+
+
+
+        {
+            isDivider: true,
+            label: t('core.label.dayTimeRange'),
+            hit: t('core.label.dayTimeRangeDesc'),
+        },
+        {
+            name: 'enableDayTimeRange',
+            label: formStatus?.values?.enableDayTimeRange ? t('sucursal.dayTimeRangeEnableText') : t('sucursal.dayTimeRangeDisabledText'),
+            component: ToggleInput,
+            required: true,
+        },
+        {
+            name: 'workSchedule',
+            label: t('core.label.workSchedule'),
+            component: WorkScheduleField,
+            required: true,
+            fullWidth: true,
+
+        },
+
         {
             isDivider: true,
             name: 'additional_data_section',
             label: t('core.label.aditionalData'),
         },
+
+
         {
             name: 'metadata',
             label: t('core.label.setting'),
@@ -205,7 +235,7 @@ export default function useFormLinkController(onSuccess: () => void) {
                     setMetadata(data)
                 },
             },
-        }
+        },
 
     ]
 
