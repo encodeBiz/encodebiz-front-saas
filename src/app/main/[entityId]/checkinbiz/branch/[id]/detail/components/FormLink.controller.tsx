@@ -215,7 +215,7 @@ export default function useFormLinkController(onSuccess: () => void) {
             fullWidth: true,
             extraProps: {
                 enableDayTimeRange: formStatus?.values?.enableDayTimeRange,
-                workScheduleEnable: formStatus?.values?.workScheduleEnable
+                workScheduleEnable: true
             },
 
         },

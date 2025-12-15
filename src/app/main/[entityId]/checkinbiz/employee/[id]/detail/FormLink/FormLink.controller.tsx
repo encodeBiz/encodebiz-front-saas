@@ -135,6 +135,7 @@ export default function useFormLinkController(onSuccess: () => void) {
             fetchJobList()
         }
     }, [currentEntity?.entity.id, user?.id])
+  const [enableDayTimeRange, setEnableDayTimeRange] = useState(false)
 
 
     const fields = [
@@ -219,7 +220,7 @@ export default function useFormLinkController(onSuccess: () => void) {
             fullWidth: true,
             extraProps: {
                 enableDayTimeRange: formStatus?.values?.enableDayTimeRange,
-                workScheduleEnable: formStatus?.values?.workScheduleEnable
+                workScheduleEnable: true
             },
 
         },
