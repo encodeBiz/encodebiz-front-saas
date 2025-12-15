@@ -304,7 +304,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
           required: true,
           extraProps: {
             onHandleChange: setEnableDayTimeRange,
-            hide: formStatus?.values?.workScheduleEnable
+            //hide: formStatus?.values?.workScheduleEnable
 
           },
         },
