@@ -800,7 +800,7 @@
     "title": "Asistencias",
     "formDesc": "Completa los campos a continuación para crear/editar un reporte de asistencia.",
     "list": "Asistencias",
-    "requestUpdates":"Solicitud de actualizaciones",
+    "requestUpdates":"Historial del registro de asistencia",
     "add": "Crear registro de asistencia",
     "edit": "Editar registro de asistencia",
     "export": "Exportar reportes de asistencia",
