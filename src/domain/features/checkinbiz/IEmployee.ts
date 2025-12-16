@@ -1,4 +1,4 @@
-import { ISucursal } from "./ISucursal";
+import { ISucursal, WorkSchedule } from "./ISucursal";
 
 export interface IEmployee {
     id?: string; // uid
@@ -49,7 +49,7 @@ export interface IEmployee {
         }
     },
 
-       totalItems?: number
+    totalItems?: number
 }
 
 // Consistency first: keys y niveles canonizados
@@ -89,9 +89,12 @@ export interface EmployeeEntityResponsibility {
 
     totalItems?: number
 
-    employee?:IEmployee
+    employee?: IEmployee
 
-    open?:boolean
+    open?: boolean
 
     metadata: any
+
+    workSchedule?: WorkSchedule,
+    workScheduleEnable?: boolean
 }

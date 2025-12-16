@@ -85,7 +85,7 @@ export default function useFormLinkController(onSuccess: () => void) {
                     active: active,
                     entityId: currentEntity?.entity.id,
                     workSchedule: values.workSchedule,
-                    enableDayTimeRange: values.enableDayTimeRange
+                    workScheduleEnable: values.enableDayTimeRange
                 }
                 if (typeof data.id === 'number') {
                     delete data.id
@@ -201,9 +201,9 @@ export default function useFormLinkController(onSuccess: () => void) {
             label: t('core.label.dayTimeRange'),
             hit: t('core.label.dayTimeRangeDesc'),
         },
-        {
+       {
             name: 'enableDayTimeRange',
-            label: formStatus?.values?.enableDayTimeRange ? t('sucursal.dayTimeRangeEnableText') : t('sucursal.dayTimeRangeDisabledText'),
+            label: formStatus?.values?.enableDayTimeRange ? t('core.label.workScheduleEnable') : t('core.label.workScheduleDisabled'),
             component: ToggleInput,
             required: true,
         },
@@ -215,7 +215,8 @@ export default function useFormLinkController(onSuccess: () => void) {
             fullWidth: true,
             extraProps: {
                 enableDayTimeRange: formStatus?.values?.enableDayTimeRange,
-                workScheduleEnable: true
+                workScheduleEnable: true,
+                hide:!formStatus?.values?.enableDayTimeRange
             },
 
         },

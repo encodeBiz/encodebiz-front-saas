@@ -42,7 +42,9 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
     price: item?.job?.price ?? 0,
     responsibility: item?.responsibility ?? '',
     active: item?.active ?? 1,
-    metadata: objectToArray(item?.metadata ?? {}) ?? []
+    metadata: objectToArray(item?.metadata ?? {}) ?? [],
+    enableDayTimeRange: item.workScheduleEnable
+
   });
 
 
@@ -71,7 +73,7 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
         },
         entityId: currentEntity?.entity.id,
         workSchedule: values.workSchedule,
-        enableDayTimeRange: values.enableDayTimeRange
+        workScheduleEnable: values.enableDayTimeRange
       }
       if (typeof data.id === 'number') {
         delete data.id
@@ -160,15 +162,15 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
       required: true,
       component: TextInput,
     },
-
     {
       isDivider: true,
       label: t('core.label.dayTimeRange'),
       hit: t('core.label.dayTimeRangeDesc'),
     },
+
     {
       name: 'enableDayTimeRange',
-      label: enableDayTimeRange ? t('sucursal.dayTimeRangeEnableText') : t('sucursal.dayTimeRangeDisabledText'),
+      label: enableDayTimeRange ? t('core.label.workScheduleEnable') : t('core.label.workScheduleDisabled'),
       component: ToggleInput,
       required: true,
       extraProps: {
@@ -184,11 +186,14 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
       required: true,
       fullWidth: true,
       extraProps: {
-        enableDayTimeRange,
-        workScheduleEnable:true
+        enableDayTimeRange: enableDayTimeRange,
+        workScheduleEnable: true,
+        hide: !enableDayTimeRange
       },
 
     },
+
+
 
     {
       isDivider: true,

@@ -93,7 +93,7 @@ export default function useFormLinkController(onSuccess: () => void) {
                     entityId: currentEntity?.entity.id,
 
                     workSchedule: values.workSchedule,
-                    enableDayTimeRange: values.enableDayTimeRange
+                    workScheduleEnable: values.enableDayTimeRange
                 }
                 if (typeof data.id === 'number') {
                     delete data.id
@@ -135,8 +135,7 @@ export default function useFormLinkController(onSuccess: () => void) {
             fetchJobList()
         }
     }, [currentEntity?.entity.id, user?.id])
-  const [enableDayTimeRange, setEnableDayTimeRange] = useState(false)
-
+ 
 
     const fields = [
         {
@@ -208,7 +207,7 @@ export default function useFormLinkController(onSuccess: () => void) {
         },
         {
             name: 'enableDayTimeRange',
-            label: formStatus?.values?.enableDayTimeRange ? t('sucursal.dayTimeRangeEnableText') : t('sucursal.dayTimeRangeDisabledText'),
+            label: formStatus?.values?.enableDayTimeRange ? t('core.label.workScheduleEnable') : t('core.label.workScheduleDisabled'),
             component: ToggleInput,
             required: true,
         },
@@ -220,7 +219,8 @@ export default function useFormLinkController(onSuccess: () => void) {
             fullWidth: true,
             extraProps: {
                 enableDayTimeRange: formStatus?.values?.enableDayTimeRange,
-                workScheduleEnable: true
+                workScheduleEnable: true,
+                hide:!formStatus?.values?.enableDayTimeRange
             },
 
         },
