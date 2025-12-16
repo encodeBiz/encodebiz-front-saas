@@ -155,15 +155,17 @@ export default function useAttendanceController() {
             if (Array.isArray(item.metadata?.requestUpdates) && item.metadata?.requestUpdates.length > 0) {
               requestUpdates = await Promise.all(
                 item.metadata?.requestUpdates.map(async (e: any) => {
-                  const employee = (await fetchEmployeeData(currentEntity?.entity.id as string, e.data?.employeeId as string))
-                   
-                  return { ...e, employee };
+                  const employee1 = (await fetchEmployeeData(currentEntity?.entity.id as string, e.data?.employeeId as string))
+                  return { ...e, employee: employee1 };
                 })
               );
             }
             return { ...item, requestUpdates, branch, employee };
           })
         );
+
+        console.log(data);
+        
 
         setItems(data)
         if (!filterParams.params.startAfter) {
@@ -219,7 +221,8 @@ export default function useAttendanceController() {
        
         {format_date(row.timestamp, 'DD/MM/YYYY')} {format_date(row.timestamp, 'hh:mm')}
          {Array.isArray(row.metadata?.requestUpdates) && row.metadata?.requestUpdates.length > 0 && <IconButton onClick={() => {
-          openModal(CommonModalType.INFO, { item: row })
+           
+          openModal(CommonModalType.INFO, { item: row?.requestUpdates[0] })
         }}><TableViewRounded /></IconButton>}
       </Box>
     },
