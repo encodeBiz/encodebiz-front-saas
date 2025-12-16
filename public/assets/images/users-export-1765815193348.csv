@@ -1,0 +1,1378 @@
+Id de Empleado,Nombre,email,Tipo de Contrato,Estado,Ordenes Entregadas,Ciudad ID,Activo desde
+4119455,Arendel 46,arendeltech+46@gmail.com,FULL_TIME,working,2,1006,11:00
+4074204,arendeltech RIDER,arendeltech+558@gmail.com,FULL_TIME,working,2,902,14:30
+4199645,Arendel 10978,arendeltech+10978@gmail.com,FULL_TIME,working,1,749,16:00
+4070211,Arendel RIDER,arendeltech+588@gmail.com,FULL_TIME,working,1,1026,13:30
+4126399,Arendel 92,rendeltech+92@gmail.com,FULL_TIME,working,1,1006,15:30
+4070227,arendeltech RIDER,arendeltech+569@gmail.com,FULL_TIME,working,1,734,13:00
+4070303,Arendel RIDER,arendeltech+578@gmail.com,FULL_TIME,working,1,734,13:00
+4266759,Arendel 11210,arendeltech+11210@gmail.com,FULL_TIME,working,1,734,10:30
+4096534,arendeltech RIDER,arendeltech+322@gmail.com,FULL_TIME,working,1,1014,15:00
+4115655,Arendel 151,arendeltech+151@gmail.com,FULL_TIME,working,1,1014,11:00
+4100443,Arendel RIDER,arendeltech+299@gmail.com,FULL_TIME,working,1,882,13:00
+4107329,Arendel RIDER,arendeltech+192@gmail.com,FULL_TIME,working,1,882,15:30
+4113505,Arendel RIDER,arendeltech+246@gmail.com,FULL_TIME,working,1,882,14:30
+4177456,Arendel 10923,arendeltech+10923@gmail.com,FULL_TIME,working,1,882,15:00
+4178356,Arendel 10929,arendeltech+10929@gmail.com,FULL_TIME,working,1,882,13:00
+4191649,Arendel 10948,arendeltech+10948@gmail.com,FULL_TIME,working,1,739,12:30
+4198525,Arendel 10968,arendeltech+10968@gmail.com,FULL_TIME,working,1,739,14:00
+4310947,Arendel 11322,arendeltech+11322@gmail.com,FULL_TIME,working,1,739,13:00
+4067048,Arendel RIDER,arendeltech+509@gmail.com,FULL_TIME,working,1,902,15:00
+4071026,arendeltech RIDER,arendeltech+596@gmail.com,FULL_TIME,working,1,902,15:00
+4071035,arendeltech RIDER,arendeltech+598@gmail.com,FULL_TIME,working,1,902,15:00
+4071056,arendeltech RIDER,arendeltech+600@gmail.com,FULL_TIME,working,1,902,15:30
+4071101,arendeltech RIDER,arendeltech+609@gmail.com,FULL_TIME,working,1,902,15:00
+4071122,arendeltech RIDER,arendeltech+606@gmail.com,FULL_TIME,working,1,902,11:00
+4071139,arendeltech RIDER,arendeltech+604@gmail.com,FULL_TIME,working,1,902,16:00
+4071201,arendeltech RIDER,arendeltech+618@gmail.com,FULL_TIME,working,1,902,15:00
+4071248,arendeltech RIDER,arendeltech+622@gmail.com,FULL_TIME,working,1,902,14:30
+4071323,arendeltech RIDER,arendeltech+627@gmail.com,FULL_TIME,ending,1,902,15:30
+4071371,arendeltech RIDER,arendeltech+633@gmail.com,FULL_TIME,working,1,902,15:00
+4071416,arendeltech RIDER,arendeltech+639@gmail.com,FULL_TIME,working,1,902,15:00
+4071444,arendeltech RIDER,arendeltech+640@gmail.com,FULL_TIME,working,1,902,13:30
+4071591,arendeltech RIDER,arendeltech+676@gmail.com,FULL_TIME,working,1,902,16:00
+4071618,arendeltech RIDER,arendeltech+674@gmail.com,FULL_TIME,working,1,902,14:30
+4071636,arendeltech RIDER,arendeltech+670@gmail.com,FULL_TIME,working,1,902,15:00
+4071653,arendeltech RIDER,arendeltech+649@gmail.com,FULL_TIME,working,1,902,13:00
+4072542,arendeltech RIDER,arendeltech+433@gmail.com,FULL_TIME,ending,1,902,15:30
+4072793,arendeltech RIDER,arendeltech+408@gmail.com,FULL_TIME,working,1,902,15:00
+4072839,arendeltech RIDER,arendeltech+414@gmail.com,FULL_TIME,working,1,902,16:00
+4072848,arendeltech RIDER,arendeltech+415@gmail.com,FULL_TIME,working,1,902,15:00
+4072907,arendeltech RIDER,arendeltech+421@gmail.com,FULL_TIME,working,1,902,15:00
+4072915,arendeltech RIDER,arendeltech+543@gmail.com,FULL_TIME,working,1,902,14:30
+4073614,arendeltech RIDER,arendeltech+551@gmail.com,FULL_TIME,working,1,902,15:00
+4073627,arendeltech RIDER,arendeltech+550@gmail.com,FULL_TIME,working,1,902,15:00
+4073630,Arendel RIDER,arendeltech+658@gmail.com,FULL_TIME,working,1,902,14:30
+4073654,arendeltech RIDER,arendeltech+546@gmail.com,FULL_TIME,working,1,902,14:30
+4073722,arendeltech RIDER,arendeltech+556@gmail.com,FULL_TIME,working,1,902,14:30
+4073771,Arendel RIDER,arendeltech+659@gmail.com,FULL_TIME,working,1,902,15:30
+4074185,arendeltech RIDER,arendeltech+561@gmail.com,FULL_TIME,working,1,902,14:30
+4074338,Arendel RIDER,arendeltech+505@gmail.com,FULL_TIME,working,1,902,13:30
+4076729,arendeltech leynis Martinez,arendeltech+519@gmail.com,FULL_TIME,working,1,902,14:30
+4076732,arendeltech victor arboleda,arendeltech+523@gmail.com,FULL_TIME,working,1,902,14:30
+4079163,arendeltech RIDER,arendeltech+376@gmail.com,FULL_TIME,working,1,902,14:00
+4083896,Arendel RIDER,arendeltech+472@gmail.com,FULL_TIME,working,1,902,16:00
+4086636,Arendel RIDER,arendeltech+481@gmail.com,FULL_TIME,working,1,902,16:00
+4086653,Arendel RIDER,arendeltech+483@gmail.com,FULL_TIME,working,1,902,15:00
+4086701,Arendel RIDER,arendeltech+381@gmail.com,FULL_TIME,working,1,902,15:00
+4086710,Arendel RIDER,arendeltech+488@gmail.com,FULL_TIME,working,1,902,15:30
+4086753,Arendel RIDER,arendeltech+493@gmail.com,FULL_TIME,working,1,902,10:30
+4086807,Arendel RIDER,arendeltech+498@gmail.com,FULL_TIME,working,1,902,15:00
+4087940,Arendel RIDER,arendeltech+344@gmail.com,FULL_TIME,working,1,902,11:00
+4096161,arendeltech RIDER,arendeltech+321@gmail.com,FULL_TIME,working,1,902,15:00
+4097705,Arendel RIDER,arendeltech+277@gmail.com,FULL_TIME,working,1,902,16:00
+4129419,Arendel 16,arendeltech+16@gmail.com,FULL_TIME,working,1,902,15:00
+4165408,Arendel 10880,arendeltech+10880@gmail.com,FULL_TIME,working,1,902,11:00
+4173231,Arendel 10914,arendeltech+10914@gmail.com,FULL_TIME,working,1,902,15:30
+4174385,Arendel 10922,arendeltech+10922@gmail.com,FULL_TIME,working,1,902,13:00
+4207676,Arendel 11031,arendeltech+11031@gmail.com,FULL_TIME,working,1,902,14:00
+4233752,Arendel 11114,arendeltech+11114@gmail.com,FULL_TIME,working,1,902,14:00
+4233756,Arendel 11117,arendeltech+11117@gmail.com,FULL_TIME,working,1,902,13:00
+4260183,Arendel 11195,arendeltech+11195@gmail.com,FULL_TIME,working,1,902,14:00
+4260197,Arendel 11196,arendeltech+11196@gmail.com,FULL_TIME,working,1,902,15:00
+4260223,Arendel 11197,arendeltech+11197@gmail.com,FULL_TIME,working,1,902,14:00
+4260289,Arendel 11201,arendeltech+11201@gmail.com,FULL_TIME,working,1,902,15:30
+4260374,Arendel 11205,arendeltech+11205@gmail.com,FULL_TIME,working,1,902,15:00
+4290801,Arendel 11274,arendeltech+11274@gmail.com,FULL_TIME,working,1,902,14:00
+4300501,Arendel 11294,arendeltech+11294@gmail.com,FULL_TIME,working,1,902,16:00
+4306572,Arendel 11314,arendeltech+11314@gmail.com,FULL_TIME,break,1,902,16:00
+4311281,Arendel 11323,arendeltech+11323@gmail.com,FULL_TIME,working,1,902,12:30
+4323300,Arendel 11376,arendeltech+11376@gmail.com,FULL_TIME,not_working,0,902,00:00
+4322601,Arendel 11375,arendeltech+11375@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4321513,Arendel 11374,arendeltech+11374@gmail.com,FULL_TIME,not_working,0,902,00:00
+4320753,Arendel 11373,arendeltech+11373@gmail.com,FULL_TIME,not_working,0,902,00:00
+4320737,Arendel 11372,arendeltech+11372@gmail.com,FULL_TIME,not_working,0,902,00:00
+4320723,Arendel 11371,arendeltech+11371@gmail.com,FULL_TIME,not_working,0,902,00:00
+4319888,Arendel 11370,arendeltech+11370@gmail.com,FULL_TIME,not_working,0,902,00:00
+4319841,Arendel 11369,arendeltech+11369@gmail.com,FULL_TIME,not_working,0,902,00:00
+4319623,Arendel 11368,arendeltech+11368@gmail.com,FULL_TIME,not_working,0,902,00:00
+4319540,Arendel 11367,arendeltech+11367@gmail.com,FULL_TIME,not_working,0,902,00:00
+4319512,Arendel 11366,arendeltech+11366@gmail.com,FULL_TIME,not_working,0,882,00:00
+4319329,Arendel 11365,arendeltech+11365@gmail.com,FULL_TIME,not_working,0,902,00:00
+4318329,Arendel 11364,arendeltech+11364@gmail.com,FULL_TIME,not_working,0,902,00:00
+4318266,Arendel 11363,arendeltech+11363@gmail.com,FULL_TIME,not_working,0,902,00:00
+4318236,Arendel 11362,arendeltech+11362@gmail.com,FULL_TIME,not_working,0,902,00:00
+4318221,Arendel 11361,arendeltech+11361@gmail.com,FULL_TIME,not_working,0,902,00:00
+4316745,Arendel 11360,arendeltech+11360@gmail.com,FULL_TIME,not_working,0,882,00:00
+4315990,Arendel 11359,arendeltech+11359@gmail.com,FULL_TIME,not_working,0,902,00:00
+4315944,Arendel 11358,arendeltech+11358@gmail.com,FULL_TIME,not_working,0,902,00:00
+4315926,Arendel 11357,arendeltech+11357@gmail.com,FULL_TIME,not_working,0,902,00:00
+4315886,Arendel 11356,arendeltech+11356@gmail.com,FULL_TIME,not_working,0,902,00:00
+4315870,Arendel 11355,arendeltech+11355@gmail.com,FULL_TIME,not_working,0,902,00:00
+4315857,Arendel 11354,arendeltech+11354@gmail.com,FULL_TIME,not_working,0,902,00:00
+4315785,Arendel 11353,arendeltech+11353@gmail.com,FULL_TIME,not_working,0,902,00:00
+4315750,Arendel 11352,arendeltech+11352@gmail.com,FULL_TIME,not_working,0,902,00:00
+4315742,Arendel 11351,arendeltech+11351@gmail.com,FULL_TIME,not_working,0,902,00:00
+4315514,Arendel 11350,arendeltech+11350@gmail.com,FULL_TIME,not_working,0,902,00:00
+4315506,Arendel 11349,arendeltech+11349@gmail.com,FULL_TIME,not_working,0,902,00:00
+4314891,Arendel 11348,arendeltech+11348@gmail.com,FULL_TIME,not_working,0,902,00:00
+4314795,Arendel 11347,arendeltech+11347@gmail.com,FULL_TIME,not_working,0,902,00:00
+4314230,Arendel 11346,arendeltech+11346@gmail.com,FULL_TIME,not_working,0,902,00:00
+4314158,Arendel 11345,arendeltech+11345@gmail.com,FULL_TIME,not_working,0,902,00:00
+4313831,Arendel 11344,arendeltech+11344@gmail.com,FULL_TIME,not_working,0,902,00:00
+4312517,Arendel 11343,arendeltech+11343@gmail.com,FULL_TIME,not_working,0,902,00:00
+4312452,Arendel 11342,arendeltech+11342@gmail.com,FULL_TIME,not_working,0,902,00:00
+4312441,Arendel 11341,arendeltech+11341@gmail.com,FULL_TIME,not_working,0,902,00:00
+4312403,Arendel 11340,arendeltech+11340@gmail.com,FULL_TIME,not_working,0,902,00:00
+4312376,Arendel 11339,arendeltech+11339@gmail.com,FULL_TIME,not_working,0,902,00:00
+4312349,Arendel 11338,arendeltech+11338@gmail.com,FULL_TIME,not_working,0,902,00:00
+4312334,Arendel 11337,arendeltech+11337@gmail.com,FULL_TIME,not_working,0,902,00:00
+4312303,Arendel 11336,arendeltech+11336@gmail.com,FULL_TIME,not_working,0,902,00:00
+4312302,Arendel 11335,arendeltech+11335@gmail.com,FULL_TIME,not_working,0,902,00:00
+4312262,Arendel 11334,arendeltech+11334@gmail.com,FULL_TIME,not_working,0,902,00:00
+4312218,Arendel 11333,arendeltech+11333@gmail.com,FULL_TIME,not_working,0,902,00:00
+4312110,Arendel 11332,arendeltech+11332@gmail.com,FULL_TIME,not_working,0,902,00:00
+4312075,Arendel 11331,arendeltech+11331@gmail.com,FULL_TIME,not_working,0,902,00:00
+4311886,Arendel 11330,arendeltech+11330@gmail.com,FULL_TIME,not_working,0,902,00:00
+4311856,Arendel 11329,arendeltech+11329@gmail.com,FULL_TIME,not_working,0,902,00:00
+4311798,Arendel 11328,arendeltech+11328@gmail.com,FULL_TIME,not_working,0,902,00:00
+4311763,Arendel 11327,arendeltech+11327@gmail.com,FULL_TIME,not_working,0,902,00:00
+4311729,Arendel 11326,arendeltech+11326@gmail.com,FULL_TIME,not_working,0,902,00:00
+4311610,Arendel 11325,arendeltech+11325@gmail.com,FULL_TIME,not_working,0,902,00:00
+4311477,Arendel 11324,arendeltech+11324@gmail.com,FULL_TIME,not_working,0,902,00:00
+4310437,Arendel 11321,arendeltech+11321@gmail.com,FULL_TIME,not_working,0,902,00:00
+4310295,Arendel 11320,arendeltech+11320@gmail.com,FULL_TIME,not_working,0,902,00:00
+4307426,Arendel 11319,arendeltech+11319@gmail.com,FULL_TIME,not_working,0,882,00:00
+4307346,Arendel 11318,arendeltech+11318@gmail.com,FULL_TIME,not_working,0,902,00:00
+4306599,Arendel 11317,arendeltech+11317@gmail.com,FULL_TIME,not_working,0,902,00:00
+4306589,Arendel 11316,arendeltech+11316@gmail.com,FULL_TIME,not_working,0,902,00:00
+4306579,Arendel 11315,arendeltech+11315@gmail.com,FULL_TIME,not_working,0,902,00:00
+4306564,Arendel 11313,arendeltech+11313@gmail.com,FULL_TIME,not_working,0,902,00:00
+4306549,Arendel 11312,arendeltech+11312@gmail.com,FULL_TIME,not_working,0,902,00:00
+4305903,Arendel 11311,arendeltech+11311@gmail.com,FULL_TIME,not_working,0,992,00:00
+4305902,Arendel 11310,arendeltech+11310@gmail.com,FULL_TIME,not_working,0,992,00:00
+4305742,Arendel 11309,arendeltech+11309@gmail.com,FULL_TIME,not_working,0,902,00:00
+4305726,Arendel 11308,arendeltech+11308@gmail.com,FULL_TIME,not_working,0,902,00:00
+4305708,Arendel 11307,arendeltech+11307@gmail.com,FULL_TIME,not_working,0,902,00:00
+4305695,Arendel 11306,arendeltech+11306@gmail.com,FULL_TIME,not_working,0,902,00:00
+4305659,Arendel 11305,arendeltech+11305@gmail.com,FULL_TIME,not_working,0,902,00:00
+4305642,Arendel 11304,arendeltech+11304@gmail.com,FULL_TIME,not_working,0,902,00:00
+4305147,Arendel 11303,arendeltech+11303@gmail.com,FULL_TIME,not_working,0,902,00:00
+4303403,Arendel 11302,arendeltech+11302@gmail.com,FULL_TIME,not_working,0,994,00:00
+4303310,Arendel Arango Parreño,revenda@gmail.com,FULL_TIME,not_working,0,734,00:00
+4303277,Arendel 11300,arendeltech+11300@gmail.com,FULL_TIME,not_working,0,902,00:00
+4303268,Arendel 11299,arendeltech+11299@gmail.com,FULL_TIME,not_working,0,902,00:00
+4302869,Arendel 11297,arendeltech+11297@gmail.com,FULL_TIME,not_working,0,994,00:00
+4301113,Arendel 11296,arendeltech+11296@gmail.com,FULL_TIME,not_working,0,902,00:00
+4300614,Arendel 11295,arendeltech+11295@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4300464,Arendel 11293,arendeltech+11293@gmail.com,FULL_TIME,not_working,0,994,00:00
+4300428,Arendel 11292,arendeltech+11292@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4300426,Arendel 11291,arendeltech+11291@gmail.com,FULL_TIME,not_working,0,902,00:00
+4300393,Arendel 11290,arendeltech+11290@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4300384,Arendel 11289,arendeltech+11289@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4300363,Arendel 11288,arendeltech+11288@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4300355,Arendel 11287,arendeltech+11287@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4300302,Arendel 11286,arendeltech+11286@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4300291,Arendel 11285,arendeltech+11285@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4300048,Arendel 11284,arendeltech+11284@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4300043,Arendel 11283,arendeltech+11283@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4300024,Arendel 11282,arendeltech+11282@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4299389,Arendel 11281,arendeltech+11281@gmail.com,FULL_TIME,not_working,0,992,00:00
+4299371,Arendel 11280,arendeltech+11280@gmail.com,FULL_TIME,not_working,0,994,00:00
+4299282,Arendel 11279,arendeltech+11279@gmail.com,FULL_TIME,not_working,0,734,00:00
+4292364,Arendel 11278,arendeltech+11278@gmail.com,FULL_TIME,not_working,0,739,00:00
+4292295,Arendel 11277,arendeltech+11277@gmail.com,FULL_TIME,not_working,0,739,00:00
+4292290,Arendel 11276,arendeltech+11276@gmail.com,FULL_TIME,not_working,0,739,00:00
+4292186,Arendel 11275,arendeltech+11275@gmail.com,FULL_TIME,not_working,0,902,00:00
+4290778,Arendel 11273,arendeltech+11273@gmail.com,FULL_TIME,not_working,0,902,00:00
+4290764,Arendel 11272,arendeltech+11272@gmail.com,FULL_TIME,not_working,0,882,00:00
+4290759,Arendel 11271,arendeltech+11271@gmail.com,FULL_TIME,not_working,0,882,00:00
+4290744,Arendel 11270,arendeltech+11270@gmail.com,FULL_TIME,not_working,0,902,00:00
+4290734,Arendel 11269,arendeltech+11269@gmail.com,FULL_TIME,not_working,0,902,00:00
+4290715,Arendel 11268,arendeltech+11268@gmail.com,FULL_TIME,not_working,0,902,00:00
+4290709,Arendel 11267,arendeltech+11267@gmail.com,FULL_TIME,not_working,0,902,00:00
+4290523,Arendel 11266,arendeltech+11266@gmail.com,FULL_TIME,not_working,0,902,00:00
+4290518,Arendel 11265,arendeltech+11265@gmail.com,FULL_TIME,not_working,0,882,00:00
+4290505,Arendel 11264,arendeltech+11264@gmail.com,FULL_TIME,not_working,0,902,00:00
+4290494,Arendel 11263,arendeltech+11263@gmail.com,FULL_TIME,not_working,0,902,00:00
+4290468,Arendel 11262,arendeltech+11262@gmail.com,FULL_TIME,not_working,0,902,00:00
+4290463,Arendel 11261,arendeltech+11261@gmail.com,FULL_TIME,not_working,0,902,00:00
+4290454,Arendel 11260,arendeltech+11260@gmail.com,FULL_TIME,not_working,0,882,00:00
+4290410,Arendel 11259,arendeltech+11259@gmail.com,FULL_TIME,not_working,0,902,00:00
+4290369,Arendel 11258,arendeltech+11258@gmail.com,FULL_TIME,not_working,0,902,00:00
+4288748,Arendel 11257,arendeltech+11257@gmail.com,FULL_TIME,not_working,0,902,00:00
+4288737,Arendel 11256,arendeltech+11256@gmail.com,FULL_TIME,not_working,0,902,00:00
+4288725,Arendel 11255,arendeltech+11255@gmail.com,FULL_TIME,not_working,0,902,00:00
+4288716,Arendel 11254,arendeltech+11254@gmail.com,FULL_TIME,not_working,0,882,00:00
+4288708,Arendel 11253,arendeltech+11253@gmail.com,FULL_TIME,not_working,0,902,00:00
+4288662,Arendel 11252,arendeltech+11252@gmail.com,FULL_TIME,not_working,0,902,00:00
+4288636,Arendel 11251,arendeltech+11251@gmail.com,FULL_TIME,not_working,0,902,00:00
+4288632,Arendel 11250,arendeltech+11250@gmail.com,FULL_TIME,not_working,0,902,00:00
+4288613,Arendel 11249,arendeltech+11249@gmail.com,FULL_TIME,not_working,0,902,00:00
+4288561,Arendel 11248,arendeltech+11248@gmail.com,FULL_TIME,not_working,0,902,00:00
+4288554,Arendel 11247,arendeltech+11247@gmail.com,FULL_TIME,not_working,0,902,00:00
+4288548,Arendel 11246,arendeltech+11246@gmail.com,FULL_TIME,not_working,0,902,00:00
+4288541,Arendel 11245,arendeltech+11245@gmail.com,FULL_TIME,not_working,0,902,00:00
+4288434,Arendel 11244,arendeltech+11244@gmail.com,FULL_TIME,not_working,0,902,00:00
+4288386,Arendel 11243,arendeltech+11243@gmail.com,FULL_TIME,not_working,0,902,00:00
+4288352,Arendel 11242,arendeltech+11242@gmail.com,FULL_TIME,not_working,0,902,00:00
+4288297,Arendel 11241,arendeltech+11241@gmail.com,FULL_TIME,not_working,0,882,00:00
+4288293,Arendel 11240,arendeltech+11240@gmail.com,FULL_TIME,not_working,0,902,00:00
+4288249,Arendel 11239,arendeltech+11239@gmail.com,FULL_TIME,not_working,0,902,00:00
+4288139,Arendel 11238,arendeltech+11238@gmail.com,FULL_TIME,not_working,0,902,00:00
+4287618,Arendel 11237,arendeltech+11237@gmail.com,FULL_TIME,not_working,0,882,00:00
+4287320,Arendel 11236,arendeltech+11236@gmail.com,FULL_TIME,not_working,0,902,00:00
+4287279,Arendel 11235,arendeltech+11235@gmail.com,FULL_TIME,not_working,0,902,00:00
+4287260,Arendel 11234,arendeltech+11234@gmail.com,FULL_TIME,not_working,0,902,00:00
+4283851,Arendel 11233,arendeltech+11233@gmail.com,FULL_TIME,not_working,0,734,00:00
+4283839,Arendel 11232,arendeltech+11232@gmail.com,FULL_TIME,not_working,0,734,00:00
+4276714,Arendel 11230,arendeltech+11230@gmail.com,FULL_TIME,not_working,0,902,00:00
+4276463,Arendel 11229,arendeltech+11229@gmail.com,FULL_TIME,not_working,0,902,00:00
+4276372,Arendel 11228,arendeltech+11228@gmail.com,FULL_TIME,not_working,0,902,00:00
+4275609,Pedro Luis,pedrito@gmail.com,FULL_TIME,not_working,0,902,00:00
+4275363,Arendel 11226,arendeltech+11226@gmail.com,FULL_TIME,not_working,0,902,00:00
+4275315,Arendel 11225,arendeltech+11225@gmail.com,FULL_TIME,not_working,0,902,00:00
+4275203,Arendel 11224,arendeltech+11224@gmail.com,FULL_TIME,not_working,0,902,00:00
+4275191,Arendel 11223,arendeltech+11223@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4275049,Arendel 11222,arendeltech+11222@gmail.com,FULL_TIME,not_working,0,902,00:00
+4275012,Arendel 11221,arendeltech+11221@gmail.com,FULL_TIME,not_working,0,734,00:00
+4274902,Arendel 11220,arendeltech+11220@gmail.com,FULL_TIME,not_working,0,902,00:00
+4274742,Arendel 11218,arendeltech+11218@gmail.com,FULL_TIME,not_working,0,902,00:00
+4273237,Arendel 11217,arendeltech+11217@gmail.com,FULL_TIME,not_working,0,882,00:00
+4273099,Arendel 11216,arendeltech+11216@gmail.com,FULL_TIME,not_working,0,902,00:00
+4273082,Arendel 11215,arendeltech+11215@gmail.com,FULL_TIME,not_working,0,902,00:00
+4272635,Arendel 11214,arendeltech+11214@gmail.com,FULL_TIME,not_working,0,749,00:00
+4269925,Arendel 11212,arendeltech+11212@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4269226,Arendel 11211,arendeltech+11211@gmail.com,FULL_TIME,not_working,0,902,00:00
+4263233,Arendel 11208,arendeltech+11208@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4262153,Arendel 11207,arendeltech+11207@gmail.com,FULL_TIME,not_working,0,902,00:00
+4262054,Arendel 11206,arendeltech+11206@gmail.com,FULL_TIME,not_working,0,902,00:00
+4260341,Arendel 11204,arendeltech+11204@gmail.com,FULL_TIME,not_working,0,902,00:00
+4260317,Arendel 11203,arendeltech+11203@gmail.com,FULL_TIME,not_working,0,902,00:00
+4260306,Arendel 11202,arendeltech+11202@gmail.com,FULL_TIME,not_working,0,902,00:00
+4260270,Arendel 11200,arendeltech+11200@gmail.com,FULL_TIME,not_working,0,902,00:00
+4260262,Arendel 11199,arendeltech+11199@gmail.com,FULL_TIME,not_working,0,902,00:00
+4260257,Arendel 11198,arendeltech+11198@gmail.com,FULL_TIME,not_working,0,902,00:00
+4260180,Arendel 11194,arendeltech+11194@gmail.com,FULL_TIME,not_working,0,902,00:00
+4260154,Arendel 11193,arendeltech+11193@gmail.com,FULL_TIME,not_working,0,902,00:00
+4259788,Arendel 11192,arendeltech+11192@gmail.com,FULL_TIME,not_working,0,902,00:00
+4259478,Arendel 11191,arendeltech+11191@gmail.com,FULL_TIME,not_working,0,902,00:00
+4259265,Arendel 11190,arendeltech+11190@gmail.com,FULL_TIME,not_working,0,902,00:00
+4259173,Arendel 11189,arendeltech+11189@gmail.com,FULL_TIME,not_working,0,902,00:00
+4259066,Arendel 11188,arendeltech+11188@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4259014,Arendel 11187,arendeltech+11187@gmail.com,FULL_TIME,not_working,0,902,00:00
+4258982,Arendel 11186,arendeltech+11186@gmail.com,FULL_TIME,not_working,0,992,00:00
+4258868,Arendel 11185,arendeltech+11185@gmail.com,FULL_TIME,not_working,0,902,00:00
+4258719,Arendel 11184,arendeltech+11184@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4257613,Arendel 11183,arendeltech+11183@gmail.com,FULL_TIME,not_working,0,902,00:00
+4257452,Arendel 11182,arendeltech+11182@gmail.com,FULL_TIME,not_working,0,902,00:00
+4257384,Arendel 11181,arendeltech+11181@gmail.com,FULL_TIME,not_working,0,902,00:00
+4257149,Arendel 11180,arendeltech+11180@gmail.com,FULL_TIME,not_working,0,902,00:00
+4257110,Arendel 11179,arendeltech+11179@gmail.com,FULL_TIME,not_working,0,902,00:00
+4257008,Arendel 11178,arendeltech+11178@gmail.com,FULL_TIME,not_working,0,902,00:00
+4256916,Arendel 11177,arendeltech+11177@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4256750,Arendel 11176,arendeltech+11176@gmail.com,FULL_TIME,not_working,0,902,00:00
+4256528,Arendel 11175,arendeltech+11175@gmail.com,FULL_TIME,not_working,0,902,00:00
+4256305,Arendel 11174,arendeltech+11174@gmail.com,FULL_TIME,not_working,0,902,00:00
+4256185,Arendel 11173,arendeltech+11173@gmail.com,FULL_TIME,not_working,0,902,00:00
+4256041,Arendel 11172,arendeltech+11172@gmail.com,FULL_TIME,not_working,0,902,00:00
+4255062,Arendel 11171,arendeltech+11171@gmail.com,FULL_TIME,not_working,0,902,00:00
+4255035,Arendel 11170,arendeltech+11170@gmail.com,FULL_TIME,not_working,0,902,00:00
+4254979,Arendel 11169,arendeltech+11169@gmail.com,FULL_TIME,not_working,0,902,00:00
+4254851,Arendel 11168,arendeltech+11168@gmail.com,FULL_TIME,not_working,0,902,00:00
+4254840,Arendel 11167,arendeltech+11167@gmail.com,FULL_TIME,not_working,0,902,00:00
+4254825,Arendel 11166,arendeltech+11166@gmail.com,FULL_TIME,not_working,0,902,00:00
+4254760,Arendel 11165,arendeltech+11165@gmail.com,FULL_TIME,not_working,0,902,00:00
+4254752,Arendel 11164,arendeltech+11164@gmail.com,FULL_TIME,not_working,0,902,00:00
+4254749,Arendel 11163,arendeltech+11163@gmail.com,FULL_TIME,not_working,0,902,00:00
+4254744,Arendel 11162,arendeltech+11162@gmail.com,FULL_TIME,not_working,0,902,00:00
+4254740,Arendel 11161,arendeltech+11161@gmail.com,FULL_TIME,not_working,0,902,00:00
+4254529,Arendel 11160,arendeltech+11160@gmail.com,FULL_TIME,not_working,0,902,00:00
+4254420,Arendel 11159,arendeltech+11159@gmail.com,FULL_TIME,not_working,0,902,00:00
+4254188,Arendel 11158,arendeltech+11158@gmail.com,FULL_TIME,not_working,0,902,00:00
+4254077,Arendel 11157,arendeltech+11157@gmail.com,FULL_TIME,not_working,0,992,00:00
+4253979,Arendel 11156,arendeltech+11156@gmail.com,FULL_TIME,not_working,0,749,00:00
+4253932,Arendel 11155,arendeltech+11155@gmail.com,FULL_TIME,not_working,0,739,00:00
+4253821,Arendel 11154,arendeltech+11154@gmail.com,FULL_TIME,not_working,0,1026,00:00
+4253812,Arendel 11153,arendeltech+11153@gmail.com,FULL_TIME,not_working,0,1026,00:00
+4253807,Arendel 11152,arendeltech+11152@gmail.com,FULL_TIME,not_working,0,739,00:00
+4253690,Arendel 11151,arendeltech+11151@gmail.com,FULL_TIME,not_working,0,749,00:00
+4253649,Arendel 11150,arendeltech+11150@gmail.com,FULL_TIME,not_working,0,739,00:00
+4253636,Arendel 11149,arendeltech+11149@gmail.com,FULL_TIME,not_working,0,739,00:00
+4253612,Arendel 11148,arendeltech+11148@gmail.com,FULL_TIME,not_working,0,739,00:00
+4253594,Arendel 11147,arendeltech+11147@gmail.com,FULL_TIME,not_working,0,739,00:00
+4252338,Arendel 11146,arendeltech+11146@gmail.com,FULL_TIME,not_working,0,902,00:00
+4252330,Arendel 11145,arendeltech+11145@gmail.com,FULL_TIME,not_working,0,902,00:00
+4251673,Arendel 11144,arendeltech+11144@gmail.com,FULL_TIME,not_working,0,734,00:00
+4251611,Arendel 11143,arendeltech+11143@gmail.com,FULL_TIME,not_working,0,902,00:00
+4251562,Arendel 11142,arendeltech+11142@gmail.com,FULL_TIME,not_working,0,902,00:00
+4251524,Arendel 11141,arendeltech+11141@gmail.com,FULL_TIME,not_working,0,902,00:00
+4251506,Arendel 11140,arendeltech+11140@gmail.com,FULL_TIME,not_working,0,902,00:00
+4248160,Arendel 11139,arendeltech+11139@gmail.com,FULL_TIME,not_working,0,749,00:00
+4248044,Arendel 11138,arendeltech+11138@gmail.com,FULL_TIME,not_working,0,902,00:00
+4247850,Arendel 11137,arendeltech+11137@gmail.com,FULL_TIME,not_working,0,1026,00:00
+4247641,Arendel 11135,arendeltech+11135@gmail.com,FULL_TIME,not_working,0,902,00:00
+4247609,Arendel 11134,arendeltech+11134@gmail.com,FULL_TIME,not_working,0,902,00:00
+4247506,Arendel 11133,arendeltech+11133@gmail.com,FULL_TIME,not_working,0,902,00:00
+4247330,Arendel 11132,arendeltech+11132@gmail.com,FULL_TIME,not_working,0,902,00:00
+4247320,Arendel 11131,arendeltech+11131@gmail.com,FULL_TIME,not_working,0,902,00:00
+4247310,Arendel 11130,arendeltech+11130@gmail.com,FULL_TIME,not_working,0,902,00:00
+4246090,Arendel 11129,arendeltech+11129@gmail.com,FULL_TIME,not_working,0,902,00:00
+4245944,Arendel 11128,arendeltech+11128@gmail.com,FULL_TIME,not_working,0,902,00:00
+4245303,Arendel 11127,arendeltech+11127@gmail.com,FULL_TIME,not_working,0,902,00:00
+4240875,Arendel 11126,arendeltech+11126@gmail.com,FULL_TIME,not_working,0,739,00:00
+4240828,Arendel 11125,arendeltech+11125@gmail.com,FULL_TIME,not_working,0,992,00:00
+4240796,Arendel 11124,arendeltech+11124@gmail.com,FULL_TIME,not_working,0,739,00:00
+4237859,Arendel 11123,arendeltech+11123@gmail.com,FULL_TIME,not_working,0,902,00:00
+4237690,Arendel 11122,arendeltech+11122@gmail.com,FULL_TIME,not_working,0,902,00:00
+4233928,Arendel 11121,arendeltech+11121@gmail.com,FULL_TIME,not_working,0,749,00:00
+4233917,Arendel 11120,arendeltech+11120@gmail.com,FULL_TIME,not_working,0,992,00:00
+4233762,Arendel 11119,arendeltech+11119@gmail.com,FULL_TIME,not_working,0,902,00:00
+4233758,Arendel 11118,arendeltech+11118@gmail.com,FULL_TIME,not_working,0,902,00:00
+4233755,Arendel 11116,arendeltech+11116@gmail.com,FULL_TIME,not_working,0,902,00:00
+4233753,Arendel 11115,arendeltech+11115@gmail.com,FULL_TIME,not_working,0,902,00:00
+4233747,Arendel 11113,arendeltech+11113@gmail.com,FULL_TIME,not_working,0,902,00:00
+4233743,Arendel 11112,arendeltech+11112@gmail.com,FULL_TIME,not_working,0,902,00:00
+4231687,Arendel 11111,arendeltech+11111@gmail.com,FULL_TIME,not_working,0,749,00:00
+4231683,Arendel 11110,arendeltech+11110@gmail.com,FULL_TIME,not_working,0,749,00:00
+4230521,Arendel 11109,arendeltech+11109@gmail.com,FULL_TIME,not_working,0,902,00:00
+4228380,Arendel 11108,arendeltech+11108@gmail.com,FULL_TIME,not_working,0,902,00:00
+4228376,Arendel 11107,arendeltech+11107@gmail.com,FULL_TIME,not_working,0,992,00:00
+4228371,Arendel 11106,arendeltech+11106@gmail.com,FULL_TIME,not_working,0,902,00:00
+4226667,Arendel 11105,arendeltech+11105@gmail.com,FULL_TIME,not_working,0,902,00:00
+4226607,Arendel 11104,arendeltech+11104@gmail.com,FULL_TIME,not_working,0,882,00:00
+4225731,Arendel 11103,arendeltech+11103@gmail.com,FULL_TIME,not_working,0,902,00:00
+4225723,Arendel 11102,arendeltech+11102@gmail.com,FULL_TIME,not_working,0,902,00:00
+4225714,Arendel 11101,arendeltech+11101@gmail.com,FULL_TIME,not_working,0,902,00:00
+4225511,Arendel 11100,arendeltech+11100@gmail.com,FULL_TIME,not_working,0,992,00:00
+4225493,Arendel 11099,arendeltech+11099@gmail.com,FULL_TIME,not_working,0,902,00:00
+4223662,Arendel 11098,arendeltech+11098@gmail.com,FULL_TIME,not_working,0,902,00:00
+4223384,Arendel 11097,arendeltech+11097@gmail.com,FULL_TIME,not_working,0,902,00:00
+4223315,Arendel 11096,arendeltech+11096@gmail.com,FULL_TIME,not_working,0,902,00:00
+4219639,Arendel 11095,arendeltech+11095@gmail.com,FULL_TIME,not_working,0,902,00:00
+4219343,Arendel 11094,arendeltech+11094@gmail.com,FULL_TIME,not_working,0,902,00:00
+4219182,Arendel 11093,arendeltech+11093@gmail.com,FULL_TIME,not_working,0,902,00:00
+4219137,Arendel 11092,arendeltech+11092@gmail.com,FULL_TIME,not_working,0,902,00:00
+4219119,Arendel 11091,arendeltech+11091@gmail.com,FULL_TIME,not_working,0,902,00:00
+4218897,Arendel 11090,arendeltech+11090@gmail.com,FULL_TIME,not_working,0,902,00:00
+4218892,Arendel 11089,arendeltech+11089@gmail.com,FULL_TIME,not_working,0,902,00:00
+4218888,Arendel 11088,arendeltech+11088@gmail.com,FULL_TIME,not_working,0,902,00:00
+4218877,Arendel 11086,arendeltech+11086@gmail.com,FULL_TIME,not_working,0,902,00:00
+4218676,Arendel 11085,arendeltech+11085@gmail.com,FULL_TIME,not_working,0,902,00:00
+4218607,Arendel 11084,arendeltech+11084@gmail.com,FULL_TIME,not_working,0,902,00:00
+4218545,Arendel 11083,arendeltech+11083@gmail.com,FULL_TIME,not_working,0,902,00:00
+4218461,Arendel 11082,arendeltech+11082@gmail.com,FULL_TIME,not_working,0,902,00:00
+4218444,Arendel 11081,arendeltech+11081@gmail.com,FULL_TIME,not_working,0,902,00:00
+4217341,Arendel 11080,arendeltech+11080@gmail.com,FULL_TIME,not_working,0,902,00:00
+4217333,Arendel 11079,arendeltech+11079@gmail.com,FULL_TIME,not_working,0,902,00:00
+4217247,Arendel 11078,arendeltech+11078@gmail.com,FULL_TIME,not_working,0,902,00:00
+4217065,Arendel 11077,arendeltech+11077@gmail.com,FULL_TIME,not_working,0,902,00:00
+4217011,Arendel 11076,arendeltech+11076@gmail.com,FULL_TIME,not_working,0,902,00:00
+4217005,Arendel 11075,arendeltech+11075@gmail.com,FULL_TIME,not_working,0,902,00:00
+4216926,Arendel 11074,arendeltech+11074@gmail.com,FULL_TIME,not_working,0,902,00:00
+4216446,Arendel 11073,arendeltech+11073@gmail.com,FULL_TIME,not_working,0,902,00:00
+4216096,Arendel 11072,arendeltech+11072@gmail.com,FULL_TIME,not_working,0,902,00:00
+4216046,Arendel 11071,arendeltech+11071@gmail.com,FULL_TIME,not_working,0,902,00:00
+4215989,Arendel 11070,arendeltech+11070@gmail.com,FULL_TIME,not_working,0,1026,00:00
+4214398,Arendel 11069,arendeltech+11069@gmail.com,FULL_TIME,not_working,0,882,00:00
+4214141,Arendel 11068,arendeltech+11068@gmail.com,FULL_TIME,not_working,0,902,00:00
+4213899,Arendel 11067,arendeltech+11067@gmail.com,FULL_TIME,not_working,0,902,00:00
+4213785,Arendel 11066,arendeltech+11066@gmail.com,FULL_TIME,not_working,0,902,00:00
+4213436,Arendel 11065,arendeltech+11065@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4213324,Arendel 11064,arendeltech+11064@gmail.com,FULL_TIME,not_working,0,902,00:00
+4213280,Arendel 11063,arendeltech+11063@gmail.com,FULL_TIME,not_working,0,902,00:00
+4213013,Arendel 11062,arendeltech+11062@gmail.com,FULL_TIME,not_working,0,902,00:00
+4213012,Arendel 11061,arendeltech+11061@gmail.com,FULL_TIME,not_working,0,902,00:00
+4212891,Arendel 11060,arendeltech+11060@gmail.com,FULL_TIME,not_working,0,902,00:00
+4211468,Arendel 11059,arendeltech+11059@gmail.com,FULL_TIME,not_working,0,734,00:00
+4211106,Arendel 11058,arendeltech+11058@gmail.com,FULL_TIME,not_working,0,902,00:00
+4211066,Arendel 11057,arendeltech+11057@gmail.com,FULL_TIME,not_working,0,902,00:00
+4211006,Arendel 11056,arendeltech+11056@gmail.com,FULL_TIME,not_working,0,902,00:00
+4211000,Arendel 11055,arendeltech+11055@gmail.com,FULL_TIME,not_working,0,902,00:00
+4210989,Arendel 11054,arendeltech+11054@gmail.com,FULL_TIME,not_working,0,902,00:00
+4210980,Arendel 11053,arendeltech+11053@gmail.com,FULL_TIME,not_working,0,902,00:00
+4210972,Arendel 11052,arendeltech+11052@gmail.com,FULL_TIME,not_working,0,902,00:00
+4210958,Arendel 11051,arendeltech+11051@gmail.com,FULL_TIME,not_working,0,902,00:00
+4210836,Arendel 11050,arendeltech+11050@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4210824,Arendel 11049,arendeltech+11049@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4210476,Arendel 11048,arendeltech+11048@gmail.com,FULL_TIME,not_working,0,902,00:00
+4210271,Arendel 11047,arendeltech+11047@gmail.com,FULL_TIME,not_working,0,749,00:00
+4210253,Arendel 11046,arendeltech+11046@gmail.com,FULL_TIME,not_working,0,902,00:00
+4210211,Arendel 11045,arendeltech+11045@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4210046,Arendel 11044,arendeltech+11044@gmail.com,FULL_TIME,not_working,0,992,00:00
+4210013,Arendel 11043,arendeltech+11043@gmail.com,FULL_TIME,not_working,0,882,00:00
+4209755,Arendel 11042,arendeltech+11042@gmail.com,FULL_TIME,not_working,0,902,00:00
+4208726,Arendel 11041,arendeltech+11041@gmail.com,FULL_TIME,not_working,0,902,00:00
+4208452,Arendel 11040,arendeltech+11040@gmail.com,FULL_TIME,not_working,0,902,00:00
+4208434,Arendel 11039,arendeltech+11039@gmail.com,FULL_TIME,not_working,0,902,00:00
+4208203,Arendel 11038,arendeltech+11038@gmail.com,FULL_TIME,not_working,0,902,00:00
+4208187,Arendel 11037,arendeltech+11037@gmail.com,FULL_TIME,not_working,0,902,00:00
+4208140,Arendel 11036,arendeltech+11036@gmail.com,FULL_TIME,not_working,0,902,00:00
+4208133,Arendel 11035,arendeltech+11035@gmail.com,FULL_TIME,not_working,0,902,00:00
+4208124,Arendel 11034,arendeltech+11034@gmail.com,FULL_TIME,not_working,0,902,00:00
+4207954,Arendel 11033,arendeltech+11033@gmail.com,FULL_TIME,not_working,0,902,00:00
+4207883,Arendel 11032,arendeltech+11032@gmail.com,FULL_TIME,not_working,0,902,00:00
+4207651,Arendel 11030,arendeltech+11030@gmail.com,FULL_TIME,not_working,0,902,00:00
+4207406,Arendel 11029,arendeltech+11029@gmail.com,FULL_TIME,not_working,0,902,00:00
+4205061,Arendel 11028,arendeltech+11028@gmail.com,FULL_TIME,not_working,0,902,00:00
+4204954,Arendel 11027,arendeltech+11027@gmail.com,FULL_TIME,not_working,0,902,00:00
+4204576,Arendel 11026,arendeltech+11026@gmail.com,FULL_TIME,not_working,0,902,00:00
+4204080,Arendel 11025,arendeltech+11025@gmail.com,FULL_TIME,not_working,0,902,00:00
+4204074,Arendel 11024,arendeltech+11024@gmail.com,FULL_TIME,not_working,0,902,00:00
+4204034,Arendel 11023,arendeltech+11023@gmail.com,FULL_TIME,not_working,0,902,00:00
+4204011,Arendel 11022,arendeltech+11022@gmail.com,FULL_TIME,not_working,0,902,00:00
+4204005,Arendel 11021,arendeltech+11021@gmail.com,FULL_TIME,not_working,0,902,00:00
+4203907,Arendel 11020,arendeltech+11020@gmail.com,FULL_TIME,not_working,0,902,00:00
+4203807,Arendel 11019,arendeltech+11019@gmail.com,FULL_TIME,not_working,0,902,00:00
+4203666,Arendel 11018,arendeltech+11018@gmail.com,FULL_TIME,not_working,0,902,00:00
+4203615,Arendel 11017,arendeltech+11017@gmail.com,FULL_TIME,not_working,0,902,00:00
+4203501,Arendel 11016,arendeltech+11016@gmail.com,FULL_TIME,not_working,0,902,00:00
+4203327,Arendel 11015,arendeltech+11015@gmail.com,FULL_TIME,not_working,0,902,00:00
+4203302,Arendel 11014,arendeltech+11014@gmail.com,FULL_TIME,not_working,0,902,00:00
+4203227,Arendel 11013,arendeltech+11013@gmail.com,FULL_TIME,not_working,0,902,00:00
+4202221,Arendel 11012,arendeltech+11012@gmail.com,FULL_TIME,not_working,0,902,00:00
+4202086,Arendel 11011,arendeltech+11011@gmail.com,FULL_TIME,not_working,0,902,00:00
+4202072,Arendel 11010,arendeltech+11010@gmail.com,FULL_TIME,not_working,0,902,00:00
+4202058,Arendel 11009,arendeltech+11009@gmail.com,FULL_TIME,not_working,0,902,00:00
+4202038,Arendel 11008,arendeltech+11008@gmail.com,FULL_TIME,not_working,0,902,00:00
+4201899,Arendel 11007,arendeltech+11007@gmail.com,FULL_TIME,not_working,0,902,00:00
+4201895,Arendel 11006,arendeltech+11006@gmail.com,FULL_TIME,not_working,0,902,00:00
+4201811,Arendel 11005,arendeltech+11005@gmail.com,FULL_TIME,not_working,0,902,00:00
+4201790,Arendel 11004,arendeltech+11004@gmail.com,FULL_TIME,not_working,0,902,00:00
+4201654,Arendel 11003,arendeltech+11003@gmail.com,FULL_TIME,not_working,0,902,00:00
+4201629,Arendel 11002,arendeltech+11002@gmail.com,FULL_TIME,not_working,0,902,00:00
+4201572,Arendel 11001,arendeltech+11001@gmail.com,FULL_TIME,not_working,0,902,00:00
+4201476,Arendel 11000,arendeltech+11000@gmail.com,FULL_TIME,not_working,0,902,00:00
+4201191,Arendel 10999,arendeltech+10999@gmail.com,FULL_TIME,not_working,0,902,00:00
+4201171,Arendel 10998,arendeltech+10998@gmail.com,FULL_TIME,not_working,0,902,00:00
+4201133,Arendel 10997,arendeltech+10997@gmail.com,FULL_TIME,not_working,0,902,00:00
+4201131,Arendel 10996,arendeltech+10996@gmail.com,FULL_TIME,not_working,0,992,00:00
+4201070,Arendel 10995,arendeltech+10995@gmail.com,FULL_TIME,not_working,0,749,00:00
+4200951,Arendel 10994,arendeltech+10994@gmail.com,FULL_TIME,not_working,0,902,00:00
+4200813,Arendel 10993,arendeltech+10993@gmail.com,FULL_TIME,not_working,0,882,00:00
+4200648,Arendel 10992,arendeltech+10992@gmail.com,FULL_TIME,not_working,0,902,00:00
+4199889,Arendel 10991,arendeltech+10991@gmail.com,FULL_TIME,not_working,0,902,00:00
+4199801,Arendel 10990,arendeltech+10990@gmail.com,FULL_TIME,not_working,0,734,00:00
+4199789,Arendel 10989,arendeltech+10989@gmail.com,FULL_TIME,not_working,0,902,00:00
+4199787,Arendel 10988,arendeltech+10988@gmail.com,FULL_TIME,not_working,0,734,00:00
+4199776,Arendel 10987,arendeltech+10987@gmail.com,FULL_TIME,not_working,0,902,00:00
+4199768,Arendel 10986,arendeltech+10986@gmail.com,FULL_TIME,not_working,0,902,00:00
+4199760,Arendel 10985,arendeltech+10985@gmail.com,FULL_TIME,not_working,0,734,00:00
+4199759,Arendel 10984,arendeltech+10984@gmail.com,FULL_TIME,not_working,0,902,00:00
+4199753,Arendel 10983,arendeltech+10983@gmail.com,FULL_TIME,not_working,0,902,00:00
+4199751,Arendel 10982,arendeltech+10982@gmail.com,FULL_TIME,not_working,0,902,00:00
+4199748,Arendel 10981,arendeltech+10981@gmail.com,FULL_TIME,not_working,0,902,00:00
+4199740,Arendel 10980,arendeltech+10980@gmail.com,FULL_TIME,not_working,0,902,00:00
+4199738,Arendel 10979,arendeltech+10979@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4199329,Arendel 10977,arendeltech+10977@gmail.com,FULL_TIME,not_working,0,902,00:00
+4199034,Arendel 10976,arendeltech+10976@gmail.com,FULL_TIME,not_working,0,739,00:00
+4198989,Arendel 10975,arendeltech+10975@gmail.com,FULL_TIME,not_working,0,902,00:00
+4198975,Arendel 10974,arendeltech+10974@gmail.com,FULL_TIME,not_working,0,902,00:00
+4198926,Arendel 10973,arendeltech+10973@gmail.com,FULL_TIME,not_working,0,739,00:00
+4198795,Arendel 10971,arendeltech+10971@gmail.com,FULL_TIME,not_working,0,739,00:00
+4198787,Arendel 10970,arendeltech+10970@gmail.com,FULL_TIME,not_working,0,902,00:00
+4198638,Arendel 10969,arendeltech+10969@gmail.com,FULL_TIME,not_working,0,902,00:00
+4197547,Arendel 10967,arendeltech+10967@gmail.com,FULL_TIME,not_working,0,739,00:00
+4197199,Arendel 10965,arendeltech+10965@gmail.com,FULL_TIME,not_working,0,739,00:00
+4197178,Arendel 10964,arendeltech+10964@gmail.com,FULL_TIME,not_working,0,882,00:00
+4196328,Arendel 10963,arendeltech+10963@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4196311,Arendel 10962,arendeltech+10962@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4196224,Arendel 10961,arendeltech+10961@gmail.com,FULL_TIME,not_working,0,882,00:00
+4196179,Arendel 10960,arendeltech+10960@gmail.com,FULL_TIME,not_working,0,882,00:00
+4194464,Arendel 10959,arendeltech+10959@gmail.com,FULL_TIME,not_working,0,992,00:00
+4194341,Arendel 10958,arendeltech+10958@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4194269,Arendel 10957,arendeltech+10957@gmail.com,FULL_TIME,not_working,0,994,00:00
+4194259,Arendel 10956,arendeltech+10956@gmail.com,FULL_TIME,not_working,0,739,00:00
+4193575,Arendel 10955,arendeltech+10955@gmail.com,FULL_TIME,not_working,0,749,00:00
+4193399,Arendel 10954,arendeltech+10954@gmail.com,FULL_TIME,not_working,0,739,00:00
+4193164,Arendel 10953,arendeltech+10953@gmail.com,FULL_TIME,not_working,0,882,00:00
+4193031,Arendel 10952,arendeltech+10952@gmail.com,FULL_TIME,not_working,0,902,00:00
+4191969,Arendel 10950,arendeltech+10950@gmail.com,FULL_TIME,not_working,0,739,00:00
+4191665,Arendel 10949,arendeltech+10949@gmail.com,FULL_TIME,not_working,0,739,00:00
+4191634,Arendel 10947,arendeltech+10947@gmail.com,FULL_TIME,not_working,0,739,00:00
+4190100,Arendel 10946,arendeltech+10946@gmail.com,FULL_TIME,not_working,0,739,00:00
+4190065,Arendel 10945,arendeltech+10945@gmail.com,FULL_TIME,not_working,0,739,00:00
+4189499,Arendel 10944,arendeltech+10944@gmail.com,FULL_TIME,not_working,0,749,00:00
+4189077,Arendel 10943,arendeltech+10943@gmail.com,FULL_TIME,not_working,0,902,00:00
+4189023,Arendel 10942,arendeltech+10942@gmail.com,FULL_TIME,not_working,0,902,00:00
+4188584,Arendel 10941,arendeltech+10941@gmail.com,FULL_TIME,not_working,0,882,00:00
+4188577,Arendel 10940,arendeltech+10940@gmail.com,FULL_TIME,not_working,0,882,00:00
+4188447,Arendel 10939,arendeltech+10939@gmail.com,FULL_TIME,not_working,0,902,00:00
+4187551,Arendel 10938,arendeltech+10938@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4186886,Arendel 10937,arendeltech+10937@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4186171,Arendel 10936,arendeltech+10936@gmail.com,FULL_TIME,not_working,0,882,00:00
+4185938,Arendel 10935,arendeltech+10935@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4183902,Arendel 10934,arendeltech+10934@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4183257,Arendel 10933,arendeltech+10933@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4183109,Arendel 10932,arendeltech+10932@gmail.com,FULL_TIME,not_working,0,882,00:00
+4178939,Arendel 10931,arendeltech+10931@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4178683,Arendel 10930,arendeltech+10930@gmail.com,FULL_TIME,not_working,0,882,00:00
+4178272,Arendel 10928,arendeltech+10928@gmail.com,FULL_TIME,not_working,0,882,00:00
+4178208,Arendel 10927,arendeltech+10927@gmail.com,FULL_TIME,not_working,0,902,00:00
+4178168,Arendel 10926,arendeltech+10926@gmail.com,FULL_TIME,not_working,0,902,00:00
+4177705,Arendel 10925,arendeltech+10925@gmail.com,FULL_TIME,not_working,0,882,00:00
+4177559,Arendel 10924,arendeltech+10924@gmail.com,FULL_TIME,not_working,0,882,00:00
+4173888,Arendel 10921,arendeltech+10921@gmail.com,FULL_TIME,not_working,0,902,00:00
+4173858,Arendel 10920,arendeltech+10920@gmail.com,FULL_TIME,not_working,0,902,00:00
+4173817,Arendel 10919,arendeltech+10919@gmail.com,FULL_TIME,not_working,0,902,00:00
+4173812,Arendel 10918,arendeltech+10918@gmail.com,FULL_TIME,not_working,0,902,00:00
+4173387,Arendel 10917,arendeltech+10917@gmail.com,FULL_TIME,not_working,0,902,00:00
+4173330,Arendel 10916,arendeltech+10916@gmail.com,FULL_TIME,not_working,0,902,00:00
+4173241,Arendel 10915,arendeltech+10915@gmail.com,FULL_TIME,not_working,0,882,00:00
+4173018,Arendel 10913,arendeltech+10913@gmail.com,FULL_TIME,not_working,0,902,00:00
+4172932,Arendel 10912,arendeltech+10912@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4171811,Arendel 10911,arendeltech+10911@gmail.com,FULL_TIME,not_working,0,902,00:00
+4171805,Arendel 10910,arendeltech+10910@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4171425,Arendel 10909,arendeltech+10909@gmail.com,FULL_TIME,not_working,0,902,00:00
+4171376,Arendel 10908,arendeltech+10908@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4171365,Arendel 10907,arendeltech+10907@gmail.com,FULL_TIME,not_working,0,882,00:00
+4171143,Arendel 10906,arendeltech+10906@gmail.com,FULL_TIME,not_working,0,902,00:00
+4170771,Arendel 10905,arendeltech+10905@gmail.com,FULL_TIME,not_working,0,902,00:00
+4170365,Arendel 10904,arendeltech+10904@gmail.com,FULL_TIME,not_working,0,902,00:00
+4170326,Arendel 10903,arendeltech+10903@gmail.com,FULL_TIME,not_working,0,902,00:00
+4168869,Arendel 10901,arendeltech+10901@gmail.com,FULL_TIME,not_working,0,902,00:00
+4168859,Arendel 10900,arendeltech+10900@gmail.com,FULL_TIME,not_working,0,902,00:00
+4168413,Arendel 10899,arendeltech+10899@gmail.com,FULL_TIME,not_working,0,902,00:00
+4168244,Arendel 10898,arendeltech+10898@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4168161,Arendel 10897,arendeltech+10897@gmail.com,FULL_TIME,not_working,0,882,00:00
+4166874,Arendel 10896,arendeltech+10896@gmail.com,FULL_TIME,not_working,0,902,00:00
+4166851,Arendel 10895,arendeltech+10895@gmail.com,FULL_TIME,not_working,0,902,00:00
+4166666,Arendel 10894,arendeltech+10894@gmail.com,FULL_TIME,not_working,0,902,00:00
+4166652,Arendel 10893,arendeltech+10893@gmail.com,FULL_TIME,not_working,0,902,00:00
+4166629,Arendel 10892,arendeltech+10892@gmail.com,FULL_TIME,not_working,0,902,00:00
+4166614,Arendel 10891,arendeltech+10891@gmail.com,FULL_TIME,not_working,0,902,00:00
+4166566,Arendel 10890,arendeltech+10890@gmail.com,FULL_TIME,not_working,0,902,00:00
+4166542,Arendel 10889,arendeltech+10889@gmail.com,FULL_TIME,not_working,0,902,00:00
+4166450,Arendel 10887,arendeltech+10887@gmail.com,FULL_TIME,not_working,0,902,00:00
+4166428,Arendel 10886,arendeltech+10886@gmail.com,FULL_TIME,not_working,0,902,00:00
+4166282,Arendel 10885,arendeltech+10885@gmail.com,FULL_TIME,not_working,0,902,00:00
+4166164,Arendel 10884,arendeltech+10884@gmail.com,FULL_TIME,not_working,0,902,00:00
+4165974,Arendel 10883,arendeltech+10883@gmail.com,FULL_TIME,not_working,0,902,00:00
+4165929,Arendel 10882,arendeltech+10882@gmail.com,FULL_TIME,not_working,0,902,00:00
+4165552,Arendel 10881,arendeltech+10881@gmail.com,FULL_TIME,not_working,0,902,00:00
+4164466,Arendel 10879,arendeltech+10879@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4164392,Arendel 10878,arendeltech+10878@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4164235,Arendel 10877,arendeltech+10877@gmail.com,FULL_TIME,not_working,0,902,00:00
+4164196,Arendel 10876,arendeltech+10876@gmail.com,FULL_TIME,not_working,0,902,00:00
+4164195,Arendel 10875,arendeltech+10875@gmail.com,FULL_TIME,not_working,0,902,00:00
+4164191,Arendel 10874,arendeltech+10874@gmail.com,FULL_TIME,not_working,0,902,00:00
+4164171,Arendel 10873,arendeltech+10873@gmail.com,FULL_TIME,not_working,0,902,00:00
+4164169,Arendel 10872,arendeltech+10872@gmail.com,FULL_TIME,not_working,0,902,00:00
+4164156,Arendel 10871,arendeltech+10871@gmail.com,FULL_TIME,not_working,0,902,00:00
+4163960,Arendel 10870,arendeltech+10870@gmail.com,FULL_TIME,not_working,0,734,00:00
+4163893,Arendel 10868,arendeltech+10868@gmail.com,FULL_TIME,not_working,0,902,00:00
+4163254,Arendel 10867,arendeltech+10867@gmail.com,FULL_TIME,not_working,0,902,00:00
+4163174,Arendel 10866,arendeltech+10866@gmail.com,FULL_TIME,not_working,0,902,00:00
+4162963,Arendel 10865,arendeltech+10865@gmail.com,FULL_TIME,not_working,0,902,00:00
+4162937,Arendel 10864,arendeltech+10864@gmail.com,FULL_TIME,not_working,0,902,00:00
+4162764,Arendel 10863,arendeltech+10863@gmail.com,FULL_TIME,not_working,0,902,00:00
+4162572,Arendel 10862,arendeltech+10862@gmail.com,FULL_TIME,not_working,0,902,00:00
+4162027,Arendel 10861,arendeltech+10861@gmail.com,FULL_TIME,not_working,0,902,00:00
+4162022,Arendel 10860,arendeltech+10860@gmail.com,FULL_TIME,not_working,0,902,00:00
+4162021,Arendel 10859,arendeltech+10859@gmail.com,FULL_TIME,not_working,0,902,00:00
+4161963,Arendel 10858,arendeltech+10858@gmail.com,FULL_TIME,not_working,0,994,00:00
+4161911,Arendel 10857,arendeltech+10857@gmail.com,FULL_TIME,not_working,0,902,00:00
+4161893,Arendel 10856,arendeltech+10856@gmail.com,FULL_TIME,not_working,0,902,00:00
+4161892,Arendel 10855,arendeltech+10855@gmail.com,FULL_TIME,not_working,0,902,00:00
+4161866,Arendel 10854,arendeltech+10854@gmail.com,FULL_TIME,not_working,0,882,00:00
+4161853,Arendel 10853,arendeltech+10853@gmail.com,FULL_TIME,not_working,0,734,00:00
+4160027,Arendel 10852,arendeltech+10852@gmail.com,FULL_TIME,not_working,0,902,00:00
+4159983,Arendel 10851,arendeltech+10851@gmail.com,FULL_TIME,not_working,0,902,00:00
+4159966,Arendel 10850,arendeltech+10850@gmail.com,FULL_TIME,not_working,0,734,00:00
+4159860,Arendel 10847,arendeltech+10847@gmail.com,FULL_TIME,not_working,0,902,00:00
+4159856,Arendel 10846,arendeltech+10846@gmail.com,FULL_TIME,not_working,0,902,00:00
+4159852,Arendel 10845,arendeltech+10845@gmail.com,FULL_TIME,not_working,0,902,00:00
+4159849,Arendel 10844,arendeltech+10844@gmail.com,FULL_TIME,not_working,0,902,00:00
+4159846,Arendel 10843,arendeltech+10843@gmail.com,FULL_TIME,not_working,0,902,00:00
+4159565,Arendel 10842,arendeltech+10842@gmail.com,FULL_TIME,not_working,0,902,00:00
+4159556,Arendel 10841,arendeltech+10841@gmail.com,FULL_TIME,not_working,0,902,00:00
+4159540,Arendel 10840,arendeltech+10840@gmail.com,FULL_TIME,not_working,0,902,00:00
+4159464,Arendel 10839,arendeltech+10839@gmail.com,FULL_TIME,not_working,0,902,00:00
+4159007,Arendel 10838,arendeltech+10838@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4158790,Arendel 10837,arendeltech+10837@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4158141,Arendel 10836,arendeltech+10836@gmail.com,FULL_TIME,not_working,0,882,00:00
+4158134,Arendel 10835,arendeltech+10835@gmail.com,FULL_TIME,not_working,0,902,00:00
+4158117,Arendel 10832,arendeltech+10832@gmail.com,FULL_TIME,not_working,0,882,00:00
+4158115,Arendel 10831,arendel999@gmail.com,FULL_TIME,not_working,0,902,00:00
+4158109,Arendel 10830,arendeltech+10831@gmail.com,FULL_TIME,not_working,0,902,00:00
+4158105,Arendel 10827,arendeltech+10828@gmail.com,FULL_TIME,not_working,0,1026,00:00
+4158077,Test Rider CompleteTotal,arendeltech+10830@gmail.com,FULL_TIME,not_working,0,902,00:00
+4158067,Arendel 10822,arendeltech+10829@gmail.com,FULL_TIME,not_working,0,902,00:00
+4158059,test Test,arendeltech+10827@gmail.com,FULL_TIME,not_working,0,902,00:00
+4158058,test Test,arendeltech+10826@gmail.com,FULL_TIME,not_working,0,902,00:00
+4158054,test Test,arendeltech+10825@gmail.com,FULL_TIME,not_working,0,902,00:00
+4158052,test Test,arendeltech+10824@gmail.com,FULL_TIME,not_working,0,902,00:00
+4158051,test Test,arendeltech+10823@gmail.com,FULL_TIME,not_working,0,902,00:00
+4158050,test Test,arendeltech+10822@gmail.com,FULL_TIME,not_working,0,902,00:00
+4158048,test Test,arendeltech+10821@gmail.com,FULL_TIME,not_working,0,902,00:00
+4158047,test Test,arendeltech+10820@gmail.com,FULL_TIME,not_working,0,902,00:00
+4158043,test Test,arendeltech+10819@gmail.com,FULL_TIME,not_working,0,902,00:00
+4158035,test Test,arendeltech+10818@gmail.com,FULL_TIME,not_working,0,902,00:00
+4158033,test Test,arendeltech+10817@gmail.com,FULL_TIME,not_working,0,902,00:00
+4158030,Arendel 10816,arendel12222@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4158029,Arendel 10816,arendeltech+10816@gmail.com,FULL_TIME,not_working,0,902,00:00
+4158001,Arendel 10815,arendel1111@gmai.com,FULL_TIME,not_working,0,992,00:00
+4157996,Arendel 10815,arendeltech+10815@gmail.com,FULL_TIME,not_working,0,902,00:00
+4157994,Arendel 10814,arendeltech+10814@gmail.com,FULL_TIME,not_working,0,1026,00:00
+4157990,Arendel 10813,arendeltech+10813@gmail.com,FULL_TIME,not_working,0,882,00:00
+4157986,Arendel 10811,arendel+10811@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4157985,Arendel 10812,arendel-3123@gmail.com,FULL_TIME,not_working,0,902,00:00
+4157973,Arendel 10811,arendeltech+10811@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4157928,Arendel 10810,arendeltech+10810@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4157923,Arendel 10809,arendeltech+10809@gmail.com,FULL_TIME,not_working,0,902,00:00
+4157827,Arendel 108l,arendeltech+108l@gmail.com,FULL_TIME,not_working,0,902,00:00
+4157809,Arendel 10807,arendeltech+10807@gmail.com,FULL_TIME,not_working,0,902,00:00
+4157805,Arendel 10806,arendeltech+10806@gmail.com,FULL_TIME,not_working,0,902,00:00
+4157801,Arendel 10805,arendeltech+10805@gmail.com,FULL_TIME,not_working,0,902,00:00
+4157768,Arendel 10804,arendeltech+10804@gmail.com,FULL_TIME,not_working,0,902,00:00
+4157765,Arendel 10803,arendeltech+10803@gmail.com,FULL_TIME,not_working,0,902,00:00
+4157741,Arendel 10801,arendeltech+10801@gmail.com,FULL_TIME,not_working,0,902,00:00
+4157715,Antonio Ochoa,arendel1758813443250@gmail.com,FULL_TIME,not_working,0,902,00:00
+4157407,Arendel 10800,arendeltech+10800@gmail.com,FULL_TIME,not_working,0,902,00:00
+4157045,test Test,arendeltech+10799@gmail.com,FULL_TIME,not_working,0,902,00:00
+4156100,Antonio Ochoa,arendel1758761731365@gmail.com,FULL_TIME,not_working,0,902,00:00
+4156096,Antonio Ochoca,arendel1758760568515@gmail.com,FULL_TIME,not_working,0,902,00:00
+4156091,María Rodriguez Pérez,maria.rodrigueaz@example.com,FULL_TIME,not_working,0,882,00:00
+4156088,María Rodriguez Pérez,maria.rodriguez@example.com,FULL_TIME,not_working,0,882,00:00
+4129748,Arendel 25,arendeltech+25@gmail.com,FULL_TIME,not_working,0,902,00:00
+4129746,Arendel 24,arendeltech+24@gmail.com,FULL_TIME,not_working,0,902,00:00
+4129742,Arendel 23,arendeltech+23@gmail.com,FULL_TIME,not_working,0,902,00:00
+4129458,Arendel 22,arendeltech+22@gmail.com,FULL_TIME,not_working,0,902,00:00
+4129451,Arendel 21,arendeltech+21@gmail.com,FULL_TIME,not_working,0,902,00:00
+4129448,Arendel 20,arendeltech+20@gmail.com,FULL_TIME,not_working,0,902,00:00
+4129440,Arendel 19,arendeltech+19@gmail.com,FULL_TIME,not_working,0,902,00:00
+4129436,Arendel 18,arendeltech+18@gmail.com,FULL_TIME,not_working,0,902,00:00
+4129432,Arendel 17,arendeltech+17@gmail.com,FULL_TIME,not_working,0,902,00:00
+4129210,Arendel 15,arendeltech+15@gmail.com,FULL_TIME,not_working,0,902,00:00
+4128646,Arendel 14,arendeltech+14@gmail.com,FULL_TIME,not_working,0,902,00:00
+4128643,Arendel 112,arendeltech+112@gmail.com,FULL_TIME,not_working,0,902,00:00
+4128640,Arendel 13,arendeltech+13@gmail.com,FULL_TIME,not_working,0,902,00:00
+4128609,Arendel 108,arendeltech+108@gmail.com,FULL_TIME,not_working,0,902,00:00
+4128592,Arendel 11,arendeltech+11@gmail.com,FULL_TIME,not_working,0,902,00:00
+4128301,Arendel RIDER,arendeltech+000@gmail.com,FULL_TIME,not_working,0,882,00:00
+4128294,Arendel 107,arendeltech+107@gmail.com,FULL_TIME,not_working,0,902,00:00
+4128226,Arendel RIDER,arendeltech+191@gmail.com,FULL_TIME,not_working,0,882,00:00
+4128220,Arendel RIDER,arendeltech+190@gmail.com,FULL_TIME,not_working,0,882,00:00
+4127607,Arendel 106,arendeltech+106@gmail.com,FULL_TIME,not_working,0,902,00:00
+4127435,Arendel 105,arendeltech+105@gmail.com,FULL_TIME,not_working,0,902,00:00
+4127316,Arendel 10,arendeltech+10@gmail.com,FULL_TIME,not_working,0,902,00:00
+4127309,Arendel 9,arendeltech+9@gmail.com,FULL_TIME,not_working,0,902,00:00
+4127302,Arendel 8,arendeltech+8@gmail.com,FULL_TIME,not_working,0,902,00:00
+4127295,Arendel 4,arendeltech+4@gmail.com,FULL_TIME,not_working,0,902,00:00
+4127288,Arendel 5,arendeltech+5@gmail.com,FULL_TIME,not_working,0,902,00:00
+4127281,Arendel 6,arendeltech+6@gmail.com,FULL_TIME,not_working,0,902,00:00
+4127273,Arendel 7,arendeltech+7@gmail.com,FULL_TIME,not_working,0,902,00:00
+4126957,Arendel 3,arendeltech+3@gmail.com,FULL_TIME,not_working,0,902,00:00
+4126949,Arendel 2,arendeltech+2@gmail.com,FULL_TIME,not_working,0,902,00:00
+4126942,Arendel 1,arendeltech+1@gmail.com,FULL_TIME,not_working,0,902,00:00
+4126859,Arendel 96,arendeltech+96@gmail.com,FULL_TIME,not_working,0,902,00:00
+4126840,Arendel 95,arendeltech+95@gmail.com,FULL_TIME,not_working,0,902,00:00
+4126699,Arendel 94,arendeltech+94@gmail.com,FULL_TIME,not_working,0,902,00:00
+4126550,Arendel 93,arendeltech+93@gmail.com,FULL_TIME,not_working,0,902,00:00
+4126368,Arendel 91,arendeltech+91@gmail.com,FULL_TIME,not_working,0,902,00:00
+4126074,Arendel 104,arendeltech+104@gmail.com,FULL_TIME,not_working,0,902,00:00
+4126064,Arendel 103,arendeltech+103@gmail.com,FULL_TIME,not_working,0,902,00:00
+4126049,arendel RIDER,arendel+103@gmail.com,FULL_TIME,not_working,0,902,00:00
+4124856,Arendel 90,arendeltech+90@gmail.com,FULL_TIME,not_working,0,902,00:00
+4124239,Arendel 89,arendeltech+89@gmail.com,FULL_TIME,not_working,0,902,00:00
+4123765,Arendel 118,arendeltech+118@gmail.com,FULL_TIME,not_working,0,902,00:00
+4123738,Arendel 117,arendeltech+117@gmail.com,FULL_TIME,not_working,0,902,00:00
+4123708,Arendel 116,arendeltech+116@gmail.com,FULL_TIME,not_working,0,902,00:00
+4123700,Arendel 115,arendeltech+115@gmail.com,FULL_TIME,not_working,0,902,00:00
+4123676,Arendel 114,arendeltech+114@gmail.com,FULL_TIME,not_working,0,902,00:00
+4123660,Arendel 113,arendeltecch+113@gmail.com,FULL_TIME,not_working,0,902,00:00
+4123153,Arendel 84,arendeltech+84@gmail.com,FULL_TIME,not_working,0,902,00:00
+4123059,Arendel 86,arendeltech+86@gmail.com,FULL_TIME,not_working,0,902,00:00
+4123055,Arendel 87,arendeltech+87@gmail.com,FULL_TIME,not_working,0,902,00:00
+4123009,Arendel 82,arendeltech+82@gmail.com,FULL_TIME,not_working,0,902,00:00
+4123005,Arendel 83,arendeltech+83@gmail.com,FULL_TIME,not_working,0,902,00:00
+4122548,Arendel 65,arendeltech+65@gmail.com,FULL_TIME,not_working,0,902,00:00
+4122427,Arendel 111,arendeltech+111@gmail.com,FULL_TIME,not_working,0,902,00:00
+4122364,Arendel 110,arendeltech+110@gmail.com,FULL_TIME,not_working,0,902,00:00
+4122360,Arendel 109,arendeltech+109@gmail.com,FULL_TIME,not_working,0,902,00:00
+4122325,Arendel 74,arendeltech+74@gmail.com,FULL_TIME,not_working,0,902,00:00
+4122318,Arendel 72,arendeltech+72@gmail.com,FULL_TIME,not_working,0,902,00:00
+4122314,Arendel 71,arendeltech+71@gmail.com,FULL_TIME,not_working,0,902,00:00
+4122310,Arendel 69,arendeltech+69@gmail.com,FULL_TIME,not_working,0,902,00:00
+4122306,Arendel 68,arendeltech+68@gmail.com,FULL_TIME,not_working,0,902,00:00
+4122120,Arendel 67,arendeltech+67@gmail.com,FULL_TIME,not_working,0,902,00:00
+4122032,Arendel 66,arendeltech+66@gmail.com,FULL_TIME,not_working,0,902,00:00
+4121429,Arendel 100,arendeltech+100@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4121421,Arendel 99,arendeltech+99@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4121417,Arendel 98,arendeltech+98@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4121177,Arendel 64,arendeltech+64@gmail.com,FULL_TIME,not_working,0,902,00:00
+4120836,Arendel 63,arendeltech+63@gmail.com,FULL_TIME,not_working,0,902,00:00
+4120583,Arendel 97,arendeltech+97@gmail.com,FULL_TIME,not_working,0,902,00:00
+4120566,Arendel 62,arendeltech+62@gmail.com,FULL_TIME,not_working,0,902,00:00
+4120489,Arendel 61,arendeltech+61@gmail.com,FULL_TIME,not_working,0,902,00:00
+4120477,Arendel 60,arendeltech+60@gmail.com,FULL_TIME,not_working,0,804,00:00
+4120418,Arendel 59,arendeltech+59@gmail.com,FULL_TIME,not_working,0,902,00:00
+4120414,Arendel 58,arendeltech+58@gmail.com,FULL_TIME,not_working,0,902,00:00
+4120331,Arendel 57,arendeltech+57@gmail.com,FULL_TIME,not_working,0,902,00:00
+4120291,Arendel 56,arendeltech+56@gmail.com,FULL_TIME,not_working,0,902,00:00
+4120275,Arendel 54,arendeltech+54@gmail.com,FULL_TIME,not_working,0,902,00:00
+4120264,Arendel 53,arendeltech+53@gmail.com,FULL_TIME,not_working,0,902,00:00
+4120220,Arendel 52,arendeltech+52@gmail.com,FULL_TIME,not_working,0,902,00:00
+4120177,Testing User,arendeltech+51@gmail.com,FULL_TIME,not_working,0,902,00:00
+4120168,Arendel 50,arendeltech+50@gmail.com,FULL_TIME,not_working,0,902,00:00
+4120164,Arendel 49,arendeltech+49@gmail.com,FULL_TIME,not_working,0,902,00:00
+4119895,Arendel 85,arendeltech+85@gmail.com,FULL_TIME,not_working,0,902,00:00
+4119491,Arendel 48,arendeltech+48@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4119469,Arendel 47,arendeltech+47@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4119450,Arendel 45,arendeltech+45@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4119445,Arendel 44,arendeltech+44@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4119440,Arendel 43,arendeltech+43@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4118784,Arendel 146,arendeltech+146@gmail.com,FULL_TIME,not_working,0,902,00:00
+4118639,Arendel 145,arendeltech+145@gmail.com,FULL_TIME,not_working,0,902,00:00
+4118618,Arendel 144,arendeltech+144@gmail.com,FULL_TIME,not_working,0,902,00:00
+4118576,Arendel 32,arendeltech+32@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4118571,Arendel 33,arendeltech+33@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4118563,Arendel 30,arendeltech+30@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4118554,Arendel 31,arendeltech+31@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4118546,Arendel 29,arendeltech+29@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4118529,Arendel 28,arendeltech+28@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4118444,Arendel 81,arendeltech+81@gmail.com,FULL_TIME,not_working,0,902,00:00
+4118375,Arendel 41,arendeltech+41@gmail.com,FULL_TIME,not_working,0,902,00:00
+4117523,Arendel 40,arendeltech+40@gmail.com,FULL_TIME,not_working,0,902,00:00
+4117466,Arendel 38,arendeltech+38@gmail.com,FULL_TIME,not_working,0,902,00:00
+4117062,Arendel 101,arendeltech+101@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4117046,Arendel 102,arendeltech+102@gmail.com,FULL_TIME,not_working,0,902,00:00
+4116713,Arendel 37,arendeltech+37@gmail.com,FULL_TIME,not_working,0,836,00:00
+4116688,Arendel 26,arendeltech+26@gmail.com,FULL_TIME,not_working,0,902,00:00
+4116680,Arendel 27,arendeltech+27@gmail.com,FULL_TIME,not_working,0,902,00:00
+4116538,Arendel 36,arendeltech+36@gmail.com,FULL_TIME,not_working,0,902,00:00
+4116432,Arendel 80,arendeltech+80@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4116391,Arendel 79,arendeltech+79@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4116178,Arendel 78,arendeltech+78@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4116170,Arendel 77,arendeltech+77@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4116147,Arendel 76,arendeltech+76@gmail.com,FULL_TIME,not_working,0,902,00:00
+4116144,Arendel 35,arendeltech+35@gmail.com,FULL_TIME,not_working,0,902,00:00
+4116099,Arendel 75,arendeltech+75@gmail.com,FULL_TIME,not_working,0,902,00:00
+4115711,Arendel 155,arendeltech+155@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4115703,Arendel 156,arendeltech+156@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4115700,Arendel 73,arendeltech+73@gmail.com,FULL_TIME,not_working,0,902,00:00
+4115695,Arendel 153,arendeltech+153@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4115686,Arendel 154,arendeltech+154@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4115684,Arendel 70,arendeltech+70@gmail.com,FULL_TIME,not_working,0,902,00:00
+4115679,Arendel 150,arendeltech+150@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4115672,Arendel 149,arendeltech+149@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4115661,Arendel 39,arendeltech+39@gmail.com,FULL_TIME,not_working,0,902,00:00
+4115620,Arendel 34,arendeltech+34@gmail.com,FULL_TIME,not_working,0,902,00:00
+4115368,Arendel 142,arendeltech+142@gmail.com,FULL_TIME,not_working,0,902,00:00
+4115343,Arendel 141,arendeltech+141@gmail.com,FULL_TIME,not_working,0,902,00:00
+4115338,Arendel 148,arendeltech+148@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4115331,Arendel 147,arendeltech+147@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4115119,Arendel 140,arendeltech+140@gmail.com,FULL_TIME,not_working,0,902,00:00
+4115111,Arendel 139,arendeltech+139@gmail.com,FULL_TIME,not_working,0,902,00:00
+4114361,arendel RIDER,arendeltech+180@gmail.com,FULL_TIME,not_working,0,902,00:00
+4114357,arendeltech RIDER,arendeltech+177@gmail.com,FULL_TIME,not_working,0,902,00:00
+4114352,arendel RIDER,arendeltecch+176@gmail.com,FULL_TIME,not_working,0,902,00:00
+4114345,arendeltech RIDER,arendeltech+167@gmail.com,FULL_TIME,not_working,0,902,00:00
+4114341,arendel RIDER,arendeltech+170@gmail.com,FULL_TIME,not_working,0,902,00:00
+4114333,arendel RIDER,arendeltech+171@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4114329,arendel RIDER,arendeltech+161@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4114325,Arendel 172,arendeltech+172@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4114321,arendeltech RIDER,arendeltech+163@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4114317,arendel RIDER,arendeltech+173@gmail.com,FULL_TIME,not_working,0,902,00:00
+4114313,arendel RIDER,arendeltech+174@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4114304,Arendel RIDER,arendeltech+234@gmail.com,FULL_TIME,not_working,0,882,00:00
+4114043,Arendel 181,arendeltech+181@gmail.com,FULL_TIME,not_working,0,882,00:00
+4114026,Arendel 184,arendeltech+184@gmail.com,FULL_TIME,not_working,0,882,00:00
+4114023,Arendel 179,arendeltech+179@gmail.com,FULL_TIME,not_working,0,882,00:00
+4114019,Arendel 175,arendeltech+175@gmail.com,FULL_TIME,not_working,0,882,00:00
+4114015,Arendel 165,arendeltech+165@gmail.com,FULL_TIME,not_working,0,882,00:00
+4114010,Arendel 162,arendeltech+162@gmail.com,FULL_TIME,not_working,0,882,00:00
+4114006,Arendel 169,arendeltech+169@gmail.com,FULL_TIME,not_working,0,882,00:00
+4114002,Arendel 178,arendeltech+178@gmail.com,FULL_TIME,not_working,0,882,00:00
+4113998,Arendel 166,arendeltech+166@gmail.com,FULL_TIME,not_working,0,882,00:00
+4113994,Arendel 183,arendeltech+183@gmail.com,FULL_TIME,not_working,0,882,00:00
+4113984,Arendel 182,arendeltech+182@gmail.com,FULL_TIME,not_working,0,882,00:00
+4113966,Arendel RIDER,arendeltech+233@gmail.com,FULL_TIME,not_working,0,736,00:00
+4113878,Arendel RIDER,arendeltech+249@gmail.com,FULL_TIME,not_working,0,736,00:00
+4113707,Arendel RIDER,arendeltech+232@gmail.com,FULL_TIME,not_working,0,882,00:00
+4113580,Arendel RIDER,arendeltech+248@gmail.com,FULL_TIME,not_working,0,882,00:00
+4113561,Arendel RIDER,arendeltech+247@gmail.com,FULL_TIME,not_working,0,902,00:00
+4113500,Arendel RIDER,arendeltech+245@gmail.com,FULL_TIME,not_working,0,882,00:00
+4113493,Arendel RIDER,arendeltech+244@gmail.com,FULL_TIME,not_working,0,902,00:00
+4113489,Arendel RIDER,arendeltech+243@gmail.com,FULL_TIME,not_working,0,902,00:00
+4113473,Arendel RIDER,arendeltech+242@gmail.com,FULL_TIME,not_working,0,902,00:00
+4113469,Arendel RIDER,arendeltech+241@gmail.com,FULL_TIME,not_working,0,902,00:00
+4113047,Arendel 159,arendeltech+159@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4113017,Arendel RIDER,arendeltech+231@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4112953,Arendel RIDER,arendeltech+230@gmail.com,FULL_TIME,not_working,0,882,00:00
+4112902,Arendel RIDER,arendeltech+229@gmail.com,FULL_TIME,not_working,0,902,00:00
+4112895,Arendel RIDER,arendeltech+228@gmail.com,FULL_TIME,not_working,0,882,00:00
+4112760,Arendel 158,arendeltech+158@gmail.com,FULL_TIME,not_working,0,902,00:00
+4112492,Arendel RIDER,arendeltech+297@gmail.com,FULL_TIME,not_working,0,902,00:00
+4112491,arendeltech RIDER,arendeltech+227@gmail.com,FULL_TIME,not_working,0,902,00:00
+4112485,Arendel RIDER,arendeltech+295@gmail.com,FULL_TIME,not_working,0,882,00:00
+4112471,Arendel RIDER,arendeltech+294@gmail.com,FULL_TIME,not_working,0,882,00:00
+4112441,Arendel RIDER,arendeltech+293@gmail.com,FULL_TIME,not_working,0,902,00:00
+4112434,Arendel RIDER,arendeltech+290@gmail.com,FULL_TIME,not_working,0,882,00:00
+4112041,Arendel 157,arendeltech+157@gmail.com,FULL_TIME,not_working,0,902,00:00
+4112007,Arendel RIDER,arendeltech+226@gmail.com,FULL_TIME,not_working,0,902,00:00
+4111936,Arendel RIDER,arendeltech+225@gmail.com,FULL_TIME,not_working,0,902,00:00
+4111897,Arendel RIDER,arendeltech+267@gmail.com,FULL_TIME,not_working,0,902,00:00
+4111728,Arendel RIDER,arendeltech+240@gmail.com,FULL_TIME,not_working,0,902,00:00
+4111715,arendeltech RIDER,arendeltech+239@gmail.com,FULL_TIME,not_working,0,882,00:00
+4111690,Arendel RIDER,arendeltech+237@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4111662,Arendel RIDER,arendeltech+236@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4111655,Arendel RIDER,arendeltech+235@gmail.com,FULL_TIME,not_working,0,882,00:00
+4110160,Arendel RIDER,arendeltech+215@gmail.com,FULL_TIME,not_working,0,902,00:00
+4110153,Arendel RIDER,arendeltech+213@gmail.com,FULL_TIME,not_working,0,902,00:00
+4110050,Arendel RIDER,arendeltech+214@gmail.com,FULL_TIME,not_working,0,882,00:00
+4109944,Arendel RIDER,arendeltech+212@gmail.com,FULL_TIME,not_working,0,736,00:00
+4109845,Arendel RIDER,arendeltech+292@gmail.com,FULL_TIME,not_working,0,902,00:00
+4109800,arendel RIDER,arendeltech+189@gmail.com,FULL_TIME,not_working,0,902,00:00
+4109629,Arendel RIDER,arendeltech+187@gmail.com,FULL_TIME,not_working,0,902,00:00
+4109572,Arendel RIDER,arendeltech+288@gmail.com,FULL_TIME,not_working,0,736,00:00
+4109514,Arendel RIDER,arendeltech+211@gmail.com,FULL_TIME,not_working,0,882,00:00
+4109507,Arendel RIDER,arendeltech+210@gmail.com,FULL_TIME,not_working,0,882,00:00
+4109471,Arendel RIDER,arendeltech+209@gmail.com,FULL_TIME,not_working,0,882,00:00
+4109313,Arendel RIDER,arendeltech+186@gmail.com,FULL_TIME,not_working,0,902,00:00
+4109187,Arendel RIDER,arendelttech+208@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4109167,Arendel RIDER,arendeltech+205@gmail.com,FULL_TIME,not_working,0,902,00:00
+4109025,Arendel RIDER,arendeltech+203@gmail.com,FULL_TIME,not_working,0,902,00:00
+4109016,Arendel RIDER,arendeltech+204@gmail.com,FULL_TIME,not_working,0,902,00:00
+4109006,Arendel RIDER,arendeltech+208@gmail.com,FULL_TIME,not_working,0,902,00:00
+4107943,Arendel RIDER,arendeltech+328@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4107848,Arendel RIDER,arendeltech+201@gmail.com,FULL_TIME,not_working,0,902,00:00
+4107840,Arendel RIDER,arendeltech+200@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4107808,Arendel RIDER,arendeltech+199@gmail.com,FULL_TIME,not_working,0,902,00:00
+4107782,Arendel RIDER,arendeltech+198@gmail.com,FULL_TIME,not_working,0,902,00:00
+4107657,Arendel RIDER,arendeltech+207@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4107375,arendel RIDER,arendeltech+197@gmail.com,FULL_TIME,not_working,0,736,00:00
+4107360,Arendel RIDER,arendeltech+196@gmail.com,FULL_TIME,not_working,0,882,00:00
+4107353,Arendel RIDER,arendeltech+195@gmail.com,FULL_TIME,not_working,0,882,00:00
+4107345,Arendel RIDER,arendeltech+194@gmail.com,FULL_TIME,not_working,0,902,00:00
+4107337,Arendel RIDER,arendeltech+193@gmail.com,FULL_TIME,not_working,0,882,00:00
+4106754,Arendel RIDER,arendeltech+224@gmail.com,FULL_TIME,not_working,0,902,00:00
+4106745,Arendel RIDER,arendeltech+223@gmail.com,FULL_TIME,not_working,0,902,00:00
+4106400,Arendel RIDER,arendeltech+268@gmail.com,FULL_TIME,not_working,0,882,00:00
+4106257,ARENDELTECH RIDER,arendeltech+185@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4106141,Arendel 138,arendeltech+138@gmail.com,FULL_TIME,not_working,0,902,00:00
+4106132,Arendel 143,arendeltech+143@gmail.com,FULL_TIME,not_working,0,902,00:00
+4105798,Arendel 137,arendeltech+137@gmail.com,FULL_TIME,not_working,0,902,00:00
+4105661,Arendel RIDER,arendeltech+222@gmail.com,FULL_TIME,not_working,0,902,00:00
+4105652,Arendel RIDER,arendeltech+221@gmail.com,FULL_TIME,not_working,0,902,00:00
+4105614,arendeltech RIDER,arendeltech+216@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4105531,Arendel RIDER,arendeltech+220@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4105521,Arendel RIDER,arendeltech+218@gmail.com,FULL_TIME,not_working,0,882,00:00
+4105474,Arendel RIDER,arendeltech+219@gmail.com,FULL_TIME,not_working,0,902,00:00
+4104967,Arendel 122,arendeltech+122@gmail.com,FULL_TIME,not_working,0,902,00:00
+4104939,Arendel 125,arendeltech+125@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4104916,Arendel 126,arendeltech+126@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4104906,Arendel 127,arendeltech+127@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4104887,Arendel 128,arendeltech+128@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4104878,Arendel 129,arendeltech+129@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4104870,Arendel RIDER,arendeltech+217@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4104840,Arendel 131,arendeltech+131@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4104831,Arendel 130,arendeltech+130@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4104804,Arendel 132,arendeltech+132@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4104654,Arendel 133,arendeltech+133@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4104525,Arendel 134,arendeltech+134@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4104507,Arendel 135,arendeltech+135@gmail.com,FULL_TIME,not_working,0,902,00:00
+4104494,Arendel 136,arendeltech+136@gmail.com,FULL_TIME,not_working,0,902,00:00
+4104111,Arendel 123,arendeltech+123@gmail.com,FULL_TIME,not_working,0,902,00:00
+4104101,Arendel 124,arendeltech+124@gmail.com,FULL_TIME,not_working,0,902,00:00
+4103932,Arendel RIDER,arendeltech+326@gmail.com,FULL_TIME,not_working,0,902,00:00
+4101476,arendeltech RIDER,arendeltech+264@gmail.com,FULL_TIME,not_working,0,902,00:00
+4101467,arendeltech RIDER,arendeltech+265@gmail.com,FULL_TIME,not_working,0,902,00:00
+4101459,arendel RIDER,arendeltech+266@gmail.com,FULL_TIME,not_working,0,882,00:00
+4101452,ARENDELTECH RIDER,arendeltech+260@gmail.com,FULL_TIME,not_working,0,882,00:00
+4101089,Arendel RIDER,arendeltech+263@gmail.com,FULL_TIME,not_working,0,902,00:00
+4101085,arendeltech RIDER,arendeltech+261@gmail.com,FULL_TIME,not_working,0,902,00:00
+4101079,arendeltech RIDER,arendeltech+262@gmail.com,FULL_TIME,not_working,0,902,00:00
+4100730,Arendel RIDER,arendeltech+259@gmail.com,FULL_TIME,not_working,0,902,00:00
+4100463,Arendel RIDER,arendeltech+301@gmail.com,FULL_TIME,not_working,0,882,00:00
+4100447,Arendel RIDER,arendeltech+300@gmail.com,FULL_TIME,not_working,0,882,00:00
+4100181,Arendel RIDER,arendeltech+298@gmail.com,FULL_TIME,not_working,0,882,00:00
+4099811,Arendel RIDER,arendeltech+367@gmail.com,FULL_TIME,not_working,0,902,00:00
+4099606,Arendel RIDER,arendeltech+256@gmail.com,FULL_TIME,not_working,0,902,00:00
+4099598,Arendel RIDER,arendeltech+255@gmail.com,FULL_TIME,not_working,0,902,00:00
+4099590,Arendel RIDER,arendeltech+254@gmail.com,FULL_TIME,not_working,0,902,00:00
+4099574,Arendel RIDER,arendeltech+253@gmail.com,FULL_TIME,not_working,0,902,00:00
+4099564,Arendel RIDER,arendeltech+252@gmail.com,FULL_TIME,not_working,0,882,00:00
+4099501,Arendel RIDER,arendeltech+366@gmail.com,FULL_TIME,not_working,0,902,00:00
+4099197,Arendel RIDER,arendeltech+365@gmail.com,FULL_TIME,not_working,0,882,00:00
+4099173,Arendel RIDER,arendeltech+364@gmail.com,FULL_TIME,not_working,0,882,00:00
+4098667,Arendel RIDER,arendeltech+251@gmail.com,FULL_TIME,not_working,0,882,00:00
+4098659,Arendel RIDER,arendeltech+250@gmail.com,FULL_TIME,not_working,0,736,00:00
+4098600,arendeltech RIDER,arendeltech+325@gmail.com,FULL_TIME,not_working,0,902,00:00
+4098454,arendel RIDER,arendel+324@gmail.com,FULL_TIME,not_working,0,902,00:00
+4098228,Arendel RIDER,arendeltech+287@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4098023,arendeltech RIDER,arendeltech+278@gmail.com,FULL_TIME,not_working,0,882,00:00
+4098015,Arendel RIDER,arendeltech+284@gmail.com,FULL_TIME,not_working,0,882,00:00
+4098007,ARENDEL RIDER,arendeltech+257@gmail.com,FULL_TIME,not_working,0,882,00:00
+4097999,Arendel RIDER,arendeltech+280@gmail.com,FULL_TIME,not_working,0,882,00:00
+4097997,Arendel RIDER,arendeltech+318@gmail.com,FULL_TIME,not_working,0,882,00:00
+4097991,arendeltech RIDER,arendeltech+258@gmail.com,FULL_TIME,not_working,0,882,00:00
+4097983,Arendel RIDER,arendeltech+286@gmail.com,FULL_TIME,not_working,0,882,00:00
+4097965,Arendel RIDER,arendeltech+317@gmail.com,FULL_TIME,not_working,0,902,00:00
+4097902,Arendel RIDER,arendeltech+316@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4097894,Arendel RIDER,arendeltech+315@gmail.com,FULL_TIME,not_working,0,882,00:00
+4097886,Arendel RIDER,arendeltech+314@gmail.com,FULL_TIME,not_working,0,902,00:00
+4097617,Arendel RIDER,arendeltech+285@gmail.com,FULL_TIME,not_working,0,902,00:00
+4097506,Arendel RIDER,arendeltech+283@gmail.com,FULL_TIME,not_working,0,902,00:00
+4097486,Arendel RIDER,arendeltech+282@gmail.com,FULL_TIME,not_working,0,902,00:00
+4097475,Arendel RIDER,arendeltech+281@gmail.com,FULL_TIME,not_working,0,902,00:00
+4097389,ARENDELTECH RIDER,arendeltech+276@gmail.com,FULL_TIME,not_working,0,882,00:00
+4097323,Arendel RIDER,arendeltech+275@gmail.com,FULL_TIME,not_working,0,902,00:00
+4097298,Arendel RIDER,arendeltech+274@gmail.com,FULL_TIME,not_working,0,902,00:00
+4097286,Arendel RIDER,arendeltech+269@gmail.com,FULL_TIME,not_working,0,882,00:00
+4097221,Arendel RIDER,arendeltech+273@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4097100,Arendel RIDER,arendeltech+271@gmail.com,FULL_TIME,not_working,0,902,00:00
+4097089,Arendel RIDER,arendeltech+272@gmail.com,FULL_TIME,not_working,0,902,00:00
+4096995,arendeltech RIDER,arendeltech+313@gmail.com,FULL_TIME,not_working,0,902,00:00
+4096969,Arendel RIDER,arendeltech+270@gmail.com,FULL_TIME,not_working,0,882,00:00
+4096958,Arendel RIDER,arendeltech+0269@gmail.com,FULL_TIME,not_working,0,882,00:00
+4096902,arendeltech RIDER,arendeltech+375@gmail.com,FULL_TIME,not_working,0,902,00:00
+4096713,Arendel RIDER,arendeltech+312@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4096670,Arendel RIDER,arendeltech+311@gmail.com,FULL_TIME,not_working,0,902,00:00
+4096647,Arendel RIDER,arendeltech+310@gmail.com,FULL_TIME,not_working,0,902,00:00
+4096635,Arendel RIDER,arendeltech+309@gmail.com,FULL_TIME,not_working,0,902,00:00
+4096624,Arendel RIDER,arendeltech+308@gmail.com,FULL_TIME,not_working,0,902,00:00
+4096544,arendeltech RIDER,arendeltech+323@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4096433,Arendel RIDER,arendeltech+307@gmail.com,FULL_TIME,not_working,0,902,00:00
+4096322,Arendel RIDER,arendeltech+306@gmail.com,FULL_TIME,not_working,0,902,00:00
+4096151,arendeltech RIDER,arendeltech+319@gmail.com,FULL_TIME,not_working,0,902,00:00
+4096046,Arendel RIDER,arendeltech+303@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4096035,Arendel RIDER,arendeltech+305@gmail.com,FULL_TIME,not_working,0,902,00:00
+4096025,Arendel RIDER,arendeltech+302@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4096015,arendeltech RIDER,arendeltech+304@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4095768,Arendel RIDER,arendeltech+291@gmail.com,FULL_TIME,not_working,0,736,00:00
+4095523,Arendel RIDER,arendeltech+289@gmail.com,FULL_TIME,not_working,0,882,00:00
+4095470,arendeltech RIDER,arendeltech+363@gmail.com,FULL_TIME,not_working,0,902,00:00
+4095461,Arendel RIDER,arendeltech+362@gmail.com,FULL_TIME,not_working,0,902,00:00
+4095099,Arendel RIDER,arendeltech+361@gmail.com,FULL_TIME,not_working,0,902,00:00
+4094978,arendeltech RIDER,arendeltech+374@gmail.com,FULL_TIME,not_working,0,902,00:00
+4094762,arendeltech RIDER,arendeltech+360@gmail.com,FULL_TIME,not_working,0,902,00:00
+4094603,arendeltech RIDER,arendeltech+359@gmail.com,FULL_TIME,not_working,0,902,00:00
+4093191,arendeltech RIDER,arendeltech+372@gmail.com,FULL_TIME,not_working,0,902,00:00
+4092889,arendeltech RIDER,arendeltech+371@gmail.com,FULL_TIME,not_working,0,902,00:00
+4092882,arendeltech RIDER,arendeltech+370@gmail.com,FULL_TIME,not_working,0,902,00:00
+4092875,arendeltech RIDER,arendeltech+369@gmail.com,FULL_TIME,not_working,0,882,00:00
+4092607,arendeltech RIDER,arendeltech+373@gmail.com,FULL_TIME,not_working,0,902,00:00
+4092270,arendeltech RIDER,arendeltech+379@gmail.com,FULL_TIME,not_working,0,1006,00:00
+4092145,Arendel RIDER,arendeltech+389@gmail.com,FULL_TIME,not_working,0,902,00:00
+4091397,Arendel RIDER,arendeltech+355@gmail.com,FULL_TIME,not_working,0,902,00:00
+4089382,arendeltech RIDER,arendeltech+388@gmail.com,FULL_TIME,not_working,0,902,00:00
+4089121,arendeltech RIDER,arendeltech+387@gmail.com,FULL_TIME,not_working,0,902,00:00
+4088784,Arendel RIDER,arendeltech+349@gmail.com,FULL_TIME,not_working,0,902,00:00
+4088736,Arendel RIDER,arendeltech+348@gmail.com,FULL_TIME,not_working,0,902,00:00
+4087978,arendeltech RIDER,arendeltech+347@gmail.com,FULL_TIME,not_working,0,882,00:00
+4087971,arendeltech RIDER,arendeltech+345@gmail.com,FULL_TIME,not_working,0,902,00:00
+4087963,arendeltech RIDER,arendeltech+346@gmail.com,FULL_TIME,not_working,0,882,00:00
+4087854,Arendel RIDER,arendeltech+343@gmail.com,FULL_TIME,not_working,0,882,00:00
+4087775,Arendel RIDER,arendeltech+342@gmail.com,FULL_TIME,not_working,0,882,00:00
+4087572,Arendel RIDER,arendeltech+341@gmail.com,FULL_TIME,not_working,0,902,00:00
+4087392,Arendel RIDER,arendeltech+338@gmail.com,FULL_TIME,not_working,0,902,00:00
+4087384,Arendel RIDER,arendeltech+340@gmail.com,FULL_TIME,not_working,0,902,00:00
+4087376,Arendel RIDER,arendeltech+339@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4087003,arendeltech RIDER,arendeltech+337@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086996,arendeltech RIDER,arendeltech+336@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086988,arendeltech RIDER,arendeltech+335@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086979,arendel RIDER,arendel+334@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086917,Arendel RIDER,arendeltech+504@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086909,Arendel RIDER,arendeltech+503@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086869,Arendel RIDER,arendeltech+501@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086863,Arendel RIDER,arendeltech+502@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086846,Arendel RIDER,arendeltech+500@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086814,Arendel RIDER,arendeltech+499@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086791,Arendel RIDER,arendeltech+497@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086776,Arendel RIDER,arendeltech+496@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086768,Arendel RIDER,arendeltech+495@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086743,Arendel RIDER,arendeltech+492@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086735,Arendel RIDER,arendeltech+491@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086728,arendeltech RIDER,arendeltech+385@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086726,Arendel RIDER,arendeltech+490@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086717,Arendel RIDER,arendeltech+489@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086709,arendeltech RIDER,arendeltech+384@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086703,Arendel RIDER,arendeltech+487@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086694,Arendel RIDER,arendeltech+486@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086686,Arendel RIDER,arendeltech+485@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086663,Arendel RIDER,arendeltech+484@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086645,Arendel RIDER,arendeltech+482@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086628,Arendel RIDER,arendeltech+480@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086621,Arendel RIDER,arendeltech+479@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086538,arendeltech RIDER,arendeltech+356@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086363,Arendel RIDER,arendeltech+476@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086355,Arendel RIDER,arendeltech+477@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086348,Arendel RIDER,arendeltech+478@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086338,Arendel RIDER,arendeltech+475@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086304,Arendel RIDER,arendeltech+382@gmail.com,FULL_TIME,not_working,0,902,00:00
+4086152,Arendel RIDER,arendeltech+399@gmail.com,FULL_TIME,not_working,0,882,00:00
+4086063,Arendel RIDER,arendeltech+398@gmail.com,FULL_TIME,not_working,0,902,00:00
+4085900,arendeltech RIDER,arendeltech+333@gmail.com,FULL_TIME,not_working,0,902,00:00
+4085892,arendeltech RIDER,arendeltech+331@gmail.com,FULL_TIME,not_working,0,902,00:00
+4085884,arendeltech RIDER,arendeltech+332@gmail.com,FULL_TIME,not_working,0,902,00:00
+4085876,arendeltech RIDER,arendeltech+330@gmail.com,FULL_TIME,not_working,0,902,00:00
+4085868,arendeltech RIDER,arendeltech+329@gmail.com,FULL_TIME,not_working,0,902,00:00
+4085418,arendeltech RIDER,arendeltech+397@gmail.com,FULL_TIME,not_working,0,902,00:00
+4085392,Arendel RIDER,arendeltech+354@gmail.com,FULL_TIME,not_working,0,902,00:00
+4085376,Arendel RIDER,arendeltech+353@gmail.com,FULL_TIME,not_working,0,902,00:00
+4085214,arendeltech RIDER,arendeltech+394@gmail.com,FULL_TIME,not_working,0,882,00:00
+4085206,Arendel RIDER,arendeltech+395@gmail.com,FULL_TIME,not_working,0,902,00:00
+4085198,Arendel RIDER,arendeltech+396@gmail.com,FULL_TIME,not_working,0,902,00:00
+4084744,Arendel RIDER,arendeltech+352@gmail.com,FULL_TIME,not_working,0,902,00:00
+4084734,Arendel RIDER,arendeltech+351@gmail.com,FULL_TIME,not_working,0,902,00:00
+4084718,Arendel RIDER,arendeltech+350@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4084298,arendeltech RIDER,arendeltech+393@gmail.com,FULL_TIME,not_working,0,882,00:00
+4083976,Arendel RIDER,arendeltech+474@gmail.com,FULL_TIME,not_working,0,902,00:00
+4083968,Arendel RIDER,arendeltech+473@gmail.com,FULL_TIME,not_working,0,902,00:00
+4083783,arendeltech RIDER,arendeltech+380@gmail.com,FULL_TIME,not_working,0,882,00:00
+4083552,Arendel RIDER,arendeltech+471@gmail.com,FULL_TIME,not_working,0,902,00:00
+4083537,Arendel RIDER,arendeltech+470@gmail.com,FULL_TIME,not_working,0,902,00:00
+4083489,Arendel RIDER,arendeltech+469@gmail.com,FULL_TIME,not_working,0,902,00:00
+4083482,Arendel RIDER,arendeltech+468@gmail.com,FULL_TIME,not_working,0,902,00:00
+4083472,Arendel RIDER,arendeltech+467@gmail.com,FULL_TIME,not_working,0,902,00:00
+4083465,Arendel RIDER,arendeltech+466@gmail.com,FULL_TIME,not_working,0,902,00:00
+4083456,Arendel RIDER,arendeltech+465@gmail.com,FULL_TIME,not_working,0,902,00:00
+4083447,Arendel RIDER,arendeltech+464@gmail.com,FULL_TIME,not_working,0,902,00:00
+4083438,Arendel RIDER,arendeltech+463@gmail.com,FULL_TIME,not_working,0,902,00:00
+4083429,Arendel RIDER,arendeltech+462@gmail.com,FULL_TIME,not_working,0,902,00:00
+4083420,Arendel RIDER,arendeltech+461@gmail.com,FULL_TIME,not_working,0,902,00:00
+4083411,Arendel RIDER,arendeltech+460@gmail.com,FULL_TIME,not_working,0,902,00:00
+4083403,Arendel RIDER,arendeltech+459@gmail.com,FULL_TIME,not_working,0,902,00:00
+4083394,Arendel RIDER,arendeltech+458@gmail.com,FULL_TIME,not_working,0,902,00:00
+4083368,Arendel RIDER,arendeltech+457@gmail.com,FULL_TIME,not_working,0,902,00:00
+4083359,Arendel RIDER,arendeltech+456@gmail.com,FULL_TIME,not_working,0,902,00:00
+4083022,arendeltech RIDER,arendeltech+391@gmail.com,FULL_TIME,not_working,0,902,00:00
+4082874,arendeltech RIDER,arendeltech+390@gmail.com,FULL_TIME,not_working,0,902,00:00
+4082790,arendeltech RIDER,arendeltech+378@gmail.com,FULL_TIME,not_working,0,902,00:00
+4082599,arendeltech RIDER,arendeltech+358@gmail.com,FULL_TIME,not_working,0,902,00:00
+4082591,arendeltech RIDER,arendeltech+357@gmail.com,FULL_TIME,not_working,0,902,00:00
+4082279,arendeltech RIDER,arendeltech+377@gmail.com,FULL_TIME,not_working,0,902,00:00
+4080340,Arendel RIDER,arendeltech+327@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4078712,Arendel RIDER,arendeltech+368@gmail.com,FULL_TIME,not_working,0,902,00:00
+4077665,Arendel RIDER,arendeltech+403@gmail.com,FULL_TIME,not_working,0,882,00:00
+4077660,Arendel RIDER,arendeltech+402@gmail.com,FULL_TIME,not_working,0,902,00:00
+4077558,arendeltech RIDER,arendeltech+401@gmail.com,FULL_TIME,not_working,0,902,00:00
+4077551,arendeltech RIDER,arendeltech+440@gmail.com,FULL_TIME,not_working,0,882,00:00
+4076752,arendeltech HANIF AHMED,arendeltech+537@gmail.com,FULL_TIME,not_working,0,902,00:00
+4076751,arendeltech omar bautista,arendeltech+534@gmail.com,FULL_TIME,not_working,0,902,00:00
+4076750,arendeltech yolimar castro,arendeltech+536@gmail.com,FULL_TIME,not_working,0,902,00:00
+4076748,arendeltech xavier guerrero,arendeltech+540@gmail.com,FULL_TIME,not_working,0,902,00:00
+4076747,arendeltech brandon chacon,arendeltech+531@gmail.com,FULL_TIME,not_working,0,902,00:00
+4076746,arendeltech kennedy rivera,arendeltech+538@gmail.com,FULL_TIME,not_working,0,902,00:00
+4076745,arendeltech edwin castro,arendeltech+533@gmail.com,FULL_TIME,not_working,0,902,00:00
+4076744,arendeltech gardenia hernandez,arendeltech+535@gmail.com,FULL_TIME,not_working,0,902,00:00
+4076743,arendeltech dana rojas,arendeltech+539@gmail.com,FULL_TIME,not_working,0,902,00:00
+4076742,arendeltech willder segovia,arendeltech+532@gmail.com,FULL_TIME,not_working,0,902,00:00
+4076741,arendeltech brayan labory,arendeltech+526@gmail.com,FULL_TIME,not_working,0,902,00:00
+4076740,arendeltech,arendeltech+528@gmail.com,FULL_TIME,not_working,0,902,00:00
+4076739,arendeltech RIDER,arendeltech+525@gmail.com,FULL_TIME,not_working,0,902,00:00
+4076738,arendeltech juan navarro,arendeltech+527@gmail.com,FULL_TIME,not_working,0,902,00:00
+4076737,arendeltech juan duran,arendeltech+529@gmail.com,FULL_TIME,not_working,0,902,00:00
+4076736,arendeltech rafael martinez,arendeltech+530@gmail.com,FULL_TIME,not_working,0,902,00:00
+4076735,arendeltech deiby bravo,arendeltech+524@gmail.com,FULL_TIME,not_working,0,902,00:00
+4076731,arendeltech keiber molero,arendeltech+521@gmail.com,FULL_TIME,not_working,0,902,00:00
+4076730,arendeltech Jose urquia,arendeltech+520@gmail.com,FULL_TIME,not_working,0,902,00:00
+4076728,arendeltech Jose Viera,arendeltech+518@gmail.com,FULL_TIME,not_working,0,902,00:00
+4076727,arendeltech Julio Requena,arendeltech+517@gmail.com,FULL_TIME,not_working,0,902,00:00
+4076726,arendeltech Raikel santafe,arendeltech+516@gmail.com,FULL_TIME,not_working,0,902,00:00
+4076725,arendeltech john alzate,arendeltech+515@gmail.com,FULL_TIME,not_working,0,902,00:00
+4076724,arendeltech Omar Hernandez,arendeltech+514@gmail.com,FULL_TIME,not_working,0,902,00:00
+4075582,Arendel RIDER,arendeltech+664@gmail.com,FULL_TIME,not_working,0,902,00:00
+4075504,arendeltech RIDER,arendeltech+737@gmail.com,FULL_TIME,not_working,0,902,00:00
+4074766,Arendel RIDER,arendeltech+441@gmail.com,FULL_TIME,not_working,0,902,00:00
+4074760,Arendel RIDER,arendeltech+437@gmail.com,FULL_TIME,not_working,0,902,00:00
+4074736,Arendel RIDER,arendeltech+439@gmail.com,FULL_TIME,not_working,0,902,00:00
+4074730,Arendel RIDER,arendeltech+438@gmail.com,FULL_TIME,not_working,0,902,00:00
+4074612,migration pre account,vec_3348_24@example.com,FULL_TIME,not_working,0,739,00:00
+4074606,migration pre account,vec_3348_23@example.com,FULL_TIME,not_working,0,739,00:00
+4074600,migration pre account,vec_3348_22@example.com,FULL_TIME,not_working,0,739,00:00
+4074589,Arendel RIDER,arendeltech+436@gmail.com,FULL_TIME,not_working,0,902,00:00
+4074588,migration pre account,vec_3348_21@example.com,FULL_TIME,not_working,0,739,00:00
+4074217,arendeltech RIDER,arendeltech+562@gmail.com,FULL_TIME,not_working,0,902,00:00
+4074210,arendeltech RIDER,arendeltech+557@gmail.com,FULL_TIME,not_working,0,902,00:00
+4074206,Arendel RIDER,arendeltech+434@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4074198,arendeltech RIDER,arendeltech+559@gmail.com,FULL_TIME,not_working,0,902,00:00
+4074191,arendeltech RIDER,arendeltech+560@gmail.com,FULL_TIME,not_working,0,902,00:00
+4074042,Arendel RIDER,arendeltech+660@gmail.com,FULL_TIME,not_working,0,902,00:00
+4073827,Arendel RIDER,arendeltech+661@gmail.com,FULL_TIME,not_working,0,902,00:00
+4073737,migration pre account,prm_3348_5@example.com,FULL_TIME,not_working,0,994,00:00
+4073730,migration pre account,prm_3348_4@example.com,FULL_TIME,not_working,0,994,00:00
+4073723,migration pre account,prm_3348_3@example.com,FULL_TIME,not_working,0,994,00:00
+4073715,migration pre account,prm_3348_2@example.com,FULL_TIME,not_working,0,994,00:00
+4073708,migration pre account,prm_3348_1@example.com,FULL_TIME,not_working,0,994,00:00
+4073701,migration pre account,prm_3348_0@example.com,FULL_TIME,not_working,0,994,00:00
+4073674,arendeltech RIDER,arendeltech+555@gmail.com,FULL_TIME,not_working,0,902,00:00
+4073667,arendeltech RIDER,arendeltech+554@gmail.com,FULL_TIME,not_working,0,902,00:00
+4073661,arendeltech RIDER,arendeltech+544@gmail.com,FULL_TIME,not_working,0,902,00:00
+4073647,arendeltech RIDER,arendeltech+545@gmail.com,FULL_TIME,not_working,0,902,00:00
+4073640,arendeltech RIDER,arendeltech+547@gmail.com,FULL_TIME,not_working,0,902,00:00
+4073633,arendeltech RIDER,arendeltech+549@gmail.com,FULL_TIME,not_working,0,902,00:00
+4073621,arendeltech RIDER,arendeltech+548@gmail.com,FULL_TIME,not_working,0,902,00:00
+4073606,arendeltech RIDER,arendeltech+552@gmail.com,FULL_TIME,not_working,0,902,00:00
+4073599,arendeltech RIDER,arendeltech+553@gmail.com,FULL_TIME,not_working,0,902,00:00
+4072941,arendeltech RIDER,arendeltech+425@gmail.com,FULL_TIME,not_working,0,902,00:00
+4072933,arendeltech RIDER,arendeltech+424@gmail.com,FULL_TIME,not_working,0,902,00:00
+4072925,arendeltech RIDER,arendeltech+542@gmail.com,FULL_TIME,not_working,0,902,00:00
+4072924,arendeltech RIDER,arendeltech+423@gmail.com,FULL_TIME,not_working,0,902,00:00
+4072916,arendeltech RIDER,arendeltech+422@gmail.com,FULL_TIME,not_working,0,902,00:00
+4072906,arendeltech RIDER,arendeltech+541@gmail.com,FULL_TIME,not_working,0,902,00:00
+4072900,arendeltech RIDER,arendeltech+417@gmail.com,FULL_TIME,not_working,0,902,00:00
+4072882,arendeltech RIDER,arendeltech+419@gmail.com,FULL_TIME,not_working,0,902,00:00
+4072874,arendeltech RIDER,arendeltech+420@gmail.com,FULL_TIME,not_working,0,902,00:00
+4072864,arendeltech RIDER,arendeltech+416@gmail.com,FULL_TIME,not_working,0,902,00:00
+4072857,arendeltech RIDER,arendeltech+413@gmail.com,FULL_TIME,not_working,0,902,00:00
+4072829,arendeltech RIDER,arendeltech+412@gmail.com,FULL_TIME,not_working,0,902,00:00
+4072819,arendeltech RIDER,arendeltech+411@gmail.com,FULL_TIME,not_working,0,902,00:00
+4072810,arendeltech RIDER,arendeltech+410@gmail.com,FULL_TIME,not_working,0,902,00:00
+4072802,arendeltech RIDER,arendeltech+409@gmail.com,FULL_TIME,not_working,0,902,00:00
+4072532,arendeltech RIDER,arendeltech+444@gmail.com,FULL_TIME,not_working,0,902,00:00
+4072523,arendeltech RIDER,arendeltech+432@gmail.com,FULL_TIME,not_working,0,902,00:00
+4072404,arendeltech RIDER,arendeltech+431@gmail.com,FULL_TIME,not_working,0,902,00:00
+4072386,arendeltech RIDER,arendeltech+429@gmail.com,FULL_TIME,not_working,0,902,00:00
+4072377,arendeltech RIDER,arendeltech+430@gmail.com,FULL_TIME,not_working,0,902,00:00
+4072359,arendeltech RIDER,arendeltech+427@gmail.com,FULL_TIME,not_working,0,902,00:00
+4072350,arendeltech RIDER,arendeltech+426@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071864,migration pre account,tld_3348_17@example.com,FULL_TIME,not_working,0,1006,00:00
+4071854,migration pre account,tld_3348_16@example.com,FULL_TIME,not_working,0,1006,00:00
+4071845,migration pre account,tld_3348_15@example.com,FULL_TIME,not_working,0,1006,00:00
+4071835,migration pre account,tld_3348_14@example.com,FULL_TIME,not_working,0,1006,00:00
+4071827,migration pre account,tld_3348_13@example.com,FULL_TIME,not_working,0,1006,00:00
+4071819,migration pre account,tld_3348_12@example.com,FULL_TIME,not_working,0,1006,00:00
+4071809,migration pre account,tld_3348_11@example.com,FULL_TIME,not_working,0,1006,00:00
+4071799,migration pre account,tld_3348_10@example.com,FULL_TIME,not_working,0,1006,00:00
+4071792,migration pre account,tld_3348_9@example.com,FULL_TIME,not_working,0,1006,00:00
+4071784,migration pre account,tld_3348_8@example.com,FULL_TIME,not_working,0,1006,00:00
+4071776,migration pre account,tld_3348_7@example.com,FULL_TIME,not_working,0,1006,00:00
+4071766,migration pre account,tld_3348_6@example.com,FULL_TIME,not_working,0,1006,00:00
+4071757,migration pre account,tld_3348_5@example.com,FULL_TIME,not_working,0,1006,00:00
+4071748,migration pre account,tld_3348_4@example.com,FULL_TIME,not_working,0,1006,00:00
+4071738,migration pre account,tld_3348_3@example.com,FULL_TIME,not_working,0,1006,00:00
+4071729,migration pre account,tld_3348_2@example.com,FULL_TIME,not_working,0,1006,00:00
+4071722,arendeltech RIDER,arendeltech+642@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071721,migration pre account,tld_3348_1@example.com,FULL_TIME,not_working,0,1006,00:00
+4071713,arendeltech RIDER,arendeltech+644@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071712,migration pre account,tld_3348_0@example.com,FULL_TIME,not_working,0,1006,00:00
+4071704,arendeltech RIDER,arendeltech+643@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071688,arendeltech RIDER,arendeltech+647@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071680,arendeltech RIDER,arendeltech+646@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071671,arendeltech RIDER,arendeltech+648@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071662,arendeltech RIDER,arendeltech+645@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071645,arendeltech RIDER,arendeltech+671@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071628,arendeltech RIDER,arendeltech+673@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071608,arendeltech RIDER,arendeltech+672@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071599,arendeltech RIDER,arendeltech+678@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071582,arendeltech RIDER,arendeltech+675@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071573,arendeltech RIDER,arendeltech+677@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071570,Arendel RIDER,arendeltech+406@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071565,arendeltech RIDER,arendeltech+679@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071557,arendeltech RIDER,arendeltech+680@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071548,arendeltech RIDER,arendeltech+681@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071541,arendeltech RIDER,arendeltech+405@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071453,arendeltech RIDER,arendeltech+641@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071442,Arendel RIDER,arendeltech+669@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071432,arendeltech RIDER,arendeltech+637@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071425,arendeltech RIDER,arendeltech+636@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071424,Arendel RIDER,arendeltech+668@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071407,arendeltech RIDER,arendeltech+638@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071389,arendeltech RIDER,arendeltech+631@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071380,arendeltech RIDER,arendeltech+635@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071362,arendeltech RIDER,arendeltech+634@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071352,arendeltech RIDER,arendeltech+632@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071335,arendeltech RIDER,arendeltech+630@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071314,arendeltech RIDER,arendeltech+624@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071305,arendeltech RIDER,arendeltech+626@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071296,arendeltech RIDER,arendeltech+625@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071287,arendeltech RIDER,arendeltech+628@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071278,arendeltech RIDER,arendeltech+629@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071267,arendeltech RIDER,arendeltech+621@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071255,arendeltech RIDER,arendeltech+623@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071239,arendeltech RIDER,arendeltech+613@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071230,arendeltech RIDER,arendeltech+611@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071219,arendeltech RIDER,arendeltech+612@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071210,arendeltech RIDER,arendeltech+615@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071194,arendeltech RIDER,arendeltech+614@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071186,arendeltech RIDER,arendeltech+617@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071174,arendeltech RIDER,arendeltech+619@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071165,arendeltech RIDER,arendeltech+616@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071156,arendeltech RIDER,arendeltech+620@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071149,arendeltech RIDER,arendeltech+605@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071131,arendeltech RIDER,arendeltech+602@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071112,arendeltech RIDER,arendeltech+601@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071092,arendeltech RIDER,arendeltech+608@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071082,arendeltech RIDER,arendeltech+607@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071073,arendeltech RIDER,arendeltech+603@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071064,arendeltech RIDER,arendeltech+610@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071046,arendeltech RIDER,arendeltech+597@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071016,arendeltech RIDER,arendeltech+599@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071011,migration pre account,bru_3348_2@example.com,FULL_TIME,not_working,0,734,00:00
+4071007,arendeltech RIDER,arendeltech+595@gmail.com,FULL_TIME,not_working,0,902,00:00
+4071002,migration pre account,bru_3348_1@example.com,FULL_TIME,not_working,0,734,00:00
+4070998,arendeltech RIDER,arendeltech+594@gmail.com,FULL_TIME,not_working,0,902,00:00
+4070993,migration pre account,bru_3348_0@example.com,FULL_TIME,not_working,0,734,00:00
+4070988,arendeltech RIDER,arendeltech+593@gmail.com,FULL_TIME,not_working,0,902,00:00
+4070979,arendeltech RIDER,arendeltech+592@gmail.com,FULL_TIME,not_working,0,902,00:00
+4070970,arendeltech RIDER,arendeltech+591@gmail.com,FULL_TIME,not_working,0,902,00:00
+4070407,Arendel RIDER,arendeltech+590@gmail.com,FULL_TIME,not_working,0,749,00:00
+4070399,Arendel RIDER,arendeltech+584@gmail.com,FULL_TIME,not_working,0,992,00:00
+4070390,Arendel RIDER,arendeltech+583@gmail.com,FULL_TIME,not_working,0,992,00:00
+4070382,Arendel RIDER,arendeltech+582@gmail.com,FULL_TIME,not_working,0,992,00:00
+4070374,Arendel RIDER,arendeltech+581@gmail.com,FULL_TIME,not_working,0,992,00:00
+4070366,Arendel RIDER,arendeltech+580@gmail.com,FULL_TIME,not_working,0,992,00:00
+4070357,Arendel RIDER,arendeltech+579@gmail.com,FULL_TIME,not_working,0,992,00:00
+4070348,Arendel RIDER,arendeltech+568@gmail.com,FULL_TIME,not_working,0,749,00:00
+4070340,Arendel RIDER,arendeltech+566@gmail.com,FULL_TIME,not_working,0,749,00:00
+4070337,arendeltech RIDER,arendeltech+392@gmail.com,FULL_TIME,not_working,0,1014,00:00
+4070333,migration pre account,rar_3348_29@example.com,FULL_TIME,not_working,0,1014,00:00
+4070332,arendeltech RIDER,arendeltech+567@gmail.com,FULL_TIME,not_working,0,749,00:00
+4070324,migration pre account,rar_3348_28@example.com,FULL_TIME,not_working,0,1014,00:00
+4070322,arendeltech RIDER,arendeltech+565@gmail.com,FULL_TIME,not_working,0,749,00:00
+4070314,Arendel RIDER,arendeltech+564@gmail.com,FULL_TIME,not_working,0,749,00:00
+4070311,migration pre account,rar_3348_27@example.com,FULL_TIME,not_working,0,1014,00:00
+4070302,migration pre account,rar_3348_26@example.com,FULL_TIME,not_working,0,1014,00:00
+4070295,Arendel RIDER,arendeltech+577@gmail.com,FULL_TIME,not_working,0,734,00:00
+4070293,migration pre account,rar_3348_25@example.com,FULL_TIME,not_working,0,1014,00:00
+4070287,arendeltech RIDER,arendeltech+576@gmail.com,FULL_TIME,not_working,0,734,00:00
+4070284,migration pre account,rar_3348_24@example.com,FULL_TIME,not_working,0,1014,00:00
+4070278,arendeltech RIDER,arendeltech+575@gmail.com,FULL_TIME,not_working,0,734,00:00
+4070275,migration pre account,rar_3348_23@example.com,FULL_TIME,not_working,0,1014,00:00
+4070269,arendeltech RIDER,arendeltech+574@gmail.com,FULL_TIME,not_working,0,734,00:00
+4070266,migration pre account,rar_3348_22@example.com,FULL_TIME,not_working,0,1014,00:00
+4070265,Arendel RIDER,arendeltech+666@gmail.com,FULL_TIME,not_working,0,902,00:00
+4070260,arendeltech RIDER,arendeltech+573@gmail.com,FULL_TIME,not_working,0,734,00:00
+4070258,migration pre account,rar_3348_21@example.com,FULL_TIME,not_working,0,1014,00:00
+4070252,arendeltech RIDER,arendeltech+572@gmail.com,FULL_TIME,not_working,0,734,00:00
+4070250,migration pre account,rar_3348_20@example.com,FULL_TIME,not_working,0,1014,00:00
+4070242,arendeltech RIDER,arendeltech+571@gmail.com,FULL_TIME,not_working,0,734,00:00
+4070241,migration pre account,rar_3348_19@example.com,FULL_TIME,not_working,0,1014,00:00
+4070235,arendeltech RIDER,arendeltech+570@gmail.com,FULL_TIME,not_working,0,734,00:00
+4070233,migration pre account,rar_3348_18@example.com,FULL_TIME,not_working,0,1014,00:00
+4070225,migration pre account,rar_3348_17@example.com,FULL_TIME,not_working,0,1014,00:00
+4070219,Arendel RIDER,arendeltech+589@gmail.com,FULL_TIME,not_working,0,1026,00:00
+4070217,migration pre account,rar_3348_16@example.com,FULL_TIME,not_working,0,1014,00:00
+4070209,migration pre account,rar_3348_15@example.com,FULL_TIME,not_working,0,1014,00:00
+4070202,migration pre account,rar_3348_14@example.com,FULL_TIME,not_working,0,1014,00:00
+4070200,Arendel RIDER,arendeltech+587@gmail.com,FULL_TIME,not_working,0,1026,00:00
+4070193,migration pre account,rar_3348_13@example.com,FULL_TIME,not_working,0,1014,00:00
+4070191,Arendel RIDER,arendeltech+586@gmail.com,FULL_TIME,not_working,0,1026,00:00
+4070183,migration pre account,rar_3348_12@example.com,FULL_TIME,not_working,0,1014,00:00
+4070182,Arendel RIDER,arendeltech+585@gmail.com,FULL_TIME,not_working,0,1026,00:00
+4070174,migration pre account,rar_3348_11@example.com,FULL_TIME,not_working,0,1014,00:00
+4070172,arendeltech RIDER,arendeltech+563@gmail.com,FULL_TIME,not_working,0,902,00:00
+4070165,migration pre account,rar_3348_10@example.com,FULL_TIME,not_working,0,1014,00:00
+4070156,migration pre account,rar_3348_9@example.com,FULL_TIME,not_working,0,1014,00:00
+4070147,migration pre account,rar_3348_8@example.com,FULL_TIME,not_working,0,1014,00:00
+4070137,migration pre account,rar_3348_7@example.com,FULL_TIME,not_working,0,1014,00:00
+4070128,migration pre account,rar_3348_6@example.com,FULL_TIME,not_working,0,1014,00:00
+4070119,migration pre account,rar_3348_5@example.com,FULL_TIME,not_working,0,1014,00:00
+4070110,migration pre account,rar_3348_4@example.com,FULL_TIME,not_working,0,1014,00:00
+4070101,migration pre account,rar_3348_3@example.com,FULL_TIME,not_working,0,1014,00:00
+4070092,migration pre account,rar_3348_2@example.com,FULL_TIME,not_working,0,1014,00:00
+4070083,migration pre account,rar_3348_1@example.com,FULL_TIME,not_working,0,1014,00:00
+4070074,migration pre account,rar_3348_0@example.com,FULL_TIME,not_working,0,1014,00:00
+4069741,arendel+665,arendeltech+665@gmail.com,FULL_TIME,not_working,0,902,00:00
+4069711,Arendel RIDER,arendeltech+667@gmail.com,FULL_TIME,not_working,0,902,00:00
+4069493,Arendel RIDER,arendeltech+657@gmail.com,FULL_TIME,not_working,0,902,00:00
+4069466,Arendel RIDER,arendeltech+656@gmail.com,FULL_TIME,not_working,0,902,00:00
+4069459,Arendel RIDER,arendeltech+655@gmail.com,FULL_TIME,not_working,0,902,00:00
+4069445,Arendel RIDER,arendeltech+654@gmail.com,FULL_TIME,not_working,0,902,00:00
+4069438,Arendel RIDER,arendeltech+653@gmail.com,FULL_TIME,not_working,0,902,00:00
+4069433,Arendel RIDER,arendeltech+652@gmail.com,FULL_TIME,not_working,0,902,00:00
+4068518,migration pre account,mad_3348_17@example.com,FULL_TIME,not_working,0,902,00:00
+4068508,migration pre account,mad_3348_15@example.com,FULL_TIME,not_working,0,902,00:00
+4068493,migration pre account,mad_3348_12@example.com,FULL_TIME,not_working,0,902,00:00
+4068484,Arendel RIDER,arendeltech+650@gmail.com,FULL_TIME,not_working,0,902,00:00
+4068483,migration pre account,mad_3348_11@example.com,FULL_TIME,not_working,0,902,00:00
+4068478,migration pre account,mad_3348_10@example.com,FULL_TIME,not_working,0,902,00:00
+4068468,migration pre account,mad_3348_8@example.com,FULL_TIME,not_working,0,902,00:00
+4068463,migration pre account,mad_3348_7@example.com,FULL_TIME,not_working,0,902,00:00
+4068458,migration pre account,mad_3348_6@example.com,FULL_TIME,not_working,0,902,00:00
+4068453,migration pre account,mad_3348_5@example.com,FULL_TIME,not_working,0,902,00:00
+4068448,migration pre account,mad_3348_4@example.com,FULL_TIME,not_working,0,902,00:00
+4068443,migration pre account,mad_3348_3@example.com,FULL_TIME,not_working,0,902,00:00
+4068438,migration pre account,mad_3348_2@example.com,FULL_TIME,not_working,0,902,00:00
+4068433,migration pre account,mad_3348_1@example.com,FULL_TIME,not_working,0,902,00:00
+4068428,migration pre account,mad_3348_0@example.com,FULL_TIME,not_working,0,902,00:00
+4068367,Arendel RIDER,arendeltech+651@gmail.com,FULL_TIME,not_working,0,902,00:00
+4068249,migration pre account,vec_3348_20@example.com,FULL_TIME,not_working,0,739,00:00
+4068244,migration pre account,vec_3348_19@example.com,FULL_TIME,not_working,0,739,00:00
+4068239,migration pre account,vec_3348_18@example.com,FULL_TIME,not_working,0,739,00:00
+4068234,migration pre account,vec_3348_17@example.com,FULL_TIME,not_working,0,739,00:00
+4068228,migration pre account,vec_3348_16@example.com,FULL_TIME,not_working,0,739,00:00
+4068223,migration pre account,vec_3348_15@example.com,FULL_TIME,not_working,0,739,00:00
+4068218,migration pre account,vec_3348_14@example.com,FULL_TIME,not_working,0,739,00:00
+4068213,migration pre account,vec_3348_13@example.com,FULL_TIME,not_working,0,739,00:00
+4068208,migration pre account,vec_3348_12@example.com,FULL_TIME,not_working,0,739,00:00
+4068203,migration pre account,vec_3348_11@example.com,FULL_TIME,not_working,0,739,00:00
+4068198,migration pre account,vec_3348_10@example.com,FULL_TIME,not_working,0,739,00:00
+4068193,migration pre account,vec_3348_9@example.com,FULL_TIME,not_working,0,739,00:00
+4068188,migration pre account,vec_3348_8@example.com,FULL_TIME,not_working,0,739,00:00
+4068183,migration pre account,vec_3348_7@example.com,FULL_TIME,not_working,0,739,00:00
+4068179,migration pre account,vec_3348_6@example.com,FULL_TIME,not_working,0,739,00:00
+4068174,migration pre account,vec_3348_5@example.com,FULL_TIME,not_working,0,739,00:00
+4068169,migration pre account,vec_3348_4@example.com,FULL_TIME,not_working,0,739,00:00
+4068164,migration pre account,vec_3348_3@example.com,FULL_TIME,not_working,0,739,00:00
+4068159,migration pre account,vec_3348_2@example.com,FULL_TIME,not_working,0,739,00:00
+4068154,migration pre account,vec_3348_1@example.com,FULL_TIME,not_working,0,739,00:00
+4068149,migration pre account,vec_3348_0@example.com,FULL_TIME,not_working,0,739,00:00
+4067854,arendeltech RIDER,arendeltech+511@gmail.com,FULL_TIME,not_working,0,902,00:00
+4067662,migration pre account,vec_3348_29@example.com,FULL_TIME,not_working,0,739,00:00
+4067657,migration pre account,vec_3348_28@example.com,FULL_TIME,not_working,0,739,00:00
+4067652,migration pre account,vec_3348_27@example.com,FULL_TIME,not_working,0,739,00:00
+4067647,migration pre account,vec_3348_26@example.com,FULL_TIME,not_working,0,739,00:00
+4067642,migration pre account,vec_3348_25@example.com,FULL_TIME,not_working,0,739,00:00
+4067637,Arendel RIDER,arendeltech+662@gmail.com,FULL_TIME,not_working,0,902,00:00
+4067554,migration pre account,som_3348_29@example.com,FULL_TIME,not_working,0,882,00:00
+4067549,migration pre account,som_3348_28@example.com,FULL_TIME,not_working,0,882,00:00
+4067544,migration pre account,som_3348_27@example.com,FULL_TIME,not_working,0,882,00:00
+4067539,migration pre account,som_3348_26@example.com,FULL_TIME,not_working,0,882,00:00
+4067534,migration pre account,som_3348_25@example.com,FULL_TIME,not_working,0,882,00:00
+4067530,migration pre account,som_3348_24@example.com,FULL_TIME,not_working,0,882,00:00
+4067525,migration pre account,som_3348_23@example.com,FULL_TIME,not_working,0,882,00:00
+4067520,migration pre account,som_3348_22@example.com,FULL_TIME,not_working,0,882,00:00
+4067515,migration pre account,som_3348_21@example.com,FULL_TIME,not_working,0,882,00:00
+4067510,migration pre account,som_3348_20@example.com,FULL_TIME,not_working,0,882,00:00
+4067505,migration pre account,som_3348_19@example.com,FULL_TIME,not_working,0,882,00:00
+4067500,migration pre account,som_3348_18@example.com,FULL_TIME,not_working,0,882,00:00
+4067495,migration pre account,som_3348_17@example.com,FULL_TIME,not_working,0,882,00:00
+4067490,migration pre account,som_3348_16@example.com,FULL_TIME,not_working,0,882,00:00
+4067484,migration pre account,som_3348_15@example.com,FULL_TIME,not_working,0,882,00:00
+4067479,migration pre account,som_3348_14@example.com,FULL_TIME,not_working,0,882,00:00
+4067474,migration pre account,som_3348_13@example.com,FULL_TIME,not_working,0,882,00:00
+4067469,migration pre account,som_3348_12@example.com,FULL_TIME,not_working,0,882,00:00
+4067464,migration pre account,som_3348_11@example.com,FULL_TIME,not_working,0,882,00:00
+4067459,migration pre account,som_3348_10@example.com,FULL_TIME,not_working,0,882,00:00
+4067454,migration pre account,som_3348_9@example.com,FULL_TIME,not_working,0,882,00:00
+4067450,Arendel RIDER,arendeltech+663@gmail.com,FULL_TIME,not_working,0,902,00:00
+4067449,migration pre account,som_3348_8@example.com,FULL_TIME,not_working,0,882,00:00
+4067444,migration pre account,som_3348_7@example.com,FULL_TIME,not_working,0,882,00:00
+4067440,migration pre account,som_3348_6@example.com,FULL_TIME,not_working,0,882,00:00
+4067435,migration pre account,som_3348_5@example.com,FULL_TIME,not_working,0,882,00:00
+4067430,migration pre account,som_3348_4@example.com,FULL_TIME,not_working,0,882,00:00
+4067425,Nombre Apellido,som_3348_3@example.com,FULL_TIME,not_working,0,882,00:00
+4067420,migration pre account,som_3348_2@example.com,FULL_TIME,not_working,0,882,00:00
+4067416,migration pre account,som_3348_1@example.com,FULL_TIME,not_working,0,882,00:00
+4067411,migration pre account,som_3348_0@example.com,FULL_TIME,not_working,0,882,00:00
+4067209,Arendel RIDER,arendeltech+510@gmail.com,FULL_TIME,not_working,0,902,00:00
+4067063,Arendel RIDER,arendeltech+506@gmail.com,FULL_TIME,not_working,0,902,00:00
+4067052,Arendel RIDER,arendeltech+508@gmail.com,FULL_TIME,not_working,0,902,00:00
+4066804,Arendel RIDER,arendeltech+435@gmail.com,FULL_TIME,not_working,0,902,00:00
+4107855,Arendel RIDER,arendeltech+202@gmail.com,FULL_TIME,late,0,1014,14:30
+4114337,arendeltech RIDER,arendeltech+160@gmail.com,FULL_TIME,working,0,1014,15:00
+4111722,arendeltech RIDER,arendeltech+238@gmail.com,FULL_TIME,working,0,882,15:00
+4113989,Arendel 168,arendeltech+168@gmail.com,FULL_TIME,working,0,882,15:30
+4193025,Arendel 10951,arendeltech+10951@gmail.com,FULL_TIME,working,0,739,15:00
+4197484,Arendel 10966,arendeltech+10966@gmail.com,FULL_TIME,working,0,739,16:00
+4067058,Arendel RIDER,arendeltech+507@gmail.com,FULL_TIME,late,0,902,15:00
+4068473,migration pre account,mad_3348_9@example.com,FULL_TIME,late,0,902,13:00
+4068498,migration pre account,mad_3348_13@example.com,FULL_TIME,late,0,902,15:00
+4068503,migration pre account,mad_3348_14@example.com,FULL_TIME,late,0,902,15:00
+4068513,migration pre account,mad_3348_16@example.com,FULL_TIME,late,0,902,15:00
+4071770,arendeltech RIDER,arendeltech+682@gmail.com,FULL_TIME,working,0,902,15:30
+4072368,arendeltech RIDER,arendeltech+428@gmail.com,FULL_TIME,working,0,902,15:00
+4072785,arendeltech RIDER,arendeltech+407@gmail.com,FULL_TIME,late,0,902,16:00
+4072891,arendeltech RIDER,arendeltech+418@gmail.com,FULL_TIME,late,0,902,15:00
+4076722,arendeltech Yener vivas,arendeltech+512@gmail.com,FULL_TIME,working,0,902,15:00
+4076723,arendeltech RIDER,arendeltech+513@gmail.com,FULL_TIME,working,0,902,13:30
+4076733,arendeltech samuel quevedo,arendeltech+522@gmail.com,FULL_TIME,late,0,902,15:30
+4081412,arendeltech RIDER,arendeltech+404@gmail.com,FULL_TIME,late,0,902,16:00
+4086760,Arendel RIDER,arendeltech+494@gmail.com,FULL_TIME,working,0,902,16:00
+4097464,Arendel RIDER,arendeltech+279@gmail.com,FULL_TIME,late,0,902,14:30
+4120283,Arendel 55,arendeltech+55@gmail.com,FULL_TIME,break,0,902,16:00
+4128604,Arendel 12,arendeltech+12@gmail.com,FULL_TIME,late,0,902,12:30
+4163897,Arendel 10869,arendeltech+10869@gmail.com,FULL_TIME,break,0,902,14:30
+4166468,Arendel 10888,arendeltech+10888@gmail.com,FULL_TIME,working,0,902,16:00
+4170258,Arendel 10902,arendeltech+10902@gmail.com,FULL_TIME,working,0,902,16:00
+4198796,Arendel 10972,arendeltech+10972@gmail.com,FULL_TIME,late,0,902,15:30
+4218882,Arendel 11087,arendeltech+11087@gmail.com,FULL_TIME,working,0,902,14:00
+4247675,Arendel 11136,arendeltech+11136@gmail.com,FULL_TIME,working,0,902,14:30
+4266508,Arendel 11209,arendeltech+11209@gmail.com,FULL_TIME,break,0,902,16:00
+4270501,Arendel 11213,arendeltech+11213@gmail.com,FULL_TIME,break,0,902,16:00
+4274843,Arendel 11219,arendeltech+11219@gmail.com,FULL_TIME,break,0,902,16:00
+4277517,Arendel 11231,arendeltech+11231@gmail.com,FULL_TIME,ending,0,902,14:30
+4303103,Arendel 11298,arendeltech+11298@gmail.com,FULL_TIME,working,0,902,14:00

@@ -71,29 +71,78 @@ export default function AttendanceList() {
       {open.type === CommonModalType.CHECKLOGFORM && <AttendanceFormModal onSuccess={onSuccessCreate} />}
       {open.type === CommonModalType.INFO && <InfoModal
         title={t('attendance.requestUpdates')}
-        htmlDescription={<Box>
-          <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-            {open.args?.item?.metadata?.requestUpdates?.map((e: any, i: number) => <ListItem key={i}>
+        centerBtn
 
-              <ListItemText primary={e.reason} secondary={
-                <React.Fragment>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    sx={{ color: 'text.primary', display: 'inline' }}
-                  >
-                    {e.employee?.fullName}
+        htmlDescription={<Box display={'flex'} flexDirection={'column'} gap={3}>
+          <Box style={{ display: 'flex', gap: 1 }} flexDirection={'column'}>
+            <CustomChip small background={open.args?.item?.metadata?.requestUpdates[0].data?.status} label={open.args?.item?.metadata?.requestUpdates[0].data?.status} />
+            <Typography variant='body1' sx={{ fontSize: 16, color: "#48494C" }}>
+              Este registro fue actualizado y validado correctamente.
+            </Typography>
+          </Box>
+          <Box style={{ display: 'flex', gap: 1 }} flexDirection={'column'}>
+            <Typography variant='body1' sx={{ fontSize: 16, color: "#1C1B1D" }}>
+              Cambio realizado
+            </Typography>
+            <ul style={{ marginLeft: -12, margin: 2 }} >
+              <li >
+                <Box style={{ display: 'flex', gap: 2 }}>
+                  <Typography variant='body1' sx={{ fontSize: 12, color: "#1C1B1D" }}>
+                    Fecha y hora anterior:
                   </Typography>
-                  {""+format_date(e.createdAt)} {',  '}
-                  <CustomChip small background={e.status} label={e.previousStatus} />
-                </React.Fragment>
-              }></ListItemText>
+                  <Typography variant='body1' sx={{ fontSize: 12, color: "#48494C", textTransform: 'capitalize' }}>
+                    {format_date(open.args?.item?.metadata?.requestUpdates[0].previousDate)}
+                  </Typography>
+                </Box>
+              </li>
+
+              <li >
+                <Box style={{ display: 'flex', gap: 2 }}>
+                  <Typography variant='body1' sx={{ fontSize: 12, color: "#1C1B1D" }}>
+                    Fecha y hora actual:
+                  </Typography>
+                  <Typography variant='body1' sx={{ fontSize: 12, color: "#48494C", textTransform: 'capitalize' }}>
+                    {format_date(open.args?.item?.metadata?.requestUpdates[0].createdAt)}
+                  </Typography>
+                </Box>
+              </li>
+            </ul>
+          </Box>
+          <Box style={{ display: 'flex', gap: 1 }} flexDirection={'column'}>
+            <Typography variant='body1' sx={{ fontSize: 16, color: "#1C1B1D" }}>
+              Motivo
+            </Typography>
+            <Typography variant='body1' sx={{ fontSize: 12, color: "#48494C" }}>
+              {open.args?.item?.metadata?.requestUpdates[0].reason}
+            </Typography>
+          </Box>
+
+          <Box style={{ display: 'flex', gap: 1 }} flexDirection={'column'}>
+            <Typography variant='body1' sx={{ fontSize: 16, color: "#1C1B1D" }}>
+              Validación
+            </Typography>
+            <Box style={{ display: 'flex', gap: 2 }}>
+              <Typography variant='body1' sx={{ fontSize: 12, color: "#1C1B1D" }}>
+                Solicitud enviada por:
+              </Typography>
+              <Typography variant='body1' sx={{ fontSize: 12, color: "#48494C" }}>
+                {open.args?.item?.metadata?.requestUpdates[0].employee?.fullName}
+              </Typography>
+            </Box>
+            <Box style={{ display: 'flex', gap: 2 }}>
+              <Typography variant='body1' sx={{ fontSize: 12, color: "#1C1B1D" }}>
+                Fecha de validación:
+              </Typography>
+              <Typography variant='body1' sx={{ fontSize: 12, color: "#48494C" }}>
+                {format_date(open.args?.item?.metadata?.requestUpdates[0].createdAt)}
+              </Typography>
+            </Box>
+          </Box>
 
 
-            </ListItem>)}
-          </List>
+
         </Box>}
-        cancelBtn
+        cancelBtn={false}
       />}
 
     </Container>

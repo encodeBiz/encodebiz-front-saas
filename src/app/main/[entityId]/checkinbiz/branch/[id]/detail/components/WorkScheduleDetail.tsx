@@ -23,6 +23,9 @@ import {
     CheckCircle,
     Cancel,
     Today,
+    NotificationsOutlined,
+    StopCircleOutlined,
+    PlayCircleOutline,
 } from '@mui/icons-material';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
@@ -104,8 +107,7 @@ const DayScheduleItem: React.FC<{
             sx={{
                 borderRadius: 1,
                 mb: compact ? 0.5 : 1,
-                bgcolor: 'background.default',
-                '&:hover': { bgcolor: 'action.hover' }
+                bgcolor: 'background.default'
             }}
         >
             <ListItemIcon sx={{ minWidth: 40 }}>
@@ -136,7 +138,7 @@ const DayScheduleItem: React.FC<{
                             alignItems={compact ? "center" : "flex-start"}
                         >
                             <Chip
-                                icon={<Schedule fontSize="small" />}
+                                icon={<PlayCircleOutline fontSize="small" />}
                                 label={`Inicio: ${formatTime(schedule.start)}`}
                                 size="small"
                                 variant="outlined"
@@ -147,7 +149,7 @@ const DayScheduleItem: React.FC<{
                                 }}
                             />
                             <Chip
-                                icon={<Schedule fontSize="small" />}
+                                icon={<StopCircleOutlined fontSize="small" />}
                                 label={`Fin: ${formatTime(schedule.end)}`}
                                 size="small"
                                 variant="outlined"
@@ -240,27 +242,18 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
             <Box sx={{ mb: compact ? 2 : 3 }}>
                 <Stack
                     direction="row"
-                    justifyContent="space-between"
+                    justifyContent="flex-end"
                     alignItems="center"
                     spacing={2}
                 >
-                    <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
-                        {title}
-                    </Typography>
+                
                     <Box display={'flex'} alignItems={'center'} gap={2}>
                         <DetailText help={branch?.advance?.enableDayTimeRange ? t('sucursal.dayTimeRangeAlertMessageE') : t('sucursal.dayTimeRangeAlertMessageD')} label={branch?.advance?.enableDayTimeRange ? t('sucursal.dayTimeRangeEnableText') : t('sucursal.dayTimeRangeDisabledText')} />
-                        {branch.advance?.workScheduleEnable && <Chip
-                            icon={<Today />}
-                            label={`${enabledDaysCount} días`}
-                            color="primary"
-                            variant="outlined"
-                            size={compact ? "small" : "medium"}
-                        />}
+                        
                     </Box>
                 </Stack>
 
-                <Divider sx={{ mt: compact ? 1 : 2 }} />
-            </Box>
+             </Box>
             {!branch.advance?.workScheduleEnable && <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'} alignItems={'flex-start'}>
                 <DetailText orientation="row" label={t('core.label.dayTimeRange')} value={((branch?.advance?.startTimeWorkingDay?.hour as number) < 10 ? '0' + branch?.advance?.startTimeWorkingDay?.hour : branch?.advance?.startTimeWorkingDay?.hour) + ':' + ((branch?.advance?.startTimeWorkingDay?.minute as number) < 10 ? '0' + branch?.advance?.startTimeWorkingDay?.minute : branch?.advance?.startTimeWorkingDay?.minute) + ' - ' + ((branch?.advance?.endTimeWorkingDay?.hour as number) < 10 ? '0' + branch?.advance?.endTimeWorkingDay?.hour : branch?.advance?.endTimeWorkingDay?.hour) + ':' + ((branch?.advance?.endTimeWorkingDay?.minute as number) < 10 ? '0' + branch?.advance?.endTimeWorkingDay?.minute : branch?.advance?.endTimeWorkingDay?.minute)} />
             </Box>}
@@ -294,7 +287,7 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
                             <Grid  >
                                 {notifyBeforeMinutes && (
                                     <Stack direction="row" spacing={1} alignItems="center">
-                                        <Notifications color="primary" />
+                                        <NotificationsOutlined color="primary" />
                                         <Box>
                                             <Typography variant="caption" color="text.secondary">
                                                 Notificar antes
@@ -344,31 +337,7 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
                     </Alert>
                 )}
 
-                {/* Sección de días deshabilitados */}
-                {showEmptyDays && disabledDays.length > 0 && !compact && (
-                    <>
-                        <Divider sx={{ my: 2 }} />
-                        <Typography
-                            variant="body2"
-                            color="text.secondary"
-                            gutterBottom
-                        >
-                            Días no laborables
-                        </Typography>
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                            {disabledDays.map(day => (
-                                <Chip
-                                    key={day}
-                                    label={day}
-                                    size="small"
-                                    variant="outlined"
-                                    color="default"
-                                    icon={<Cancel fontSize="small" />}
-                                />
-                            ))}
-                        </Box>
-                    </>
-                )}
+                
             </>}
 
         </Paper>

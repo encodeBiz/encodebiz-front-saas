@@ -53,7 +53,7 @@ const initialValues: WorkSchedule = {
 
 const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
     afterTextField: string,
-
+    onHandleChange?: (value: any) => void,
     enableDayTimeRange: boolean
     workScheduleEnable: boolean
 
@@ -61,7 +61,7 @@ const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
     ...props
 }) => {
 
-        const { workScheduleEnable, enableDayTimeRange } = props
+        const { workScheduleEnable, enableDayTimeRange, onHandleChange } = props
         const [field, meta, helper] = useField(props.name as string);
         const { touched, error } = meta
         const [fieldValue, setFieldValue] = useState<WorkSchedule>(field.value ?? initialValues)
@@ -69,6 +69,7 @@ const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
         const t = useTranslations()
         useEffect(() => {
             helper.setValue(fieldValue)
+            if (typeof onHandleChange === 'function') onHandleChange(fieldValue)
         }, [fieldValue])
 
         useEffect(() => {
@@ -80,7 +81,7 @@ const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
 
         return (<LocalizationProvider dateAdapter={AdapterDayjs} localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}><Box display={'flex'} justifyItems={'center'} alignItems={'center'} >
             <Box alignItems="flex-start" gap={2} justifyContent={'space-evenly'} display={'flex'} flexDirection={'column'} width={'100%'}>
-                
+
                 {DAYS.map((day) => (
                     <Box key={day.key} sx={{ mb: 3 }} width={'100%'}>
                         <Grid spacing={2} alignItems="center" gap={2} justifyContent={'space-between'} display={'flex'} flexDirection={'row'} width={'100%'}>

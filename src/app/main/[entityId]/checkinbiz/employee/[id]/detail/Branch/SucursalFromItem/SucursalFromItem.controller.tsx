@@ -35,14 +35,17 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
   const [jobName, setJobName] = useState(item?.job?.job ?? '')
   const [metadata, setMetadata] = useState(objectToArray(item.metadata ?? {}) ?? [])
   const [enableDayTimeRange, setEnableDayTimeRange] = useState(false)
-
+  const [workSchedule, setWorkSchedule] = useState()
 
   const [initialValues, setInitialValues] = useState<Partial<any>>({
     job: item?.job?.job,
     price: item?.job?.price ?? 0,
     responsibility: item?.responsibility ?? '',
     active: item?.active ?? 1,
-    metadata: objectToArray(item?.metadata ?? {}) ?? []
+    metadata: objectToArray(item?.metadata ?? {}) ?? [],
+    enableDayTimeRange: item.workScheduleEnable??false,
+     workSchedule: item.workSchedule
+
   });
 
 
@@ -70,8 +73,8 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
           ...ArrayToObject(values.metadata as any),
         },
         entityId: currentEntity?.entity.id,
-        workSchedule: values.workSchedule,
-        enableDayTimeRange: values.enableDayTimeRange
+        workSchedule: values.workSchedule??{},
+        workScheduleEnable: values.enableDayTimeRange??false
       }
       if (typeof data.id === 'number') {
         delete data.id
@@ -160,15 +163,15 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
       required: true,
       component: TextInput,
     },
-
     {
       isDivider: true,
       label: t('core.label.dayTimeRange'),
-      hit: t('core.label.dayTimeRangeDesc'),
+      hit: t('core.label.dayTimeRangeDescEmployee'),
     },
+
     {
       name: 'enableDayTimeRange',
-      label: enableDayTimeRange ? t('sucursal.dayTimeRangeEnableText') : t('sucursal.dayTimeRangeDisabledText'),
+      label: enableDayTimeRange ? t('core.label.workScheduleEnable') : t('core.label.workScheduleDisabled'),
       component: ToggleInput,
       required: true,
       extraProps: {
@@ -184,11 +187,15 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
       required: true,
       fullWidth: true,
       extraProps: {
-        enableDayTimeRange,
-        workScheduleEnable:true
+        enableDayTimeRange: !enableDayTimeRange,
+        workScheduleEnable: true,
+        hide: !enableDayTimeRange,
+        onHandleChange: setWorkSchedule
       },
 
     },
+
+
 
     {
       isDivider: true,
@@ -203,9 +210,7 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
       fullWidth: true,
       component: DynamicKeyValueInput,
       extraProps: {
-        onHandleChange: (data: any) => {
-          setMetadata(data)
-        },
+        onHandleChange: setMetadata
       },
     }
 
@@ -215,7 +220,7 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
     if (jobName) {
       const itemData = jobList.find(e => e.job?.toLowerCase() === jobName?.toLowerCase())
       if (itemData) {
-        setInitialValues({ price: itemData?.price, responsibility: typeOwner, job: jobName, metadata })
+        setInitialValues({ price: itemData?.price, responsibility: typeOwner, job: jobName, metadata, workSchedule, enableDayTimeRange })
       }
     }
   }, [jobName])
