@@ -98,7 +98,8 @@ export const EmployeeDetailProvider = ({ children, employee }: { children: React
                 const branch = await fetchSucursal(e.scope.entityId, (e.scope as any).branchId)
                 return { ...e, branch }
             }))
-
+            console.log(items);
+            
             setEntityResponsibilityListList(items)
             if (data.length > 0) setResponsabilityTotal(data[0].totalItems as number)
 

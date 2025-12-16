@@ -84,7 +84,7 @@ export default function AttendanceList() {
             <Typography variant='body1' sx={{ fontSize: 16, color: "#1C1B1D" }}>
               Cambio realizado
             </Typography>
-            <ul style={{ marginLeft:-12, margin:2}} >
+            <ul style={{ marginLeft: -12, margin: 2 }} >
               <li >
                 <Box style={{ display: 'flex', gap: 2 }}>
                   <Typography variant='body1' sx={{ fontSize: 12, color: "#1C1B1D" }}>
@@ -123,7 +123,7 @@ export default function AttendanceList() {
             </Typography>
             <Box style={{ display: 'flex', gap: 2 }}>
               <Typography variant='body1' sx={{ fontSize: 12, color: "#1C1B1D" }}>
-                Actualizado por:
+                Solicitud enviada por:
               </Typography>
               <Typography variant='body1' sx={{ fontSize: 12, color: "#48494C" }}>
                 {open.args?.item?.metadata?.requestUpdates[0].employee?.fullName}

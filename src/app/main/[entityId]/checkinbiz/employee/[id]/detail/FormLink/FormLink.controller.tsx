@@ -203,7 +203,7 @@ export default function useFormLinkController(onSuccess: () => void) {
         {
             isDivider: true,
             label: t('core.label.dayTimeRange'),
-            hit: t('core.label.dayTimeRangeDesc'),
+            hit: t('core.label.dayTimeRangeDescEmployee'),
         },
         {
             name: 'enableDayTimeRange',
@@ -218,7 +218,7 @@ export default function useFormLinkController(onSuccess: () => void) {
             required: true,
             fullWidth: true,
             extraProps: {
-                enableDayTimeRange: formStatus?.values?.enableDayTimeRange,
+                enableDayTimeRange: !formStatus?.values?.enableDayTimeRange,
                 workScheduleEnable: true,
                 hide:!formStatus?.values?.enableDayTimeRange
             },

@@ -145,6 +145,7 @@
       "advance": "CONFIGURACIÓN AVANZADA",
       "dayTimeRange": "Horario de la jornada",
       "dayTimeRangeDesc": "Define el horario de trabajo de esta sucursal o proyecto.",
+      "dayTimeRangeDescEmployee": "Define el horario de trabajo del empleado, si esta deshabilitado tomará esta condiguración desde la sucursal o proyecto.",
       "enableDayTimeRange": "Habilitar horario",
       "startTime": "Hora de inicio",
       "endTime": "Hora de fin",

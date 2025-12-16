@@ -199,9 +199,9 @@ export default function useFormLinkController(onSuccess: () => void) {
         {
             isDivider: true,
             label: t('core.label.dayTimeRange'),
-            hit: t('core.label.dayTimeRangeDesc'),
+            hit: t('core.label.dayTimeRangeDescEmployee'),
         },
-       {
+        {
             name: 'enableDayTimeRange',
             label: formStatus?.values?.enableDayTimeRange ? t('core.label.workScheduleEnable') : t('core.label.workScheduleDisabled'),
             component: ToggleInput,
@@ -214,9 +214,9 @@ export default function useFormLinkController(onSuccess: () => void) {
             required: true,
             fullWidth: true,
             extraProps: {
-                enableDayTimeRange: formStatus?.values?.enableDayTimeRange,
+                enableDayTimeRange: !formStatus?.values?.enableDayTimeRange,
                 workScheduleEnable: true,
-                hide:!formStatus?.values?.enableDayTimeRange
+                hide: !formStatus?.values?.enableDayTimeRange
             },
 
         },

@@ -155,7 +155,7 @@ export default function useAttendanceController() {
             if (Array.isArray(item.metadata?.requestUpdates) && item.metadata?.requestUpdates.length > 0) {
               requestUpdates = await Promise.all(
                 item.metadata?.requestUpdates.map(async (e: any) => {
-                  const employee = (await fetchEmployeeData(currentEntity?.entity.id as string, e.updateBy as string))
+                  const employee = (await fetchEmployeeData(currentEntity?.entity.id as string, e.data?.employeeId as string))
                    
                   return { ...e, employee };
                 })
