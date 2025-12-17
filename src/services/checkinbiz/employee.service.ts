@@ -628,8 +628,7 @@ export const getEmployeeStatsByYear = async (
       lowestMonth,
     };
   } catch (error: any) {
-    console.log(error);
-
+ 
     throw new Error(
       mapperErrorFromBack(error?.message as string, false) as string
     );

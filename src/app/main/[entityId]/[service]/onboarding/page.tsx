@@ -70,7 +70,7 @@ export default function Dashboard() {
           id: '1',
           title: t(`onboarding.${service}.tab1Title`),
           icon: (props: any) => <StepIcon {...props} fontSize="small" />,
-          tabContent: <TabContent title={dataTab1.title} subtitle={dataTab1.subtitle} data={dataTab1.data} />
+          tabContent: <TabContent counter title={dataTab1.title} subtitle={dataTab1.subtitle} data={dataTab1.data} />
         },
         {
           id: '2',

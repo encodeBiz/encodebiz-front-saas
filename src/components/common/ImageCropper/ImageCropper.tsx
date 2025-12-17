@@ -24,7 +24,7 @@ export const ImageCropper = ({ onComplete, disabled = false, isUploading, size =
     const t = useTranslations()
 
     return (
-        <Box>
+        <Box  >
             <input disabled={disabled}
                 type="file"
                 accept="image/*"
@@ -35,9 +35,9 @@ export const ImageCropper = ({ onComplete, disabled = false, isUploading, size =
 
             <SassButton disabled={disabled}
                 variant="contained"
+                sx={{width:180}}
                 startIcon={!isUploading ? <CloudUpload /> : <CircularProgress color='inherit' size={24} />}
-                onClick={() => fileInputRef.current.click()}
-                style={{ width: 180, height: 55 }}
+                onClick={() => fileInputRef.current.click()}            
             >
                 {t('core.label.uploadResourse')}
             </SassButton>

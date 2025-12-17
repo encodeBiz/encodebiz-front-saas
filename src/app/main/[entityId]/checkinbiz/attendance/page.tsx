@@ -69,29 +69,30 @@ export default function AttendanceList() {
         />}
       </HeaderPage>
       {open.type === CommonModalType.CHECKLOGFORM && <AttendanceFormModal onSuccess={onSuccessCreate} />}
-      {open.type === CommonModalType.INFO && <InfoModal
+      {open.type === CommonModalType.INFO && !!open.args?.item && <InfoModal
         title={t('attendance.requestUpdates')}
         centerBtn
 
         htmlDescription={<Box display={'flex'} flexDirection={'column'} gap={3}>
+         
           <Box style={{ display: 'flex', gap: 1 }} flexDirection={'column'}>
-            <CustomChip small background={open.args?.item?.metadata?.requestUpdates[0].data?.status} label={open.args?.item?.metadata?.requestUpdates[0].data?.status} />
+            <CustomChip small background={open.args?.item?.data?.status} label={t('core.label.'+open.args?.item?.data?.status)} />
             <Typography variant='body1' sx={{ fontSize: 16, color: "#48494C" }}>
-              Este registro fue actualizado y validado correctamente.
+              {open.args?.item?.data?.status==='valid'?t('attendance.updateRequestStatusOk'):t('attendance.updateRequestStatusError')}
             </Typography>
           </Box>
           <Box style={{ display: 'flex', gap: 1 }} flexDirection={'column'}>
             <Typography variant='body1' sx={{ fontSize: 16, color: "#1C1B1D" }}>
-              Cambio realizado
+              {t('attendance.updateRequestChanged')}
             </Typography>
             <ul style={{ marginLeft: -12, margin: 2 }} >
               <li >
                 <Box style={{ display: 'flex', gap: 2 }}>
                   <Typography variant='body1' sx={{ fontSize: 12, color: "#1C1B1D" }}>
-                    Fecha y hora anterior:
+                     {t('attendance.updateRequestDate')}:
                   </Typography>
                   <Typography variant='body1' sx={{ fontSize: 12, color: "#48494C", textTransform: 'capitalize' }}>
-                    {format_date(open.args?.item?.metadata?.requestUpdates[0].previousDate)}
+                    {format_date(open.args?.item?.previousDate)}
                   </Typography>
                 </Box>
               </li>
@@ -99,10 +100,10 @@ export default function AttendanceList() {
               <li >
                 <Box style={{ display: 'flex', gap: 2 }}>
                   <Typography variant='body1' sx={{ fontSize: 12, color: "#1C1B1D" }}>
-                    Fecha y hora actual:
+                    {t('attendance.updateRequestTime')}:
                   </Typography>
                   <Typography variant='body1' sx={{ fontSize: 12, color: "#48494C", textTransform: 'capitalize' }}>
-                    {format_date(open.args?.item?.metadata?.requestUpdates[0].createdAt)}
+                    {format_date(open.args?.item?.createdAt)}
                   </Typography>
                 </Box>
               </li>
@@ -110,31 +111,31 @@ export default function AttendanceList() {
           </Box>
           <Box style={{ display: 'flex', gap: 1 }} flexDirection={'column'}>
             <Typography variant='body1' sx={{ fontSize: 16, color: "#1C1B1D" }}>
-              Motivo
+              {t('attendance.updateRequestReason')}:
             </Typography>
             <Typography variant='body1' sx={{ fontSize: 12, color: "#48494C" }}>
-              {open.args?.item?.metadata?.requestUpdates[0].reason}
+              {open.args?.item?.reason}
             </Typography>
           </Box>
 
           <Box style={{ display: 'flex', gap: 1 }} flexDirection={'column'}>
-            <Typography variant='body1' sx={{ fontSize: 16, color: "#1C1B1D" }}>
-              Validación
+            <Typography variant='body1' sx={{ fontSize: 16, color: "#1C1B1D" }}>              
+               {t('attendance.updateRequestValidate')}:
             </Typography>
             <Box style={{ display: 'flex', gap: 2 }}>
               <Typography variant='body1' sx={{ fontSize: 12, color: "#1C1B1D" }}>
-                Solicitud enviada por:
+                 {t('attendance.updateRequestRequest')}:
               </Typography>
               <Typography variant='body1' sx={{ fontSize: 12, color: "#48494C" }}>
-                {open.args?.item?.metadata?.requestUpdates[0].employee?.fullName}
+                {open.args?.item?.employee?.fullName}
               </Typography>
             </Box>
             <Box style={{ display: 'flex', gap: 2 }}>
               <Typography variant='body1' sx={{ fontSize: 12, color: "#1C1B1D" }}>
-                Fecha de validación:
+                 {t('attendance.updateRequestRequestDate')}:
               </Typography>
               <Typography variant='body1' sx={{ fontSize: 12, color: "#48494C" }}>
-                {format_date(open.args?.item?.metadata?.requestUpdates[0].createdAt)}
+                {format_date(open.args?.item?.createdAt)}
               </Typography>
             </Box>
           </Box>
@@ -148,3 +149,5 @@ export default function AttendanceList() {
     </Container>
   );
 }
+
+ 

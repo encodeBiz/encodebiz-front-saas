@@ -11,6 +11,7 @@ export const SassButton = (props: BaseButtonProps) => (
             height: props.size === 'small' ? 40 : 46,
             textTransform: 'capitalize',
             minWidth:120,
+            width: 'fit-content',          
             ...props.sx
         }}
 

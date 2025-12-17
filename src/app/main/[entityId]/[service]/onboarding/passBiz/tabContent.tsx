@@ -2,7 +2,7 @@
 import { karla } from '@/config/fonts/google_fonts';
 import { Box, Container, Divider, Typography } from '@mui/material';
 
-export default function TabContent({ title, subtitle, data }: { title: string, subtitle?: string, data: Array<{ title: string, description: string }> }) {
+export default function TabContent({ title, subtitle, data, counter=false }: {counter?:boolean, title: string, subtitle?: string, data: Array<{ title: string, description: string }> }) {
 
     return (
         <Container maxWidth="xl">
@@ -22,8 +22,10 @@ export default function TabContent({ title, subtitle, data }: { title: string, s
                     gap={4}
                     p={3}
                 >
-                    <Typography variant='h6' sx={{ minWidth: 300, maxWidth: 300, textAlign: 'left' }} fontFamily={karla.style.fontFamily }>{e.title}</Typography>
-                    <Typography>{e.description}</Typography>
+                    <Typography   sx={{ minWidth: 300, maxWidth: 300, textAlign: 'left', fontSize: 20, color: "#48494C"  }} fontFamily={karla.style.fontFamily }>
+                     {counter?`${(i+1)}.`:''}   {e.title}
+                    </Typography>
+                    <Typography sx={{ fontSize: 18, color: "#48494C" }}>{e.description}</Typography>
                 </Box>
 
             </Box>

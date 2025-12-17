@@ -87,7 +87,7 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
                 <Box display={'flex'} justifyContent={'space-between'} alignItems={'flex-start'}>
 
                     {branch?.advance && <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={4} alignItems={'flex-start'}>
-                  
+
 
                         <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'} alignItems={'flex-start'}>
                             <DetailText orientation="row" label={t('core.label.breakTimeRange')} value={branch?.advance?.timeBreak + ' ' + t('core.label.minutes')} />
@@ -95,7 +95,7 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
                         </Box>
                     </Box>}
                 </Box>
- 
+
 
 
 
@@ -115,20 +115,6 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
             <Divider />
 
             {branch?.id && <HelpTabs small tabs={[
-
-                {
-                    id: '2',
-                    title: t("employee.list"),
-                    tabContent: <EmployeeList addResponsabiltyItem={addResponsabiltyItem} >{children}</EmployeeList>
-                },
-                ...(branchPatternList.length > 0 && !pending ? [
-                    {
-                        id: '1',
-                        title: t(`sucursal.panel`),
-                        tabContent: <PanelStats />
-                    },
-                ] : []),
-
                 ...[
                     {
                         id: '1',
@@ -142,7 +128,22 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
 
                         />
                     },
-                ]
+                ],
+
+                ...(branchPatternList.length > 0 && !pending ? [
+                    {
+                        id: '1',
+                        title: t(`sucursal.panel`),
+                        tabContent: <PanelStats />
+                    },
+                ] : []),
+
+
+                {
+                    id: '2',
+                    title: t("employee.list"),
+                    tabContent: <EmployeeList addResponsabiltyItem={addResponsabiltyItem} >{children}</EmployeeList>
+                },
 
 
             ]} />}

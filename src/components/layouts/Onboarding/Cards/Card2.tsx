@@ -1,6 +1,4 @@
 import { Box, Typography, useTheme } from "@mui/material"
-import Image from "next/image"
-import logo from '../../../../../public/assets/images/logo.svg'
 import { SassButton } from "@/components/common/buttons/GenericButton"
 import { BorderBox } from "@/components/common/tabs/BorderBox"
 import { HealthAndSafetyOutlined, PaletteOutlined, TextSnippetOutlined } from "@mui/icons-material"
@@ -18,12 +16,6 @@ export const Card2 = ({ handleNext }: any) => {
     const t = useTranslations()
     return <Box display={'flex'} flexDirection={"column"} justifyContent={'space-between'} p={2} >
         <Box width={'100%'} display={'flex'} flexDirection={"column"} gap={2} justifyContent={'space-between'} alignItems={'flex-start'} >
-            <Image
-                width={220}
-                height={73}
-                alt=""
-                src={logo}
-            />
             <Typography marginTop={2} variant="h3">{t('cards.card2.text1')}</Typography>
             <Box display={'flex'} flexDirection={"column"} gap={2}>
                 <Typography variant="body1">{t('cards.card2.text2')}</Typography>

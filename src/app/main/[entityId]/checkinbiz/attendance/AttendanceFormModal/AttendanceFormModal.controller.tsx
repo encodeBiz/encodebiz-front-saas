@@ -191,8 +191,7 @@ export default function useAttendanceFormModalController(onSuccess: () => void, 
 
   useEffect(() => {
     if (open.args?.data) {
-      console.log(open.args?.data);      
-      setInitialValues({
+       setInitialValues({
         ...initialValues,
         status: open.args?.data ? open.args?.data.status : 'valid',
         timestamp: (open.args?.data.timestamp instanceof Timestamp) ? open.args?.data.timestamp.toDate() : new Date(open.args?.data.timestamp),
