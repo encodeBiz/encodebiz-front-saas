@@ -90,7 +90,7 @@ export const PricingCard: React.FC<PricingCardProps> = (props) => {
 
                     <Box py={2}>
                         {!current && <SassButton
-                            sx={{ mb: 1 }}
+                            sx={{ mb: 1, width:'100%' }}
                             fullWidth
                             variant="contained"
                             onClick={() => handleSubscripe(payPerUse)}
@@ -115,7 +115,7 @@ export const PricingCard: React.FC<PricingCardProps> = (props) => {
 
                  
                     {current && <SassButton
-                        fullWidth
+                        fullWidth sx={{ mb: 1, width:'100%' }}
                         variant="outlined"
                         color='error'
                         onClick={() => {

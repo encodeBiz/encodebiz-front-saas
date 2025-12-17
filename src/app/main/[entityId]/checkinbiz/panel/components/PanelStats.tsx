@@ -2,7 +2,7 @@
 import BoxLoader from "@/components/common/BoxLoader";
 import HeaderPage from "@/components/features/dashboard/HeaderPage/HeaderPage";
 import { InfoOutline, SettingsOutlined } from "@mui/icons-material";
-import { Container, Box, Typography, Popover, IconButton } from "@mui/material";
+import { Container, Box, Typography, Popover, IconButton, Divider } from "@mui/material";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 import { useDashboard } from "../context/dashboardContext";
@@ -64,23 +64,34 @@ export const PanelStats = () => {
   }
 
 
-  const InnetContent = () => <Box sx={{ minHeight: 600, p: 3 }}>
+  const InnetContent = () => <Box sx={{ minHeight: 600 }}>
     {branchList.length > 0 && <SelectorBranch />}
     {pending && <BoxLoader message={t('statsCheckbiz.loading')} />}
 
-    {!pending && branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour'].includes(e)).length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5} pt={5}>
+    {!pending && branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour'].includes(e)).length > 0 && <Box sx={{ p: 3 }} display={'flex'} flexDirection={'column'} gap={5} pt={5}>
       <OperatingHours />
     </Box>}
 
-    {!pending && branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour'].includes(e)).length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5} pt={5}>
+    {!pending && branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour'].includes(e)).length > 0 && <Divider sx={{ mt: 2, mb: 2 }} flexItem variant="fullWidth" orientation="horizontal" />}
+
+
+    {!pending && branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['avgStartHour_avgEndHour', 'stdStartHour_stdEndHour'].includes(e)).length > 0 && <Box sx={{ p: 3 }} display={'flex'} flexDirection={'column'} gap={5} pt={5}>
       <TempActivity />
     </Box>}
 
-    {!pending && branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['avgCostHour', 'avgCycleCost', 'avgCostEfficiency', 'effectiveRealCost'].includes(e)).length > 0 && <Box display={'flex'} flexDirection={'column'} pt={5}>
+    {!pending && branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['avgCostHour', 'avgCycleCost', 'avgCostEfficiency', 'effectiveRealCost'].includes(e)).length > 0 && <Divider sx={{ mt: 2, mb: 2 }} flexItem variant="fullWidth" orientation="horizontal" />}
+
+
+    {!pending && branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['avgCostHour', 'avgCycleCost', 'avgCostEfficiency', 'effectiveRealCost'].includes(e)).length > 0 && <Box sx={{ p: 3 }} display={'flex'} flexDirection={'column'} pt={5}>
       <OperatingCosts />
     </Box>}
 
-    {!pending && branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['reliability', 'dataPoints'].includes(e)).length > 0 && <Box display={'flex'} flexDirection={'column'} pt={5}>
+
+
+    {!pending && branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['reliability', 'dataPoints'].includes(e)).length > 0 && <Divider sx={{ mt: 2, mb: 2 }} flexItem variant="fullWidth" orientation="horizontal" />}
+
+
+    {!pending && branchPatternList.length > 0 && cardIndicatorSelected.filter(e => ['reliability', 'dataPoints'].includes(e)).length > 0 && <Box sx={{ p: 3 }} display={'flex'} flexDirection={'column'} pt={5}>
       <DataReliability />
     </Box>}
 

@@ -93,13 +93,13 @@ const FieldItem = ({ field, i, formikProps, column, disabled }: { field: FormFie
   const isInvalid =
     formikProps.touched[field.name] && Boolean(formikProps.errors[field.name]);
   const errorText = formikProps.errors[field.name];
-  if(field?.extraProps?.hide) return null
+  if (field?.extraProps?.hide) return null
   if (field.isDivider) return <Grid size={{
     xs: 12,
     sm: 12
-  }} key={i} sx={{ width: '100%', position: 'relative', top: field?.extraProps?.disabledBottomMargin?0:10, mt: field?.extraProps?.disabledBottomMargin?0: 2 }}>
+  }} key={i} sx={{ width: '100%', position: 'relative', top: field?.extraProps?.disabledBottomMargin ? 0 : 10, mt: field?.extraProps?.disabledBottomMargin ? 0 : 2 }}>
     <Typography variant='subtitle1' textTransform={'uppercase'}>{field.label as string}</Typography>
-   {field.hit}
+    {field.hit}
 
   </Grid>
   else
@@ -137,7 +137,7 @@ const GenericForm = <T extends Record<string, any>>({
   validationSchema,
   onSubmit,
   fields,
-  title, 
+  title,
   submitButtonText = 'Submit',
   cancelButtonText = 'Cancel',
   onCancel,
@@ -206,7 +206,7 @@ const GenericForm = <T extends Record<string, any>>({
                       </Box>
                     </AccordionSummary>
                     <AccordionDetails>
-                      <Box sx={{ width: '100%'}}>
+                      <Box sx={{ width: '100%' }}>
                         <Grid display={'flex'} flexDirection={{
                           xs: 'column',
                           sm: 'column',
@@ -223,7 +223,7 @@ const GenericForm = <T extends Record<string, any>>({
 
                         </Grid>
                         {field.extraProps?.alertMessage}
-                     
+
                       </Box>
                     </AccordionDetails>
                   </Accordion>
@@ -256,12 +256,12 @@ const GenericForm = <T extends Record<string, any>>({
               <Grid sx={{ width: '100%' }}>
                 <Box display="flex" justifyContent="flex-end" gap={2}>
                   {onCancel && (
-                    <SassButton sx={{ mt: 3, mb: 2, py: 1.5 }} onClick={onCancel} disabled={formikProps.isSubmitting || disabled} fullWidth={btnFullWidth} variant="outlined" color="primary" >
+                    <SassButton sx={{ mt: 3, mb: 2, py: 1.5, width: btnFullWidth ? '100%' : 'fit-content' }} onClick={onCancel} disabled={formikProps.isSubmitting || disabled} fullWidth={btnFullWidth} variant="outlined" color="primary" >
                       {cancelButtonText}
                     </SassButton>
                   )}
 
-                  {!hideBtn && <SassButton sx={{ mt: 3, mb: 2, py: 1.5 }} disabled={formikProps.isSubmitting || disabled || !formikProps.isValid} type="submit" fullWidth={btnFullWidth} variant="contained" color="primary" >
+                  {!hideBtn && <SassButton sx={{ mt: 3, mb: 2, py: 1.5 , width: btnFullWidth ? '100%' : 'fit-content' }} disabled={formikProps.isSubmitting || disabled || !formikProps.isValid} type="submit" fullWidth={btnFullWidth} variant="contained" color="primary" >
                     {formikProps.isSubmitting ? t('core.button.submitting') : submitButtonText}
                   </SassButton>}
                 </Box>
