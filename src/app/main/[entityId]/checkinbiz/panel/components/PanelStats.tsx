@@ -154,7 +154,7 @@ export const PanelStats = () => {
         onClose={() => closeModal(CommonModalType.INFO)}
       />}
 
-      {open.type === CommonModalType.INFO && open.args.empthy && <InfoModal
+      {open.type === CommonModalType.INFO && open.args?.empthy && <InfoModal
         centerBtn cancelBtn={false} closeBtn={false} closeIcon={false}
         description={t('employeeDashboard.helpPanelEmpty')}
         title={t('employeeDashboard.helpPanelEmptyTitle')}

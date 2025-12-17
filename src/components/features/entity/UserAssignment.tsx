@@ -162,7 +162,7 @@ const roleOptions = [
                                         }
                                     />
                                 </ListItem>
-                                <Divider variant="inset" component="li" />
+                                <Divider variant="fullWidth" component="li" />
                             </Card>
                         ))}
                     </List>

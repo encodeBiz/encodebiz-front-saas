@@ -18,6 +18,8 @@ import ConfirmModal from '@/components/common/modals/ConfirmModal';
 import { fileTypes } from '@/config/constants';
 import { ImageCropper } from '@/components/common/ImageCropper/ImageCropper';
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
+import { useCommonModal } from '@/hooks/useCommonModal';
+import { CommonModalType } from '@/contexts/commonModalContext';
 
 const EntityPreferencesPage = () => {
   const t = useTranslations();
@@ -27,6 +29,7 @@ const EntityPreferencesPage = () => {
     filterParams, selectedType, handleFileChange, isUploading, setSelectedType,
     columns, deleting,
     loading } = useMediaList();
+  const { open } = useCommonModal()
 
 
 
@@ -80,12 +83,12 @@ const EntityPreferencesPage = () => {
 
 
 
-      <ConfirmModal closeIcon={false}
+      {open.type === CommonModalType.DELETE && <ConfirmModal closeIcon={false}
         isLoading={deleting}
         title={t('media.deleteConfirmModalTitle')}
         description={t('media.deleteConfirmModalTitle2')}
         onOKAction={(args: { data: Array<string> }) => onDelete(args.data)}
-      />
+      />}
     </Container>
   );
 };

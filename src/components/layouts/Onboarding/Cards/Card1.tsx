@@ -1,7 +1,6 @@
 import { Box, Typography } from "@mui/material"
 import Image from "next/image"
 import image from '../../../../../public/assets/images/onboarding1.png'
-import logo from '../../../../../public/assets/images/logo.svg'
 import { SassButton } from "@/components/common/buttons/GenericButton"
 import { useTranslations } from "next-intl"
 
@@ -11,12 +10,7 @@ export const Card1 = ({handleNext}: any) => {
     return <Box display={'flex'} flexDirection={"row"} p={2}  >
     
     <Box width={'55%'} display={'flex'} flexDirection={"column"} gap={8} justifyContent={'space-between'} alignItems={'flex-start'} >
-        <Image
-            width={220}
-            height={73}
-            alt=""
-            src={logo}
-        />
+        
         <Typography variant="h3">{t('cards.card1.text1')}</Typography>
         <Box  display={'flex'} flexDirection={"column"} gap={2}>
             <Typography variant="h6">{t('cards.card1.text2')}</Typography>

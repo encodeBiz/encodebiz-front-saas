@@ -164,8 +164,7 @@ export default function useAttendanceController() {
           })
         );
 
-        console.log(data);
-        
+         
 
         setItems(data)
         if (!filterParams.params.startAfter) {

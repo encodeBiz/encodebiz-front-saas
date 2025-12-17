@@ -44,7 +44,7 @@ export default function EmployeeList() {
           <EmptyList
             imageUrl={emptyImage}
             title={t('employeeDashboard.employeeNoDataTitle')}
-            description={t('employeeDashboard.employeeNoDataTitle')}
+            description={t('employeeDashboard.employeeNoDataText')}
           />}
         {!empthy && <GenericTable
           data={items}
