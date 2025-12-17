@@ -42,7 +42,7 @@ const Check = () => {
                     <SassButton
                         sx={{
                             borderRadius: 4, textTransform: 'uppercase', mt: 1,
-                            px: 2, height: 73, maxWidth: '100%', fontSize: 20
+                            px: 2, height: 73, maxWidth: '100%',width: '100%', fontSize: 20
                         }}
                         disabled={restAction == 'restin' || pendingStatus} variant='contained' color='primary'
                         onClick={() => {
@@ -63,7 +63,7 @@ const Check = () => {
                     <Typography color="#595E70" variant="body1" fontWeight={400} fontSize={16}  > {t('checking.controlDay')} </Typography>
                     <SassButton
                         sx={{
-                            borderRadius: 4, textTransform: 'uppercase', mt: 1,
+                            borderRadius: 4, textTransform: 'uppercase', mt: 1,width: '100%',
                             px: 2, height: 73, maxWidth: '100%', fontSize: 20, color: "#1C1B1D"
                         }}
                         disabled={checkAction === 'checkout' || pendingStatus} variant='outlined' color='primary'

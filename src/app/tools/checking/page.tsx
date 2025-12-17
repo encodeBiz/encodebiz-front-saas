@@ -55,7 +55,7 @@ const Checking = () => {
                     color: '#FFFFFF',
                 }}
             >
-                <SassButton fullWidth sx={{ background: '#001946',borderRadius:2 }} variant='contained' startIcon={<NorthEastOutlined />} onClick={() => openModal(CommonModalType.LOGS)} >
+                <SassButton fullWidth sx={{ background: '#001946',borderRadius:2, width: '100%' }} variant='contained' startIcon={<NorthEastOutlined />} onClick={() => openModal(CommonModalType.LOGS)} >
                     {t('checking.history')}
                 </SassButton>               
             </Box>
