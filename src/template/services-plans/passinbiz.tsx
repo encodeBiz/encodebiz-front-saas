@@ -1,0 +1,78 @@
+import { Cancel, CheckOutlined } from "@mui/icons-material"
+
+export const passinbizPlansItems = (current: boolean, highlighted: boolean): any => ({
+    'es': {
+        'freemium': <ul style={{ paddingInlineStart: 0 }}>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Emisión Apple/Google Wallet.</li>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} />Validación QR en tiempo real.</li>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} />Pases digitales</li>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <Cancel fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Módulo de eventos</li>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <Cancel fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} />Branding personalizado.</li>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <Cancel fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Multi-entidad.</li>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <Cancel fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} />Emisión de eventos webhook.</li>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}><Cancel fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Soporte de desarrollo, bajo convenio.</li>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Soporte sin desarrollo.</li>
+        </ul>,
+
+        'bronze': <ul style={{ paddingInlineStart: 0 }}>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Emisión Apple/Google Wallet.</li>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} />Validación QR en tiempo real.</li>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} />Pases digitales</li>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Módulo de eventos</li>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} />Branding personalizado.</li>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Multi-entidad.</li>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <Cancel fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} />Emisión de eventos webhook.</li>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}><Cancel fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Soporte de desarrollo, bajo convenio.</li>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Soporte sin desarrollo.</li>
+        </ul>,
+
+        'enterprise': <ul style={{ paddingInlineStart: 0 }}>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Emisión Apple/Google Wallet.</li>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} />Validación QR en tiempo real.</li>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} />Pases digitales</li>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}><CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Módulo de eventos</li>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} />Branding personalizado.</li>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Multi-entidad.</li>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} />Emisión de eventos webhook.</li>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Soporte de desarrollo, bajo convenio.</li>
+            <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Soporte sin desarrollo.</li>
+        </ul>
+    },
+    'en':  {
+    'freemium': <ul style={{ paddingInlineStart: 0 }}>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Apple/Google Wallet issuance.</li>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Real-time QR validation.</li>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Digital passes</li>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <Cancel fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Events module</li>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <Cancel fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Custom branding.</li>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <Cancel fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Multi-entity.</li>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <Cancel fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Webhook event emission.</li>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}><Cancel fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Development support, under agreement.</li>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Support without development.</li>
+    </ul>,
+
+    'bronze': <ul style={{ paddingInlineStart: 0 }}>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Apple/Google Wallet issuance.</li>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Real-time QR validation.</li>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Digital passes</li>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Events module</li>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Custom branding.</li>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Multi-entity.</li>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <Cancel fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Webhook event emission.</li>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}><Cancel fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Development support, under agreement.</li>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Support without development.</li>
+    </ul>,
+
+    'enterprise': <ul style={{ paddingInlineStart: 0 }}>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Apple/Google Wallet issuance.</li>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Real-time QR validation.</li>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Digital passes</li>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}><CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Events module</li>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Custom branding.</li>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Multi-entity.</li>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Webhook event emission.</li>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Development support, under agreement.</li>
+        <li style={{ listStyle: 'none', marginBottom: 10, gap: 2 }}> <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main, position: 'relative', top: 5 }} /> Support without development.</li>
+    </ul>
+}
+})
