@@ -1,5 +1,5 @@
 import { SassButton } from "@/components/common/buttons/GenericButton"
-import { Box, Typography, Paper, Alert, CircularProgress } from "@mui/material"
+import { Box, Paper, Alert, CircularProgress } from "@mui/material"
 import { useTranslations } from "next-intl"
 import SucursalFromItem from "./SucursalFromItem/SucursalFromItem"
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter"

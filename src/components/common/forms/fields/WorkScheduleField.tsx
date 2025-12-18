@@ -1,9 +1,7 @@
-import { useFormStatus } from "@/hooks/useFormStatus";
-import { Alert, Box, Card, CardContent, Divider, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, Switch, TextField, TextFieldProps, Typography } from "@mui/material";
+import { Box, FormControlLabel, Grid, Switch, TextFieldProps, Typography, Divider } from "@mui/material";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { Field, FieldProps, useField } from "formik";
 import { useEffect, useState } from "react";
-import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useAppLocale } from "@/hooks/useAppLocale";
@@ -28,12 +26,6 @@ const DAYS = [
 ] as const;
 
 // Horas del día (0-23)
-const HOURS = Array.from({ length: 24 }, (_, i) => i);
-
-// Minutos (0-59, cada 15 minutos)
-const MINUTES = [0, 15, 30, 45];
-
-// Valores iniciales
 const defaultDaySchedule: WorkDaySchedule = {
     enabled: true,
     start: { hour: 9, minute: 0 },
@@ -62,15 +54,14 @@ const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
 }) => {
 
         const { workScheduleEnable, enableDayTimeRange, onHandleChange } = props
-        const [field, meta, helper] = useField(props.name as string);
-        const { touched, error } = meta
+        const [field, , helper] = useField(props.name as string);
         const [fieldValue, setFieldValue] = useState<WorkSchedule>(field.value ?? initialValues)
         const { currentLocale } = useAppLocale()
         const t = useTranslations()
         useEffect(() => {
             helper.setValue(fieldValue)
             if (typeof onHandleChange === 'function') onHandleChange(fieldValue)
-        }, [fieldValue])
+        }, [fieldValue, helper, onHandleChange])
 
         useEffect(() => {
             if (field.value)
@@ -93,7 +84,7 @@ const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
                                 xl: 'row',
                             }} >
                                 <Field name={`${day.key}.enabled`}>
-                                    {({ field }: FieldProps) => (
+                                    {() => (
                                         <FormControlLabel
                                             control={
                                                 <Switch

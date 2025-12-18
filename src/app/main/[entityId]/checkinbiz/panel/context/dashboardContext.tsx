@@ -1,5 +1,5 @@
 'use client'
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
 
 import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
 import { fetchSucursal, search } from '@/services/checkinbiz/sucursal.service';
@@ -84,7 +84,7 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
 
 
 
-    const initialize = async () => {
+    const initialize = useCallback(async () => {
         setPending(true)
         const branchList = await search(currentEntity?.entity?.id as string, { ...{} as any, limit: 100 })
         setBranchList(branchList)
@@ -134,11 +134,11 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
         setbranchPatternList(branchPatternDataListt.filter(e => !!e.branch).slice(0, 3))
         setBranchSelected(branchPatternDataListt.filter(e => !!e.branch).map(e => e.branch as ISucursal).slice(0, 3))
         setPending(false)
-    }
+    }, [currentEntity?.entity?.id, openModal])
 
-    const onSelectedBranch = async (branchSelected: Array<ISucursal>) => {
+    const onSelectedBranch = useCallback(async (branchSelected: Array<ISucursal>) => {
         setbranchPatternList(normalizedData.filter(e => branchSelected.map(b => b.id).includes(e.branchId)).map((e, i) => ({ ...e, color: colorBarDataset[i] })))
-    }
+    }, [normalizedData])
 
 
 

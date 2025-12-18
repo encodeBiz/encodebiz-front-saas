@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-
 import { Box, Stack, Typography } from "@mui/material";
 import React from "react";
 import {

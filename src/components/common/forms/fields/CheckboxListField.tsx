@@ -4,7 +4,6 @@ import {
   FormControl,
   FormGroup,
   FormControlLabel,
-  Checkbox,
   FormLabel,
   FormHelperText,
   Radio,

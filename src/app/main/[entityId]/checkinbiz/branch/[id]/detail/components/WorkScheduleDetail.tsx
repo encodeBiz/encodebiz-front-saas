@@ -1,12 +1,9 @@
 import React from 'react';
 import {
-    Card,
-    CardContent,
     Typography,
     Box,
     Chip,
     Grid,
-    Divider,
     List,
     ListItem,
     ListItemText,
@@ -18,17 +15,12 @@ import {
 } from '@mui/material';
 import {
     AccessTime,
-    Schedule,
-    Notifications,
-    CheckCircle,
     Cancel,
-    Today,
     NotificationsOutlined,
     StopCircleOutlined,
     PlayCircleOutline,
 } from '@mui/icons-material';
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
+import dayjs from 'dayjs';
 import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
 import { DetailText } from '@/components/common/table/DetailText';
 import { useTranslations } from 'next-intl';
@@ -58,8 +50,6 @@ interface WorkSchedule {
 
 interface WorkScheduleDetailProps {
     schedule: WorkSchedule;
-    title?: string;
-    showEmptyDays?: boolean;
     compact?: boolean;
     notifyBeforeMinutes?: number
     branch: ISucursal
@@ -67,9 +57,7 @@ interface WorkScheduleDetailProps {
 
 // Función para formatear hora
 const formatTime = (time: Time): string => {
-    const date = new Date();
-    date.setHours(time.hour, time.minute, 0, 0);
-    return format(date, 'hh:mm a');
+    return dayjs().hour(time.hour).minute(time.minute).format('hh:mm A');
 };
 
 // Función para calcular duración
@@ -175,12 +163,11 @@ const DayScheduleItem: React.FC<{
 // Componente principal
 const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
     schedule,
-    title = "Horario Laboral",
-    showEmptyDays = false,
     compact = false,
     notifyBeforeMinutes = 0,
     branch
 }) => {
+    const safeSchedule: WorkSchedule = schedule ?? {};
     // Configuración de días
     const t = useTranslations()
     const daysConfig = [
@@ -195,7 +182,7 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
 
     // Filtrar días habilitados
     const enabledDays = daysConfig.filter(
-        day => schedule[day.key]?.enabled
+        day => safeSchedule[day.key]?.enabled
     );
 
     // Contar días habilitados
@@ -206,7 +193,7 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
         let totalMinutes = 0;
 
         daysConfig.forEach(day => {
-            const daySchedule = schedule[day.key];
+            const daySchedule = safeSchedule[day.key];
             if (daySchedule?.enabled) {
                 const start = daySchedule.start;
                 const end = daySchedule.end;
@@ -227,11 +214,6 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
         if (minutes === 0) return `${hours} horas`;
         return `${hours}h ${minutes}min`;
     };
-
-    // Obtener días deshabilitados para mostrar mensaje
-    const disabledDays = daysConfig.filter(
-        day => !schedule[day.key]?.enabled
-    ).map(day => day.label);
 
     return (
         <Paper elevation={0} sx={{ p: 3 }}>

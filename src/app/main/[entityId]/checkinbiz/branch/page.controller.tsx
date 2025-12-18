@@ -316,7 +316,6 @@ export default function useEmployeeListController() {
         const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
         if (value?.id) {
           const item = await getRefByPathData(value.index)
-         
           if (item)
             setItems([item])
           else
