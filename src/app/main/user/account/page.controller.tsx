@@ -80,7 +80,7 @@ export const useUserAccountController = () => {
         {
             name: 'avatar',
             label: t('core.label.avatar'),
-            type: 'logo',
+            type: 'avatar',
             component: ImageUploadInput,
             required: true,
         },

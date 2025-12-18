@@ -16,6 +16,8 @@ import { useAppLocale } from '@/hooks/useAppLocale';
 import ContactModalModal from '../modals/ContactModal/ContactModal';
 import { useLayout } from '@/hooks/useLayout';
 import { karla } from '@/config/fonts/google_fonts';
+import { checkbizPlansItems } from '@/template/services-plans/checkbiz';
+import { passinbizPlansItems } from '@/template/services-plans/passinbiz';
 
 
 const PlanCard = styled(Box)<{ highlighted?: string, current?: string }>(({ theme, highlighted, current }) => ({
@@ -88,7 +90,7 @@ export const PricingCard: React.FC<PricingCardProps> = (props) => {
 
                     <Box py={2}>
                         {!current && <SassButton
-                            sx={{ mb: 1 }}
+                            sx={{ mb: 1, width:'100%' }}
                             fullWidth
                             variant="contained"
                             onClick={() => handleSubscripe(payPerUse)}
@@ -105,19 +107,15 @@ export const PricingCard: React.FC<PricingCardProps> = (props) => {
                         </Typography>}
 
                     </Box>
+
                     {name !== 'freemium' && <Divider sx={{ background: () => current ? '#4AB84F' : highlighted ? "#FFF" : '#002FB7' }} />}
-                    <List sx={{ marginTop: "10px" }}>
-                        {((props as any)[`items_${currentLocale}`] as Array<string> ?? [])?.map((feature, i) => (
-                            <ListItem key={i} disableGutters>
-                                <ListItemIcon sx={{ minWidth: 30 }}>
-                                    {featuredList[i] ? <CheckOutlined fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main }} /> : <Cancel fontSize="small" sx={{ color: (theme) => current ? theme.palette.text.primary : highlighted ? "#FFF" : theme.palette.primary.main }} />}
-                                </ListItemIcon>
-                                <Typography variant="body2">{feature}</Typography>
-                            </ListItem>
-                        ))}
-                    </List>
+
+                    {fromService === 'checkinbiz' && <>{checkbizPlansItems(current, highlighted)[currentLocale][name as string]}</>}
+                    {fromService === 'passinbiz' && <>{passinbizPlansItems(current, highlighted)[currentLocale][name as string]}</>}
+
+                 
                     {current && <SassButton
-                        fullWidth
+                        fullWidth sx={{ mb: 1, width:'100%' }}
                         variant="outlined"
                         color='error'
                         onClick={() => {

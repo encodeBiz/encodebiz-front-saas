@@ -16,11 +16,13 @@ import SearchFilter from "@/components/common/table/filters/SearchFilter";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { CustomChip } from "@/components/common/table/CustomChip";
-import { Edit, Map, TableViewRounded } from "@mui/icons-material";
+import { Edit, Map } from "@mui/icons-material";
 import { onGoMap } from "@/lib/common/maps";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { emptyChecklog } from "@/services/checkinbiz/report.service";
+import { HistoryIcon } from "@/components/common/icons/HistoryIcon";
+import { fetchUserAccount } from "@/services/core/account.service";
 
 interface IFilterParams {
   filter: { branchId: string, employeeId: string, status: string, range: { start: any, end: any } | null },
@@ -156,7 +158,9 @@ export default function useAttendanceController() {
               requestUpdates = await Promise.all(
                 item.metadata?.requestUpdates.map(async (e: any) => {
                   const employee1 = (await fetchEmployeeData(currentEntity?.entity.id as string, e.data?.employeeId as string))
-                  return { ...e, employee: employee1 };
+                  const admin = (await fetchUserAccount( e.updateBy as string))
+                   
+                  return { ...e, employee: employee1, admin };
                 })
               );
             }
@@ -210,19 +214,19 @@ export default function useAttendanceController() {
       id: 'status',
       label: t("core.label.status"),
       minWidth: 170,
-      format: (value, row) => <CustomChip background={row.status === 'pending-employee-validation' ? row.status : 'default'} label={t('core.label.' + row.status)} />
+      format: (value, row) => <CustomChip role={row.status=='failed'?'button':'text'} background={row.status} label={t('core.label.' + row.status)} />
     },
     {
       id: 'timestamp',
       label: t("core.label.date-hour"),
       minWidth: 200,
-      format: (value, row) => <Box display={'flex'} alignItems={'center'}>
+      format: (value, row) => <Box display={'flex'} alignItems={'center'} gap={1}>
        
         {format_date(row.timestamp, 'DD/MM/YYYY')} {format_date(row.timestamp, 'hh:mm')}
          {Array.isArray(row.metadata?.requestUpdates) && row.metadata?.requestUpdates.length > 0 && <IconButton onClick={() => {
            
           openModal(CommonModalType.INFO, { item: row?.requestUpdates[0] })
-        }}><TableViewRounded /></IconButton>}
+        }}><HistoryIcon /></IconButton>}
       </Box>
     },
 

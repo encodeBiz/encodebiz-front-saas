@@ -70,7 +70,7 @@ export const RenuewCard: React.FC<PricingCardProps> = ({ plan }) => {
                 <Divider sx={{ background: (theme) => theme.palette.text.primary }} />
 
                 <SassButton
-                    sx={{ mb: 1, mt: 4, height: 40 }}
+                    sx={{ mb: 1, mt: 4, height: 40, width:'100%' }}
                     fullWidth
                     variant="contained"
                     onClick={() => navivateTo(`/${plan.serviceId}/onboarding?to=plans`)}

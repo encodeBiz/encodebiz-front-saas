@@ -831,7 +831,7 @@
     "updateRequestTime": " Current date and time",
     "updateRequestReason": " Reason",
     "updateRequestValidate": " Validation",
-    "updateRequestRequest": " Request sent by",
+    "updateRequestRequest": " Updated by",
     "updateRequestRequestDate": "Validation date",
     "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the report"
   },

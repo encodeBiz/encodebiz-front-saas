@@ -3,7 +3,7 @@ import BoxLoader from "@/components/common/BoxLoader";
 import HeaderPage from "@/components/features/dashboard/HeaderPage/HeaderPage";
 import { useEntity } from "@/hooks/useEntity";
 import { SettingsOutlined } from "@mui/icons-material";
-import { Container, Box, Typography, Popover } from "@mui/material";
+import { Container, Box, Typography, Popover, Divider } from "@mui/material";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 import { OperatingHours } from "./cards/OperatingHours";
@@ -55,26 +55,36 @@ export const PanelStats = () => {
   }
 
 
-  const InnetContent = () => <Box sx={{ minHeight: 600, p: 3 }}>
+  const InnetContent = () => <Box sx={{ minHeight: 600 }}>
 
     {!pending && employeePatternList.length == 0 && <Box display={'flex'} justifyContent={'center'} alignItems={'center'} sx={{ minHeight: 100 }}>
       <EmptyState text={t('employeeDashboard.emptyPattern')} />
     </Box>}
     {pending && <BoxLoader message={t('statsCheckbiz.loading')} />}
 
-    {!pending && employeePatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5}>
+
+    {!pending && employeePatternList.length > 0 && <Box sx={{ p: 3 }} display={'flex'} flexDirection={'column'} gap={5}>
       <OperatingHours />
     </Box>}
 
-    {!pending && employeePatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5}>
+    {!pending && employeePatternList.length > 0 && <Divider sx={{ mt: 2, mb: 2 }} flexItem variant="fullWidth" orientation="horizontal" />}
+
+
+    {!pending && employeePatternList.length > 0 && <Box sx={{ p: 3 }} display={'flex'} flexDirection={'column'} gap={5}>
       <TempActivity />
     </Box>}
 
-    {!pending && employeePatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5}>
+    {!pending && employeePatternList.length > 0 && <Divider sx={{ mt: 2, mb: 2 }} flexItem variant="fullWidth" orientation="horizontal" />}
+
+
+    {!pending && employeePatternList.length > 0 && <Box sx={{ p: 3 }} display={'flex'} flexDirection={'column'} gap={5}>
       <DispercionActivity />
     </Box>}
 
-    {!pending && employeePatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5} pt={5}>
+    {!pending && employeePatternList.length > 0 && <Divider sx={{ mt: 2, mb: 2 }} flexItem variant="fullWidth" orientation="horizontal" />}
+
+
+    {!pending && employeePatternList.length > 0 && <Box sx={{ p: 3 }} display={'flex'} flexDirection={'column'} gap={5} pt={5}>
       <RulesAnalize />
     </Box>}
 

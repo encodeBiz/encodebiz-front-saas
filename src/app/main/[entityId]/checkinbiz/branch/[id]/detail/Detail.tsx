@@ -80,24 +80,6 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
                 </Box>
 
                 <Divider sx={{ mt: 2 }} />
-                <Typography variant="subtitle1" gutterBottom textTransform={'capitalize'} sx={{ mt: 2 }}>
-                    {t('core.label.advance')}
-                </Typography>
-
-                <Box display={'flex'} justifyContent={'space-between'} alignItems={'flex-start'}>
-
-                    {branch?.advance && <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={4} alignItems={'flex-start'}>
-
-
-                        <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'} alignItems={'flex-start'}>
-                            <DetailText orientation="row" label={t('core.label.breakTimeRange')} value={branch?.advance?.timeBreak + ' ' + t('core.label.minutes')} />
-                            <DetailText help={branch?.advance?.disableBreak ? t('sucursal.disableBreakAlertMessageE') : t('sucursal.disableBreakAlertMessageD')} label={!branch?.advance?.disableBreak ? t('sucursal.breakDisabledText') : t('sucursal.breakEnableText')} />
-                        </Box>
-                    </Box>}
-                </Box>
-
-
-
 
 
                 {Array.isArray(branch.metadata) && branch.metadata.length > 0 && <><Divider /> <Paper sx={{ mt: 4 }} elevation={0} >

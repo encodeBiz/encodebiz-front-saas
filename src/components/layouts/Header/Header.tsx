@@ -159,7 +159,7 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
         >
           <HelpIcon />
         </IconButton>
-        <p>{t('layout.header.profile')}</p>
+        <Typography>{t('layout.header.profile')}</Typography>
       </MenuItem>
 
       <MenuItem onClick={() => openModal(CommonModalType.ONBOARDING)}>
@@ -185,11 +185,11 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
-          color="inherit"
+          color="error"
         >
-          <HelpIcon />
+          <HelpIcon  color="error" />
         </IconButton>
-        <p>{t('layout.header.logout')}</p>
+        <Typography  color="error">{t('layout.header.logout')}</Typography>
       </MenuItem>
     </Menu>
   );

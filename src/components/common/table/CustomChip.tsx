@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 
 
 const colorRepository: any = {
-    'pending-employee-validation': '#F4AA32',
+    'pending-employee-validation': 'rgba(121, 123, 125, 0.08)',
     "failed": '#F4AA32',
     "active": 'rgba(122, 223, 127, 0.65)',
     "valid": 'rgba(122, 223, 127, 0.65)',
@@ -28,7 +28,7 @@ export const CustomChip = ({ label, background = "default", id = '', role = 'but
     const t = useTranslations()
     return (<>
         <Chip
-            key={id}
+            key={id}  
             label={label}
             variant="outlined"
             onClick={role === 'button' ? () => {
