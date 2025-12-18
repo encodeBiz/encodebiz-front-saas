@@ -27,8 +27,7 @@ import {
     StopCircleOutlined,
     PlayCircleOutline,
 } from '@mui/icons-material';
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
+import dayjs from 'dayjs';
 import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
 import { DetailText } from '@/components/common/table/DetailText';
 import { useTranslations } from 'next-intl';
@@ -67,9 +66,7 @@ interface WorkScheduleDetailProps {
 
 // Función para formatear hora
 const formatTime = (time: Time): string => {
-    const date = new Date();
-    date.setHours(time.hour, time.minute, 0, 0);
-    return format(date, 'hh:mm a');
+    return dayjs().hour(time.hour).minute(time.minute).format('hh:mm A');
 };
 
 // Función para calcular duración
