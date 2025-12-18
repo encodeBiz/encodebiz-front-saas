@@ -18,6 +18,19 @@ export const formatPercent = (value?: number, fractionToPercent = true) => {
   return `${base.toFixed(1)}%`;
 };
 
+export const defaultTooltipProps = {
+  wrapperStyle: { overflow: "visible", zIndex: 10 },
+  contentStyle: {
+    backgroundColor: "#fff",
+    border: "1px solid rgba(0,0,0,0.08)",
+    borderRadius: 12,
+    boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+    padding: "10px 12px",
+  },
+  labelStyle: { fontWeight: 600, color: "#111", marginBottom: 4 },
+  itemStyle: { padding: 0 },
+} as const;
+
 export const formatNumber = (value?: number | null, digits = 1) => {
   const numeric = typeof value === "string" ? Number(value) : value;
   if (numeric === undefined || numeric === null || Number.isNaN(numeric)) return "-";
@@ -65,16 +78,17 @@ export const formatKpiEntries = (
     }
     const lower = key.toLowerCase();
     const label = translateLabel ? translateLabel(key) : defaultLabelFromKey(key);
+    const num = Number(value);
     if (lower.includes("cost") || lower.includes("budget")) {
-      return { label, value: formatCurrency(value) };
+      return { label, value: formatCurrency(num) };
     }
     if (lower.includes("hour")) {
-      return { label, value: formatHours(value) };
+      return { label, value: formatHours(num) };
     }
     if (lower.includes("rate") || lower.includes("pct") || lower.includes("percent")) {
-      return { label, value: formatPercent(value, false) };
+      return { label, value: formatPercent(num, false) };
     }
-    return { label, value: formatNumber(value, 2) };
+    return { label, value: formatNumber(num, 2) };
   });
 };
 
@@ -92,6 +106,6 @@ export const normalizeSeriesNumbers = <T extends BranchSeries>(
           next[key] = Number.isNaN(num) ? next[key] : num;
         }
       });
-      return next as BranchSeriesPoint;
+      return next as unknown as BranchSeriesPoint;
     }),
   }));

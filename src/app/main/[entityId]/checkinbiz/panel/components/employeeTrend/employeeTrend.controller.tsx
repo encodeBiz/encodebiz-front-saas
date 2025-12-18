@@ -3,13 +3,11 @@
 import { useEffect, useState } from "react";
 import { useEntity } from "@/hooks/useEntity";
 import { EmployeeStats, getEmployeeStatsByYear } from "@/services/checkinbiz/employee.service";
-import { useTranslations } from "next-intl";
 
 
 
 export default function useEmployeeTrendChart() {
     const { currentEntity } = useEntity()
-    const t = useTranslations
     const [loading, setLoading] = useState(false);
     //Graph Data
     const [graphData, setGraphData] = useState<EmployeeStats>()

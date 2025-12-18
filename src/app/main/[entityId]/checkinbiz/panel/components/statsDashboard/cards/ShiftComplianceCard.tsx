@@ -11,7 +11,7 @@ import {
   YAxis,
 } from "recharts";
 import { StatCard } from "../StatCard";
-import { defaultLabelFromKey, formatKpiEntries, formatPercent, hashBranchColor, normalizeSeriesNumbers } from "../chartUtils";
+import { defaultLabelFromKey, defaultTooltipProps, formatKpiEntries, formatPercent, hashBranchColor, normalizeSeriesNumbers } from "../chartUtils";
 import { BranchSeries, useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 import { useTranslations } from "next-intl";
@@ -60,7 +60,11 @@ export const ShiftComplianceCard = ({ entityId, branchId, from, to }: CheckbizCa
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="date" type="category" allowDuplicatedCategory={false} />
           <YAxis tickFormatter={(v) => formatPercent(Number(v))} domain={[0, 1]} />
-          <Tooltip formatter={(value: number) => formatPercent(Number(value))} labelFormatter={(label) => `Fecha: ${label}`} />
+          <Tooltip
+            {...defaultTooltipProps}
+            formatter={(value: number) => formatPercent(Number(value))}
+            labelFormatter={(label) => `Fecha: ${label}`}
+          />
           <Legend />
           {series.map((branch) => {
             const label = branch.branchName ?? branch.branchId;

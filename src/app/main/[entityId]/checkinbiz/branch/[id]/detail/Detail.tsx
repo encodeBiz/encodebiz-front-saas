@@ -103,8 +103,6 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
                         title: t(`core.label.workSchedule`),
                         tabContent: <WorkScheduleDetail
                             schedule={branch.advance?.workSchedule as WorkSchedule}
-                            title={t(`core.label.workSchedule`)}
-                            showEmptyDays={true}
                             branch={branch}
                             notifyBeforeMinutes={branch.advance?.notifyBeforeMinutes as number}
 

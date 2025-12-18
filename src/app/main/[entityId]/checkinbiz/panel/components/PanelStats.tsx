@@ -1,6 +1,6 @@
 import BoxLoader from "@/components/common/BoxLoader";
 import HeaderPage from "@/components/features/dashboard/HeaderPage/HeaderPage";
-import { Box, Typography, Stack, Alert } from "@mui/material";
+import { Box, Typography, Stack } from "@mui/material";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 import { useDashboard } from "../context/dashboardContext";

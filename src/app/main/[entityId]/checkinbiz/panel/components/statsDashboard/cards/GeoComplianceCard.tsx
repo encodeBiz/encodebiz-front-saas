@@ -2,8 +2,6 @@
 
 import { useMemo } from "react";
 import {
-  Bar,
-  BarChart,
   CartesianGrid,
   Legend,
   Line,
@@ -13,10 +11,9 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-  Cell,
 } from "recharts";
 import { StatCard } from "../StatCard";
-import { defaultLabelFromKey, formatKpiEntries, formatPercent, hashBranchColor, normalizeSeriesNumbers } from "../chartUtils";
+import { defaultLabelFromKey, defaultTooltipProps, formatKpiEntries, formatPercent, hashBranchColor, normalizeSeriesNumbers } from "../chartUtils";
 import { BranchSeries, useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 import { useTranslations } from "next-intl";
@@ -81,7 +78,11 @@ export const GeoComplianceCard = ({ entityId, branchId, from, to }: CheckbizCard
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="date" type="category" allowDuplicatedCategory={false} />
           <YAxis domain={["dataMin", "dataMax"]} />
-          <Tooltip labelFormatter={(label) => `Fecha: ${label}`} formatter={(value: number) => [`${Number(value).toFixed(1)} m`, "Distancia"]} />
+          <Tooltip
+            {...defaultTooltipProps}
+            labelFormatter={(label) => `Fecha: ${label}`}
+            formatter={(value: number) => [`${Number(value).toFixed(1)} m`, "Distancia"]}
+          />
           {threshold !== undefined && (
             <ReferenceLine y={threshold} stroke="#f44336" strokeDasharray="4 2" label="Umbral" />
           )}
@@ -108,7 +109,7 @@ export const GeoComplianceCard = ({ entityId, branchId, from, to }: CheckbizCard
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <XAxis dataKey="branchName" />
           <YAxis tickFormatter={(v) => formatPercent(Number(v), true)} />
-          <Tooltip formatter={(value: number) => formatPercent(Number(value), true)} />
+          <Tooltip {...defaultTooltipProps} formatter={(value: number) => formatPercent(Number(value), true)} />
           {series.length > 1 && <Legend />}
           <Bar dataKey="withinRate" name="Cumplimiento" radius={[6, 6, 0, 0]}>
             {withinRates.map((item) => (
