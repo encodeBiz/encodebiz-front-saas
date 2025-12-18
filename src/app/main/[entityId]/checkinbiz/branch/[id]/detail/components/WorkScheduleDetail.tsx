@@ -167,6 +167,7 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
     notifyBeforeMinutes = 0,
     branch
 }) => {
+    const safeSchedule: WorkSchedule = schedule ?? {};
     // Configuración de días
     const t = useTranslations()
     const daysConfig = [
@@ -181,7 +182,7 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
 
     // Filtrar días habilitados
     const enabledDays = daysConfig.filter(
-        day => schedule[day.key]?.enabled
+        day => safeSchedule[day.key]?.enabled
     );
 
     // Contar días habilitados
@@ -192,7 +193,7 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
         let totalMinutes = 0;
 
         daysConfig.forEach(day => {
-            const daySchedule = schedule[day.key];
+            const daySchedule = safeSchedule[day.key];
             if (daySchedule?.enabled) {
                 const start = daySchedule.start;
                 const end = daySchedule.end;
