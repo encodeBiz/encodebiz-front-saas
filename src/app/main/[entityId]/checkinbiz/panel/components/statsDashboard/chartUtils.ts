@@ -65,16 +65,17 @@ export const formatKpiEntries = (
     }
     const lower = key.toLowerCase();
     const label = translateLabel ? translateLabel(key) : defaultLabelFromKey(key);
+    const num = Number(value);
     if (lower.includes("cost") || lower.includes("budget")) {
-      return { label, value: formatCurrency(value) };
+      return { label, value: formatCurrency(num) };
     }
     if (lower.includes("hour")) {
-      return { label, value: formatHours(value) };
+      return { label, value: formatHours(num) };
     }
     if (lower.includes("rate") || lower.includes("pct") || lower.includes("percent")) {
-      return { label, value: formatPercent(value, false) };
+      return { label, value: formatPercent(num, false) };
     }
-    return { label, value: formatNumber(value, 2) };
+    return { label, value: formatNumber(num, 2) };
   });
 };
 
@@ -92,6 +93,6 @@ export const normalizeSeriesNumbers = <T extends BranchSeries>(
           next[key] = Number.isNaN(num) ? next[key] : num;
         }
       });
-      return next as BranchSeriesPoint;
+      return next as unknown as BranchSeriesPoint;
     }),
   }));

@@ -15,7 +15,7 @@ import {
 import { Box, Tab, Tabs, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { StatCard } from "../StatCard";
-import { defaultLabelFromKey, formatKpiEntries, hashBranchColor } from "../chartUtils";
+import { defaultLabelFromKey, formatKpiEntries } from "../chartUtils";
 import { HourlyDistribution, useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 import { useTranslations } from "next-intl";

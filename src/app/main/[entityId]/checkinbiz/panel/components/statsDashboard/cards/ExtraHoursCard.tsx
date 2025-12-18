@@ -56,6 +56,21 @@ export const ExtraHoursCard = ({ entityId, branchId, from, to }: CheckbizCardPro
   );
   const apiKpis = formatKpiEntries(data?.kpis, kpiLabel);
 
+  const mergedData = React.useMemo(() => {
+    const map = new Map<string, any>();
+    series.forEach((branch) => {
+      branch.points.forEach((p) => {
+        const rec = map.get(p.date) ?? { date: p.date };
+        rec[`${branch.branchId}-workedHours`] = p.workedHours ?? 0;
+        rec[`${branch.branchId}-expectedHours`] = p.expectedHours ?? 0;
+        rec[`${branch.branchId}-extraHours`] = p.extraHours ?? 0;
+        rec[`${branch.branchId}-deficitHours`] = p.deficitHours ?? 0;
+        map.set(p.date, rec);
+      });
+    });
+    return Array.from(map.values()).sort((a, b) => `${a.date}`.localeCompare(`${b.date}`));
+  }, [series]);
+
   return (
     <StatCard
       title={t("extraHours.title")}
@@ -72,7 +87,7 @@ export const ExtraHoursCard = ({ entityId, branchId, from, to }: CheckbizCardPro
       infoText={t("descriptions.extraHours")}
     >
       <ResponsiveContainer width="100%" height={260}>
-        <ComposedChart>
+        <ComposedChart data={mergedData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="date" type="category" allowDuplicatedCategory={false} />
           <YAxis domain={["dataMin", "dataMax"]} />
@@ -80,14 +95,17 @@ export const ExtraHoursCard = ({ entityId, branchId, from, to }: CheckbizCardPro
           <Legend />
           {series.map((branch) => {
             const label = branch.branchName ?? branch.branchId;
+            const workedKey = `${branch.branchId}-workedHours`;
+            const expectedKey = `${branch.branchId}-expectedHours`;
+            const extraKey = `${branch.branchId}-extraHours`;
+            const deficitKey = `${branch.branchId}-deficitHours`;
             return (
               <React.Fragment key={branch.branchId}>
-                <Bar data={branch.points} dataKey="workedHours" name={`${label} worked`} stackId={branch.branchId} fill="#2196f3" />
-                <Bar data={branch.points} dataKey="expectedHours" name={`${label} expected`} stackId={branch.branchId} fill="#bbdefb" />
+                <Bar dataKey={workedKey} name={`${label} worked`} stackId={branch.branchId} fill="#2196f3" />
+                <Bar dataKey={expectedKey} name={`${label} expected`} stackId={branch.branchId} fill="#bbdefb" />
                 <Line
                   type="monotone"
-                  data={branch.points}
-                  dataKey="extraHours"
+                  dataKey={extraKey}
                   name={`${label} extra`}
                   stroke="#4caf50"
                   strokeWidth={2}
@@ -95,8 +113,7 @@ export const ExtraHoursCard = ({ entityId, branchId, from, to }: CheckbizCardPro
                 />
                 <Line
                   type="monotone"
-                  data={branch.points}
-                  dataKey="deficitHours"
+                  dataKey={deficitKey}
                   name={`${label} deficit`}
                   stroke="#f44336"
                   strokeWidth={2}

@@ -27,6 +27,7 @@ export interface CheckbizStatsParams {
     | "top_employees"
     | "branch_ranking"
     | "hourly_distribution"
+    | "salary_estimate"
     | "kpis";
   granularity?: CheckbizGranularity;
   topN?: number;
@@ -118,7 +119,17 @@ export interface RankingItem {
 
 export interface HourlyDistribution {
   branchId: string;
-  hours: { hour: number; coverage: number; starts?: number; ends?: number }[];
+  branchName?: string;
+  daysCount?: number;
+  hours: {
+    hour: number;
+    coverage?: number;
+    starts?: number;
+    ends?: number;
+    avgEmployees?: number;
+    startsPerDay?: number;
+    endsPerDay?: number;
+  }[];
   threshold?: number;
 }
 
