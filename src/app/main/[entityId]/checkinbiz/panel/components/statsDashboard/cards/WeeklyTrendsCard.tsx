@@ -13,7 +13,7 @@ import {
 } from "recharts";
 import { useTranslations } from "next-intl";
 import { StatCard } from "../StatCard";
-import { defaultLabelFromKey, formatCurrency, formatHours, formatKpiEntries } from "../chartUtils";
+import { defaultLabelFromKey, defaultTooltipProps, formatCurrency, formatHours, formatKpiEntries } from "../chartUtils";
 import { useCheckbizStats, WeeklyTrend } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 
@@ -93,6 +93,7 @@ export const WeeklyTrendsCard = ({ entityId, branchId, from, to }: CheckbizCardP
           <XAxis dataKey="week" allowDuplicatedCategory={false} />
           <YAxis />
           <Tooltip
+            {...defaultTooltipProps}
             formatter={(value: number, name: string) => {
               if (name?.toString().toLowerCase().includes("costo")) return [formatCurrency(Number(value)), name];
               if (name?.toString().toLowerCase().includes("hora")) return [formatHours(Number(value)), name];

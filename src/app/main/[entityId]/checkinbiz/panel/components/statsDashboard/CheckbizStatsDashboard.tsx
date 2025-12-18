@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { useTranslations } from "next-intl";
 import GenericTabs from "@/components/common/tabs/GenericTabs";
 import { CheckbizCardProps } from "./cards/types";
@@ -20,9 +20,9 @@ import { WeeklyTrendsCard } from "./cards/WeeklyTrendsCard";
 import { HourlyDistributionCard } from "./cards/HourlyDistributionCard";
 import { SalaryEstimateCard } from "./cards/SalaryEstimateCard";
 
-interface DashboardProps extends CheckbizCardProps {
+type DashboardProps = CheckbizCardProps & {
   topN?: number;
-}
+};
 
 const GridLayout = ({ children }: { children: React.ReactNode }) => (
   <Box
@@ -42,7 +42,6 @@ export const CheckbizStatsDashboard = ({
   branchId,
   from,
   to,
-  topN = 5,
 }: DashboardProps) => {
   const t = useTranslations("statsDashboard");
   const tabs = useMemo(
@@ -119,7 +118,7 @@ export const CheckbizStatsDashboard = ({
         ),
       },
     ],
-    [branchId, entityId, from, t, to, topN]
+    [branchId, entityId, from, t, to]
   );
 
   return (

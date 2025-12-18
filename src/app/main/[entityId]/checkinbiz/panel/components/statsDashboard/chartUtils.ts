@@ -18,6 +18,19 @@ export const formatPercent = (value?: number, fractionToPercent = true) => {
   return `${base.toFixed(1)}%`;
 };
 
+export const defaultTooltipProps = {
+  wrapperStyle: { overflow: "visible", zIndex: 10 },
+  contentStyle: {
+    backgroundColor: "#fff",
+    border: "1px solid rgba(0,0,0,0.08)",
+    borderRadius: 12,
+    boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+    padding: "10px 12px",
+  },
+  labelStyle: { fontWeight: 600, color: "#111", marginBottom: 4 },
+  itemStyle: { padding: 0 },
+} as const;
+
 export const formatNumber = (value?: number | null, digits = 1) => {
   const numeric = typeof value === "string" ? Number(value) : value;
   if (numeric === undefined || numeric === null || Number.isNaN(numeric)) return "-";

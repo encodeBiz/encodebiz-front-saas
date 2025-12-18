@@ -13,7 +13,7 @@ import {
 import { useTranslations } from "next-intl";
 import React from "react";
 import { StatCard } from "../StatCard";
-import { defaultLabelFromKey, formatKpiEntries, formatPercent, hashBranchColor, normalizeSeriesNumbers } from "../chartUtils";
+import { defaultLabelFromKey, defaultTooltipProps, formatKpiEntries, formatPercent, hashBranchColor, normalizeSeriesNumbers } from "../chartUtils";
 import { BranchSeries, useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 
@@ -76,6 +76,7 @@ export const PunctualityCard = ({ entityId, branchId, from, to }: CheckbizCardPr
           />
           <YAxis yAxisId="right" orientation="right" />
           <Tooltip
+            {...defaultTooltipProps}
             formatter={(value: number, name: string) => {
               const isLate = name?.toString().toLowerCase().includes("late");
               return isLate

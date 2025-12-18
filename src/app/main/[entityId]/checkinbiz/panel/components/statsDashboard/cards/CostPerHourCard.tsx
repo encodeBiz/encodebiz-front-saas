@@ -12,7 +12,7 @@ import {
 } from "recharts";
 import { useTranslations } from "next-intl";
 import { StatCard } from "../StatCard";
-import { defaultLabelFromKey, formatCurrency, formatKpiEntries, hashBranchColor, normalizeSeriesNumbers } from "../chartUtils";
+import { defaultLabelFromKey, defaultTooltipProps, formatCurrency, formatKpiEntries, hashBranchColor, normalizeSeriesNumbers } from "../chartUtils";
 import { BranchSeries, useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 
@@ -67,6 +67,7 @@ export const CostPerHourCard = ({ entityId, branchId, from, to }: CheckbizCardPr
           <XAxis dataKey="date" type="category" allowDuplicatedCategory={false} />
           <YAxis domain={["dataMin", "dataMax"]} tickFormatter={(v) => formatCurrency(Number(v))} />
           <Tooltip
+            {...defaultTooltipProps}
             formatter={(value: number, name: string) => [formatCurrency(Number(value)), name]}
             labelFormatter={(label) => `Fecha: ${label}`}
           />

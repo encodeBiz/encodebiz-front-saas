@@ -12,7 +12,7 @@ import {
   Cell,
 } from "recharts";
 import { StatCard } from "../StatCard";
-import { defaultLabelFromKey, formatKpiEntries, formatPercent, hashBranchColor } from "../chartUtils";
+import { defaultLabelFromKey, defaultTooltipProps, formatKpiEntries, formatPercent, hashBranchColor } from "../chartUtils";
 import { BranchAggregate, useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 import { useTranslations } from "next-intl";
@@ -69,7 +69,7 @@ export const AbsenteeismCard = ({ entityId, branchId, from, to }: CheckbizCardPr
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <XAxis dataKey="branchName" />
           <YAxis />
-          <Tooltip />
+          <Tooltip {...defaultTooltipProps} />
           <Legend />
           <Bar dataKey="activeDays" name="Activos" stackId="days" radius={[6, 6, 0, 0]}>
             {dataset.map((item) => (

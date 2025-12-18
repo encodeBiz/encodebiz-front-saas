@@ -22,7 +22,6 @@ import { useFormStatus } from "@/hooks/useFormStatus";
 import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 import { ArrayToObject } from "@/lib/common/String";
 import WorkScheduleField from "@/components/common/forms/fields/WorkScheduleField";
-import { CheckboxListField } from "@/components/common/forms/fields/CheckboxListField";
 
 
 export default function useFormLinkController(onSuccess: () => void) {

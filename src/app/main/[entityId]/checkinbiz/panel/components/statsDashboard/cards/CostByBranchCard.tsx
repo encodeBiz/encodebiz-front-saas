@@ -12,7 +12,7 @@ import {
 } from "recharts";
 import { useTranslations } from "next-intl";
 import { StatCard } from "../StatCard";
-import { defaultLabelFromKey, formatCurrency, formatKpiEntries, hashBranchColor, normalizeSeriesNumbers } from "../chartUtils";
+import { defaultLabelFromKey, defaultTooltipProps, formatCurrency, formatKpiEntries, hashBranchColor, normalizeSeriesNumbers } from "../chartUtils";
 import { BranchSeries, useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 
@@ -72,6 +72,7 @@ export const CostByBranchCard = ({ entityId, branchId, from, to }: CheckbizCardP
             tickFormatter={(v) => formatCurrency(Number(v))}
           />
           <Tooltip
+            {...defaultTooltipProps}
             formatter={(value: number, name: string) => [formatCurrency(Number(value)), name]}
             labelFormatter={(label) => `Fecha: ${label}`}
           />

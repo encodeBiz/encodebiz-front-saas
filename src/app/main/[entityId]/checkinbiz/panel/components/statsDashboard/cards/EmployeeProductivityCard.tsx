@@ -12,7 +12,7 @@ import {
 } from "recharts";
 import { useTranslations } from "next-intl";
 import { StatCard } from "../StatCard";
-import { defaultLabelFromKey, formatCurrency, formatHours, formatKpiEntries } from "../chartUtils";
+import { defaultLabelFromKey, defaultTooltipProps, formatCurrency, formatHours, formatKpiEntries } from "../chartUtils";
 import { RankingItem, useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 
@@ -65,6 +65,7 @@ export const EmployeeProductivityCard = ({
           <XAxis type="number" />
           <YAxis dataKey="label" type="category" width={110} />
           <Tooltip
+            {...defaultTooltipProps}
             formatter={(value: number, name: string) => {
               if (name === "hours") return [formatHours(Number(value)), "Horas"];
               if (name === "cost") return [formatCurrency(Number(value)), "Costo"];

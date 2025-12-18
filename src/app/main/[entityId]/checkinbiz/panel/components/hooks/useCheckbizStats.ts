@@ -153,19 +153,19 @@ export function useCheckbizStats<T = unknown>(
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const requestKey = useMemo(() => (params ? JSON.stringify(params) : ""), [params]);
+  const paramsJson = useMemo(() => (params ? JSON.stringify(params) : ""), [params]);
 
   useEffect(() => {
-    if (!params) return;
+    if (!paramsJson) return;
     const controller = new AbortController();
     const run = async () => {
       setIsLoading(true);
       setError(null);
       try {
-        const res = await fetch("http://127.0.0.1:5001/encodebiz-services/us-central1/apiV100-firebaseEntryHttp-checkinbiz-checkbizStatsController", {
+        const res = await fetch("https://apiv100-firebaseentryhttp-checkinbiz-checkbizstat-jxvyznhhja-uc.a.run.app", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(params),
+          body: paramsJson,
           signal: controller.signal,
         });
         if (!res.ok) {
@@ -187,7 +187,7 @@ export function useCheckbizStats<T = unknown>(
     };
     run();
     return () => controller.abort();
-  }, [requestKey]);
+  }, [paramsJson]);
 
   return { data, isLoading, error };
 }

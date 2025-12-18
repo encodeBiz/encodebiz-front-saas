@@ -1,5 +1,5 @@
 'use client';
-import { Box, Container, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import { useTranslations } from "next-intl";
 import { GenericTable } from "@/components/common/table/GenericTable";
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';

@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  Box,
   Chip,
   FormControl,
   InputLabel,

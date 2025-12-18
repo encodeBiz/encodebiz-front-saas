@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import { CardContent, Typography, Box, List, ListItem, ListItemIcon, Divider } from '@mui/material';
+import { CardContent, Typography, Box, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useTranslations } from 'next-intl';
 import { IPlan } from '@/domain/core/IPlan';
@@ -11,7 +11,6 @@ import { CommonModalType } from '@/contexts/commonModalContext';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import SheetModalModal from '../modals/SheetModal';
 import { SassButton } from '../buttons/GenericButton';
-import { Cancel, CheckOutlined } from '@mui/icons-material';
 import { useAppLocale } from '@/hooks/useAppLocale';
 import ContactModalModal from '../modals/ContactModal/ContactModal';
 import { useLayout } from '@/hooks/useLayout';
@@ -49,7 +48,7 @@ export type PricingCardProps = IPlan & {
 
 export const PricingCard: React.FC<PricingCardProps> = (props) => {
     const t = useTranslations();
-    const { id, payPerUse, monthlyPrice, pricePerUse, description, name, highlighted = false, fromService, featuredList } = props;
+    const { id, payPerUse, monthlyPrice, pricePerUse, description, name, highlighted = false, fromService } = props;
     const { ubSubcribeAction, handleSubscripe } = usePricingCardController(id as string, name as string, fromService);
     const { navivateTo } = useLayout()
     const { currentLocale } = useAppLocale()

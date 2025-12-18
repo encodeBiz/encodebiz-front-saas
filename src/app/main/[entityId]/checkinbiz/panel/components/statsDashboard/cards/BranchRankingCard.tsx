@@ -12,7 +12,7 @@ import {
 } from "recharts";
 import { useTranslations } from "next-intl";
 import { StatCard } from "../StatCard";
-import { defaultLabelFromKey, formatKpiEntries, formatPercent, hashBranchColor } from "../chartUtils";
+import { defaultLabelFromKey, defaultTooltipProps, formatKpiEntries, formatPercent, hashBranchColor } from "../chartUtils";
 import { RankingItem, useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 
@@ -68,7 +68,8 @@ export const BranchRankingCard = ({
           <XAxis type="number" domain={[0, "auto"]} />
           <YAxis type="category" dataKey="label" width={110} />
           <Tooltip
-            formatter={(value: number, name: string, props) => {
+            {...defaultTooltipProps}
+            formatter={(value: number, name: string) => {
               if (name === "complianceRate") return [formatPercent(Number(value)), "Cumplimiento"];
               if (name === "suspectRate") return [formatPercent(Number(value)), "Sospecha"];
               return [value, "Score"];

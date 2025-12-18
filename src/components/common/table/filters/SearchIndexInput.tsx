@@ -5,7 +5,6 @@ import {
   FormControl,
   Autocomplete,
   ListItem,
-  ListItemIcon,
   TextField,
   ListItemText,
   CircularProgress,
@@ -165,7 +164,7 @@ const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type, la
           />
         )}
 
-        renderOption={(liProps, option, { selected }) => (
+        renderOption={(liProps, option) => (
           <ListItem {...liProps} key={option.id}>
             {/*selected && (
               <ListItemIcon>

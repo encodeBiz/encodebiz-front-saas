@@ -1,12 +1,9 @@
 import React from 'react';
 import {
-    Card,
-    CardContent,
     Typography,
     Box,
     Chip,
     Grid,
-    Divider,
     List,
     ListItem,
     ListItemText,
@@ -18,11 +15,7 @@ import {
 } from '@mui/material';
 import {
     AccessTime,
-    Schedule,
-    Notifications,
-    CheckCircle,
     Cancel,
-    Today,
     NotificationsOutlined,
     StopCircleOutlined,
     PlayCircleOutline,
@@ -57,8 +50,6 @@ interface WorkSchedule {
 
 interface WorkScheduleDetailProps {
     schedule: WorkSchedule;
-    title?: string;
-    showEmptyDays?: boolean;
     compact?: boolean;
     notifyBeforeMinutes?: number
     branch: ISucursal
@@ -172,8 +163,6 @@ const DayScheduleItem: React.FC<{
 // Componente principal
 const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
     schedule,
-    title = "Horario Laboral",
-    showEmptyDays = false,
     compact = false,
     notifyBeforeMinutes = 0,
     branch
@@ -224,11 +213,6 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
         if (minutes === 0) return `${hours} horas`;
         return `${hours}h ${minutes}min`;
     };
-
-    // Obtener días deshabilitados para mostrar mensaje
-    const disabledDays = daysConfig.filter(
-        day => !schedule[day.key]?.enabled
-    ).map(day => day.label);
 
     return (
         <Paper elevation={0} sx={{ p: 3 }}>

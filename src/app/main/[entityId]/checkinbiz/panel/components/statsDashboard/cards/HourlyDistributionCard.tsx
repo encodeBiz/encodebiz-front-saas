@@ -15,7 +15,7 @@ import {
 import { Box, Tab, Tabs, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { StatCard } from "../StatCard";
-import { defaultLabelFromKey, formatKpiEntries } from "../chartUtils";
+import { defaultLabelFromKey, defaultTooltipProps, formatKpiEntries } from "../chartUtils";
 import { HourlyDistribution, useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 import { useTranslations } from "next-intl";
@@ -23,13 +23,6 @@ import { useTranslations } from "next-intl";
 export const HourlyDistributionCard = ({ entityId, branchId, from, to }: CheckbizCardProps) => {
   const t = useTranslations("statsDashboard");
   const theme = useTheme();
-  const kpiLabel = (key: string) => {
-    try {
-      return t(`kpiLabels.${key}` as any);
-    } catch {
-      return defaultLabelFromKey(key);
-    }
-  };
   const { data, isLoading, error } = useCheckbizStats<HourlyDistribution[]>({
     entityId,
     branchId,
@@ -38,8 +31,16 @@ export const HourlyDistributionCard = ({ entityId, branchId, from, to }: Checkbi
     metric: "hourly_distribution",
     granularity: "hourly",
   });
+  const branches = useMemo(() => data?.dataset ?? [], [data?.dataset]);
+  const kpiLabel = (key: string) => {
+    try {
+      return t(`kpiLabels.${key}` as any);
+    } catch {
+      return defaultLabelFromKey(key);
+    }
+  };
 
-  const dataset = data?.dataset ?? [];
+  const dataset = branches;
   const [selectedBranch, setSelectedBranch] = useState(dataset[0]?.branchId);
 
   useEffect(() => {
@@ -90,6 +91,7 @@ export const HourlyDistributionCard = ({ entityId, branchId, from, to }: Checkbi
           <XAxis dataKey="hour" />
           <YAxis domain={[0, "dataMax"]} label={{ value: t("hourlyDistribution.axisLabel"), angle: -90, position: "insideLeft" }} />
           <Tooltip
+            {...defaultTooltipProps}
             formatter={(value: number, name: string) =>
               name.toLowerCase().includes("avg")
                 ? [`${Number(value).toFixed(2)} ${t("hourlyDistribution.people")}`, t("hourlyDistribution.avgEmployees")]
