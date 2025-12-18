@@ -829,6 +829,8 @@
     "updateRequestChanged": "Change made",
     "updateRequestDate": " Previous date and time",
     "updateRequestTime": " Current date and time",
+    "updateRequestStatus": "Current status",
+    "updateRequestPreviewStatus": "Previous status",
     "updateRequestReason": " Reason",
     "updateRequestValidate": " Validation",
     "updateRequestRequest": " Updated by",
@@ -1174,11 +1176,26 @@
     },
     "dateRangeFrom": "From",
     "dateRangeTo": "To",
-    "costByBranch": { "title": "Cost by branch", "subtitle": "Daily series by branch" },
-    "hoursByBranch": { "title": "Hours by branch", "subtitle": "Daily load by branch" },
-    "costPerHour": { "title": "Cost per hour", "subtitle": "Average unit cost" },
-    "costVsBudget": { "title": "Cost vs budget", "subtitle": "Compare actual vs expected cost" },
-    "suspectRates": { "title": "Suspect rates", "subtitle": "Daily distribution" },
+    "costByBranch": {
+      "title": "Cost by branch",
+      "subtitle": "Daily series by branch"
+    },
+    "hoursByBranch": {
+      "title": "Hours by branch",
+      "subtitle": "Daily load by branch"
+    },
+    "costPerHour": {
+      "title": "Cost per hour",
+      "subtitle": "Average unit cost"
+    },
+    "costVsBudget": {
+      "title": "Cost vs budget",
+      "subtitle": "Compare actual vs expected cost"
+    },
+    "suspectRates": {
+      "title": "Suspect rates",
+      "subtitle": "Daily distribution"
+    },
     "punctuality": {
       "title": "Punctuality",
       "subtitle": "On-time rate and delay minutes",
@@ -1189,15 +1206,41 @@
       "lateLabel": "late",
       "date": "Date"
     },
-    "extraHours": { "title": "Extra / deficit hours", "subtitle": "Daily comparison" },
-    "startEnd": { "title": "Start / end time", "subtitle": "Daily average per branch" },
-    "geoCompliance": { "title": "Geo compliance", "subtitle": "Average distance to expected point" },
-    "absenteeism": { "title": "Absenteeism", "subtitle": "Active vs inactive days" },
-    "shiftCompliance": { "title": "Shift compliance", "subtitle": "Daily rate by branch" },
-    "weeklyTrends": { "title": "Weekly trends", "subtitle": "Cost, hours and suspects per week" },
-    "employeeProductivity": { "title": "Employee productivity", "subtitle": "Top {topN} by cost/hour" },
-    "branchRanking": { "title": "Branch ranking", "subtitle": "Top {topN} by score" },
-    "hourlyDistribution": { "title": "Hourly distribution", "subtitle": "Coverage per hour of day",
+    "extraHours": {
+      "title": "Extra / deficit hours",
+      "subtitle": "Daily comparison"
+    },
+    "startEnd": {
+      "title": "Start / end time",
+      "subtitle": "Daily average per branch"
+    },
+    "geoCompliance": {
+      "title": "Geo compliance",
+      "subtitle": "Average distance to expected point"
+    },
+    "absenteeism": {
+      "title": "Absenteeism",
+      "subtitle": "Active vs inactive days"
+    },
+    "shiftCompliance": {
+      "title": "Shift compliance",
+      "subtitle": "Daily rate by branch"
+    },
+    "weeklyTrends": {
+      "title": "Weekly trends",
+      "subtitle": "Cost, hours and suspects per week"
+    },
+    "employeeProductivity": {
+      "title": "Employee productivity",
+      "subtitle": "Top {topN} by cost/hour"
+    },
+    "branchRanking": {
+      "title": "Branch ranking",
+      "subtitle": "Top {topN} by score"
+    },
+    "hourlyDistribution": {
+      "title": "Hourly distribution",
+      "subtitle": "Coverage per hour of day",
       "axisLabel": "Avg employees",
       "people": "people",
       "avgEmployees": "Avg employees",

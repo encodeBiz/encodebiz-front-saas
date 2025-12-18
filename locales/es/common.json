@@ -829,6 +829,8 @@
     "updateRequestChanged": "Cambio realizado",
     "updateRequestDate": " Fecha y hora anterior",
     "updateRequestTime": " Fecha y hora actual",
+    "updateRequestStatus":"Estado actual",
+    "updateRequestPreviewStatus":"Estado anterior",
     "updateRequestReason": " Motivo",
     "updateRequestValidate": " Validación",
     "updateRequestRequest": " Actualizado por",

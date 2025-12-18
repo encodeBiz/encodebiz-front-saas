@@ -76,7 +76,6 @@ export default function AttendanceList() {
         htmlDescription={<Box display={'flex'} flexDirection={'column'} gap={3}>
          
           <Box style={{ display: 'flex', gap: 1 }} flexDirection={'column'}>
-            <CustomChip role={'text'} small background={open.args?.item?.data?.status} label={t('core.label.'+open.args?.item?.data?.status)} />
             <Typography variant='body1' sx={{ fontSize: 16, color: "#48494C" }}>
               {open.args?.item?.data?.status==='valid'?t('attendance.updateRequestStatusOk'):t('attendance.updateRequestStatusError')}
             </Typography>
@@ -85,6 +84,32 @@ export default function AttendanceList() {
             <Typography variant='body1' sx={{ fontSize: 16, color: "#1C1B1D" }}>
               {t('attendance.updateRequestChanged')}
             </Typography>
+
+           
+
+             <ul style={{ marginLeft: -12, margin: 2 }} >
+              <li >
+                <Box style={{ display: 'flex', gap: 2 }}>
+                  <Typography variant='body1' sx={{ fontSize: 12, color: "#1C1B1D" }}>
+                     {t('attendance.updateRequestStatus')}:
+                  </Typography>
+                  <Typography variant='body1' sx={{ fontSize: 12, color: "#48494C", textTransform: 'capitalize' }}>
+                    {t('core.valid.'+ open.args?.item?.data?.status)}
+                  </Typography>
+                </Box>
+              </li>
+
+              <li >
+                <Box style={{ display: 'flex', gap: 2 }}>
+                  <Typography variant='body1' sx={{ fontSize: 12, color: "#1C1B1D" }}>
+                    {t('attendance.updateRequestPreviewStatus')}:
+                  </Typography>
+                  <Typography variant='body1' sx={{ fontSize: 12, color: "#48494C", textTransform: 'capitalize' }}>
+                    {t('core.valid.'+ open.args?.item?.previousStatus)}
+                  </Typography>
+                </Box>
+              </li>
+            </ul>
             <ul style={{ marginLeft: -12, margin: 2 }} >
               <li >
                 <Box style={{ display: 'flex', gap: 2 }}>

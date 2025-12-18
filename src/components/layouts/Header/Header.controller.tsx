@@ -41,7 +41,7 @@ export const useHeader = () => {
 
 
   const contextMenu = [
-    { label: <Typography >{t('layout.header.profile')}</Typography>, icon: <PersonOutline fontSize="small" />, action: () => { push(`/${MAIN_ROUTE}/${USER_ROUTE}/account`); handleMenuClose(); } },
+    { label: <Typography sx={{color:"#000000"}} >{t('layout.header.profile')}</Typography>, icon: <PersonOutline sx={{color:"#000000"}} fontSize="small" />, action: () => { push(`/${MAIN_ROUTE}/${USER_ROUTE}/account`); handleMenuClose(); } },
     {
       label: <Typography color="error">{t('layout.header.logout')}</Typography>,  icon: <LogoutIcon color="error" fontSize="small" />, action: () => {
         handleMenuClose();
