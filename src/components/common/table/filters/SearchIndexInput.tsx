@@ -10,7 +10,7 @@ import {
   ListItemText,
   CircularProgress,
 } from "@mui/material";
-import { CheckCircleOutline, SearchOutlined } from "@mui/icons-material";
+import { SearchOutlined } from "@mui/icons-material";
 import { fetchIndex } from "@/services/core/helper.service";
 import { useTranslations } from "next-intl";
 import { useEntity } from "@/hooks/useEntity";
@@ -167,11 +167,11 @@ const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type, la
 
         renderOption={(liProps, option, { selected }) => (
           <ListItem {...liProps} key={option.id}>
-            {selected && (
+            {/*selected && (
               <ListItemIcon>
                 <CheckCircleOutline />
               </ListItemIcon>
-            )}
+            )*/}
             {type === 'events' && <ListItemText key={option?.id} primary={option?.data?.fields['name']} />}
             {type !== 'events' && <ListItemText key={option.id} primary={option.label} />}
           </ListItem>

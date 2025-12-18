@@ -14,7 +14,7 @@ import { Column } from "@/components/common/table/GenericTable";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
-import { format_date, rmNDay } from "@/lib/common/Date";
+import { format_date, getDateRange } from "@/lib/common/Date";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 import { fetchSucursal, fetchSucursal as fetchSucursalData, search } from "@/services/checkinbiz/sucursal.service";
 import { Box } from "@mui/material";
@@ -24,9 +24,10 @@ import { onGoMap } from "@/lib/common/maps";
 import { Edit, MapOutlined } from "@mui/icons-material";
 import { CustomChip } from "@/components/common/table/CustomChip";
 import { useAppLocale } from "@/hooks/useAppLocale";
+import SearchFilter from "@/components/common/table/filters/SearchFilter";
 
 interface IFilterParams {
-  filter: { branchId: '', range: { start: any, end: any } | null },
+  filter: { branchId: string, status: string, range: { start: any, end: any } | null },
   params: {
     orderBy: string,
     orderDirection: 'desc' | 'asc',
@@ -93,12 +94,16 @@ export default function useEmployeeDetailController() {
   const [items, setItems] = useState<IChecklog[]>([]);
   const [itemsHistory, setItemsHistory] = useState<IChecklog[]>([]);
   const [filterParams, setFilterParams] = useState<any>({
-    filter: { branchId: 'none', range: { start: rmNDay(new Date(), 1), end: new Date() } },
+    filter: { branchId: 'none', range: { start: getDateRange('today').start, end: getDateRange('today').end }, status: 'valid' },
     startAfter: null,
     currentPage: 0,
     total: 0,
     params: {
-      filters: [],
+      filters: [
+        { field: 'timestamp', operator: '>=', value: getDateRange('today').start },
+        { field: 'timestamp', operator: '<=', value: getDateRange('today').end },
+        { field: 'status', operator: '==', value: 'valid' }
+      ],
       startAfter: null,
       limit: 5,
       orderBy: 'timestamp',
@@ -193,7 +198,7 @@ export default function useEmployeeDetailController() {
       id: 'branchId',
       label: t("core.label.branch"),
       minWidth: 170,
-      format: (value, row) => row.branch?.name??' - '
+      format: (value, row) => row.branch?.name ?? ' - '
     },
     {
       id: 'type',
@@ -212,7 +217,7 @@ export default function useEmployeeDetailController() {
       id: 'status',
       label: t("core.label.status"),
       minWidth: 170,
-      format: (value, row) => <CustomChip background={row.status} text={t("error." + row.failedCode)}
+      format: (value, row) => <CustomChip role={row.status == 'failed' ? 'button' : 'text'} background={row.status} text={row.status == 'failed' ? t("error." + row.failedCode) : null}
         size="small"
         label={t("core.label." + row.status)}
       />,
@@ -269,6 +274,14 @@ export default function useEmployeeDetailController() {
 
 
   const topFilter = <Box sx={{ display: 'flex', gap: 2 }}>
+    <SearchFilter
+      label={t('core.label.status')}
+      value={filterParams.filter.status}
+      onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, status: value } })}
+      options={[{ value: 'valid' as string, label: t('core.label.valid') }, { value: 'failed' as string, label: t('core.label.failed') }, { value: 'pending-employee-validation' as string, label: t('core.label.pending-employee-validation') }]}
+    />
+
+
     <DateRangePicker filter width='100%' value={filterParams.filter.range} onChange={(rg: { start: any, end: any }) => {
       onFilter({ ...filterParams, filter: { ...filterParams.filter, range: rg } })
     }} />

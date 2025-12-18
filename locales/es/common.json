@@ -300,7 +300,7 @@
       "accepTerm3": " y la",
       "accepTerm4": " Política de Privacidad",
       "billingEmail": "Email para gestionar los pagos",
-      "avatar": "Avatar",
+      "avatar": "Imagen de perfil",
       "sessionLastTime": "Último inicio de sesión",
       "createAt": "Fecha de creación",
       "logo": "Logotipo",
@@ -820,7 +820,7 @@
     "updateRequestTime": " Fecha y hora actual",
     "updateRequestReason": " Motivo",
     "updateRequestValidate": " Validación",
-    "updateRequestRequest": " Solicitud enviada por",
+    "updateRequestRequest": " Actualizado por",
     "updateRequestRequestDate":"Fecha de validación",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el reporte"
   },

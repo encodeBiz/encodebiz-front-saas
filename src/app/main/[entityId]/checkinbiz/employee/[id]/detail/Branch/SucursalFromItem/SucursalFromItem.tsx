@@ -42,7 +42,12 @@ export default function SucursalFromItem({ item, onEnd }: { item: EmployeeEntity
                         <FormGroup>
                             <FormControlLabel control={<Switch checked={active == 1} onChange={(e) => setActive(e.target.checked ? 1 : 0)} />} label={t('core.label.active')} />
                         </FormGroup>
-                        <IconButton color='error' onClick={() => openModal(CommonModalType.DELETE, { id: item.id, responsability: true })}><TrashIcon /></IconButton>
+                        <IconButton style={{
+                            width: 45,
+                            paddingLeft: 14,
+                            height: 45,
+                            paddingTop: 10
+                        }} color='error' onClick={() => openModal(CommonModalType.DELETE, { id: item.id, responsability: true })}><TrashIcon /></IconButton>
 
                     </Box>
                 </Box>
