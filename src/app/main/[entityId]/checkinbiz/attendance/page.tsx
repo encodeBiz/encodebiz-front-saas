@@ -127,7 +127,7 @@ export default function AttendanceList() {
                  {t('attendance.updateRequestRequest')}:
               </Typography>
               <Typography variant='body1' sx={{ fontSize: 12, color: "#48494C" }}>
-                {open.args?.item?.employee?.fullName}
+                {open.args?.item?.admin?.fullName}
               </Typography>
             </Box>
             <Box style={{ display: 'flex', gap: 2 }}>

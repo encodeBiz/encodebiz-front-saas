@@ -41,7 +41,7 @@ export const OperatingHours = () => {
         </Box>
 
         <Divider orientation="horizontal" flexItem />
-        <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'space-around'} gap={2} p={3}>
+        <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'space-between'} gap={2} p={3}>
             {indicatorList(t).filter(e => e.tag.includes('employee')).filter(e => cardIndicatorSelected.includes(e.id)).map((e, i) =>
                 <CardIndicatorData key={i} value={e.data(employeePatternList[0] as any)} icon={e.icon} label={e.label} />
             )}

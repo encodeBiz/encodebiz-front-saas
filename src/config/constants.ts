@@ -743,6 +743,7 @@ export const countriesCode = [
 
 export const fileTypes = (t: any) => [
 
+
   { label: t('core.label.logo'), value: 'logo', size: { w: 300, h: 300, locked: true, boxH: 160, boxW: 160 } },
   { label: t('core.label.background'), value: 'background', size: { w: 400, h: 400, locked: true, boxH: 160, boxW: 160 } },
   { label: t('core.label.stripImage'), value: 'stripImage', size: { w: 375, h: 98, locked: true, boxH: 123, boxW: 312 } },

@@ -168,7 +168,7 @@ export default function useEmployeeResponsabilityController(branchId: string) {
       id: 'phone',
       label: t("core.label.phone"),
       minWidth: 170,
-      onClick: (item: EmployeeEntityResponsibility) => onDetail(item),
+      onClick: (item: EmployeeEntityResponsibility) => onDetail(item.employee),
       format: (value, row) => row.employee?.phone
 
     },
@@ -177,7 +177,7 @@ export default function useEmployeeResponsabilityController(branchId: string) {
       id: 'responsibility',
       label: t("core.label.responsibility"),
       minWidth: 170,
-      onClick: (item: EmployeeEntityResponsibility) => onDetail(item),
+      onClick: (item: EmployeeEntityResponsibility) => onDetail(item.employee),
       format: (value, row) => t("core.label." + row.responsibility)
     },
 
@@ -185,7 +185,7 @@ export default function useEmployeeResponsabilityController(branchId: string) {
       id: 'job',
       label: t("core.label.job"),
       minWidth: 170,
-      onClick: (item: EmployeeEntityResponsibility) => onDetail(item),
+      onClick: (item: EmployeeEntityResponsibility) => onDetail(item.employee),
       format: (value, row) => row.job?.job
     },
 

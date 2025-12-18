@@ -20,13 +20,11 @@ export const Branch = () => {
 
     return <Paper elevation={0} sx={{ p: 3 }}>
         <Box gap={2} display={'flex'} flexDirection={'column'} mt={2}>
-            <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
-                <Box display={'flex'} justifyContent={'center'} gap={1} alignItems={'center'}>
-                    <Typography variant="subtitle1" gutterBottom textTransform={'uppercase'}>
-                        {t('core.label.sucursalAsigned')}
-                    </Typography>
-                    {pending && <CircularProgress size={20} color="inherit" />}
-                </Box>
+            <Box display={'flex'} justifyContent={'flex-end'} alignItems={'center'}>
+              {pending &&   <Box display={'flex'} justifyContent={'center'} gap={1} alignItems={'center'}>
+                    
+                    <CircularProgress size={20} color="inherit" />
+                </Box>}
 
                 <SassButton color="primary" variant="contained" onClick={addResponsabiltyItem} disabled={branchList.length == 0}>
                     {t('employee.linkBranch')}

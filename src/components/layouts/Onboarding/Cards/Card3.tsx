@@ -98,7 +98,7 @@ export const Card3 = ({ handleNext }: any) => {
             </Box>
         </Box>
 
-        <Box marginTop={10} display={'flex'} flexDirection={"row"} justifyContent={'flex-end'} alignItems={'flex-end'} gap={4}>
+        <Box marginTop={3} display={'flex'} flexDirection={"row"} justifyContent={'flex-end'} alignItems={'flex-end'} gap={4}>
             <SassButton sx={{ background: '#FFF', border: 0 }} size="small" onClick={handleNext} variant="outlined" color="primary">{t('cards.card3.text15')}</SassButton>
 
             <SassButton sx={{ width: '437px' }} size="small" onClick={() => {

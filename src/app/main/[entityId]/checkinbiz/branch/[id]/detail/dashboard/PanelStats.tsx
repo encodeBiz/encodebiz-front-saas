@@ -3,7 +3,7 @@ import BoxLoader from "@/components/common/BoxLoader";
 import HeaderPage from "@/components/features/dashboard/HeaderPage/HeaderPage";
 import { useEntity } from "@/hooks/useEntity";
 import { SettingsOutlined } from "@mui/icons-material";
-import { Container, Box, Typography, Popover } from "@mui/material";
+import { Container, Box, Typography, Popover, Divider } from "@mui/material";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 import { OperatingHours } from "./cards/OperatingHours";
@@ -58,21 +58,30 @@ export const PanelStats = () => {
   }
 
 
-  const InnetContent = () => <Box sx={{ minHeight: 600, p: 3 }}>
+  const InnetContent = () => <Box sx={{ minHeight: 600 }}>
 
     {pending && <BoxLoader message={t('statsCheckbiz.loading')} />}
 
-    {!pending && branchPatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5}>
-      <OperatingHours />
-    </Box>}
+    <Box sx={{ p: 3 }}>
+      {!pending && branchPatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5}>
+        <OperatingHours />
+      </Box>}
+    </Box>
 
-    {!pending && branchPatternList.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5}>
+    {!pending && branchPatternList.length > 0 && <Divider sx={{ mt: 2, mb: 2 }} flexItem variant="fullWidth" orientation="horizontal" />}
+
+
+    {!pending && branchPatternList.length > 0 && <Box sx={{ p: 3 }} display={'flex'} flexDirection={'column'} gap={5}>
       <TempActivity />
     </Box>}
 
-    {!pending && heuristic.length > 0 && <Box display={'flex'} flexDirection={'column'} gap={5} pt={5}>
+    {!pending && heuristic.length > 0 && <Divider sx={{ mt: 2, mb: 2 }} flexItem variant="fullWidth" orientation="horizontal" />
+    }
+
+    {!pending && heuristic.length > 0 && <Box sx={{ p: 3 }} display={'flex'} flexDirection={'column'} gap={5} pt={5}>
       <HeuristicAnalize />
     </Box>}
+
 
 
 

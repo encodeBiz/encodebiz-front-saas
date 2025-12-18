@@ -238,7 +238,12 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
 
 
 
-
+            {branch?.advance && <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={4} alignItems={'flex-start'}>
+                <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'} alignItems={'flex-start'}>
+                    <DetailText orientation="row" label={t('core.label.breakTimeRange')} value={branch?.advance?.timeBreak + ' ' + t('core.label.minutes')} />
+                    <DetailText help={branch?.advance?.disableBreak ? t('sucursal.disableBreakAlertMessageE') : t('sucursal.disableBreakAlertMessageD')} label={!branch?.advance?.disableBreak ? t('sucursal.breakDisabledText') : t('sucursal.breakEnableText')} />
+                </Box>
+            </Box>}
             <Box sx={{ mb: compact ? 2 : 3 }}>
                 <Stack
                     direction="row"
@@ -246,14 +251,14 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
                     alignItems="center"
                     spacing={2}
                 >
-                
+
                     <Box display={'flex'} alignItems={'center'} gap={2}>
                         <DetailText help={branch?.advance?.enableDayTimeRange ? t('sucursal.dayTimeRangeAlertMessageE') : t('sucursal.dayTimeRangeAlertMessageD')} label={branch?.advance?.enableDayTimeRange ? t('sucursal.dayTimeRangeEnableText') : t('sucursal.dayTimeRangeDisabledText')} />
-                        
+
                     </Box>
                 </Stack>
 
-             </Box>
+            </Box>
             {!branch.advance?.workScheduleEnable && <Box display={'flex'} flexDirection={'column'} justifyContent={'flex-start'} alignItems={'flex-start'}>
                 <DetailText orientation="row" label={t('core.label.dayTimeRange')} value={((branch?.advance?.startTimeWorkingDay?.hour as number) < 10 ? '0' + branch?.advance?.startTimeWorkingDay?.hour : branch?.advance?.startTimeWorkingDay?.hour) + ':' + ((branch?.advance?.startTimeWorkingDay?.minute as number) < 10 ? '0' + branch?.advance?.startTimeWorkingDay?.minute : branch?.advance?.startTimeWorkingDay?.minute) + ' - ' + ((branch?.advance?.endTimeWorkingDay?.hour as number) < 10 ? '0' + branch?.advance?.endTimeWorkingDay?.hour : branch?.advance?.endTimeWorkingDay?.hour) + ':' + ((branch?.advance?.endTimeWorkingDay?.minute as number) < 10 ? '0' + branch?.advance?.endTimeWorkingDay?.minute : branch?.advance?.endTimeWorkingDay?.minute)} />
             </Box>}
@@ -337,7 +342,7 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
                     </Alert>
                 )}
 
-                
+
             </>}
 
         </Paper>

@@ -13,7 +13,7 @@ export interface IChecklog {
     }
     timestamp?: any
     userAgent?: any
-    status: 'valid' | "failed"
+    status: 'valid' | "failed" | 'pending-employee-validation'
     failedCode?: string
 
     reason?: string

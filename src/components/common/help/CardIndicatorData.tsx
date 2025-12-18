@@ -15,7 +15,7 @@ function safeSum(arr: any) {
 }
 
 export const CardIndicatorData = ({ icon, label, value }: { icon: ReactNode, label: string, value: any }) => <Box sx={{
-    width: 221, minHeight: 67, borderRadius: 2, border: (theme) => '1px solid ' + theme.palette.primary.main
+    width: 221, minHeight: 78, borderRadius: 2, border: (theme) => '1px solid ' + theme.palette.primary.main
 }} display={'flex'} flexDirection={'row'} alignItems={'center'} gap={2} p={1} px={2} >
     <Box sx={{
         background: 'rgba(40, 81, 205, 0.1)',
