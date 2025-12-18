@@ -94,7 +94,7 @@ export default function AttendanceList() {
                      {t('attendance.updateRequestStatus')}:
                   </Typography>
                   <Typography variant='body1' sx={{ fontSize: 12, color: "#48494C", textTransform: 'capitalize' }}>
-                    {t('core.valid.'+ open.args?.item?.data?.status)}
+                    {t('core.label.'+ open.args?.item?.data?.status)}
                   </Typography>
                 </Box>
               </li>
@@ -105,7 +105,7 @@ export default function AttendanceList() {
                     {t('attendance.updateRequestPreviewStatus')}:
                   </Typography>
                   <Typography variant='body1' sx={{ fontSize: 12, color: "#48494C", textTransform: 'capitalize' }}>
-                    {t('core.valid.'+ open.args?.item?.previousStatus)}
+                    {t('core.label.'+ open.args?.item?.previousStatus)}
                   </Typography>
                 </Box>
               </li>
@@ -128,7 +128,7 @@ export default function AttendanceList() {
                     {t('attendance.updateRequestTime')}:
                   </Typography>
                   <Typography variant='body1' sx={{ fontSize: 12, color: "#48494C", textTransform: 'capitalize' }}>
-                    {format_date(open.args?.item?.createdAt)}
+                    {format_date(open.args?.item?.data?.timestamp)}
                   </Typography>
                 </Box>
               </li>
