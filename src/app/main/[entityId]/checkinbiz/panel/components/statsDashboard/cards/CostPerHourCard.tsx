@@ -12,12 +12,19 @@ import {
 } from "recharts";
 import { useTranslations } from "next-intl";
 import { StatCard } from "../StatCard";
-import { formatCurrency, formatKpiEntries, hashBranchColor, normalizeSeriesNumbers } from "../chartUtils";
+import { defaultLabelFromKey, formatCurrency, formatKpiEntries, hashBranchColor, normalizeSeriesNumbers } from "../chartUtils";
 import { BranchSeries, useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 
 export const CostPerHourCard = ({ entityId, branchId, from, to }: CheckbizCardProps) => {
   const t = useTranslations("statsDashboard");
+  const kpiLabel = (key: string) => {
+    try {
+      return t(`kpiLabels.${key}` as any);
+    } catch {
+      return defaultLabelFromKey(key);
+    }
+  };
   const { data, isLoading, error } = useCheckbizStats<BranchSeries[]>({
     entityId,
     branchId,
@@ -31,14 +38,13 @@ export const CostPerHourCard = ({ entityId, branchId, from, to }: CheckbizCardPr
   const averages =
     series.map((branch) => ({
       branchId: branch.branchId,
+      branchName: branch.branchName ?? branch.branchId,
       avg:
         branch.points.reduce((acc, p) => acc + (p.costPerHour ?? 0), 0) /
         (branch.points.length || 1),
     }));
 
-  const branchIds = averages.map((item) => item.branchId);
-
-  const apiKpis = formatKpiEntries(data?.kpis);
+  const apiKpis = formatKpiEntries(data?.kpis, kpiLabel);
 
   return (
     <StatCard
@@ -49,10 +55,11 @@ export const CostPerHourCard = ({ entityId, branchId, from, to }: CheckbizCardPr
       kpis={[
         ...apiKpis,
         ...averages.map((item) => ({
-          label: item.branchId,
+          label: item.branchName,
           value: formatCurrency(item.avg),
         })),
       ]}
+      infoText={t("descriptions.costPerHour")}
     >
       <ResponsiveContainer width="100%" height={260}>
         <AreaChart>

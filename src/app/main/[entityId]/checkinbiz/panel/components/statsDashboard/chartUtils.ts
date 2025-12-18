@@ -4,7 +4,7 @@ import { BranchSeries, BranchSeriesPoint } from "../hooks/useCheckbizStats";
 
 export const formatCurrency = (value?: number) => {
   if (value === undefined || Number.isNaN(value)) return "-";
-  return `${value.toFixed(0)} $`;
+  return `¤ ${value.toFixed(0)}`;
 };
 
 export const formatHours = (value?: number) => {
@@ -51,15 +51,20 @@ export const mergeBranchSeries = (
   return Array.from(map.values()).sort((a, b) => `${a.date}`.localeCompare(`${b.date}`));
 };
 
-export const formatKpiEntries = (kpis?: Record<string, number | string | null>) => {
+export const defaultLabelFromKey = (key: string) => key.replace(/([A-Z])/g, " $1").trim();
+
+export const formatKpiEntries = (
+  kpis?: Record<string, number | string | null>,
+  translateLabel?: (key: string) => string,
+) => {
   if (!kpis) return [];
   const entries = Object.entries(kpis);
   return entries.map(([key, value]) => {
     if (value === null || value === undefined || Number.isNaN(Number(value))) {
-      return { label: key.replace(/([A-Z])/g, " $1").trim(), value: "-" };
+      return { label: translateLabel ? translateLabel(key) : defaultLabelFromKey(key), value: "-" };
     }
     const lower = key.toLowerCase();
-    const label = key.replace(/([A-Z])/g, " $1").trim();
+    const label = translateLabel ? translateLabel(key) : defaultLabelFromKey(key);
     if (lower.includes("cost") || lower.includes("budget")) {
       return { label, value: formatCurrency(value) };
     }

@@ -13,12 +13,20 @@ import {
 import { useTranslations } from "next-intl";
 import React from "react";
 import { StatCard } from "../StatCard";
-import { formatKpiEntries, formatPercent, hashBranchColor, normalizeSeriesNumbers } from "../chartUtils";
+import { defaultLabelFromKey, formatKpiEntries, formatPercent, hashBranchColor, normalizeSeriesNumbers } from "../chartUtils";
 import { BranchSeries, useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 
 export const PunctualityCard = ({ entityId, branchId, from, to }: CheckbizCardProps) => {
   const t = useTranslations("statsDashboard");
+  const tp = useTranslations("statsDashboard.punctuality");
+  const kpiLabel = (key: string) => {
+    try {
+      return t(`kpiLabels.${key}` as any);
+    } catch {
+      return defaultLabelFromKey(key);
+    }
+  };
   const { data, isLoading, error } = useCheckbizStats<BranchSeries[]>({
     entityId,
     branchId,
@@ -42,7 +50,7 @@ export const PunctualityCard = ({ entityId, branchId, from, to }: CheckbizCardPr
       0,
     ) /
     (series.reduce((acc, branch) => acc + branch.points.length, 0) || 1);
-  const apiKpis = formatKpiEntries(data?.kpis);
+  const apiKpis = formatKpiEntries(data?.kpis, kpiLabel);
 
   return (
     <StatCard
@@ -52,9 +60,10 @@ export const PunctualityCard = ({ entityId, branchId, from, to }: CheckbizCardPr
       error={error}
       kpis={[
         ...apiKpis,
-        { label: "On-time rate", value: formatPercent(onTimeAverage) },
-        { label: "Min. atraso prom.", value: `${lateAverage.toFixed(1)} min` },
+        { label: tp("avgOnTimeRate"), value: formatPercent(onTimeAverage) },
+        { label: tp("avgDelayMinutes"), value: `${lateAverage.toFixed(1)} ${tp("minutes")}` },
       ]}
+      infoText={t("descriptions.punctuality")}
     >
       <ResponsiveContainer width="100%" height={320}>
         <LineChart>
@@ -69,9 +78,11 @@ export const PunctualityCard = ({ entityId, branchId, from, to }: CheckbizCardPr
           <Tooltip
             formatter={(value: number, name: string) => {
               const isLate = name?.toString().toLowerCase().includes("late");
-              return isLate ? [`${Number(value).toFixed(1)} min`, "Atraso"] : [formatPercent(Number(value)), name];
+              return isLate
+                ? [`${Number(value).toFixed(1)} ${tp("minutes")}`, tp("lateLabel")]
+                : [formatPercent(Number(value)), tp("onTimeLabel")];
             }}
-            labelFormatter={(label) => `Fecha: ${label}`}
+            labelFormatter={(label) => `${tp("date")}: ${label}`}
           />
           <Legend />
           {series.map((branch) => {
@@ -82,7 +93,7 @@ export const PunctualityCard = ({ entityId, branchId, from, to }: CheckbizCardPr
                   type="monotone"
                   data={branch.points}
                   dataKey="onTimeRate"
-                  name={`${label} on-time`}
+                  name={`${label} ${tp("onTimeLabel")}`}
                   yAxisId="left"
                   stroke={hashBranchColor(branch.branchId)}
                   strokeWidth={2}
@@ -92,7 +103,7 @@ export const PunctualityCard = ({ entityId, branchId, from, to }: CheckbizCardPr
                   type="monotone"
                   data={branch.points}
                   dataKey="avgLateMinutes"
-                  name={`${label} late (min)`}
+                  name={`${label} ${tp("lateLabel")}`}
                   yAxisId="right"
                   stroke="#ff7043"
                   strokeDasharray="4 2"

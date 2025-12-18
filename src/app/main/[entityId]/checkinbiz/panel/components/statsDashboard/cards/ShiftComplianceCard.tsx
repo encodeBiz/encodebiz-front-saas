@@ -11,13 +11,21 @@ import {
   YAxis,
 } from "recharts";
 import { StatCard } from "../StatCard";
-import { formatKpiEntries, formatPercent, hashBranchColor, normalizeSeriesNumbers } from "../chartUtils";
+import { defaultLabelFromKey, formatKpiEntries, formatPercent, hashBranchColor, normalizeSeriesNumbers } from "../chartUtils";
 import { BranchSeries, useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 import { useTranslations } from "next-intl";
 
 export const ShiftComplianceCard = ({ entityId, branchId, from, to }: CheckbizCardProps) => {
   const t = useTranslations("statsDashboard");
+  const tkpi = useTranslations("statsDashboard.kpiLabels");
+  const kpiLabel = (key: string) => {
+    try {
+      return t(`kpiLabels.${key}` as any);
+    } catch {
+      return defaultLabelFromKey(key);
+    }
+  };
   const { data, isLoading, error } = useCheckbizStats<BranchSeries[]>({
     entityId,
     branchId,
@@ -33,7 +41,7 @@ export const ShiftComplianceCard = ({ entityId, branchId, from, to }: CheckbizCa
       (acc, branch) => acc + branch.points.reduce((sum, p) => sum + (p.complianceRate ?? 0), 0),
       0,
     ) / (series.reduce((acc, branch) => acc + branch.points.length, 0) || 1);
-  const apiKpis = formatKpiEntries(data?.kpis);
+  const apiKpis = formatKpiEntries(data?.kpis, kpiLabel);
 
   return (
     <StatCard
@@ -41,7 +49,11 @@ export const ShiftComplianceCard = ({ entityId, branchId, from, to }: CheckbizCa
       subtitle={t("shiftCompliance.subtitle")}
       isLoading={isLoading}
       error={error}
-      kpis={[...apiKpis, { label: "Promedio", value: formatPercent(average) }]}
+      kpis={[
+        ...apiKpis,
+        { label: tkpi("avgCompliance"), value: formatPercent(average) },
+      ]}
+      infoText={t("descriptions.shiftCompliance")}
     >
       <ResponsiveContainer width="100%" height={220}>
         <LineChart>

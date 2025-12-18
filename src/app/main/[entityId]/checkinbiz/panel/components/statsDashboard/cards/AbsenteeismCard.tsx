@@ -12,13 +12,21 @@ import {
   Cell,
 } from "recharts";
 import { StatCard } from "../StatCard";
-import { formatKpiEntries, formatPercent, hashBranchColor } from "../chartUtils";
+import { defaultLabelFromKey, formatKpiEntries, formatPercent, hashBranchColor } from "../chartUtils";
 import { BranchAggregate, useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 import { useTranslations } from "next-intl";
 
+// Ausentismo: removido temporalmente (bajo valor)
 export const AbsenteeismCard = ({ entityId, branchId, from, to }: CheckbizCardProps) => {
   const t = useTranslations("statsDashboard");
+  const kpiLabel = (key: string) => {
+    try {
+      return t(`kpiLabels.${key}` as any);
+    } catch {
+      return defaultLabelFromKey(key);
+    }
+  };
   const { data, isLoading, error } = useCheckbizStats<BranchAggregate[]>({
     entityId,
     branchId,
@@ -40,7 +48,7 @@ export const AbsenteeismCard = ({ entityId, branchId, from, to }: CheckbizCardPr
   );
 
   const averageRate = dataset.length ? totals.rate / dataset.length : 0;
-  const apiKpis = formatKpiEntries(data?.kpis);
+  const apiKpis = formatKpiEntries(data?.kpis, kpiLabel);
 
   return (
     <StatCard
@@ -54,6 +62,7 @@ export const AbsenteeismCard = ({ entityId, branchId, from, to }: CheckbizCardPr
         { label: "Dias inactivos", value: totals.inactive.toString() },
         { label: "Actividad", value: formatPercent(averageRate) },
       ]}
+      infoText={t("descriptions.absenteeism")}
     >
       <ResponsiveContainer width="100%" height={260}>
         <BarChart data={dataset}>

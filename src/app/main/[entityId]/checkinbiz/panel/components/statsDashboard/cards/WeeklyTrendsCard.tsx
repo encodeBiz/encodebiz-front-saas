@@ -13,12 +13,19 @@ import {
 } from "recharts";
 import { useTranslations } from "next-intl";
 import { StatCard } from "../StatCard";
-import { formatCurrency, formatHours, formatKpiEntries } from "../chartUtils";
+import { defaultLabelFromKey, formatCurrency, formatHours, formatKpiEntries } from "../chartUtils";
 import { useCheckbizStats, WeeklyTrend } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 
 export const WeeklyTrendsCard = ({ entityId, branchId, from, to }: CheckbizCardProps) => {
   const t = useTranslations("statsDashboard");
+  const kpiLabel = (key: string) => {
+    try {
+      return t(`kpiLabels.${key}` as any);
+    } catch {
+      return defaultLabelFromKey(key);
+    }
+  };
   const { data, isLoading, error } = useCheckbizStats<WeeklyTrend[]>({
     entityId,
     branchId,
@@ -37,7 +44,7 @@ export const WeeklyTrendsCard = ({ entityId, branchId, from, to }: CheckbizCardP
     }),
     { cost: 0, hours: 0, suspects: 0 },
   );
-  const apiKpis = formatKpiEntries(data?.kpis);
+  const apiKpis = formatKpiEntries(data?.kpis, kpiLabel);
 
   const branchIds = Array.from(
     new Set(
@@ -78,6 +85,7 @@ export const WeeklyTrendsCard = ({ entityId, branchId, from, to }: CheckbizCardP
         { label: "Horas", value: formatHours(totals.hours) },
         { label: "Sospechas", value: totals.suspects.toString() },
       ]}
+      infoText={t("descriptions.weeklyTrends")}
     >
       <ResponsiveContainer width="100%" height={260}>
         <LineChart>

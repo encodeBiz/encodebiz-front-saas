@@ -1,34 +1,30 @@
 'use client';
 
-import { Box } from "@mui/material";
+import { useMemo } from "react";
+import { Box, Typography } from "@mui/material";
+import { useTranslations } from "next-intl";
+import GenericTabs from "@/components/common/tabs/GenericTabs";
 import { CheckbizCardProps } from "./cards/types";
 import { CostByBranchCard } from "./cards/CostByBranchCard";
 import { HoursByBranchCard } from "./cards/HoursByBranchCard";
 import { CostPerHourCard } from "./cards/CostPerHourCard";
-import { CostVsBudgetCard } from "./cards/CostVsBudgetCard";
 import { SuspectRatesCard } from "./cards/SuspectRatesCard";
 import { StartEndTimesCard } from "./cards/StartEndTimesCard";
 import { GeoComplianceCard } from "./cards/GeoComplianceCard";
-import { AbsenteeismCard } from "./cards/AbsenteeismCard";
+// import { AbsenteeismCard } from "./cards/AbsenteeismCard";
 import { PunctualityCard } from "./cards/PunctualityCard";
 import { ExtraHoursCard } from "./cards/ExtraHoursCard";
 import { ShiftComplianceCard } from "./cards/ShiftComplianceCard";
 import { WeeklyTrendsCard } from "./cards/WeeklyTrendsCard";
-import { EmployeeProductivityCard } from "./cards/EmployeeProductivityCard";
-import { BranchRankingCard } from "./cards/BranchRankingCard";
+// import { EmployeeProductivityCard } from "./cards/EmployeeProductivityCard";
 import { HourlyDistributionCard } from "./cards/HourlyDistributionCard";
+import { SalaryEstimateCard } from "./cards/SalaryEstimateCard";
 
 interface DashboardProps extends CheckbizCardProps {
   topN?: number;
 }
 
-export const CheckbizStatsDashboard = ({
-  entityId,
-  branchId,
-  from,
-  to,
-  topN = 5,
-}: DashboardProps) => (
+const GridLayout = ({ children }: { children: React.ReactNode }) => (
   <Box
     sx={{
       display: "grid",
@@ -37,59 +33,99 @@ export const CheckbizStatsDashboard = ({
       width: "100%",
     }}
   >
-    <Box sx={{ gridColumn: "1 / -1" }}>
-      <CostByBranchCard entityId={entityId} branchId={branchId} from={from} to={to} />
-    </Box>
-    <Box>
-      <HoursByBranchCard entityId={entityId} branchId={branchId} from={from} to={to} />
-    </Box>
-    <Box>
-      <CostPerHourCard entityId={entityId} branchId={branchId} from={from} to={to} />
-    </Box>
-    {/* <Box>
-      <CostVsBudgetCard entityId={entityId} branchId={branchId} from={from} to={to} />
-    </Box> */}
-    {/* <Box>
-      <WeeklyTrendsCard entityId={entityId} branchId={branchId} from={from} to={to} />
-    </Box> */}
-    <Box sx={{ gridColumn: "1 / -1" }}>
-      <SuspectRatesCard entityId={entityId} branchId={branchId} from={from} to={to} />
-    </Box>
-    <Box>
-      <WeeklyTrendsCard entityId={entityId} branchId={branchId} from={from} to={to} />
-    </Box>
-    <Box>
-      <PunctualityCard entityId={entityId} branchId={branchId} from={from} to={to} />
-    </Box>
-    <Box>
-      <ExtraHoursCard entityId={entityId} branchId={branchId} from={from} to={to} />
-    </Box>
-    <Box>
-      <StartEndTimesCard entityId={entityId} branchId={branchId} from={from} to={to} />
-    </Box>
-    <Box>
-      <GeoComplianceCard entityId={entityId} branchId={branchId} from={from} to={to} />
-    </Box>
-    <Box>
-      <AbsenteeismCard entityId={entityId} branchId={branchId} from={from} to={to} />
-    </Box>
-    <Box>
-      <ShiftComplianceCard entityId={entityId} branchId={branchId} from={from} to={to} />
-    </Box>
-    <Box>
-      <EmployeeProductivityCard
-        entityId={entityId}
-        branchId={branchId}
-        from={from}
-        to={to}
-        topN={topN}
-      />
-    </Box>
-    {/* <Box>
-      <BranchRankingCard entityId={entityId} branchId={branchId} from={from} to={to} topN={topN} />
-    </Box> */}
-    <Box sx={{ gridColumn: "1 / -1" }}>
-      <HourlyDistributionCard entityId={entityId} branchId={branchId} from={from} to={to} />
-    </Box>
+    {children}
   </Box>
 );
+
+export const CheckbizStatsDashboard = ({
+  entityId,
+  branchId,
+  from,
+  to,
+  topN = 5,
+}: DashboardProps) => {
+  const t = useTranslations("statsDashboard");
+  const tabs = useMemo(
+    () => [
+      {
+        id: "costs",
+        label: t("tabs.costs"),
+        content: (
+          <GridLayout>
+            <Box sx={{ gridColumn: "1 / -1" }}>
+              <CostByBranchCard entityId={entityId} branchId={branchId} from={from} to={to} />
+            </Box>
+            <Box>
+              <HoursByBranchCard entityId={entityId} branchId={branchId} from={from} to={to} />
+            </Box>
+            <Box>
+              <CostPerHourCard entityId={entityId} branchId={branchId} from={from} to={to} />
+            </Box>
+            <Box sx={{ gridColumn: "1 / -1" }}>
+              <WeeklyTrendsCard entityId={entityId} branchId={branchId} from={from} to={to} />
+            </Box>
+            {/* <Box>
+              <CostVsBudgetCard entityId={entityId} branchId={branchId} from={from} to={to} />
+            </Box> */}
+          </GridLayout>
+        ),
+      },
+      {
+        id: "compliance",
+        label: t("tabs.compliance"),
+        content: (
+          <GridLayout>
+            <Box sx={{ gridColumn: "1 / -1" }}>
+              <SuspectRatesCard entityId={entityId} branchId={branchId} from={from} to={to} />
+            </Box>
+            <Box sx={{ gridColumn: "1 / -1" }}>
+              <PunctualityCard entityId={entityId} branchId={branchId} from={from} to={to} />
+            </Box>
+            <Box>
+              <StartEndTimesCard entityId={entityId} branchId={branchId} from={from} to={to} />
+            </Box>
+            <Box>
+              <GeoComplianceCard entityId={entityId} branchId={branchId} from={from} to={to} />
+            </Box>
+            <Box>
+              <ShiftComplianceCard entityId={entityId} branchId={branchId} from={from} to={to} />
+            </Box>
+          </GridLayout>
+        ),
+      },
+      {
+        id: "time",
+        label: t("tabs.time"),
+        content: (
+          <GridLayout>
+            <Box sx={{ gridColumn: "1 / -1" }}>
+              <ExtraHoursCard entityId={entityId} branchId={branchId} from={from} to={to} />
+            </Box>
+            <Box sx={{ gridColumn: "1 / -1" }}>
+              <HourlyDistributionCard entityId={entityId} branchId={branchId} from={from} to={to} />
+            </Box>
+          </GridLayout>
+        ),
+      },
+      {
+        id: "salary",
+        label: t("tabs.salaryEstimation"),
+        content: (
+          <Box sx={{ width: "100%" }}>
+            <SalaryEstimateCard entityId={entityId} branchId={branchId} from={from} to={to} />
+          </Box>
+        ),
+      },
+    ],
+    [branchId, entityId, from, t, to, topN]
+  );
+
+  return (
+    <GenericTabs
+      tabs={tabs}
+      scrollable
+      sx={{ width: "100%" }}
+      syncUrl={false}
+    />
+  );
+};

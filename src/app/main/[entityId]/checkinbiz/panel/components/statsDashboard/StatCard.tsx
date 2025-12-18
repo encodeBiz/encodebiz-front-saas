@@ -1,6 +1,7 @@
 'use client';
 
-import { Alert, Box, Card, CardContent, Skeleton, Stack, Typography } from "@mui/material";
+import { Alert, Box, Card, CardContent, Skeleton, Stack, Typography, Tooltip, IconButton } from "@mui/material";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { ReactNode } from "react";
 
 interface StatCardProps {
@@ -10,6 +11,7 @@ interface StatCardProps {
   error?: Error | null;
   kpis?: { label: string; value: string }[];
   action?: ReactNode;
+  infoText?: ReactNode;
   children?: ReactNode;
 }
 
@@ -20,6 +22,7 @@ export const StatCard = ({
   error,
   kpis,
   action,
+  infoText,
   children,
 }: StatCardProps) => (
   <Card sx={{ height: "100%", width: '100%' }}>
@@ -33,7 +36,16 @@ export const StatCard = ({
             </Typography>
           )}
         </Box>
-        {action}
+        <Stack direction="row" spacing={1} alignItems="center">
+          {infoText && (
+            <Tooltip title={infoText} placement="left" arrow>
+              <IconButton size="small" color="default">
+                <HelpOutlineIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          )}
+          {action}
+        </Stack>
       </Box>
       {isLoading && (
         <Box display="flex" flexDirection="column" gap={2}>
@@ -47,8 +59,8 @@ export const StatCard = ({
         <>
           {kpis && kpis.length > 0 && (
             <Stack direction="row" spacing={3} rowGap={1.5} flexWrap="wrap">
-              {kpis.map((kpi) => (
-                <Box key={kpi.label} display="flex" flexDirection="column">
+              {kpis.map((kpi, idx) => (
+                <Box key={`${kpi.label}-${idx}`} display="flex" flexDirection="column">
                   <Typography variant="body2" color="text.secondary">
                     {kpi.label}
                   </Typography>

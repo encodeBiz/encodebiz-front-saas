@@ -12,7 +12,7 @@ import {
 } from "recharts";
 import { useTranslations } from "next-intl";
 import { StatCard } from "../StatCard";
-import { formatKpiEntries, formatPercent, hashBranchColor } from "../chartUtils";
+import { defaultLabelFromKey, formatKpiEntries, formatPercent, hashBranchColor } from "../chartUtils";
 import { RankingItem, useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 
@@ -28,6 +28,13 @@ export const BranchRankingCard = ({
   topN = 5,
 }: BranchRankingProps) => {
   const t = useTranslations("statsDashboard");
+  const kpiLabel = (key: string) => {
+    try {
+      return t(`kpiLabels.${key}` as any);
+    } catch {
+      return defaultLabelFromKey(key);
+    }
+  };
   const { data, isLoading, error } = useCheckbizStats<RankingItem[]>({
     entityId,
     branchId,
@@ -45,7 +52,7 @@ export const BranchRankingCard = ({
       ...item,
       label: item.branchName ?? item.branchId ?? "",
     }));
-  const apiKpis = formatKpiEntries(data?.kpis);
+  const apiKpis = formatKpiEntries(data?.kpis, kpiLabel);
 
   return (
     <StatCard

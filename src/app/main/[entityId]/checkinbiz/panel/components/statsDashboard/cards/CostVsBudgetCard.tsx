@@ -14,12 +14,19 @@ import {
 } from "recharts";
 import { useTranslations } from "next-intl";
 import { StatCard } from "../StatCard";
-import { formatCurrency, formatKpiEntries, formatPercent, hashBranchColor, normalizeSeriesNumbers } from "../chartUtils";
+import { defaultLabelFromKey, formatCurrency, formatKpiEntries, formatPercent, hashBranchColor, normalizeSeriesNumbers } from "../chartUtils";
 import { BranchSeries, useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 
 export const CostVsBudgetCard = ({ entityId, branchId, from, to }: CheckbizCardProps) => {
   const t = useTranslations("statsDashboard");
+  const kpiLabel = (key: string) => {
+    try {
+      return t(`kpiLabels.${key}` as any);
+    } catch {
+      return defaultLabelFromKey(key);
+    }
+  };
   const { data, isLoading, error } = useCheckbizStats<BranchSeries[]>({
     entityId,
     branchId,
@@ -40,7 +47,7 @@ export const CostVsBudgetCard = ({ entityId, branchId, from, to }: CheckbizCardP
       branch.points.reduce((sum, p) => sum + (p.budget ?? 0), 0),
     0,
   );
-  const apiKpis = formatKpiEntries(data?.kpis);
+  const apiKpis = formatKpiEntries(data?.kpis, kpiLabel);
 
   return (
     <StatCard

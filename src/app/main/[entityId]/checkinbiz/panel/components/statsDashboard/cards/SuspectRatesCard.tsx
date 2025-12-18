@@ -12,13 +12,20 @@ import {
   YAxis,
 } from "recharts";
 import { StatCard } from "../StatCard";
-import { formatKpiEntries, formatPercent, normalizeSeriesNumbers } from "../chartUtils";
+import { defaultLabelFromKey, formatKpiEntries, formatPercent, normalizeSeriesNumbers } from "../chartUtils";
 import { BranchSeries, BranchSeriesPoint, useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 import { useTranslations } from "next-intl";
 
 export const SuspectRatesCard = ({ entityId, branchId, from, to }: CheckbizCardProps) => {
   const t = useTranslations("statsDashboard");
+  const kpiLabel = (key: string) => {
+    try {
+      return t(`kpiLabels.${key}` as any);
+    } catch {
+      return defaultLabelFromKey(key);
+    }
+  };
   const { data, isLoading, error } = useCheckbizStats<BranchSeries[]>({
     entityId,
     branchId,
@@ -47,7 +54,7 @@ export const SuspectRatesCard = ({ entityId, branchId, from, to }: CheckbizCardP
 
   const totalChecks = totals.suspects + totals.failed + totals.valid;
   const suspectRate = totalChecks ? (totals.suspects / totalChecks) * 100 : 0;
-  const apiKpis = formatKpiEntries(data?.kpis);
+  const apiKpis = formatKpiEntries(data?.kpis, kpiLabel);
 
   return (
     <StatCard
@@ -62,6 +69,7 @@ export const SuspectRatesCard = ({ entityId, branchId, from, to }: CheckbizCardP
         { label: "Validos", value: totals.valid.toFixed(0) },
         { label: "Tasa sospecha", value: formatPercent(suspectRate, false) },
       ]}
+      infoText={t("descriptions.suspectRates")}
     >
       <ResponsiveContainer width="100%" height={280}>
         <AreaChart stackOffset="none">

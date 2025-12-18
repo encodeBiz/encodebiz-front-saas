@@ -36,6 +36,7 @@ const GenericTabs: React.FC<GenericTabsProps> = ({
     defaultTab = 0,
     onChange,
     sx = [],
+    syncUrl = true,
 }) => {
     const [currentTab, setCurrentTab] = useState(defaultTab);
     const pathname = usePathname()
@@ -80,9 +81,11 @@ const GenericTabs: React.FC<GenericTabsProps> = ({
                     {tabs.map((tab, index) => (
                         <Tab
                             onClick={() => {
-                                const params = new URLSearchParams(searchParams.toString())
-                                params.set('tab', tab.id as string)
-                                router.push(pathname + '?' + params.toString())
+                                if (syncUrl && tab.id) {
+                                    const params = new URLSearchParams(searchParams.toString())
+                                    params.set('tab', tab.id as string)
+                                    router.push(pathname + '?' + params.toString())
+                                }
                             }}
                             key={`tab-${index}`}
                             label={tab.label}

@@ -12,7 +12,7 @@ import {
 } from "recharts";
 import { useTranslations } from "next-intl";
 import { StatCard } from "../StatCard";
-import { formatCurrency, formatHours, formatKpiEntries } from "../chartUtils";
+import { defaultLabelFromKey, formatCurrency, formatHours, formatKpiEntries } from "../chartUtils";
 import { RankingItem, useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 
@@ -28,6 +28,13 @@ export const EmployeeProductivityCard = ({
   topN = 5,
 }: EmployeeProductivityProps) => {
   const t = useTranslations("statsDashboard");
+  const kpiLabel = (key: string) => {
+    try {
+      return t(`kpiLabels.${key}` as any);
+    } catch {
+      return defaultLabelFromKey(key);
+    }
+  };
   const { data, isLoading, error } = useCheckbizStats<RankingItem[]>({
     entityId,
     branchId,
@@ -42,7 +49,7 @@ export const EmployeeProductivityCard = ({
     ...item,
     label: item.employeeId ?? "",
   }));
-  const apiKpis = formatKpiEntries(data?.kpis);
+  const apiKpis = formatKpiEntries(data?.kpis, kpiLabel);
 
   return (
     <StatCard
