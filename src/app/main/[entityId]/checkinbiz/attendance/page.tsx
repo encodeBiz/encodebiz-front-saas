@@ -76,7 +76,7 @@ export default function AttendanceList() {
         htmlDescription={<Box display={'flex'} flexDirection={'column'} gap={3}>
          
           <Box style={{ display: 'flex', gap: 1 }} flexDirection={'column'}>
-            <CustomChip small background={open.args?.item?.data?.status} label={t('core.label.'+open.args?.item?.data?.status)} />
+            <CustomChip role={'text'} small background={open.args?.item?.data?.status} label={t('core.label.'+open.args?.item?.data?.status)} />
             <Typography variant='body1' sx={{ fontSize: 16, color: "#48494C" }}>
               {open.args?.item?.data?.status==='valid'?t('attendance.updateRequestStatusOk'):t('attendance.updateRequestStatusError')}
             </Typography>

@@ -232,8 +232,9 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       label: t('core.label.dayTimeRange'),
       hit: t('core.label.dayTimeRangeDesc'),
       extraProps: {
-        alertMessage: <Box>
-          <Alert sx={{ borderRadius: 2, mt: 2, color: '#FFF', bgcolor: theme => enableDayTimeRange ? theme.palette.primary.main : theme.palette.grey[800] }} icon={<InfoOutline sx={{ color: '#FFF' }} />} >
+        alertMessagePos:5,
+        alertMessage: <Box sx={{width:'100%'}}>
+          <Alert sx={{width:'100%', borderRadius: 2, mt: 2, color: '#FFF', bgcolor: theme => enableDayTimeRange ? theme.palette.primary.main : theme.palette.grey[800] }} icon={<InfoOutline sx={{ color: '#FFF' }} />} >
             {enableDayTimeRange ? <>
               <Typography>{t('sucursal.fieldHelp12')} <strong>{t('sucursal.fieldHelp13')}</strong>{t('sucursal.fieldHelp14')}</Typography>
               <ul>

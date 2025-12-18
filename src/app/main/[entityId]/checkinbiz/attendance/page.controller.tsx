@@ -168,6 +168,7 @@ export default function useAttendanceController() {
           })
         );
 
+         console.log(data);
          
 
         setItems(data)
@@ -214,13 +215,13 @@ export default function useAttendanceController() {
       id: 'status',
       label: t("core.label.status"),
       minWidth: 170,
-      format: (value, row) => <CustomChip role={row.status=='failed'?'button':'text'} background={row.status} label={t('core.label.' + row.status)} />
+      format: (value, row) => <CustomChip role={'text'} background={row.status} label={t('core.label.' + row.status)} />
     },
     {
       id: 'timestamp',
       label: t("core.label.date-hour"),
       minWidth: 200,
-      format: (value, row) => <Box display={'flex'} alignItems={'center'} gap={1}>
+      format: (value, row) => <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'} gap={1}>
        
         {format_date(row.timestamp, 'DD/MM/YYYY')} {format_date(row.timestamp, 'hh:mm')}
          {Array.isArray(row.metadata?.requestUpdates) && row.metadata?.requestUpdates.length > 0 && <IconButton onClick={() => {

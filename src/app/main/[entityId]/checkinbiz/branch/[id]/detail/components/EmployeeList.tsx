@@ -9,7 +9,7 @@ export const EmployeeList = ({ children, addResponsabiltyItem }: { addResponsabi
     return  <Paper elevation={0} sx={{ p: 3 }}>
             <Box display={'flex'} justifyContent={'space-between'} alignContent={'center'} mb={2}>
                 <Typography variant="subtitle1" gutterBottom sx={{ textTransform: 'uppercase' }}>
-                    {t("employee.list")}
+                   
                 </Typography>
 
                 <SassButton

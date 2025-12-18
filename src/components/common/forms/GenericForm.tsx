@@ -216,13 +216,14 @@ const GenericForm = <T extends Record<string, any>>({
                         }} container spacing={3}>
                           {
                             field.fieldList?.map((fieldInner, index) => {
-                              return <FieldItem key={index + '-' + i} field={fieldInner} i={index} disabled={disabled} column={field.column ? field.column : column} formikProps={formikProps} />
+                              
+                              return <>
+                              {(!!field.extraProps?.alertMessagePos && field.extraProps?.alertMessagePos===index) && field.extraProps?.alertMessage}
+                              <FieldItem key={index + '-' + i} field={fieldInner} i={index} disabled={disabled} column={field.column ? field.column : column} formikProps={formikProps} /></>
                             })
                           }
-
-
                         </Grid>
-                        {field.extraProps?.alertMessage}
+                        {!field.extraProps?.alertMessagePos && field.extraProps?.alertMessage}
 
                       </Box>
                     </AccordionDetails>

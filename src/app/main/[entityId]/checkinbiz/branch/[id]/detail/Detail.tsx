@@ -70,7 +70,9 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
             <Paper elevation={0} sx={{ p: 3 }}>
                 <Box display={'flex'} justifyContent={'space-between'} alignItems={'flex-start'}>
                     <Box display={'flex'} flexDirection={'column'} flexWrap={'wrap'} justifyContent={'flex-start'} gap={0} alignItems={'flex-start'}>
-                        <DetailText label={t('core.label.ratioChecklog2')} value={branch?.ratioChecklog + ' ' + t('core.label.meters')} orientation="row" help={t('sucursal.ratioHelp')} />
+                        {!branch?.disableRatioChecklog && <DetailText label={t('core.label.ratioChecklog2')} value={branch?.ratioChecklog + ' ' + t('core.label.meters')} orientation="row" help={t('sucursal.ratioHelp')} />}
+                        {branch?.disableRatioChecklog && <DetailText label={t('core.label.disableRatioChecklogD')}  orientation="row"  />}
+
                         <DetailText label={t('core.label.address')} value={branch?.address?.street} orientation="row" >
                             <Box sx={{ marginLeft: 4, minWidth: 140 }}><SassButton variant="text" onClick={() => onGoMap(branch.address.geo.lat, branch.address.geo.lng)}> {t('sucursal.map')}</SassButton></Box>
                         </DetailText>
