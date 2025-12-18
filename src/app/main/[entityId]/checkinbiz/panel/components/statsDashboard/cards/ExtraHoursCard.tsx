@@ -12,13 +12,19 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-  TooltipProps,
 } from "recharts";
 import { Box, Paper, Typography } from "@mui/material";
 import { StatCard } from "../StatCard";
 import { defaultLabelFromKey, formatHours, formatKpiEntries, normalizeSeriesNumbers } from "../chartUtils";
 import { BranchSeries, useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
+
+type ExtraTooltipPayload = {
+  dataKey?: string | number;
+  name?: string | number;
+  value?: number;
+  color?: string;
+};
 
 export const ExtraHoursCard = ({ entityId, branchId, from, to }: CheckbizCardProps) => {
   const t = useTranslations("statsDashboard");
@@ -73,9 +79,14 @@ export const ExtraHoursCard = ({ entityId, branchId, from, to }: CheckbizCardPro
     return Array.from(map.values()).sort((a, b) => `${a.date}`.localeCompare(`${b.date}`));
   }, [series]);
 
-  const CustomTooltip = ({ active, label, payload }: TooltipProps<number, string>) => {
-    if (!active || !payload || payload.length === 0) return null;
-    const grouped = payload.reduce<
+  const CustomTooltip = ({
+    active,
+    payload,
+    label,
+  }: { active?: boolean; payload?: ExtraTooltipPayload[]; label?: string | number }) => {
+    const items = payload ?? [];
+    if (!active || items.length === 0) return null;
+    const grouped = items.reduce<
       Record<
         string,
         {
