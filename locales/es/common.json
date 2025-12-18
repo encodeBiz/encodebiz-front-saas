@@ -1031,6 +1031,7 @@
     "avgWeekWork": "Promedio de horas semanales",
     "avgWeekWorkHelp": "Hora promedio de inicio y fin de jornada (en formato decimal)",
     "reliability": "Nivel de confianza",
+    "reliabilityHelp": "Confiabilidad del patrón según cantidad y consistencia de datos analizados (0 a 1)",
     "rentabilityHelp": "Nivel de confianza del patrón (0 a 1)",
     "totalCost": "Costos reales",
     "totalCostHelp": "Suma acumulada de costos reales",

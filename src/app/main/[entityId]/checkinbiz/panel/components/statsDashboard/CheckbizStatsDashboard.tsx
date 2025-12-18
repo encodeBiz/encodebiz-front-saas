@@ -71,6 +71,17 @@ export const CheckbizStatsDashboard = ({
         ),
       },
       {
+        id: "salary",
+        label: t("tabs.salaryEstimation"),
+        content: (
+          <GridLayout>
+            <Box sx={{ gridColumn: "1 / -1" }}>
+              <SalaryEstimateCard entityId={entityId} branchId={branchId} from={from} to={to} />
+            </Box>
+          </GridLayout>
+        ),
+      },
+      {
         id: "compliance",
         label: t("tabs.compliance"),
         content: (
@@ -105,15 +116,6 @@ export const CheckbizStatsDashboard = ({
               <HourlyDistributionCard entityId={entityId} branchId={branchId} from={from} to={to} />
             </Box>
           </GridLayout>
-        ),
-      },
-      {
-        id: "salary",
-        label: t("tabs.salaryEstimation"),
-        content: (
-          <Box sx={{ width: "100%" }}>
-            <SalaryEstimateCard entityId={entityId} branchId={branchId} from={from} to={to} />
-          </Box>
         ),
       },
     ],

@@ -32,7 +32,6 @@ export const PanelStats = () => {
 
       {!pending && currentEntity?.entity?.id && branchList.length > 0 && (
         <Box display="flex" flexDirection="column" gap={3} mt={1}>
-          <Typography variant="h6">{t("statsCheckbiz.stats")}</Typography>
           <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems="flex-start">
             <DateRangeFilter value={dateRange} onChange={setDateRange} />
           </Stack>

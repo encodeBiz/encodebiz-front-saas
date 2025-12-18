@@ -1031,6 +1031,7 @@
     "avgWeekWork": "Average weekly hours",
     "avgWeekWorkHelp": "Average start and end time of workday (in decimal format)",
     "reliability": "Reliability level",
+    "reliabilityHelp": "Reliability of the pattern based on amount and consistency of analyzed data (0 to 1)",
     "rentabilityHelp": "Pattern confidence level (0 to 1)",
     "totalCost": "Real costs",
     "totalCostHelp": "Cumulative sum of real costs",
