@@ -27,7 +27,7 @@ export const PanelStats = () => {
   }, [currentEntity?.entity?.id, initialize]);
 
   const InnetContent = () => (
-    <Box sx={{ minHeight: 600, p: 3 }}>
+    <Box sx={{ minHeight: 600 }}>
       {pending && <BoxLoader message={t("statsCheckbiz.loading")} />}
 
       {!pending && currentEntity?.entity?.id && branchList.length > 0 && (
@@ -56,7 +56,7 @@ export const PanelStats = () => {
   );
 
   return (
-    <Box width="100%" sx={{ px: { xs: 1, md: 3 }, py: { xs: 2, md: 3 } }}>
+    <Box width="100%" sx={{py: { xs: 2, md: 3 } }}>
       <HeaderPage
         title={
           <Box display="flex" gap={0.2} justifyItems="center" alignItems="center">

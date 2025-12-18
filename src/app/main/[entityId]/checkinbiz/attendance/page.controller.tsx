@@ -148,27 +148,35 @@ export default function useAttendanceController() {
     searchLogs(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async res => {
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
-       
+
         const data: Array<IChecklog> = await Promise.all(
           res.map(async (item) => {
             const branch = (await fetchSucursalData(currentEntity?.entity.id as string, item.branchId as string))
             const employee = (await fetchEmployeeData(currentEntity?.entity.id as string, item.employeeId as string))
             let requestUpdates: Array<any> = []
+            let requestUpdate: any
             if (Array.isArray(item.metadata?.requestUpdates) && item.metadata?.requestUpdates.length > 0) {
               requestUpdates = await Promise.all(
                 item.metadata?.requestUpdates.map(async (e: any) => {
                   const employee1 = (await fetchEmployeeData(currentEntity?.entity.id as string, e.data?.employeeId as string))
-                  const admin = (await fetchUserAccount( e.updateBy as string))
-                   
+                  const admin = (await fetchUserAccount(e.updateBy as string))
+
                   return { ...e, employee: employee1, admin };
                 })
               );
+
+              if (item.requestUpdate) {
+                requestUpdate = requestUpdates.find(e => e.id === item.requestUpdate)
+              }
             }
-            return { ...item, requestUpdates, branch, employee };
+
+
+            return { ...item, requestUpdates, branch, employee, requestUpdate };
           })
         );
 
-         
+        console.log(data);
+
 
         setItems(data)
         if (!filterParams.params.startAfter) {
@@ -214,18 +222,17 @@ export default function useAttendanceController() {
       id: 'status',
       label: t("core.label.status"),
       minWidth: 170,
-      format: (value, row) => <CustomChip role={row.status=='failed'?'button':'text'} background={row.status} label={t('core.label.' + row.status)} />
+      format: (value, row) => <CustomChip role={'text'} background={row.status} label={t('core.label.' + row.status)} />
     },
     {
       id: 'timestamp',
       label: t("core.label.date-hour"),
       minWidth: 200,
-      format: (value, row) => <Box display={'flex'} alignItems={'center'} gap={1}>
-       
+      format: (value, row) => <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'} gap={1}>
+
         {format_date(row.timestamp, 'DD/MM/YYYY')} {format_date(row.timestamp, 'hh:mm')}
-         {Array.isArray(row.metadata?.requestUpdates) && row.metadata?.requestUpdates.length > 0 && <IconButton onClick={() => {
-           
-          openModal(CommonModalType.INFO, { item: row?.requestUpdates[0] })
+        {!!row.requestUpdate && <IconButton onClick={() => {
+          openModal(CommonModalType.INFO, { item: row.requestUpdate })
         }}><HistoryIcon /></IconButton>}
       </Box>
     },
