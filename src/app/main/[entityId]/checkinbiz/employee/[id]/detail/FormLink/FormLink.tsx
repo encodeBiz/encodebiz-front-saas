@@ -16,6 +16,7 @@ import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
 import useFormLinkController from './FormLink.controller';
+import { SalaryConverterButton } from '../components/SalaryConverterButton';
 
 const FormLink = ({ onSuccess }: { onSuccess: () => void }): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
@@ -43,6 +44,29 @@ const FormLink = ({ onSuccess }: { onSuccess: () => void }): React.JSX.Element =
             (formRef.current as any).submitForm()
         }
     }
+
+    const enhancedFields = [
+        ...fields
+            .filter((f) => f.name === 'active')
+            .map((field) => ({
+                ...field,
+                fullWidth: true,
+            })),
+        ...fields
+            .filter((f) => f.name !== 'active')
+            .map((field) =>
+                field.name === 'price'
+                    ? {
+                        ...field,
+                        extraProps: {
+                            ...field.extraProps,
+                            afterTextField: <SalaryConverterButton fieldName="price" size="small" />,
+                        },
+                    }
+                    : field,
+            ),
+    ];
+
     return (
         <Dialog
             open={open.open}
@@ -67,7 +91,7 @@ const FormLink = ({ onSuccess }: { onSuccess: () => void }): React.JSX.Element =
                         initialValues={initialValues}
                         validationSchema={validationSchema}
                         onSubmit={handleModal}
-                        fields={fields as FormField[]}
+                        fields={enhancedFields as FormField[]}
                         submitButtonText={t('core.button.save')}
                         enableReinitialize
                         hideBtn
