@@ -1048,6 +1048,37 @@
     "tempActiviyLabel": "Datos de actividad temporal",
     "operativeDataLabel": "Datos operativos"
   },
+  "statsDashboard": {
+    "dateRange": "Rango de fechas",
+    "dateApply": "Aplicar",
+    "dateCancel": "Cancelar",
+    "dateMaxHint": "Máximo 12 meses de rango",
+    "presets": {
+      "last7": "Últimos 7 días",
+      "last30": "Últimos 30 días",
+      "last90": "Últimos 90 días",
+      "last365": "Últimos 12 meses",
+      "thisMonth": "Este mes",
+      "custom": "Personalizado"
+    },
+    "dateRangeFrom": "Desde",
+    "dateRangeTo": "Hasta",
+    "costByBranch": { "title": "Coste por sucursal", "subtitle": "Serie diaria por sucursal" },
+    "hoursByBranch": { "title": "Horas por sucursal", "subtitle": "Carga diaria por sucursal" },
+    "costPerHour": { "title": "Costo por hora", "subtitle": "Costo unitario promedio" },
+    "costVsBudget": { "title": "Costo vs presupuesto", "subtitle": "Compara coste real vs esperado" },
+    "suspectRates": { "title": "Tasa de sospechosos", "subtitle": "Distribución diaria" },
+    "punctuality": { "title": "Puntualidad", "subtitle": "On-time rate y minutos de atraso" },
+    "extraHours": { "title": "Horas extra / déficit", "subtitle": "Comparación diaria" },
+    "startEnd": { "title": "Hora inicio/fin", "subtitle": "Promedio diario por sucursal" },
+    "geoCompliance": { "title": "Cumplimiento geográfico", "subtitle": "Distancia promedio al punto esperado" },
+    "absenteeism": { "title": "Ausentismo", "subtitle": "Días activos vs inactivos" },
+    "shiftCompliance": { "title": "Cumplimiento de turnos", "subtitle": "Porcentaje diario por sucursal" },
+    "weeklyTrends": { "title": "Tendencias semanales", "subtitle": "Costo, horas y sospechas por semana" },
+    "employeeProductivity": { "title": "Productividad empleados", "subtitle": "Top {topN} por costo/hora" },
+    "branchRanking": { "title": "Ranking sucursales", "subtitle": "Top {topN} por score" },
+    "hourlyDistribution": { "title": "Distribución horaria", "subtitle": "Cobertura por hora del día" }
+  },
   "employeeDashboard": {
     "emptyPattern": "No hay patrones de asistencia disponibles para mostrar en el perfil del empleado",
     "dispertionTitle": " Dispersión semanal de entrada y salida",

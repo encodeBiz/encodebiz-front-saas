@@ -1048,6 +1048,37 @@
     "tempActiviyLabel": "Temporal activity data",
     "operativeDataLabel": "Operational data"
   },
+  "statsDashboard": {
+    "dateRange": "Date range",
+    "dateApply": "Apply",
+    "dateCancel": "Cancel",
+    "dateMaxHint": "Max range: 12 months",
+    "presets": {
+      "last7": "Last 7 days",
+      "last30": "Last 30 days",
+      "last90": "Last 90 days",
+      "last365": "Last 12 months",
+      "thisMonth": "This month",
+      "custom": "Custom"
+    },
+    "dateRangeFrom": "From",
+    "dateRangeTo": "To",
+    "costByBranch": { "title": "Cost by branch", "subtitle": "Daily series by branch" },
+    "hoursByBranch": { "title": "Hours by branch", "subtitle": "Daily load by branch" },
+    "costPerHour": { "title": "Cost per hour", "subtitle": "Average unit cost" },
+    "costVsBudget": { "title": "Cost vs budget", "subtitle": "Compare actual vs expected cost" },
+    "suspectRates": { "title": "Suspect rates", "subtitle": "Daily distribution" },
+    "punctuality": { "title": "Punctuality", "subtitle": "On-time rate and delay minutes" },
+    "extraHours": { "title": "Extra / deficit hours", "subtitle": "Daily comparison" },
+    "startEnd": { "title": "Start / end time", "subtitle": "Daily average per branch" },
+    "geoCompliance": { "title": "Geo compliance", "subtitle": "Average distance to expected point" },
+    "absenteeism": { "title": "Absenteeism", "subtitle": "Active vs inactive days" },
+    "shiftCompliance": { "title": "Shift compliance", "subtitle": "Daily rate by branch" },
+    "weeklyTrends": { "title": "Weekly trends", "subtitle": "Cost, hours and suspects per week" },
+    "employeeProductivity": { "title": "Employee productivity", "subtitle": "Top {topN} by cost/hour" },
+    "branchRanking": { "title": "Branch ranking", "subtitle": "Top {topN} by score" },
+    "hourlyDistribution": { "title": "Hourly distribution", "subtitle": "Coverage per hour of day" }
+  },
   "employeeDashboard": {
     "emptyPattern": "No attendance patterns available to display in the employee profile",
     "dispertionTitle": "Weekly entry and exit dispersion",
