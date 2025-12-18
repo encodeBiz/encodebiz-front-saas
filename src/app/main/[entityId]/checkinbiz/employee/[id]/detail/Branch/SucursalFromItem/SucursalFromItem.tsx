@@ -10,6 +10,7 @@ import { useRef } from 'react';
 import { TrashIcon } from '@/components/common/icons/TrashIcon';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
+import { SalaryConverterButton } from '../../components/SalaryConverterButton';
 
 
 
@@ -38,24 +39,35 @@ export default function SucursalFromItem({ item, onEnd }: { item: EmployeeEntity
                         <Typography component="span" textTransform={'uppercase'}>{currentEntity?.entity?.name}</Typography>
                         <Typography color='textSecondary' component="span" >{item.branch?.name}</Typography>
                     </Box>
-                    <Box display={'flex'} flexDirection={'row'} gap={2} mr={2}>
-                        <FormGroup>
-                            <FormControlLabel control={<Switch checked={active == 1} onChange={(e) => setActive(e.target.checked ? 1 : 0)} />} label={t('core.label.active')} />
-                        </FormGroup>
-                        <IconButton color='error' onClick={() => openModal(CommonModalType.DELETE, { id: item.id, responsability: true })}><TrashIcon /></IconButton>
-
-                    </Box>
                 </Box>
 
             </AccordionSummary>
             <AccordionDetails>
+                <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                    <FormGroup>
+                        <FormControlLabel control={<Switch checked={active == 1} onChange={(e) => setActive(e.target.checked ? 1 : 0)} />} label={t('core.label.active')} />
+                    </FormGroup>
+                    <IconButton color='error' onClick={() => openModal(CommonModalType.DELETE, { id: item.id, responsability: true })}><TrashIcon /></IconButton>
+                </Box>
 
                 <GenericForm<Partial<any>>
                     column={3}
                     initialValues={initialValues}
                     validationSchema={validationSchema}
                     onSubmit={(values) => handleSubmit(values)}
-                    fields={fields as FormField[]}
+                    fields={fields.map((field) =>
+                        field.name === 'price'
+                            ? {
+                                ...field,
+                                extraProps: {
+                                    ...field.extraProps,
+                                    afterTextField: (
+                                        <SalaryConverterButton fieldName="price" size="small" />
+                                    ),
+                                },
+                            }
+                            : field,
+                    ) as FormField[]}
                     enableReinitialize
                     activateWatchStatus={true}
                     hideBtn={false}
