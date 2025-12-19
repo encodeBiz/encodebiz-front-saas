@@ -22,7 +22,7 @@ export const Card2 = ({ handleNext }: any) => {
                 <Typography variant="body1">{t('cards.card2.text3')}</Typography>
             </Box>
             <Box display={'flex'} flexDirection={"row"} gap={5} marginTop={3}>
-                <BorderBox sx={{ position: 'relative', minHeight:255 }}>
+                <BorderBox sx={{ position: 'relative', minHeight:255, width:335 }}>
                     <PaletteOutlined sx={{ position: 'absolute', top: -20, left: -20, color: '#FFF', background: (theme) => theme.palette.primary.main, p: 1, fontSize: 40, borderRadius: '50%' }} />
                     <Box sx={{ p: 4, fontFamily: karla.style.fontFamily }}>
                         <span style={{ color: theme.palette.primary.main, fontSize: 22 }}> {t('cards.card2.text4')}</span>
@@ -31,7 +31,7 @@ export const Card2 = ({ handleNext }: any) => {
                     </Box>
 
                 </BorderBox>
-                <BorderBox sx={{ position: 'relative', fontFamily: karla.style.fontFamily, minHeight:255 }}>
+                <BorderBox sx={{ position: 'relative', fontFamily: karla.style.fontFamily, minHeight:255, width:335 }}>
                     <TextSnippetOutlined sx={{ position: 'absolute', top: -20, left: -20, color: '#FFF', background: (theme) => theme.palette.primary.main, p: 1, fontSize: 40, borderRadius: '50%' }} />
 
                     <Box sx={{ p: 4 }}>
@@ -41,7 +41,7 @@ export const Card2 = ({ handleNext }: any) => {
 
                     </Box>
                 </BorderBox>
-                <BorderBox sx={{ position: 'relative', fontFamily: karla.style.fontFamily, minHeight:255  }}>
+                <BorderBox sx={{ position: 'relative', fontFamily: karla.style.fontFamily, minHeight:255 , width:335 }}>
                     <HealthAndSafetyOutlined sx={{ position: 'absolute', top: -20, left: -20, color: '#FFF', background: (theme) => theme.palette.primary.main, p: 1, fontSize: 40, borderRadius: '50%' }} />
 
                     <Box sx={{ p: 4 }}>

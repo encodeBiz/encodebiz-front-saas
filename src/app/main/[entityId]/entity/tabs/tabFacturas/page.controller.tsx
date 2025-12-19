@@ -10,7 +10,7 @@ import { useToast } from '@/hooks/useToast';
 import { DownloadOutlined } from '@mui/icons-material';
 import { StripeInvoice } from '@/domain/core/auth/ISubscription';
 import { Typography } from '@mui/material';
-import { formatDateInSpanish } from '@/lib/common/Date';
+import { format_date } from '@/lib/common/Date';
 
 
 interface IFilterParams {
@@ -115,18 +115,19 @@ export const useFacturaController = () => {
             id: 'createdAt',
             label: t("core.label.date"),
             minWidth: 170,
-            format: (value, row) => <Typography sx={{ textTransform: 'capitalize' }}>{formatDateInSpanish(row.createdAt)}</Typography>,
+            format: (value, row) => <Typography sx={{ textTransform: 'capitalize' }}>{format_date(row.createdAt,'DD/MM/YYYY')}</Typography>,
         },
         {
             id: 'inviceData',
-            label: t("core.label.price"),
+            label: t("core.label.priceData"),
             minWidth: 170,
-            format: (value, row) => <Typography sx={{ textTransform: 'capitalize' }}>{row.inviceData?.total ? row.inviceData?.total + '€' : ' - '}</Typography>,
+            format: (value, row) => <Typography sx={{ textTransform: 'capitalize' }}>{row.inviceData?.total ? (row.inviceData?.total/100).toFixed(2) + ' €' : ' - '}</Typography>,
         },
         {
             id: 'status',
             label: t("core.label.status"),
-            minWidth: 170
+            minWidth: 170,
+             format: (value, row) => t('core.label.'+row.status?.toLowerCase()?.trim())
         },
     ];
 

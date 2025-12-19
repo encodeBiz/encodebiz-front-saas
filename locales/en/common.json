@@ -118,6 +118,7 @@
       "nocard": "You have no payment methods associated with the entity, please configure at least one."
     },
     "label": {
+       "paid":"Paid",
       "workScheduleEnable": "Custom schedule",
       "workScheduleDisabled": "Custom schedule",
       "workScheduleUniform": "Uniform workday",
@@ -134,6 +135,7 @@
       "resolved": "Resolved",
       "reason": "Reasons for change",
       "languageNotification": "Notification language",
+      "languageMain": "Main language",
       "linkToCreateEmployee": "Create employee",
       "end": "End",
       "download": "Download",
@@ -217,6 +219,7 @@
       "disableRatioChecklogE": "Check-in zone enabled",
       "disableRatioChecklogD": "Check-in zone disabled",
       "price": "Hourly wage",
+      "priceData":"Price",
       "convertToHourly": "Convert monthly salary",
       "salaryHelper": "Have a monthly salary? Convert it to hourly.",
       "salaryHelperDesc": "Enter monthly salary and hours per month to calculate the hourly rate.",
