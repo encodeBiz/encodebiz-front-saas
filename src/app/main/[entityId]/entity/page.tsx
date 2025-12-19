@@ -107,7 +107,8 @@ const EntityPreferencesPage = () => {
             >{currentEntity?.role === 'owner' &&
                 <GenericTabs
                     defaultTab={tab}
-                    fullWidth
+                    scrollable
+                    fullWidth={false}
                     tabs={tabsRender}
                 />
                 }

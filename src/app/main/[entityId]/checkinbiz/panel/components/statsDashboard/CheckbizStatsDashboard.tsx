@@ -124,7 +124,7 @@ export const CheckbizStatsDashboard = ({
   return (
     <GenericTabs
       tabs={tabs}
-      scrollable
+      fullWidth       
       sx={{ width: "100%" }}
       syncUrl={false}
     />

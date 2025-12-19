@@ -1,13 +1,13 @@
 import { SassButton } from "@/components/common/buttons/GenericButton"
 import { BorderBox } from "@/components/common/tabs/BorderBox"
 import { Alert, Box } from "@mui/material"
-import { DateRangePicker } from "./fields/DateRangeFilter"
 import { EventFilter } from "./fields/EventFilter"
 import { GroupByFilter } from "./fields/GroupByFilter"
 import { TypeFilter } from "./fields/TypeFilter"
 import { usePassinBizStats } from "../../context/passBizStatsContext"
 import { useTranslations } from "next-intl"
 import { IPassValidatorStatsRequest } from "../../model/PassValidator"
+import { DateRange, DateRangeFilter } from "@/app/main/[entityId]/checkinbiz/panel/components/statsDashboard/DateRangeFilter"
 
 export const PassValidatorFilter = () => {
   const { payloadPassValidator, setPayloadPassValidator, applyFilter, error } = usePassinBizStats()
@@ -35,8 +35,11 @@ export const PassValidatorFilter = () => {
             onChange={(groupBy) => {
               setPayloadPassValidator({ ...payloadPassValidator as IPassValidatorStatsRequest, groupBy })
             }} />
-          <DateRangePicker value={payloadPassValidator?.dateRange as any} onChange={(dateRange) => setPayloadPassValidator({ ...payloadPassValidator as IPassValidatorStatsRequest, dateRange })} />
 
+          <DateRangeFilter value={{ from: payloadPassValidator?.dateRange.start?.toISOString(), to: payloadPassValidator?.dateRange.end?.toISOString() }}
+            onChange={(rg: DateRange) => {
+              setPayloadPassValidator({ ...payloadPassValidator as IPassValidatorStatsRequest, dateRange: { start: new Date(rg.from), end: new Date(rg.to) } })
+            }} />
         </Box>
 
 
