@@ -145,8 +145,7 @@ export default function useAttendanceController() {
 
     setEmpthy(await emptyChecklog(currentEntity?.entity.id as string))
 
-    console.log({ ...(filterParams.params as any), filters });
-    
+   
 
     searchLogs(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async res => {
       if (res.length !== 0) {
@@ -178,8 +177,7 @@ export default function useAttendanceController() {
           })
         );
 
-        console.log(data);
-
+ 
 
         setItems(data)
         if (!filterParams.params.startAfter) {
