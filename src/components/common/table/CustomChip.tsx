@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 
 const colorRepository: any = {
     'pending-employee-validation': 'rgba(121, 123, 125, 0.08)',
+    'in_review': 'rgba(121, 123, 125, 0.08)',
     "failed": '#F4AA32',
     "active": 'rgba(122, 223, 127, 0.65)',
     "valid": 'rgba(122, 223, 127, 0.65)',
@@ -19,7 +20,7 @@ const colorRepository: any = {
     'disabled': 'rgba(121, 123, 125, 0.08)',
     "pending": 'rgba(122, 166, 223, 0.65)',
     "resolved": 'rgba(122, 223, 127, 0.65)',
-    "in_review": 'rgba(177, 35, 33, 0.65)',
+
     'rejected': 'rgba(121, 123, 125, 0.08)',
 }
 
@@ -28,7 +29,7 @@ export const CustomChip = ({ label, background = "default", id = '', role = 'but
     const t = useTranslations()
     return (<>
         <Chip
-            key={id}  
+            key={id}
             label={label}
             variant="outlined"
             onClick={role === 'button' ? () => {
@@ -36,7 +37,7 @@ export const CustomChip = ({ label, background = "default", id = '', role = 'but
             } : null}
             sx={{
                 background: colorRepository[background],
-                borderColor: (theme) => background == "default" ? theme.palette.primary.main :  background == "disabled" ? theme.palette.grey[400]  :colorRepository[background],
+                borderColor: (theme) => background == "default" ? theme.palette.primary.main : background == "disabled" ? theme.palette.grey[400] : colorRepository[background],
                 px: props.size == 'small' ? 0 : 1, py: props.size == 'small' ? 0 : 2,
                 width: 'fit-content',
                 cursor: text ? 'pointer' : 'default',

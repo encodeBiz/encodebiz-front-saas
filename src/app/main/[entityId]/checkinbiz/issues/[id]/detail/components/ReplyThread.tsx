@@ -12,6 +12,12 @@ import useResponseIssueController from '../detail.controller';
 import { format_date } from '@/lib/common/Date';
 import { useTranslations } from 'next-intl';
 import { SassButton } from '@/components/common/buttons/GenericButton';
+import { useCommonModal } from '@/hooks/useCommonModal';
+import { CommonModalType } from '@/contexts/commonModalContext';
+import ResponseFormModal from './ResponseFormModal/ResponseFormModal';
+import emptyImage from '../../../../../../../../../public/assets/images/empty/asistencia.svg';
+import EmptyList from '@/components/common/EmptyState/EmptyList';
+import { IIssue } from '@/domain/features/checkinbiz/IIssue';
 
 
 
@@ -21,20 +27,24 @@ const statusColors: any = {
     'Rechazada': 'error'
 };
 
-const ReplyThread = () => {
+const ReplyThread = ({issue}:{issue:IIssue}) => {
     const theme = useTheme();
     const { items, loading, limit, total, loadMore } = useResponseIssueController()
     const t = useTranslations();
     const getStatusColor = (status: any) => {
         return statusColors[status] || 'default';
     };
+    const { open, openModal } = useCommonModal()
 
     return (
         <Box sx={{ maxWidth: '100%', margin: '0 auto', p: 3 }}>
             {/* Contador de respuestas */}
-            <Typography variant="h6" gutterBottom>
-                {t("issues.responses")}: {items.length > 0 ? items[0].totalItems : 0}
-            </Typography>
+            <Box sx={{ maxWidth: '100%', margin: '0 auto', p: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography variant="h6" gutterBottom>
+                    {t("issues.responses")}: {items.length > 0 ? items[0].totalItems : 0}
+                </Typography>
+                <SassButton variant='contained' onClick={() => openModal(CommonModalType.FORM)}>{t("issues.response")}</SassButton>
+            </Box>
 
             {/* Lista de respuestas */}
             <Box sx={{ mb: 4 }}>
@@ -88,7 +98,18 @@ const ReplyThread = () => {
             {loading && <Box sx={{ width: '100%', display: 'flex', gap: 1, alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
                 <CircularProgress color="inherit" size={20} />
             </Box>}
+
+            {items.length === 0 && !loading &&
+                <EmptyList
+                    imageUrl={emptyImage}
+                    title={t('issues.responseNoDataTitle')}
+                    description={t('issues.responseNoDataText')}
+                />}
+
+
             {limit <= total && <SassButton variant='outlined' onClick={() => loadMore()} >{t('core.label.moreload')}</SassButton>}
+            {open.type === CommonModalType.FORM && <ResponseFormModal issue={issue} onSuccess={() => loadMore(true)} />}
+
 
         </Box>
     );
