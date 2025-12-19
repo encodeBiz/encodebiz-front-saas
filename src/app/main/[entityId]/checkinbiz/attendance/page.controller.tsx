@@ -11,7 +11,7 @@ import { fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucurs
 
 import { Box, IconButton } from "@mui/material";
 
-import { DateRangePicker } from "@/app/main/[entityId]/passinbiz/stats/components/filters/fields/DateRangeFilter";
+import { DateRangeFilter } from "@/app/main/[entityId]/checkinbiz/panel/components/statsDashboard/DateRangeFilter";
 import SearchFilter from "@/components/common/table/filters/SearchFilter";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
@@ -252,10 +252,22 @@ export default function useAttendanceController() {
     }
   }, [currentEntity?.entity?.id])
 
-
-
-
-
+  function adaptRangeToFilter(range?: { from?: any; to?: any; start?: any; end?: any }) {
+    const startValue = range?.from ?? range?.start;
+    const endValue = range?.to ?? range?.end;
+    const start = startValue ? new Date(startValue) : undefined;
+    const end = endValue ? new Date(endValue) : undefined;
+    if (start) {
+      start.setHours(0, 0, 0, 0);
+    }
+    if (end) {
+      end.setHours(23, 59, 59, 999);
+    }
+    return {
+      start,
+      end,
+    };
+  }
 
   const topFilter = <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap', width: '100%', justifyContent: 'flex-end' }}>
 
@@ -302,9 +314,19 @@ export default function useAttendanceController() {
         }
       }}
     />
-    <DateRangePicker filter width='100%' value={filterParams.filter.range} onChange={(rg: { start: any, end: any }) => {
-      onFilter({ ...filterParams, filter: { ...filterParams.filter, range: rg } })
-    }} />
+    <DateRangeFilter
+      value={{
+        from: filterParams.filter.range?.start,
+        to: filterParams.filter.range?.end,
+      }}
+      onChange={(rg: { from: any; to: any }) => {
+        const mappedRange = adaptRangeToFilter(rg);
+        onFilter({
+          ...filterParams,
+          filter: { ...filterParams.filter, range: { start: mappedRange.start, end: mappedRange.end } },
+        });
+      }}
+    />
 
   </Box>
 
@@ -314,13 +336,16 @@ export default function useAttendanceController() {
     const filterData: Array<{ field: string, operator: any, value: any }> = []
     const filter = filterParamsData.filter
     Object.keys(filter).forEach((key) => {
-      if (key === 'range')
-        filterData.push(
-          { field: 'timestamp', operator: '>=', value: filter[key].start },
-          { field: 'timestamp', operator: '<=', value: filter[key].end }
-        )
-      else
+      if (key === 'range') {
+        if (filter[key]?.start && filter[key]?.end) {
+          filterData.push(
+            { field: 'timestamp', operator: '>=', value: filter[key].start },
+            { field: 'timestamp', operator: '<=', value: filter[key].end }
+          )
+        }
+      } else {
         filterData.push({ field: key, operator: '==', value: filter[key] })
+      }
     })
     const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null, filters: filterData }, filter: filter }
     setFilterParams(filterParamsUpdated)
@@ -343,6 +368,7 @@ export default function useAttendanceController() {
     setFilterParams(filterParamsUpdated)
     fetchingData(filterParamsUpdated)
   }
+
   return {
     items, onSort, onRowsPerPageChange,
     topFilter, empthy,

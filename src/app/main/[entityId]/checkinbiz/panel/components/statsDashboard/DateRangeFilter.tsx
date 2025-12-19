@@ -12,6 +12,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import { useTranslations } from "next-intl";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -20,9 +21,10 @@ import dayjs, { Dayjs } from "dayjs";
 
 const MAX_DAYS = 365;
 
-type PresetKey = "last7" | "last30" | "last90" | "last365" | "thisMonth" | "custom";
+type PresetKey = "today" | "last7" | "last30" | "last90" | "last365" | "thisMonth" | "custom";
 
 const presets: { key: PresetKey; label: string; from: Dayjs; to: Dayjs }[] = [
+  { key: "today", label: "Hoy", from: dayjs().startOf("day"), to: dayjs().endOf("day") },
   { key: "last7", label: "Últimos 7 días", from: dayjs().subtract(7, "day"), to: dayjs().endOf("day") },
   { key: "last30", label: "Últimos 30 días", from: dayjs().subtract(30, "day"), to: dayjs().endOf("day") },
   { key: "last90", label: "Últimos 90 días", from: dayjs().subtract(90, "day"), to: dayjs().endOf("day") },
@@ -47,6 +49,14 @@ export const DateRangeFilter = ({ value, onChange }: DateRangeFilterProps) => {
   const [tempTo, setTempTo] = useState<Dayjs | null>(dayjs(value.to));
   const [selection, setSelection] = useState<PresetKey | null>(null);
   const [hint, setHint] = useState<string | null>(null);
+
+  const presetLabel = (preset: (typeof presets)[number]) => {
+    try {
+      return t(`presets.${preset.key}` as any);
+    } catch {
+      return preset.label;
+    }
+  };
 
   const open = Boolean(anchorEl);
   const id = open ? "daterange-popover" : undefined;
@@ -93,7 +103,30 @@ export const DateRangeFilter = ({ value, onChange }: DateRangeFilterProps) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} alignItems="flex-start">
-        <Button variant="outlined" onClick={(e) => setAnchorEl(e.currentTarget)}>
+        <Button
+          variant="outlined"
+          color="secondary"
+          size="small"
+          startIcon={<CalendarMonthOutlinedIcon fontSize="small" />}
+          onClick={(e) => setAnchorEl(e.currentTarget)}
+          sx={{
+            height: 46,
+            minWidth: 200,
+            borderRadius: 1,
+            px: 1.5,
+            textTransform: "none",
+            fontSize: "1rem",
+            fontWeight: 400,
+            borderColor: "divider",
+            color: "text.primary",
+            bgcolor: "background.paper",
+            justifyContent: "flex-start",
+            "&:hover": {
+              borderColor: "primary.main",
+              bgcolor: "action.hover",
+            },
+          }}
+        >
           {displayLabel}
         </Button>
       </Stack>
@@ -105,7 +138,7 @@ export const DateRangeFilter = ({ value, onChange }: DateRangeFilterProps) => {
         anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
       >
         <Box sx={{ p: 2, minWidth: 360 }}>
-          <Typography variant="subtitle1" sx={{ mb: 1 }}>
+          <Typography variant="subtitle1" sx={{ mb: 1, color: "text.primary" }}>
             {t("dateRange")} (max. 12m)
           </Typography>
           <Stack direction="row" spacing={2}>
@@ -116,19 +149,7 @@ export const DateRangeFilter = ({ value, onChange }: DateRangeFilterProps) => {
                   selected={selection === preset.key}
                   onClick={() => handlePreset(preset.key)}
                 >
-                  <ListItemText
-                    primary={
-                      preset.key === "last7"
-                        ? t("presets.last7")
-                        : preset.key === "last30"
-                        ? t("presets.last30")
-                        : preset.key === "last90"
-                        ? t("presets.last90")
-                        : preset.key === "last365"
-                        ? t("presets.last365")
-                        : t("presets.thisMonth")
-                    }
-                  />
+                  <ListItemText primary={presetLabel(preset)} />
                 </ListItemButton>
               ))}
               <Divider sx={{ my: 1 }} />

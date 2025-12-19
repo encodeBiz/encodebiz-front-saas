@@ -1167,6 +1167,7 @@
       "salaryEstimate": "Tabla con horas, tarifa promedio y total a pagar por empleado; filtra por sucursal o rol."
     },
     "presets": {
+      "today": "Hoy",
       "last7": "Últimos 7 días",
       "last30": "Últimos 30 días",
       "last90": "Últimos 90 días",

@@ -1167,6 +1167,7 @@
       "salaryEstimate": "Table with hours, average rate, and total payout per employee; filter by branch or role."
     },
     "presets": {
+      "today": "Today",
       "last7": "Last 7 days",
       "last30": "Last 30 days",
       "last90": "Last 90 days",
