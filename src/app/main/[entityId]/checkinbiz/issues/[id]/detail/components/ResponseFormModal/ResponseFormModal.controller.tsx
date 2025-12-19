@@ -70,6 +70,7 @@ export default function useResponseFormModalController(onSuccess: () => void, is
       name: 'newState',
       label: t('core.label.status'),
       component: SelectInput,
+      fullWidth: true,
       options: [
         { value: '' as string, label: t('core.label.select') },
         { label: t('core.label.resolved'), value: 'resolved' },
@@ -82,6 +83,7 @@ export default function useResponseFormModalController(onSuccess: () => void, is
       name: 'message',
       label: t('core.label.message'),
       type: 'textarea',
+      fullWidth: true,
       component: TextInput,
 
     },
@@ -90,7 +92,7 @@ export default function useResponseFormModalController(onSuccess: () => void, is
 
 
 
-  
+
 
 
 

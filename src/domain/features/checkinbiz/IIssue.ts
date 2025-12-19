@@ -1,3 +1,4 @@
+import IUser from "@/domain/core/auth/IUser"
 import { IEmployee } from "./IEmployee"
 import { ISucursal } from "./ISucursal"
 
@@ -33,6 +34,7 @@ export interface IIssueResponse {
     newState: string
     oldState: string
     userId: string
+    user?:IUser
 
     totalItems?:number
 }
