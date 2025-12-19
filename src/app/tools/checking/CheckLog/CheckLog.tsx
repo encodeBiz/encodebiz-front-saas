@@ -23,7 +23,6 @@ import {
 
 import { useTranslations } from 'next-intl';
 
-import { DateRangePicker } from '@/app/main/[entityId]/passinbiz/stats/components/filters/fields/DateRangeFilter';
 import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import EmptyState from '@/components/common/EmptyState/EmptyState';
 import { IChecklog } from '@/domain/features/checkinbiz/IChecklog';
@@ -36,6 +35,7 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import SearchFilter from '@/components/common/table/filters/SearchFilter';
 import { SassButton } from '@/components/common/buttons/GenericButton';
+import { DateRangeFilter, DateRange } from '@/app/main/[entityId]/checkinbiz/panel/components/statsDashboard/DateRangeFilter';
 const CheckLog = () => {
     const { sessionData } = useCheck()
     const t = useTranslations()
@@ -128,10 +128,14 @@ const CheckLog = () => {
                         justifyContent: 'flex-end',
                         alignItems: 'flex-end'
                     }}>
-                        <DateRangePicker width='100%' value={range} onChange={(rg: { start: any, end: any }) => {
-                            getEmplyeeLogsData(rg, status)
-                            setRange(rg)
-                        }} />
+                       
+
+                        <DateRangeFilter value={{ from: range.start?.toISOString(), to: range.end?.toISOString() }}
+                            onChange={(rg: DateRange) => {
+                                getEmplyeeLogsData({ start: new Date(rg.from), end: new Date(rg.to) }, status)
+                                setRange({ start: new Date(rg.from), end: new Date(rg.to) })
+                            }}
+                        />
 
                         <SearchFilter width='100%'
                             label={t('core.label.status')}
@@ -174,7 +178,7 @@ const CheckLog = () => {
                     {pending && <Box sx={{ width: '100%', display: 'flex', gap: 1, alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
                         <CircularProgress color="inherit" size={20} />
                     </Box>}
-                    {limit<=total && <SassButton variant='outlined' onClick={() => loadMore()} >{t('core.label.moreload')}</SassButton>}
+                    {limit <= total && <SassButton variant='outlined' onClick={() => loadMore()} >{t('core.label.moreload')}</SassButton>}
                 </Box>
             </DialogContent>
         </Dialog>

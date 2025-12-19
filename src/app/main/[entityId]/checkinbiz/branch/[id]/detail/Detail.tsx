@@ -81,7 +81,6 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
                     </Box>
                 </Box>
 
-                <Divider sx={{ mt: 2 }} />
 
 
                 {Array.isArray(branch.metadata) && branch.metadata.length > 0 && <><Divider /> <Paper sx={{ mt: 4 }} elevation={0} >

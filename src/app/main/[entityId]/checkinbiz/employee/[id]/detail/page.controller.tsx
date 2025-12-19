@@ -19,12 +19,12 @@ import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 import { fetchSucursal, fetchSucursal as fetchSucursalData, search } from "@/services/checkinbiz/sucursal.service";
 import { Box } from "@mui/material";
 
-import { DateRangePicker } from "@/app/main/[entityId]/passinbiz/stats/components/filters/fields/DateRangeFilter";
 import { onGoMap } from "@/lib/common/maps";
 import { Edit, MapOutlined } from "@mui/icons-material";
 import { CustomChip } from "@/components/common/table/CustomChip";
 import { useAppLocale } from "@/hooks/useAppLocale";
 import SearchFilter from "@/components/common/table/filters/SearchFilter";
+import { DateRangeFilter, DateRange } from "../../../panel/components/statsDashboard/DateRangeFilter";
 
 interface IFilterParams {
   filter: { branchId: string, status: string, range: { start: any, end: any } | null },
@@ -282,9 +282,11 @@ export default function useEmployeeDetailController() {
     />
 
 
-    <DateRangePicker filter width='100%' value={filterParams.filter.range} onChange={(rg: { start: any, end: any }) => {
-      onFilter({ ...filterParams, filter: { ...filterParams.filter, range: rg } })
-    }} />
+    <DateRangeFilter value={{ from: filterParams.filter.range.start?.toISOString(), to: filterParams.filter.range.end?.toISOString() }}
+      onChange={(rg: DateRange) => {
+        onFilter({ ...filterParams, filter: { ...filterParams.filter, range: { start: new Date(rg.from), end: new Date(rg.to) } } })
+      }}
+    />
 
 
   </Box>

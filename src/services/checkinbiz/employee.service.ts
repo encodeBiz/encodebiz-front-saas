@@ -495,6 +495,20 @@ export const getIssuesResponsesLists = async (issuesId: string, params: SearchPa
   return result;
 }
 
+export const addResponse = async (data: Partial<IIssueResponse>) => {
+  try {
+    await addDocument<IIssueResponse>({
+      collection: `${collection.ISSUES}/${data.issueId}/responses`,
+      data: {
+        ...data
+      }
+    });
+  } catch (error: any) {
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
+  }
+
+}
+
 
 /**
    * Search employee
@@ -588,7 +602,7 @@ export const getEmployeeStatsByYear = async (
       }
     });
     delete monthlyData[12]
- 
+
 
     // Calcular estadísticas mensuales
     const monthlyBreakdown = Object.entries(monthlyData).map(([monthIndex, count]) => {
@@ -604,7 +618,7 @@ export const getEmployeeStatsByYear = async (
       };
     });
 
- 
+
 
     // Encontrar mes con mayor y menor creación
     const nonZeroMonths = monthlyBreakdown.filter(m => m.count > 0);
@@ -628,7 +642,7 @@ export const getEmployeeStatsByYear = async (
       lowestMonth,
     };
   } catch (error: any) {
- 
+
     throw new Error(
       mapperErrorFromBack(error?.message as string, false) as string
     );

@@ -11,9 +11,9 @@ import { IIssueResponse } from "@/domain/features/checkinbiz/IIssue";
 
 
 export default function useResponseIssueController() {
-   const { id } = useParams<{ id: string }>()
+  const { id } = useParams<{ id: string }>()
 
-   const { currentEntity, watchServiceAccess } = useEntity()
+  const { currentEntity, watchServiceAccess } = useEntity()
   const { showToast } = useToast()
   const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<IIssueResponse[]>([]);
@@ -60,9 +60,9 @@ export default function useResponseIssueController() {
 
 
 
-  const loadMore = () => {
-    setLimit(limit + 10)
-    fetchingData( limit + 10)
+  const loadMore = (restart: boolean = false) => {
+    setLimit(restart ? 10 : limit + 10)
+    fetchingData(restart ? 10 : limit + 10)
   }
 
   return {

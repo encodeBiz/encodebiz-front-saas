@@ -12,8 +12,8 @@ import { DownloadOutlined } from "@mui/icons-material";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
 import { useLayout } from "@/hooks/useLayout";
 import SearchFilter from "@/components/common/table/filters/SearchFilter";
-import { DateRangePicker } from "../../passinbiz/stats/components/filters/fields/DateRangeFilter";
 import { Box } from "@mui/material";
+import { DateRange, DateRangeFilter } from "../panel/components/statsDashboard/DateRangeFilter";
 
 interface IFilterParams {
   filter: { status: string, range: { start: any, end: any } | null },
@@ -40,8 +40,8 @@ export default function useAttendanceController() {
   const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<IReport[]>([]);
   const [itemsHistory, setItemsHistory] = useState<IReport[]>([]);
-    const [empthy, setEmpthy] = useState(false)
-  
+  const [empthy, setEmpthy] = useState(false)
+
   const [filterParams, setFilterParams] = useState<any>({
     filter: { status: 'active', range: getDateRange('year') },
     startAfter: null,
@@ -108,9 +108,11 @@ export default function useAttendanceController() {
     />
 
 
-    <DateRangePicker filter width='100%' value={filterParams.filter.range} onChange={(rg: { start: any, end: any }) => {
-      onFilter({ ...filterParams, filter: { ...filterParams.filter, range: rg } })
-    }} />
+    <DateRangeFilter value={{ from: filterParams.filter.range.start?.toISOString(), to: filterParams.filter.range.end?.toISOString() }}
+      onChange={(rg: DateRange) => {
+        onFilter({ ...filterParams, filter: { ...filterParams.filter, range: { start: new Date(rg.from), end: new Date(rg.to) } } })
+      }}
+    />
 
   </Box>
 
@@ -162,11 +164,11 @@ export default function useAttendanceController() {
     ]
     setLoading(true)
 
-     
+
     setEmpthy(await emptyReport(currentEntity?.entity.id as string))
-     
+
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async res => {
- 
+
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
         const data: Array<IReport> = await Promise.all(
@@ -218,7 +220,7 @@ export default function useAttendanceController() {
 
     {
       id: 'start',
- 
+
       label: t("core.label.start"),
       minWidth: 170,
       format: (value, row) => format_date(row.start, 'YYYY-MM-DD')
@@ -230,14 +232,14 @@ export default function useAttendanceController() {
       format: (value, row) => format_date(row.end, 'YYYY-MM-DD')
     },
 
-     {
+    {
       id: 'createdAt',
       sortable: true,
       label: t("core.label.createAt"),
       minWidth: 170,
       format: (value, row) => format_date(row.createdAt, 'YYYY-MM-DD')
     },
- 
+
 
   ];
 

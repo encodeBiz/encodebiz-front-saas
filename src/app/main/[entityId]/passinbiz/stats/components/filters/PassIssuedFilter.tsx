@@ -1,19 +1,19 @@
 import { SassButton } from "@/components/common/buttons/GenericButton"
 import { BorderBox } from "@/components/common/tabs/BorderBox"
 import { Alert, Box } from "@mui/material"
-import { DateRangePicker } from "./fields/DateRangeFilter"
 import { EventFilter } from "./fields/EventFilter"
 import { GroupByFilter } from "./fields/GroupByFilter"
 import { TypeFilter } from "./fields/TypeFilter"
 import { usePassinBizStats } from "../../context/passBizStatsContext"
 import { useTranslations } from "next-intl"
 import { IPassIssuedStatsRequest } from "../../model/PassIssued"
-
+import { DateRangeFilter, DateRange } from "@/app/main/[entityId]/checkinbiz/panel/components/statsDashboard/DateRangeFilter"
+ 
 export const PassIssuedFilter = () => {
   const { payloadPassIssued, setPayloadPassIssued, applyFilter, error } = usePassinBizStats()
   const t = useTranslations()
   return <BorderBox sx={{ width: "100%", p: 3, boxShadow: '0px 1px 4px 0.5px rgba(219, 217, 222, 0.85)', }}>
-    {error['issued'] && <Alert sx={{mb:3}} variant="outlined"
+    {error['issued'] && <Alert sx={{ mb: 3 }} variant="outlined"
       severity="warning"
     >{error['issued']}</Alert>}
     <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} flexDirection={"row"}   >
@@ -37,8 +37,11 @@ export const PassIssuedFilter = () => {
             onChange={(groupBy) => {
               setPayloadPassIssued({ ...payloadPassIssued as IPassIssuedStatsRequest, groupBy })
             }} />
-          <DateRangePicker value={payloadPassIssued?.dateRange as any} onChange={(dateRange) => setPayloadPassIssued({ ...payloadPassIssued as IPassIssuedStatsRequest, dateRange })} />
-
+          <DateRangeFilter value={{ from: payloadPassIssued?.dateRange.start?.toISOString(), to: payloadPassIssued?.dateRange.end?.toISOString() }}
+            onChange={(rg: DateRange) => {
+              setPayloadPassIssued({ ...payloadPassIssued as IPassIssuedStatsRequest, dateRange: { start: new Date(rg.from), end: new Date(rg.to) } })
+            }}
+          />
         </Box>
       </Box>
 

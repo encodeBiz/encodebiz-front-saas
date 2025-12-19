@@ -11,7 +11,6 @@ import { fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucurs
 
 import { Box, IconButton } from "@mui/material";
 
-import { DateRangePicker } from "@/app/main/[entityId]/passinbiz/stats/components/filters/fields/DateRangeFilter";
 import SearchFilter from "@/components/common/table/filters/SearchFilter";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
@@ -23,6 +22,7 @@ import { CommonModalType } from "@/contexts/commonModalContext";
 import { emptyChecklog } from "@/services/checkinbiz/report.service";
 import { HistoryIcon } from "@/components/common/icons/HistoryIcon";
 import { fetchUserAccount } from "@/services/core/account.service";
+import { DateRange, DateRangeFilter } from "../panel/components/statsDashboard/DateRangeFilter";
 
 interface IFilterParams {
   filter: { branchId: string, employeeId: string, status: string, range: { start: any, end: any } | null },
@@ -145,6 +145,8 @@ export default function useAttendanceController() {
 
     setEmpthy(await emptyChecklog(currentEntity?.entity.id as string))
 
+   
+
     searchLogs(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async res => {
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
@@ -175,8 +177,7 @@ export default function useAttendanceController() {
           })
         );
 
-        console.log(data);
-
+ 
 
         setItems(data)
         if (!filterParams.params.startAfter) {
@@ -302,10 +303,14 @@ export default function useAttendanceController() {
         }
       }}
     />
-    <DateRangePicker filter width='100%' value={filterParams.filter.range} onChange={(rg: { start: any, end: any }) => {
-      onFilter({ ...filterParams, filter: { ...filterParams.filter, range: rg } })
-    }} />
 
+    <DateRangeFilter value={{ from: filterParams.filter.range.start?.toISOString(), to: filterParams.filter.range.end?.toISOString() }}
+      onChange={(rg: DateRange) => {               
+        onFilter({ ...filterParams, filter: { ...filterParams.filter, range: { start: new Date(rg.from), end: new Date(rg.to) } } })
+      }}
+    />
+
+    
   </Box>
 
 
