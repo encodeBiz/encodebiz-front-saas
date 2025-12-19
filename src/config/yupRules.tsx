@@ -43,8 +43,8 @@ export const fileImageRule = (t: any) => Yup.mixed()
 
 export const ratioLogRule = (t: any) => Yup.number()
     .required(t('core.formValidatorMessages.required'))
-    .min(201, t('core.formValidatorMessages.min') + 201)
-    .max(1000, t('core.formValidatorMessages.max') + 1000)
+    .min(50, t('core.formValidatorMessages.min') + 50)
+    .max(5000, t('core.formValidatorMessages.max') + 5000)
 
 export const timeBreakRule = (t: any) => Yup.number()
     .required(t('core.formValidatorMessages.required'))

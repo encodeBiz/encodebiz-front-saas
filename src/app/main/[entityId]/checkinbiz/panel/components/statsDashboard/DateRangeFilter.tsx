@@ -17,6 +17,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs, { Dayjs } from "dayjs";
+import { SassButton } from "@/components/common/buttons/GenericButton";
+import { CalendarMonth } from "@mui/icons-material";
 
 const MAX_DAYS = 365;
 
@@ -30,7 +32,7 @@ const presets: { key: PresetKey; label: string; from: Dayjs; to: Dayjs }[] = [
   { key: "thisMonth", label: "Este mes", from: dayjs().startOf("month"), to: dayjs().endOf("day") },
 ];
 
-interface DateRange {
+export interface DateRange {
   from: string;
   to: string;
 }
@@ -84,18 +86,52 @@ export const DateRangeFilter = ({ value, onChange }: DateRangeFilterProps) => {
     applyRange(preset.from, preset.to);
   };
 
-  const handleApply = () => {
-    if (!tempFrom || !tempTo) return;
-    onChange({ from: tempFrom.toISOString(), to: tempTo.toISOString() });
-    setAnchorEl(null);
-  };
+ const handleApply = () => {
+  if (!tempFrom || !tempTo) return;
+  
+  // Crear copias de las fechas para no modificar las originales
+  const fromDate = new Date(tempFrom.toDate());
+  const toDate = new Date(tempTo.toDate());
+  
+  // Establecer from a las 00:00:00
+  fromDate.setHours(0, 0, 0, 0);
+  
+  // Establecer to a las 23:59:59
+  toDate.setHours(23, 59, 59, 999);
+  
+  onChange({ 
+    from: fromDate.toISOString(), 
+    to: toDate.toISOString() 
+  });
+  setAnchorEl(null);
+};
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} alignItems="flex-start">
-        <Button variant="outlined" onClick={(e) => setAnchorEl(e.currentTarget)}>
+      <Stack spacing={1.5} display={'flex'} alignItems="flex-end">
+        <SassButton
+          sx={{
+            fontWeight: 600,
+            /*textTransform: 'none',*/
+            padding: theme => theme.spacing(1.5, 3),
+            borderRadius: 1,
+            gap: 2,
+            boxShadow: 'none',
+            borderColor: theme => theme.palette.grey[400],
+            borderStyle: 'solid',
+            borderWidth: 1,
+            color: theme => theme.palette.grey[800],
+            '&:hover': {
+              boxShadow: 'none',
+              backgroundColor: '#FFF',
+              borderColor: theme => theme.palette.grey[800],
+            },
+
+
+          }}
+          variant="outlined" onClick={(e) => setAnchorEl(e.currentTarget)} endIcon={<CalendarMonth />}>
           {displayLabel}
-        </Button>
+        </SassButton>
       </Stack>
       <Popover
         id={id}
@@ -121,12 +157,12 @@ export const DateRangeFilter = ({ value, onChange }: DateRangeFilterProps) => {
                       preset.key === "last7"
                         ? t("presets.last7")
                         : preset.key === "last30"
-                        ? t("presets.last30")
-                        : preset.key === "last90"
-                        ? t("presets.last90")
-                        : preset.key === "last365"
-                        ? t("presets.last365")
-                        : t("presets.thisMonth")
+                          ? t("presets.last30")
+                          : preset.key === "last90"
+                            ? t("presets.last90")
+                            : preset.key === "last365"
+                              ? t("presets.last365")
+                              : t("presets.thisMonth")
                     }
                   />
                 </ListItemButton>
@@ -161,12 +197,12 @@ export const DateRangeFilter = ({ value, onChange }: DateRangeFilterProps) => {
             </Typography>
           )}
           <Stack direction="row" justifyContent="flex-end" spacing={1} sx={{ mt: 2 }}>
-            <Button size="small" onClick={() => setAnchorEl(null)}>
+            <SassButton size="small" onClick={() => setAnchorEl(null)}>
               {t("dateCancel")}
-            </Button>
-            <Button size="small" variant="contained" onClick={handleApply}>
+            </SassButton>
+            <SassButton size="small" variant="contained" onClick={handleApply}>
               {t("dateApply")}
-            </Button>
+            </SassButton>
           </Stack>
         </Box>
       </Popover>

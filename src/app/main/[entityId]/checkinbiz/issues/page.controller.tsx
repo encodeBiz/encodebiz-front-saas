@@ -167,7 +167,7 @@ export default function useIIssuesListController() {
       id: 'state',
       label: t("core.label.status"),
       minWidth: 170,
-      format: (value, row) => <CustomChip background={row.state} label={t("core.label." + row.state)} />,
+      format: (value, row) => <CustomChip role="text" background={row.state} label={t("core.label." + row.state)} />,
     },
 
     {

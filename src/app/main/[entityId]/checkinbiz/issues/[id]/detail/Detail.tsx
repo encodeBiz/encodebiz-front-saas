@@ -50,7 +50,7 @@ export const Detail = ({ issue }: { issue: IIssue }) => {
                 {issue.comments}
             </Box>
             <Divider />
-            <ReplyThread />
+            <ReplyThread issue={issue} />
         </CardContent>
 
 

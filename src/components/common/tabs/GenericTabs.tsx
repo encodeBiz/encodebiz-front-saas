@@ -30,6 +30,8 @@ const OrientationContainer = styled(Box)<{ orientation: TabsOrientation }>(
 
 const GenericTabs: React.FC<GenericTabsProps> = ({
     tabs,
+    scrollable = false,
+    fullWidth = true,
     orientation = 'horizontal',
     alignment = 'left',
     color = 'primary',
@@ -41,7 +43,7 @@ const GenericTabs: React.FC<GenericTabsProps> = ({
     const [currentTab, setCurrentTab] = useState(defaultTab);
     const pathname = usePathname()
     const searchParams = useSearchParams()
-     const router = useRouter()
+    const router = useRouter()
     const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
         setCurrentTab(newValue);
         if (onChange) onChange(newValue);
@@ -54,7 +56,7 @@ const GenericTabs: React.FC<GenericTabsProps> = ({
                     value={currentTab}
                     onChange={handleChange}
                     orientation={orientation}
-                    variant={'scrollable'}
+                    variant={fullWidth ? 'fullWidth' : scrollable ? 'scrollable' : 'standard'}
                     scrollButtons="auto"
                     sx={{
                         '& .MuiTab-root': {
