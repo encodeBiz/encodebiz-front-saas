@@ -27,6 +27,7 @@ export interface IEmployee {
         },
     }
     enableRemoteWork?: boolean;
+    enableA2F?: boolean;
     nationalId: string;
     jobTitle?: string
     branchId: Array<any>

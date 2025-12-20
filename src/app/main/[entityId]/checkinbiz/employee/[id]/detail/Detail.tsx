@@ -61,7 +61,27 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
                             {employee?.fullName}
                         </Typography>
                         <Box display={'flex'} flexDirection={'row'} gap={1}>
-                            <CustomChip role='ship' size='small' background={employee?.twoFA ? 'active' : 'disabled'} label={employee?.twoFA ? t('core.label.enable2AF') : t('core.label.disable2AF')} />
+                            <CustomChip
+                              role='ship'
+                              size='small'
+                              background={employee?.twoFA ? 'active' : 'disabled'}
+                              label={employee?.twoFA ? t('core.label.enable2AF') : t('core.label.disable2AF')}
+                            />
+                            {employee?.enableA2F === false ? (
+                              <CustomChip
+                                role='ship'
+                                size='small'
+                                background='disabled'
+                                label={t('core.label.policyA2FDisabled')}
+                              />
+                            ) : (
+                              <CustomChip
+                                role='ship'
+                                size='small'
+                                background='active'
+                                label={t('core.label.policyA2FEnabled')}
+                              />
+                            )}
                             <CustomChip role='ship' size='small' background={employee?.enableRemoteWork ? 'active' : 'disabled'} label={employee.enableRemoteWork ? t('core.label.enableRemoteWorkEnable') : t('core.label.enableRemoteWorkDisabled')} />
                         </Box>
                     </Box>
