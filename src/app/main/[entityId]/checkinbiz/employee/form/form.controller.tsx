@@ -65,6 +65,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     nationalId: 'N/A',
     metadata: [],
     enableRemoteWork: false,
+    enableA2F: true,
 
   });
 
@@ -126,6 +127,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
       const initialValuesData = {
         ...event,
+        enableA2F: event.enableA2F ?? true,
         metadata: objectToArray(event.metadata)
       }
       if (event.enableRemoteWork) {
@@ -186,6 +188,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         nationalId: 'N/A',
         status: 'active',
         enableRemoteWork: false,
+        enableA2F: true,
         metadata: [],
         address: { "country": "", "city": "", "postalCode": "", "street": "", "geo": { "lat": 0, "lng": 0 }, "timeZone": "" }
       } as any)
@@ -258,6 +261,12 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
       },
 
+      {
+        name: 'enableA2F',
+        label: t('core.label.enableA2F'),
+        required: false,
+        component: ToggleInput,
+      },
       {
         name: 'enableRemoteWork',
         label: t('core.label.enableRemoteWork'),
