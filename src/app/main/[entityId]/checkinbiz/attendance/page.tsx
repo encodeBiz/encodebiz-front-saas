@@ -188,6 +188,9 @@ export default function AttendanceList() {
                 <Typography variant="body2" color="text.secondary">
                   {t('core.label.status')}: {t('core.label.' + (logDetail.status ?? ''))} · {format_date(logDetail.timestamp, 'DD/MM/YYYY HH:mm:ss', logDetail.metadata?.tz ?? logDetail.metadata?.etz)}
                 </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {t('core.label.timeZone')}: {logDetail.metadata?.tz ?? logDetail.metadata?.etz ?? '-'}
+                </Typography>
               </Box>
 
               <Divider />
