@@ -22,6 +22,8 @@ import { CommonModalType } from "@/contexts/commonModalContext";
 import { emptyChecklog } from "@/services/checkinbiz/report.service";
 import { HistoryIcon } from "@/components/common/icons/HistoryIcon";
 import { fetchUserAccount } from "@/services/core/account.service";
+import { Tooltip } from "@mui/material";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { DateRange, DateRangeFilter } from "../panel/components/statsDashboard/DateRangeFilter";
 
 interface IFilterParams {
@@ -100,6 +102,14 @@ export default function useAttendanceController() {
     bulk: false,
     allowItem: () => true,
     onPress: (item: IChecklog) => onGoMap(item.geo.lat, item.geo.lng)
+  }, {
+    actionBtn: true,
+    color: 'primary',
+    icon: <InfoOutlinedIcon color="primary" />,
+    label: t('core.label.viewDetails'),
+    bulk: false,
+    allowItem: () => true,
+    onPress: (item: IChecklog) => openModal(CommonModalType.LOGS, { log: item })
   }]
 
   /** Paginated Changed */
@@ -229,13 +239,14 @@ export default function useAttendanceController() {
       id: 'timestamp',
       label: t("core.label.date-hour"),
       minWidth: 200,
-      format: (value, row) => <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'} gap={1}>
-
-        {format_date(row.timestamp, 'DD/MM/YYYY')} {format_date(row.timestamp, 'hh:mm')}
-        {!!row.requestUpdate && <IconButton onClick={() => {
-          openModal(CommonModalType.INFO, { item: row.requestUpdate })
-        }}><HistoryIcon /></IconButton>}
-      </Box>
+      format: (value, row) => (
+        <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'} gap={1}>
+          <span>{format_date(row.timestamp, 'DD/MM/YYYY HH:mm:ss', row.metadata?.tz ?? row.metadata?.etz)}</span>
+          {!!row.requestUpdate && <IconButton onClick={() => {
+            openModal(CommonModalType.INFO, { item: row.requestUpdate })
+          }}><HistoryIcon /></IconButton>}
+        </Box>
+      )
     },
 
 
