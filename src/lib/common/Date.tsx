@@ -1,9 +1,11 @@
 import { Timestamp } from "firebase/firestore";
 import moment from "moment";
 import { DateTimeFormatOptions } from "next-intl";
-import 'moment/locale/es';
 import dayjs from "dayjs";
-moment.locale('es')
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export type FirestoreTimestamp = {
     seconds: number;
@@ -30,22 +32,43 @@ export function toDateTime(secs: number) {
  * @param {(Timestamp | Date | string)} str
  * @returns {string}
  */
-export function format_date(str: Timestamp | Date | string | any, format: string = "LLLL"): string {
-    let date: string = ""
+const toJsDate = (value: Timestamp | Date | string | any): Date | null => {
+  if (value instanceof Date) return value;
+  if (value instanceof Timestamp) return value.toDate();
+  if (typeof value === "object" && value?.seconds) return new Date(value.seconds * 1000 + (value.nanoseconds ?? 0) / 1_000_000);
+  if (typeof value === "string") {
+    const parsed = new Date(value);
+    return Number.isNaN(parsed.getTime()) ? null : parsed;
+  }
+  return null;
+};
 
-    if (typeof str === 'string')
-        date = moment(str).format(format)
-    if (typeof str === 'object' && str?.seconds) {
-        date = moment.unix(str?.seconds).format(format)
-    }
-    if (str instanceof Date) {
-        date = moment((str as Date)).format(format)
-    }
-    if (str instanceof Timestamp) {
-        date = moment((str as Timestamp).toDate()).format(format)
-    }
+export function format_date(str: Timestamp | Date | string | any, format: string = "LLLL", tz?: string | null): string {
+  const jsDate = toJsDate(str);
 
-    return date;
+  if (tz && jsDate) {
+    const fmt = format
+      .replace("DD", "DD")
+      .replace("MM", "MM")
+      .replace("YYYY", "YYYY")
+      .replace("HH", "HH")
+      .replace("mm", "mm")
+      .replace("ss", "ss");
+    return dayjs(jsDate).tz(tz).format(fmt);
+  }
+
+  let date = "";
+  if (typeof str === "string") date = moment(str).format(format);
+  if (typeof str === "object" && str?.seconds) {
+    date = moment.unix(str?.seconds).format(format);
+  }
+  if (str instanceof Date) {
+    date = moment(str as Date).format(format);
+  }
+  if (str instanceof Timestamp) {
+    date = moment((str as Timestamp).toDate()).format(format);
+  }
+  return date;
 }
 
 export const formatDate = async (
