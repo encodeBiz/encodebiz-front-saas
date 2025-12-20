@@ -10,14 +10,16 @@ import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 import { deleteSucursal, search, updateSucursal } from "@/services/checkinbiz/sucursal.service";
+import { countFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { useLayout } from "@/hooks/useLayout";
 import { DeleteOutline, Edit, ListAltOutlined } from "@mui/icons-material";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
-import { Box } from "@mui/material";
+import { Box, Tooltip } from "@mui/material";
 import { useAppLocale } from "@/hooks/useAppLocale";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
+import { collection } from "@/config/collection";
 
 
 interface IFilterParams {
@@ -157,8 +159,14 @@ export default function useEmployeeListController() {
       id: 'address',
       label: t("core.label.address"),
       minWidth: 170,
-      format: (value, row) => row.address.street,
+      format: (value, row) => <Tooltip title={row.address.street}><span>{row.address.street}</span></Tooltip>,
       onClick: (item: ISucursal) => onDetail(item),
+    },
+    {
+      id: 'employeesCount',
+      label: t("core.label.employees"),
+      minWidth: 120,
+      format: (_value, row) => row.employeesCount ?? 0,
     },
 
     {
@@ -204,13 +212,32 @@ export default function useEmployeeListController() {
 
     setLoading(true)
     search(currentEntity?.entity.id as string, { ...(filterParams.params as any) }).then(async res => {
+      // Enriquecer con cantidad de empleados (responsibilities) por sucursal
+      const enriched = await Promise.all(
+        res.map(async (branch) => {
+          try {
+            const employeesCount = await countFirestore({
+              collection: `${collection.ENTITIES}/${currentEntity?.entity.id}/${collection.RESPONSABILITY}`,
+              filters: [
+                { field: "scope.branchId", operator: "==", value: branch.id },
+                { field: "active", operator: "==", value: 1 },
+              ],
+              includeCount: true,
+            });
+            return { ...branch, employeesCount };
+          } catch {
+            return { ...branch, employeesCount: 0 };
+          }
+        })
+      );
+
       if (res.length !== 0) {
         setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
-        setItems(res)
+        setItems(enriched)
         if (!filterParams.params.startAfter) {
-          setItemsHistory([...res])
+          setItemsHistory([...enriched])
         } else {
-          setItemsHistory(prev => [...prev, ...res])
+          setItemsHistory(prev => [...prev, ...enriched])
         }
       }
 
