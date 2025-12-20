@@ -13,9 +13,7 @@ export default function useDashboardController() {
     if (user?.id && currentEntity?.status=='active') {     
       const isViewOnboarding = localStorage.getItem('view-onboarding-' + user?.id)
       if (!isViewOnboarding) {
-        setTimeout(() => {
-          openModal(CommonModalType.ONBOARDING)
-        }, 2000);
+        // Apertura automática deshabilitada; usar el botón del header para abrir Onboarding.
       }
     }    
  }, [openModal, user?.id])
