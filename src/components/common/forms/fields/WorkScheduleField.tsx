@@ -140,7 +140,7 @@ const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
                                                 }
                                             });
                                         }}
-                                        disabled={!workScheduleEnable || enableDayTimeRange || props.disabled || ((props.name === 'endTime' || props.name === 'startTime') && !enableDayTimeRange)}
+                                        disabled={!workScheduleEnable || props.disabled || ((props.name === 'endTime' || props.name === 'startTime') && !enableDayTimeRange)}
                                         sx={{ width: '100%' }}
                                     />
                                 </Grid>
@@ -178,7 +178,7 @@ const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
                                                 }
                                             });
                                         }}
-                                        disabled={!workScheduleEnable || enableDayTimeRange || props.disabled || ((props.name === 'endTime' || props.name === 'startTime') && !enableDayTimeRange)}
+                                        disabled={!workScheduleEnable || props.disabled || ((props.name === 'endTime' || props.name === 'startTime') && !enableDayTimeRange)}
                                         sx={{ width: '100%' }}
                                     />
                                 </Grid>

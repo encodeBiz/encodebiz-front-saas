@@ -4,7 +4,7 @@ import { BranchSeries, BranchSeriesPoint } from "../hooks/useCheckbizStats";
 
 export const formatCurrency = (value?: number) => {
   if (value === undefined || Number.isNaN(value)) return "-";
-  return `¤ ${value.toFixed(0)}`;
+  return `¤ ${value.toFixed(2)}`;
 };
 
 export const formatHours = (value?: number) => {

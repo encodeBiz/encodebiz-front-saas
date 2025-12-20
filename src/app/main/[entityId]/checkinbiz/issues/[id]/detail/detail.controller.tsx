@@ -7,6 +7,7 @@ import { fetchEmployee as fetchEmployeeData } from "@/services/checkinbiz/employ
 
 import { useParams } from "next/navigation";
 import { IIssueResponse } from "@/domain/features/checkinbiz/IIssue";
+import { fetchUser } from "@/services/core/users.service";
 
 
 
@@ -26,7 +27,8 @@ export default function useResponseIssueController() {
       const res: Array<IIssueResponse> = await Promise.all(
         data.map(async (item) => {
           const employee = (await fetchEmployeeData(currentEntity?.entity.id as string, item.employeeId as string))
-          return { ...item, employee };
+          const user = (await fetchUser(item.userId as string))
+          return { ...item, employee, user };
         })
       );
 

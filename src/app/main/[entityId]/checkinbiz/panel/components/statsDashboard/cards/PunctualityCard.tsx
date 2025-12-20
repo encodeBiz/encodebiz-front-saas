@@ -77,8 +77,13 @@ export const PunctualityCard = ({ entityId, branchId, from, to }: CheckbizCardPr
           <YAxis yAxisId="right" orientation="right" />
           <Tooltip
             {...defaultTooltipProps}
-            formatter={(value: number, name: string) => {
-              const isLate = name?.toString().toLowerCase().includes("late");
+            formatter={(value: number, name: string, item) => {
+              const lowerName = name?.toString().toLowerCase() ?? "";
+              const dataKey = (item as any)?.dataKey?.toString().toLowerCase?.() ?? "";
+              const isLate =
+                lowerName.includes("late") ||
+                lowerName.includes("tarde") ||
+                dataKey.includes("avglate");
               return isLate
                 ? [`${Number(value).toFixed(1)} ${tp("minutes")}`, tp("lateLabel")]
                 : [formatPercent(Number(value)), tp("onTimeLabel")];
@@ -94,7 +99,7 @@ export const PunctualityCard = ({ entityId, branchId, from, to }: CheckbizCardPr
                   type="monotone"
                   data={branch.points}
                   dataKey="onTimeRate"
-                  name={`${label} ${tp("onTimeLabel")}`}
+                  name={`${label} · ${tp("onTimeLabel")}`}
                   yAxisId="left"
                   stroke={hashBranchColor(branch.branchId)}
                   strokeWidth={2}
@@ -104,7 +109,7 @@ export const PunctualityCard = ({ entityId, branchId, from, to }: CheckbizCardPr
                   type="monotone"
                   data={branch.points}
                   dataKey="avgLateMinutes"
-                  name={`${label} ${tp("lateLabel")}`}
+                  name={`${label} · ${tp("lateLabel")}`}
                   yAxisId="right"
                   stroke="#ff7043"
                   strokeDasharray="4 2"

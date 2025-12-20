@@ -63,11 +63,11 @@ const ReplyThread = ({issue}:{issue:IIssue}) => {
                             <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
                                 <Box display="flex" alignItems="center">
                                     <Avatar sx={{ bgcolor: theme.palette.primary.dark, mr: 2 }}>
-                                        {reply.employee?.fullName?.charAt(0)}
+                                        {reply.user?.fullName?.charAt(0)}
                                     </Avatar>
                                     <Box>
                                         <Typography variant="subtitle1" fontWeight="medium">
-                                            {reply.employee?.fullName}
+                                            {reply.user?.fullName}
                                         </Typography>
                                         <Typography variant="caption" color="text.secondary">
                                             {format_date(reply?.createdAt)}
