@@ -215,6 +215,7 @@
       "disableA2F": "A2F disabled",
       "policyA2FEnabled": "A2F policy active",
       "policyA2FDisabled": "A2F policy disabled",
+      "employees": "Employees",
       "enableRemoteWork": "Enable remote work",
       "remoteWork": "Remote work",
       "enableRemoteWorkEnable": "Remote work enabled",

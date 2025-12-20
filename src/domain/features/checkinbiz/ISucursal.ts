@@ -34,6 +34,7 @@ export interface ISucursal {
     notifyBeforeMinutes?:number
 
   }
+  employeesCount?: number;
 }
 
 export interface WorkDaySchedule {
