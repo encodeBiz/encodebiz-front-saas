@@ -4,6 +4,8 @@ import { DateTimeFormatOptions } from "next-intl";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import 'dayjs/locale/es';
+import 'dayjs/locale/en';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -69,6 +71,16 @@ export function format_date(str: Timestamp | Date | string | any, format: string
     date = moment((str as Timestamp).toDate()).format(format);
   }
   return date;
+}
+
+export function format_date_with_locale(str: Timestamp | Date | string | any, locale?: 'es' | 'en', format: string = "LLLL"): string {
+  const jsDate = toJsDate(str);
+  if (!jsDate) return '';
+
+  dayjs.locale(locale === 'es' ? 'es' : 'en');
+
+ 
+  return dayjs(jsDate).format("MMMM D, YYYY h:mm A");
 }
 
 export const formatDate = async (
