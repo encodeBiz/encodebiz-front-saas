@@ -1,7 +1,6 @@
 'use client';
 
 import { BranchSeries, BranchSeriesPoint } from "../hooks/useCheckbizStats";
-
 export const formatCurrency = (value?: number) => {
   if (value === undefined || Number.isNaN(value)) return "-";
   return `¤ ${value.toFixed(2)}`;
@@ -72,7 +71,10 @@ export const formatKpiEntries = (
 ) => {
   if (!kpis) return [];
   const entries = Object.entries(kpis);
-  return entries.map(([key, value]) => {
+  const hidden = new Set(["avgcostperemployee"]);
+  return entries
+    .filter(([key]) => !hidden.has(key.toLowerCase()))
+    .map(([key, value]) => {
     if (value === null || value === undefined || Number.isNaN(Number(value))) {
       return { label: translateLabel ? translateLabel(key) : defaultLabelFromKey(key), value: "-" };
     }
