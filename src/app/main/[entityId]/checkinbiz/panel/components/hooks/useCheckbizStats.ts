@@ -46,13 +46,14 @@ export interface BranchSeriesPoint {
   suspects?: number;
   failed?: number;
   valid?: number;
-  suspectRate?: number;
-  onTimeRate?: number;
-  avgLateMinutes?: number;
-  onTimeRateIn?: number;
-  onTimeRateOut?: number;
-  avgLateMinutesIn?: number;
-  avgLateMinutesOut?: number;
+  suspectRate?: number | null;
+  failureRate?: number | null;
+  onTimeRate?: number | null;
+  avgLateMinutes?: number | null;
+  onTimeRateIn?: number | null;
+  onTimeRateOut?: number | null;
+  avgLateMinutesIn?: number | null;
+  avgLateMinutesOut?: number | null;
   avgStart?: number;
   avgEnd?: number;
   budget?: number;
@@ -61,8 +62,8 @@ export interface BranchSeriesPoint {
   extraHours?: number;
   deficitHours?: number;
   complianceRate?: number;
-  avgDistance?: number;
-  withinRate?: number;
+  avgDistance?: number | null;
+  withinRate?: number | null;
   expectedHoursPerDay?: number;
 }
 

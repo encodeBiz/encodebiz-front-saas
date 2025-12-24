@@ -109,9 +109,9 @@ export const alignSeriesByDate = <T extends BranchSeries>(
     const alignedPoints = dates.map((date) => {
       const existing = pointMap.get(date);
       if (existing) return existing;
-      const filler: BranchSeriesPoint = { date };
+      const filler = { date } as BranchSeriesPoint;
       numericKeys.forEach((key) => {
-        filler[key] = fillValue as any;
+        (filler as any)[key] = fillValue as number | null;
       });
       return filler;
     });

@@ -33,6 +33,7 @@ type TopBranch = {
   totalChecklogs?: number;
   suspectRate?: number;
   failureRate?: number;
+  validRate?: number;
   suspectsPer1k?: number;
   failurePer1k?: number;
 };
