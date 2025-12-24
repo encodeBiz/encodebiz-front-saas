@@ -35,7 +35,7 @@ export const ImageCropper = ({ onComplete, disabled = false, isUploading, size =
 
             <SassButton disabled={disabled}
                 variant="contained"
-                sx={{width:180}}
+                sx={{width:200}}
                 startIcon={!isUploading ? <CloudUpload /> : <CircularProgress color='inherit' size={24} />}
                 onClick={() => fileInputRef.current.click()}            
             >

@@ -86,6 +86,7 @@ const DayScheduleItem: React.FC<{
     schedule?: DaySchedule;
     compact?: boolean;
 }> = ({ day, schedule, compact = false }) => {
+    const t = useTranslations()
     if (!schedule || !schedule.enabled) return null;
 
     const duration = calculateDuration(schedule.start, schedule.end);
@@ -127,7 +128,7 @@ const DayScheduleItem: React.FC<{
                         >
                             <Chip
                                 icon={<PlayCircleOutline fontSize="small" />}
-                                label={`Inicio: ${formatTime(schedule.start)}`}
+                                label={`${t('core.label.start')}: ${formatTime(schedule.start)}`}
                                 size="small"
                                 variant="outlined"
                                 color="success"
@@ -138,7 +139,7 @@ const DayScheduleItem: React.FC<{
                             />
                             <Chip
                                 icon={<StopCircleOutlined fontSize="small" />}
-                                label={`Fin: ${formatTime(schedule.end)}`}
+                                label={`${t('core.label.end')}: ${formatTime(schedule.end)}`}
                                 size="small"
                                 variant="outlined"
                                 color="error"
@@ -171,13 +172,13 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
     // Configuración de días
     const t = useTranslations()
     const daysConfig = [
-        { key: 'monday' as const, label: 'Lunes' },
-        { key: 'tuesday' as const, label: 'Martes' },
-        { key: 'wednesday' as const, label: 'Miércoles' },
-        { key: 'thursday' as const, label: 'Jueves' },
-        { key: 'friday' as const, label: 'Viernes' },
-        { key: 'saturday' as const, label: 'Sábado' },
-        { key: 'sunday' as const, label: 'Domingo' },
+        { key: 'monday' as const, label: t('core.days.monday') },
+        { key: 'tuesday' as const, label: t('core.days.tuesday') },
+        { key: 'wednesday' as const, label: t('core.days.wednesday') },
+        { key: 'thursday' as const, label: t('core.days.thursday') },
+        { key: 'friday' as const, label: t('core.days.friday') },
+        { key: 'saturday' as const, label: t('core.days.saturday') },
+        { key: 'sunday' as const, label: t('core.days.sunday') },
     ];
 
     // Filtrar días habilitados
@@ -218,8 +219,8 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
     return (
         <Paper elevation={0} sx={{ p: 3 }}>
 
-
-            <Box sx={{ mb: compact ? 2 : 3 }}>
+            <Typography>{t('sucursal.breakTime')}</Typography>
+            <Box sx={{ mb: 1 }}>
                 <Stack
                     direction="row"
                     justifyContent="flex-start"
@@ -260,14 +261,13 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
             </Paper>
 
 
-
-            <Box sx={{ mb: compact ? 2 : 3 }}>
+            <Typography>{t('sucursal.workTime')}</Typography>
+            <Box sx={{ mb: 1 }}>
                 <Stack
                     direction="row"
                     justifyContent="flex-start"
                     alignItems="center"
                 >
-
                     <Box display={'flex'} alignItems={'center'} gap={2}>
                         <DetailText help={branch?.advance?.enableDayTimeRange ? t('sucursal.dayTimeRangeAlertMessageE') : t('sucursal.dayTimeRangeAlertMessageD')} label={branch?.advance?.enableDayTimeRange ? t('sucursal.dayTimeRangeEnableText') : t('sucursal.dayTimeRangeDisabledText')} />
                     </Box>
@@ -322,7 +322,7 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
                                     <AccessTime color="primary" />
                                     <Box>
                                         <Typography variant="caption" color="text.secondary">
-                                            Horas semanales
+                                            {t('sucursal.weekTime')}
                                         </Typography>
                                         <Typography variant="h6" fontWeight="bold">
                                             {calculateTotalWeeklyHours()}
@@ -336,10 +336,11 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
                                         <NotificationsOutlined color="primary" />
                                         <Box>
                                             <Typography variant="caption" color="text.secondary">
-                                                Notificar antes
+
+                                                {t('core.label.workScheduleNotify')}
                                             </Typography>
                                             <Typography variant="h6" fontWeight="bold">
-                                                {notifyBeforeMinutes} min
+                                                {notifyBeforeMinutes}
                                             </Typography>
                                         </Box>
                                     </Stack>
@@ -356,9 +357,9 @@ const WorkScheduleDetail: React.FC<WorkScheduleDetailProps> = ({
                             variant={compact ? "body2" : "body1"}
                             color="text.secondary"
                             gutterBottom
-                            sx={{ mb: compact ? 1 : 2 }}
+                            sx={{ mb: 1 }}
                         >
-                            Días programados ({enabledDaysCount})
+                            {t('sucursal.scheduledDays')} ({enabledDaysCount})
                         </Typography>
 
                         <List sx={{ p: 0 }}>
