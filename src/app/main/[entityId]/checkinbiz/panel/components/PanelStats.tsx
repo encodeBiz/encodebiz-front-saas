@@ -16,8 +16,8 @@ export const PanelStats = () => {
   const { pending, branchList, initialize } = useDashboard();
   const { currentEntity } = useEntity();
   const [dateRange, setDateRange] = useState(() => ({
-    from: dayjs().startOf("month").toISOString(),
-    to: dayjs().endOf("day").toISOString(),
+    from: dayjs().startOf("week").toISOString(),
+    to: dayjs().endOf("week").toISOString(),
   }));
 
   useEffect(() => {

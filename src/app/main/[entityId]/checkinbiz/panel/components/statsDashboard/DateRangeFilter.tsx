@@ -22,13 +22,14 @@ import { CalendarMonth } from "@mui/icons-material";
 
 const MAX_DAYS = 365;
 
-type PresetKey = "last7" | "last30" | "last90" | "last365" | "thisMonth" | "custom";
+type PresetKey = "last7" | "last30" | "last90" | "last365" | "thisMonth" | "thisWeek" | "custom";
 
 const presets: { key: PresetKey; label: string; from: Dayjs; to: Dayjs }[] = [
   { key: "last7", label: "Últimos 7 días", from: dayjs().subtract(7, "day"), to: dayjs().endOf("day") },
   { key: "last30", label: "Últimos 30 días", from: dayjs().subtract(30, "day"), to: dayjs().endOf("day") },
   { key: "last90", label: "Últimos 90 días", from: dayjs().subtract(90, "day"), to: dayjs().endOf("day") },
   { key: "last365", label: "Últimos 12 meses", from: dayjs().subtract(365, "day"), to: dayjs().endOf("day") },
+  { key: "thisWeek", label: "Esta semana", from: dayjs().startOf("week"), to: dayjs().endOf("week") },
   { key: "thisMonth", label: "Este mes", from: dayjs().startOf("month"), to: dayjs().endOf("day") },
 ];
 
@@ -47,7 +48,7 @@ export const DateRangeFilter = ({ value, onChange }: DateRangeFilterProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [tempFrom, setTempFrom] = useState<Dayjs | null>(dayjs(value.from));
   const [tempTo, setTempTo] = useState<Dayjs | null>(dayjs(value.to));
-  const [selection, setSelection] = useState<PresetKey | null>(null);
+  const [selection, setSelection] = useState<PresetKey | null>("thisWeek");
   const [hint, setHint] = useState<string | null>(null);
 
   const open = Boolean(anchorEl);
@@ -169,7 +170,9 @@ export const DateRangeFilter = ({ value, onChange }: DateRangeFilterProps) => {
                             ? t("presets.last90")
                             : preset.key === "last365"
                               ? t("presets.last365")
-                              : t("presets.thisMonth")
+                              : preset.key === "thisWeek"
+                                ? t("presets.thisWeek")
+                                : t("presets.thisMonth")
                     }
                   />
                 </ListItemButton>
