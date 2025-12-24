@@ -1128,6 +1128,9 @@
       "complianceRate": "Compliance rate",
       "avgCompliance": "Avg. compliance",
       "cost": "Cost",
+      "suspectsPer1k": "Suspects per 1k",
+      "failurePer1k": "Failures per 1k",
+      "validRate": "Valid rate",
       "hours": "Hours",
       "suspects": "Suspects",
       "lastWeek": "Last week",
@@ -1186,6 +1189,7 @@
       "last30": "Last 30 days",
       "last90": "Last 90 days",
       "last365": "Last 12 months",
+      "thisWeek": "This week",
       "thisMonth": "This month",
       "custom": "Custom"
     },
@@ -1208,8 +1212,16 @@
       "subtitle": "Compare actual vs expected cost"
     },
     "suspectRates": {
-      "title": "Suspect rates",
-      "subtitle": "Daily distribution"
+      "title": "Check-in behavior",
+      "subtitle": "Suspects / Failures / Valid (S/F/V)",
+      "suspectRateLabel": "Suspect rate",
+      "failureRateLabel": "Failure rate",
+      "topBranchesLabel": "Branch ranking",
+      "countsLabel": "S/F/V",
+      "totalChecklogsLabel": "Total",
+      "per1kSuspectsLabel": "S/1k",
+      "per1kFailureLabel": "F/1k",
+      "totalsLabel": "Suspects / total checklogs"
     },
     "punctuality": {
       "title": "Punctuality",

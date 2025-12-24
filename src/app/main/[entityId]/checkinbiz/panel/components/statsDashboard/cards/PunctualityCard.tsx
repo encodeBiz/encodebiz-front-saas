@@ -13,7 +13,7 @@ import {
 import { useTranslations } from "next-intl";
 import React from "react";
 import { StatCard } from "../StatCard";
-import { defaultLabelFromKey, defaultTooltipProps, formatKpiEntries, formatPercent, hashBranchColor, normalizeSeriesNumbers } from "../chartUtils";
+import { alignSeriesByDate, defaultLabelFromKey, defaultTooltipProps, formatKpiEntries, formatPercent, hashBranchColor, normalizeSeriesNumbers } from "../chartUtils";
 import { BranchSeries, useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 
@@ -36,33 +36,54 @@ export const PunctualityCard = ({ entityId, branchId, from, to }: CheckbizCardPr
     granularity: "daily",
   });
 
-  const series = normalizeSeriesNumbers(data?.dataset ?? [], ["onTimeRate", "avgLateMinutes"]);
-  const onTimeAverage =
-    series.reduce(
-      (acc, branch) => acc + branch.points.reduce((sum, p) => sum + (p.onTimeRate ?? 0), 0),
-      0,
-    ) /
-    (series.reduce((acc, branch) => acc + branch.points.length, 0) || 1);
+  const mappedSeries: BranchSeries[] =
+    data?.dataset?.map((branch) => ({
+      ...branch,
+      points: branch.points.map((p) => ({
+        ...p,
+        onTimeRateIn: p.onTimeRateIn ?? p.onTimeRate ?? null,
+        onTimeRateOut: p.onTimeRateOut ?? null,
+        avgLateMinutesIn: p.avgLateMinutesIn ?? p.avgLateMinutes ?? null,
+        avgLateMinutesOut: p.avgLateMinutesOut ?? null,
+      })),
+    })) ?? [];
 
-  const lateAverage =
-    series.reduce(
-      (acc, branch) => acc + branch.points.reduce((sum, p) => sum + (p.avgLateMinutes ?? 0), 0),
-      0,
-    ) /
-    (series.reduce((acc, branch) => acc + branch.points.length, 0) || 1);
-  const apiKpis = formatKpiEntries(data?.kpis, kpiLabel);
+  const series = alignSeriesByDate(
+    normalizeSeriesNumbers(mappedSeries, [
+      "onTimeRateIn",
+      "onTimeRateOut",
+      "avgLateMinutesIn",
+      "avgLateMinutesOut",
+    ]),
+    ["onTimeRateIn", "onTimeRateOut", "avgLateMinutesIn", "avgLateMinutesOut"],
+    null,
+  );
+  const punctualityKpis =
+    data?.kpis
+      ? Object.entries(data.kpis).map(([key, value]) => {
+        const label = kpiLabel(key);
+        if (value === null || value === undefined || Number.isNaN(Number(value))) {
+          return { label, value: "-" };
+        }
+        const num = Number(value);
+        const lower = key.toLowerCase();
+        if (lower.includes("rate")) {
+          return { label: `${label} (%)`, value: `${(num * 100).toFixed(1)}%` };
+        }
+        if (lower.includes("late") || lower.includes("minutes")) {
+          return { label, value: `${num.toFixed(1)} ${tp("minutes")}` };
+        }
+        return { label, value: num.toFixed(2) };
+      })
+      : [];
 
   return (
     <StatCard
       title={t("punctuality.title")}
-      subtitle={t("punctuality.subtitle")}
+      subtitle={`${t("punctuality.subtitle")} (${tp("onTimeLabel")} = proporción → % en UI)`}
       isLoading={isLoading}
       error={error}
-      kpis={[
-        ...apiKpis,
-        { label: tp("avgOnTimeRate"), value: formatPercent(onTimeAverage) },
-        { label: tp("avgDelayMinutes"), value: `${lateAverage.toFixed(1)} ${tp("minutes")}` },
-      ]}
+      kpis={punctualityKpis}
       infoText={t("descriptions.punctuality")}
     >
       <ResponsiveContainer width="100%" height={320}>
@@ -70,52 +91,59 @@ export const PunctualityCard = ({ entityId, branchId, from, to }: CheckbizCardPr
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="date" type="category" allowDuplicatedCategory={false} />
           <YAxis
-            yAxisId="left"
             tickFormatter={(v) => formatPercent(Number(v))}
-            domain={[0, 1]}
+            domain={[0, "dataMax"]}
           />
-          <YAxis yAxisId="right" orientation="right" />
           <Tooltip
             {...defaultTooltipProps}
             formatter={(value: number, name: string, item) => {
-              const lowerName = name?.toString().toLowerCase() ?? "";
-              const dataKey = (item as any)?.dataKey?.toString().toLowerCase?.() ?? "";
-              const isLate =
-                lowerName.includes("late") ||
-                lowerName.includes("tarde") ||
-                dataKey.includes("avglate");
-              return isLate
-                ? [`${Number(value).toFixed(1)} ${tp("minutes")}`, tp("lateLabel")]
-                : [formatPercent(Number(value)), tp("onTimeLabel")];
+              const dataKey = (item as any)?.dataKey?.toString() ?? "";
+              const lower = dataKey.toLowerCase();
+              const formattedValue = lower.includes("minutes")
+                ? `${Number(value).toFixed(1)} ${tp("minutes")}`
+                : `${(Number(value) * 100).toFixed(1)}%`;
+              const fallbackLabel = lower.includes("out")
+                ? `${tp("onTimeLabel")} (out)`
+                : `${tp("onTimeLabel")} (in)`;
+              return [formattedValue, name || fallbackLabel];
             }}
             labelFormatter={(label) => `${tp("date")}: ${label}`}
           />
           <Legend />
           {series.map((branch) => {
             const label = branch.branchName ?? branch.branchId;
+            const hasIn = branch.points.some(
+              (p) => p.onTimeRateIn !== null && p.onTimeRateIn !== undefined,
+            );
+            const hasOut = branch.points.some(
+              (p) => p.onTimeRateOut !== null && p.onTimeRateOut !== undefined,
+            );
             return (
               <React.Fragment key={branch.branchId}>
-                <Line
-                  type="monotone"
-                  data={branch.points}
-                  dataKey="onTimeRate"
-                  name={`${label} · ${tp("onTimeLabel")}`}
-                  yAxisId="left"
-                  stroke={hashBranchColor(branch.branchId)}
-                  strokeWidth={2}
-                  dot={false}
-                />
-                <Line
-                  type="monotone"
-                  data={branch.points}
-                  dataKey="avgLateMinutes"
-                  name={`${label} · ${tp("lateLabel")}`}
-                  yAxisId="right"
-                  stroke="#ff7043"
-                  strokeDasharray="4 2"
-                  strokeWidth={2}
-                  dot={false}
-                />
+                {hasIn && (
+                  <Line
+                    type="monotone"
+                    data={branch.points}
+                    dataKey="onTimeRateIn"
+                    name={`${label} · ${tp("onTimeLabel")} (in)`}
+                    stroke={hashBranchColor(branch.branchId)}
+                    strokeWidth={2}
+                    dot={false}
+                    connectNulls={false}
+                  />
+                )}
+                {hasOut && (
+                  <Line
+                    type="monotone"
+                    data={branch.points}
+                    dataKey="onTimeRateOut"
+                    name={`${label} · ${tp("onTimeLabel")} (out)`}
+                    stroke={hashBranchColor(`${branch.branchId}-out`)}
+                    strokeWidth={2}
+                    dot={false}
+                    connectNulls={false}
+                  />
+                )}
               </React.Fragment>
             );
           })}

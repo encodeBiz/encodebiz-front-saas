@@ -13,7 +13,7 @@ import {
   YAxis,
 } from "recharts";
 import { StatCard } from "../StatCard";
-import { defaultLabelFromKey, defaultTooltipProps, formatKpiEntries, formatPercent, hashBranchColor, normalizeSeriesNumbers } from "../chartUtils";
+import { defaultLabelFromKey, defaultTooltipProps, hashBranchColor, normalizeSeriesNumbers, alignSeriesByDate } from "../chartUtils";
 import { BranchSeries, useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 import { useTranslations } from "next-intl";
@@ -36,23 +36,27 @@ export const GeoComplianceCard = ({ entityId, branchId, from, to }: CheckbizCard
     granularity: "daily",
   });
 
-  const series = normalizeSeriesNumbers(data?.dataset ?? [], ["avgDistance", "withinRate"]);
-  const threshold = series.find((b) => b.threshold !== undefined)?.threshold;
-  const withinRates = useMemo(
-    () =>
-      series.map((branch) => {
-        const avgWithin =
-          branch.points.reduce((acc, p) => acc + (p.withinRate ?? 0), 0) /
-          (branch.points.length || 1);
-        const avgDistance =
-          branch.points.reduce((acc, p) => acc + (p.avgDistance ?? 0), 0) /
-          (branch.points.length || 1);
-        return { branchId: branch.branchId, branchName: branch.branchName, withinRate: avgWithin, avgDistance };
-      }),
-    [series],
+  const series = alignSeriesByDate(
+    normalizeSeriesNumbers(data?.dataset ?? [], ["avgDistance"]),
+    ["avgDistance"],
+    null,
   );
-
-  const apiKpis = formatKpiEntries(data?.kpis, kpiLabel);
+  const threshold = series.find((b) => b.threshold !== undefined)?.threshold;
+  const kpis = useMemo(() => {
+    const entries: { label: string; value: string }[] = [];
+    const avgDistance = (data as any)?.kpis?.avgDistance;
+    const samples = (data as any)?.kpis?.samples;
+    if (avgDistance !== undefined && avgDistance !== null && !Number.isNaN(Number(avgDistance))) {
+      entries.push({ label: kpiLabel("avgDistance"), value: `${Number(avgDistance).toFixed(1)} m` });
+    }
+    if (samples !== undefined && samples !== null && !Number.isNaN(Number(samples))) {
+      entries.push({ label: kpiLabel("samples"), value: Number(samples).toString() });
+    }
+    if (threshold !== undefined) {
+      entries.push({ label: kpiLabel("threshold"), value: `${threshold} m` });
+    }
+    return entries;
+  }, [data, kpiLabel, threshold]);
 
   return (
     <StatCard
@@ -60,24 +64,14 @@ export const GeoComplianceCard = ({ entityId, branchId, from, to }: CheckbizCard
       subtitle={t("geoCompliance.subtitle")}
       isLoading={isLoading}
       error={error}
-      kpis={[
-        ...apiKpis,
-        {
-          label: "Dentro de umbral",
-          value: formatPercent(
-            withinRates.reduce((acc, item) => acc + item.withinRate, 0) /
-              (withinRates.length || 1),
-          ),
-        },
-        threshold !== undefined ? { label: "Umbral", value: `${threshold} m` } : undefined,
-      ].filter(Boolean) as { label: string; value: string }[]}
+      kpis={kpis}
       infoText={t("descriptions.geoCompliance")}
     >
       <ResponsiveContainer width="100%" height={240}>
         <LineChart>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="date" type="category" allowDuplicatedCategory={false} />
-          <YAxis domain={["dataMin", "dataMax"]} />
+          <YAxis domain={["dataMin", "dataMax"]} tickFormatter={(v) => `${Number(v).toFixed(1)} m`} />
           <Tooltip
             {...defaultTooltipProps}
             labelFormatter={(label) => `Fecha: ${label}`}
@@ -99,6 +93,7 @@ export const GeoComplianceCard = ({ entityId, branchId, from, to }: CheckbizCard
                 stroke={hashBranchColor(branch.branchId)}
                 strokeWidth={2}
                 dot={false}
+                connectNulls={false}
               />
             );
           })}

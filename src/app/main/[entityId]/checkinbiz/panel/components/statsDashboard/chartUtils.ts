@@ -92,13 +92,40 @@ export const formatKpiEntries = (
   });
 };
 
+export const sortPointsByDate = (points: BranchSeriesPoint[]) =>
+  [...points].sort((a, b) => `${a.date}`.localeCompare(`${b.date}`));
+
+export const alignSeriesByDate = <T extends BranchSeries>(
+  series: T[],
+  numericKeys: (keyof BranchSeriesPoint)[],
+  fillValue: number | null = null,
+): T[] => {
+  const dates = Array.from(
+    new Set<string>(series.flatMap((branch) => branch.points.map((p) => p.date))),
+  ).sort((a, b) => `${a}`.localeCompare(`${b}`));
+
+  return series.map((branch) => {
+    const pointMap = new Map(branch.points.map((p) => [p.date, p]));
+    const alignedPoints = dates.map((date) => {
+      const existing = pointMap.get(date);
+      if (existing) return existing;
+      const filler: BranchSeriesPoint = { date };
+      numericKeys.forEach((key) => {
+        filler[key] = fillValue as any;
+      });
+      return filler;
+    });
+    return { ...branch, points: alignedPoints } as T;
+  });
+};
+
 export const normalizeSeriesNumbers = <T extends BranchSeries>(
   series: T[],
   numericKeys: (keyof BranchSeriesPoint)[],
 ): T[] =>
   series.map((branch) => ({
     ...branch,
-    points: branch.points.map((p) => {
+    points: sortPointsByDate(branch.points).map((p) => {
       const next: Record<string, unknown> = { ...p };
       numericKeys.forEach((key) => {
         if (next[key] !== undefined && next[key] !== null) {
