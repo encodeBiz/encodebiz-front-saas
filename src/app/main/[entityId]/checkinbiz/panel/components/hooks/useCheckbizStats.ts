@@ -49,6 +49,10 @@ export interface BranchSeriesPoint {
   suspectRate?: number;
   onTimeRate?: number;
   avgLateMinutes?: number;
+  onTimeRateIn?: number;
+  onTimeRateOut?: number;
+  avgLateMinutesIn?: number;
+  avgLateMinutesOut?: number;
   avgStart?: number;
   avgEnd?: number;
   budget?: number;

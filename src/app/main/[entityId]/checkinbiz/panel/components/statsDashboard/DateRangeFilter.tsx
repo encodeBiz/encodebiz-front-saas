@@ -108,7 +108,14 @@ export const DateRangeFilter = ({ value, onChange }: DateRangeFilterProps) => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Stack spacing={1.5} display={'flex'} alignItems="flex-end">
+      <Stack
+        spacing={1}
+        display="flex"
+        alignItems="flex-end"
+        sx={{
+          minWidth: { xs: "100%", sm: "auto" },
+        }}
+      >
         <SassButton
           sx={{
             fontWeight: 600,
