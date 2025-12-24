@@ -16,8 +16,8 @@ export const PanelStats = () => {
   const { pending, branchList, initialize } = useDashboard();
   const { currentEntity } = useEntity();
   const [dateRange, setDateRange] = useState(() => ({
-    from: dayjs().startOf("month").toISOString(),
-    to: dayjs().endOf("day").toISOString(),
+    from: dayjs().startOf("week").toISOString(),
+    to: dayjs().endOf("week").toISOString(),
   }));
 
   useEffect(() => {
@@ -32,7 +32,13 @@ export const PanelStats = () => {
 
       {!pending && currentEntity?.entity?.id && branchList.length > 0 && (
         <Box display="flex" flexDirection="column" gap={3} mt={1}>
-          <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems="flex-start">
+          <Stack
+            direction="row"
+            spacing={2}
+            alignItems="flex-start"
+            justifyContent="flex-end"
+            sx={{ width: "100%", pr: { xs: 0, md: 1 }, mt: { xs: 0, md: 1 } }}
+          >
             <DateRangeFilter value={dateRange} onChange={setDateRange} />
           </Stack>
         <CheckbizStatsDashboard

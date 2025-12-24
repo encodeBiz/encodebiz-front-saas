@@ -107,9 +107,9 @@ export const SalaryEstimateCard = ({ entityId, branchId, from, to }: CheckbizCar
   const apiKpis = formatKpiEntries(data?.kpis, kpiLabel);
 
   const footerTotals = {
-    totalCost: data?.kpis?.totalCost ?? filteredRows.reduce((acc, r) => acc + (r.totalCost ?? 0), 0),
-    totalHours: data?.kpis?.totalHours ?? filteredRows.reduce((acc, r) => acc + (r.totalHours ?? 0), 0),
-    totalEmployees: data?.kpis?.totalEmployees ?? filteredRows.length,
+    totalCost: filteredRows.reduce((acc, r) => acc + (r.totalCost ?? 0), 0),
+    totalHours: filteredRows.reduce((acc, r) => acc + (r.totalHours ?? 0), 0),
+    totalEmployees: filteredRows.length,
   };
 
   return (

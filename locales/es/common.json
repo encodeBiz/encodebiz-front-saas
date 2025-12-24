@@ -1137,6 +1137,9 @@
       "complianceRate": "Tasa de cumplimiento",
       "avgCompliance": "Cumplimiento prom.",
       "cost": "Costo",
+      "suspectsPer1k": "Sospechas por 1k",
+      "failurePer1k": "Fallos por 1k",
+      "validRate": "Tasa de válidos",
       "hours": "Horas",
       "suspects": "Sospechas",
       "lastWeek": "Última semana",
@@ -1195,6 +1198,7 @@
       "last30": "Últimos 30 días",
       "last90": "Últimos 90 días",
       "last365": "Últimos 12 meses",
+      "thisWeek": "Esta semana",
       "thisMonth": "Este mes",
       "custom": "Personalizado"
     },
@@ -1204,7 +1208,18 @@
     "hoursByBranch": { "title": "Horas por sucursal", "subtitle": "Carga diaria por sucursal" },
     "costPerHour": { "title": "Costo por hora", "subtitle": "Costo unitario promedio" },
     "costVsBudget": { "title": "Costo vs presupuesto", "subtitle": "Compara coste real vs esperado" },
-    "suspectRates": { "title": "Tasa de sospechosos", "subtitle": "Distribución diaria" },
+    "suspectRates": {
+      "title": "Comportamiento de marcaje",
+      "subtitle": "Sospechosos / Fallos / Válidos (S/F/V)",
+      "suspectRateLabel": "Tasa de sospecha",
+      "failureRateLabel": "Tasa de fallos",
+      "topBranchesLabel": "Ranking de sucursales",
+      "countsLabel": "S/F/V",
+      "totalChecklogsLabel": "Total",
+      "per1kSuspectsLabel": "S/1k",
+      "per1kFailureLabel": "F/1k",
+      "totalsLabel": "Sospechosos / checklogs totales"
+    },
     "punctuality": {
       "title": "Puntualidad",
       "subtitle": "On-time rate y minutos de atraso",
