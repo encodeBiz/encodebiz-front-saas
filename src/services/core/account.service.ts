@@ -8,9 +8,9 @@ import IUser from "@/domain/core/auth/IUser";
 import { updateProfile, User, UserCredential } from "firebase/auth";
 import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
 import { codeError } from "@/config/errorLocales";
- 
 
- 
+
+
 
 export async function signInToken(
     token: string, locale: any = 'es'
@@ -48,7 +48,7 @@ export async function recoveryPassword(email: string, locale: any = 'es') {
     try {
         const httpClientFetchInstance: HttpClient = new HttpClient({
             baseURL: process.env.NEXT_PUBLIC_BACKEND_URI_RECOVERY_PASS,
-            headers: {locale},
+            headers: { locale },
         });
         const response: any = await httpClientFetchInstance.post('', {
             email
@@ -71,7 +71,7 @@ export async function signUpEmail(data: RegisterFormValues, sessionToken?: strin
                 Authorization: `Bearer ${sessionToken}`, locale
             },
         });
-        const response: any = await httpClientFetchInstance.post('', {           
+        const response: any = await httpClientFetchInstance.post('', {
             fullName: data.fullName,
             phoneNumber: data.phone,
             uid: uid,
@@ -97,12 +97,14 @@ export async function signUpEmail(data: RegisterFormValues, sessionToken?: strin
 export async function fetchUserAccount(
     uid: string, locale: any = 'es'
 ): Promise<IUser> {
-    try {
-        return await getOne(collection.USER, uid);
-    } catch (error: any) {
-        throw new Error(codeError[locale][error.code] ? codeError[locale][error.code] : error?.message)
+    if (uid) {
+        try {
+            return await getOne(collection.USER, uid);
+        } catch (error: any) {
+            throw new Error(codeError[locale][error.code] ? codeError[locale][error.code] : error?.message)
 
-    }
+        }
+    } return null as any;
 }
 
 
@@ -117,9 +119,9 @@ export async function handleLogout(callback: () => void, locale: any = 'es'): Pr
     }
 }
 
- 
 
- 
+
+
 
 export async function updateAccout(photoURL: string, phoneNumber: string, displayName: string, locale: any = 'es'): Promise<void> {
     try {
@@ -147,4 +149,3 @@ export async function updateAccout(photoURL: string, phoneNumber: string, displa
     }
 }
 
- 

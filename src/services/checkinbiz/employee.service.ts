@@ -21,9 +21,11 @@ import { Timestamp } from "firebase/firestore";
    * @returns {Promise<Iemployee[]>}
    */
 export const fetchEmployee = async (entityId: string, id: string): Promise<IEmployee> => {
-  return await getOne(
-    `${collection.ENTITIES}/${entityId}/${collection.EMPLOYEE}`,
-    id);
+  if (id)
+    return await getOne(
+      `${collection.ENTITIES}/${entityId}/${collection.EMPLOYEE}`,
+      id);
+  return null as any
 }
 
 export const fetch2FAData = async (entityId: string, id: string): Promise<{ twoFA: boolean, trustedDevicesId: Array<string> }> => {
@@ -448,6 +450,8 @@ export async function verify2AF(code: string, token: string, locale: any = 'es')
 
 
 export const searchLogs = async (entityId: string, params: SearchParams): Promise<IChecklog[]> => {
+ 
+
   const result: IChecklog[] = await searchFirestore({
     ...params,
     collection: `${collection.ENTITIES}/${entityId}/${collection.CHECKLOG}`,
