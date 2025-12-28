@@ -163,6 +163,7 @@ export default function useAttendanceController() {
 
         const data: Array<IChecklog> = await Promise.all(
           res.map(async (item) => {
+             
             const branch = (await fetchSucursalData(currentEntity?.entity.id as string, item.branchId as string))
             const employee = (await fetchEmployeeData(currentEntity?.entity.id as string, item.employeeId as string))
             let requestUpdates: Array<any> = []
