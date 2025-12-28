@@ -98,10 +98,11 @@ export default function AttendanceList() {
               <li >
                 <Box style={{ display: 'flex', gap: 2 }}>
                   <Typography variant='body1' sx={{ fontSize: 12, color: "#1C1B1D" }}>
-                    {t('attendance.updateRequestStatus')}:
+                    {t('attendance.updateRequestPreviewStatus')}:
                   </Typography>
                   <Typography variant='body1' sx={{ fontSize: 12, color: "#48494C", textTransform: 'capitalize' }}>
-                    {t('core.label.' + open.args?.item?.data?.status)}
+                    {t('core.label.' + open.args?.item?.previousStatus)}
+
                   </Typography>
                 </Box>
               </li>
@@ -112,9 +113,7 @@ export default function AttendanceList() {
                     {t('attendance.updateRequestDate')}:
                   </Typography>
                   <Typography variant='body1' sx={{ fontSize: 12, color: "#48494C", textTransform: 'capitalize' }}>
-
                     <Typography variant="body2" textTransform={'capitalize'}>{format_date_with_locale(open.args?.item?.previousDate, currentLocale as 'en' | 'es')}</Typography>
-
                   </Typography>
                 </Box>
               </li>
@@ -129,10 +128,10 @@ export default function AttendanceList() {
               <li >
                 <Box style={{ display: 'flex', gap: 2 }}>
                   <Typography variant='body1' sx={{ fontSize: 12, color: "#1C1B1D" }}>
-                    {t('attendance.updateRequestPreviewStatus')}:
+                    {t('attendance.updateRequestStatus')}:
                   </Typography>
                   <Typography variant='body1' sx={{ fontSize: 12, color: "#48494C", textTransform: 'capitalize' }}>
-                    {t('core.label.' + open.args?.item?.previousStatus)}
+                    {t('core.label.' + open.args?.item?.data?.status)}
                   </Typography>
                 </Box>
               </li>
