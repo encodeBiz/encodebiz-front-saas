@@ -38,16 +38,7 @@ export default function AttendanceList() {
   return (
     <Container maxWidth="lg">
       <HeaderPage
-        title={t("attendance.list")}
-        actions={
-          <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
-            {/* <SassButton
-              onClick={() => openModal(CommonModalType.CHECKLOGFORM)}
-              variant='contained'
-
-            > {t('attendance.add')}</SassButton> */}
-          </Box>
-        }
+        title={t("attendance.list")}         
       >
         {empthy && !loading &&
           <EmptyList
