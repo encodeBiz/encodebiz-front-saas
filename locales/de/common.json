@@ -10,6 +10,45 @@
 }, 
 "footer": { 
 "copyright": "© {{year}} EncodeBiz. All rights reserved." 
-} 
+}, 
+"attendance": {
+  "logDetail": {
+    "summaryTitle": "Zusammenfassung des Datensatzes",
+    "recordTypeLabel": "Datensatztyp: ",
+    "recordStatusLabel": "Datensatzstatus: ",
+    "dateTimeLabel": "Datum und Uhrzeit: ",
+    "timezoneLabel": "Zeitzone: ",
+    "locationValidationTitle": "Standort und Validierung",
+    "registeredLocation": "Registrierter Standort",
+    "coordinatesLabel": "Koordinaten: ",
+    "distanceToAuthorizedPointLabel": "Entfernung zum autorisierten Punkt: ",
+    "locationControl": "Standortkontrolle",
+    "automaticEvaluation": "Automatische Bewertung",
+    "suspiciousRecordLabel": "Verdächtiger Datensatz: ",
+    "viewLocationOnMap": "Standort auf Karte anzeigen",
+    "workdayConditionsTitle": "Arbeitstagbedingungen",
+    "strictSchedule": "Strenger Zeitplan",
+    "flexibleSchedule": "Flexibler Zeitplan",
+    "appliedScheduleLabel": "Angewandter Zeitplan:",
+    "scheduleNoticeLabel": "Zeitplanhinweis: ",
+    "minutesBeforeEntryAndExit": " Minuten vor Ein- und Austritt",
+    "workModality": "Arbeitsmodalität",
+    "remoteWorkLabel": "Heimarbeit: ",
+    "roleAndCostTitle": "Rolle und Kosten",
+    "assignedResponsibility": "Zugewiesene Verantwortung",
+    "areaLabel": "Bereich: ",
+    "roleLabel": "Rolle: ",
+    "levelLabel": "Ebene: ",
+    "priceTitle": "Preis",
+    "pricePerHourLabel": "Preis pro Stunde: ",
+    "auditTitle": "Audit",
+    "lastUpdate": "Letzte Aktualisierung",
+    "updatedOnLabel": "Aktualisiert am: ",
+    "updatedByLabel": "Aktualisiert von: ",
+    "technicalInformation": "Technische Informationen",
+    "registeredUserAgentLabel": "Registrierter User-Agent: ",
+    "meters": "m"
+  }
+}
 }
 }
