@@ -184,7 +184,7 @@ export default function useAttendanceController() {
             }
 
 
-            return { ...item, requestUpdates, branch, employee, requestUpdate };
+            return { ...item, requestUpdates, branch, employee, requestUpdateData: requestUpdate };
           })
         );
 
@@ -243,8 +243,8 @@ export default function useAttendanceController() {
       format: (value, row) => (
         <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'} gap={1}>
           <span>{format_date(row.timestamp, 'DD/MM/YYYY HH:mm:ss', row.metadata?.tz ?? row.metadata?.etz)}</span>
-          {!!row.requestUpdate && <IconButton onClick={() => {
-            openModal(CommonModalType.INFO, { item: row.requestUpdate })
+          {!!row.requestUpdateData && <IconButton onClick={() => {
+            openModal(CommonModalType.INFO, { item: row.requestUpdateData })
           }}><HistoryIcon /></IconButton>}
         </Box>
       )

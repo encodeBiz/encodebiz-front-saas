@@ -1409,6 +1409,8 @@
     "noGeoBtn": "Activar ahora",
     "issues": "Incidencias",
     "outRadiusTitle": "Fuera de Zona",
+    "requestUpdate":"Solicitud de cambio",
+    "okdenied":"Aceptar/Denegar",
     "outRadiusText": "Al parecer no estás dentro de la zona de chequeo, por favor para realizar las operaciones de esta herramienta, debe estar cerca de la sucursal o proyecto.",
     "noGeoText": "Al parecer no tienes activado el permiso de geolocalización, actívelo para usar esta herramienta"
   },

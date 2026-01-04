@@ -1,6 +1,24 @@
+import IUser from "@/domain/core/auth/IUser";
 import { IEmployee } from "./IEmployee";
 import { ISucursal } from "./ISucursal";
 
+export interface IUpdateRequest {
+    createdAt: any
+    id: number
+    previousDate: string
+    previousStatus: string
+    reason: string
+    updateBy: string
+    admin?:IUser
+    employee?: IEmployee
+    data: {
+        employeeId: string
+        entityId: string
+        id: string
+        status: string
+        timestamp: any
+    }
+}
 export interface IChecklog {
     id?: string; // uid
     "employeeId": string
@@ -18,28 +36,14 @@ export interface IChecklog {
 
     reason?: string
     updateId?: string
-    requestUpdate   ?: string
+    requestUpdate?: string
 
     metadata?: {
-        requestUpdates?: Array<{
-            createdAt: any
-            id: number
-            previousDate: string
-            previousStatus: string
-            reason: string
-            updateBy: string
-            employee?: IEmployee
-            data: {
-                employeeId: string
-                entityId: string
-                id: string
-                status: string
-                timestamp: any
-            }
-        }>
+        requestUpdates?: Array<IUpdateRequest>
     } & any
     branch?: ISucursal
     employee?: IEmployee
+    requestUpdateData?: IUpdateRequest | null
 }
 
 

@@ -246,7 +246,7 @@ export function formatLocalDateTime(codeLocale: string, date: Date) {
     });
 }
 
-export function getDateRange(rangeType: 'today' | 'week' | 'month' | 'year') {
+export function getDateRange(rangeType: 'today' | 'week' | 'month' | 'year' | 'older') {
     const now = new Date();
     const result: any = { label: rangeType };
 
@@ -275,6 +275,11 @@ export function getDateRange(rangeType: 'today' | 'week' | 'month' | 'year') {
 
         case 'year':
             result.start = new Date(now.getFullYear(), 0, 1);
+            result.end = new Date(now.getFullYear(), 11, 31, 23, 59, 59, 999);
+            break;
+
+        case 'older':
+            result.start = new Date(2000, 0, 1);
             result.end = new Date(now.getFullYear(), 11, 31, 23, 59, 59, 999);
             break;
 

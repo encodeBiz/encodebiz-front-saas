@@ -10,8 +10,8 @@ export enum CommonModalType {
     FILES = 'FILES',
     GEO = 'GEO',
     SEND = 'SEND',
-    ISSUES="ISSUES",
-    ISSUES_RESPONSE="ISSUES_RESPONSE",
+    ISSUES = "ISSUES",
+    ISSUES_RESPONSE = "ISSUES_RESPONSE",
     BILLING = 'BILLING',
     RECOVERY = 'RECOVERY',
     CONFIG_CSV = 'CONFIG_CSV',
@@ -19,7 +19,7 @@ export enum CommonModalType {
     REACTIVE = 'REACTIVE',
     ARCHIVED = 'ARCHIVED',
     EVENT_SELECTED = 'EVENT_SELECTED',
-     BRANCH_SELECTED = 'BRANCH_SELECTED',
+    BRANCH_SELECTED = 'BRANCH_SELECTED',
     CONTACT = 'CONTACT',
     COLABORATOR = 'COLABORATOR',
     INFO = 'INFO',
@@ -29,7 +29,8 @@ export enum CommonModalType {
     OUT_RADIUS = 'OUT_RADIUS',
     CONFIG2AF = 'CONFIG2AF',
     LOGS = 'LOGS',
- }
+    UPDATEREQUEST = 'UPDATEREQUEST',
+}
 interface CommonModalContextType {
     open: { type: CommonModalType, open: boolean, args?: any }
     closeModal: (type?: CommonModalType) => void
