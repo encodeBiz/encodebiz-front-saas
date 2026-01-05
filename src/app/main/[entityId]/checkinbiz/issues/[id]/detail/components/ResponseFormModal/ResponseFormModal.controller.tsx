@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+ 
 import { useTranslations } from "next-intl";
 import { requiredRule } from '@/config/yupRules';
 import { useToast } from "@/hooks/useToast";
@@ -63,7 +63,7 @@ export default function useResponseFormModalController(onSuccess: () => void, is
       showToast(error.message, 'error')
     }
   };
-  let fields = [
+  const fields = [
 
 
     {

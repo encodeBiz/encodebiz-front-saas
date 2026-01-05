@@ -1,24 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     Box,
     CircularProgress,
     Dialog,
     DialogContent,
     DialogTitle,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
+    Divider,
     Typography,
     useMediaQuery,
     useTheme
-    ,
-
 } from '@mui/material';
 
 import { useTranslations } from 'next-intl';
@@ -26,18 +18,14 @@ import { fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucurs
 import { fetchEmployee as fetchEmployeeData } from "@/services/checkinbiz/employee.service";
 
 import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
-import EmptyState from '@/components/common/EmptyState/EmptyState';
 import { IChecklog } from '@/domain/features/checkinbiz/IChecklog';
-import { format_date, getDateRange, rmNDay } from '@/lib/common/Date';
+import { format_date, rmNDay } from '@/lib/common/Date';
 import { useCheck } from '../page.context';
 import { getEmplyeeLogs } from '@/services/checkinbiz/employee.service';
 import { useToast } from '@/hooks/useToast';
-import { fetchSucursal } from '@/services/checkinbiz/sucursal.service';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
-import SearchFilter from '@/components/common/table/filters/SearchFilter';
 import { SassButton } from '@/components/common/buttons/GenericButton';
-import { DateRangeFilter, DateRange } from '@/app/main/[entityId]/checkinbiz/panel/components/statsDashboard/DateRangeFilter';
 import { fetchUserAccount } from '@/services/core/account.service';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import { CustomChip } from '@/components/common/table/CustomChip';
@@ -53,22 +41,21 @@ const UpdateRequest = () => {
     const { showToast } = useToast()
     const { open, closeModal, openModal } = useCommonModal()
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-    const [limit, setLimit] = useState<number>(10)
+    const [limit, setLimit] = useState<number>(1000)
     const [total, setTotal] = useState(0)
 
 
     const getEmplyeeRequestUpdateRequestData = async (status: 'valid' | "failed" | 'pending-employee-validation', limit: number = 10) => {
         setPending(true)
         try {
-            const filters = [
-                { field: 'metadata.requestUpdates.createdAt', operator: '>=', value: getDateRange('older').start },
-                { field: 'status', operator: '==', value: status },
-            ]
+            const filters: any = []
             const resultList: Array<IChecklog> = await getEmplyeeLogs(sessionData?.entityId || '', sessionData?.employeeId || '', sessionData?.branchId || '', { limit, orderBy: 'timestamp', orderDirection: 'desc', filters } as any) as Array<IChecklog>
             if (resultList.length > 0) setTotal((resultList[0] as any).totalItems)
 
+            console.log(resultList.filter(e => e.metadata?.requestUpdates?.length > 0));
+
             const data: Array<IChecklog> = await Promise.all(
-                resultList.map(async (item) => {
+                resultList.filter(e => e.metadata?.requestUpdates?.length > 0).map(async (item) => {
 
                     const branch = (await fetchSucursalData(sessionData?.entityId as string, item.branchId as string))
                     const employee = (await fetchEmployeeData(sessionData?.entityId as string, item.employeeId as string))
@@ -84,6 +71,8 @@ const UpdateRequest = () => {
                         );
                         if (item.requestUpdate)
                             requestUpdate = requestUpdates.find(e => e.id === item.requestUpdate)
+                        if (!requestUpdate)
+                            requestUpdate = requestUpdates[0]
                     }
                     return { ...item, requestUpdates, branch, employee, requestUpdateData: requestUpdate };
                 })
@@ -130,9 +119,9 @@ const UpdateRequest = () => {
                 />
             </DialogTitle>
             <DialogContent  >
-                <Box sx={{ p: 2, pt: 4, position: 'relative', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 6 }}>
+                <Box sx={{  pt: 4, position: 'relative', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 2 }}>
 
-                    <Box sx={{
+                    {/**  <Box sx={{
                         display: 'flex',
                         flexDirection: {
                             xs: 'column',
@@ -154,28 +143,40 @@ const UpdateRequest = () => {
                                 getEmplyeeRequestUpdateRequestData(value)
 
                             }}
-                            options={[{ value: 'valid' as string, label: t('core.label.valid') }, { value: 'failed' as string, label: t('core.label.failed') }]}
+                            options={[{ value: 'valid' as string, label: t('core.label.valid') }, { value: 'failed' as string, label: t('core.label.failed') }, { value: 'pending-employee-validation' as string, label: t('core.label.pending-employee-validation') }]}
                         />
                     </Box>
-                    <TableContainer component={Paper}>
-                        {employeeLogs.map((row: IChecklog, index: number) => (
-                            <BorderBox sx={{ p: 2, display: 'flex', flexDirection: 'column' }} key={index}>
-                                <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
-                                    <Typography variant='body2'>{row.requestUpdateData?.admin?.displayName}</Typography>
-                                    <CustomChip role={'text'} background={row.status} label={t('core.label.' + row.requestUpdateData?.data.status)} />
+                    */}
+
+                    {employeeLogs.map((row: IChecklog, index: number) => (
+                        <BorderBox sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 1, bgcolor: theme => theme.palette.background.paper }} key={index}>
+                            <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
+                                <Box display={'flex'} flexDirection={'column'} justifyContent={'space-between'} alignItems={'flex-start'}>
+                                    <Typography variant='body2'>Sucursal:{row.branch?.name}</Typography>
+                                    <Typography variant='body2'>Tipo:{row.type}</Typography>
                                 </Box>
-                                <Typography variant='body1'>{row.requestUpdateData?.reason}</Typography>
-                                <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
-                                    <Typography variant='body2'>{format_date(row.requestUpdateData?.createdAt)}</Typography>
-                                    {row.status === 'pending-employee-validation' && <SassButton variant='contained' onClick={() => openModal(CommonModalType.INFO)}>{t('checking.okdenied')}</SassButton>}
-                                </Box>
-                            </BorderBox>
-                        ))}
-                    </TableContainer>
+                                <CustomChip role={'text'} background={row.status} label={t('core.label.' + row.status)} />
+
+                            </Box>
+                            <Divider />
+                            <Typography variant='body1' fontWeight={'bold'}>Cambios</Typography>
+                            <Typography variant='body1'>{row.requestUpdateData?.reason}</Typography>
+                            <Box display={'flex'} flexDirection={'column'} justifyContent={'space-between'} alignItems={'flex-start'}>
+                                <Typography variant='caption'>Fecha anterior: {format_date(row.requestUpdateData?.previousDate, 'DD/MM/YYYY hh:mm')}</Typography>
+                                <Typography variant='caption'>Fecha actual: {format_date(row.requestUpdateData?.data.timestamp, 'DD/MM/YYYY hh:mm')}</Typography>
+                            </Box>
+                            <Divider />
+                            <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
+                               
+                                {row.status === 'pending-employee-validation' && <SassButton sx={{width:'100%'}} variant='contained' onClick={() => openModal(CommonModalType.INFO)}>{t('checking.okdenied')}</SassButton>}
+                            </Box>
+                        </BorderBox>
+                    ))}
+
                     {pending && <Box sx={{ width: '100%', display: 'flex', gap: 1, alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
                         <CircularProgress color="inherit" size={20} />
                     </Box>}
-                    {limit <= total && <SassButton variant='outlined' onClick={() => loadMore()} >{t('core.label.moreload')}</SassButton>}
+                    {/*limit <= total && <SassButton variant='outlined' onClick={() => loadMore()} >{t('core.label.moreload')}</SassButton>*/}
                 </Box>
             </DialogContent>
         </Dialog>
