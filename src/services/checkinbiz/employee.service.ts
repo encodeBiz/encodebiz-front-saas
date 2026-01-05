@@ -450,7 +450,7 @@ export async function verify2AF(code: string, token: string, locale: any = 'es')
 
 
 export const searchLogs = async (entityId: string, params: SearchParams): Promise<IChecklog[]> => {
- 
+
 
   const result: IChecklog[] = await searchFirestore({
     ...params,
@@ -531,6 +531,48 @@ export const search = async (entityId: string, params: SearchParams): Promise<IE
   return result
 }
 
+
+export const addUpdateRequest = async (item: IChecklog, status: 'valid' | "failed", employeeId: string) => {
+  try {
+    const requestUpdateData = item.requestUpdateData
+    const id = new Date().getTime()
+    const requestUpdate = {
+      createdAt: new Date(),
+      id,
+      previousDate: requestUpdateData?.data?.timestamp,
+      previousStatus: item.status,
+      reason: requestUpdateData?.reason,
+      updateBy: employeeId,
+
+      data: {
+        employeeId: employeeId,
+        entityId: item.entityId,
+        id,
+        status: status,
+        timestamp: new Date()
+      }
+    }
+
+    item.requestUpdate = id
+    item.metadata.requestUpdates = [...(item.metadata?.requestUpdates || []), requestUpdate]
+    item.status = status
+
+    delete item.requestUpdateData
+    delete item.branch
+    delete item.employee
+    delete item.requestUpdates
+
+    await updateDocument<Partial<any>>({
+      collection: `${collection.ENTITIES}/${item.entityId}/${collection.CHECKLOG}`,
+      data: {
+        ...item
+      },
+      id: item.id as string,
+    });
+  } catch (error: any) {
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
+  }
+}
 
 export interface EmployeeStats {
   year: number;

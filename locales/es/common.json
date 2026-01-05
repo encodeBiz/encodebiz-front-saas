@@ -218,7 +218,10 @@
       "employees": "Empleados",
       "viewDetails": "Detalles",
       "viewDetailsTitle": "Detalle del registro de asistencia",
-
+      "type":"Tipo",
+      "changes":"Cambios",
+      "previewDate":"Fecha anterior",
+      "currentDate":"Fecha actual",
       "enableRemoteWork": "Habilitar trabajo remoto",
       "remoteWork": "Trabajo remoto",
       "enableRemoteWorkEnable": "Trabajo remoto habilitado",
@@ -411,7 +414,9 @@
       "ok": "Entiendo",
       "configurenow": "Configurar",
       "update": "Actualizar",
-      "addBranch": "Agregar sucursal"
+      "addBranch": "Agregar sucursal",
+      "validate": "Validar",
+      "reject": "Denegar"
     },
     "formValidatorMessages": {
       "required": "Este campo es requerido",
@@ -1409,8 +1414,10 @@
     "noGeoBtn": "Activar ahora",
     "issues": "Incidencias",
     "outRadiusTitle": "Fuera de Zona",
-    "requestUpdate":"Solicitud de cambio",
+    "requestUpdate":"Cambios",
     "okdenied":"Aceptar/Denegar",
+    "updateRequestTitle":"Solicitud de cambio",
+    "updateRequestText":"Sobre la solicitud de cambio seleccionada seleccione la acción que desea sobre la misma Aceptar/Denegar",
     "outRadiusText": "Al parecer no estás dentro de la zona de chequeo, por favor para realizar las operaciones de esta herramienta, debe estar cerca de la sucursal o proyecto.",
     "noGeoText": "Al parecer no tienes activado el permiso de geolocalización, actívelo para usar esta herramienta"
   },

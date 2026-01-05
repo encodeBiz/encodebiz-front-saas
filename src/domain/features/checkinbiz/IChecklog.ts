@@ -36,7 +36,7 @@ export interface IChecklog {
 
     reason?: string
     updateId?: string
-    requestUpdate?: string
+    requestUpdate?: number
 
     metadata?: {
         requestUpdates?: Array<IUpdateRequest>
@@ -44,6 +44,7 @@ export interface IChecklog {
     branch?: ISucursal
     employee?: IEmployee
     requestUpdateData?: IUpdateRequest | null
+    requestUpdates?: Array<IUpdateRequest>
 }
 
 

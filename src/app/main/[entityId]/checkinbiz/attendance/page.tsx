@@ -27,13 +27,12 @@ export default function AttendanceList() {
     columns, rowAction, onSuccessCreate,
     loading } = useAttendanceController();
 
-  const { openModal, open, closeModal } = useCommonModal();
+  const { open, closeModal } = useCommonModal();
   const logDetail = useMemo(() => open.args?.log, [open.args?.log]);
-  const { currentLocale } = useAppLocale()
   return (
     <Container maxWidth="lg">
       <HeaderPage
-        title={t("attendance.list")}         
+        title={t("attendance.list")}
       >
         {empthy && !loading &&
           <EmptyList

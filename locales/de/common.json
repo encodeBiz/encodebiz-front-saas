@@ -38,10 +38,7 @@
     "assignedResponsibility": "Zugewiesene Verantwortung",
     "areaLabel": "Bereich: ",
     "roleLabel": "Rolle: ",
-    "levelLabel": "Ebene: ",
-    "updateRequestTitle":"Solicitud de cambio",
-    "updateRequestText":"Sobre la solicitud de cambio seleccionada seleccione la acción que desea sobre la misma Aceptar/Denegar"
-  }
+    "levelLabel": "Ebene: "  }
 }
 }
 }

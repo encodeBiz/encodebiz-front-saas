@@ -21,7 +21,7 @@ import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 import { useStyles } from './page.styles';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import UpdateRequest from './UpdateRequest/UpdateRequest';
-
+ 
 
 const Checking = () => {
     const t = useTranslations()
@@ -98,6 +98,8 @@ const Checking = () => {
                     handleRequestLocation()
                 }}
             />}
+
+           
 
         </Container>
 

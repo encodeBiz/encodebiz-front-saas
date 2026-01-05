@@ -15,11 +15,11 @@ import {
 
 import { useTranslations } from 'next-intl';
 import { fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucursal.service";
-import { fetchEmployee as fetchEmployeeData } from "@/services/checkinbiz/employee.service";
+import { addUpdateRequest, fetchEmployee as fetchEmployeeData } from "@/services/checkinbiz/employee.service";
 
 import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import { IChecklog } from '@/domain/features/checkinbiz/IChecklog';
-import { format_date, rmNDay } from '@/lib/common/Date';
+import { format_date } from '@/lib/common/Date';
 import { useCheck } from '../page.context';
 import { getEmplyeeLogs } from '@/services/checkinbiz/employee.service';
 import { useToast } from '@/hooks/useToast';
@@ -35,24 +35,19 @@ const UpdateRequest = () => {
     const t = useTranslations()
     const theme = useTheme()
     const [pending, setPending] = useState(false)
-    const [range, setRange] = useState<{ start: any, end: any }>({ start: rmNDay(new Date(), 1), end: new Date() })
-    const [status, setStatus] = useState<'valid' | 'failed'>('valid')
     const [employeeLogs, setEmployeeLogs] = useState<Array<IChecklog>>([])
     const { showToast } = useToast()
-    const { open, closeModal, openModal } = useCommonModal()
+    const { open, closeModal } = useCommonModal()
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-    const [limit, setLimit] = useState<number>(1000)
-    const [total, setTotal] = useState(0)
+    const [openConfirm, setOpenConfirm] = useState(false)
+    const [item, setItem] = useState<IChecklog>()
 
-
-    const getEmplyeeRequestUpdateRequestData = async (status: 'valid' | "failed" | 'pending-employee-validation', limit: number = 10) => {
+    const getEmplyeeRequestUpdateRequestData = async (limit: number = 10) => {
         setPending(true)
         try {
             const filters: any = []
             const resultList: Array<IChecklog> = await getEmplyeeLogs(sessionData?.entityId || '', sessionData?.employeeId || '', sessionData?.branchId || '', { limit, orderBy: 'timestamp', orderDirection: 'desc', filters } as any) as Array<IChecklog>
-            if (resultList.length > 0) setTotal((resultList[0] as any).totalItems)
 
-            console.log(resultList.filter(e => e.metadata?.requestUpdates?.length > 0));
 
             const data: Array<IChecklog> = await Promise.all(
                 resultList.filter(e => e.metadata?.requestUpdates?.length > 0).map(async (item) => {
@@ -89,12 +84,9 @@ const UpdateRequest = () => {
 
     useEffect(() => {
         if (sessionData?.entityId)
-            getEmplyeeRequestUpdateRequestData(status)
+            getEmplyeeRequestUpdateRequestData()
     }, [sessionData?.entityId])
-    const loadMore = () => {
-        setLimit(limit + 10)
-        getEmplyeeRequestUpdateRequestData(status, limit + 10)
-    }
+
 
     return (<>
         <Dialog
@@ -114,61 +106,35 @@ const UpdateRequest = () => {
                 </Box>
                 <CustomIconBtn
                     sx={{ position: 'absolute', top: 16, right: 26 }}
-                    onClick={() => closeModal(CommonModalType.LOGS)}
+                    onClick={() => closeModal(CommonModalType.UPDATEREQUEST)}
                     color={theme.palette.primary.main}
                 />
             </DialogTitle>
             <DialogContent  >
-                <Box sx={{  pt: 4, position: 'relative', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 2 }}>
-
-                    {/**  <Box sx={{
-                        display: 'flex',
-                        flexDirection: {
-                            xs: 'column',
-                            sm: 'column',
-                            md: 'column',
-                            lg: 'column',
-                            xl: 'column',
-                        },
-                        gap: 2,
-                        justifyContent: 'flex-end',
-                        alignItems: 'flex-end'
-                    }}>
-
-                        <SearchFilter width='100%'
-                            label={t('core.label.status')}
-                            value={status}
-                            onChange={(value: any) => {
-                                setStatus(value)
-                                getEmplyeeRequestUpdateRequestData(value)
-
-                            }}
-                            options={[{ value: 'valid' as string, label: t('core.label.valid') }, { value: 'failed' as string, label: t('core.label.failed') }, { value: 'pending-employee-validation' as string, label: t('core.label.pending-employee-validation') }]}
-                        />
-                    </Box>
-                    */}
-
+                <Box sx={{ pt: 4, position: 'relative', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 2 }}>
                     {employeeLogs.map((row: IChecklog, index: number) => (
                         <BorderBox sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 1, bgcolor: theme => theme.palette.background.paper }} key={index}>
                             <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
                                 <Box display={'flex'} flexDirection={'column'} justifyContent={'space-between'} alignItems={'flex-start'}>
-                                    <Typography variant='body2'>Sucursal:{row.branch?.name}</Typography>
-                                    <Typography variant='body2'>Tipo:{row.type}</Typography>
+                                    <Typography variant='body2'>{t('core.label.branch')}:{row.branch?.name}</Typography>
+                                    <Typography variant='body2'>{t('core.label.type')}:{row.type}</Typography>
                                 </Box>
                                 <CustomChip role={'text'} background={row.status} label={t('core.label.' + row.status)} />
 
                             </Box>
                             <Divider />
-                            <Typography variant='body1' fontWeight={'bold'}>Cambios</Typography>
+                            <Typography variant='body1' fontWeight={'bold'}>{t('core.label.changes')}</Typography>
                             <Typography variant='body1'>{row.requestUpdateData?.reason}</Typography>
                             <Box display={'flex'} flexDirection={'column'} justifyContent={'space-between'} alignItems={'flex-start'}>
-                                <Typography variant='caption'>Fecha anterior: {format_date(row.requestUpdateData?.previousDate, 'DD/MM/YYYY hh:mm')}</Typography>
-                                <Typography variant='caption'>Fecha actual: {format_date(row.requestUpdateData?.data.timestamp, 'DD/MM/YYYY hh:mm')}</Typography>
+                                <Typography variant='caption'>{t('core.label.previewDate')}: {format_date(row.requestUpdateData?.previousDate, 'DD/MM/YYYY hh:mm')}</Typography>
+                                <Typography variant='caption'>{t('core.label.currentDate')}: {format_date(row.requestUpdateData?.data.timestamp, 'DD/MM/YYYY hh:mm')}</Typography>
                             </Box>
                             <Divider />
                             <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
-                               
-                                {row.status === 'pending-employee-validation' && <SassButton sx={{width:'100%'}} variant='contained' onClick={() => openModal(CommonModalType.INFO)}>{t('checking.okdenied')}</SassButton>}
+                                {row.status === 'pending-employee-validation' && <SassButton sx={{ width: '100%' }} variant='contained' onClick={() => {
+                                    setItem(row)
+                                    setOpenConfirm(true)
+                                }}>{t('checking.okdenied')}</SassButton>}
                             </Box>
                         </BorderBox>
                     ))}
@@ -181,11 +147,21 @@ const UpdateRequest = () => {
             </DialogContent>
         </Dialog>
 
-        {open.type === CommonModalType.INFO && <InfoModal
-            cancelBtn={false}
-            closeBtn={true}
+        {openConfirm && <InfoModal
+            closeIcon={true} centerBtn
+            decisiveAction={true}
             title={t('checking.updateRequestTitle')}
             description={t('checking.updateRequestText')}
+            btnText={t('core.button.validate')}
+            btnCloseText={t('core.button.reject')}
+            onClose={async (key: any) => {
+                if (key === 'valid' || key === 'failed') {
+                    const status = key === 'valid' ? 'valid' : 'failed'                    
+                    await addUpdateRequest(item as IChecklog, status, sessionData?.employeeId as string)
+                    getEmplyeeRequestUpdateRequestData()
+                }
+                setOpenConfirm(false)
+            }}
         />}
     </>
     );

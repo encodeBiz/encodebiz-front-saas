@@ -30,6 +30,7 @@ export enum CommonModalType {
     CONFIG2AF = 'CONFIG2AF',
     LOGS = 'LOGS',
     UPDATEREQUEST = 'UPDATEREQUEST',
+    CONFIRMUPDATE="CONFIRMUPDATE"
 }
 interface CommonModalContextType {
     open: { type: CommonModalType, open: boolean, args?: any }
