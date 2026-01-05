@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { } from 'react';
 import {
     Box,
@@ -39,14 +38,13 @@ const QRScanner = () => {
     const { open, openModal, closeModal } = useCommonModal()
 
     const disabledPass = async (docRef: string) => {
-
-        try {
+ 
             await updateDoc(await getDocRefByPath(docRef), {
                 result: 'failed'
             });
             closeModal(CommonModalType.DELETE)
             resetScanner()
-        } catch (_: any) { }
+      
     }
     return (<>
  

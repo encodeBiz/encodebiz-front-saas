@@ -10,8 +10,8 @@ import {
 } from "firebase/auth";
 import { auth } from "../initializeApp";
 import { codeError } from "@/config/errorLocales";
- 
-export const login = async (params: {email:string, password:string}): Promise<UserCredential> => {
+
+export const login = async (params: { email: string, password: string }): Promise<UserCredential> => {
   const { email, password } = params;
 
   try {
@@ -27,14 +27,10 @@ export const login = async (params: {email:string, password:string}): Promise<Us
   }
 };
 
+
 export const loginWithGoogle = async () => {
-  try {
-    const result = await signInWithPopup(auth, new GoogleAuthProvider());
-    return result;
-  } catch (error) {
- 
-    throw error;
-  }
+  const result = await signInWithPopup(auth, new GoogleAuthProvider());
+  return result;
 };
 
 export const loginWithToken = async (token: string): Promise<UserCredential> => {
@@ -65,4 +61,3 @@ export const deleteAccount = async function (user: User): Promise<void> {
   await deleteUser(user);
 };
 
- 

@@ -35,52 +35,52 @@ export function toDateTime(secs: number) {
  * @returns {string}
  */
 const toJsDate = (value: Timestamp | Date | string | any): Date | null => {
-  if (value instanceof Date) return value;
-  if (value instanceof Timestamp) return value.toDate();
-  if (typeof value === "object" && value?.seconds) return new Date(value.seconds * 1000 + (value.nanoseconds ?? 0) / 1_000_000);
-  if (typeof value === "string") {
-    const parsed = new Date(value);
-    return Number.isNaN(parsed.getTime()) ? null : parsed;
-  }
-  return null;
+    if (value instanceof Date) return value;
+    if (value instanceof Timestamp) return value.toDate();
+    if (typeof value === "object" && value?.seconds) return new Date(value.seconds * 1000 + (value.nanoseconds ?? 0) / 1_000_000);
+    if (typeof value === "string") {
+        const parsed = new Date(value);
+        return Number.isNaN(parsed.getTime()) ? null : parsed;
+    }
+    return null;
 };
 
 export function format_date(str: Timestamp | Date | string | any, format: string = "LLLL", tz?: string | null): string {
-  const jsDate = toJsDate(str);
+    const jsDate = toJsDate(str);
 
-  if (tz && jsDate) {
-    const fmt = format
-      .replace("DD", "DD")
-      .replace("MM", "MM")
-      .replace("YYYY", "YYYY")
-      .replace("HH", "HH")
-      .replace("mm", "mm")
-      .replace("ss", "ss");
-    return dayjs(jsDate).tz(tz).format(fmt);
-  }
+    if (tz && jsDate) {
+        const fmt = format
+            .replace("DD", "DD")
+            .replace("MM", "MM")
+            .replace("YYYY", "YYYY")
+            .replace("HH", "HH")
+            .replace("mm", "mm")
+            .replace("ss", "ss");
+        return dayjs(jsDate).tz(tz).format(fmt);
+    }
 
-  let date = "";
-  if (typeof str === "string") date = moment(str).format(format);
-  if (typeof str === "object" && str?.seconds) {
-    date = moment.unix(str?.seconds).format(format);
-  }
-  if (str instanceof Date) {
-    date = moment(str as Date).format(format);
-  }
-  if (str instanceof Timestamp) {
-    date = moment((str as Timestamp).toDate()).format(format);
-  }
-  return date;
+    let date = "";
+    if (typeof str === "string") date = moment(str).format(format);
+    if (typeof str === "object" && str?.seconds) {
+        date = moment.unix(str?.seconds).format(format);
+    }
+    if (str instanceof Date) {
+        date = moment(str as Date).format(format);
+    }
+    if (str instanceof Timestamp) {
+        date = moment((str as Timestamp).toDate()).format(format);
+    }
+    return date;
 }
 
-export function format_date_with_locale(str: Timestamp | Date | string | any, locale?: 'es' | 'en', format: string = "LLLL"): string {
-  const jsDate = toJsDate(str);
-  if (!jsDate) return '';
+export function format_date_with_locale(str: Timestamp | Date | string | any, locale?: 'es' | 'en'): string {
+    const jsDate = toJsDate(str);
+    if (!jsDate) return '';
 
-  dayjs.locale(locale === 'es' ? 'es' : 'en');
+    dayjs.locale(locale === 'es' ? 'es' : 'en');
 
- 
-  return dayjs(jsDate).format("MMMM D, YYYY h:mm A");
+
+    return dayjs(jsDate).format("MMMM D, YYYY h:mm A");
 }
 
 export const formatDate = async (
@@ -256,7 +256,7 @@ export function getDateRange(rangeType: 'today' | 'week' | 'month' | 'year' | 'o
             result.end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
             break;
 
-        case 'week':
+        case 'week': {
             const day = now.getDay();
             const startOfWeek = new Date(now);
             startOfWeek.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
@@ -267,6 +267,7 @@ export function getDateRange(rangeType: 'today' | 'week' | 'month' | 'year' | 'o
             result.end.setDate(startOfWeek.getDate() + 6);
             result.end.setHours(23, 59, 59, 999);
             break;
+        }
 
         case 'month':
             result.start = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -312,19 +313,19 @@ export function decimalAHorasMinutos(decimal: number) {
 
 
 export function createDayjsTime(hour: number, minute: number, baseDate = null) {
-  let dateObj;
-  
-  if (baseDate) {
-    // Si se proporciona una fecha base
-    dateObj = dayjs(baseDate);
-  } else {
-    // Usar fecha actual
-    dateObj = dayjs();
-  }
-  
-  return dateObj
-    .hour(hour)
-    .minute(minute)
-    .second(0)
-    .millisecond(0);
+    let dateObj;
+
+    if (baseDate) {
+        // Si se proporciona una fecha base
+        dateObj = dayjs(baseDate);
+    } else {
+        // Usar fecha actual
+        dateObj = dayjs();
+    }
+
+    return dateObj
+        .hour(hour)
+        .minute(minute)
+        .second(0)
+        .millisecond(0);
 }

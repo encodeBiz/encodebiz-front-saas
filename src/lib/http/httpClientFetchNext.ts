@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 import { codeError } from "@/config/errorLocales";
 import { logout } from "../firebase/authentication/logout";
 

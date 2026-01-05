@@ -13,7 +13,7 @@ import {
 import { useTranslations } from "next-intl";
 import React from "react";
 import { StatCard } from "../StatCard";
-import { alignSeriesByDate, defaultLabelFromKey, defaultTooltipProps, formatKpiEntries, formatPercent, hashBranchColor, normalizeSeriesNumbers } from "../chartUtils";
+import { alignSeriesByDate, defaultLabelFromKey, defaultTooltipProps, formatPercent, hashBranchColor, normalizeSeriesNumbers } from "../chartUtils";
 import { BranchSeries, useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 

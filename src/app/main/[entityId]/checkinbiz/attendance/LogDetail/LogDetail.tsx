@@ -1,13 +1,12 @@
 import { SassButton } from "@/components/common/buttons/GenericButton";
 import { format_date } from "@/lib/common/Date";
 import { onGoMap } from "@/lib/common/maps";
-import { Stack, Box, Typography, Divider } from "@mui/material";
+import { Stack, Box, Typography } from "@mui/material";
 import { useTranslations } from "next-intl";
 
 export const LogDetail = ({ logDetail }: { logDetail: any }) => {
     const t = useTranslations()
-    console.log(logDetail);
-
+ 
 
     return <Stack spacing={2.5}>
 

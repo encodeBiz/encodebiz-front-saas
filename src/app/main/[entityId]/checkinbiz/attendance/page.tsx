@@ -11,7 +11,6 @@ import EmptyList from '@/components/common/EmptyState/EmptyList';
 import emptyImage from '../../../../../../public/assets/images/empty/asistencia.svg';
 import InfoModal from '@/components/common/modals/InfoModal';
 import { useMemo } from 'react';
-import { useAppLocale } from '@/hooks/useAppLocale';
 import { LogDetail } from './LogDetail/LogDetail';
 
 const AttendanceFormModal = dynamic(() => import("./AttendanceFormModal/AttendanceFormModal").then(mod => mod.default), {
