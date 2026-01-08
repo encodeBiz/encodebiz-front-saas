@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
 import React, { useMemo } from "react";
@@ -86,10 +87,7 @@ export const SuspectRatesCard = ({ entityId, branchId, from, to }: CheckbizCardP
       value === null || value === undefined || Number.isNaN(Number(value))
         ? "-"
         : `${(Number(value) * 100).toFixed(1)}%`;
-    const formatPer1k = (value?: number | null) =>
-      value === null || value === undefined || Number.isNaN(Number(value))
-        ? "-"
-        : Number(value).toFixed(1);
+ 
 
     const totalSuspects = k.totalSuspects ?? 0;
     const totalValid = k.totalValid ?? 0;
@@ -121,11 +119,7 @@ export const SuspectRatesCard = ({ entityId, branchId, from, to }: CheckbizCardP
       .sort((a, b) => (b.suspectRate ?? 0) - (a.suspectRate ?? 0));
   }, [data]);
 
-  const badColor = (rate?: number | null) => {
-    const value = Number(rate);
-    if (!Number.isFinite(value)) return "#9e9e9e";
-    return "#d32f2f";
-  };
+ 
 
   const goodColor = (rate?: number | null) => {
     const value = Number(rate);
@@ -208,8 +202,7 @@ export const SuspectRatesCard = ({ entityId, branchId, from, to }: CheckbizCardP
             </Typography>
             <Stack spacing={1}>
               {topBranches.map((b, idx) => {
-                const failColor = badColor(b.failureRate);
-                const suspectColor = badColor(b.suspectRate);
+           
                 const validColor = goodColor(b.validRate);
                 return (
                   <Stack

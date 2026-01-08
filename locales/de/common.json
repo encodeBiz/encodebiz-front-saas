@@ -38,17 +38,7 @@
     "assignedResponsibility": "Zugewiesene Verantwortung",
     "areaLabel": "Bereich: ",
     "roleLabel": "Rolle: ",
-    "levelLabel": "Ebene: ",
-    "priceTitle": "Preis",
-    "pricePerHourLabel": "Preis pro Stunde: ",
-    "auditTitle": "Audit",
-    "lastUpdate": "Letzte Aktualisierung",
-    "updatedOnLabel": "Aktualisiert am: ",
-    "updatedByLabel": "Aktualisiert von: ",
-    "technicalInformation": "Technische Informationen",
-    "registeredUserAgentLabel": "Registrierter User-Agent: ",
-    "meters": "m"
-  }
+    "levelLabel": "Ebene: "  }
 }
 }
 }

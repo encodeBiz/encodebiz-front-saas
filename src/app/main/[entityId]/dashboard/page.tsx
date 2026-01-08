@@ -14,7 +14,7 @@ import { EmployeeTrendChart } from '../checkinbiz/panel/components/employeeTrend
  
 export default function Dashboard() {
   const t = useTranslations()
-  const { } = useDashboardController()
+  useDashboardController()
   const { entitySuscription } = useEntity()
 
 

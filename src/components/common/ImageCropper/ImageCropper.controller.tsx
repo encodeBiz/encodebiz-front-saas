@@ -69,7 +69,7 @@ export const useImageCropper = (onComplete: (file: File) => void, size: { w: num
   const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
   const [isLoading, setIsLoading] = useState(false);
   const [scale, setScale] = useState(1)
-  const {showToast} = useToast()
+  const { showToast } = useToast()
   const previewCanvasRef = useRef<HTMLCanvasElement>(null)
   const imgRef = useRef<HTMLImageElement>(null)
   const t = useTranslations()
@@ -114,7 +114,7 @@ export const useImageCropper = (onComplete: (file: File) => void, size: { w: num
           reader.readAsDataURL(file);
         } else {
           handleClose()
-          showToast(`${t('core.title.cropValidate1')} ${minWidth}x${minHeigth} ${t('core.title.cropValidate2')} ${maxWidth}x${maxHeigth}.`,'error')
+          showToast(`${t('core.title.cropValidate1')} ${minWidth}x${minHeigth} ${t('core.title.cropValidate2')} ${maxWidth}x${maxHeigth}.`, 'error')
         }
       }
       image.src = URL.createObjectURL(file);
@@ -131,18 +131,17 @@ export const useImageCropper = (onComplete: (file: File) => void, size: { w: num
     if (!completedCrop || !imgRef.current) return;
     setIsLoading(true);
 
-    try {
-      const croppedImage: any = await getCroppedImg(
-        imgRef.current,
-        completedCrop,
-        file?.name
-      );
+    const croppedImage: any = await getCroppedImg(
+      imgRef.current,
+      completedCrop,
+      file?.name
+    );
 
-      onComplete(croppedImage.file)
-      setOpen(false);
-    } catch (err) { throw err } finally {
-      setIsLoading(false);
-    }
+    onComplete(croppedImage.file)
+    setOpen(false);
+
+    setIsLoading(false);
+
   };
 
   function onImageLoad() {

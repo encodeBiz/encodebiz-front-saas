@@ -1,22 +1,16 @@
 'use client';
-import { Box, Container, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Button, IconButton, Divider, Stack } from '@mui/material';
+import { Container } from '@mui/material';
 import { useTranslations } from "next-intl";
 import { GenericTable } from "@/components/common/table/GenericTable";
 import HeaderPage from '@/components/features/dashboard/HeaderPage/HeaderPage';
 import useAttendanceController from './page.controller';
-import { SassButton } from '@/components/common/buttons/GenericButton';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import dynamic from "next/dynamic";
 import EmptyList from '@/components/common/EmptyState/EmptyList';
 import emptyImage from '../../../../../../public/assets/images/empty/asistencia.svg';
 import InfoModal from '@/components/common/modals/InfoModal';
-import { format_date, format_date_with_locale } from '@/lib/common/Date';
-import { CustomChip } from '@/components/common/table/CustomChip';
-import React, { useMemo } from 'react';
-import CloseIcon from "@mui/icons-material/Close";
-import { onGoMap } from '@/lib/common/maps';
-import { useAppLocale } from '@/hooks/useAppLocale';
+import { useMemo } from 'react';
 import { LogDetail } from './LogDetail/LogDetail';
 
 const AttendanceFormModal = dynamic(() => import("./AttendanceFormModal/AttendanceFormModal").then(mod => mod.default), {
@@ -32,13 +26,12 @@ export default function AttendanceList() {
     columns, rowAction, onSuccessCreate,
     loading } = useAttendanceController();
 
-  const { openModal, open, closeModal } = useCommonModal();
+  const { open, closeModal } = useCommonModal();
   const logDetail = useMemo(() => open.args?.log, [open.args?.log]);
-  const { currentLocale } = useAppLocale()
   return (
     <Container maxWidth="lg">
       <HeaderPage
-        title={t("attendance.list")}         
+        title={t("attendance.list")}
       >
         {empthy && !loading &&
           <EmptyList

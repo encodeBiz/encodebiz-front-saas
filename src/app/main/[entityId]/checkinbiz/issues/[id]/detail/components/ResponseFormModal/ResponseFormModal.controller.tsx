@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+
 import { useTranslations } from "next-intl";
 import { requiredRule } from '@/config/yupRules';
 import { useToast } from "@/hooks/useToast";
@@ -7,11 +7,9 @@ import { useLayout } from "@/hooks/useLayout";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useState } from "react";
-import { useEntity } from "@/hooks/useEntity";
 import { addResponse } from "@/services/checkinbiz/employee.service";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { useFormStatus } from "@/hooks/useFormStatus";
-import { useAppLocale } from "@/hooks/useAppLocale";
 import TextInput from "@/components/common/forms/fields/TextInput";
 import { IIssue, IIssueResponse } from "@/domain/features/checkinbiz/IIssue";
 
@@ -20,20 +18,17 @@ export default function useResponseFormModalController(onSuccess: () => void, is
   const t = useTranslations();
   const { showToast } = useToast()
   const { user } = useAuth()
-  const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
   const { formStatus } = useFormStatus()
   const { closeModal } = useCommonModal()
-  const { currentLocale } = useAppLocale()
 
 
-  const [initialValues, setInitialValues] = useState<Partial<IIssueResponse>>({
+  const [initialValues] = useState<Partial<IIssueResponse>>({
     message: '',
     newState: ''
   })
 
-  const [branchList, setBranchList] = useState<Array<any>>([])
-  const [validationSchema, setValidationSchema] = useState<any>({
+  const [validationSchema] = useState<any>({
     message: requiredRule(t),
     newState: requiredRule(t)
   })
@@ -63,7 +58,7 @@ export default function useResponseFormModalController(onSuccess: () => void, is
       showToast(error.message, 'error')
     }
   };
-  let fields = [
+  const fields = [
 
 
     {

@@ -51,5 +51,5 @@ export interface WorkSchedule {
     friday?: WorkDaySchedule;
     saturday?: WorkDaySchedule;
     sunday?: WorkDaySchedule;
-    notifyBeforeMinutes?: number;
+    notifyBeforeMinutes?: number;
 }

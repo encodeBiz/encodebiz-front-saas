@@ -133,7 +133,8 @@ export const DashboardEmployeeProvider = ({ children, employeeId }: { children: 
         try {
             const data: Array<IRulesInfo> = await fetchHeuristic(currentEntity?.entity?.id as string, null, employeeId, token, currentLocale)
             setHeuristic(data);
-        } catch { }
+        } catch {
+            setHeuristic([])}
         setPending(false)
 
     }

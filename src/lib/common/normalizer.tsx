@@ -150,5 +150,5 @@ export function normalizeBranchDataset(patterns: IBranchPattern[]) {
         branchId: (p as any)?.branchId ?? null,
         pattern: p,
         normalized: NormalizationService.normalize(p, ranges),
-    }));
+}));
 }

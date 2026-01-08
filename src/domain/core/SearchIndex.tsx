@@ -6,6 +6,6 @@ export interface ISearchIndex {
     type: "entities" | "users" | "events" | "staff" | "holder",
     updatedAt: Date,
     metadata?: Record<string, string>,
-    index: string // path referent to object
+    index: string
     entityId: string
 }

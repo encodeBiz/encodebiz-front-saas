@@ -21,7 +21,7 @@ import { IChecklog } from '@/domain/features/checkinbiz/IChecklog';
 import * as Yup from 'yup';
 import { IIssue, IIssueResponse } from '@/domain/features/checkinbiz/IIssue';
 
-const ResponseFormModal = ({ employeeId, branchId, onSuccess,issue }: {issue:IIssue ,employeeId?: string, branchId?: string, onSuccess: () => void }): React.JSX.Element => {
+const ResponseFormModal = ({  onSuccess,issue }: {issue:IIssue ,employeeId?: string, branchId?: string, onSuccess: () => void }): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const theme = useTheme()
     const { fields, validationSchema, createResponse, initialValues } = useResponseFormModalController(onSuccess, issue);

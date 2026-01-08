@@ -25,12 +25,14 @@ interface InfoModalProps {
     closeIcon?: boolean
     centerBtn?: boolean
     btnFill?: boolean
-    onClose?: () => void
+    onClose?: (text?: string) => void
     btnText?: string
     extraText?: string
     btnCloseText?: string
+
+    decisiveAction?: boolean
 }
-const InfoModal = ({ title, description, htmlDescription, onClose, btnText, closeBtn, btnCloseText, centerBtn, extraText, closeIcon = false, btnFill = false,
+const InfoModal = ({ title, description, decisiveAction = false, htmlDescription, onClose, btnText, closeBtn, btnCloseText, centerBtn, extraText, closeIcon = false, btnFill = false,
     cancelBtn = true }: InfoModalProps): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
     const t = useTranslations()
@@ -38,13 +40,15 @@ const InfoModal = ({ title, description, htmlDescription, onClose, btnText, clos
     // Handler for closing the dialog
 
     const handleClose = (event: any, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
-        if (reason !== 'backdropClick')
-            closeModal(CommonModalType.DELETE);
-        closeModal(CommonModalType.INFO);
+         
+            if (reason !== 'backdropClick')
+                closeModal(CommonModalType.DELETE);
+            closeModal(CommonModalType.INFO);
 
-        if (typeof onClose === 'function') {
-            onClose()
-        }
+            if (typeof onClose === 'function') {
+                onClose()
+            }
+        
     };
 
     return (
@@ -62,7 +66,12 @@ const InfoModal = ({ title, description, htmlDescription, onClose, btnText, clos
                     <CustomTypography >{title}</CustomTypography>
                 </Box>
                 {closeIcon && <CustomIconBtn
-                    onClick={() => closeModal(CommonModalType.INFO)}
+                    onClick={() => {
+                        if(!decisiveAction)
+                            closeModal(CommonModalType.INFO)
+                        else
+                           if (typeof onClose === 'function') onClose('')
+                    }}
                     color={theme.palette.primary.main}
                 />}
             </DialogTitle>}
@@ -76,8 +85,7 @@ const InfoModal = ({ title, description, htmlDescription, onClose, btnText, clos
             </DialogContent>
             <DialogActions >
 
-                <Box width={'100%'} display={'center'} alignItems={centerBtn ? 'center' : 'flex-end'} justifyContent={centerBtn ? 'center' : 'flex-end'}>
-
+                {!decisiveAction && <Box width={'100%'} display={'center'} alignItems={centerBtn ? 'center' : 'flex-end'} justifyContent={centerBtn ? 'center' : 'flex-end'}>
                     {cancelBtn && <SassButton
                         color="primary"
                         variant={btnFill ? "contained" : "outlined"}
@@ -108,7 +116,35 @@ const InfoModal = ({ title, description, htmlDescription, onClose, btnText, clos
                     >
                         {btnText ? btnText : t('core.button.accept')}
                     </SassButton>}
-                </Box>
+                </Box>}
+
+                {decisiveAction && <Box width={'100%'} display={'flex'} gap={1} alignItems={centerBtn ? 'center' : 'flex-end'} justifyContent={centerBtn ? 'center' : 'flex-end'}>
+
+
+                    <SassButton
+                        color="error"
+                        variant="contained"
+                        onClick={() => {
+                            if (typeof onClose === 'function') onClose('denied')
+                        }}
+                        size='small'
+
+                    >
+                        {btnCloseText ? btnCloseText : t('core.button.accept')}
+                    </SassButton>
+
+                    <SassButton
+                        color="primary"
+                        sx={{ width: 139 }}
+                        variant="contained"
+                        onClick={() => {
+                            if (typeof onClose === 'function') onClose('valid')
+                        }}
+                        size='small'
+                    >
+                        {btnText ? btnText : t('core.button.accept')}
+                    </SassButton>
+                </Box>}
             </DialogActions>
         </Dialog>
     );

@@ -17,7 +17,7 @@ import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { Box, Typography } from "@mui/material";
 import { useAppLocale } from "@/hooks/useAppLocale";
 import { CustomChip } from "@/components/common/table/CustomChip";
-import { format_date, format_date_with_locale } from "@/lib/common/Date";
+import {  format_date_with_locale } from "@/lib/common/Date";
 import { fetchEmployee, getIssues } from "@/services/checkinbiz/employee.service";
 import SearchFilter from "@/components/common/table/filters/SearchFilter";
 

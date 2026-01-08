@@ -20,7 +20,8 @@ import VerifyTwoFA from './VerifyTwoFA/VerifyTwoFA';
 import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 import { useStyles } from './page.styles';
 import { SassButton } from '@/components/common/buttons/GenericButton';
-
+import UpdateRequest from './UpdateRequest/UpdateRequest';
+ 
 
 const Checking = () => {
     const t = useTranslations()
@@ -40,10 +41,10 @@ const Checking = () => {
                 sx={{
                     position: 'fixed',
                     width: '95%',
-                    margin:'auto',
+                    margin: 'auto',
                     height: 89,
                     left: 1,
-                    right:2,
+                    right: 2,
                     bottom: 0,
 
                     display: 'flex',
@@ -55,9 +56,13 @@ const Checking = () => {
                     color: '#FFFFFF',
                 }}
             >
-                <SassButton fullWidth sx={{ background: '#001946',borderRadius:2, width: '100%' }} variant='contained' startIcon={<NorthEastOutlined />} onClick={() => openModal(CommonModalType.LOGS)} >
+                <SassButton fullWidth sx={{ background: '#001946', borderRadius: 2, width: '100%' }} variant='contained' startIcon={<NorthEastOutlined />} onClick={() => openModal(CommonModalType.LOGS)} >
                     {t('checking.history')}
-                </SassButton>               
+                </SassButton>
+
+                <SassButton fullWidth sx={{ background: '#001946', borderRadius: 2, width: '100%' }} variant='contained' startIcon={<NorthEastOutlined />} onClick={() => openModal(CommonModalType.UPDATEREQUEST)} >
+                    {t('checking.requestUpdate')}
+                </SassButton>
             </Box>
 
             {open.type === CommonModalType.BRANCH_SELECTED && <BranchSelectorModal
@@ -68,8 +73,9 @@ const Checking = () => {
                 }}
             />}
             {open.type === CommonModalType.LOGS && <CheckLog />}
-          
+
             {open.type === CommonModalType.CONFIG2AF && <ConfigTwoFA />}
+            {open.type === CommonModalType.UPDATEREQUEST && <UpdateRequest />}
             {open.type === CommonModalType.ADDDEVICE2AF && <VerifyTwoFA />}
             {open.type === CommonModalType.INFO && <InfoModal centerBtn cancelBtn={false} closeBtn={false}
                 title={t('twoFactor.newDeviceMessage')}
@@ -92,6 +98,8 @@ const Checking = () => {
                     handleRequestLocation()
                 }}
             />}
+
+           
 
         </Container>
 
