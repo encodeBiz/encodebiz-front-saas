@@ -167,7 +167,7 @@ export function useCheckbizStats<T = unknown>(
       setIsLoading(true);
       setError(null);
       try {
-        const res = await fetch("https://apiv100-firebaseentryhttp-checkinbiz-checkbizstat-jxvyznhhja-uc.a.run.app", {
+        const res = await fetch('http://127.0.0.1:5001/encodebiz-services/us-central1/apiV100-firebaseEntryHttp-checkinbiz-checkbizStatsController'/* "https://apiv100-firebaseentryhttp-checkinbiz-checkbizstat-jxvyznhhja-uc.a.run.app" */, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: paramsJson,
