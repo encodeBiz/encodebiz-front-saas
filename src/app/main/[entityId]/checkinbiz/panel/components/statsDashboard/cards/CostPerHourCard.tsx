@@ -74,7 +74,7 @@ export const CostPerHourCard = ({ entityId, branchId, from, to }: CheckbizCardPr
           <YAxis domain={["dataMin", "dataMax"]} tickFormatter={(v) => formatCurrency(Number(v))} />
           <Tooltip
             {...defaultTooltipProps}
-            formatter={(value: number | null | undefined, name: string, payload) => {
+            formatter={(value: number, name: string, payload) => {
               if (value === null || value === undefined) return null;
               const worked = (payload as any)?.payload?.workedHours;
               const workedText =
