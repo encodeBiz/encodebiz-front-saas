@@ -36,12 +36,7 @@ export const ShiftComplianceCard = ({ entityId, branchId, from, to }: CheckbizCa
   });
 
   const series = normalizeSeriesNumbers(data?.dataset ?? [], ["complianceRate"]);
-  const average =
-    series.reduce(
-      (acc, branch) => acc + branch.points.reduce((sum, p) => sum + (p.complianceRate ?? 0), 0),
-      0,
-    ) / (series.reduce((acc, branch) => acc + branch.points.length, 0) || 1);
-  const apiKpis = formatKpiEntries(data?.kpis, kpiLabel);
+  const apiKpis = formatKpiEntries(data?.kpis, kpiLabel).filter((item) => item.value !== "-");
 
   return (
     <StatCard
@@ -49,10 +44,7 @@ export const ShiftComplianceCard = ({ entityId, branchId, from, to }: CheckbizCa
       subtitle={t("shiftCompliance.subtitle")}
       isLoading={isLoading}
       error={error}
-      kpis={[
-        ...apiKpis,
-        { label: tkpi("avgCompliance"), value: formatPercent(average) },
-      ]}
+      kpis={apiKpis}
       infoText={t("descriptions.shiftCompliance")}
     >
       <ResponsiveContainer width="100%" height={220}>
@@ -78,6 +70,7 @@ export const ShiftComplianceCard = ({ entityId, branchId, from, to }: CheckbizCa
                 stroke={hashBranchColor(branch.branchId ?? "branch")}
                 strokeWidth={2}
                 dot={false}
+                connectNulls
               />
             );
           })}

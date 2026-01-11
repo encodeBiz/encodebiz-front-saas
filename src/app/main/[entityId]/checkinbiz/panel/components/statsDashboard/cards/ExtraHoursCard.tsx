@@ -15,7 +15,7 @@ import {
 } from "recharts";
 import { Box, Paper, Typography } from "@mui/material";
 import { StatCard } from "../StatCard";
-import { defaultLabelFromKey, formatHours, formatKpiEntries, normalizeSeriesNumbers } from "../chartUtils";
+import { alignSeriesByDate, defaultLabelFromKey, formatHours, formatKpiEntries, normalizeSeriesNumbers } from "../chartUtils";
 import { BranchSeries, useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 
@@ -50,29 +50,18 @@ export const ExtraHoursCard = ({ entityId, branchId, from, to }: CheckbizCardPro
     "extraHours",
     "deficitHours",
   ]);
-  const totals = series.reduce(
-    (acc, branch) => {
-      branch.points.forEach((item) => {
-        acc.expected += item.expectedHours ?? 0;
-        acc.worked += item.workedHours ?? 0;
-        acc.extra += item.extraHours ?? 0;
-        acc.deficit += item.deficitHours ?? 0;
-      });
-      return acc;
-    },
-    { expected: 0, worked: 0, extra: 0, deficit: 0 },
-  );
+  const aligned = alignSeriesByDate(series, ["expectedHours", "workedHours", "extraHours", "deficitHours"], null);
   const apiKpis = formatKpiEntries(data?.kpis, kpiLabel);
 
   const mergedData = React.useMemo(() => {
     const map = new Map<string, any>();
-    series.forEach((branch) => {
+    aligned.forEach((branch) => {
       branch.points.forEach((p) => {
         const rec = map.get(p.date) ?? { date: p.date };
-        rec[`${branch.branchId}-workedHours`] = p.workedHours ?? 0;
-        rec[`${branch.branchId}-expectedHours`] = p.expectedHours ?? 0;
-        rec[`${branch.branchId}-extraHours`] = p.extraHours ?? 0;
-        rec[`${branch.branchId}-deficitHours`] = p.deficitHours ?? 0;
+        rec[`${branch.branchId}-workedHours`] = p.workedHours ?? null;
+        rec[`${branch.branchId}-expectedHours`] = p.expectedHours ?? null;
+        rec[`${branch.branchId}-extraHours`] = p.extraHours ?? null;
+        rec[`${branch.branchId}-deficitHours`] = p.deficitHours ?? null;
         map.set(p.date, rec);
       });
     });
@@ -153,10 +142,6 @@ export const ExtraHoursCard = ({ entityId, branchId, from, to }: CheckbizCardPro
       error={error}
       kpis={[
         ...apiKpis,
-        { label: "Esperadas", value: formatHours(totals.expected) },
-        { label: "Trabajadas", value: formatHours(totals.worked) },
-        { label: "Extra", value: formatHours(totals.extra) },
-        { label: "Deficit", value: formatHours(totals.deficit) },
       ]}
       infoText={t("descriptions.extraHours")}
     >
@@ -167,7 +152,7 @@ export const ExtraHoursCard = ({ entityId, branchId, from, to }: CheckbizCardPro
           <YAxis domain={["dataMin", "dataMax"]} />
           <Tooltip content={<CustomTooltip />} wrapperStyle={{ overflow: "visible" }} />
           <Legend />
-          {series.map((branch) => {
+          {aligned.map((branch) => {
             const label = branch.branchName ?? branch.branchId;
             const workedKey = `${branch.branchId}-workedHours`;
             const expectedKey = `${branch.branchId}-expectedHours`;
@@ -184,6 +169,7 @@ export const ExtraHoursCard = ({ entityId, branchId, from, to }: CheckbizCardPro
                   stroke="#4caf50"
                   strokeWidth={2}
                   dot={false}
+                  connectNulls
                 />
                 <Line
                   type="monotone"
@@ -192,6 +178,7 @@ export const ExtraHoursCard = ({ entityId, branchId, from, to }: CheckbizCardPro
                   stroke="#f44336"
                   strokeWidth={2}
                   dot={false}
+                  connectNulls
                 />
               </React.Fragment>
             );

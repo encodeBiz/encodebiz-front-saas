@@ -27,7 +27,7 @@ export const PanelStats = () => {
   }, [currentEntity?.entity?.id, initialize]);
 
   const InnetContent = () => (
-    <Box sx={{ minHeight: 600 }}>
+    <Box sx={{ minHeight: 600, pb: { xs: 4, md: 6 } }}>
       {pending && <BoxLoader message={t("statsCheckbiz.loading")} />}
 
       {!pending && currentEntity?.entity?.id && branchList.length > 0 && (

@@ -174,7 +174,7 @@ export const SuspectRatesCard = ({ entityId, branchId, from, to }: CheckbizCardP
                       stroke={hashBranchColor(branch.branchId)}
                       strokeWidth={2}
                       dot={false}
-                      connectNulls={false}
+                      connectNulls
                     />
                   )}
                   {hasFailureRate && (
@@ -186,7 +186,7 @@ export const SuspectRatesCard = ({ entityId, branchId, from, to }: CheckbizCardP
                       stroke={hashBranchColor(`${branch.branchId}-fail`)}
                       strokeWidth={2}
                       dot={false}
-                      connectNulls={false}
+                      connectNulls
                     />
                   )}
                 </React.Fragment>

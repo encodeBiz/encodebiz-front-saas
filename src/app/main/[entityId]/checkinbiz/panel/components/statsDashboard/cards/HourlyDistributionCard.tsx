@@ -105,16 +105,16 @@ export const HourlyDistributionCard = ({ entityId, branchId, from, to }: Checkbi
             dataKey="startsPerDay"
             name={t("hourlyDistribution.startsPerDay")}
             stroke={theme.palette.success.main}
-            strokeDasharray="4 2"
             dot={false}
+            connectNulls
           />
           <Line
             type="monotone"
             dataKey="endsPerDay"
             name={t("hourlyDistribution.endsPerDay")}
             stroke={theme.palette.error.main}
-            strokeDasharray="4 2"
             dot={false}
+            connectNulls
           />
         </BarChart>
       </ResponsiveContainer>

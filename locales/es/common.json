@@ -1184,6 +1184,7 @@
       "suspectsPer1k": "Sospechas por 1k",
       "failurePer1k": "Fallos por 1k",
       "validRate": "Tasa de válidos",
+      "share": "Participación",
       "hours": "Horas",
       "suspects": "Sospechas",
       "lastWeek": "Última semana",
@@ -1273,6 +1274,11 @@
       "onTimeLabel": "a tiempo",
       "lateLabel": "tarde",
       "date": "Fecha"
+    },
+    "costDistribution": {
+      "title": "Distribución de coste",
+      "subtitle": "Participación por sucursal",
+      "empty": "Sin sucursales activas en el rango"
     },
     "extraHours": { "title": "Horas extra / déficit", "subtitle": "Comparación diaria" },
     "startEnd": { "title": "Hora inicio/fin", "subtitle": "Promedio diario por sucursal" },

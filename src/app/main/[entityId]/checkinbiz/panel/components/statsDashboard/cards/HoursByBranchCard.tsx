@@ -35,15 +35,7 @@ export const HoursByBranchCard = ({ entityId, branchId, from, to }: CheckbizCard
   });
 
   const series = normalizeSeriesNumbers(data?.dataset ?? [], ["workedHours"]);
-  const totals =
-    series.map((branch) => ({
-      branchId: branch.branchId,
-      total: branch.points.reduce((acc, p) => acc + (p.workedHours ?? 0), 0),
-    }));
-
-  const totalHours = totals.reduce((acc, item) => acc + item.total, 0);
-
-  const apiKpis = formatKpiEntries(data?.kpis, kpiLabel);
+  const apiKpis = formatKpiEntries(data?.kpis, kpiLabel).filter((kpi) => kpi.value !== "-");
 
   return (
     <StatCard
@@ -51,14 +43,7 @@ export const HoursByBranchCard = ({ entityId, branchId, from, to }: CheckbizCard
       subtitle={t("hoursByBranch.subtitle")}
       isLoading={isLoading}
       error={error}
-      kpis={[
-        ...apiKpis,
-        { label: "Horas totales", value: formatHours(totalHours) },
-        {
-          label: "Promedio por sucursal",
-          value: formatHours(totals.length > 0 ? totalHours / totals.length : 0),
-        },
-      ]}
+      kpis={apiKpis}
       infoText={t("descriptions.hoursByBranch")}
     >
       <ResponsiveContainer width="100%" height={260}>
@@ -84,6 +69,7 @@ export const HoursByBranchCard = ({ entityId, branchId, from, to }: CheckbizCard
                 stroke={hashBranchColor(branch.branchId)}
                 strokeWidth={2}
                 dot={false}
+                connectNulls
                 activeDot={{ r: 4 }}
               />
             );
