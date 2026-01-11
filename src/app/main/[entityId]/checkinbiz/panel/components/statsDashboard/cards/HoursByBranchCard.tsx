@@ -84,6 +84,7 @@ export const HoursByBranchCard = ({ entityId, branchId, from, to }: CheckbizCard
                 stroke={hashBranchColor(branch.branchId)}
                 strokeWidth={2}
                 dot={false}
+                connectNulls
                 activeDot={{ r: 4 }}
               />
             );

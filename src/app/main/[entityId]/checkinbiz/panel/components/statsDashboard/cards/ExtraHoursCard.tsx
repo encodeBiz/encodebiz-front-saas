@@ -169,6 +169,7 @@ export const ExtraHoursCard = ({ entityId, branchId, from, to }: CheckbizCardPro
                   stroke="#4caf50"
                   strokeWidth={2}
                   dot={false}
+                  connectNulls
                 />
                 <Line
                   type="monotone"
@@ -177,6 +178,7 @@ export const ExtraHoursCard = ({ entityId, branchId, from, to }: CheckbizCardPro
                   stroke="#f44336"
                   strokeWidth={2}
                   dot={false}
+                  connectNulls
                 />
               </React.Fragment>
             );

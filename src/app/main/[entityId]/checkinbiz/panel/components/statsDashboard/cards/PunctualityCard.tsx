@@ -125,25 +125,25 @@ export const PunctualityCard = ({ entityId, branchId, from, to }: CheckbizCardPr
                     type="monotone"
                     data={branch.points}
                     dataKey="onTimeRateIn"
-                    name={`${label} · ${tp("onTimeLabel")} (in)`}
-                    stroke={hashBranchColor(branch.branchId)}
-                    strokeWidth={2}
-                    dot={false}
-                    connectNulls={false}
-                  />
-                )}
-                {hasOut && (
-                  <Line
-                    type="monotone"
-                    data={branch.points}
-                    dataKey="onTimeRateOut"
-                    name={`${label} · ${tp("onTimeLabel")} (out)`}
-                    stroke={hashBranchColor(`${branch.branchId}-out`)}
-                    strokeWidth={2}
-                    dot={false}
-                    connectNulls={false}
-                  />
-                )}
+                  name={`${label} · ${tp("onTimeLabel")} (in)`}
+                  stroke={hashBranchColor(branch.branchId)}
+                  strokeWidth={2}
+                  dot={false}
+                  connectNulls
+                />
+              )}
+              {hasOut && (
+                <Line
+                  type="monotone"
+                  data={branch.points}
+                  dataKey="onTimeRateOut"
+                  name={`${label} · ${tp("onTimeLabel")} (out)`}
+                  stroke={hashBranchColor(`${branch.branchId}-out`)}
+                  strokeWidth={2}
+                  dot={false}
+                  connectNulls
+                />
+              )}
               </React.Fragment>
             );
           })}

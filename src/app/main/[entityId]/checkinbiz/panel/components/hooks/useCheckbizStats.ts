@@ -13,6 +13,7 @@ export interface CheckbizStatsParams {
     | "cost_by_branch"
     | "hours_by_branch"
     | "cost_per_hour"
+    | "cost_distribution"
     | "cost_vs_budget"
     | "suspect_rates"
     | "start_end_times"

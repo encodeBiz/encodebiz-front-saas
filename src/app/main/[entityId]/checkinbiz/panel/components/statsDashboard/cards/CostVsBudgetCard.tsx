@@ -113,9 +113,9 @@ export const CostVsBudgetCard = ({ entityId, branchId, from, to }: CheckbizCardP
                 dataKey={budgetKey}
                 name={`${label} budget`}
                 stroke={hashBranchColor(branch.branchId, 0.8)}
-                strokeDasharray="5 3"
                 strokeWidth={2}
                 dot={{ r: 3 }}
+                connectNulls
               />,
             ];
           })}

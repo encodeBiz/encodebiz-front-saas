@@ -19,6 +19,7 @@ import { WeeklyTrendsCard } from "./cards/WeeklyTrendsCard";
 // import { EmployeeProductivityCard } from "./cards/EmployeeProductivityCard";
 import { HourlyDistributionCard } from "./cards/HourlyDistributionCard";
 import { SalaryEstimateCard } from "./cards/SalaryEstimateCard";
+import { CostDistributionCard } from "./cards/CostDistributionCard";
 
 type DashboardProps = CheckbizCardProps & {
   topN?: number;
@@ -55,9 +56,12 @@ export const CheckbizStatsDashboard = ({
               <CostByBranchCard entityId={entityId} branchId={branchId} from={from} to={to} />
             </Box>
             <Box>
-              <HoursByBranchCard entityId={entityId} branchId={branchId} from={from} to={to} />
+              <CostDistributionCard entityId={entityId} branchId={branchId} from={from} to={to} />
             </Box>
             <Box>
+              <HoursByBranchCard entityId={entityId} branchId={branchId} from={from} to={to} />
+            </Box>
+            <Box sx={{ gridColumn: "1 / -1" }}>
               <CostPerHourCard entityId={entityId} branchId={branchId} from={from} to={to} />
             </Box>
             <Box sx={{ gridColumn: "1 / -1" }}>

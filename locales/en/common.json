@@ -1172,6 +1172,7 @@
       "suspectsPer1k": "Suspects per 1k",
       "failurePer1k": "Failures per 1k",
       "validRate": "Valid rate",
+      "share": "Share",
       "hours": "Hours",
       "suspects": "Suspects",
       "lastWeek": "Last week",
@@ -1273,6 +1274,11 @@
       "onTimeLabel": "on-time",
       "lateLabel": "late",
       "date": "Date"
+    },
+    "costDistribution": {
+      "title": "Cost distribution",
+      "subtitle": "Cost share by branch",
+      "empty": "No active branches in range"
     },
     "extraHours": {
       "title": "Extra / deficit hours",
