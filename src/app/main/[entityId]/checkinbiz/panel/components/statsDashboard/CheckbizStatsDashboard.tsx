@@ -107,20 +107,6 @@ export const CheckbizStatsDashboard = ({
           </GridLayout>
         ),
       },
-      {
-        id: "time",
-        label: t("tabs.time"),
-        content: (
-          <GridLayout>
-            <Box sx={{ gridColumn: "1 / -1" }}>
-              <ExtraHoursCard entityId={entityId} branchId={branchId} from={from} to={to} />
-            </Box>
-            <Box sx={{ gridColumn: "1 / -1" }}>
-              <HourlyDistributionCard entityId={entityId} branchId={branchId} from={from} to={to} />
-            </Box>
-          </GridLayout>
-        ),
-      },
     ],
     [branchId, entityId, from, t, to]
   );
