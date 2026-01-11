@@ -86,11 +86,10 @@ export const CostByBranchCard = ({ entityId, branchId, from, to }: CheckbizCardP
           />
           <Tooltip
             {...defaultTooltipProps}
-            formatter={(value: number | null | undefined, name: string, payload) => {
+            formatter={(value: number, name: string, payload) => {
               if (value === null || value === undefined) return null;
               const emp = (payload as any)?.payload?.employeesCount;
-              const empText =
-                emp === null || emp === undefined ? "" : ` · Empleados: ${emp}`;
+              const empText = emp === null || emp === undefined ? "" : ` · Empleados: ${emp}`;
               return [`${formatCurrency(Number(value))}${empText}`, name];
             }}
             labelFormatter={(label) => `Fecha: ${label}`}
