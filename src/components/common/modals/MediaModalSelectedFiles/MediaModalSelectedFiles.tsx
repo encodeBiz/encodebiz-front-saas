@@ -40,7 +40,7 @@ import { SassButton } from '../../buttons/GenericButton';
 import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import { CustomTypography } from '../../Text/CustomTypography';
 import { useAppLocale } from '@/hooks/useAppLocale';
- 
+
 export interface IMedia {
   preview: string
   file: File
@@ -65,7 +65,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom', onF
   const [selectedType, setSelectedType] = useState<string>(type)
   const { open, closeModal } = useCommonModal()
   const [isUploading, setIsUploading] = useState(false);
-  const {currentLocale} = useAppLocale()
+  const { currentLocale } = useAppLocale()
   const t = useTranslations();
 
   const handleClose = () => {
@@ -98,7 +98,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom', onF
       const form = new FormData();
       form.append('entityId', currentEntity?.entity.id as string);
       form.append('uid', user?.id as string);
-      form.append('type', selectedType);
+      form.append('type', selectedType === 'avatar' ? 'custom' : selectedType);
       form.append('file', renameF);
       const mediaId = (await uploadMedia(form, token, currentLocale) as { mediaId: string })?.mediaId
 
@@ -132,7 +132,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom', onF
           handleClose()
           if (typeof onFailed === 'function')
             onFailed(`${minWidth}x${minHeigth}`)
-          
+
         }
       }
       image.src = URL.createObjectURL(file);
@@ -218,13 +218,13 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom', onF
           <Divider />
 
           <Box sx={classes.content}>
-            {userMediaList.filter(e => (type === 'custom' ? true : (e.type === type))).length === 0 ? (
+            {userMediaList.filter(e => (type === 'custom' ? true : (e.type === (selectedType === 'avatar' ? 'custom' : selectedType)))).length === 0 ? (
               <Typography variant="body2" color="textSecondary" align="center">
                 {t('core.table.nofile')}
               </Typography>
             ) : (
               <Grid container spacing={2}>
-                {userMediaList.filter(e => (type === 'custom' ? true : (e.type === type))).map((file: IUserMedia, index: number) => (
+                {userMediaList.filter(e => (type === 'custom' ? true : (e.type === (selectedType === 'avatar' ? 'custom' : selectedType)))).map((file: IUserMedia, index: number) => (
                   <Grid sx={{ position: 'relative', cursor: 'pointer' }} size={{ xs: 12, sm: 6, md: 4 }} key={index}>
                     <Box
                       sx={selectedFile !== file.id ? { ...classes.fileItem } : { ...classes.selectedFile }}
@@ -297,7 +297,7 @@ const MediaModalSelectedFiles = ({ onSelected, crop = true, type = 'custom', onF
         </Paper>
       </DialogContent>
 
-      
+
     </Dialog >
   );
 };

@@ -49,11 +49,12 @@ export const useUserAccountController = () => {
     const [pending, setPending] = useState(false)
     const { changeLoaderState } = useLayout()
     const { openModal } = useCommonModal()
+     
     const [initialValues, setInitialValues] = useState<UserFormValues>({
         uid: user?.uid as string | "",
         "name": user?.displayName as string | "",
         "email": user?.email as string | "",
-        "phone": user?.phoneNumber as string | "",
+        "phone": user?.phoneNumber as string && user?.phoneNumber!=="-"&& user?.phoneNumber!==""?user?.phoneNumber as string:"",
         avatar: user?.photoURL as string | "",
         "active": true,
     });
@@ -203,7 +204,7 @@ export const useUserAccountController = () => {
             uid: user?.uid as string | "",
             "name": user?.displayName as string | "",
             "email": user?.email as string | "",
-            "phone": user?.phoneNumber as string | "",
+        "phone": user?.phoneNumber as string && user?.phoneNumber!=="-"&& user?.phoneNumber!==""?user?.phoneNumber as string:"",
             avatar: user?.photoURL as string | "",
             "active": true,
         });
