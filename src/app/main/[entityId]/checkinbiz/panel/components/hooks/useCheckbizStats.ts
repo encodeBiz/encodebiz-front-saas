@@ -13,6 +13,7 @@ export interface CheckbizStatsParams {
     | "cost_by_branch"
     | "hours_by_branch"
     | "cost_per_hour"
+    | "cost_distribution"
     | "cost_vs_budget"
     | "suspect_rates"
     | "start_end_times"
@@ -167,7 +168,7 @@ export function useCheckbizStats<T = unknown>(
       setIsLoading(true);
       setError(null);
       try {
-        const res = await fetch("https://apiv100-firebaseentryhttp-checkinbiz-checkbizstat-jxvyznhhja-uc.a.run.app", {
+        const res = await fetch( process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_STATS_PANEL as string, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: paramsJson,

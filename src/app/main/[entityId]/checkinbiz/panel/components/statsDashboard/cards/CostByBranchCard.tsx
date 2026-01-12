@@ -35,24 +35,37 @@ export const CostByBranchCard = ({ entityId, branchId, from, to }: CheckbizCardP
   });
 
   const series = normalizeSeriesNumbers(data?.dataset ?? [], ["totalCost"]);
-  const totals = series.map((branch) => ({
-    branchId: branch.branchId,
-    total: branch.points.reduce((acc, p) => acc + (p.totalCost ?? 0), 0),
-  }));
-
-  const totalCost = totals.reduce((acc, item) => acc + item.total, 0);
-  const kpis = [
-    {
-      label: "Gasto total",
-      value: formatCurrency(totalCost),
-    },
-    {
-      label: "Promedio por sucursal",
-      value: formatCurrency(totals.length > 0 ? totalCost / totals.length : 0),
-    },
-  ];
-
-  const apiKpis = formatKpiEntries(data?.kpis, kpiLabel);
+  const apiKpis = (() => {
+    const kpis = (data as any)?.kpis ?? {};
+    const items: { label: string; value: string }[] = [];
+    const pushIfNumber = (label: string, value?: number | null, formatter?: (v: number) => string) => {
+      if (value === null || value === undefined || Number.isNaN(Number(value))) return;
+      items.push({ label, value: formatter ? formatter(Number(value)) : Number(value).toString() });
+    };
+    pushIfNumber("Costo total", kpis.totalCost, (v) => formatCurrency(v));
+    if (!Number.isNaN(Number(kpis.activeBranches)) && !Number.isNaN(Number(kpis.countBranches))) {
+      items.push({
+        label: "Sucursales activas / totales",
+        value: `${kpis.activeBranches ?? 0} / ${kpis.countBranches ?? 0}`,
+      });
+    }
+    pushIfNumber(kpiLabel("avgCostPerEmployee"), kpis.avgCostPerEmployee, (v) => formatCurrency(v));
+    if (kpis.maxCostBranch && kpis.maxCostBranch.cost !== null && kpis.maxCostBranch.cost !== undefined) {
+      const b = kpis.maxCostBranch;
+      items.push({
+        label: "Top sucursal",
+        value: `${b.branchName ?? b.branchId}: ${formatCurrency(Number(b.cost))} (${(Number(b.share ?? 0) * 100).toFixed(1)}%)`,
+      });
+    }
+    if (kpis.minCostBranch && Number(kpis.minCostBranch.cost ?? 0) > 0) {
+      const b = kpis.minCostBranch;
+      items.push({
+        label: "Mínima",
+        value: `${b.branchName ?? b.branchId}: ${formatCurrency(Number(b.cost))} (${(Number(b.share ?? 0) * 100).toFixed(1)}%)`,
+      });
+    }
+    return items;
+  })();
 
   return (
     <StatCard
@@ -60,7 +73,7 @@ export const CostByBranchCard = ({ entityId, branchId, from, to }: CheckbizCardP
       subtitle={t("costByBranch.subtitle")}
       isLoading={isLoading}
       error={error}
-      kpis={[...apiKpis, ...kpis]}
+      kpis={apiKpis}
       infoText={t("descriptions.costByBranch")}
     >
       <ResponsiveContainer width="100%" height={320}>
@@ -73,7 +86,12 @@ export const CostByBranchCard = ({ entityId, branchId, from, to }: CheckbizCardP
           />
           <Tooltip
             {...defaultTooltipProps}
-            formatter={(value: number, name: string) => [formatCurrency(Number(value)), name]}
+            formatter={(value: number, name: string, payload) => {
+              if (value === null || value === undefined) return null;
+              const emp = (payload as any)?.payload?.employeesCount;
+              const empText = emp === null || emp === undefined ? "" : ` · Empleados: ${emp}`;
+              return [`${formatCurrency(Number(value))}${empText}`, name];
+            }}
             labelFormatter={(label) => `Fecha: ${label}`}
           />
           {series.length > 1 && <Legend />}
@@ -89,6 +107,7 @@ export const CostByBranchCard = ({ entityId, branchId, from, to }: CheckbizCardP
                 stroke={hashBranchColor(branch.branchId)}
                 strokeWidth={2}
                 dot={false}
+                connectNulls
                 activeDot={{ r: 4 }}
               />
             );

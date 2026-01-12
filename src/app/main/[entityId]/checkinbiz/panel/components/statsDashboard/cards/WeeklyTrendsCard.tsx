@@ -103,9 +103,9 @@ export const WeeklyTrendsCard = ({ entityId, branchId, from, to }: CheckbizCardP
           <Legend />
           {branchIds.length === 0 && (
             <>
-              <Line type="monotone" dataKey="cost" data={dataset} name="Costo" stroke="#1976d2" strokeWidth={2} />
-              <Line type="monotone" dataKey="hours" data={dataset} name="Horas" stroke="#4caf50" strokeWidth={2} />
-              <Line type="monotone" dataKey="suspects" data={dataset} name="Sospechas" stroke="#ff9800" strokeWidth={2} />
+              <Line type="monotone" dataKey="cost" data={dataset} name="Costo" stroke="#1976d2" strokeWidth={2} connectNulls />
+              <Line type="monotone" dataKey="hours" data={dataset} name="Horas" stroke="#4caf50" strokeWidth={2} connectNulls />
+              <Line type="monotone" dataKey="suspects" data={dataset} name="Sospechas" stroke="#ff9800" strokeWidth={2} connectNulls />
             </>
           )}
           {branchIds.length > 0 &&
@@ -118,6 +118,7 @@ export const WeeklyTrendsCard = ({ entityId, branchId, from, to }: CheckbizCardP
                 name={`${serie.name} costo`}
                 stroke="#1976d2"
                 strokeWidth={2}
+                connectNulls
               />,
               <Line
                 key={`${serie.branchId}-hours`}
@@ -127,6 +128,7 @@ export const WeeklyTrendsCard = ({ entityId, branchId, from, to }: CheckbizCardP
                 name={`${serie.name} horas`}
                 stroke="#4caf50"
                 strokeWidth={2}
+                connectNulls
               />,
               <Line
                 key={`${serie.branchId}-suspects`}
@@ -136,6 +138,7 @@ export const WeeklyTrendsCard = ({ entityId, branchId, from, to }: CheckbizCardP
                 name={`${serie.name} sospechas`}
                 stroke="#ff9800"
                 strokeWidth={2}
+                connectNulls
               />,
             ])}
         </LineChart>

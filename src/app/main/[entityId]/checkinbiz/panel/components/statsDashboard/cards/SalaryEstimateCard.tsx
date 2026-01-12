@@ -2,11 +2,6 @@
 
 import {
   Chip,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
   Stack,
   Table,
   TableBody,
@@ -48,9 +43,6 @@ export const SalaryEstimateCard = ({ entityId, branchId, from, to }: CheckbizCar
     granularity: "total",
   });
 
-  const [branchFilter, setBranchFilter] = useState<string>("all");
-  const [roleFilter, setRoleFilter] = useState<string>("all");
-
   const rows = useMemo(() => {
     const dataset = data?.dataset ?? [];
     const sorted = [...dataset].sort((a, b) => (b.totalCost ?? 0) - (a.totalCost ?? 0));
@@ -68,34 +60,6 @@ export const SalaryEstimateCard = ({ entityId, branchId, from, to }: CheckbizCar
     });
   }, [data?.dataset]);
 
-  const branchOptions = useMemo(() => {
-    const set = new Map<string, string>();
-    rows.forEach((r) => {
-      r.branches?.forEach((b) => {
-        if (b.branchId) set.set(b.branchId, b.branchName ?? b.branchId);
-      });
-    });
-    return Array.from(set.entries()).map(([value, label]) => ({ value, label }));
-  }, [rows]);
-
-  const roleOptions = useMemo(() => {
-    const set = new Set<string>();
-    rows.forEach((r) => r.jobNames?.forEach((j) => set.add(j)));
-    return Array.from(set.values()).map((value) => ({ value, label: value }));
-  }, [rows]);
-
-  const filteredRows = useMemo(
-    () =>
-      rows.filter((row) => {
-        const branchMatch =
-          branchFilter === "all" ||
-          row.branches?.some((b) => b.branchId === branchFilter);
-        const roleMatch = roleFilter === "all" || row.jobNames?.includes(roleFilter);
-        return branchMatch && roleMatch;
-      }),
-    [branchFilter, roleFilter, rows],
-  );
-
   const kpiLabel = (key: string) => {
     try {
       return tkpi(key as any);
@@ -107,9 +71,9 @@ export const SalaryEstimateCard = ({ entityId, branchId, from, to }: CheckbizCar
   const apiKpis = formatKpiEntries(data?.kpis, kpiLabel);
 
   const footerTotals = {
-    totalCost: filteredRows.reduce((acc, r) => acc + (r.totalCost ?? 0), 0),
-    totalHours: filteredRows.reduce((acc, r) => acc + (r.totalHours ?? 0), 0),
-    totalEmployees: filteredRows.length,
+    totalCost: rows.reduce((acc, r) => acc + (r.totalCost ?? 0), 0),
+    totalHours: rows.reduce((acc, r) => acc + (r.totalHours ?? 0), 0),
+    totalEmployees: rows.length,
   };
 
   return (
@@ -120,42 +84,6 @@ export const SalaryEstimateCard = ({ entityId, branchId, from, to }: CheckbizCar
       error={error}
       kpis={apiKpis}
       infoText={tDesc("salaryEstimate")}
-      action={
-        <Stack direction="row" spacing={1}>
-          <FormControl size="small">
-            <InputLabel>{t("branchFilter")}</InputLabel>
-            <Select
-              label={t("branchFilter")}
-              value={branchFilter}
-              onChange={(e: SelectChangeEvent<string>) => setBranchFilter(e.target.value)}
-              sx={{ minWidth: 160 }}
-            >
-              <MenuItem value="all">{t("allBranches")}</MenuItem>
-              {branchOptions.map((opt) => (
-                <MenuItem key={opt.value} value={opt.value}>
-                  {opt.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl size="small">
-            <InputLabel>{t("roleFilter")}</InputLabel>
-            <Select
-              label={t("roleFilter")}
-              value={roleFilter}
-              onChange={(e: SelectChangeEvent<string>) => setRoleFilter(e.target.value)}
-              sx={{ minWidth: 160 }}
-            >
-              <MenuItem value="all">{t("allRoles")}</MenuItem>
-              {roleOptions.map((opt) => (
-                <MenuItem key={opt.value} value={opt.value}>
-                  {opt.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Stack>
-      }
     >
       <TableContainer>
         <Table size="small">
@@ -170,7 +98,7 @@ export const SalaryEstimateCard = ({ entityId, branchId, from, to }: CheckbizCar
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredRows.map((row) => (
+            {rows.map((row) => (
               <TableRow key={row.employeeId ?? row.employeeName}>
                 <TableCell>
                   <Tooltip title={row.employeeName ?? row.employeeId ?? "-"} arrow>

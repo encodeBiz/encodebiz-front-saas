@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from "react";
+import React from "react";
 import { useTranslations } from "next-intl";
 import {
   CartesianGrid,
@@ -35,28 +35,9 @@ export const StartEndTimesCard = ({ entityId, branchId, from, to }: CheckbizCard
     granularity: "daily",
   });
 
-  const averages = useMemo(() => {
-    let startSum = 0;
-    let endSum = 0;
-    let count = 0;
-    (data?.dataset ?? []).forEach((branch) => {
-      branch.points.forEach((p) => {
-        if (p.avgStart !== undefined && p.avgEnd !== undefined) {
-          startSum += p.avgStart;
-          endSum += p.avgEnd;
-          count += 1;
-        }
-      });
-    });
-    return {
-      avgStart: count ? startSum / count : 0,
-      avgEnd: count ? endSum / count : 0,
-    };
-  }, [data?.dataset]);
-
   const series = normalizeSeriesNumbers(data?.dataset ?? [], ["avgStart", "avgEnd"]);
 
-  const apiKpis = formatKpiEntries(data?.kpis, kpiLabel);
+  const apiKpis = formatKpiEntries(data?.kpis, kpiLabel).filter((item) => item.value !== "-");
 
   return (
     <StatCard
@@ -64,11 +45,7 @@ export const StartEndTimesCard = ({ entityId, branchId, from, to }: CheckbizCard
       subtitle={t("startEnd.subtitle")}
       isLoading={isLoading}
       error={error}
-      kpis={[
-        ...apiKpis,
-        { label: "Inicio promedio", value: `${averages.avgStart.toFixed(2)} h` },
-        { label: "Fin promedio", value: `${averages.avgEnd.toFixed(2)} h` },
-      ]}
+      kpis={apiKpis}
       infoText={t("descriptions.startEnd")}
     >
       <ResponsiveContainer width="100%" height={260}>
@@ -89,11 +66,12 @@ export const StartEndTimesCard = ({ entityId, branchId, from, to }: CheckbizCard
                 <Line
                   type="monotone"
                   data={branch.points}
-                  dataKey="avgStart"
+                dataKey="avgStart"
                   name={`${label} inicio`}
                   stroke={hashBranchColor(branch.branchId)}
                   strokeWidth={2}
                   dot={false}
+                  connectNulls
                 />
                 <Line
                   type="monotone"
@@ -101,13 +79,13 @@ export const StartEndTimesCard = ({ entityId, branchId, from, to }: CheckbizCard
                   dataKey="avgEnd"
                   name={`${label} fin`}
                   stroke={hashBranchColor(branch.branchId, 0.6)}
-                  strokeDasharray="4 2"
                   strokeWidth={2}
                   dot={false}
+                  connectNulls
                 />
-              </React.Fragment>
-            );
-          })}
+             </React.Fragment>
+          );
+        })}
         </ComposedChart>
       </ResponsiveContainer>
     </StatCard>

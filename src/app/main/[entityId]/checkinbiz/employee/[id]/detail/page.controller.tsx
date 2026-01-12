@@ -210,7 +210,8 @@ export default function useEmployeeDetailController() {
       id: 'timestamp',
       label: t("core.label.date-hour"),
       minWidth: 170,
-      format: (value, row) => format_date(row.timestamp, 'DD/MM/YYYY') + ' ' + format_date(row.timestamp, 'hh:mm')
+      format: (value, row) =>
+        format_date(row.timestamp, 'DD/MM/YYYY HH:mm:ss', row.metadata?.tz ?? row.metadata?.etz)
     },
 
     {
