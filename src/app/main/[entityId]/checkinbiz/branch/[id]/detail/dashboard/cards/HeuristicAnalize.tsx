@@ -11,9 +11,11 @@ import InfoModal from '@/components/common/modals/InfoModal';
 import { InfoHelp } from '../../../../../../../../../components/common/help/InfoHelp';
 import { karla } from '@/config/fonts/google_fonts';
 import { useTranslations } from 'next-intl';
+import EmptyList from '@/components/common/EmptyState/EmptyList';
+import emptyImage from '../../../../../../../../../../public/assets/images/empty/datos.svg';
 
 export const HeuristicAnalize = () => {
-    const { heuristic, cardHeuristicsIndicatorSelected, heuristicsItems } = useDashboardBranch()
+    const { heuristic, cardHeuristicsIndicatorSelected, pending, heuristicsItems } = useDashboardBranch()
     const theme = useTheme()
     const t = useTranslations()
 
@@ -51,7 +53,15 @@ export const HeuristicAnalize = () => {
 
             <Divider orientation="horizontal" flexItem />
             <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} justifyContent={'space-between'} gap={2} p={3}>
-                {heuristic.filter(e => cardHeuristicsIndicatorSelected.includes(e.id)).map((e, i) => <Card key={i} sx={{ width: 450, border: `1px solid ${getColor(e.status as "error" | 'success' | 'warning')}` }}>
+                {heuristic.filter(e => cardHeuristicsIndicatorSelected.includes(e.id)).map((e, i) => <Card key={i} sx={{
+                    width: {
+                        xs: '100%',
+                        sm: '100%',
+                        md: '100%',
+                        lg: '45%',
+                        xl: '45%'
+                    }, border: `1px solid ${getColor(e.status as "error" | 'success' | 'warning')}`
+                }}>
 
                     <CardContent sx={{ background: getColor(e.status as "error" | 'success' | 'warning'), color: "#FFF" }}
                     >
@@ -91,11 +101,21 @@ export const HeuristicAnalize = () => {
 
 
                 </Card>)}
+
+                {!pending && heuristic.length == 0 && <Box sx={{ p: 3, width: '100%' }} display={'flex'} alignItems={'center'} justifyContent={'center'} flexDirection={'column'} gap={5} pt={5}>
+
+                    <EmptyList
+                        imageUrl={emptyImage}
+                        title={t('statsCheckbiz.statsNoDataTitle')}
+                        description={t('statsCheckbiz.statsNoDataText')}
+                    />
+
+                </Box>}
             </Box>
 
             {open.type === CommonModalType.INFO && open.args?.id === 'data3' && <InfoModal
                 centerBtn cancelBtn={false} closeBtn={false} closeIcon={false}
-                htmlDescription={<InfoHelp title={t("employeeDashboard.help")}  data={heuristicsItems.map(e => ({
+                htmlDescription={<InfoHelp title={t("employeeDashboard.help")} data={heuristicsItems.map(e => ({
                     head: e.name, items: e.children.map(ch => ({ title: ch.name, description: ch.description as string }))
                 }))} />}
                 onClose={() => closeModal(CommonModalType.INFO)}
