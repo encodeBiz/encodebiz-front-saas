@@ -20,7 +20,7 @@ export interface IIssue {
     responseCount: number
     state: 'resolved' | "in_review" | "pending"
     toRole: "worker" | "supervisor"
-    type: string
+    type: "journeyRegistration" | "restRegistration" | "configuration" | "other"
     userId: string
 }
 
@@ -34,7 +34,7 @@ export interface IIssueResponse {
     newState: string
     oldState: string
     userId: string
-    user?:IUser
+    user?: IUser
 
-    totalItems?:number
+    totalItems?: number
 }

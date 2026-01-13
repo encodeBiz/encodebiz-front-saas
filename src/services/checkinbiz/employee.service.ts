@@ -463,7 +463,7 @@ export const searchLogs = async (entityId: string, params: SearchParams): Promis
 
 export const getIssues = async (entityId: string, params: SearchParams): Promise<IIssue[]> => {
 
-
+ 
 
   const result: IIssue[] = await searchFirestore({
     ...params,
@@ -717,3 +717,35 @@ export const getEmployeeStatsByYearRange = async (
     );
   }
 };
+
+
+export const updateIssue = async (issue: IIssue): Promise<void> => {
+  try {
+    await updateDocument<Job>({
+      collection: `${collection.ISSUES}`,
+      data: {
+        ...issue
+      },
+      id: issue.id as string
+    });
+  } catch (error: any) {
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
+  }
+
+}
+
+export const addIssue = async (issue: IIssue): Promise<void> => {
+  try {
+
+    await addDocument<IIssue>({
+      collection: `${collection.ISSUES}`,
+      data: {
+        ...issue
+      }
+    });
+
+  } catch (error: any) {
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
+  }
+
+}

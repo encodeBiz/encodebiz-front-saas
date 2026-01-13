@@ -118,6 +118,12 @@
       "nocard": "No tienes métodos de pago asociado a la entidad, por favor configure al menos uno."
     },
     "label": {
+      "fromRole":"Rol Origen",
+      "toRole":"Rol Destino",
+      "journeyRegistration":"Registro de jornada",
+      "restRegistration":"Registro de descanso",
+      "configuration":"Configuración",
+      "other":"Otro",
       "paid":"Pagado",
       "workScheduleEnable": "Horario personalizado",
       "workScheduleDisabled": "Horario personalizado",

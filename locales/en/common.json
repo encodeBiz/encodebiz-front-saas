@@ -118,6 +118,12 @@
       "nocard": "You have no payment methods associated with the entity, please configure at least one."
     },
     "label": {
+        "fromRole":"From Role",
+      "toRole":"To Role",
+      "journeyRegistration":"Journey Registration",
+      "restRegistration":"Rest Registration",
+      "configuration":"Configuration",
+      "other":"Other",
       "paid": "Paid",
       "workScheduleEnable": "Custom schedule",
       "workScheduleDisabled": "Custom schedule",
