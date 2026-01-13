@@ -16,6 +16,7 @@ import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
 import useFormLinkController from './FormLink.controller';
+import { SalaryConverterButton } from '../../../../employee/[id]/detail/components/SalaryConverterButton';
 
 const FormLink = ({ onSuccess }: { employeeId?: string, branchId?: string, onSuccess: () => void }): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
@@ -67,9 +68,23 @@ const FormLink = ({ onSuccess }: { employeeId?: string, branchId?: string, onSuc
                         initialValues={initialValues}
                         validationSchema={validationSchema}
                         onSubmit={handleModal}
-                        fields={fields as FormField[]}
-                        submitButtonText={t('core.button.save')}
+                        fields={fields.map((field) =>
+                            field.name === 'price'
+                                ? {
+                                    ...field,
+                                    extraProps: {
+                                        ...field.extraProps,
+                                        afterTextField: (
+                                            <SalaryConverterButton fieldName="price" size="small" />
+                                        ),
+                                    },
+                                }
+                                : field,
+                        ) as FormField[]}
                         enableReinitialize
+
+                        submitButtonText={t('core.button.save')}
+                         
                         hideBtn
                         activateWatchStatus
                         formRef={formRef}

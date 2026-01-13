@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import Check from './Check/Check';
 import { useTranslations } from 'next-intl';
-import { NorthEastOutlined } from '@mui/icons-material';
+import { NorthEastOutlined, RefreshOutlined } from '@mui/icons-material';
 
 import CheckLog from './CheckLog/CheckLog';
 import { CheckProvider, useCheck } from './page.context';
@@ -60,7 +60,7 @@ const Checking = () => {
                     {t('checking.history')}
                 </SassButton>
 
-                <SassButton fullWidth sx={{ background: '#001946', borderRadius: 2, width: '100%' }} variant='contained' startIcon={<NorthEastOutlined />} onClick={() => openModal(CommonModalType.UPDATEREQUEST)} >
+                <SassButton fullWidth sx={{ background: '#001946', borderRadius: 2, width: '100%' }} variant='contained' startIcon={<RefreshOutlined />} onClick={() => openModal(CommonModalType.UPDATEREQUEST)} >
                     {t('checking.requestUpdate')}
                 </SassButton>
             </Box>
@@ -73,7 +73,7 @@ const Checking = () => {
                 }}
             />}
             {open.type === CommonModalType.LOGS && <CheckLog />}
-
+            
             {open.type === CommonModalType.CONFIG2AF && <ConfigTwoFA />}
             {open.type === CommonModalType.UPDATEREQUEST && <UpdateRequest />}
             {open.type === CommonModalType.ADDDEVICE2AF && <VerifyTwoFA />}

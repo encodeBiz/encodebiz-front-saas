@@ -111,13 +111,13 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
                     },
                 ],
 
-                ...(branchPatternList.length > 0 && !pending ? [
+                ...([
                     {
                         id: '1',
                         title: t(`sucursal.panel`),
                         tabContent: <PanelStats />
                     },
-                ] : []),
+                ]),
 
 
                 {

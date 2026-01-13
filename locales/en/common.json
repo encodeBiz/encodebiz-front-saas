@@ -1116,7 +1116,9 @@
     "tempActiviy": "Temporal Activity",
     "operativeData": "OPERATIONAL DATA",
     "tempActiviyLabel": "Temporal activity data",
-    "operativeDataLabel": "Operational data"
+    "operativeDataLabel": "Operational data",
+    "statsNoDataTitle": "No se puede mostrar el análisis heurísticos",
+    "statsNoDataText": "No existe suficiente datos recopilados para realizar un análisis heurísticos"
   },
   "statsDashboard": {
     "dateRange": "Date range",
@@ -1447,7 +1449,10 @@
     "issues": "Issues",
     "outRadiusTitle": "Out of Zone",
     "outRadiusText": "It seems you are not within the check-in zone. To perform operations with this tool, you must be near the branch or project.",
-    "noGeoText": "It seems you do not have the geolocation permission enabled. Enable it to use this tool"
+    "noGeoText": "It seems you do not have the geolocation permission enabled. Enable it to use this tool",
+    
+    "statsNoDataTitle":"No existen datos para mostrar",
+    "statsNoDataText":"No existe solicitudes de cambio horario para resolver"
   },
   "twoFactor": {
     "copyCode": "Code copied",

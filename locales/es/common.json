@@ -1128,7 +1128,12 @@
     "tempActiviy": "Actividad Temporal",
     "operativeData": "DATOS OPERATIVOS",
     "tempActiviyLabel": "Datos de actividad temporal",
-    "operativeDataLabel": "Datos operativos"
+    "operativeDataLabel": "Datos operativos",
+
+
+    "statsNoDataTitle":"No se puede mostrar el análisis heurísticos",
+    "statsNoDataText":"No existe suficiente datos recopilados para realizar un análisis heurísticos"
+
   },
   "statsDashboard": {
     "dateRange": "Rango de fechas",
@@ -1420,12 +1425,16 @@
     "noGeoBtn": "Activar ahora",
     "issues": "Incidencias",
     "outRadiusTitle": "Fuera de Zona",
-    "requestUpdate":"Cambios",
+    "requestUpdate":"CAMBIOS",
     "okdenied":"Aceptar/Denegar",
     "updateRequestTitle":"Solicitud de cambio",
     "updateRequestText":"Sobre la solicitud de cambio seleccionada seleccione la acción que desea sobre la misma Aceptar/Denegar",
     "outRadiusText": "Al parecer no estás dentro de la zona de chequeo, por favor para realizar las operaciones de esta herramienta, debe estar cerca de la sucursal o proyecto.",
-    "noGeoText": "Al parecer no tienes activado el permiso de geolocalización, actívelo para usar esta herramienta"
+    "noGeoText": "Al parecer no tienes activado el permiso de geolocalización, actívelo para usar esta herramienta",
+    
+    "statsNoDataTitle":"No existen datos para mostrar",
+    "statsNoDataText":"No existe solicitudes de cambio horario para resolver"
+
   },
   "twoFactor": {
     "copyCode": "Código copiado",

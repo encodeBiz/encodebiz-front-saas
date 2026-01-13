@@ -136,8 +136,10 @@ const ConfigTwoFA = () => {
                         <Typography variant="body1" fontSize={16} color='textSecondary' > {t('twoFactor.step2Text1')} </Typography>
                         <SixDigitCodeInput onCompleted={setCode} />
                     </Box>
-                    <SassButton onClick={verifyCode} disabled={code.length != 6} variant='contained' color='primary' >{t('twoFactor.verifyAndContinue')}</SassButton>
 
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'center', justifyContent: 'center' }}>
+                        <SassButton onClick={verifyCode} disabled={code.length != 6} variant='contained' color='primary' >{t('twoFactor.verifyAndContinue')}</SassButton>
+                    </Box>
 
 
 
