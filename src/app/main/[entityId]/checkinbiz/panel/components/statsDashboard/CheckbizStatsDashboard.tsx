@@ -13,12 +13,10 @@ import { StartEndTimesCard } from "./cards/StartEndTimesCard";
 import { GeoComplianceCard } from "./cards/GeoComplianceCard";
 // import { AbsenteeismCard } from "./cards/AbsenteeismCard";
 import { PunctualityCard } from "./cards/PunctualityCard";
-import { ExtraHoursCard } from "./cards/ExtraHoursCard";
-import { ShiftComplianceCard } from "./cards/ShiftComplianceCard";
+ import { ShiftComplianceCard } from "./cards/ShiftComplianceCard";
 import { WeeklyTrendsCard } from "./cards/WeeklyTrendsCard";
 // import { EmployeeProductivityCard } from "./cards/EmployeeProductivityCard";
-import { HourlyDistributionCard } from "./cards/HourlyDistributionCard";
-import { SalaryEstimateCard } from "./cards/SalaryEstimateCard";
+ import { SalaryEstimateCard } from "./cards/SalaryEstimateCard";
 import { CostDistributionCard } from "./cards/CostDistributionCard";
 
 type DashboardProps = CheckbizCardProps & {

@@ -186,6 +186,8 @@ export const DashboardBranchProvider = ({ children, branchId }: { children: Reac
             const data: Array<IHeuristicInfo> = await fetchHeuristic(currentEntity?.entity?.id as string, branchId, null, token, currentLocale)
             setHeuristic(data.map((e) => ({ ...e, active: true })));
             setPending(false)
+
+
         } catch {
             setPending(false)
         }

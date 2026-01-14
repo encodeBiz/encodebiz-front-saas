@@ -16,6 +16,7 @@ import {
 import { useTranslations } from 'next-intl';
 import { fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucursal.service";
 import { addUpdateRequest, fetchEmployee as fetchEmployeeData } from "@/services/checkinbiz/employee.service";
+import emptyImage from '../../../../../public/assets/images/empty/datos.svg';
 
 import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import { IChecklog } from '@/domain/features/checkinbiz/IChecklog';
@@ -30,6 +31,7 @@ import { fetchUserAccount } from '@/services/core/account.service';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import { CustomChip } from '@/components/common/table/CustomChip';
 import InfoModal from '@/components/common/modals/InfoModal';
+import EmptyList from '@/components/common/EmptyState/EmptyList';
 const UpdateRequest = () => {
     const { sessionData } = useCheck()
     const t = useTranslations()
@@ -142,6 +144,13 @@ const UpdateRequest = () => {
                     {pending && <Box sx={{ width: '100%', display: 'flex', gap: 1, alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
                         <CircularProgress color="inherit" size={20} />
                     </Box>}
+
+                    {employeeLogs.length === 0 && !pending && <EmptyList
+                              imageUrl={emptyImage}
+                              title={t('checking.statsNoDataTitle')}
+                              description={t('checking.statsNoDataText')}
+                            />}
+                            
                     {/*limit <= total && <SassButton variant='outlined' onClick={() => loadMore()} >{t('core.label.moreload')}</SassButton>*/}
                 </Box>
             </DialogContent>

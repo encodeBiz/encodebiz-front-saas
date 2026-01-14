@@ -5,7 +5,7 @@ import { Box, Typography } from "@mui/material";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { useTranslations } from "next-intl";
 import { StatCard } from "../StatCard";
-import { defaultLabelFromKey, formatCurrency, hashBranchColor } from "../chartUtils";
+import {   formatCurrency, hashBranchColor } from "../chartUtils";
 import { useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 
@@ -19,13 +19,7 @@ type DistributionItem = {
 
 export const CostDistributionCard = ({ entityId, branchId, from, to }: CheckbizCardProps) => {
   const t = useTranslations("statsDashboard");
-  const kpiLabel = (key: string) => {
-    try {
-      return t(`kpiLabels.${key}` as any);
-    } catch {
-      return defaultLabelFromKey(key);
-    }
-  };
+  
 
   const { data, isLoading, error } = useCheckbizStats<DistributionItem[]>({
     entityId,

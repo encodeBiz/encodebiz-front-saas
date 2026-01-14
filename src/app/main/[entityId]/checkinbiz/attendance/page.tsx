@@ -12,6 +12,7 @@ import emptyImage from '../../../../../../public/assets/images/empty/asistencia.
 import InfoModal from '@/components/common/modals/InfoModal';
 import { useMemo } from 'react';
 import { LogDetail } from './LogDetail/LogDetail';
+import { UpdateRequest } from './UpdateRequest/UpdateRequest';
 
 const AttendanceFormModal = dynamic(() => import("./AttendanceFormModal/AttendanceFormModal").then(mod => mod.default), {
   ssr: false,
@@ -40,6 +41,9 @@ export default function AttendanceList() {
             description={t('employeeDashboard.attendanceNoDataText')}
           />}
 
+
+         
+
         {!empthy && <GenericTable
           data={items}
           rowAction={rowAction}
@@ -62,7 +66,7 @@ export default function AttendanceList() {
         <InfoModal
           title={t('attendance.requestUpdates')}
           centerBtn
-          htmlDescription={<LogDetail logDetail={open.args} />}
+          htmlDescription={<UpdateRequest logDetail={open.args} />}
           cancelBtn={false}
         />}
       {open.type === CommonModalType.LOGS && !!logDetail && (<InfoModal onClose={() => closeModal(CommonModalType.LOGS)}

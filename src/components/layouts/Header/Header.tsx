@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -36,11 +36,14 @@ import { QuestionIcon } from '@/components/common/icons/QuestionIcon';
 import { useAppLocale } from '@/hooks/useAppLocale';
 import { useRouter } from 'nextjs-toploader/app';
 import { MAIN_ROUTE, USER_ROUTE } from '@/config/routes';
+import { ProductsContextMenu } from '@/components/common/ProductsContextMenu/ProductsContextMenu';
 
 
 export default function Header({ drawerWidth }: { drawerWidth: number }) {
   const { changeLayoutState, layoutState } = useLayout()
   const { user } = useAuth()
+  const [productsMenuAnchor, setProductsMenuAnchor] = useState<null | HTMLElement>(null);
+  const productsMenuOpen = Boolean(productsMenuAnchor);
 
   const t = useTranslations();
   const { anchorEl, contextMenu, handleMobileMenuClose, handleProfileMenuOpen, handleMobileMenuOpen,
@@ -252,11 +255,17 @@ export default function Header({ drawerWidth }: { drawerWidth: number }) {
                   height: 40,
                   width: 40
                 }}
-                onClick={() => openModal()}
+                onClick={(e) => setProductsMenuAnchor(e.currentTarget)}
               >
                 <QuestionIcon />
               </IconButton>
             </Tooltip>
+
+            <ProductsContextMenu
+              anchorEl={productsMenuAnchor}
+              open={productsMenuOpen}
+              onClose={() => setProductsMenuAnchor(null)}
+            />
 
             <Divider sx={{ height: 30, mt: 1.5 }} orientation="vertical" flexItem />
 

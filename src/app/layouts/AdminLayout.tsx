@@ -37,7 +37,8 @@ function Admin({
   const enableAdvise = entitySuscription.filter(e => (e.plan === "bronze" || e.plan === "enterprise")).length > 0 && currentEntity?.entity.billingConfig?.payment_method?.length === 0
 
   useEffect(() => {
-    if (currentEntity?.id && user?.id && currentEntity.status === 'invited' && !pendAuth && !localStorage.getItem(`ENTITY-${currentEntity?.id}-${user?.id}`)) {
+     
+    if (!!currentEntity?.id && !!user?.id && currentEntity.status === 'invited' && !pendAuth && !localStorage.getItem(`ENTITY-${currentEntity?.id}-${user?.id}`)) {
       openModal(CommonModalType.WELCOMEGUEST)
     }
   }, [currentEntity?.id, user?.id, pendAuth])

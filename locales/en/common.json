@@ -118,6 +118,12 @@
       "nocard": "You have no payment methods associated with the entity, please configure at least one."
     },
     "label": {
+      "fromRole": "From Role",
+      "toRole": "To Role",
+      "journeyRegistration": "Journey Registration",
+      "restRegistration": "Rest Registration",
+      "configuration": "Configuration",
+      "other": "Other",
       "paid": "Paid",
       "workScheduleEnable": "Custom schedule",
       "workScheduleDisabled": "Custom schedule",
@@ -484,6 +490,11 @@
       "card": {
         "title": "Your operation, in a single platform",
         "subtitle": "encodeBiz is the platform where we build technology that connects, organizes, and powers the real functioning of your company."
+      },
+      "card2": {
+        "title": "Product overview",
+        "subtitle": "This panel provides an overview of the status and activity of the products contracted with EncodeBiz.",
+        "subtitle2": "A basic summary by product is displayed here, with key indicators that provide insight into the usage and evolution of each solution."
       },
       "cardDesc": {
         "title1": "More than software,",
@@ -1116,7 +1127,9 @@
     "tempActiviy": "Temporal Activity",
     "operativeData": "OPERATIONAL DATA",
     "tempActiviyLabel": "Temporal activity data",
-    "operativeDataLabel": "Operational data"
+    "operativeDataLabel": "Operational data",
+    "statsNoDataTitle": "Cannot display heuristic analysis",
+    "statsNoDataText": "There is not enough collected data to perform a heuristic analysis"
   },
   "statsDashboard": {
     "dateRange": "Date range",
@@ -1410,8 +1423,8 @@
     "emptyBranch": " You must select at least one branch/project to see statistics.",
     "helpPanelEmpty": "Currently there is not enough operational information generated to display in the comparative dashboard. Once the selected branches/projects begin recording attendance and operational data, you will be able to view detailed and comparative analysis here.",
     "helpPanelEmptyTitle": "No information to display",
-    "panelNoDataTitle": "No data to compare yet",
-    "panelNoDataText": "This view allows comparing operational, temporal, and heuristic behavior between different branches or projects. Once there is sufficient activity, you will be able to select which branch or project you want to contrast and which indicators to visualize. Until then, comparisons are not possible.",
+    "panelNoDataTitle": "Not enough data yet to perform comparisons",
+    "panelNoDataText": "This panel allows comparing performance between branches or projects, analyzing costs, workload, salary estimation, and compliance and punctuality levels. When there are multiple active branches and sufficient records, comparisons will be automatically generated in this view.",
     "employeeNoDataTitle": "You haven't created employees yet",
     "employeeNoDataText": "Create your first employee to start organizing your operation. From here you can manage their basic information and assign them to a branch or project. Once created, this section will display the complete list of your team.",
     "reportNoDataTitle": "No data to generate a report",
@@ -1420,6 +1433,8 @@
     "attendanceNoDataText": "Here, entries and exits linked to each employee and branch/project will be displayed, along with location and schedule validation. Once the first clock-ins are recorded, you will be able to supervise daily activity and filter by dates, employee, and branch or project.",
     "employeeTrend": "Annual trend: Employees",
     "employeeTrendText": "Employee registration behavior",
+    "issuesNoDataTitle": "No incidents registered",
+    "issuesNoDataText": "This section will display incidents reported by employees and associated with a branch or project. When the first incident is registered, it will be listed here for review and management.",
     "total": "Total",
     "averagePerMonth": "Average",
     "totalEmployees": "Total",
@@ -1447,7 +1462,9 @@
     "issues": "Issues",
     "outRadiusTitle": "Out of Zone",
     "outRadiusText": "It seems you are not within the check-in zone. To perform operations with this tool, you must be near the branch or project.",
-    "noGeoText": "It seems you do not have the geolocation permission enabled. Enable it to use this tool"
+    "noGeoText": "It seems you do not have the geolocation permission enabled. Enable it to use this tool",
+    "statsNoDataTitle": "No data to display",
+    "statsNoDataText": "There are no time change requests to resolve"
   },
   "twoFactor": {
     "copyCode": "Code copied",
@@ -1576,6 +1593,19 @@
         "pricePerUse": "",
         "monthlyPrice": "Free"
       }
+    }
+  },
+  "productsMenu": {
+    "title": "Available products",
+    "noImage": "No image",
+    "access": "Access",
+    "passinbiz": {
+      "name": "PassBiz",
+      "description": "Solution to create and manage digital credentials and access, allowing control of entries and validations in a unified environment."
+    },
+    "checkinbiz": {
+      "name": "CheckBiz",
+      "description": "Real work traceability with validation by location, schedule and device. EU compliance, enhanced security and complete metrics ready for audit."
     }
   }
 }

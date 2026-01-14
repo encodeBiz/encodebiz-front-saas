@@ -11,14 +11,14 @@ import { CommonModalType } from "@/contexts/commonModalContext";
 import { IIssue } from "@/domain/features/checkinbiz/IIssue";
 import { deleteSucursal, fetchSucursal } from "@/services/checkinbiz/sucursal.service";
 import { useLayout } from "@/hooks/useLayout";
-import { ListAltOutlined } from "@mui/icons-material";
+import { Edit, ListAltOutlined } from "@mui/icons-material";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { Box, Typography } from "@mui/material";
 import { useAppLocale } from "@/hooks/useAppLocale";
 import { CustomChip } from "@/components/common/table/CustomChip";
-import {  format_date_with_locale } from "@/lib/common/Date";
-import { fetchEmployee, getIssues } from "@/services/checkinbiz/employee.service";
+import { format_date_with_locale } from "@/lib/common/Date";
+import { emptyIssue, fetchEmployee, getIssues } from "@/services/checkinbiz/employee.service";
 import SearchFilter from "@/components/common/table/filters/SearchFilter";
 
 
@@ -63,18 +63,19 @@ export default function useIIssuesListController() {
       orderDirection: 'desc',
     }
   })
+  const [empthy, setEmpthy] = useState(false)
 
   const { closeModal, openModal } = useCommonModal()
   const rowAction: Array<IRowAction> = [
-    /* {
-       actionBtn: true,
-       color: 'primary',
-       icon: <Edit color="primary" />,
-       label: t('core.button.edit'),
-       bulk: false,
-       allowItem: () => true,
-       onPress: (item: IIssue) => onEdit(item)
-     },*/
+    {
+      actionBtn: true,
+      color: 'primary',
+      icon: <Edit color="primary" />,
+      label: t('core.button.edit'),
+      bulk: false,
+      allowItem: () => true,
+      onPress: (item: IIssue) => onEdit(item)
+    },
 
     {
       actionBtn: true,
@@ -146,7 +147,7 @@ export default function useIIssuesListController() {
 
 
   const columns: Column<IIssue>[] = [
-  
+
     {
       id: 'branch',
       label: t("core.label.branch"),
@@ -174,7 +175,7 @@ export default function useIIssuesListController() {
       id: 'createdAt',
       label: t("core.label.createAt"),
       minWidth: 170,
-      format: (value, row) =><Typography variant="body2" textTransform={'capitalize'}>{ format_date_with_locale(row.createdAt,currentLocale as 'en' | 'es') }</Typography>
+      format: (value, row) => <Typography variant="body2" textTransform={'capitalize'}>{format_date_with_locale(row.createdAt, currentLocale as 'en' | 'es')}</Typography>
     },
 
 
@@ -182,7 +183,7 @@ export default function useIIssuesListController() {
 
 
 
-  const fetchingData = (filterParams: IFilterParams) => {
+  const fetchingData = async (filterParams: IFilterParams) => {
     if (filterParams.params.filters.find((e: any) => e.field === 'branchId' && e.value === 'none'))
       filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "branchId")
 
@@ -195,6 +196,9 @@ export default function useIIssuesListController() {
       ...filterParams.params.filters,
     ]
     setLoading(true)
+
+    setEmpthy(await emptyIssue(currentEntity?.entity.id as string))
+
     getIssues(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async data => {
       const res: Array<any> = await Promise.all(
         data.map(async (item) => {
@@ -242,10 +246,6 @@ export default function useIIssuesListController() {
   }, [currentEntity?.entity?.id])
 
 
-
-  const onEdit = async (item: any) => {
-    openModal(CommonModalType.FORM, { ...item })
-  }
 
 
 
@@ -353,6 +353,10 @@ export default function useIIssuesListController() {
     fetchingData(filterParamsUpdated)
   }
 
+  const onEdit = async (item: any) => {
+    openModal(CommonModalType.FORM, { ...item })
+  }
+
 
 
   return {
@@ -361,7 +365,7 @@ export default function useIIssuesListController() {
     onNext, onBack,
     columns, rowAction, onDelete, topFilter,
     loading, deleting, filterParams,
-
+empthy
   }
 
 

@@ -11,6 +11,7 @@ import { updateDocument } from "@/lib/firebase/firestore/updateDocument";
 import { deleteDocument } from "@/lib/firebase/firestore/deleteDocument";
 import { IIssue, IIssueResponse } from "@/domain/features/checkinbiz/IIssue";
 import { Timestamp } from "firebase/firestore";
+import { Issue } from "next/dist/build/swc/types";
 
 
 /**
@@ -668,13 +669,20 @@ export const getEmployeeStatsByYear = async (
 
     // Encontrar mes con mayor y menor creación
     const nonZeroMonths = monthlyBreakdown.filter(m => m.count > 0);
-    const peakMonth = nonZeroMonths.reduce((max, current) =>
-      current.count > max.count ? current : max
-    ) || { month: 0, monthName: 'N/A', count: 0 };
 
-    const lowestMonth = nonZeroMonths.reduce((min, current) =>
-      current.count < min.count ? current : min
-    ) || { month: 0, monthName: 'N/A', count: 0 };
+    let peakMonth = { month: 0, monthName: 'N/A', count: 0 }
+    if (nonZeroMonths.length > 0) {
+      peakMonth = nonZeroMonths.reduce((max, current) =>
+        current.count > max.count ? current : max
+      ) || { month: 0, monthName: 'N/A', count: 0 };
+    }
+
+    let lowestMonth = { month: 0, monthName: 'N/A', count: 0 }
+    if (nonZeroMonths.length > 0) {
+      lowestMonth = nonZeroMonths.reduce((min, current) =>
+        current.count < min.count ? current : min
+      ) || { month: 0, monthName: 'N/A', count: 0 };
+    }
 
     const totalEmployees = employees.length;
     const averagePerMonth = Math.round((totalEmployees / 12) * 100) / 100;
@@ -717,3 +725,54 @@ export const getEmployeeStatsByYearRange = async (
     );
   }
 };
+
+
+export const updateIssue = async (issue: IIssue): Promise<void> => {
+  try {
+    await updateDocument<Job>({
+      collection: `${collection.ISSUES}`,
+      data: {
+        ...issue
+      },
+      id: issue.id as string
+    });
+  } catch (error: any) {
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
+  }
+
+}
+
+export const addIssue = async (issue: IIssue): Promise<void> => {
+  try {
+
+    await addDocument<IIssue>({
+      collection: `${collection.ISSUES}`,
+      data: {
+        ...issue
+      }
+    });
+
+  } catch (error: any) {
+    throw new Error(mapperErrorFromBack(error?.message as string, false) as string);
+  }
+
+}
+
+export const emptyIssue = async (entityId: string): Promise<boolean> => {
+  const data: Issue[] = await searchFirestore({
+    ...{
+      filters: [
+
+        {
+          field: 'entityId',
+          operator: '==',
+          value: entityId,
+        },
+      ],
+      limit: 1
+    } as any,
+    collection: `${collection.ISSUES}`,
+  });
+
+  return data.length === 0
+}

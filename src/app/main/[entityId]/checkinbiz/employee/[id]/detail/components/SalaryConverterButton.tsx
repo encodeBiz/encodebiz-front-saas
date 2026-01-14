@@ -3,7 +3,6 @@
 import React, { useMemo, useState } from "react";
 import {
   Box,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -17,6 +16,7 @@ import {
 } from "@mui/material";
 import { useTranslations } from "next-intl";
 import { useFormikContext } from "formik";
+import { SassButton } from "@/components/common/buttons/GenericButton";
 
 type Period = "month" | "week";
 
@@ -44,14 +44,14 @@ export const SalaryConverterButton = ({ fieldName = "price", size = "small" }: S
 
   return (
     <>
-      <Button
+      <SassButton
         size={size}
         variant="outlined"
         onClick={() => setOpen(true)}
         sx={{ whiteSpace: "nowrap" }}
       >
         {t("convertToHourly")}
-      </Button>
+      </SassButton>
       <Dialog open={open} onClose={() => setOpen(false)} maxWidth="sm" fullWidth>
         <DialogTitle>{t("convertToHourly")}</DialogTitle>
         <DialogContent>
@@ -107,10 +107,10 @@ export const SalaryConverterButton = ({ fieldName = "price", size = "small" }: S
           </Stack>
         </DialogContent>
         <DialogActions>
-          <Button size="small" variant="outlined" onClick={() => setOpen(false)}>
+          <SassButton size="small" variant="outlined" onClick={() => setOpen(false)}>
             {tButton("cancel")}
-          </Button>
-          <Button
+          </SassButton>
+          <SassButton
             size="small"
             variant="contained"
             onClick={() => {
@@ -121,7 +121,7 @@ export const SalaryConverterButton = ({ fieldName = "price", size = "small" }: S
             }}
           >
             {tButton("save")}
-          </Button>
+          </SassButton>
         </DialogActions>
       </Dialog>
     </>

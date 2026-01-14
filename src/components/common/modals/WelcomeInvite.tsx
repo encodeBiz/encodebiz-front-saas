@@ -33,11 +33,13 @@ const WelcomeInviteModal = (): React.JSX.Element => {
     const isGuest = user?.fullName?.trim()?.toLowerCase() === 'guest'
     // Handler for closing the dialog
     const handleWelcomeInvite = async () => {
-        localStorage.setItem('view-onboarding-' + user?.id, '1')
-        await updateAuth(currentEntity?.id as string, user?.id as string, currentLocale)
-        setCurrentEntity({ ...currentEntity, status: 'active' } as IUserEntity)
-        if (isGuest) push(`/${MAIN_ROUTE}/user/account`)
-        closeModal(CommonModalType.WELCOMEGUEST)
+        if (currentEntity) {
+            localStorage.setItem('view-onboarding-' + user?.id, '1')
+            await updateAuth(currentEntity?.id as string, user?.id as string, currentLocale)
+            setCurrentEntity({ ...currentEntity, status: 'active' } as IUserEntity)
+            if (isGuest) push(`/${MAIN_ROUTE}/user/account`)
+            closeModal(CommonModalType.WELCOMEGUEST)
+        }
 
     }
     const handleClose = async () => {
@@ -46,44 +48,44 @@ const WelcomeInviteModal = (): React.JSX.Element => {
         setCurrentEntity({ ...currentEntity, status: 'active' } as IUserEntity)
         if (isGuest) push(`/${MAIN_ROUTE}/user/account`)
         closeModal(CommonModalType.WELCOMEGUEST)
-        }
-        return (
-            <Dialog
-                open={open.open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-                fullWidth
-                maxWidth="sm"
-                slotProps={{ paper: { sx: { p: 2, borderRadius: 2 } } }}
-            >
-                <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
-                        <CustomTypography >{t('guestModal.title')}</CustomTypography>
-                    </Box>
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description" sx={{ mb: 3 }}>
-                        <Typography variant='body1'>{t('guestModal.text1')}</Typography>
-                        {isGuest && <Typography sx={{ mt: 1 }} variant='body1'>{t('guestModal.text2')}</Typography>}
-                    </DialogContentText>
+    }
+    return (
+        <Dialog
+            open={open.open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            fullWidth
+            maxWidth="sm"
+            slotProps={{ paper: { sx: { p: 2, borderRadius: 2 } } }}
+        >
+            <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
+                    <CustomTypography >{t('guestModal.title')}</CustomTypography>
+                </Box>
+            </DialogTitle>
+            <DialogContent>
+                <DialogContentText id="alert-dialog-description" sx={{ mb: 3 }}>
+                    <Typography variant='body1'>{t('guestModal.text1')}</Typography>
+                    {isGuest && <Typography sx={{ mt: 1 }} variant='body1'>{t('guestModal.text2')}</Typography>}
+                </DialogContentText>
 
 
-                </DialogContent>
-                <DialogActions >
-                    <Box width={'100%'} display={'center'} alignItems={'center'} justifyContent={'center'}>
-                        <SassButton
-                            onClick={handleWelcomeInvite}
-                            color="primary"
-                            size='small'
-                            variant="contained"
-                        >
-                            {isGuest ? t('guestModal.btn') : t('core.button.accept')}
-                        </SassButton>
-                    </Box>
-                </DialogActions>
-            </Dialog>
-        );
-    };
+            </DialogContent>
+            <DialogActions >
+                <Box width={'100%'} display={'center'} alignItems={'center'} justifyContent={'center'}>
+                    <SassButton
+                        onClick={handleWelcomeInvite}
+                        color="primary"
+                        size='small'
+                        variant="contained"
+                    >
+                        {isGuest ? t('guestModal.btn') : t('core.button.accept')}
+                    </SassButton>
+                </Box>
+            </DialogActions>
+        </Dialog>
+    );
+};
 
-    export default WelcomeInviteModal
+export default WelcomeInviteModal

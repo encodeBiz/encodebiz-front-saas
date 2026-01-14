@@ -25,7 +25,7 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
     const t = useTranslations()
     const { navivateTo } = useLayout()
     const { openModal, open } = useCommonModal()
-    const { initialize, branchPatternList, pending } = useDashboardBranch()
+    const { initialize } = useDashboardBranch()
     const { currentEntity } = useEntity()
 
     useEffect(() => {
@@ -111,13 +111,13 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
                     },
                 ],
 
-                ...(branchPatternList.length > 0 && !pending ? [
+                ...([
                     {
                         id: '1',
                         title: t(`sucursal.panel`),
                         tabContent: <PanelStats />
                     },
-                ] : []),
+                ]),
 
 
                 {

@@ -22,8 +22,9 @@ export default function Dashboard() {
     <PassinBizStatsProvider>
       <Container maxWidth="xl">
         <OnboardingCard
-          title={t('features.dashboard.card.title')}
-          description={t('features.dashboard.card.subtitle')}
+          title={t('features.dashboard.card2.title')}
+          description={t('features.dashboard.card2.subtitle')}
+          description2={t('features.dashboard.card2.subtitle2')}
           image={image}
           
         />

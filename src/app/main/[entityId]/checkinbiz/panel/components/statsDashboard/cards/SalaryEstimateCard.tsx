@@ -13,7 +13,7 @@ import {
   Typography,
   Tooltip,
 } from "@mui/material";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { StatCard } from "../StatCard";
 import { defaultLabelFromKey, formatCurrency, formatHours, formatKpiEntries } from "../chartUtils";

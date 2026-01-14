@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
 import React from "react";
@@ -15,7 +16,7 @@ import {
 } from "recharts";
 import { Box, Paper, Typography } from "@mui/material";
 import { StatCard } from "../StatCard";
-import { alignSeriesByDate, defaultLabelFromKey, formatHours, formatKpiEntries, normalizeSeriesNumbers } from "../chartUtils";
+import { alignSeriesByDate, defaultLabelFromKey, formatKpiEntries, normalizeSeriesNumbers } from "../chartUtils";
 import { BranchSeries, useCheckbizStats } from "../../hooks/useCheckbizStats";
 import { CheckbizCardProps } from "./types";
 

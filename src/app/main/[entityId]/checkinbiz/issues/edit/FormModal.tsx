@@ -4,40 +4,35 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    Box
+    Box 
 } from '@mui/material';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useTranslations } from 'next-intl';
-import { useFormStatus } from '@/hooks/useFormStatus';
+ import { useFormStatus } from '@/hooks/useFormStatus';
 import { CustomTypography } from '@/components/common/Text/CustomTypography';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { SassButton } from '@/components/common/buttons/GenericButton';
-import { ISucursal } from '@/domain/features/checkinbiz/ISucursal';
-import useFormLinkController from './FormLink.controller';
-import { SalaryConverterButton } from '../../../../employee/[id]/detail/components/SalaryConverterButton';
+import useFormController from '../form/form.controller';
+import * as Yup from 'yup';
+import { IIssue } from '@/domain/features/checkinbiz/IIssue';
 
-const FormLink = ({ onSuccess }: { employeeId?: string, branchId?: string, onSuccess: () => void }): React.JSX.Element => {
+const FormModal = ({ onSuccess }: { onSuccess: () => void }): React.JSX.Element => {
     const { open, closeModal } = useCommonModal()
-    const { fields, validationSchema, handleSubmit, initialValues } = useFormLinkController(onSuccess);
+     const { fields, validationSchema, handleSubmit, initialValues } = useFormController(true, onSuccess);
     const t = useTranslations();
     const formRef = useRef(null)
-    const { formStatus } = useFormStatus()
-
     const handleClose = (event: any, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
         if (reason !== 'backdropClick')
             closeModal(CommonModalType.FORM);
     };
 
-    const handleModal = (values: Partial<ISucursal>) => {
-        setTimeout(() => {
-            handleSubmit(values)
-        }, 2000);
+    const handleModal = (values: Partial<IIssue>) => {
+        handleSubmit(values)
     }
 
-
-
+    const { formStatus } = useFormStatus()
 
     const handleExternalSubmit = () => {
         if (formRef.current) {
@@ -56,35 +51,21 @@ const FormLink = ({ onSuccess }: { employeeId?: string, branchId?: string, onSuc
         >
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
-                    <CustomTypography >{t('sucursal.linkEmployee')}</CustomTypography>
-                    <CustomTypography sx={{ fontSize: 20 }} >{t('sucursal.linkEmployeeDesc')}</CustomTypography>
+                    <CustomTypography >{t('issues.edit')}</CustomTypography>
+                    <CustomTypography sx={{ fontSize: 20 }} >{t('issues.formDesc')}</CustomTypography>
                 </Box>
-
+               
             </DialogTitle>
             <DialogContent>
                 <BorderBox sx={{ p: 2 }} key={open.open + ''}>
-                    <GenericForm<Partial<ISucursal>>
+                    <GenericForm<Partial<IIssue>>
                         column={2}
                         initialValues={initialValues}
-                        validationSchema={validationSchema}
+                        validationSchema={Yup.object().shape(validationSchema)}
                         onSubmit={handleModal}
-                        fields={fields.map((field) =>
-                            field.name === 'price'
-                                ? {
-                                    ...field,
-                                    extraProps: {
-                                        ...field.extraProps,
-                                        afterTextField: (
-                                            <SalaryConverterButton fieldName="price" size="small" />
-                                        ),
-                                    },
-                                }
-                                : field,
-                        ) as FormField[]}
-                        enableReinitialize
-
+                        fields={fields as FormField[]}
                         submitButtonText={t('core.button.save')}
-                         
+                        enableReinitialize
                         hideBtn
                         activateWatchStatus
                         formRef={formRef}
@@ -98,6 +79,8 @@ const FormLink = ({ onSuccess }: { employeeId?: string, branchId?: string, onSuc
                     onClick={(e) => handleClose(e, 'manual')}
                     disabled={formStatus?.isSubmitting}
                     size='small'
+
+
                 >
                     {t('core.button.cancel')}
                 </SassButton>
@@ -115,4 +98,4 @@ const FormLink = ({ onSuccess }: { employeeId?: string, branchId?: string, onSuc
     );
 };
 
-export default FormLink
+export default FormModal

@@ -108,7 +108,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       const data: ISucursal = {
         name: values.name,
         ratioChecklog: values.ratioChecklog ?? 0,
-        disableRatioChecklog: values.disableRatioChecklog,
+        disableRatioChecklog: !values.disableRatioChecklog,
         status: values.status,
         nif: values.nif,
         "metadata": ArrayToObject(values.metadata as any),
@@ -202,7 +202,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     },
     {
       name: 'disableRatioChecklog',
-      label: t('core.label.disableRatioChecklogD'),
+      label: t('core.label.disableRatioChecklogE'),
       required: false,
       component: ToggleInput,
       extraProps: {
@@ -401,12 +401,12 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       endTime.setHours(sucursal?.advance?.endTimeWorkingDay?.hour ?? 0)
       setEnableDayTimeRange(sucursal?.advance?.enableDayTimeRange ?? false)
       setDisableBreak(sucursal?.advance?.disableBreak ?? false)
-      setDisableRatioChecklog((sucursal?.disableRatioChecklog ?? false))
+      setDisableRatioChecklog((!sucursal?.disableRatioChecklog))
       setInitialValues({
         address: sucursal.address,
 
         postalCode: sucursal.address.postalCode,
-        disableRatioChecklog: sucursal.disableRatioChecklog,
+        disableRatioChecklog: !sucursal.disableRatioChecklog,
         status: sucursal.status,
         ratioChecklog: sucursal.ratioChecklog,
         name: sucursal.name,

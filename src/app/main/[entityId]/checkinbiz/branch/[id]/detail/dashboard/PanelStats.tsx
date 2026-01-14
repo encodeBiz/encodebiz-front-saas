@@ -14,7 +14,7 @@ import { SelectorChart } from "../../../../panel/components/common/SelectorChart
 import { useDashboardBranch } from "./DashboardBranchContext";
 import { HeuristicAnalize } from "./cards/HeuristicAnalize";
 import { preferenceDashboardItems } from "@/domain/features/checkinbiz/IStats";
-
+ 
 
 export const PanelStats = () => {
   const t = useTranslations();
@@ -78,11 +78,11 @@ export const PanelStats = () => {
     {!pending && heuristic.length > 0 && <Divider sx={{ mt: 2, mb: 2 }} flexItem variant="fullWidth" orientation="horizontal" />
     }
 
-    {!pending && heuristic.length > 0 && <Box sx={{ p: 3 }} display={'flex'} flexDirection={'column'} gap={5} pt={5}>
+   
+
       <HeuristicAnalize />
-    </Box>}
-
-
+     
+ 
 
 
   </Box>

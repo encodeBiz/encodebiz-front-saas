@@ -46,6 +46,7 @@ export default function EmployeeList() {
             title={t('employeeDashboard.employeeNoDataTitle')}
             description={t('employeeDashboard.employeeNoDataText')}
           />}
+          
         {!empthy && <GenericTable
           data={items}
           rowAction={rowAction}
