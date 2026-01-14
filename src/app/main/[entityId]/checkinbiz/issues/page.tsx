@@ -12,6 +12,8 @@ import { SassButton } from '@/components/common/buttons/GenericButton';
 import { Add } from '@mui/icons-material';
 import { useLayout } from '@/hooks/useLayout';
 import { CHECKINBIZ_MODULE_ROUTE } from '@/config/routes';
+import EmptyList from '@/components/common/EmptyState/EmptyList';
+import emptyImage from '../../../../../../public/assets/images/empty/reportes.svg';
 
 export default function IssuesList() {
   const t = useTranslations();
@@ -19,7 +21,7 @@ export default function IssuesList() {
     items, rowAction, onRowsPerPageChange, onSort,
     onNext, onBack, onDelete, deleting,
     filterParams, topFilter,
-    columns, onSuccess,
+    columns, onSuccess, empthy,
     loading } = useIssuesListController();
   const { open } = useCommonModal()
   const { navivateTo } = useLayout()
@@ -58,6 +60,14 @@ export default function IssuesList() {
 
 
         />
+
+        {empthy && !loading &&
+          <EmptyList
+            imageUrl={emptyImage}
+            title={t('employeeDashboard.issuesNoDataTitle')}
+            description={t('employeeDashboard.issuesNoDataText')}
+          />}         
+
       </HeaderPage>
       {open.type === CommonModalType.DELETE && <ConfirmModal
         isLoading={deleting}

@@ -44,6 +44,8 @@ export default function AttendanceList() {
             description={t('employeeDashboard.reportNoDataText')}
           />}
 
+          
+
         {!empthy && <GenericTable
           data={items}
           rowAction={rowAction}

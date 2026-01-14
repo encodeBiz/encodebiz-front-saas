@@ -118,13 +118,13 @@
       "nocard": "No tienes métodos de pago asociado a la entidad, por favor configure al menos uno."
     },
     "label": {
-      "fromRole":"Rol Origen",
-      "toRole":"Rol Destino",
-      "journeyRegistration":"Registro de jornada",
-      "restRegistration":"Registro de descanso",
-      "configuration":"Configuración",
-      "other":"Otro",
-      "paid":"Pagado",
+      "fromRole": "Rol Origen",
+      "toRole": "Rol Destino",
+      "journeyRegistration": "Registro de jornada",
+      "restRegistration": "Registro de descanso",
+      "configuration": "Configuración",
+      "other": "Otro",
+      "paid": "Pagado",
       "workScheduleEnable": "Horario personalizado",
       "workScheduleDisabled": "Horario personalizado",
       "workScheduleUniform": "Jornada uniforme",
@@ -224,22 +224,22 @@
       "employees": "Empleados",
       "viewDetails": "Detalles",
       "viewDetailsTitle": "Detalle del registro de asistencia",
-      "type":"Tipo",
-      "changes":"Cambios",
-      "previewDate":"Fecha anterior",
-      "currentDate":"Fecha actual",
+      "type": "Tipo",
+      "changes": "Cambios",
+      "previewDate": "Fecha anterior",
+      "currentDate": "Fecha actual",
       "enableRemoteWork": "Habilitar trabajo remoto",
       "remoteWork": "Trabajo remoto",
       "enableRemoteWorkEnable": "Trabajo remoto habilitado",
       "enableRemoteWorkDisabled": "Trabajo remoto deshabilitado",
       "ratioChecklogTitle": "CONFIGURACIÓN OPERATIVA",
       "disableRatioChecklog": "Desabilitar zona de chequeo",
-      "disableRatioChecklogE": "Zona de chequeo habilitada",
+      "disableRatioChecklogE": "Zona de chequeo permitida",
       "disableRatioChecklogD": "Zona de chequeo deshabilitada",
       "price": "Salario por hora",
       "level": "Nivel",
       "update": "Actualización",
-      "priceData":"Precio",
+      "priceData": "Precio",
       "convertToHourly": "Salario mensual",
       "salaryHelper": "¿Tienes salario mensual? Conviértelo a valor por hora.",
       "salaryHelperDesc": "Ingresa salario mensual y horas al mes para calcular el valor por hora.",
@@ -422,7 +422,9 @@
       "update": "Actualizar",
       "addBranch": "Agregar sucursal",
       "validate": "Validar",
-      "reject": "Denegar"
+      "reject": "Denegar",
+      "more": "Ver todos",
+      "minus": "Ver menos"
     },
     "formValidatorMessages": {
       "required": "Este campo es requerido",
@@ -495,6 +497,11 @@
       "card": {
         "title": "Tu operación, en una sola plataforma",
         "subtitle": "encodeBiz es la plataforma donde construimos tecnología que conecta, ordena y potencia el funcionamiento real de tu empresa."
+      },
+      "card2": {
+        "title": "Resumen general de productos",
+        "subtitle": "Este panel ofrece una visión general del estado y la actividad de los productos contratados en EncodeBiz.",
+        "subtitle2": "Aquí se muestra un resumen básico por producto, con indicadores clave que permiten tener una primera lectura del uso y la evolución de cada solución."
       },
       "cardDesc": {
         "title1": "Más que un software,",
@@ -773,7 +780,7 @@
   "sucursal": {
     "panel": "Comportamiento operacional",
     "title": "Sucursales/Proyectos",
-    "scheduledDays":"Días programados",
+    "scheduledDays": "Días programados",
     "formFirstSectionTitle": "DATOS DE LA SUCURSAL / PROYECTO",
     "address": "DATOS DE UBICACIÓN",
     "addEmployee": "Agregar empleado",
@@ -810,7 +817,7 @@
     "linkToEmployeeNotBtn": "Crear Empleado",
     "breakTime": "TIEMPO DE DESCANSO",
     "workTime": "HORARIO DE JORNADA LABORAL",
-    "weekTime":"Horas semanales",
+    "weekTime": "Horas semanales",
     "fieldHelp1": "El sistema aplica ",
     "fieldHelp2": "exactamente",
     "fieldHelp3": " la duración configurada para el descanso.",
@@ -859,14 +866,14 @@
     "updateRequestChanged": "Cambio realizado",
     "updateRequestDate": " Fecha y hora anterior",
     "updateRequestTime": " Fecha y hora actual",
-    "updateRequestStatus":"Estado actual",
-    "updateRequestPreviewStatus":"Estado anterior",
+    "updateRequestStatus": "Estado actual",
+    "updateRequestPreviewStatus": "Estado anterior",
     "latestData": "Datos anteriores",
     "currentData": "Datos actuales",
     "updateRequestReason": " Motivo",
     "updateRequestValidate": " Validación",
     "updateRequestRequest": " Actualizado por",
-    "updateRequestRequestDate":"Fecha de validación",
+    "updateRequestRequestDate": "Fecha de validación",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el reporte",
     "logDetail": {
       "summaryTitle": "Resumen del registro",
@@ -919,7 +926,7 @@
     "update": "Editar incidencia",
     "response": "Responder",
     "responseNoDataTitle": "Todavía no hay respuestas a esta incidencia",
-     "responseNoDataText": "Aquí se mostrarán las respuestas emitidas por el supervisor asociadas a esta incidencia",
+    "responseNoDataText": "Aquí se mostrarán las respuestas emitidas por el supervisor asociadas a esta incidencia",
     "description": "Rellene los campos para registrar la incidencia",
     "deleteConfirmModalTitle": "Eliminar reporte",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el reporte"
@@ -1135,11 +1142,8 @@
     "operativeData": "DATOS OPERATIVOS",
     "tempActiviyLabel": "Datos de actividad temporal",
     "operativeDataLabel": "Datos operativos",
-
-
-    "statsNoDataTitle":"No se puede mostrar el análisis heurísticos",
-    "statsNoDataText":"No existe suficiente datos recopilados para realizar un análisis heurísticos"
-
+    "statsNoDataTitle": "No se puede mostrar el análisis heurísticos",
+    "statsNoDataText": "No existe suficiente datos recopilados para realizar un análisis heurísticos"
   },
   "statsDashboard": {
     "dateRange": "Rango de fechas",
@@ -1260,10 +1264,22 @@
     },
     "dateRangeFrom": "Desde",
     "dateRangeTo": "Hasta",
-    "costByBranch": { "title": "Coste por sucursal", "subtitle": "Serie diaria por sucursal" },
-    "hoursByBranch": { "title": "Horas por sucursal", "subtitle": "Carga diaria por sucursal" },
-    "costPerHour": { "title": "Costo por hora", "subtitle": "Costo unitario promedio" },
-    "costVsBudget": { "title": "Costo vs presupuesto", "subtitle": "Compara coste real vs esperado" },
+    "costByBranch": {
+      "title": "Coste por sucursal",
+      "subtitle": "Serie diaria por sucursal"
+    },
+    "hoursByBranch": {
+      "title": "Horas por sucursal",
+      "subtitle": "Carga diaria por sucursal"
+    },
+    "costPerHour": {
+      "title": "Costo por hora",
+      "subtitle": "Costo unitario promedio"
+    },
+    "costVsBudget": {
+      "title": "Costo vs presupuesto",
+      "subtitle": "Compara coste real vs esperado"
+    },
     "suspectRates": {
       "title": "Comportamiento de marcaje",
       "subtitle": "Sospechosos / Fallos / Válidos (S/F/V)",
@@ -1291,15 +1307,41 @@
       "subtitle": "Participación por sucursal",
       "empty": "Sin sucursales activas en el rango"
     },
-    "extraHours": { "title": "Horas extra / déficit", "subtitle": "Comparación diaria" },
-    "startEnd": { "title": "Hora inicio/fin", "subtitle": "Promedio diario por sucursal" },
-    "geoCompliance": { "title": "Cumplimiento geográfico", "subtitle": "Distancia promedio al punto esperado" },
-    "absenteeism": { "title": "Ausentismo", "subtitle": "Días activos vs inactivos" },
-    "shiftCompliance": { "title": "Cumplimiento de turnos", "subtitle": "Porcentaje diario por sucursal" },
-    "weeklyTrends": { "title": "Tendencias semanales", "subtitle": "Costo, horas y sospechas por semana" },
-    "employeeProductivity": { "title": "Productividad empleados", "subtitle": "Top {topN} por costo/hora" },
-    "branchRanking": { "title": "Ranking sucursales", "subtitle": "Top {topN} por score" },
-    "hourlyDistribution": { "title": "Distribución horaria", "subtitle": "Cobertura por hora del día",
+    "extraHours": {
+      "title": "Horas extra / déficit",
+      "subtitle": "Comparación diaria"
+    },
+    "startEnd": {
+      "title": "Hora inicio/fin",
+      "subtitle": "Promedio diario por sucursal"
+    },
+    "geoCompliance": {
+      "title": "Cumplimiento geográfico",
+      "subtitle": "Distancia promedio al punto esperado"
+    },
+    "absenteeism": {
+      "title": "Ausentismo",
+      "subtitle": "Días activos vs inactivos"
+    },
+    "shiftCompliance": {
+      "title": "Cumplimiento de turnos",
+      "subtitle": "Porcentaje diario por sucursal"
+    },
+    "weeklyTrends": {
+      "title": "Tendencias semanales",
+      "subtitle": "Costo, horas y sospechas por semana"
+    },
+    "employeeProductivity": {
+      "title": "Productividad empleados",
+      "subtitle": "Top {topN} por costo/hora"
+    },
+    "branchRanking": {
+      "title": "Ranking sucursales",
+      "subtitle": "Top {topN} por score"
+    },
+    "hourlyDistribution": {
+      "title": "Distribución horaria",
+      "subtitle": "Cobertura por hora del día",
       "axisLabel": "Empleados promedio",
       "people": "personas",
       "avgEmployees": "Empleados promedio",
@@ -1395,8 +1437,8 @@
     "emptyBranch": " Debes seleccionar al menos una sucursal/proyecto para ver estadísticas.",
     "helpPanelEmpty": "Actualmente no existe suficiente información operativa generada para mostrar en el panel comparativo. Una vez que las sucursales/proyectos seleccionados comiencen a registrar datos de asistencia y operación, podrás visualizar análisis detallados y comparativos aquí.",
     "helpPanelEmptyTitle": "No existe información para mostrar",
-    "panelNoDataTitle": "Aún no hay datos para comparar",
-    "panelNoDataText": "Esta vista permite comparar el comportamiento operativo, temporal y heurístico entre distintas sucursales o proyectos. Una vez exista actividad suficiente, podrás seleccionar qué sucursal o proyecto deseas contrastar y qué indicadores visualizar. Hasta entonces, no es posible generar comparaciones.",
+    "panelNoDataTitle": "Aún no hay datos suficientes para realizar comparaciones",
+    "panelNoDataText": "Este panel permite comparar el rendimiento entre sucursales o proyectos, analizando costes, carga de trabajo, estimación salarial y niveles de cumplimiento y puntualidad. Cuando existan varias sucursales activas y registros suficientes, los comparativos se generarán automáticamente en esta vista.",
     "employeeNoDataTitle": "Aún no has creado empleados",
     "employeeNoDataText": "Crea tu primer empleado para comenzar a organizar tu operación. Desde aquí podrás gestionar su información básica y asignarlo a una sucursal o proyecto. Una vez creado, esta sección mostrará la lista completa de tu equipo.",
     "reportNoDataTitle": "Sin datos para generar un reporte",
@@ -1405,6 +1447,8 @@
     "attendanceNoDataText": "Aquí se mostrarán las entradas y salidas vinculadas a cada empleado y sucursal/proyecto, junto con la validación del lugar y del horario. Una vez los primeros marcajes sean registrados, podrás supervisar la actividad diaria y filtrar por fechas, empleado y sucursal o proyecto.",
     "employeeTrend": "Tendencia anual: Empleados",
     "employeeTrendText": "Comportamiento de registro de empleados",
+    "issuesNoDataTitle": "No hay incidencias registradas",
+    "issuesNoDataText": "En esta sección se mostrarán las incidencias reportadas por los empleados y asociadas a una sucursal o proyecto. Cuando se registre la primera incidencia, aparecerá listada aquí para su revisión y gestión.",
     "total": "Total",
     "averagePerMonth": "Promedio",
     "totalEmployees": "Total",
@@ -1431,16 +1475,14 @@
     "noGeoBtn": "Activar ahora",
     "issues": "Incidencias",
     "outRadiusTitle": "Fuera de Zona",
-    "requestUpdate":"CAMBIOS",
-    "okdenied":"Aceptar/Denegar",
-    "updateRequestTitle":"Solicitud de cambio",
-    "updateRequestText":"Sobre la solicitud de cambio seleccionada seleccione la acción que desea sobre la misma Aceptar/Denegar",
+    "requestUpdate": "CAMBIOS",
+    "okdenied": "Aceptar/Denegar",
+    "updateRequestTitle": "Solicitud de cambio",
+    "updateRequestText": "Sobre la solicitud de cambio seleccionada seleccione la acción que desea sobre la misma Aceptar/Denegar",
     "outRadiusText": "Al parecer no estás dentro de la zona de chequeo, por favor para realizar las operaciones de esta herramienta, debe estar cerca de la sucursal o proyecto.",
     "noGeoText": "Al parecer no tienes activado el permiso de geolocalización, actívelo para usar esta herramienta",
-    
-    "statsNoDataTitle":"No existen datos para mostrar",
-    "statsNoDataText":"No existe solicitudes de cambio horario para resolver"
-
+    "statsNoDataTitle": "No existen datos para mostrar",
+    "statsNoDataText": "No existe solicitudes de cambio horario para resolver"
   },
   "twoFactor": {
     "copyCode": "Código copiado",

@@ -199,7 +199,7 @@ export default function useFormLinkController(onSuccess: () => void) {
             required: true,
             component: ToggleInput,
         },
-
+        /*
         {
             isDivider: true,
             label: t('core.label.dayTimeRange'),
@@ -224,6 +224,7 @@ export default function useFormLinkController(onSuccess: () => void) {
             },
 
         },
+        */
 
         {
             isDivider: true,

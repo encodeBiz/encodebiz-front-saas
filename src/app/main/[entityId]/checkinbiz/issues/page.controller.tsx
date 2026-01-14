@@ -18,7 +18,7 @@ import { Box, Typography } from "@mui/material";
 import { useAppLocale } from "@/hooks/useAppLocale";
 import { CustomChip } from "@/components/common/table/CustomChip";
 import { format_date_with_locale } from "@/lib/common/Date";
-import { fetchEmployee, getIssues } from "@/services/checkinbiz/employee.service";
+import { emptyIssue, fetchEmployee, getIssues } from "@/services/checkinbiz/employee.service";
 import SearchFilter from "@/components/common/table/filters/SearchFilter";
 
 
@@ -63,6 +63,7 @@ export default function useIIssuesListController() {
       orderDirection: 'desc',
     }
   })
+  const [empthy, setEmpthy] = useState(false)
 
   const { closeModal, openModal } = useCommonModal()
   const rowAction: Array<IRowAction> = [
@@ -182,7 +183,7 @@ export default function useIIssuesListController() {
 
 
 
-  const fetchingData = (filterParams: IFilterParams) => {
+  const fetchingData = async (filterParams: IFilterParams) => {
     if (filterParams.params.filters.find((e: any) => e.field === 'branchId' && e.value === 'none'))
       filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "branchId")
 
@@ -195,6 +196,9 @@ export default function useIIssuesListController() {
       ...filterParams.params.filters,
     ]
     setLoading(true)
+
+    setEmpthy(await emptyIssue(currentEntity?.entity.id as string))
+
     getIssues(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async data => {
       const res: Array<any> = await Promise.all(
         data.map(async (item) => {
@@ -243,7 +247,7 @@ export default function useIIssuesListController() {
 
 
 
- 
+
 
   const onDetail = async (item: any) => {
 
@@ -361,7 +365,7 @@ export default function useIIssuesListController() {
     onNext, onBack,
     columns, rowAction, onDelete, topFilter,
     loading, deleting, filterParams,
-
+empthy
   }
 
 

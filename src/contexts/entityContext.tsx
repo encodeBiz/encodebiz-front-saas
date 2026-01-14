@@ -104,7 +104,11 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
                 }
 
             }
+
+
         }
+
+
     };
 
     const refrestList = async (userId: string) => {
@@ -199,6 +203,13 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
 
     }, []);
+
+    useEffect(() => {
+        if (process.env.NEXT_PUBLIC_ENV === 'prod' && pathname.includes('/passinbiz')) {
+            push(`/`)
+        }
+    }, [pathname])
+
 
 
 

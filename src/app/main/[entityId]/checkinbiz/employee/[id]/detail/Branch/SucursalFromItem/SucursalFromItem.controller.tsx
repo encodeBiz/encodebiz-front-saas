@@ -16,9 +16,7 @@ import SelectCreatableInput from "@/components/common/forms/fields/SelectCreatab
 import { useParams } from "next/navigation";
 import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 import { ArrayToObject, objectToArray } from "@/lib/common/String";
-import ToggleInput from "@/components/common/forms/fields/ToggleInput";
-import WorkScheduleField from "@/components/common/forms/fields/WorkScheduleField";
-
+ 
 
 export default function useSucursalFromItemController(item: EmployeeEntityResponsibility, onEnd: () => void) {
   const t = useTranslations();
@@ -34,8 +32,8 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
   const [typeOwner, setTypeOwner] = useState(item.responsibility ?? 'worker')
   const [jobName, setJobName] = useState(item?.job?.job ?? '')
   const [metadata, setMetadata] = useState(objectToArray(item.metadata ?? {}) ?? [])
-  const [enableDayTimeRange, setEnableDayTimeRange] = useState(false)
-  const [workSchedule, setWorkSchedule] = useState()
+  const [enableDayTimeRange] = useState(false)
+  const [workSchedule] = useState()
 
   const [initialValues, setInitialValues] = useState<Partial<any>>({
     job: item?.job?.job,
@@ -163,6 +161,7 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
       required: true,
       component: TextInput,
     },
+    /*
     {
       isDivider: true,
       label: t('core.label.dayTimeRange'),
@@ -194,7 +193,7 @@ export default function useSucursalFromItemController(item: EmployeeEntityRespon
       },
 
     },
-
+    */
 
 
     {

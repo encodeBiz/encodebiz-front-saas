@@ -82,13 +82,16 @@ export const menuItemsServices = [{
     name: 'Services',
     header: true, subMenu: []
 },
-{
-    id: 'passinbiz',
-    name: 'PassBiz',
-    icon: <PassInBizIcon />,
-    link: `/passinbiz/onboarding`,
-    subMenu: PASSINBIZ
-},
+...(process.env.NEXT_PUBLIC_ENV === 'dev' ? [
+    {
+        id: 'passinbiz',
+        name: 'PassBiz',
+        icon: <PassInBizIcon />,
+        link: `/passinbiz/onboarding`,
+        subMenu: PASSINBIZ
+    },
+] : []),
+
 {
     id: 'checkinbiz',
     name: 'CheckBiz',

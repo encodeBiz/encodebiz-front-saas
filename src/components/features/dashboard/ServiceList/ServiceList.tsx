@@ -24,11 +24,11 @@ const ServiceList = () => {
     const styles = useStyles()
     const { currentLocale } = useAppLocale()
     const handleActionClick = (id: any) => {
-      navivateTo(`/${id}/onboarding`)
+        navivateTo(`/${id}/onboarding`)
     };
 
 
-    if (entityServiceList.filter(e => entitySuscription.filter((es) => es.serviceId === e.id).length === 0).length > 0)
+    if (entityServiceList.filter(e => !(e.id === 'passinbiz' && process.env.NEXT_PUBLIC_ENV === 'prod')).filter(e => entitySuscription.filter((es) => es.serviceId === e.id).length === 0).length > 0)
         return (
             <Grid container spacing={4} display={'flex'} flexDirection={{
                 xs: 'column',
@@ -38,7 +38,7 @@ const ServiceList = () => {
                 xl: 'row',
             }} justifyContent="space-between" marginTop={10}>
                 {entityServiceList.filter(e => entitySuscription.filter((es) => es.serviceId === e.id).length === 0).map((card) => (
-                    <Card key={card.id} sx={styles.card} style={{ cursor: card.id != 'checkinbiz' ? 'pointer' : 'default' }} onClick={()=>handleActionClick(card.id)} elevation={0} >
+                    <Card key={card.id} sx={styles.card} style={{ cursor: card.id != 'checkinbiz' ? 'pointer' : 'default' }} onClick={() => handleActionClick(card.id)} elevation={0} >
                         <CardContent sx={styles.card}>
                             <Box sx={styles.iconContainer} >
                                 <Image src={icons[card.id]} width={card.id == 'checkinbiz' ? 70 : 70} height={card.id == 'checkinbiz' ? 76 : 70} alt='' />

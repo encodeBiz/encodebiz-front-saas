@@ -9,7 +9,8 @@ import {
   ListItemText,
   Collapse,
   Box,
-  IconButton
+  IconButton,
+  Typography
 } from '@mui/material';
 import {
   ExpandLess,
@@ -47,7 +48,7 @@ const CustomListItemButton = ({ children, item, subItem = false, handleSubMenuTo
       '&.Mui-selected': {
         backgroundColor: (theme) => theme.palette.primary.main,
         borderRadius: 10,
-        
+
         color: 'white',
         '&:hover': disableHover ? {} : {
           backgroundColor: 'primary.main',
@@ -61,7 +62,7 @@ const CustomListItemButton = ({ children, item, subItem = false, handleSubMenuTo
 
       },
       // Styles for the hover state (when not selected)
-      '&:hover':  disableHover ? { backgroundColor: 'transparent',    borderRadius: 10,} :{
+      '&:hover': disableHover ? { backgroundColor: 'transparent', borderRadius: 10, } : {
         backgroundColor: 'action.hover',
         borderRadius: 10,
       },
@@ -131,15 +132,14 @@ export default function SideMenu() {
         open={layoutState.openDraw}
       >
         <DrawerHeader sx={{ pt: 2, pb: 2, width: '100%' }} >
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%', position:'relative' }}>
             <Image
               width={220}
               height={73}
               src={logo}
               alt="Company Logo"
             />
-
-
+            {process.env.NEXT_PUBLIC_ENV === 'dev' && <Typography sx={{position:'absolute', top:45, right:40, color:(theme)=>theme.palette.primary.main}} variant='caption'>development</Typography>}
           </Box>
 
 

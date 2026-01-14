@@ -22,7 +22,7 @@ const TextInput: React.FC<FieldProps & TextFieldProps & { afterTextField?: React
         rows={2}
         disabled={
           props.disabled ||
-          (props.name === 'ratioChecklog' && formStatus?.values?.disableRatioChecklog) ||
+          (props.name === 'ratioChecklog' && !formStatus?.values?.disableRatioChecklog) ||
           (props.name === 'postalCode' && (!formStatus?.values?.country || !formStatus?.values?.city))
         }
         helperText={touched && (error as string)}
