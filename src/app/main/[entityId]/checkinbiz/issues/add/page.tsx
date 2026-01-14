@@ -8,8 +8,7 @@ import { useLayout } from '@/hooks/useLayout';
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { useRef } from 'react';
 import { SassButton } from '@/components/common/buttons/GenericButton';
-import { IEmployee } from '@/domain/features/checkinbiz/IEmployee';
-import useFormController from '../form/form.controller';
+ import useFormController from '../form/form.controller';
 import * as Yup from 'yup';
 import { IIssue } from '@/domain/features/checkinbiz/IIssue';
 

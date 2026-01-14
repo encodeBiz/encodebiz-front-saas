@@ -17,8 +17,7 @@ import { CheckbizCardProps } from "./types";
 import { useTranslations } from "next-intl";
 
 export const ShiftComplianceCard = ({ entityId, branchId, from, to }: CheckbizCardProps) => {
-  const t = useTranslations("statsDashboard");
-  const tkpi = useTranslations("statsDashboard.kpiLabels");
+  const t = useTranslations("statsDashboard"); 
   const kpiLabel = (key: string) => {
     try {
       return t(`kpiLabels.${key}` as any);

@@ -5,8 +5,7 @@ import {
     Box,
     Typography,
     Grid,
-    Divider,
-    Paper
+    Divider
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { SassButton } from '../buttons/GenericButton';
