@@ -24,7 +24,7 @@ export const Detail = ({ issue, onSuccess }: { issue: IIssue , onSuccess: () => 
 
                     <Box display="flex" alignItems="center" mb={2}>
                         <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main, mr: 2 }}>
-                            {issue.employee?.fullName.charAt(0)}
+                            {issue.employee?.fullName?.charAt(0)}
                         </Avatar>
                         <Box>
                             <Typography variant="subtitle1">

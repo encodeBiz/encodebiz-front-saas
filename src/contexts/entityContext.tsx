@@ -183,8 +183,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
         })
     }
 
-    const watchIssueState = async () => {
-       
+    const watchIssueState = async (entityId: string) => {     
         
         setInReviewIssueCount(await getIssues(entityId, {
             filters: [{
@@ -240,16 +239,16 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
         if (currentEntity?.entity.id) {
             unsubscribe = watchSubscrptionEntityChange(currentEntity?.entity.id, watchSubcriptionState);
             unsubscribeEntity = watchEntityChange(currentEntity?.entity.id, watchEntityState)
-            unsubscribeIssue = watchIssueChange(watchIssueState)
+            unsubscribeIssue = watchIssueChange(() => watchIssueState(currentEntity?.entity.id as string))
 
             fetchEntitySuscription()
-            watchIssueState()
+            watchIssueState(currentEntity?.entity.id as string)
         }
         return () => {
             if (typeof unsubscribe === 'function') unsubscribe()
             if (typeof unsubscribeEntity === 'function') unsubscribeEntity()
             if (typeof unsubscribeIssue === 'function') unsubscribeIssue()
-        };
+        };        
     }, [currentEntity?.entity.id])
 
 

@@ -119,6 +119,7 @@
       "nocard": "No tienes métodos de pago asociado a la entidad, por favor configure al menos uno."
     },
     "label": {
+      "incomplete_workday":"Jornada Incompleta",
       "fromRole": "Rol Origen",
       "toRole": "Rol Destino",
       "journeyRegistration": "Registro de jornada",

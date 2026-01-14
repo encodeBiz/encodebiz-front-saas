@@ -119,6 +119,7 @@
       "nocard": "You have no payment methods associated with the entity, please configure at least one."
     },
     "label": {
+       "incomplete_workday":"Imcomplete Workday",
       "fromRole": "From Role",
       "toRole": "To Role",
       "journeyRegistration": "Journey Registration",
