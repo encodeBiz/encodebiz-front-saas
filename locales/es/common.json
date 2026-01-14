@@ -1612,5 +1612,18 @@
         "monthlyPrice": "Gratis"
       }
     }
+  },
+  "productsMenu": {
+    "title": "Productos disponibles",
+    "noImage": "Sin imagen",
+    "access": "Acceder",
+    "passinbiz": {
+      "name": "PassBiz",
+      "description": "Solución para crear y gestionar credenciales digitales y accesos, permitiendo controlar entradas y validaciones en un entorno unificado."
+    },
+    "checkinbiz": {
+      "name": "CheckBiz",
+      "description": "Trazabilidad laboral real con validación por ubicación, horario y dispositivo. Cumplimiento UE, seguridad reforzada y métricas completas listas para auditoría."
+    }
   }
 }
