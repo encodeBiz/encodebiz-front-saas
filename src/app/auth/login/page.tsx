@@ -32,7 +32,7 @@ const SignInPage = () => {
         <Container sx={{ display: 'flex', justifyItems: 'center', flexDirection: 'column', alignItems: 'center' }} maxWidth="sm">
 
             <BorderBox sx={classes.root}>
-                <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'}>
+                <Box position={'relative'} display={'flex'} flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'}>
                     <Image
                         width={150}
                         height={44}
@@ -40,6 +40,8 @@ const SignInPage = () => {
                         alt="Company Logo"
                         style={{ position: 'relative', left: -15 }}
                     />
+                    {process.env.NEXT_PUBLIC_ENV === 'dev' && <Typography sx={{ position: 'absolute', top: 30, left: 55, color: (theme) => theme.palette.primary.main }} variant='caption'>development</Typography>}
+
                     <LocaleSwitcher />
                 </Box>
                 <Box sx={{
