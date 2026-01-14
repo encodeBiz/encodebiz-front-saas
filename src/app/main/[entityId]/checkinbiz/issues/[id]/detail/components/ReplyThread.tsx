@@ -27,7 +27,7 @@ const statusColors: any = {
     'Rechazada': 'error'
 };
 
-const ReplyThread = ({issue}:{issue:IIssue}) => {
+const ReplyThread = ({ issue, onSuccess }: { issue: IIssue, onSuccess: () => void }) => {
     const theme = useTheme();
     const { items, loading, limit, total, loadMore } = useResponseIssueController()
     const t = useTranslations();
@@ -43,7 +43,7 @@ const ReplyThread = ({issue}:{issue:IIssue}) => {
                 <Typography variant="h6" gutterBottom>
                     {t("issues.responses")}: {items.length > 0 ? items[0].totalItems : 0}
                 </Typography>
-                <SassButton variant='contained' onClick={() => openModal(CommonModalType.FORM)}>{t("issues.response")}</SassButton>
+                {issue.state !== 'resolved' && <SassButton variant='contained' onClick={() => openModal(CommonModalType.FORM)}>{t("issues.response")}</SassButton>}
             </Box>
 
             {/* Lista de respuestas */}
@@ -108,7 +108,10 @@ const ReplyThread = ({issue}:{issue:IIssue}) => {
 
 
             {limit <= total && <SassButton variant='outlined' onClick={() => loadMore()} >{t('core.label.moreload')}</SassButton>}
-            {open.type === CommonModalType.FORM && <ResponseFormModal issue={issue} onSuccess={() => loadMore(true)} />}
+            {open.type === CommonModalType.FORM && <ResponseFormModal issue={issue} onSuccess={() => {
+                onSuccess()
+                loadMore(true)
+            }} />}
 
 
         </Box>

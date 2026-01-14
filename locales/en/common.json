@@ -109,6 +109,7 @@
     },
     "feedback": {
       "userDeletedTitle": "You have left the entity",
+      "pendingIssues": "You have {count} pending issue(s) under review",
       "userDeletedText": "You have successfully unsubscribed from the entity, please log in to start again",
       "tokenExireTitle": "Session has expired",
       "tokenExireText": "The session has expired, please log in again to access the encodeBiz dashboard",
@@ -382,6 +383,7 @@
     },
     "button": {
       "revoke": "Revoke",
+       "review":"Review",
       "applyFilter": "Apply",
       "configure": "Configure",
       "createReport": "Create report",

@@ -7,7 +7,7 @@ import { useLayout } from "@/hooks/useLayout";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useState } from "react";
-import { addResponse } from "@/services/checkinbiz/employee.service";
+import { addResponse, updateIssue } from "@/services/checkinbiz/employee.service";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
 import { useFormStatus } from "@/hooks/useFormStatus";
 import TextInput from "@/components/common/forms/fields/TextInput";
@@ -49,6 +49,11 @@ export default function useResponseFormModalController(onSuccess: () => void, is
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
       closeModal(CommonModalType.CHECKLOGFORM)
+      await updateIssue({
+        id: issue?.id,
+        state: values?.newState,
+
+      } as IIssue)
       if (typeof onSuccess === 'function') onSuccess()
       if (typeof callback === 'function') callback()
 

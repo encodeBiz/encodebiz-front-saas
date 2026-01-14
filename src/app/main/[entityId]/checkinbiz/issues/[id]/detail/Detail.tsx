@@ -8,7 +8,7 @@ import { IIssue } from "@/domain/features/checkinbiz/IIssue"
 import { format_date } from "@/lib/common/Date"
 import ReplyThread from "./components/ReplyThread"
 
-export const Detail = ({ issue }: { issue: IIssue }) => {
+export const Detail = ({ issue, onSuccess }: { issue: IIssue , onSuccess: () => void }) => {
     const t = useTranslations()
     const { navivateTo } = useLayout()
 
@@ -50,7 +50,7 @@ export const Detail = ({ issue }: { issue: IIssue }) => {
                 {issue.comments}
             </Box>
             <Divider />
-            <ReplyThread issue={issue} />
+            <ReplyThread issue={issue} onSuccess={onSuccess} />
         </CardContent>
 
 

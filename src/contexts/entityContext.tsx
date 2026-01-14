@@ -18,6 +18,7 @@ import IEntity from "@/domain/core/auth/IEntity";
 import { useParams, usePathname } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import { useAppLocale } from "@/hooks/useAppLocale";
+import { getIssues, watchIssueChange } from "@/services/checkinbiz/employee.service";
 
 interface EntityContextType {
     currentEntity: IUserEntity | undefined;
@@ -29,6 +30,7 @@ interface EntityContextType {
     entitySuscription: Array<IEntitySuscription>
     watchServiceAccess: (serviceId: BizType) => void
     cleanEntityContext: () => void
+    inReviewIssueCount: number
 
 
 }
@@ -44,6 +46,8 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
     const { changeLocale } = useAppLocale()
     const { entityId } = useParams<any>()
     const { currentLocale } = useAppLocale()
+    const [inReviewIssueCount, setInReviewIssueCount] = useState(0)
+
 
     const watchServiceAccess = useCallback(async (serviceId: BizType) => {
         const serviceSuscription: Array<IEntitySuscription> = await fetchSuscriptionByEntity(currentEntity?.entity.id as string)
@@ -179,6 +183,18 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
         })
     }
 
+    const watchIssueState = async () => {
+       
+        
+        setInReviewIssueCount(await getIssues(entityId, {
+            filters: [{
+                field: 'state',
+                operator: '==',
+                value: 'in_review'
+            }]
+        } as any).then(res => res.length))
+    }
+
     const watchEntityState = async (entity: IEntity) => {
 
         changeLocale(entity?.language?.toLowerCase() ?? 'es')
@@ -191,6 +207,7 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
         }
         setCurrentEntity(prev => ({ ...(prev as IUserEntity), entity }))
     }
+
 
 
 
@@ -214,23 +231,30 @@ export const EntityProvider = ({ children }: { children: React.ReactNode }) => {
 
 
 
+
+
     useEffect(() => {
         let unsubscribe: Unsubscribe
         let unsubscribeEntity: Unsubscribe
+        let unsubscribeIssue: Unsubscribe
         if (currentEntity?.entity.id) {
             unsubscribe = watchSubscrptionEntityChange(currentEntity?.entity.id, watchSubcriptionState);
             unsubscribeEntity = watchEntityChange(currentEntity?.entity.id, watchEntityState)
+            unsubscribeIssue = watchIssueChange(watchIssueState)
+
             fetchEntitySuscription()
+            watchIssueState()
         }
         return () => {
             if (typeof unsubscribe === 'function') unsubscribe()
             if (typeof unsubscribeEntity === 'function') unsubscribeEntity()
+            if (typeof unsubscribeIssue === 'function') unsubscribeIssue()
         };
     }, [currentEntity?.entity.id])
 
 
     return (
-        <EntityContext.Provider value={{ entityList, cleanEntityContext, watchServiceAccess, entitySuscription, entityServiceList, currentEntity, refrestList, setCurrentEntity, changeCurrentEntity }}>
+        <EntityContext.Provider value={{ entityList,inReviewIssueCount, cleanEntityContext, watchServiceAccess, entitySuscription, entityServiceList, currentEntity, refrestList, setCurrentEntity, changeCurrentEntity }}>
             {children}
         </EntityContext.Provider>
     );

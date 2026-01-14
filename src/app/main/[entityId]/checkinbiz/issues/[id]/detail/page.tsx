@@ -5,11 +5,11 @@ import useEmployeeDetailController from './page.controller';
 import { Detail } from './Detail';
 
 export default function BranchDetail() {
-    const { initialValues } = useEmployeeDetailController()
+    const { initialValues, onSuccess } = useEmployeeDetailController()
 
     return (
         <Container maxWidth="lg">
-            {initialValues?.id && <Detail  issue={initialValues as any} ></Detail>}
+            {initialValues?.id && <Detail onSuccess={onSuccess}  issue={initialValues as any} ></Detail>}
 
         </Container>
     );

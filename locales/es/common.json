@@ -108,6 +108,7 @@
       "loaderActionBilling": "Procesando información"
     },
     "feedback": {
+      "pendingIssues": "Tienes {count} incidencia(s) pendiente(s) de revisión",
       "userDeletedTitle": "Has abandonado la entidad",
       "userDeletedText": "Te has dado de baja de la entidad exitosamente, por favor inicie sesión para comenzar de nuevo",
       "tokenExireTitle": "La sesión ha caducado",
@@ -385,6 +386,7 @@
     },
     "button": {
       "revoke": "Revocar",
+      "review":"Revisar",
       "applyFilter": "Aplicar",
       "configure": "Configurar",
       "createReport": "Crear reporte",
