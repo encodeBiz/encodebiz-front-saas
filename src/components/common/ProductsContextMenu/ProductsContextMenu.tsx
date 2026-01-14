@@ -29,18 +29,20 @@ interface ProductsContextMenuProps {
 }
 
 const DEFAULT_PRODUCTS: Product[] = [
-    {
-        id: 'passinbiz',
-        name: 'PassBiz',
-        description: 'productsMenu.passinbiz.description',
-        image: passinbiz.src,
-        accessRoute: '/passinbiz/onboarding'
-    },
+    ...(process.env.NEXT_PUBLIC_ENV === 'dev' ? [
+        {
+            id: 'passinbiz',
+            name: 'PassBiz',
+            description: 'productsMenu.passinbiz.description',
+            image: passinbiz.src,
+            accessRoute: '/passinbiz/onboarding'
+        }
+    ] : []),
     {
         id: 'checkinbiz',
         name: 'CheckBiz',
         description: 'productsMenu.checkinbiz.description',
-        image:  checkbiz.src,
+        image: checkbiz.src,
         accessRoute: '/checkinbiz/onboarding'
     }
 ];
@@ -95,7 +97,7 @@ export const ProductsContextMenu: React.FC<ProductsContextMenuProps> = ({
                         <Grid key={product.id}>
                             <BorderBox
                                 sx={{
-                                    width:"100%",
+                                    width: "100%",
                                     display: 'flex',
                                     overflow: 'hidden',
                                     transition: 'all 0.3s ease',
@@ -112,7 +114,7 @@ export const ProductsContextMenu: React.FC<ProductsContextMenuProps> = ({
                                 <Box
                                     sx={{
                                         width: 100,
-                                       
+
                                         flexShrink: 0,
                                         backgroundImage: `url(${product.image})`,
                                         backgroundSize: 'cover',
