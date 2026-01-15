@@ -108,6 +108,7 @@
       "loaderActionBilling": "Procesando información"
     },
     "feedback": {
+      "pendingIssues": "Tienes {count} incidencia(s) pendiente(s) de revisión",
       "userDeletedTitle": "Has abandonado la entidad",
       "userDeletedText": "Te has dado de baja de la entidad exitosamente, por favor inicie sesión para comenzar de nuevo",
       "tokenExireTitle": "La sesión ha caducado",
@@ -118,6 +119,7 @@
       "nocard": "No tienes métodos de pago asociado a la entidad, por favor configure al menos uno."
     },
     "label": {
+      "incomplete_workday":"Jornada Incompleta",
       "fromRole": "Rol Origen",
       "toRole": "Rol Destino",
       "journeyRegistration": "Registro de jornada",
@@ -385,6 +387,7 @@
     },
     "button": {
       "revoke": "Revocar",
+      "review":"Revisar",
       "applyFilter": "Aplicar",
       "configure": "Configurar",
       "createReport": "Crear reporte",
@@ -915,6 +918,7 @@
   },
   "issues": {
     "title": "Incidencias",
+    "toResponde": "Responder",
     "responses": "Respuestas",
     "formDesc": "Completa los campos a continuación para crear/editar una  incidencia.",
     "list": "Reportes de incidencias",

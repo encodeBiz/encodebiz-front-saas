@@ -276,7 +276,7 @@ export default function useAttendanceController() {
       label={t('core.label.status')}
       value={filterParams.filter.status}
       onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, status: value } })}
-      options={[{ value: 'valid' as string, label: t('core.label.valid') }, { value: 'failed' as string, label: t('core.label.failed') }, { value: 'pending-employee-validation' as string, label: t('core.label.pending-employee-validation') }]}
+      options={[{ value: 'valid' as string, label: t('core.label.valid') }, { value: 'failed' as string, label: t('core.label.failed') }, { value: 'pending-employee-validation' as string, label: t('core.label.pending-employee-validation') }, { value: 'incomplete_workday' as string, label: t('core.label.incomplete_workday') }]}
     />
 
 

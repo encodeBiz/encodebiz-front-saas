@@ -30,6 +30,7 @@ export const errorDict: any = {
     "checklog/out_of_radius": "Parece que no te encuentras en la sucursal seleccionada, no puedes iniciar jornada",
     "stats/range_and_groupBy_tolong": "Los datos para graficar son demasiadox extensos, intenta seleccionar un rango menor de fechas o otro tipo de agrupación"
     , "auth/authentication_already_exists": "",
+    "checklog/out_of_schedule":"Salida fuera de horario",    
     "twofactor/not_activated": "A2F no activada para este empleado",
     "employee/not_found": "Empleado no encontrado",
     "entity/not_found": "Entidad no encontrada",
@@ -84,6 +85,7 @@ export const errorDict: any = {
     "unavailable": "Service unavailable. Please try again later",
     "staff/email_already_exists": "Support staff with that email already exists",
     "media/invalid_dimesions": "Invalid dimensions",
+     "checklog/out_of_schedule":"Checkin out of schedule",
     "auth/invalid_plan": "The Freemium plan cannot create events",
     "auth/unauthorized": "Unauthorized access to resource",
     "staff/unauthorized": "Support staff access disabled or expired",

@@ -38,20 +38,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     return data
   }
 
-  const [validationSchema] = useState({
-    branchId: requiredRule(t),
-    employeeId: requiredRule(t),
-    comments: requiredRule(t),
-    fromRole: requiredRule(t),
-    includeLocation: requiredRule(t),
-    localtion: Yup.object().shape({
-      latitude: requiredRule(t),
-      longiude: requiredRule(t)
-    }),
-    state: requiredRule(t),
-    toRole: requiredRule(t),
-    type: requiredRule(t),
-  })
+  const [validationSchema, setValidationSchema] = useState({})
 
 
   const [fields, setFields] = useState<Array<any>>([])
@@ -87,7 +74,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         userId: user?.id as string,
       }
 
-       
+
 
       if (itemId)
         await updateIssue(data as IIssue)
@@ -135,88 +122,129 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const inicialize = async () => {
     changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
     const branchList = await fetchSucursalList()
-    setFields([
-      {
-        name: 'branchId',
-        label: t('core.label.sucursal'),
-        type: 'text',
-        required: true,
-     
-        component: SelectInput,
-        options: [...branchList.map(e => ({ label: e.name, value: e.id }))]
-      },
+    if (itemId) {
+      setValidationSchema({
+        comments: requiredRule(t),
+        state: requiredRule(t),
+      })
+      setFields([
+        {
+          name: 'comments',
+          label: t('core.label.comments'),
+          type: 'textarea',
+          fullWidth: true,
+          required: true,
+          component: TextInput,
+        },
+        {
+          name: 'state',
+          label: t('core.label.state'),
+          component: SelectInput,
+          required: true,
+          options: [
+            { value: 'resolved', label: t('core.label.resolved') },
+            { value: 'in_review', label: t('core.label.in_review') },
+            { value: 'pending', label: t('core.label.pending') },
+          ],
+        },
+      ])
+    } else {
+      setValidationSchema({
+        branchId: requiredRule(t),
+        employeeId: requiredRule(t),
+        comments: requiredRule(t),
+        fromRole: requiredRule(t),
+        includeLocation: requiredRule(t),
+        localtion: Yup.object().shape({
+          latitude: requiredRule(t),
+          longiude: requiredRule(t)
+        }),
+        state: requiredRule(t),
+        toRole: requiredRule(t),
+        type: requiredRule(t),
+      })
+      setFields([
+        {
+          name: 'branchId',
+          label: t('core.label.sucursal'),
+          type: 'text',
+          required: true,
 
-      {
-        name: 'employeeId',
-        label: t('core.label.employee'),
-        type: 'text',
-        required: true,
-       
-        component: SearchIndexFilterInput,
+          component: SelectInput,
+          options: [...branchList.map(e => ({ label: e.name, value: e.id }))]
+        },
 
-      },
+        {
+          name: 'employeeId',
+          label: t('core.label.employee'),
+          type: 'text',
+          required: true,
 
-      {
-        name: 'comments',
-        label: t('core.label.comments'),
-        type: 'textarea',
-           fullWidth: true,
-        required: true,
-        component: TextInput,
-      },
+          component: SearchIndexFilterInput,
 
-      {
-        name: 'fromRole',
-        label: t('core.label.fromRole'),
-        component: SelectInput,
-        required: true,
-        options: [
-          { value: 'worker', label: t('core.label.worker') },
-          { value: 'supervisor', label: t('core.label.supervisor') },
-        ],
-      },
+        },
 
-      {
-        name: 'toRole',
-        label: t('core.label.toRole'),
-        component: SelectInput,
-        required: true,
-        options: [
-          { value: 'worker', label: t('core.label.worker') },
-          { value: 'supervisor', label: t('core.label.supervisor') },
-        ],
-      },
+        {
+          name: 'comments',
+          label: t('core.label.comments'),
+          type: 'textarea',
+          fullWidth: true,
+          required: true,
+          component: TextInput,
+        },
 
+        {
+          name: 'fromRole',
+          label: t('core.label.fromRole'),
+          component: SelectInput,
+          required: true,
+          options: [
+            { value: 'worker', label: t('core.label.worker') },
+            { value: 'supervisor', label: t('core.label.supervisor') },
+          ],
+        },
 
-      {
-        name: 'state',
-        label: t('core.label.state'),
-        component: SelectInput,
-        required: true,
-        options: [
-          { value: 'resolved', label: t('core.label.resolved') },
-          { value: 'in_review', label: t('core.label.in_review') },
-          { value: 'pending', label: t('core.label.pending') },
-        ],
-      },
-
-      {
-        name: 'type',
-        label: t('core.label.type'),
-        component: SelectInput,
-        required: true,
-        options: [
-          { value: 'journeyRegistration', label: t('core.label.journeyRegistration') },
-          { value: 'restRegistration', label: t('core.label.restRegistration') },
-          { value: 'configuration', label: t('core.label.configuration') },
-          { value: 'other', label: t('core.label.other') },
-        ],
-      },
+        {
+          name: 'toRole',
+          label: t('core.label.toRole'),
+          component: SelectInput,
+          required: true,
+          options: [
+            { value: 'worker', label: t('core.label.worker') },
+            { value: 'supervisor', label: t('core.label.supervisor') },
+          ],
+        },
 
 
+        {
+          name: 'state',
+          label: t('core.label.state'),
+          component: SelectInput,
+          required: true,
+          options: [
+            { value: 'resolved', label: t('core.label.resolved') },
+            { value: 'in_review', label: t('core.label.in_review') },
+            { value: 'pending', label: t('core.label.pending') },
+          ],
+        },
 
-    ])
+        {
+          name: 'type',
+          label: t('core.label.type'),
+          component: SelectInput,
+          required: true,
+          options: [
+            { value: 'journeyRegistration', label: t('core.label.journeyRegistration') },
+            { value: 'restRegistration', label: t('core.label.restRegistration') },
+            { value: 'configuration', label: t('core.label.configuration') },
+            { value: 'other', label: t('core.label.other') },
+          ],
+        },
 
+
+
+      ])
+    }
     changeLoaderState({ show: false })
   }
 

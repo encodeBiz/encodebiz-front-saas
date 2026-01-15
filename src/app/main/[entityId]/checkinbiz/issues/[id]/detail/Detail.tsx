@@ -8,7 +8,7 @@ import { IIssue } from "@/domain/features/checkinbiz/IIssue"
 import { format_date } from "@/lib/common/Date"
 import ReplyThread from "./components/ReplyThread"
 
-export const Detail = ({ issue }: { issue: IIssue }) => {
+export const Detail = ({ issue, onSuccess }: { issue: IIssue , onSuccess: () => void }) => {
     const t = useTranslations()
     const { navivateTo } = useLayout()
 
@@ -24,7 +24,7 @@ export const Detail = ({ issue }: { issue: IIssue }) => {
 
                     <Box display="flex" alignItems="center" mb={2}>
                         <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main, mr: 2 }}>
-                            {issue.employee?.fullName.charAt(0)}
+                            {issue.employee?.fullName?.charAt(0)}
                         </Avatar>
                         <Box>
                             <Typography variant="subtitle1">
@@ -50,7 +50,7 @@ export const Detail = ({ issue }: { issue: IIssue }) => {
                 {issue.comments}
             </Box>
             <Divider />
-            <ReplyThread issue={issue} />
+            <ReplyThread issue={issue} onSuccess={onSuccess} />
         </CardContent>
 
 

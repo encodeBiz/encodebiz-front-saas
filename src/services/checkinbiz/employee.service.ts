@@ -1,5 +1,5 @@
 import { SearchParams } from "@/domain/core/firebase/firestore";
-import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
+import { onSnapshotCollection, searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { collection } from "@/config/collection";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
@@ -12,6 +12,7 @@ import { deleteDocument } from "@/lib/firebase/firestore/deleteDocument";
 import { IIssue, IIssueResponse } from "@/domain/features/checkinbiz/IIssue";
 import { Timestamp } from "firebase/firestore";
 import { Issue } from "next/dist/build/swc/types";
+import { Unsubscribe } from "firebase/auth";
 
 
 /**
@@ -775,4 +776,9 @@ export const emptyIssue = async (entityId: string): Promise<boolean> => {
   });
 
   return data.length === 0
+}
+
+
+export function watchIssueChange(callback: (type: 'added' | 'removed' | 'modified', doc: any) => void): Unsubscribe {
+    return onSnapshotCollection(`${collection.ISSUES}`, callback)
 }

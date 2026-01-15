@@ -32,12 +32,12 @@ function Admin({
   const { layoutState, navivateTo } = useLayout()
   const { pendAuth, user } = useAuth()
   const { open, openModal } = useCommonModal()
-  const { currentEntity, entitySuscription } = useEntity()
+  const { currentEntity, entitySuscription, inReviewIssueCount } = useEntity()
   const t = useTranslations()
   const enableAdvise = entitySuscription.filter(e => (e.plan === "bronze" || e.plan === "enterprise")).length > 0 && currentEntity?.entity.billingConfig?.payment_method?.length === 0
-
+ 
   useEffect(() => {
-     
+
     if (!!currentEntity?.id && !!user?.id && currentEntity.status === 'invited' && !pendAuth && !localStorage.getItem(`ENTITY-${currentEntity?.id}-${user?.id}`)) {
       openModal(CommonModalType.WELCOMEGUEST)
     }
@@ -70,7 +70,7 @@ function Admin({
             paddingTop: "100px",
             paddingBottom: "24px", px: 4
           }}>
-             <ScrollToTop />
+            <ScrollToTop />
             {pendAuth && <PageLoader backdrop type={'circular'} fullScreen />}
             {enableAdvise && <Alert
               action={
@@ -85,10 +85,40 @@ function Admin({
           </Grid>
         </div>
 
+
+
         {/** <CustomFooter /> */}
         <Footer />
       </Box>
-      
+
+      {/* Floating Alert for pending issues */}
+      {inReviewIssueCount > 0 &&  (
+        <Box
+          sx={{
+            position: 'fixed',
+            bottom: 24,
+            right: 24,
+            zIndex: 1300,
+            maxWidth: 400,
+          }}
+        >
+          <Alert
+            severity="warning"
+            onClick={() => navivateTo('/checkinbiz/issues', true)}
+            variant="filled"
+
+            sx={{
+              boxShadow: 3,
+
+              '& .MuiAlert-message': {
+                fontWeight: 500
+              }
+            }}
+          >
+            {t('core.feedback.pendingIssues', { count: inReviewIssueCount })}
+          </Alert>
+        </Box>
+      )}
     </Box>
 
 
@@ -103,18 +133,18 @@ export default function AdminLayout({
 }) {
 
   return (
-  
-      <EntityProvider>
-        <LayoutProvider>
-            <CommonModalProvider>
-              <MediaProvider>
-                <FormStatusProvider>
-                  <Admin>{children}</Admin>
-                </FormStatusProvider>
-              </MediaProvider>
-            </CommonModalProvider>         
-        </LayoutProvider>
-      </EntityProvider>
-   
+
+    <EntityProvider>
+      <LayoutProvider>
+        <CommonModalProvider>
+          <MediaProvider>
+            <FormStatusProvider>
+              <Admin>{children}</Admin>
+            </FormStatusProvider>
+          </MediaProvider>
+        </CommonModalProvider>
+      </LayoutProvider>
+    </EntityProvider>
+
   );
 }
