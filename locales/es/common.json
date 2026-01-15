@@ -1486,7 +1486,13 @@
     "outRadiusText": "Al parecer no estás dentro de la zona de chequeo, por favor para realizar las operaciones de esta herramienta, debe estar cerca de la sucursal o proyecto.",
     "noGeoText": "Al parecer no tienes activado el permiso de geolocalización, actívelo para usar esta herramienta",
     "statsNoDataTitle": "No existen datos para mostrar",
-    "statsNoDataText": "No existe solicitudes de cambio horario para resolver"
+    "statsNoDataText": "No existe solicitudes de cambio horario para resolver",
+    "contact":"Contacto",
+    "contactNoDataText":"No tienes incidencias para mostrar",
+    "":"",
+    "":"",
+    "":"",
+    "":""
   },
   "twoFactor": {
     "copyCode": "Código copiado",

@@ -4,40 +4,29 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    Box,
-     useTheme
+    Box
 } from '@mui/material';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import { useTranslations } from 'next-intl';
-import { CustomIconBtn } from '@/components/icons/CustomIconBtn';
 import { useFormStatus } from '@/hooks/useFormStatus';
 import { CustomTypography } from '@/components/common/Text/CustomTypography';
 import { BorderBox } from '@/components/common/tabs/BorderBox';
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { SassButton } from '@/components/common/buttons/GenericButton';
-import useResponseFormModalController from './ResponseFormModal.controller';
-import { IChecklog } from '@/domain/features/checkinbiz/IChecklog';
+import useFormController from '../form/form.controller';
 import * as Yup from 'yup';
-import { IIssue, IIssueResponse } from '@/domain/features/checkinbiz/IIssue';
+import { IIssue } from '@/domain/features/checkinbiz/IIssue';
 
-const ResponseFormModal = ({  onSuccess,issue }: {issue:IIssue ,employeeId?: string, branchId?: string, onSuccess: () => void }): React.JSX.Element => {
-    const { open, closeModal } = useCommonModal()
-    const theme = useTheme()
-    const { fields, validationSchema, createResponse, initialValues } = useResponseFormModalController(onSuccess, issue);
+const FormModal = ({ onSuccess, openConfirm, handleClose }: { openConfirm: boolean, handleClose: () => void, onSuccess: () => void }): React.JSX.Element => {
+    const { fields, validationSchema, handleSubmit, initialValues } = useFormController(true, onSuccess, handleClose);
     const t = useTranslations();
     const formRef = useRef(null)
-    const handleClose = (event: any, reason: 'backdropClick' | 'escapeKeyDown' | 'manual') => {
-        if (reason !== 'backdropClick')
-            closeModal(CommonModalType.CHECKLOGFORM);
-    };
 
-    const handleContactModal = (values: Partial<IIssueResponse>) => {
-        createResponse(values, () => { (formRef.current as any)?.resetForm() })
 
+    const handleModal = (values: Partial<IIssue>) => {
+        handleSubmit(values)
     }
-
-
 
     const { formStatus } = useFormStatus()
 
@@ -48,30 +37,27 @@ const ResponseFormModal = ({  onSuccess,issue }: {issue:IIssue ,employeeId?: str
     }
     return (
         <Dialog
-            open={open.open}
+            open={openConfirm}
             onClose={handleClose}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
             fullWidth
-            maxWidth="md"
-            slotProps={{ paper: { sx: { p: 2, borderRadius: 2 } } }}
+            maxWidth="xl"
+            slotProps={{ paper: { sx: { borderRadius: 2 } } }}
         >
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>
-                    <CustomTypography >{open?.args?.data ? t('issues.editResponse') : t('issues.addResponse')}</CustomTypography>
-                </Box>
-                <CustomIconBtn
-                    onClick={() => handleClose(null, 'manual')}
-                    color={theme.palette.primary.main}
-                />
+                    <CustomTypography >{t('issues.add')}</CustomTypography>
+                 </Box>
+
             </DialogTitle>
-            <DialogContent>
-                <BorderBox sx={{ p: 2 }} key={open.open + ''}>
-                    <GenericForm<Partial<IChecklog>>
+            <DialogContent >
+                <Box sx={{pt:2}}>
+                    <GenericForm<Partial<IIssue>>
                         column={2}
                         initialValues={initialValues}
                         validationSchema={Yup.object().shape(validationSchema)}
-                        onSubmit={handleContactModal}
+                        onSubmit={handleModal}
                         fields={fields as FormField[]}
                         submitButtonText={t('core.button.save')}
                         enableReinitialize
@@ -79,13 +65,13 @@ const ResponseFormModal = ({  onSuccess,issue }: {issue:IIssue ,employeeId?: str
                         activateWatchStatus
                         formRef={formRef}
                     />
-                </BorderBox>
+               </Box>
             </DialogContent>
             <DialogActions>
                 <SassButton
                     color="primary"
                     variant="outlined"
-                    onClick={(e) => handleClose(e, 'manual')}
+                    onClick={(e) => handleClose()}
                     disabled={formStatus?.isSubmitting}
                     size='small'
 
@@ -100,11 +86,11 @@ const ResponseFormModal = ({  onSuccess,issue }: {issue:IIssue ,employeeId?: str
                     size='small'
                     variant="contained"
                 >
-                    {t('core.button.submit')}
+                    {t('core.button.save')}
                 </SassButton>
             </DialogActions>
         </Dialog>
     );
 };
 
-export default ResponseFormModal
+export default FormModal

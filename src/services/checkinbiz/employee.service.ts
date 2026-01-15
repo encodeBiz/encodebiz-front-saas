@@ -465,8 +465,6 @@ export const searchLogs = async (entityId: string, params: SearchParams): Promis
 
 export const getIssues = async (entityId: string, params: SearchParams): Promise<IIssue[]> => {
 
-
-
   const result: IIssue[] = await searchFirestore({
     ...params,
     filters: [
