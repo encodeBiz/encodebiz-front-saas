@@ -918,6 +918,7 @@
   },
   "issues": {
     "title": "Incidencias",
+    "toResponde": "Responder",
     "responses": "Respuestas",
     "formDesc": "Completa los campos a continuación para crear/editar una  incidencia.",
     "list": "Reportes de incidencias",

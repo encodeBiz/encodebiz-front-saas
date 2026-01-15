@@ -67,21 +67,13 @@ export default function useIIssuesListController() {
 
   const { closeModal, openModal } = useCommonModal()
   const rowAction: Array<IRowAction> = [
-    {
-      actionBtn: true,
-      color: 'primary',
-      icon: <Edit color="primary" />,
-      label: t('core.button.edit'),
-      bulk: false,
-      allowItem: () => true,
-      onPress: (item: IIssue) => onEdit(item)
-    },
+    
 
     {
       actionBtn: true,
       color: 'primary',
       icon: <ListAltOutlined color="primary" />,
-      label: t('employee.detail'),
+      label: t('issues.toResponde'),
       bulk: false,
       allowItem: () => true,
       onPress: (item: IIssue) => onDetail(item)

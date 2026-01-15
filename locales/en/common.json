@@ -909,6 +909,7 @@
   },
   "issues": {
     "title": "Issues",
+    "toResponde": "Reply",
     "responses": "Responses",
     "formDesc": "Complete the fields below to create/edit an issue.",
     "list": "Issue reports",
