@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import Check from './Check/Check';
 import { useTranslations } from 'next-intl';
-import { NorthEastOutlined, RefreshOutlined } from '@mui/icons-material';
+import { ContactsOutlined, NorthEastOutlined, RefreshOutlined } from '@mui/icons-material';
 
 import CheckLog from './CheckLog/CheckLog';
 import { CheckProvider, useCheck } from './page.context';
@@ -21,6 +21,7 @@ import LocaleSwitcher from '@/components/common/LocaleSwitcher';
 import { useStyles } from './page.styles';
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import UpdateRequest from './UpdateRequest/UpdateRequest';
+import Contact from './Contact/Contact';
  
 
 const Checking = () => {
@@ -51,7 +52,7 @@ const Checking = () => {
                     flexDirection: 'row',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    gap: 2,
+                    gap: 1,
                     cursor: 'pointer',
                     color: '#FFFFFF',
                 }}
@@ -62,6 +63,10 @@ const Checking = () => {
 
                 <SassButton fullWidth sx={{ background: '#001946', borderRadius: 2, width: '100%' }} variant='contained' startIcon={<RefreshOutlined />} onClick={() => openModal(CommonModalType.UPDATEREQUEST)} >
                     {t('checking.requestUpdate')}
+                </SassButton>
+
+                <SassButton fullWidth sx={{ background: '#001946', borderRadius: 2, width: '100%' }} variant='contained' startIcon={<ContactsOutlined />} onClick={() => openModal(CommonModalType.CONTACT_CHECKING)} >
+                    {t('checking.contact')}
                 </SassButton>
             </Box>
 
@@ -77,6 +82,7 @@ const Checking = () => {
             {open.type === CommonModalType.CONFIG2AF && <ConfigTwoFA />}
             {open.type === CommonModalType.UPDATEREQUEST && <UpdateRequest />}
             {open.type === CommonModalType.ADDDEVICE2AF && <VerifyTwoFA />}
+            {open.type === CommonModalType.CONTACT_CHECKING && <Contact  />}
             {open.type === CommonModalType.INFO && <InfoModal centerBtn cancelBtn={false} closeBtn={false}
                 title={t('twoFactor.newDeviceMessage')}
                 description={t('twoFactor.newDeviceMessageText')}
