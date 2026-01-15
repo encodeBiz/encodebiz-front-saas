@@ -33,7 +33,7 @@ const ResponseFormModal = ({  onSuccess,issue }: {issue:IIssue ,employeeId?: str
     };
 
     const handleContactModal = (values: Partial<IIssueResponse>) => {
-        createResponse(values, () => { (formRef.current as any).resetForm() })
+        createResponse(values, () => { (formRef.current as any)?.resetForm() })
 
     }
 
