@@ -157,13 +157,11 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
                     title: t("checklog.list"),
                     tabContent: <Attedance>{children}</Attedance>
                 },
-                ...(employeePatternList.length > 0 ? [
-                    {
+                 {
                         id: '2',
                         title: t("employee.workProfile"),
                         tabContent: <PanelStats />
                     }
-                ] : [])
 
 
             ]} />

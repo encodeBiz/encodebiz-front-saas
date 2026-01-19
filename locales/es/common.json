@@ -1147,7 +1147,10 @@
     "tempActiviyLabel": "Datos de actividad temporal",
     "operativeDataLabel": "Datos operativos",
     "statsNoDataTitle": "No se puede mostrar el análisis heurísticos",
-    "statsNoDataText": "No existe suficiente datos recopilados para realizar un análisis heurísticos"
+    "statsNoDataText": "No existe suficiente datos recopilados para realizar un análisis heurísticos",
+    "employeeNoDataTitle": "No se puede mostrar el perfil laboral",
+    "employeeNoDataText": "No existe suficiente datos recopilados para realizar un análisis del perfil laboral y mostrar información"
+ 
   },
   "statsDashboard": {
     "dateRange": "Rango de fechas",
