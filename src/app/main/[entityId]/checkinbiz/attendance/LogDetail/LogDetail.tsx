@@ -40,59 +40,40 @@ export const LogDetail = ({ logDetail }: { logDetail: any }) => {
                         <Typography > {logDetail.metadata?.tz ?? logDetail.metadata?.etz ?? '-'}</Typography>
                     </Box>
                 </li>
-            </ul>
-        </Box>
-
-        <Box>
-            <Typography sx={{ fontSize: 18, fontWeight: 400 }}>{t('attendance.logDetail.locationValidationTitle')}</Typography>
-            <Typography sx={{ fontSize: 14, fontWeight: 400 }}>{t('attendance.logDetail.registeredLocation')}</Typography>
-            <ul style={{ margin: 0 }}>
-                <li style={{ fontSize: 16, fontWeight: 400, }}>
-                    <Box display={'flex'} gap={1}>
-                        <Typography fontWeight={700}>{t('attendance.logDetail.coordinatesLabel')}</Typography>
-                        <Typography >{logDetail.geo?.lat?.toFixed(6)}, {logDetail.geo?.lng?.toFixed(6)}</Typography>
-                    </Box>
-                </li>
-                <li style={{ fontSize: 16, fontWeight: 400, }}>
-                    <Box display={'flex'} gap={1}>
-                        <Typography fontWeight={700}>{t('attendance.logDetail.distanceToAuthorizedPointLabel')}</Typography>
-                        <Typography >{Number(logDetail.metadata?.distance ?? 0).toFixed(2)} {t('attendance.logDetail.meters')}</Typography>
-                    </Box>
-                </li>
-
-            </ul>
-
-            <Typography sx={{ fontSize: 14, fontWeight: 400 }}>{t('attendance.logDetail.locationControl')}</Typography>
-            <ul style={{ margin: 0 }}>
-                <li style={{ fontSize: 16, fontWeight: 400, }}>
-                    <Box display={'flex'} gap={1}>
-                        <Typography fontWeight={700}>{t('core.label.' + logDetail.disableRatioChecklog ? 'disable' : 'enable')}</Typography>
-                    </Box>
-                </li>
-                <li style={{ fontSize: 16, fontWeight: 400, }}>
-                    <Box display={'flex'} gap={1}>
-                        <Typography fontWeight={700}>{t('attendance.logDetail.distanceToAuthorizedPointLabel')}</Typography>
-                        <Typography >{logDetail.ratioChecklog} {t('attendance.logDetail.meters')}</Typography>
-                    </Box>
-                </li>
-            </ul>
-
-            <Typography sx={{ fontSize: 14, fontWeight: 400 }}>{t('attendance.logDetail.automaticEvaluation')}</Typography>
-            <ul style={{ margin: 0 }}>
-                <li style={{ fontSize: 16, fontWeight: 400, }}>
-                    <Box display={'flex'} gap={1}>
-                        <Typography fontWeight={700}>{t('core.label.' + logDetail.disableRatioChecklog ? 'disable' : 'enable')}</Typography>
-                    </Box>
-                </li>
                 <li style={{ fontSize: 16, fontWeight: 400, }}>
                     <Box display={'flex'} gap={1}>
                         <Typography fontWeight={700}>{t('attendance.logDetail.suspiciousRecordLabel')}</Typography>
                         <Typography >{logDetail.isSuspect ? t('core.label.yes') : t('core.label.no')}</Typography>
                     </Box>
                 </li>
+            </ul>
+        </Box>
+
+        <Box>
+            <Typography sx={{ fontSize: 18, fontWeight: 400 }}>{t('attendance.logDetail.locationValidationTitle')}</Typography>
+             <ul style={{ margin: 0 }}>
+                <li style={{ fontSize: 16, fontWeight: 400, }}>
+                    <Box display={'flex'} gap={1}>
+                        <Typography fontWeight={700}>{t('attendance.logDetail.coordinatesLabel')}</Typography>
+                        <Typography >{logDetail.geo?.lat?.toFixed(6)}, {logDetail.geo?.lng?.toFixed(6)}</Typography>
+                    </Box>
+                </li>
+                
+                {logDetail.disableRatioChecklog && <li style={{ fontSize: 16, fontWeight: 400, }}>
+                    <Box display={'flex'} gap={1}>
+                        <Typography fontWeight={700}>{t('attendance.logDetail.distanceToAuthorizedPointLabel')}</Typography>
+                        <Typography >{Number(logDetail.metadata?.distance ?? 0).toFixed(2)} {t('attendance.logDetail.meters')}</Typography>
+                    </Box>
+                </li>}
+                <li style={{ fontSize: 16, fontWeight: 400, }}>
+                    <Box display={'flex'} gap={1}>
+                        <Typography fontWeight={700}>{t('core.label.' + logDetail.disableRatioChecklog ? t('core.label.disableRatioChecklogD') : t('core.label.disableRatioChecklogE'))}</Typography>
+                    </Box>
+                </li>
 
             </ul>
 
+           
             <SassButton size="small" variant="outlined" onClick={() => onGoMap(logDetail.geo?.lat as number, logDetail.geo?.lng as number)} sx={{ mt: 1, border: 0 }}>
                 {t('attendance.logDetail.viewLocationOnMap')}
             </SassButton>
