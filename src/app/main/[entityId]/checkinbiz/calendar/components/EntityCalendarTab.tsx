@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState, useCallback } from "react";
+import { useMemo, useState, useCallback, useEffect } from "react";
 import { Accordion, AccordionDetails, AccordionSummary, Alert, Box, Divider, FormControlLabel, Grid, IconButton, Stack, Switch, TextField, Typography, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { ExpandMoreOutlined, AddOutlined, EditOutlined, DeleteOutline } from "@mui/icons-material";
 import { Formik, Form } from "formik";
@@ -16,10 +16,11 @@ import { useToast } from "@/hooks/useToast";
 import { useEntity } from "@/hooks/useEntity";
 import { useLayout } from "@/hooks/useLayout";
 import { upsertCalendar, deleteCalendarItem } from "@/services/checkinbiz/calendar.service";
+import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
 
 type EntityCalendarFormValues = {
     defaultSchedule: WeeklyScheduleWithBreaks;
-    strictRange: boolean;
+    enableDayTimeRange: boolean;
     notifyBeforeMinutes?: number;
     disableBreak?: boolean;
     timeBreak?: number;
@@ -62,7 +63,7 @@ const parseError = (message?: string) => {
     }
 };
 
-const sanitizeSchedule = (schedule: WeeklyScheduleWithBreaks, strictRange: boolean): WeeklyScheduleWithBreaks => {
+const sanitizeSchedule = (schedule: WeeklyScheduleWithBreaks, enableDayTimeRange: boolean): WeeklyScheduleWithBreaks => {
     const cleaned: WeeklyScheduleWithBreaks = {};
     DAY_ITEMS.forEach(day => {
         const dayValue = schedule[day.key];
@@ -70,7 +71,7 @@ const sanitizeSchedule = (schedule: WeeklyScheduleWithBreaks, strictRange: boole
             cleaned[day.key] = {
                 start: dayValue.start,
                 end: dayValue.end,
-                strictRange: strictRange || dayValue.strictRange ? true : undefined,
+                strictRange: enableDayTimeRange || dayValue.strictRange ? true : undefined,
                 toleranceMinutes: undefined,
             };
         }
@@ -89,18 +90,69 @@ const EntityCalendarTab = () => {
     const { changeLoaderState } = useLayout();
     const entityTimezone = currentEntity?.entity?.legal?.address?.timeZone ?? "UTC";
 
-    const [holidays, setHolidays] = useState<Holiday[]>([]);
-    const [openHolidayModal, setOpenHolidayModal] = useState(false);
-    const [editingHoliday, setEditingHoliday] = useState<Holiday | undefined>();
-    const [scheduleErrors, setScheduleErrors] = useState<string[]>([]);
-
-    const initialValues: EntityCalendarFormValues = useMemo(() => ({
+    const defaultInitialValues: EntityCalendarFormValues = useMemo(() => ({
         defaultSchedule: buildDefaultSchedule(),
-        strictRange: false,
+        enableDayTimeRange: false,
         notifyBeforeMinutes: 15,
         disableBreak: false,
         timeBreak: 60,
     }), []);
+
+    const [holidays, setHolidays] = useState<Holiday[]>([]);
+    const [openHolidayModal, setOpenHolidayModal] = useState(false);
+    const [editingHoliday, setEditingHoliday] = useState<Holiday | undefined>();
+    const [scheduleErrors, setScheduleErrors] = useState<string[]>([]);
+    const [initialValues, setInitialValues] = useState<EntityCalendarFormValues>(defaultInitialValues);
+
+    useEffect(() => {
+        const loadConfig = async () => {
+            if (!currentEntity?.entity?.id) return;
+            try {
+                const path = `entities/${currentEntity.entity.id}/calendar/config`;
+                const data = await getRefByPathData(path);
+                if (data) {
+                    const storedSchedule: WeeklyScheduleWithBreaks = {};
+                    DAY_ITEMS.forEach(day => {
+                        const dayValue = data?.defaultSchedule?.[day.key];
+                        if (dayValue) {
+                            storedSchedule[day.key] = {
+                                ...dayValue,
+                                enabled: true,
+                            };
+                        } else {
+                            storedSchedule[day.key] = { ...defaultDay(false) };
+                        }
+                    });
+
+                    const advance = data.advance ?? {};
+
+                    setInitialValues({
+                        defaultSchedule: storedSchedule,
+                        enableDayTimeRange: advance.enableDayTimeRange ?? data.strictRange ?? false,
+                        notifyBeforeMinutes: advance.notifyBeforeMinutes ?? data.notifyBeforeMinutes ?? 15,
+                        disableBreak: advance.disableBreak ?? data.disableBreak ?? false,
+                        timeBreak: advance.timeBreak ?? data.timeBreak ?? 60,
+                    });
+
+                    if (Array.isArray(data.holidays)) {
+                        setHolidays(data.holidays);
+                    } else if (data.holiday) {
+                        setHolidays([data.holiday]);
+                    } else {
+                        setHolidays([]);
+                    }
+                } else {
+                    setInitialValues(defaultInitialValues);
+                    setHolidays([]);
+                }
+            } catch (error) {
+                setInitialValues(defaultInitialValues);
+                setHolidays([]);
+            }
+        };
+
+        loadConfig();
+    }, [currentEntity?.entity?.id, defaultInitialValues]);
 
     const validateForm = useCallback((values: EntityCalendarFormValues) => {
         const errors: any = {};
@@ -122,7 +174,7 @@ const EntityCalendarTab = () => {
             errors.defaultSchedule = scheduleErrs;
         }
 
-        if (values.timeBreak === undefined || values.timeBreak === null || Number.isNaN(Number(values.timeBreak)) || Number(values.timeBreak) <= 0) {
+        if (values.disableBreak && (values.timeBreak === undefined || values.timeBreak === null || Number.isNaN(Number(values.timeBreak)) || Number(values.timeBreak) <= 0)) {
             errors.timeBreak = t('errors.badRequest');
         }
 
@@ -141,16 +193,18 @@ const EntityCalendarTab = () => {
         }
         try {
             changeLoaderState({ show: true, args: { text: t('actions.saving') } });
-            const payloadSchedule = sanitizeSchedule(values.defaultSchedule, values.strictRange);
+            const payloadSchedule = sanitizeSchedule(values.defaultSchedule, values.enableDayTimeRange);
             const advance = {
-                enableDayTimeRange: values.strictRange,
+                enableDayTimeRange: values.enableDayTimeRange,
+                disableBreak: values.disableBreak,
+                timeBreak: values.timeBreak,
+                notifyBeforeMinutes: values.notifyBeforeMinutes,
             };
             await upsertCalendar({
                 scope: "entity",
                 entityId: currentEntity.entity.id,
                 defaultSchedule: payloadSchedule,
                 timezone: entityTimezone ?? "",
-                strictRange: values.strictRange,
                 advance,
             }, token, currentLocale);
             resetForm({ values });
@@ -274,12 +328,12 @@ const EntityCalendarTab = () => {
                                 <Divider sx={{ my: 2 }} />
                                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center">
                                     <FormControlLabel
-                                        control={<Switch checked={values.strictRange} onChange={(e) => setFieldValue('strictRange', e.target.checked)} />}
+                                        control={<Switch checked={values.enableDayTimeRange} onChange={(e) => setFieldValue('enableDayTimeRange', e.target.checked)} />}
                                         label={t('schedule.strictRange')}
                                     />
                                 </Stack>
-                                <Alert sx={{ mt: 2 }} severity={values.strictRange ? "info" : "success"}>
-                                    {values.strictRange ? (
+                                <Alert sx={{ mt: 2 }} severity={values.enableDayTimeRange ? "info" : "success"}>
+                                    {values.enableDayTimeRange ? (
                                         <Stack spacing={0.5}>
                                             <Typography variant="body2">{t('schedule.strictInfo.line1')}</Typography>
                                             <Typography variant="body2">{t('schedule.strictInfo.line2')}</Typography>
@@ -294,6 +348,39 @@ const EntityCalendarTab = () => {
                                         </Stack>
                                     )}
                                 </Alert>
+
+                                <Divider sx={{ my: 3 }} />
+                                <Stack spacing={1.5}>
+                                    <Typography fontWeight={600}>{tSucursal('breakTime')}</Typography>
+                                    <Alert sx={{ borderRadius: 2 }} severity={values.disableBreak ? "info" : "warning"}>
+                                        <Typography variant="body2">
+                                            {values.disableBreak ? tSucursal('disableBreakAlertMessageE') : tSucursal('disableBreakAlertMessageD')}
+                                        </Typography>
+                                    </Alert>
+                                    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center">
+                                        <FormControlLabel
+                                            control={
+                                                <Switch
+                                                    checked={!!values.disableBreak}
+                                                    onChange={(e) => setFieldValue('disableBreak', e.target.checked)}
+                                                />
+                                            }
+                                            label={tSucursal('breakEnableText')}
+                                        />
+                                        <TextField
+                                            name="timeBreak"
+                                            type="number"
+                                            value={values.timeBreak ?? ''}
+                                            onChange={(e) => {
+                                                const parsed = Number(e.target.value);
+                                                setFieldValue('timeBreak', e.target.value === '' ? undefined : parsed);
+                                            }}
+                                            inputProps={{ min: 1 }}
+                                        label={tCore('timeBreak')}
+                                        disabled={!values.disableBreak}
+                                    />
+                                </Stack>
+                                </Stack>
 
                                 <Divider sx={{ my: 3 }} />
                                 <Stack spacing={1} maxWidth={320}>
