@@ -17,16 +17,12 @@ import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 
 import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 import ToggleInput from "@/components/common/forms/fields/ToggleInput";
-import TimeInput from "@/components/common/forms/fields/TimeInput";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useAppLocale } from "@/hooks/useAppLocale";
 import AddressComplexInput from "@/components/common/forms/fields/AddressComplexInput";
 import { Alert, Box, Typography } from "@mui/material";
 import { InfoOutline } from "@mui/icons-material";
-import WorkScheduleField from "@/components/common/forms/fields/WorkScheduleField";
-import { useFormStatus } from "@/hooks/useFormStatus";
-import { CheckboxListField } from "@/components/common/forms/fields/CheckboxListField";
 
 
 export default function useFormController(isFromModal: boolean, onSuccess?: () => void) {
@@ -41,21 +37,9 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
   const { open, closeModal, openModal } = useCommonModal()
   const { id } = useParams<{ id: string }>()
-  const { formStatus } = useFormStatus()
-
   const itemId = isFromModal ? open.args?.id : id
-  const [enableDayTimeRange, setEnableDayTimeRange] = useState(false)
   const [disableBreak, setDisableBreak] = useState(false)
   const [, setDisableRatioChecklog] = useState(false)
-
-
-  const startTime = new Date()
-  startTime.setMinutes(0)
-  startTime.setHours(8)
-
-  const endTime = new Date()
-  endTime.setMinutes(0)
-  endTime.setHours(17)
 
   const [initialValues, setInitialValues] = useState<Partial<any>>({
     "name": '',
@@ -70,13 +54,9 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     ratioChecklog: 201,
     disableRatioChecklog: false,
     nif: 'N/A',
-    startTime: startTime,
-    endTime: endTime,
-    "enableDayTimeRange": false, //poner texto  explicativo en los detalles  y el form
     "disableBreak": false, //poner texto  explicativo en los detalles y el form
     "timeBreak": 60,
     notifyBeforeMinutes: 15,
-    workScheduleEnable: false
   });
 
   const defaultValidationSchema: any = {
@@ -93,8 +73,6 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     nif: requiredRule(t),
     status: requiredRule(t),
     ratioChecklog: ratioLogRule(t),
-    startTime: requiredRule(t),
-    endTime: requiredRule(t),
     timeBreak: timeBreakRule(t),
     notifyBeforeMinutes: timeBreakRule(t),
   }
@@ -116,14 +94,9 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         address: values.address,
         entityId: currentEntity?.entity.id as string,
         advance: {
-          "enableDayTimeRange": values.enableDayTimeRange,
-          "startTimeWorkingDay": { hour: new Date(values.startTime).getHours(), minute: new Date(values.startTime).getMinutes() },
-          "endTimeWorkingDay": { hour: new Date(values.endTime).getHours(), minute: new Date(values.endTime).getMinutes() },
           "disableBreak": values.disableBreak,
           "timeBreak": values.timeBreak,
           notifyBeforeMinutes: values.notifyBeforeMinutes,
-          "workScheduleEnable": values.workScheduleEnable,
-          "workSchedule": values.workSchedule,
         }
       }
 
@@ -227,107 +200,15 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       label: t('core.label.advance'),
     },
     {
-      isCollapse: true,
-      column: 3,
-      label: t('core.label.dayTimeRange'),
-      hit: t('core.label.dayTimeRangeDesc'),
-      extraProps: {
-        alertMessagePos:5,
-        alertMessage: <Box sx={{width:'100%'}}>
-          <Alert sx={{width:'100%', borderRadius: 2, mt: 2, color: '#FFF', bgcolor: theme => enableDayTimeRange ? theme.palette.primary.main : theme.palette.grey[800] }} icon={<InfoOutline sx={{ color: '#FFF' }} />} >
-            {enableDayTimeRange ? <>
-              <Typography>{t('sucursal.fieldHelp12')} <strong>{t('sucursal.fieldHelp13')}</strong>{t('sucursal.fieldHelp14')}</Typography>
-              <ul>
-                <li><Typography>{t('sucursal.fieldHelp15')}<strong>{t('sucursal.fieldHelp16')}</strong> {t('sucursal.fieldHelp17')}</Typography></li>
-                <li><Typography>{t('sucursal.fieldHelp18')} <strong>{t('sucursal.fieldHelp19')}</strong>.</Typography></li>
-                <li><Typography>{t('sucursal.fieldHelp20')}<strong>{t('sucursal.fieldHelp16')}</strong>{t('sucursal.fieldHelp21')}</Typography></li>
-              </ul>
-            </> : <>
-              <Typography>{t('sucursal.fieldHelp22')}<strong>{t('sucursal.fieldHelp23')}</strong>.</Typography>
-              <ul>
-                <li><Typography>{t('sucursal.fieldHelp24')}<strong> {t('sucursal.fieldHelp25')}</strong>.</Typography></li>
-                <li><Typography>{t('sucursal.fieldHelp26')} <strong>{t('sucursal.fieldHelp27')}</strong>.</Typography></li>
-              </ul>
-            </>}
-          </Alert>
-        </Box>
-
-      },
-      fieldList: [
-        {
-          name: 'workScheduleEnable',
-          component: CheckboxListField,
-          options: [
-            { value: true, label: t('core.label.workScheduleByDay') },
-            { value: false, label: t('core.label.workScheduleUniform') },
-          ],
-          required: true,
-          fullWidth: true,
-        },
-
-
-        {
-          name: 'workSchedule',
-          label: t('core.label.workSchedule'),
-          component: WorkScheduleField,
-          required: true,
-          fullWidth: true,
-          extraProps: {
-            hide: !formStatus?.values?.workScheduleEnable,
-            enableDayTimeRange: formStatus?.values?.enableDayTimeRange,
-            workScheduleEnable: formStatus?.values?.workScheduleEnable
-
-          }
-        },
-
-
-
-        {
-          name: 'startTime',
-          label: t('core.label.startTime'),
-          component: TimeInput,
-
-          required: true,
-          extraProps: {
-            hide: formStatus?.values?.workScheduleEnable
-          },
-        },
-        {
-          name: 'endTime',
-          label: t('core.label.endTime'),
-          component: TimeInput,
-          required: true,
-          extraProps: {
-            hide: formStatus?.values?.workScheduleEnable
-          },
-        },
-        {
-          name: 'enableDayTimeRange',
-          label: enableDayTimeRange ? t('sucursal.dayTimeRangeEnableText') : t('sucursal.dayTimeRangeDisabledText'),
-          component: ToggleInput,
-          required: true,
-          extraProps: {
-            onHandleChange: setEnableDayTimeRange,
-            //hide: formStatus?.values?.workScheduleEnable
-
-          },
-        },
-
-        {
-          isDivider: true,
-          label: t('core.label.adviseWorkDay'),
-          hit: t('core.label.adviseWorkDayText'),
-
-        },
-
-        {
-          name: 'notifyBeforeMinutes',
-          label: t('core.label.minute'),
-          type: 'number',
-          component: TextInput,
-        },
-
-      ]
+      isDivider: true,
+      label: t('core.label.adviseWorkDay'),
+      hit: t('core.label.adviseWorkDayText'),
+    },
+    {
+      name: 'notifyBeforeMinutes',
+      label: t('core.label.minute'),
+      type: 'number',
+      component: TextInput,
     },
 
     {
@@ -392,14 +273,6 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       const sucursal: ISucursal = await fetchSucursal(currentEntity?.entity.id as string, itemId)
 
 
-      const startTime = new Date()
-      startTime.setMinutes(sucursal?.advance?.startTimeWorkingDay?.minute ?? 0)
-      startTime.setHours(sucursal?.advance?.startTimeWorkingDay?.hour ?? 0)
-
-      const endTime = new Date()
-      endTime.setMinutes(sucursal?.advance?.endTimeWorkingDay?.minute ?? 0)
-      endTime.setHours(sucursal?.advance?.endTimeWorkingDay?.hour ?? 0)
-      setEnableDayTimeRange(sucursal?.advance?.enableDayTimeRange ?? false)
       setDisableBreak(sucursal?.advance?.disableBreak ?? false)
       setDisableRatioChecklog((!sucursal?.disableRatioChecklog))
       setInitialValues({
@@ -412,13 +285,8 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         name: sucursal.name,
         nif: sucursal.nif ?? 'N/A',
         metadata: objectToArray(sucursal.metadata),
-        "enableDayTimeRange": sucursal?.advance?.enableDayTimeRange,
-        "startTime": startTime,
-        "endTime": endTime,
         "disableBreak": sucursal?.advance?.disableBreak,
         "timeBreak": sucursal?.advance?.timeBreak,
-        workSchedule: sucursal?.advance?.workSchedule,
-        workScheduleEnable: sucursal?.advance?.workScheduleEnable,
         notifyBeforeMinutes: sucursal?.advance?.notifyBeforeMinutes,
 
       })

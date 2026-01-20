@@ -1,4 +1,4 @@
-import { Box, FormControlLabel, Grid, Switch, TextFieldProps, Typography, Divider } from "@mui/material";
+import { Box, Divider, FormControlLabel, Grid, Switch, TextFieldProps, Typography } from "@mui/material";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { Field, FieldProps, useField } from "formik";
 import { useEffect, useState } from "react";
@@ -11,6 +11,7 @@ import { enUS } from '@mui/x-date-pickers/locales';
 import { createDayjsTime } from "@/lib/common/Date";
 import { WorkDaySchedule, WorkSchedule } from "@/domain/features/checkinbiz/ISucursal";
 import { useTranslations } from "next-intl";
+import { useMemo } from "react";
 
 // Tipos
 
@@ -24,6 +25,8 @@ const DAYS = [
     { key: 'saturday', label: 'Sábado' },
     { key: 'sunday', label: 'Domingo' },
 ] as const;
+
+type DayKey = typeof DAYS[number]['key'];
 
 // Horas del día (0-23)
 const defaultDaySchedule: WorkDaySchedule = {
@@ -44,11 +47,16 @@ const initialValues: WorkSchedule = {
 };
 
 const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
-    afterTextField: string,
+    afterTextField?: string,
     onHandleChange?: (value: any) => void,
     enableDayTimeRange: boolean
     workScheduleEnable: boolean
-
+    renderDayExtras?: (args: {
+        dayKey: DayKey;
+        dayLabel: string;
+        dayValue: any;
+        onChange: (updater: (current: any) => any) => void;
+    }) => React.ReactNode
 }> = ({
     ...props
 }) => {
@@ -58,15 +66,23 @@ const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
         const [fieldValue, setFieldValue] = useState<WorkSchedule>(field.value ?? initialValues)
         const { currentLocale } = useAppLocale()
         const t = useTranslations()
+
+        const updateDay = (dayKey: DayKey, updater: (current: any) => any) => {
+            setFieldValue(prev => {
+                const base = prev ?? fieldValue ?? initialValues;
+                const currentDay = (base as any)[dayKey] ?? { ...defaultDaySchedule };
+                const nextDay = updater({ ...currentDay });
+                return {
+                    ...(base as any),
+                    [dayKey]: nextDay
+                };
+            });
+        };
+
         useEffect(() => {
             helper.setValue(fieldValue)
             if (typeof onHandleChange === 'function') onHandleChange(fieldValue)
         }, [fieldValue, helper, onHandleChange])
-
-        useEffect(() => {
-            if (field.value)
-                setFieldValue(field.value)
-        }, [field.value])
 
 
 
@@ -91,13 +107,10 @@ const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
                                                     disabled={!workScheduleEnable}
                                                     checked={fieldValue[day.key]?.enabled}
                                                     onChange={(e) => {
-                                                        setFieldValue({
-                                                            ...fieldValue,
-                                                            [day.key]: {
-                                                                ...fieldValue[day.key],
-                                                                enabled: e.target.checked
-                                                            }
-                                                        });
+                                                        updateDay(day.key, (current) => ({
+                                                            ...current,
+                                                            enabled: e.target.checked
+                                                        }))
                                                     }}
                                                     color="primary"
                                                 />
@@ -128,17 +141,14 @@ const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
                                         value={createDayjsTime(fieldValue[day.key]?.start?.hour as number, fieldValue[day.key]?.start?.minute as number)}
                                         defaultValue={createDayjsTime(fieldValue[day.key]?.start?.hour as number, fieldValue[day.key]?.start?.minute as number)}
                                         onChange={(e) => {
-                                            setFieldValue({
-                                                ...fieldValue,
-                                                [day.key]: {
-                                                    ...fieldValue[day.key],
-                                                    start: {
-                                                        ...fieldValue[day.key]?.start,
-                                                        minute: e?.toDate().getMinutes(),
-                                                        hour: e?.toDate().getHours()
-                                                    }
+                                            updateDay(day.key, (current) => ({
+                                                ...current,
+                                                start: {
+                                                    ...(current?.start ?? fieldValue[day.key]?.start),
+                                                    minute: e?.toDate().getMinutes(),
+                                                    hour: e?.toDate().getHours()
                                                 }
-                                            });
+                                            }))
                                         }}
                                         disabled={!workScheduleEnable || props.disabled || ((props.name === 'endTime' || props.name === 'startTime') && !enableDayTimeRange)}
                                         sx={{ width: '100%' }}
@@ -166,17 +176,14 @@ const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
                                         value={createDayjsTime(fieldValue[day.key]?.end?.hour as number, fieldValue[day.key]?.end?.minute as number)}
                                         defaultValue={createDayjsTime(fieldValue[day.key]?.end?.hour as number, fieldValue[day.key]?.end?.minute as number)}
                                         onChange={(e) => {
-                                            setFieldValue({
-                                                ...fieldValue,
-                                                [day.key]: {
-                                                    ...fieldValue[day.key],
-                                                    end: {
-                                                        ...fieldValue[day.key]?.end,
-                                                        minute: e?.toDate().getMinutes(),
-                                                        hour: e?.toDate().getHours()
-                                                    }
+                                            updateDay(day.key, (current) => ({
+                                                ...current,
+                                                end: {
+                                                    ...(current?.end ?? fieldValue[day.key]?.end),
+                                                    minute: e?.toDate().getMinutes(),
+                                                    hour: e?.toDate().getHours()
                                                 }
-                                            });
+                                            }))
                                         }}
                                         disabled={!workScheduleEnable || props.disabled || ((props.name === 'endTime' || props.name === 'startTime') && !enableDayTimeRange)}
                                         sx={{ width: '100%' }}
@@ -184,7 +191,14 @@ const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
                                 </Grid>
                             </Grid>
 
-
+                            {typeof props.renderDayExtras === 'function' && <Box mt={1} width="100%">
+                                {props.renderDayExtras({
+                                    dayKey: day.key,
+                                    dayLabel: day.label,
+                                    dayValue: (fieldValue as any)[day.key],
+                                    onChange: (updater) => updateDay(day.key, updater),
+                                })}
+                            </Box>}
                         </Grid>
                         <Divider sx={{ mt: 2 }} />
                     </Box>

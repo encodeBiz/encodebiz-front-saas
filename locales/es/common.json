@@ -29,6 +29,7 @@
         "Events": "Eventos",
         "Media": "Media",
         "Report": "Reportes",
+        "Calendar": "Horarios y festivos",
         "Attendance": "Asistencia",
         "Sucursal": "Sucursal/Proyecto",
         "home": "Inicio",
@@ -191,7 +192,7 @@
       "inactive": "Inactivo",
       "adviseWorkDay": "Aviso de jornada",
       "minute": "Minutos",
-      "adviseWorkDayText": "Configura con cuánta antelación se avisará al empleado antes de su hora de entrada y de salida.",
+      "adviseWorkDayText": "Define el periodo de gracia y los minutos previos para enviar el recordatorio de entrada y salida.",
       "personalData": "INFORMACIÓN PESONAL",
       "configData": "CONFIGURACIÓN ADICIONAL",
       "aditionalData": "INFORMACIÓN ADICIONAL",
@@ -817,6 +818,7 @@
     "dayTimeRangeDisabledText": "Jornada flexible",
     "breakEnableText": "Descanso estricto",
     "breakDisabledText": "Descanso flexible",
+    "breakFlexibleSwitch": "Descanso flexible",
     "linkToEmployeeNotBtn": "Crear Empleado",
     "breakTime": "TIEMPO DE DESCANSO",
     "workTime": "HORARIO DE JORNADA LABORAL",
@@ -1597,6 +1599,99 @@
     "holder/not_found": "No se encuentra el titular",
     "holder/not_found_applepass": "No se encuentra el Applepass del titular",
     "employee/not_resposibility": "No tienes responsabilidades asignada en esta sucursal/proyecto"
+  },
+  "calendar": {
+    "title": "Horarios y festivos",
+    "subtitle": "Define el horario base y los festivos de la entidad.",
+    "tabs": {
+      "entity": "Entidad",
+      "branch": "Sucursal",
+      "employee": "Empleado",
+      "comingSoon": "Próximamente"
+    },
+    "timezone": {
+      "title": "Zona horaria de la entidad",
+      "tooltip": "Si una sucursal no define zona horaria, usará esta. Los empleados remotos pueden tener la suya propia.",
+      "label": "Zona horaria"
+    },
+    "schedule": {
+      "title": "Horario semanal (plantilla base)",
+      "subtitle": "Define el horario laboral estándar. Los días no configurados se consideran inactivos.",
+      "strictRange": "Jornada estricta",
+      "strictInfo": {
+        "line1": "El sistema aplica el horario oficial, sin sumar tiempo extra.",
+        "line2": "Entradas antes del horario: no se contabilizan.",
+        "line3": "Entradas tarde o salidas anticipadas: se descuentan.",
+        "line4": "Salidas después del horario: no se contabilizan como extra."
+      },
+      "flexInfo": {
+        "line1": "El sistema contabiliza la jornada real trabajada.",
+        "line2": "Tiempo trabajado antes o después del horario: se suma como extra.",
+        "line3": "Retrasos o salidas anticipadas: se descuentan."
+      }
+    },
+    "notes": {
+      "inheritance": "Los horarios heredan: Entidad -> Sucursal -> Empleado. Si no defines un override, se aplica el superior.",
+      "inactiveDays": "Los días sin horario se consideran inactivos.",
+      "toleranceHint": "Usa jornada estricta para evitar desviaciones; jornada flexible suma el tiempo real trabajado."
+    },
+    "actions": {
+      "addBreak": "Añadir pausa",
+      "addHoliday": "Añadir festivo",
+      "discard": "Descartar cambios",
+      "saveCalendar": "Guardar calendario",
+      "saving": "Guardando calendario...",
+      "savingHoliday": "Guardando festivo...",
+      "deletingHoliday": "Eliminando festivo...",
+      "editHoliday": "Editar festivo",
+      "deleteHoliday": "Eliminar festivo",
+      "cancel": "Cancelar",
+      "save": "Guardar"
+    },
+    "labels": {
+      "breakStart": "Inicio pausa {{index}}",
+      "breakEnd": "Fin pausa {{index}}",
+      "deleteBreak": "Eliminar pausa"
+    },
+    "holidays": {
+      "title": "Festivos de la entidad",
+      "subtitle": "Aplican a todas las sucursales; las sucursales pueden añadir festivos locales.",
+      "columns": {
+        "name": "Nombre",
+        "date": "Fecha",
+        "description": "Descripción",
+        "actions": "Acciones"
+      },
+      "empty": "Aún no hay festivos configurados.",
+      "addTitle": "Añadir festivo",
+      "editTitle": "Editar festivo",
+      "fields": {
+        "name": "Nombre del festivo",
+        "date": "Fecha",
+        "description": "Descripción (opcional)"
+      },
+      "save": "Guardar festivo",
+      "saved": "Festivo guardado",
+      "deleted": "Festivo eliminado"
+    },
+    "errors": {
+      "timezoneRequired": "Selecciona una zona horaria.",
+      "startEndRequired": "Completa inicio y fin para {{day}}.",
+      "startBeforeEnd": "La hora de inicio debe ser anterior a la de fin para {{day}}.",
+      "breakOrder": "La pausa {{index}} en {{day}} debe tener inicio antes que fin.",
+      "breakOutside": "La pausa {{index}} en {{day}} debe estar dentro del horario del día.",
+      "breakIncomplete": "Completa inicio y fin de la pausa {{index}} en {{day}}.",
+      "tolerancePositive": "La tolerancia debe ser un número positivo.",
+      "noEntity": "No se encontró la entidad activa.",
+      "badRequest": "Revisa los datos enviados.",
+      "notFound": "No se encontró el calendario.",
+      "generic": "No pudimos guardar los cambios. Intenta de nuevo.",
+      "holidayName": "Ingresa el nombre del festivo.",
+      "holidayDate": "Selecciona la fecha del festivo."
+    },
+    "feedback": {
+      "saved": "Calendario guardado"
+    }
   },
   "plan_translation": {
     "checkinbiz": {
