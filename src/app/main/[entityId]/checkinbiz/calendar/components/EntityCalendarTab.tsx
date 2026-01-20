@@ -332,31 +332,48 @@ const EntityCalendarTab = () => {
                                         label={t('schedule.strictRange')}
                                     />
                                 </Stack>
-                                <Alert sx={{ mt: 2 }} severity={values.enableDayTimeRange ? "info" : "success"}>
-                                    {values.enableDayTimeRange ? (
-                                        <Stack spacing={0.5}>
-                                            <Typography variant="body2">{t('schedule.strictInfo.line1')}</Typography>
-                                            <Typography variant="body2">{t('schedule.strictInfo.line2')}</Typography>
-                                            <Typography variant="body2">{t('schedule.strictInfo.line3')}</Typography>
-                                            <Typography variant="body2">{t('schedule.strictInfo.line4')}</Typography>
-                                        </Stack>
-                                    ) : (
-                                        <Stack spacing={0.5}>
-                                            <Typography variant="body2">{t('schedule.flexInfo.line1')}</Typography>
-                                            <Typography variant="body2">{t('schedule.flexInfo.line2')}</Typography>
-                                            <Typography variant="body2">{t('schedule.flexInfo.line3')}</Typography>
-                                        </Stack>
-                                    )}
-                                </Alert>
+                                <Box
+                                    sx={{
+                                        mt: 2,
+                                        bgcolor: values.enableDayTimeRange ? (theme) => theme.palette.primary.main : (theme) => theme.palette.grey[800],
+                                        color: '#fff',
+                                        p: 2,
+                                        borderRadius: 2,
+                                    }}
+                                >
+                                    <Stack spacing={0.5}>
+                                        {values.enableDayTimeRange ? (
+                                            <>
+                                                <Typography variant="body2">{t('schedule.strictInfo.line1')}</Typography>
+                                                <Typography variant="body2">{t('schedule.strictInfo.line2')}</Typography>
+                                                <Typography variant="body2">{t('schedule.strictInfo.line3')}</Typography>
+                                                <Typography variant="body2">{t('schedule.strictInfo.line4')}</Typography>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Typography variant="body2">{t('schedule.flexInfo.line1')}</Typography>
+                                                <Typography variant="body2">{t('schedule.flexInfo.line2')}</Typography>
+                                                <Typography variant="body2">{t('schedule.flexInfo.line3')}</Typography>
+                                            </>
+                                        )}
+                                    </Stack>
+                                </Box>
 
                                 <Divider sx={{ my: 3 }} />
                                 <Stack spacing={1.5}>
                                     <Typography fontWeight={600}>{tSucursal('breakTime')}</Typography>
-                                    <Alert sx={{ borderRadius: 2 }} severity={values.disableBreak ? "info" : "warning"}>
+                                    <Box
+                                        sx={{
+                                            borderRadius: 2,
+                                            p: 2,
+                                            bgcolor: values.disableBreak ? (theme) => theme.palette.primary.main : (theme) => theme.palette.grey[800],
+                                            color: '#fff',
+                                        }}
+                                    >
                                         <Typography variant="body2">
                                             {values.disableBreak ? tSucursal('disableBreakAlertMessageE') : tSucursal('disableBreakAlertMessageD')}
                                         </Typography>
-                                    </Alert>
+                                    </Box>
                                     <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center">
                                         <FormControlLabel
                                             control={

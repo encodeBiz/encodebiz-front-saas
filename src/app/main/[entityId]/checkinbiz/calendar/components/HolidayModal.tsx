@@ -6,6 +6,13 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { SassButton } from "@/components/common/buttons/GenericButton";
 import { Holiday } from "@/domain/features/checkinbiz/ICalendar";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import dayjs from "dayjs";
+import { useAppLocale } from "@/hooks/useAppLocale";
+import { esES } from '@mui/x-date-pickers/locales';
+import { enUS } from '@mui/x-date-pickers/locales';
 
 type HolidayModalProps = {
     open: boolean;
@@ -16,6 +23,7 @@ type HolidayModalProps = {
 
 const HolidayModal = ({ open, initialValue, onClose, onSubmit }: HolidayModalProps) => {
     const t = useTranslations('calendar');
+    const { currentLocale } = useAppLocale();
 
     const formik = useFormik({
         initialValues: {
@@ -57,18 +65,38 @@ const HolidayModal = ({ open, initialValue, onClose, onSubmit }: HolidayModalPro
                         fullWidth
                         autoFocus
                     />
-                    <TextField
-                        label={t('holidays.fields.date')}
-                        name="date"
-                        type="date"
-                        value={formik.values.date}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        error={formik.touched.date && Boolean(formik.errors.date)}
-                        helperText={formik.touched.date && formik.errors.date}
-                        fullWidth
-                        InputLabelProps={{ shrink: true }}
-                    />
+                    <LocalizationProvider
+                        dateAdapter={AdapterDayjs}
+                        localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}
+                    >
+                        <DatePicker
+                            label={t('holidays.fields.date')}
+                            value={formik.values.date ? dayjs(formik.values.date) : null}
+                            onChange={(newValue) => {
+                                formik.setFieldValue('date', newValue ? dayjs(newValue).format('YYYY-MM-DD') : '');
+                            }}
+                            sx={{
+                                '& .MuiInputBase-root': {
+                                    borderRadius: 2,
+                                },
+                                '& .MuiOutlinedInput-notchedOutline': {
+                                    borderColor: (theme) => theme.palette.primary.main,
+                                },
+                                '& .Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                    borderWidth: 1,
+                                },
+                            }}
+                            slotProps={{
+                                textField: {
+                                    onBlur: formik.handleBlur,
+                                    name: 'date',
+                                    error: formik.touched.date && Boolean(formik.errors.date),
+                                    helperText: formik.touched.date && formik.errors.date,
+                                    fullWidth: true,
+                                }
+                            }}
+                        />
+                    </LocalizationProvider>
                     <TextField
                         label={t('holidays.fields.description')}
                         name="description"
