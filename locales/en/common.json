@@ -420,7 +420,9 @@
       "ok": "I understand",
       "configurenow": "Configure",
       "update": "Update",
-      "addBranch": "Add branch"
+      "addBranch": "Add branch",
+      "more": "View all",
+      "minus": "View less"
     },
     "formValidatorMessages": {
       "required": "This field is required",
