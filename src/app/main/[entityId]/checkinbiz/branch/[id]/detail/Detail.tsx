@@ -19,7 +19,7 @@ import { PanelStats } from "./dashboard/PanelStats"
 import { useDashboardBranch } from "./dashboard/DashboardBranchContext"
 import { useEffect } from "react"
 import { useEntity } from "@/hooks/useEntity"
-import WorkScheduleDetail from "./components/WorkScheduleDetail"
+import BranchCalendarDetail from "./components/BranchCalendarDetail"
 
 export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { addResponsabiltyItem: () => void, branch: ISucursal, children: React.ReactNode, onSuccess: () => void }) => {
     const t = useTranslations()
@@ -98,35 +98,21 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
             <Divider />
 
             {branch?.id && <HelpTabs small tabs={[
-                ...[
-                    {
-                        id: '1',
-                        title: t(`core.label.workSchedule`),
-                        tabContent: <WorkScheduleDetail
-                            schedule={branch.advance?.workSchedule as WorkSchedule}
-                            branch={branch}
-                            notifyBeforeMinutes={branch.advance?.notifyBeforeMinutes as number}
-
-                        />
-                    },
-                ],
-
-                ...([
-                    {
-                        id: '1',
-                        title: t(`sucursal.panel`),
-                        tabContent: <PanelStats />
-                    },
-                ]),
-
-
+                {
+                    id: '1',
+                    title: t('calendar.title'),
+                    tabContent: <BranchCalendarDetail branch={branch} />
+                },
                 {
                     id: '2',
+                    title: t(`sucursal.panel`),
+                    tabContent: <PanelStats />
+                },
+                {
+                    id: '3',
                     title: t("employee.list"),
                     tabContent: <EmployeeList addResponsabiltyItem={addResponsabiltyItem} >{children}</EmployeeList>
                 },
-
-
             ]} />}
 
 

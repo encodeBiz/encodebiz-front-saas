@@ -58,6 +58,7 @@ export type CalendarUpsertPayload = {
     branchId?: string;
     employeeId?: string;
     timezone?: string;
+    disabled?: boolean;
     defaultSchedule?: WeeklyScheduleWithBreaks;
     overridesSchedule?: WeeklyScheduleWithBreaks;
     holiday?: Holiday;

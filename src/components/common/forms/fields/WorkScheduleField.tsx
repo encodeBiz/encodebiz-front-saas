@@ -1,7 +1,6 @@
 import { Box, Divider, FormControlLabel, Grid, Switch, TextFieldProps, Typography } from "@mui/material";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { Field, FieldProps, useField } from "formik";
-import { useEffect, useState } from "react";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useAppLocale } from "@/hooks/useAppLocale";
@@ -61,14 +60,14 @@ const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
     ...props
 }) => {
 
-        const { workScheduleEnable, enableDayTimeRange, onHandleChange } = props
+        const { workScheduleEnable, enableDayTimeRange } = props
         const [field, , helper] = useField(props.name as string);
-        const [fieldValue, setFieldValue] = useState<WorkSchedule>(field.value ?? initialValues)
+        const fieldValue: WorkSchedule = field.value ?? initialValues;
         const { currentLocale } = useAppLocale()
         const t = useTranslations()
 
         const updateDay = (dayKey: DayKey, updater: (current: any) => any) => {
-            setFieldValue(prev => {
+            helper.setValue((prev: WorkSchedule) => {
                 const base = prev ?? fieldValue ?? initialValues;
                 const currentDay = (base as any)[dayKey] ?? { ...defaultDaySchedule };
                 const nextDay = updater({ ...currentDay });
@@ -78,11 +77,6 @@ const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
                 };
             });
         };
-
-        useEffect(() => {
-            helper.setValue(fieldValue)
-            if (typeof onHandleChange === 'function') onHandleChange(fieldValue)
-        }, [fieldValue, helper, onHandleChange])
 
 
 

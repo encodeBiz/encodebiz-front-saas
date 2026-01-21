@@ -6,7 +6,7 @@ import GenericTabs from "@/components/common/tabs/GenericTabs";
 import { TabItem } from "@/components/common/tabs/BaseTabs";
 import { useTranslations } from "next-intl";
 import EntityCalendarTab from "./components/EntityCalendarTab";
-import EmptyState from "@/components/common/EmptyState/EmptyState";
+import BranchCalendarTab from "./components/BranchCalendarTab";
 
 const CalendarPage = () => {
     const t = useTranslations('calendar');
@@ -20,7 +20,7 @@ const CalendarPage = () => {
         {
             id: 'branch',
             label: t('tabs.branch'),
-            content: <EmptyState description={t('tabs.comingSoon')} />
+            content: <BranchCalendarTab />
         },
     ];
 
