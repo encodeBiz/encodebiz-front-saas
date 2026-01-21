@@ -21,12 +21,9 @@ import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useAppLocale } from "@/hooks/useAppLocale";
 import AddressComplexInput from "@/components/common/forms/fields/AddressComplexInput";
-import { Alert, Box, Typography } from "@mui/material";
-import { InfoOutline } from "@mui/icons-material";
-import WorkScheduleField from "@/components/common/forms/fields/WorkScheduleField";
 import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
 import { useFormStatus } from "@/hooks/useFormStatus";
-import CalendarConfig from "@/app/main/[entityId]/checkinbiz/calendar/components/CalendarConfig";
+import CalendarSection from "@/app/main/[entityId]/checkinbiz/calendar/components/CalendarSection";
 
 
 export default function useFormController(isFromModal: boolean, onSuccess?: () => void) {
@@ -43,7 +40,6 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const { open, closeModal, openModal } = useCommonModal()
   const { id } = useParams<{ id: string }>()
   const itemId = isFromModal ? open.args?.id : id
-  const [disableBreak, setDisableBreak] = useState(false)
   const [, setDisableRatioChecklog] = useState(false)
   const [scheduleLoaded, setScheduleLoaded] = useState(false)
 
@@ -129,7 +125,6 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       }
 
       const branchIdToUse = itemId ?? (values.id as string | undefined)
-      // calendar handled via CalendarConfig
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
 
@@ -229,25 +224,27 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     {
       name: 'calendarConfig',
       label: t('calendar.title'),
-      component: CalendarConfig,
+      component: CalendarSection,
       fullWidth: true,
       extraProps: {
+        textAlign: 'left',
         scope: 'branch',
         entityId: currentEntity?.entity.id,
         branchId: itemId,
         timezone: (initialValues as any)?.address?.timeZone ?? currentEntity?.entity?.legal?.address?.timeZone ?? "UTC",
-        initialSchedule: (formStatus?.values as any)?.overridesSchedule,
+        initialSchedule: initialValues?.overridesSchedule,
         initialAdvance: {
-          enableDayTimeRange: (formStatus?.values as any)?.enableDayTimeRange,
-          disableBreak: (formStatus?.values as any)?.disableBreak,
-          timeBreak: (formStatus?.values as any)?.timeBreak,
-          notifyBeforeMinutes: (formStatus?.values as any)?.notifyBeforeMinutes,
+          enableDayTimeRange: initialValues?.enableDayTimeRange,
+          disableBreak: initialValues?.disableBreak,
+          timeBreak: initialValues?.timeBreak,
+          notifyBeforeMinutes: initialValues?.notifyBeforeMinutes,
         },
         initialDisabled: (formStatus?.values as any)?.disabled,
         initialHolidays: [],
         token: token,
         locale: currentLocale,
-        onSaved: () => { }
+        onSaved: () => { },
+        hide: !scheduleLoaded,
       }
     },
 
@@ -283,7 +280,6 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         notifyBeforeMinutes: 15,
       };
 
-      setDisableBreak(sucursal?.advance?.disableBreak ?? false)
       setDisableRatioChecklog((!sucursal?.disableRatioChecklog))
       setInitialValues({
         address: sucursal.address,

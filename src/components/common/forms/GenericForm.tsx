@@ -110,7 +110,7 @@ const FieldItem = ({ field, i, formikProps, column, disabled }: { field: FormFie
         md: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4,
         lg: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4,
         xl: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4
-      }} key={field.name} sx={{ width: '100%', textAlign: 'center', }}>
+      }} key={field.name} sx={{ width: '100%', textAlign: field.extraProps?.textAlign ?? 'center', }}>
         <FieldComponent
 
           name={field.name}
