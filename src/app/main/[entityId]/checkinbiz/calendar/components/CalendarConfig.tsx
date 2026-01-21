@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { Accordion, AccordionDetails, AccordionSummary, Alert, Box, Divider, FormControlLabel, IconButton, Stack, Switch, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { ExpandMoreOutlined, AddOutlined, EditOutlined, DeleteOutline } from "@mui/icons-material";
-import { Formik, Form } from "formik";
+import { Formik, Form, Field } from "formik";
 import { useTranslations } from "next-intl";
 import WorkScheduleField from "@/components/common/forms/fields/WorkScheduleField";
 import { DayScheduleWithBreaks, Holiday, WeeklyScheduleWithBreaks } from "@/domain/features/checkinbiz/ICalendar";
@@ -239,8 +239,9 @@ export function CalendarConfig({
                                                 control={<Switch checked={!disableSchedule} onChange={(e) => setFieldValue('disabled', !e.target.checked)} />}
                                                 label={t('core.label.workScheduleEnable')}
                                             />
-                                            <WorkScheduleField
+                                            <Field
                                                 name="overridesSchedule"
+                                                component={WorkScheduleField as any}
                                                 enableDayTimeRange
                                                 workScheduleEnable={!disableSchedule}
                                             />

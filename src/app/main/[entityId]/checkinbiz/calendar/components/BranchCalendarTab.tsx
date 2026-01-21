@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { Accordion, AccordionDetails, AccordionSummary, Alert, Box, Divider, FormControlLabel, IconButton, MenuItem, Select, Stack, Switch, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { ExpandMoreOutlined, AddOutlined, EditOutlined, DeleteOutline } from "@mui/icons-material";
-import { Formik, Form } from "formik";
+import { Formik, Form, Field } from "formik";
 import { useTranslations } from "next-intl";
 import { SassButton } from "@/components/common/buttons/GenericButton";
 import HolidayModal from "./HolidayModal";
@@ -370,8 +370,9 @@ const BranchCalendarTab = () => {
                                     </Stack>
                                 </AccordionSummary>
                                 <AccordionDetails>
-                                    <WorkScheduleField
+                                    <Field
                                         name="overridesSchedule"
+                                        component={WorkScheduleField as any}
                                         enableDayTimeRange
                                         workScheduleEnable={!disableSchedule}
                                     />
