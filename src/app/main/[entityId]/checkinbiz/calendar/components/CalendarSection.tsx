@@ -3,7 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { Accordion, AccordionDetails, AccordionSummary, Alert, Box, Divider, FormControlLabel, IconButton, Stack, Switch, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { ExpandMoreOutlined, AddOutlined, EditOutlined, DeleteOutline } from "@mui/icons-material";
-import { Formik, Form } from "formik";
+import { Formik } from "formik";
 import { useTranslations } from "next-intl";
 import { Holiday, WeeklyScheduleWithBreaks } from "@/domain/features/checkinbiz/ICalendar";
 import WorkScheduleField from "@/components/common/forms/fields/WorkScheduleField";
@@ -234,15 +234,9 @@ const CalendarSection = ({
   };
 
   return (
-    <Formik<FormValues>
-      initialValues={initialValues}
-      onSubmit={handleSave}
-      validate={validateForm}
-      enableReinitialize
-    >
-      {({ values, setFieldValue, isSubmitting, dirty }) => (
-        <Form>
-          <Stack spacing={3} sx={{ pb: 6, textAlign: "left" }}>
+    <Formik<FormValues> initialValues={initialValues} onSubmit={handleSave} validate={validateForm} enableReinitialize>
+      {({ values, setFieldValue, isSubmitting, dirty, handleSubmit }) => (
+        <Stack spacing={3} sx={{ pb: 6, textAlign: "left" }}>
             <Accordion defaultExpanded>
               <AccordionSummary expandIcon={<ExpandMoreOutlined />}>
                 <Stack>
@@ -370,7 +364,7 @@ const CalendarSection = ({
                 </Stack>
 
                 <Stack direction={{ xs: "column", sm: "row" }} justifyContent="flex-end" spacing={2} sx={{ mt: 3, mb: 2 }}>
-                  <SassButton type="submit" variant="contained" disabled={isSubmitting || !dirty}>
+                  <SassButton type="button" variant="contained" disabled={isSubmitting || !dirty} onClick={() => handleSubmit()}>
                     {t("actions.save")}
                   </SassButton>
                 </Stack>
@@ -457,8 +451,7 @@ const CalendarSection = ({
                 }}
               />
             )}
-          </Stack>
-        </Form>
+        </Stack>
       )}
     </Formik>
   );

@@ -153,7 +153,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   };
 
 
-  const fields = [
+  const baseFields: any[] = [
     {
       isDivider: true,
       label: t('sucursal.formFirstSectionTitle'),
@@ -213,41 +213,53 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         { value: 'inactive', label: t('core.label.inactive') },
       ],
     },
+  ];
 
-
-    {
+  if (itemId) {
+    baseFields.push(
+      {
+        isDivider: true,
+        label: t('calendar.title'),
+        hit: t('calendar.schedule.subtitle'),
+        extraProps: { disabledBottomMargin: true }
+      },
+      {
+        name: 'calendarConfig',
+        label: t('calendar.title'),
+        component: CalendarSection,
+        fullWidth: true,
+        extraProps: {
+          textAlign: 'left',
+          scope: 'branch',
+          entityId: currentEntity?.entity.id,
+          branchId: itemId,
+          timezone: (initialValues as any)?.address?.timeZone ?? currentEntity?.entity?.legal?.address?.timeZone ?? "UTC",
+          initialSchedule: initialValues?.overridesSchedule,
+          initialAdvance: {
+            enableDayTimeRange: initialValues?.enableDayTimeRange,
+            disableBreak: initialValues?.disableBreak,
+            timeBreak: initialValues?.timeBreak,
+            notifyBeforeMinutes: initialValues?.notifyBeforeMinutes,
+          },
+          initialDisabled: (formStatus?.values as any)?.disabled,
+          initialHolidays: [],
+          token: token,
+          locale: currentLocale,
+          onSaved: () => { },
+          hide: !scheduleLoaded,
+        }
+      }
+    );
+  } else {
+    baseFields.push({
       isDivider: true,
       label: t('calendar.title'),
       hit: t('calendar.schedule.subtitle'),
       extraProps: { disabledBottomMargin: true }
-    },
-    {
-      name: 'calendarConfig',
-      label: t('calendar.title'),
-      component: CalendarSection,
-      fullWidth: true,
-      extraProps: {
-        textAlign: 'left',
-        scope: 'branch',
-        entityId: currentEntity?.entity.id,
-        branchId: itemId,
-        timezone: (initialValues as any)?.address?.timeZone ?? currentEntity?.entity?.legal?.address?.timeZone ?? "UTC",
-        initialSchedule: initialValues?.overridesSchedule,
-        initialAdvance: {
-          enableDayTimeRange: initialValues?.enableDayTimeRange,
-          disableBreak: initialValues?.disableBreak,
-          timeBreak: initialValues?.timeBreak,
-          notifyBeforeMinutes: initialValues?.notifyBeforeMinutes,
-        },
-        initialDisabled: (formStatus?.values as any)?.disabled,
-        initialHolidays: [],
-        token: token,
-        locale: currentLocale,
-        onSaved: () => { },
-        hide: !scheduleLoaded,
-      }
-    },
+    });
+  }
 
+  baseFields.push(
     {
       isDivider: true,
       label: t('core.label.aditionalData'),
@@ -261,7 +273,9 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       fullWidth: true,
       component: DynamicKeyValueInput,
     },
-  ];
+  );
+
+  const fields = baseFields;
 
   const fetchData = useCallback(async () => {
 
