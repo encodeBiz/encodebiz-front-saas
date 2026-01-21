@@ -23,6 +23,10 @@ import { useAppLocale } from "@/hooks/useAppLocale";
 import AddressComplexInput from "@/components/common/forms/fields/AddressComplexInput";
 import { Alert, Box, Typography } from "@mui/material";
 import { InfoOutline } from "@mui/icons-material";
+import WorkScheduleField from "@/components/common/forms/fields/WorkScheduleField";
+import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
+import { useFormStatus } from "@/hooks/useFormStatus";
+import CalendarConfig from "@/app/main/[entityId]/checkinbiz/calendar/components/CalendarConfig";
 
 
 export default function useFormController(isFromModal: boolean, onSuccess?: () => void) {
@@ -34,12 +38,14 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
   const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
+  const { formStatus } = useFormStatus()
 
   const { open, closeModal, openModal } = useCommonModal()
   const { id } = useParams<{ id: string }>()
   const itemId = isFromModal ? open.args?.id : id
   const [disableBreak, setDisableBreak] = useState(false)
   const [, setDisableRatioChecklog] = useState(false)
+  const [scheduleLoaded, setScheduleLoaded] = useState(false)
 
   const [initialValues, setInitialValues] = useState<Partial<any>>({
     "name": '',
@@ -57,6 +63,18 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     "disableBreak": false, //poner texto  explicativo en los detalles y el form
     "timeBreak": 60,
     notifyBeforeMinutes: 15,
+    enableDayTimeRange: false,
+    overridesSchedule: {
+      monday: { enabled: true, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
+      tuesday: { enabled: true, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
+      wednesday: { enabled: true, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
+      thursday: { enabled: true, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
+      friday: { enabled: true, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
+      saturday: { enabled: true, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
+      sunday: { enabled: false, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
+    },
+    disabled: false,
+    holidaysInfo: '',
   });
 
   const defaultValidationSchema: any = {
@@ -103,8 +121,15 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
       if (itemId)
         await updateSucursal(data, token, currentLocale)
-      else
-        await createSucursal(data, token, currentLocale)
+      else {
+        const resp = await createSucursal(data, token, currentLocale)
+        if (resp?.id) {
+          values.id = resp.id
+        }
+      }
+
+      const branchIdToUse = itemId ?? (values.id as string | undefined)
+      // calendar handled via CalendarConfig
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
 
@@ -197,58 +222,33 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
     {
       isDivider: true,
-      label: t('core.label.advance'),
+      label: t('calendar.title'),
+      hit: t('calendar.schedule.subtitle'),
+      extraProps: { disabledBottomMargin: true }
     },
     {
-      isDivider: true,
-      label: t('core.label.adviseWorkDay'),
-      hit: t('core.label.adviseWorkDayText'),
-    },
-    {
-      name: 'notifyBeforeMinutes',
-      label: t('core.label.minute'),
-      type: 'number',
-      component: TextInput,
-    },
-
-    {
-      isCollapse: true,
-      column: 3,
-      hit: t('core.label.timeBreakDesc'),
-      label: t('core.label.breakTimeRange'),
+      name: 'calendarConfig',
+      label: t('calendar.title'),
+      component: CalendarConfig,
+      fullWidth: true,
       extraProps: {
-        alertMessage: <Box>
-          <Alert sx={{ borderRadius: 2, mt: 2, color: '#FFF', bgcolor: theme => disableBreak ? theme.palette.primary.main : theme.palette.grey[800] }} icon={<InfoOutline sx={{ color: '#FFF' }} />} >
-            {disableBreak ? <><Typography>{t('sucursal.fieldHelp1')} <strong>{t('sucursal.fieldHelp2')}</strong>{t('sucursal.fieldHelp3')}</Typography>
-              <Typography>{t('sucursal.fieldHelp4')}<strong>{t('sucursal.fieldHelp5')}</strong>{t('sucursal.fieldHelp6')}</Typography>
-              <Typography>{t('sucursal.fieldHelp7')}</Typography>
-            </> : <>
-              <Typography>{t('sucursal.fieldHelp8')} <strong>{t('sucursal.fieldHelp9')}</strong>{t('sucursal.fieldHelp10')}</Typography>
-              <Typography>{t('sucursal.fieldHelp11')}</Typography>
-            </>}
-          </Alert>
-        </Box>
-      },
-      fieldList: [
-
-        {
-          name: 'timeBreak',
-          label: t('core.label.timeBreak'),
-          component: TextInput,
-          type: 'number',
-          required: true,
+        scope: 'branch',
+        entityId: currentEntity?.entity.id,
+        branchId: itemId,
+        timezone: (initialValues as any)?.address?.timeZone ?? currentEntity?.entity?.legal?.address?.timeZone ?? "UTC",
+        initialSchedule: (formStatus?.values as any)?.overridesSchedule,
+        initialAdvance: {
+          enableDayTimeRange: (formStatus?.values as any)?.enableDayTimeRange,
+          disableBreak: (formStatus?.values as any)?.disableBreak,
+          timeBreak: (formStatus?.values as any)?.timeBreak,
+          notifyBeforeMinutes: (formStatus?.values as any)?.notifyBeforeMinutes,
         },
-        {
-          name: 'disableBreak',
-          label: disableBreak ? t('sucursal.breakEnableText') : t('sucursal.breakDisabledText'),
-          component: ToggleInput,
-          required: true,
-          extraProps: {
-            onHandleChange: setDisableBreak
-          },
-        },
-
-      ]
+        initialDisabled: (formStatus?.values as any)?.disabled,
+        initialHolidays: [],
+        token: token,
+        locale: currentLocale,
+        onSaved: () => { }
+      }
     },
 
     {
@@ -271,13 +271,22 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const sucursal: ISucursal = await fetchSucursal(currentEntity?.entity.id as string, itemId)
-
+      const entityCalendar = await getRefByPathData(`entities/${currentEntity?.entity.id}/calendar/config`);
+      const branchCalendar = await getRefByPathData(`entities/${currentEntity?.entity.id}/branches/${itemId}/calendar/config`);
+      const fallbackSchedule = entityCalendar?.defaultSchedule ? Object.fromEntries(
+        Object.entries(entityCalendar.defaultSchedule).map(([k, v]: any) => [k, { ...v, enabled: true }])
+      ) : initialValues.overridesSchedule;
+      const fallbackAdvance = entityCalendar?.advance ?? {
+        enableDayTimeRange: false,
+        disableBreak: false,
+        timeBreak: 30,
+        notifyBeforeMinutes: 15,
+      };
 
       setDisableBreak(sucursal?.advance?.disableBreak ?? false)
       setDisableRatioChecklog((!sucursal?.disableRatioChecklog))
       setInitialValues({
         address: sucursal.address,
-
         postalCode: sucursal.address.postalCode,
         disableRatioChecklog: !sucursal.disableRatioChecklog,
         status: sucursal.status,
@@ -285,11 +294,14 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         name: sucursal.name,
         nif: sucursal.nif ?? 'N/A',
         metadata: objectToArray(sucursal.metadata),
-        "disableBreak": sucursal?.advance?.disableBreak,
-        "timeBreak": sucursal?.advance?.timeBreak,
-        notifyBeforeMinutes: sucursal?.advance?.notifyBeforeMinutes,
-
+        disableBreak: branchCalendar?.advance?.disableBreak ?? fallbackAdvance.disableBreak,
+        timeBreak: branchCalendar?.advance?.timeBreak ?? fallbackAdvance.timeBreak,
+        notifyBeforeMinutes: branchCalendar?.advance?.notifyBeforeMinutes ?? fallbackAdvance.notifyBeforeMinutes,
+        enableDayTimeRange: branchCalendar?.advance?.enableDayTimeRange ?? fallbackAdvance.enableDayTimeRange,
+        overridesSchedule: branchCalendar?.overridesSchedule ?? fallbackSchedule,
+        disabled: branchCalendar?.disabled ?? false,
       })
+      setScheduleLoaded(true)
       changeLoaderState({ show: false })
     } catch (error: any) {
       changeLoaderState({ show: false })
@@ -300,6 +312,38 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   useEffect(() => {
     if (currentEntity?.entity.id && user?.id && itemId)
       fetchData()
+    else if (currentEntity?.entity.id && !itemId) {
+      // carga fallback de entidad para alta
+      (async () => {
+        try {
+          changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+          const entityCalendar = await getRefByPathData(`entities/${currentEntity?.entity.id}/calendar/config`);
+          const fallbackSchedule = entityCalendar?.defaultSchedule ? Object.fromEntries(
+            Object.entries(entityCalendar.defaultSchedule).map(([k, v]: any) => [k, { ...v, enabled: true }])
+          ) : initialValues.overridesSchedule;
+          const fallbackAdvance = entityCalendar?.advance ?? {
+            enableDayTimeRange: false,
+            disableBreak: false,
+            timeBreak: 30,
+            notifyBeforeMinutes: 15,
+          };
+          setInitialValues(prev => ({
+            ...prev,
+            overridesSchedule: fallbackSchedule,
+            enableDayTimeRange: fallbackAdvance.enableDayTimeRange,
+            disableBreak: fallbackAdvance.disableBreak,
+            timeBreak: fallbackAdvance.timeBreak,
+            notifyBeforeMinutes: fallbackAdvance.notifyBeforeMinutes,
+            disabled: false,
+          }))
+          setScheduleLoaded(true)
+        } catch (error) {
+          // ignore
+        } finally {
+          changeLoaderState({ show: false })
+        }
+      })()
+    }
   }, [currentEntity?.entity.id, user?.id, itemId])
 
 
