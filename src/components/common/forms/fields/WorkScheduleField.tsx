@@ -83,9 +83,13 @@ const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
         return (<LocalizationProvider dateAdapter={AdapterDayjs} localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}><Box display={'flex'} justifyItems={'center'} alignItems={'center'} >
             <Box alignItems="flex-start" gap={2} justifyContent={'space-evenly'} display={'flex'} flexDirection={'column'} width={'100%'}>
 
-                {DAYS.map((day) => (
-                    <Box key={day.key} sx={{ mb: 3 }} width={'100%'}>
-                        <Grid spacing={2} alignItems="center" gap={2} justifyContent={'space-between'} display={'flex'} flexDirection={'row'} width={'100%'}>
+                {DAYS.map((day) => {
+                    const dayValue = (fieldValue as any)[day.key] ?? { ...defaultDaySchedule };
+                    const startValue = dayValue?.start ? createDayjsTime(dayValue.start.hour as number, dayValue.start.minute as number) : null;
+                    const endValue = dayValue?.end ? createDayjsTime(dayValue.end.hour as number, dayValue.end.minute as number) : null;
+                    return (
+                        <Box key={day.key} sx={{ mb: 3 }} width={'100%'}>
+                            <Grid spacing={2} alignItems="center" gap={2} justifyContent={'space-between'} display={'flex'} flexDirection={'row'} width={'100%'}>
                             <Grid display={'flex'} width={'20%'} alignItems="flex-start" justifyContent={'flex-start'} flexDirection={{
                                 xs: 'column',
                                 sm: 'column',
@@ -93,13 +97,11 @@ const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
                                 lg: 'row',
                                 xl: 'row',
                             }} >
-                                <Field name={`${day.key}.enabled`}>
-                                    {() => (
                                         <FormControlLabel
                                             control={
                                                 <Switch
                                                     disabled={!workScheduleEnable}
-                                                    checked={fieldValue[day.key]?.enabled}
+                                                    checked={!!dayValue?.enabled}
                                                     onChange={(e) => {
                                                         updateDay(day.key, (current) => ({
                                                             ...current,
@@ -115,8 +117,6 @@ const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
                                                 </Typography>
                                             }
                                         />
-                                    )}
-                                </Field>
                             </Grid>
 
 
@@ -132,13 +132,12 @@ const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
                                 <Grid container spacing={1}>
                                     <TimePicker label={t('core.label.startTime')} localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}
                                         //minTime={dayjs(props.name === 'endTime' ? new Date(formStatus?.values?.startTime) ?? new Date() : new Date())}
-                                        value={createDayjsTime(fieldValue[day.key]?.start?.hour as number, fieldValue[day.key]?.start?.minute as number)}
-                                        defaultValue={createDayjsTime(fieldValue[day.key]?.start?.hour as number, fieldValue[day.key]?.start?.minute as number)}
+                                        value={startValue}
                                         onChange={(e) => {
                                             updateDay(day.key, (current) => ({
                                                 ...current,
                                                 start: {
-                                                    ...(current?.start ?? fieldValue[day.key]?.start),
+                                                    ...(current?.start ?? dayValue?.start),
                                                     minute: e?.toDate().getMinutes(),
                                                     hour: e?.toDate().getHours()
                                                 }
@@ -167,13 +166,12 @@ const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
                                 }} >
                                     <TimePicker label={t('core.label.endTime')} localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}
                                         //minTime={dayjs(props.name === 'endTime' ? new Date(formStatus?.values?.startTime) ?? new Date() : new Date())}
-                                        value={createDayjsTime(fieldValue[day.key]?.end?.hour as number, fieldValue[day.key]?.end?.minute as number)}
-                                        defaultValue={createDayjsTime(fieldValue[day.key]?.end?.hour as number, fieldValue[day.key]?.end?.minute as number)}
+                                        value={endValue}
                                         onChange={(e) => {
                                             updateDay(day.key, (current) => ({
                                                 ...current,
                                                 end: {
-                                                    ...(current?.end ?? fieldValue[day.key]?.end),
+                                                    ...(current?.end ?? dayValue?.end),
                                                     minute: e?.toDate().getMinutes(),
                                                     hour: e?.toDate().getHours()
                                                 }
@@ -186,17 +184,17 @@ const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
                             </Grid>
 
                             {typeof props.renderDayExtras === 'function' && <Box mt={1} width="100%">
-                                {props.renderDayExtras({
-                                    dayKey: day.key,
-                                    dayLabel: day.label,
-                                    dayValue: (fieldValue as any)[day.key],
-                                    onChange: (updater) => updateDay(day.key, updater),
-                                })}
-                            </Box>}
-                        </Grid>
-                        <Divider sx={{ mt: 2 }} />
-                    </Box>
-                ))}
+                                    {props.renderDayExtras({
+                                        dayKey: day.key,
+                                        dayLabel: day.label,
+                                        dayValue,
+                                        onChange: (updater) => updateDay(day.key, updater),
+                                    })}
+                                </Box>}
+                            </Grid>
+                            <Divider sx={{ mt: 2 }} />
+                        </Box>
+                )})}
 
 
             </Box>

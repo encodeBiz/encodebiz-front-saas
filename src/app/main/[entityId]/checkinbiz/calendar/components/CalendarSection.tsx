@@ -1,7 +1,25 @@
 'use client';
 
-import { useCallback, useMemo, useState } from "react";
-import { Accordion, AccordionDetails, AccordionSummary, Alert, Box, Divider, FormControlLabel, IconButton, Stack, Switch, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Alert,
+  Box,
+  Divider,
+  FormControlLabel,
+  IconButton,
+  Stack,
+  Switch,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { ExpandMoreOutlined, AddOutlined, EditOutlined, DeleteOutline } from "@mui/icons-material";
 import { Formik } from "formik";
 import { useTranslations } from "next-intl";
@@ -30,6 +48,20 @@ type Props = {
   };
   initialHolidays?: Holiday[];
   onSaved?: () => void;
+  hideSaveButton?: boolean;
+  disableHolidayActions?: boolean;
+  onChange?: (data: {
+    values: FormValues;
+    payloadSchedule: WeeklyScheduleWithBreaks;
+    advance: {
+      enableDayTimeRange: boolean;
+      disableBreak?: boolean;
+      timeBreak?: number;
+      notifyBeforeMinutes?: number;
+    };
+    holidays: Holiday[];
+    dirty: boolean;
+  }) => void;
 };
 
 type FormValues = {
@@ -50,22 +82,13 @@ const DAY_ITEMS = [
   { key: "sunday", label: "Domingo" },
 ] as const;
 
-const minutesOf = (time?: { hour?: number; minute?: number }) =>
-  (time?.hour ?? 0) * 60 + (time?.minute ?? 0);
+const minutesOf = (time?: { hour?: number; minute?: number }) => (time?.hour ?? 0) * 60 + (time?.minute ?? 0);
 
-const sanitizeSchedule = (
-  schedule: WeeklyScheduleWithBreaks,
-  enableDayTimeRange: boolean
-): WeeklyScheduleWithBreaks => {
+const sanitizeSchedule = (schedule: WeeklyScheduleWithBreaks, enableDayTimeRange: boolean): WeeklyScheduleWithBreaks => {
   const cleaned: WeeklyScheduleWithBreaks = {};
   DAY_ITEMS.forEach((day) => {
     const dayValue = schedule[day.key];
-    if (
-      dayValue?.enabled &&
-      dayValue.start &&
-      dayValue.end &&
-      minutesOf(dayValue.start) < minutesOf(dayValue.end)
-    ) {
+    if (dayValue?.enabled && dayValue.start && dayValue.end && minutesOf(dayValue.start) < minutesOf(dayValue.end)) {
       cleaned[day.key] = {
         start: dayValue.start,
         end: dayValue.end,
@@ -89,22 +112,37 @@ const CalendarSection = ({
   initialAdvance,
   initialHolidays,
   onSaved,
+  hideSaveButton = false,
+  disableHolidayActions = false,
+  onChange,
 }: Props) => {
   const t = useTranslations("calendar");
   const tCore = useTranslations("core.label");
   const tSucursal = useTranslations("sucursal");
   const { currentLocale } = useAppLocale();
 
-  const initialValues: FormValues = useMemo(
-    () => ({
-      schedule: initialSchedule ?? {},
+  const initialValues: FormValues = useMemo(() => {
+    const normalizedSchedule: WeeklyScheduleWithBreaks = {};
+    DAY_ITEMS.forEach((day) => {
+      const dayValue = initialSchedule?.[day.key];
+      if (dayValue && dayValue.start && dayValue.end) {
+        normalizedSchedule[day.key] = { ...dayValue, enabled: dayValue.enabled ?? true };
+      } else {
+        normalizedSchedule[day.key] = {
+          enabled: false,
+          start: { hour: 9, minute: 0 },
+          end: { hour: 17, minute: 0 },
+        };
+      }
+    });
+    return {
+      schedule: normalizedSchedule,
       enableDayTimeRange: initialAdvance?.enableDayTimeRange ?? false,
       notifyBeforeMinutes: initialAdvance?.notifyBeforeMinutes ?? 15,
       disableBreak: initialAdvance?.disableBreak ?? false,
       timeBreak: initialAdvance?.timeBreak ?? 60,
-    }),
-    [initialAdvance, initialSchedule]
-  );
+    };
+  }, [initialAdvance, initialSchedule]);
 
   const [holidays, setHolidays] = useState<Holiday[]>(initialHolidays ?? []);
   const [openHolidayModal, setOpenHolidayModal] = useState(false);
@@ -133,10 +171,7 @@ const CalendarSection = ({
 
       if (
         values.disableBreak &&
-        (values.timeBreak === undefined ||
-          values.timeBreak === null ||
-          Number.isNaN(Number(values.timeBreak)) ||
-          Number(values.timeBreak) <= 0)
+        (values.timeBreak === undefined || values.timeBreak === null || Number.isNaN(Number(values.timeBreak)) || Number(values.timeBreak) <= 0)
       ) {
         errors.timeBreak = t("errors.badRequest");
       }
@@ -235,9 +270,24 @@ const CalendarSection = ({
 
   return (
     <Formik<FormValues> initialValues={initialValues} onSubmit={handleSave} validate={validateForm} enableReinitialize>
-      {({ values, setFieldValue, isSubmitting, dirty, handleSubmit }) => (
-        <Stack spacing={3} sx={{ pb: 6, textAlign: "left" }}>
-            <Accordion defaultExpanded>
+      {({ values, setFieldValue, isSubmitting, dirty, handleSubmit }) => {
+        const payloadSchedule = sanitizeSchedule(values.schedule, values.enableDayTimeRange);
+        const advance = {
+          enableDayTimeRange: values.enableDayTimeRange,
+          disableBreak: values.disableBreak,
+          timeBreak: values.timeBreak,
+          notifyBeforeMinutes: values.notifyBeforeMinutes,
+        };
+
+        useEffect(() => {
+          if (onChange) {
+            onChange({ values, payloadSchedule, advance, holidays, dirty });
+          }
+        }, [advance, dirty, holidays, onChange, payloadSchedule, values]);
+
+        return (
+          <Stack spacing={3} sx={{ pb: 6, textAlign: "left" }}>
+            <Accordion defaultExpanded={!hideSaveButton}>
               <AccordionSummary expandIcon={<ExpandMoreOutlined />}>
                 <Stack>
                   <Typography fontWeight={600}>{t("schedule.title")}</Typography>
@@ -253,10 +303,7 @@ const CalendarSection = ({
                 <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems="center">
                   <FormControlLabel
                     control={
-                      <Switch
-                        checked={values.enableDayTimeRange}
-                        onChange={(e) => setFieldValue("enableDayTimeRange", e.target.checked)}
-                      />
+                      <Switch checked={values.enableDayTimeRange} onChange={(e) => setFieldValue("enableDayTimeRange", e.target.checked)} />
                     }
                     label={t("schedule.strictRange")}
                   />
@@ -303,12 +350,7 @@ const CalendarSection = ({
                   </Box>
                   <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems="center">
                     <FormControlLabel
-                      control={
-                        <Switch
-                          checked={!!values.disableBreak}
-                          onChange={(e) => setFieldValue("disableBreak", e.target.checked)}
-                        />
-                      }
+                      control={<Switch checked={!!values.disableBreak} onChange={(e) => setFieldValue("disableBreak", e.target.checked)} />}
                       label={tSucursal("breakEnableText")}
                     />
                     <TextField
@@ -363,15 +405,17 @@ const CalendarSection = ({
                   <Typography variant="body2">{t("notes.toleranceHint")}</Typography>
                 </Stack>
 
-                <Stack direction={{ xs: "column", sm: "row" }} justifyContent="flex-end" spacing={2} sx={{ mt: 3, mb: 2 }}>
-                  <SassButton type="button" variant="contained" disabled={isSubmitting || !dirty} onClick={() => handleSubmit()}>
-                    {t("actions.save")}
-                  </SassButton>
-                </Stack>
+                {!hideSaveButton && (
+                  <Stack direction={{ xs: "column", sm: "row" }} justifyContent="flex-end" spacing={2} sx={{ mt: 3, mb: 2 }}>
+                    <SassButton type="button" variant="contained" disabled={isSubmitting || !dirty} onClick={() => handleSubmit()}>
+                      {t("actions.save")}
+                    </SassButton>
+                  </Stack>
+                )}
               </AccordionDetails>
             </Accordion>
 
-            <Accordion defaultExpanded>
+            <Accordion defaultExpanded={!hideSaveButton}>
               <AccordionSummary expandIcon={<ExpandMoreOutlined />}>
                 <Stack>
                   <Typography fontWeight={600}>{t("holidays.title")}</Typography>
@@ -381,18 +425,20 @@ const CalendarSection = ({
                 </Stack>
               </AccordionSummary>
               <AccordionDetails>
-                <Box display="flex" justifyContent="flex-end" mb={2}>
-                  <SassButton
-                    variant="contained"
-                    startIcon={<AddOutlined />}
-                    onClick={() => {
-                      setEditingHoliday(undefined);
-                      setOpenHolidayModal(true);
-                    }}
-                  >
-                    {t("actions.addHoliday")}
-                  </SassButton>
-                </Box>
+                {!disableHolidayActions && (
+                  <Box display="flex" justifyContent="flex-end" mb={2}>
+                    <SassButton
+                      variant="contained"
+                      startIcon={<AddOutlined />}
+                      onClick={() => {
+                        setEditingHoliday(undefined);
+                        setOpenHolidayModal(true);
+                      }}
+                    >
+                      {t("actions.addHoliday")}
+                    </SassButton>
+                  </Box>
+                )}
 
                 <Table size="small">
                   <TableHead>
@@ -417,18 +463,22 @@ const CalendarSection = ({
                         <TableCell>{holiday.date}</TableCell>
                         <TableCell>{holiday.description || "--"}</TableCell>
                         <TableCell align="right">
-                          <IconButton
-                            aria-label={t("actions.editHoliday")}
-                            onClick={() => {
-                              setEditingHoliday(holiday);
-                              setOpenHolidayModal(true);
-                            }}
-                          >
-                            <EditOutlined />
-                          </IconButton>
-                          <IconButton aria-label={t("actions.deleteHoliday")} onClick={() => handleHolidayDelete(holiday.id)}>
-                            <DeleteOutline />
-                          </IconButton>
+                          {!disableHolidayActions && (
+                            <>
+                              <IconButton
+                                aria-label={t("actions.editHoliday")}
+                                onClick={() => {
+                                  setEditingHoliday(holiday);
+                                  setOpenHolidayModal(true);
+                                }}
+                              >
+                                <EditOutlined />
+                              </IconButton>
+                              <IconButton aria-label={t("actions.deleteHoliday")} onClick={() => handleHolidayDelete(holiday.id)}>
+                                <DeleteOutline />
+                              </IconButton>
+                            </>
+                          )}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -437,7 +487,7 @@ const CalendarSection = ({
               </AccordionDetails>
             </Accordion>
 
-            {openHolidayModal && (
+            {openHolidayModal && !disableHolidayActions && (
               <HolidayModal
                 open={openHolidayModal}
                 initialValue={editingHoliday}
@@ -451,8 +501,9 @@ const CalendarSection = ({
                 }}
               />
             )}
-        </Stack>
-      )}
+          </Stack>
+        );
+      }}
     </Formik>
   );
 };

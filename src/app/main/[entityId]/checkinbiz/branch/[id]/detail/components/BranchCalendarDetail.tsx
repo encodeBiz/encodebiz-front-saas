@@ -23,6 +23,21 @@ type BranchCalendarConfig = {
     holidays?: Holiday[];
 };
 
+const mapScheduleWithEnabled = (schedule?: WeeklyScheduleWithBreaks, fallback?: WeeklyScheduleWithBreaks): WeeklyScheduleWithBreaks => {
+    const base = fallback ?? {};
+    const dayKeys = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const;
+    const result: WeeklyScheduleWithBreaks = {};
+    dayKeys.forEach((key) => {
+        const dayValue: any = schedule?.[key];
+        if (dayValue) {
+            result[key] = { ...dayValue, enabled: dayValue.enabled ?? true };
+        } else if ((base as any)[key]) {
+            result[key] = { ...(base as any)[key] };
+        }
+    });
+    return result;
+};
+
 const BranchCalendarDetail = ({ branch }: { branch: ISucursal }) => {
     const t = useTranslations('calendar');
     const tSucursal = useTranslations('sucursal');
@@ -85,9 +100,7 @@ const BranchCalendarDetail = ({ branch }: { branch: ISucursal }) => {
                 const entityPath = `entities/${entityId}/calendar/config`;
                 const entityData = await getRefByPathData(entityPath);
                 const entitySchedule: WeeklyScheduleWithBreaks = entityData?.defaultSchedule
-                    ? Object.fromEntries(
-                        Object.entries(entityData.defaultSchedule).map(([k, v]: any) => [k, { ...v, enabled: true }])
-                    ) as WeeklyScheduleWithBreaks
+                    ? mapScheduleWithEnabled(entityData.defaultSchedule as WeeklyScheduleWithBreaks, fallbackSchedule)
                     : fallbackSchedule;
                 const entityAdvance = entityData?.advance ?? fallbackAdvance;
 
@@ -95,7 +108,7 @@ const BranchCalendarDetail = ({ branch }: { branch: ISucursal }) => {
                 const data = await getRefByPathData(path);
                 if (data) {
                     setConfig({
-                        overridesSchedule: data.overridesSchedule ?? entitySchedule,
+                        overridesSchedule: mapScheduleWithEnabled(data.overridesSchedule as WeeklyScheduleWithBreaks | undefined, entitySchedule),
                         disabled: data.disabled ?? false,
                         advance: data.advance ?? entityAdvance,
                         holidays: Array.isArray(data.holidays) ? data.holidays : data.holiday ? [data.holiday] : [],

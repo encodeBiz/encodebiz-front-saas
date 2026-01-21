@@ -24,6 +24,7 @@ import AddressComplexInput from "@/components/common/forms/fields/AddressComplex
 import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
 import { useFormStatus } from "@/hooks/useFormStatus";
 import CalendarSection from "@/app/main/[entityId]/checkinbiz/calendar/components/CalendarSection";
+import { upsertCalendar } from "@/services/checkinbiz/calendar.service";
 
 
 export default function useFormController(isFromModal: boolean, onSuccess?: () => void) {
@@ -42,6 +43,8 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const itemId = isFromModal ? open.args?.id : id
   const [, setDisableRatioChecklog] = useState(false)
   const [scheduleLoaded, setScheduleLoaded] = useState(false)
+  const [calendarDraft, setCalendarDraft] = useState<any>(null)
+  const [initialCalendarHash, setInitialCalendarHash] = useState<string>("")
 
   const [initialValues, setInitialValues] = useState<Partial<any>>({
     "name": '',
@@ -91,6 +94,12 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     notifyBeforeMinutes: timeBreakRule(t),
   }
   const [validationSchema] = useState(defaultValidationSchema)
+  const buildCalendarHash = (data?: { payloadSchedule?: any; advance?: any; holidays?: any[] }) =>
+    JSON.stringify({
+      schedule: data?.payloadSchedule ?? {},
+      advance: data?.advance ?? {},
+      holidays: data?.holidays ?? [],
+    });
 
 
 
@@ -114,17 +123,60 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         }
       }
 
+      let branchIdToUse = itemId
+      if (itemId) {
+        const requests: Promise<any>[] = []
+        requests.push(updateSucursal(data, token, currentLocale))
 
-      if (itemId)
-        await updateSucursal(data, token, currentLocale)
-      else {
+        const currentCalendarHash = calendarDraft ? buildCalendarHash(calendarDraft) : initialCalendarHash
+        const calendarDirty = calendarDraft && currentCalendarHash !== initialCalendarHash
+
+        if (calendarDirty) {
+          requests.push(
+            upsertCalendar(
+              {
+                scope: "branch",
+                entityId: currentEntity?.entity.id as string,
+                branchId: itemId,
+                overridesSchedule: calendarDraft.payloadSchedule,
+                advance: calendarDraft.advance,
+                timezone: values.address?.timeZone ?? currentEntity?.entity?.legal?.address?.timeZone ?? "UTC",
+              } as any,
+              token,
+              currentLocale
+            )
+          )
+        }
+
+        await Promise.all(requests)
+        if (calendarDraft && calendarDirty) {
+          setInitialCalendarHash(currentCalendarHash)
+        }
+      } else {
         const resp = await createSucursal(data, token, currentLocale)
         if (resp?.id) {
           values.id = resp.id
+          branchIdToUse = resp.id
+        }
+        const currentCalendarHash = calendarDraft ? buildCalendarHash(calendarDraft) : initialCalendarHash
+        const calendarDirty = calendarDraft && currentCalendarHash !== initialCalendarHash
+        if (calendarDirty && branchIdToUse) {
+          await upsertCalendar(
+            {
+              scope: "branch",
+              entityId: currentEntity?.entity.id as string,
+              branchId: branchIdToUse,
+              overridesSchedule: calendarDraft.payloadSchedule,
+              advance: calendarDraft.advance,
+              timezone: values.address?.timeZone ?? currentEntity?.entity?.legal?.address?.timeZone ?? "UTC",
+            } as any,
+            token,
+            currentLocale
+          )
+          setInitialCalendarHash(currentCalendarHash)
         }
       }
 
-      const branchIdToUse = itemId ?? (values.id as string | undefined)
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
 
@@ -215,49 +267,42 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     },
   ];
 
-  if (itemId) {
-    baseFields.push(
-      {
-        isDivider: true,
-        label: t('calendar.title'),
-        hit: t('calendar.schedule.subtitle'),
-        extraProps: { disabledBottomMargin: true }
-      },
-      {
-        name: 'calendarConfig',
-        label: t('calendar.title'),
-        component: CalendarSection,
-        fullWidth: true,
-        extraProps: {
-          textAlign: 'left',
-          scope: 'branch',
-          entityId: currentEntity?.entity.id,
-          branchId: itemId,
-          timezone: (initialValues as any)?.address?.timeZone ?? currentEntity?.entity?.legal?.address?.timeZone ?? "UTC",
-          initialSchedule: initialValues?.overridesSchedule,
-          initialAdvance: {
-            enableDayTimeRange: initialValues?.enableDayTimeRange,
-            disableBreak: initialValues?.disableBreak,
-            timeBreak: initialValues?.timeBreak,
-            notifyBeforeMinutes: initialValues?.notifyBeforeMinutes,
-          },
-          initialDisabled: (formStatus?.values as any)?.disabled,
-          initialHolidays: [],
-          token: token,
-          locale: currentLocale,
-          onSaved: () => { },
-          hide: !scheduleLoaded,
-        }
-      }
-    );
-  } else {
-    baseFields.push({
+  baseFields.push(
+    {
       isDivider: true,
       label: t('calendar.title'),
       hit: t('calendar.schedule.subtitle'),
       extraProps: { disabledBottomMargin: true }
-    });
-  }
+    },
+    {
+      name: 'calendarConfig',
+      label: t('calendar.title'),
+      component: CalendarSection,
+      fullWidth: true,
+      extraProps: {
+        textAlign: 'left',
+        scope: 'branch',
+        entityId: currentEntity?.entity.id,
+        branchId: itemId,
+        timezone: (initialValues as any)?.address?.timeZone ?? currentEntity?.entity?.legal?.address?.timeZone ?? "UTC",
+        initialSchedule: initialValues?.overridesSchedule,
+        initialAdvance: {
+          enableDayTimeRange: initialValues?.enableDayTimeRange,
+          disableBreak: initialValues?.disableBreak,
+          timeBreak: initialValues?.timeBreak,
+          notifyBeforeMinutes: initialValues?.notifyBeforeMinutes,
+        },
+        initialHolidays: [],
+        token: token,
+        locale: currentLocale,
+        onSaved: () => { },
+        hide: !scheduleLoaded,
+        hideSaveButton: true,
+        disableHolidayActions: !itemId,
+        onChange: (data: any) => setCalendarDraft(data),
+      }
+    }
+  );
 
   baseFields.push(
     {
@@ -311,6 +356,18 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         overridesSchedule: branchCalendar?.overridesSchedule ?? fallbackSchedule,
         disabled: branchCalendar?.disabled ?? false,
       })
+      setInitialCalendarHash(
+        buildCalendarHash({
+          payloadSchedule: branchCalendar?.overridesSchedule ?? fallbackSchedule,
+          advance: {
+            enableDayTimeRange: branchCalendar?.advance?.enableDayTimeRange ?? fallbackAdvance.enableDayTimeRange,
+            disableBreak: branchCalendar?.advance?.disableBreak ?? fallbackAdvance.disableBreak,
+            timeBreak: branchCalendar?.advance?.timeBreak ?? fallbackAdvance.timeBreak,
+            notifyBeforeMinutes: branchCalendar?.advance?.notifyBeforeMinutes ?? fallbackAdvance.notifyBeforeMinutes,
+          },
+          holidays: [],
+        })
+      )
       setScheduleLoaded(true)
       changeLoaderState({ show: false })
     } catch (error: any) {
@@ -346,6 +403,18 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
             notifyBeforeMinutes: fallbackAdvance.notifyBeforeMinutes,
             disabled: false,
           }))
+          setInitialCalendarHash(
+            buildCalendarHash({
+              payloadSchedule: fallbackSchedule,
+              advance: {
+                enableDayTimeRange: fallbackAdvance.enableDayTimeRange,
+                disableBreak: fallbackAdvance.disableBreak,
+                timeBreak: fallbackAdvance.timeBreak,
+                notifyBeforeMinutes: fallbackAdvance.notifyBeforeMinutes,
+              },
+              holidays: [],
+            })
+          )
           setScheduleLoaded(true)
         } catch (error) {
           // ignore
