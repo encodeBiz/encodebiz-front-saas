@@ -148,7 +148,7 @@ const HolidayModal = ({ open, scope, initialValue, onClose, onSubmit, existingDa
                                     }}
                                     sx={{ maxWidth: 360, width: "100%", alignSelf: "center" }}
                                     slots={{
-                                        day: (dayProps: PickersDayProps<Dayjs>) => {
+                                        day: (dayProps: PickersDayProps) => {
                                             const start = formik.values.startDate ? dayjs(formik.values.startDate) : null;
                                             const end = formik.values.endDate ? dayjs(formik.values.endDate) : null;
                                             const isStart = start?.isSame(dayProps.day, "day");
