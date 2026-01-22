@@ -462,7 +462,12 @@ const CalendarSection = ({
                 </Stack>
               </AccordionSummary>
               <AccordionDetails>
-                <WorkScheduleField name="schedule" enableDayTimeRange={values.enableDayTimeRange} workScheduleEnable={!isOverridesDisabled} />
+                <WorkScheduleField
+                  name="schedule"
+                  enableDayTimeRange={values.enableDayTimeRange}
+                  workScheduleEnable={!isOverridesDisabled}
+                  onBulkApply={() => setScheduleExpanded(true)}
+                />
 
                 <Divider sx={{ my: 2 }} />
                 <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems="center">
@@ -594,9 +599,9 @@ const CalendarSection = ({
             <Accordion defaultExpanded={accordionInitialExpanded}>
               <AccordionSummary expandIcon={<ExpandMoreOutlined />}>
                 <Stack>
-                  <Typography fontWeight={600}>{t("holidays.title")}</Typography>
+                  <Typography fontWeight={600}>{scope === "employee" ? "Ausencias" : "Días libres"}</Typography>
                   <Typography color="text.secondary" variant="body2">
-                    {t("holidays.subtitle")}
+                    {scope === "employee" ? "Gestiona las ausencias del empleado." : "Gestiona los días libres que aplican a este nivel."}
                   </Typography>
                 </Stack>
               </AccordionSummary>
@@ -611,7 +616,7 @@ const CalendarSection = ({
                         setOpenHolidayModal(true);
                       }}
                     >
-                      {t("actions.addHoliday")}
+                      {scope === "employee" ? "Agregar ausencia" : "Agregar día libre"}
                     </SassButton>
                   </Box>
                 )}
@@ -666,7 +671,9 @@ const CalendarSection = ({
             {openHolidayModal && !disableHolidayActions && (
               <HolidayModal
                 open={openHolidayModal}
+                scope={scope}
                 initialValue={editingHoliday}
+                existingDates={holidays.map((h) => h.date)}
                 onClose={() => {
                   setOpenHolidayModal(false);
                   setEditingHoliday(undefined);

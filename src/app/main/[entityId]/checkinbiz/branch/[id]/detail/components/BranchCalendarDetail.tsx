@@ -135,6 +135,9 @@ const BranchCalendarDetail = ({ branch, refreshKey = 0 }: { branch: ISucursal; r
 
     const schedule = config?.overridesSchedule ?? fallbackSchedule;
     const overridesDisabled = config?.overridesDisabled ?? false;
+    const holidays = config?.holidays ?? [];
+    const holidaysTitle = "Días libres";
+    const holidaysSubtitle = "Aplica solo a esta sucursal. Puedes gestionar días libres locales.";
 
     return (
         <Stack spacing={3}>
@@ -263,8 +266,8 @@ const BranchCalendarDetail = ({ branch, refreshKey = 0 }: { branch: ISucursal; r
             <Accordion defaultExpanded>
                 <AccordionSummary expandIcon={<ExpandMoreOutlined />}>
                     <Stack>
-                        <Typography fontWeight={600}>{t('holidays.title')}</Typography>
-                        <Typography color="text.secondary" variant="body2">{t('holidays.subtitle')}</Typography>
+                        <Typography fontWeight={600}>{holidaysTitle}</Typography>
+                        <Typography color="text.secondary" variant="body2">{holidaysSubtitle}</Typography>
                     </Stack>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -277,14 +280,14 @@ const BranchCalendarDetail = ({ branch, refreshKey = 0 }: { branch: ISucursal; r
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {(config?.holidays ?? []).length === 0 && (
+                            {holidays.length === 0 && (
                                 <TableRow>
                                     <TableCell colSpan={3}>
                                         <Typography color="text.secondary">{t('holidays.empty')}</Typography>
                                     </TableCell>
                                 </TableRow>
                             )}
-                            {(config?.holidays ?? []).map((holiday) => (
+                            {holidays.map((holiday) => (
                                 <TableRow key={holiday.id}>
                                     <TableCell>{holiday.name}</TableCell>
                                     <TableCell>{holiday.date}</TableCell>

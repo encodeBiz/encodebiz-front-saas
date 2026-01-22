@@ -1,6 +1,6 @@
-import { Box, Divider, FormControlLabel, Grid, Switch, TextFieldProps, Typography } from "@mui/material";
+import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControlLabel, Grid, Stack, Switch, TextFieldProps, Typography } from "@mui/material";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import { useField } from "formik";
+import { useField, useFormikContext } from "formik";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useAppLocale } from "@/hooks/useAppLocale";
@@ -10,7 +10,9 @@ import { enUS } from '@mui/x-date-pickers/locales';
 import { createDayjsTime } from "@/lib/common/Date";
 import { WorkDaySchedule, WorkSchedule } from "@/domain/features/checkinbiz/ISucursal";
 import { useTranslations } from "next-intl";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import dayjs from "dayjs";
+import { SassButton } from "@/components/common/buttons/GenericButton";
 
 // Tipos
 
@@ -51,6 +53,7 @@ type WorkScheduleFieldProps = TextFieldProps & {
     onHandleChange?: (value: any) => void,
     enableDayTimeRange: boolean
     workScheduleEnable: boolean
+    onBulkApply?: () => void;
     renderDayExtras?: (args: {
         dayKey: DayKey;
         dayLabel: string;
@@ -63,28 +66,75 @@ const WorkScheduleField: React.FC<WorkScheduleFieldProps> = ({
     ...props
 }) => {
 
-        const { workScheduleEnable, enableDayTimeRange } = props
+        const { workScheduleEnable, enableDayTimeRange, onBulkApply } = props
         const [field, , helper] = useField(props.name as string);
         const fieldValue: WorkSchedule = field.value ?? initialValues;
+        const formik = useFormikContext<any>();
         const { currentLocale } = useAppLocale()
         const t = useTranslations()
+        const [bulkOpen, setBulkOpen] = useState(false);
+        const [bulkStart, setBulkStart] = useState(dayjs().hour(9).minute(0).second(0).millisecond(0));
+        const [bulkEnd, setBulkEnd] = useState(dayjs().hour(17).minute(0).second(0).millisecond(0));
 
         const updateDay = (dayKey: DayKey, updater: (current: any) => any) => {
-            helper.setValue((prev: WorkSchedule) => {
-                const base = prev ?? fieldValue ?? initialValues;
-                const currentDay = (base as any)[dayKey] ?? { ...defaultDaySchedule };
-                const nextDay = updater({ ...currentDay });
-                return {
-                    ...(base as any),
-                    [dayKey]: nextDay
+            const currentSchedule = (formik?.values?.[props.name] as any) ?? fieldValue ?? initialValues;
+            const base = currentSchedule ?? initialValues;
+            const currentDay = (base as any)[dayKey] ?? { ...defaultDaySchedule };
+            const nextDay = updater({ ...currentDay });
+            const next = {
+                ...(base as any),
+                [dayKey]: nextDay,
+            };
+            if (formik?.setFieldValue) formik.setFieldValue(props.name as string, next, true);
+            else helper.setValue(next);
+        };
+
+        const applyBulkTimes = (startHour: number, startMinute: number, endHour: number, endMinute: number) => {
+            const currentSchedule = (formik?.values?.[props.name] as any) ?? fieldValue ?? initialValues;
+            const base = currentSchedule ?? initialValues;
+            const next: any = { ...(base as any) };
+            DAYS.forEach((day) => {
+                const currentDay = (base as any)[day.key] ?? { ...defaultDaySchedule };
+                next[day.key] = {
+                    ...currentDay,
+                    start: { ...(currentDay.start ?? defaultDaySchedule.start), hour: startHour, minute: startMinute },
+                    end: { ...(currentDay.end ?? defaultDaySchedule.end), hour: endHour, minute: endMinute },
+                    enabled: true,
+                    disabled: false,
                 };
             });
+            if (formik?.setFieldValue) formik.setFieldValue(props.name as string, next, true);
+            else helper.setValue(next);
         };
 
 
 
         return (<LocalizationProvider dateAdapter={AdapterDayjs} localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}><Box display={'flex'} justifyItems={'center'} alignItems={'center'} >
             <Box alignItems="flex-start" gap={2} justifyContent={'space-evenly'} display={'flex'} flexDirection={'column'} width={'100%'}>
+
+                <Stack direction={{ xs: "column", sm: "row" }} justifyContent="flex-end" width="100%" spacing={1}>
+                    <SassButton
+                        type="button"
+                        size="small"
+                        variant="outlined"
+                        disabled={!workScheduleEnable}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            setBulkOpen(true);
+                        }}
+                        onMouseDown={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                        }}
+                        onMouseUp={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                        }}
+                    >
+                        Aplicar a todos los días
+                    </SassButton>
+                </Stack>
 
                 {DAYS.map((day) => {
                     const dayValue = (fieldValue as any)[day.key] ?? { ...defaultDaySchedule };
@@ -199,6 +249,70 @@ const WorkScheduleField: React.FC<WorkScheduleFieldProps> = ({
                             <Divider sx={{ mt: 2 }} />
                         </Box>
                 )})}
+
+                <Dialog
+                    open={bulkOpen}
+                    onClose={(e) => {
+                        e?.stopPropagation?.();
+                        setBulkOpen(false);
+                    }}
+                    fullWidth
+                    maxWidth="xs"
+                >
+                    <DialogTitle sx={{ fontWeight: 600 }}>Aplicar horario estándar</DialogTitle>
+                    <DialogContent dividers>
+                        <Stack spacing={3} mt={1}>
+                            <TimePicker
+                                label={t('core.label.startTime')}
+                                value={bulkStart}
+                                onChange={(e) => e && setBulkStart(e)}
+                            />
+                            <TimePicker
+                                label={t('core.label.endTime')}
+                                value={bulkEnd}
+                                onChange={(e) => e && setBulkEnd(e)}
+                            />
+                            <Typography variant="body2" color="text.secondary">
+                                Esta acción actualiza inicio y fin en todos los días del calendario actual.
+                            </Typography>
+                        </Stack>
+                    </DialogContent>
+                    <DialogActions>
+                        <SassButton
+                            type="button"
+                            onMouseDown={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                            }}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setBulkOpen(false);
+                            }}
+                        >
+                            {t('core.button.cancel')}
+                        </SassButton>
+                        <SassButton
+                            type="button"
+                            variant="contained"
+                            onMouseDown={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                            }}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                const startHour = bulkStart.hour();
+                                const startMinute = bulkStart.minute();
+                                const endHour = bulkEnd.hour();
+                                const endMinute = bulkEnd.minute();
+                                applyBulkTimes(startHour, startMinute, endHour, endMinute);
+                                setBulkOpen(false);
+                                onBulkApply?.();
+                            }}
+                        >
+                            Aceptar
+                        </SassButton>
+                    </DialogActions>
+                </Dialog>
 
 
             </Box>

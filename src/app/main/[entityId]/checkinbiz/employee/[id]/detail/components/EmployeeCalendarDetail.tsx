@@ -115,7 +115,7 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
           overridesSchedule: effectiveSchedule,
           overridesDisabled,
           advance: effectiveAdvance,
-          holidays: Array.isArray(data?.holidays) ? data?.holidays : data?.holiday ? [data?.holiday] : Array.isArray(entityData?.holidays) ? entityData?.holidays : [],
+          holidays: Array.isArray(data?.holidays) ? data?.holidays : data?.holiday ? [data?.holiday] : [],
         });
       } catch (error) {
         setConfig({
@@ -262,8 +262,8 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMoreOutlined />}>
           <Stack>
-            <Typography fontWeight={600}>{t('holidays.title')}</Typography>
-            <Typography color="text.secondary" variant="body2">{t('holidays.subtitle')}</Typography>
+            <Typography fontWeight={600}>Ausencias</Typography>
+            <Typography color="text.secondary" variant="body2">Ausencias registradas del empleado.</Typography>
           </Stack>
         </AccordionSummary>
         <AccordionDetails>
@@ -279,7 +279,7 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
               {(config?.holidays ?? []).length === 0 && (
                 <TableRow>
                   <TableCell colSpan={3}>
-                    <Typography color="text.secondary">{t('holidays.empty')}</Typography>
+                    <Typography color="text.secondary">Sin ausencias registradas.</Typography>
                   </TableCell>
                 </TableRow>
               )}
