@@ -20,9 +20,10 @@ import { Attedance } from "./Attedance/Attedance"
 import { onGoMap } from "@/lib/common/maps"
 import InfoModal from "@/components/common/modals/InfoModal"
 import { PanelStats } from "./dashboard/PanelStats"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useDashboardEmployee } from "./dashboard/DashboardEmployeeContext"
 import { useEntity } from "@/hooks/useEntity"
+import EmployeeCalendarDetail from "./components/EmployeeCalendarDetail"
 
 export const Detail = ({ employee, onResend, onSuccess, children }: { employee: IEmployee, onSuccess: () => void, onResend: (v: IEmployee) => void, children: React.ReactNode }) => {
     const t = useTranslations()
@@ -32,6 +33,7 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
     const backAction = search.get('back')
     const { initialize, employeePatternList } = useDashboardEmployee()
     const { currentEntity } = useEntity()
+    const [calendarRefreshKey, setCalendarRefreshKey] = useState(0);
 
     useEffect(() => {
         if (currentEntity?.entity?.id) {
@@ -148,6 +150,11 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
 
             <HelpTabs small tabs={[
                 {
+                    id: 'calendar',
+                    title: t('calendar.title'),
+                    tabContent: <EmployeeCalendarDetail employee={employee} refreshKey={calendarRefreshKey} />
+                },
+                {
                     id: '1',
                     title: t(`core.label.sucursalAsigned`),
                     tabContent: <Branch />
@@ -157,13 +164,11 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
                     title: t("checklog.list"),
                     tabContent: <Attedance>{children}</Attedance>
                 },
-                 {
-                        id: '2',
-                        title: t("employee.workProfile"),
-                        tabContent: <PanelStats />
-                    }
-
-
+                {
+                    id: '3',
+                    title: t("employee.workProfile"),
+                    tabContent: <PanelStats />
+                }
             ]} />
 
         </CardContent>
@@ -177,7 +182,7 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
             />
         }
 
-        {open.type === CommonModalType.FORM && <FormModal onSuccess={onSuccess} />}
+        {open.type === CommonModalType.FORM && <FormModal onSuccess={() => { onSuccess(); setCalendarRefreshKey((k) => k + 1); }} />}
         {open.type === CommonModalType.INFO && open.args?.id === 'maxSelectionBranch' && <InfoModal
             title={t('employee.linkToBranchNotTitle')}
             description={t('employee.linkToBranchNotText')}

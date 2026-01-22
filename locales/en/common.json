@@ -1601,7 +1601,9 @@
         "line1": "The system counts the actual worked time.",
         "line2": "Time worked before or after the scheduled range is added as extra.",
         "line3": "Late arrivals or early departures: discounted."
-      }
+      },
+      "baseSchedule": "Use base schedule",
+      "customSchedule": "Custom schedule"
     },
     "notes": {
       "inheritance": "Schedules inherit: Entity -> Branch -> Employee. If you don't override, the higher level applies.",

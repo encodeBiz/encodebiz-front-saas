@@ -13,7 +13,7 @@ import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 
 type BranchCalendarConfig = {
     overridesSchedule?: WeeklyScheduleWithBreaks;
-    disabled?: boolean;
+    overridesDisabled?: boolean;
     advance?: {
         enableDayTimeRange?: boolean;
         disableBreak?: boolean;
@@ -107,25 +107,21 @@ const BranchCalendarDetail = ({ branch, refreshKey = 0 }: { branch: ISucursal; r
 
                 const path = `entities/${entityId}/branches/${branchId}/calendar/config`;
                 const data = await getRefByPathData(path);
-                if (data) {
-                    setConfig({
-                        overridesSchedule: mapScheduleWithEnabled(data.overridesSchedule as WeeklyScheduleWithBreaks | undefined, entitySchedule),
-                        disabled: data.disabled ?? false,
-                        advance: data.advance ?? entityAdvance,
-                        holidays: Array.isArray(data.holidays) ? data.holidays : data.holiday ? [data.holiday] : [],
-                    });
-                } else {
-                    setConfig({
-                        overridesSchedule: entitySchedule,
-                        disabled: true,
-                        advance: entityAdvance,
-                        holidays: [],
-                    });
-                }
+                const overridesDisabled = data ? (data.overridesDisabled ?? false) : true;
+                const effectiveSchedule = overridesDisabled
+                    ? entitySchedule
+                    : mapScheduleWithEnabled(data?.overridesSchedule as WeeklyScheduleWithBreaks | undefined, entitySchedule);
+                const effectiveAdvance = overridesDisabled ? entityAdvance : data?.advance ?? entityAdvance;
+                setConfig({
+                    overridesSchedule: effectiveSchedule,
+                    overridesDisabled,
+                    advance: effectiveAdvance,
+                    holidays: Array.isArray(data?.holidays) ? data?.holidays : data?.holiday ? [data?.holiday] : [],
+                });
             } catch (error) {
                 setConfig({
                     overridesSchedule: fallbackSchedule,
-                    disabled: true,
+                    overridesDisabled: true,
                     advance: fallbackAdvance,
                     holidays: [],
                 });
@@ -138,7 +134,7 @@ const BranchCalendarDetail = ({ branch, refreshKey = 0 }: { branch: ISucursal; r
     }, [entityId, branchId, changeLoaderState, t, refreshKey]);
 
     const schedule = config?.overridesSchedule ?? fallbackSchedule;
-    const disabled = config?.disabled;
+    const overridesDisabled = config?.overridesDisabled ?? false;
 
     return (
         <Stack spacing={3}>
@@ -152,9 +148,9 @@ const BranchCalendarDetail = ({ branch, refreshKey = 0 }: { branch: ISucursal; r
                 <AccordionDetails>
                     <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
                         <Chip
-                            color={disabled ? "default" : "primary"}
+                            color="primary"
                             variant="outlined"
-                            label={disabled ? t('notes.inheritance') : t('schedule.title')}
+                            label={overridesDisabled ? t('schedule.baseSchedule') : t('schedule.customSchedule')}
                             size="small"
                         />
                     </Stack>

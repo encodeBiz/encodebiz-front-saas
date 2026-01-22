@@ -40,13 +40,30 @@ type Props = {
   token: string;
   locale?: any;
   initialSchedule?: WeeklyScheduleWithBreaks;
+  baseSchedule?: WeeklyScheduleWithBreaks;
+  overrideSchedule?: WeeklyScheduleWithBreaks;
   initialAdvance?: {
     enableDayTimeRange?: boolean;
     disableBreak?: boolean;
     timeBreak?: number;
     notifyBeforeMinutes?: number;
   };
+  baseAdvance?: {
+    enableDayTimeRange?: boolean;
+    disableBreak?: boolean;
+    timeBreak?: number;
+    notifyBeforeMinutes?: number;
+  };
+  overrideAdvance?: {
+    enableDayTimeRange?: boolean;
+    disableBreak?: boolean;
+    timeBreak?: number;
+    notifyBeforeMinutes?: number;
+  };
+  initialOverridesDisabled?: boolean;
   initialHolidays?: Holiday[];
+  formFieldName?: string;
+  setParentFieldValue?: (name: string, value: any) => void;
   onSaved?: () => void;
   hideSaveButton?: boolean;
   disableHolidayActions?: boolean;
@@ -61,6 +78,7 @@ type Props = {
     };
     holidays: Holiday[];
     dirty: boolean;
+    overridesDisabled: boolean;
   }) => void;
 };
 
@@ -70,6 +88,7 @@ type FormValues = {
   notifyBeforeMinutes?: number;
   disableBreak?: boolean;
   timeBreak?: number;
+  overridesDisabled: boolean;
 };
 
 const DAY_ITEMS = [
@@ -105,6 +124,7 @@ const sanitizeSchedule = (schedule: WeeklyScheduleWithBreaks, enableDayTimeRange
 const CalendarChangeReporter = ({
   holidays,
   onChange,
+  onHashChange,
 }: {
   holidays: Holiday[];
   onChange?: (data: {
@@ -118,7 +138,9 @@ const CalendarChangeReporter = ({
     };
     holidays: Holiday[];
     dirty: boolean;
+    overridesDisabled: boolean;
   }) => void;
+  onHashChange?: (hash: string) => void;
 }) => {
   const { values, dirty } = useFormikContext<FormValues>();
   const payloadSchedule = useMemo(() => sanitizeSchedule(values.schedule, values.enableDayTimeRange), [values.schedule, values.enableDayTimeRange]);
@@ -131,15 +153,17 @@ const CalendarChangeReporter = ({
     }),
     [values.disableBreak, values.enableDayTimeRange, values.notifyBeforeMinutes, values.timeBreak]
   );
-  const changeKey = useMemo(() => JSON.stringify({ payloadSchedule, advance, holidays }), [advance, holidays, payloadSchedule]);
+  const changeKey = useMemo(() => JSON.stringify({ payloadSchedule, advance, holidays, overridesDisabled: values.overridesDisabled }), [advance, holidays, payloadSchedule, values.overridesDisabled]);
   const lastKey = useRef<string | undefined>(undefined);
 
   useEffect(() => {
-    if (!onChange) return;
     if (lastKey.current === changeKey) return;
     lastKey.current = changeKey;
-    onChange({ values, payloadSchedule, advance, holidays, dirty });
-  }, [advance, changeKey, dirty, holidays, onChange, payloadSchedule, values]);
+    if (onChange) {
+      onChange({ values, payloadSchedule, advance, holidays, dirty, overridesDisabled: values.overridesDisabled });
+    }
+    if (onHashChange) onHashChange(changeKey);
+  }, [advance, changeKey, dirty, holidays, onChange, payloadSchedule, values, onHashChange]);
 
   return null;
 };
@@ -153,8 +177,15 @@ const CalendarSection = ({
   token,
   locale,
   initialSchedule,
+  baseSchedule,
+  overrideSchedule,
   initialAdvance,
+  baseAdvance,
+  overrideAdvance,
+  initialOverridesDisabled,
   initialHolidays,
+  formFieldName,
+  setParentFieldValue,
   onSaved,
   hideSaveButton = false,
   disableHolidayActions = false,
@@ -165,15 +196,15 @@ const CalendarSection = ({
   const tSucursal = useTranslations("sucursal");
   const { currentLocale } = useAppLocale();
 
-  const initialValues: FormValues = useMemo(() => {
-    const normalizedSchedule: WeeklyScheduleWithBreaks = {};
+  const normalizeScheduleForForm = useCallback((schedule?: WeeklyScheduleWithBreaks, fallback?: WeeklyScheduleWithBreaks) => {
+    const normalized: WeeklyScheduleWithBreaks = {};
     DAY_ITEMS.forEach((day) => {
-      const dayValue = initialSchedule?.[day.key];
+      const dayValue = schedule?.[day.key] ?? fallback?.[day.key];
       if (dayValue && dayValue.start && dayValue.end) {
         const enabled = dayValue.disabled ? false : dayValue.enabled ?? true;
-        normalizedSchedule[day.key] = { ...dayValue, enabled, disabled: dayValue.disabled ?? !enabled };
+        normalized[day.key] = { ...dayValue, enabled, disabled: dayValue.disabled ?? !enabled };
       } else {
-        normalizedSchedule[day.key] = {
+        normalized[day.key] = {
           enabled: false,
           disabled: true,
           start: { hour: 9, minute: 0 },
@@ -181,19 +212,34 @@ const CalendarSection = ({
         };
       }
     });
+    return normalized;
+  }, []);
+
+  const initialValues: FormValues = useMemo(() => {
+    const overridesDisabledDefault = initialOverridesDisabled ?? (scope !== "entity");
+    const scheduleSource = overridesDisabledDefault ? baseSchedule ?? initialSchedule : overrideSchedule ?? initialSchedule ?? baseSchedule;
+    const advanceSource = overridesDisabledDefault ? baseAdvance ?? initialAdvance : overrideAdvance ?? initialAdvance ?? baseAdvance;
+    const normalizedSchedule = normalizeScheduleForForm(scheduleSource, baseSchedule ?? initialSchedule);
     return {
       schedule: normalizedSchedule,
-      enableDayTimeRange: initialAdvance?.enableDayTimeRange ?? false,
-      notifyBeforeMinutes: initialAdvance?.notifyBeforeMinutes ?? 15,
-      disableBreak: initialAdvance?.disableBreak ?? false,
-      timeBreak: initialAdvance?.timeBreak ?? 60,
+      enableDayTimeRange: advanceSource?.enableDayTimeRange ?? false,
+      notifyBeforeMinutes: advanceSource?.notifyBeforeMinutes ?? 15,
+      disableBreak: advanceSource?.disableBreak ?? false,
+      timeBreak: advanceSource?.timeBreak ?? 60,
+      overridesDisabled: overridesDisabledDefault,
     };
-  }, [initialAdvance, initialSchedule]);
+  }, [baseAdvance, baseSchedule, initialAdvance, initialOverridesDisabled, initialSchedule, normalizeScheduleForForm, overrideAdvance, overrideSchedule, scope]);
 
   const [holidays, setHolidays] = useState<Holiday[]>(initialHolidays ?? []);
   const [openHolidayModal, setOpenHolidayModal] = useState(false);
   const [editingHoliday, setEditingHoliday] = useState<Holiday | undefined>();
   const [scheduleErrors, setScheduleErrors] = useState<string[]>([]);
+  const accordionInitialExpanded = !hideSaveButton && !(initialOverridesDisabled ?? (scope !== "entity"));
+  const [scheduleExpanded, setScheduleExpanded] = useState<boolean>(accordionInitialExpanded);
+
+  useEffect(() => {
+    setScheduleExpanded(!hideSaveButton && !(initialOverridesDisabled ?? false));
+  }, [hideSaveButton, initialOverridesDisabled]);
 
   useEffect(() => {
     setHolidays(initialHolidays ?? []);
@@ -206,7 +252,7 @@ const CalendarSection = ({
 
       DAY_ITEMS.forEach((day) => {
         const dayValue = values.schedule[day.key];
-        if (dayValue?.enabled) {
+        if (!values.overridesDisabled && dayValue?.enabled) {
           if (!dayValue.start || !dayValue.end) {
             scheduleErrs.push(t("errors.startEndRequired", { day: day.label }));
           } else if (minutesOf(dayValue.start) >= minutesOf(dayValue.end)) {
@@ -259,6 +305,7 @@ const CalendarSection = ({
           overridesSchedule: scope !== "entity" ? payloadSchedule : undefined,
           timezone: timezone ?? "UTC",
           advance,
+          overridesDisabled: values.overridesDisabled,
         } as any,
         token,
         locale ?? currentLocale
@@ -321,28 +368,111 @@ const CalendarSection = ({
   return (
     <Formik<FormValues> initialValues={initialValues} onSubmit={handleSave} validate={validateForm} enableReinitialize>
       {({ values, setFieldValue, isSubmitting, dirty, handleSubmit }) => {
-        const accordionInitialExpanded = !hideSaveButton;
+        const isOverridesDisabled = values.overridesDisabled;
+
+        const handleScheduleAccordionChange = (_: any, expanded: boolean) => {
+          if (isOverridesDisabled) return;
+          setScheduleExpanded(expanded);
+        };
+
+        // Sincroniza el switch con el valor que viene del config (cuando rehidrata el formulario)
+        useEffect(() => {
+          const fallbackOverrides = initialOverridesDisabled ?? (scope !== "entity");
+          const scheduleSource = fallbackOverrides ? baseSchedule ?? initialSchedule : overrideSchedule ?? initialSchedule ?? baseSchedule;
+          const advanceSource = fallbackOverrides ? baseAdvance ?? initialAdvance : overrideAdvance ?? initialAdvance ?? baseAdvance;
+
+          setFieldValue("overridesDisabled", fallbackOverrides, false);
+          setFieldValue("schedule", normalizeScheduleForForm(scheduleSource, baseSchedule ?? initialSchedule), false);
+          setFieldValue("enableDayTimeRange", advanceSource?.enableDayTimeRange ?? false, false);
+          setFieldValue("notifyBeforeMinutes", advanceSource?.notifyBeforeMinutes ?? 15, false);
+          setFieldValue("disableBreak", advanceSource?.disableBreak ?? false, false);
+          setFieldValue("timeBreak", advanceSource?.timeBreak ?? 60, false);
+          setScheduleExpanded(!hideSaveButton && !fallbackOverrides);
+        }, [
+          baseAdvance,
+          baseSchedule,
+          hideSaveButton,
+          initialAdvance,
+          initialOverridesDisabled,
+          initialSchedule,
+          normalizeScheduleForForm,
+          overrideAdvance,
+          overrideSchedule,
+          scope,
+          setFieldValue,
+        ]);
 
         return (
           <Stack spacing={3} sx={{ pb: 6, textAlign: "left" }}>
-            <CalendarChangeReporter holidays={holidays} onChange={onChange} />
-            <Accordion defaultExpanded={accordionInitialExpanded}>
-              <AccordionSummary expandIcon={<ExpandMoreOutlined />}>
-                <Stack>
-                  <Typography fontWeight={600}>{t("schedule.title")}</Typography>
-                  <Typography color="text.secondary" variant="body2">
-                    {t("schedule.subtitle")}
-                  </Typography>
+            <CalendarChangeReporter
+              holidays={holidays}
+              onChange={onChange}
+              onHashChange={(hash) => {
+                if (formFieldName && setParentFieldValue) {
+                  setParentFieldValue(formFieldName, hash);
+                }
+              }}
+            />
+            <Accordion expanded={!isOverridesDisabled && scheduleExpanded} onChange={handleScheduleAccordionChange}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreOutlined color={isOverridesDisabled ? "disabled" : undefined} />}
+                sx={{ "& .MuiAccordionSummary-content": { alignItems: "center", gap: 2 } }}
+              >
+                <Stack direction="row" alignItems="center" justifyContent="space-between" width="100%" gap={2}>
+                  <Stack flexGrow={1}>
+                    <Typography fontWeight={600}>{t("schedule.title")}</Typography>
+                    <Typography color="text.secondary" variant="body2">
+                      {t("schedule.subtitle")}
+                    </Typography>
+                  </Stack>
+                  {scope !== "entity" && (
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      spacing={1}
+                      onClick={(e) => e.stopPropagation()}
+                      sx={{ pr: 1 }}
+                    >
+                      <Typography variant="body2" fontWeight={600}>
+                        {t("schedule.baseSchedule")}
+                      </Typography>
+                      <Switch
+                        size="small"
+                        checked={!!values.overridesDisabled}
+                        onChange={(e) => {
+                          const checked = e.target.checked;
+                          const nextSchedule = checked
+                            ? normalizeScheduleForForm(baseSchedule ?? initialSchedule, initialSchedule)
+                            : normalizeScheduleForForm(overrideSchedule ?? initialSchedule ?? baseSchedule, baseSchedule ?? initialSchedule);
+                          const nextAdvance = checked
+                            ? baseAdvance ?? initialAdvance
+                            : overrideAdvance ?? initialAdvance ?? baseAdvance;
+
+                          setFieldValue("overridesDisabled", checked);
+                          setFieldValue("schedule", nextSchedule, false);
+                          setFieldValue("enableDayTimeRange", nextAdvance?.enableDayTimeRange ?? false, false);
+                          setFieldValue("notifyBeforeMinutes", nextAdvance?.notifyBeforeMinutes ?? 15, false);
+                          setFieldValue("disableBreak", nextAdvance?.disableBreak ?? false, false);
+                          setFieldValue("timeBreak", nextAdvance?.timeBreak ?? 60, false);
+                          setScheduleExpanded(!checked);
+                        }}
+                      />
+                    </Stack>
+                  )}
                 </Stack>
               </AccordionSummary>
               <AccordionDetails>
-                <WorkScheduleField name="schedule" enableDayTimeRange workScheduleEnable />
+                <WorkScheduleField name="schedule" enableDayTimeRange={values.enableDayTimeRange} workScheduleEnable={!isOverridesDisabled} />
 
                 <Divider sx={{ my: 2 }} />
                 <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems="center">
                   <FormControlLabel
                     control={
-                      <Switch checked={values.enableDayTimeRange} onChange={(e) => setFieldValue("enableDayTimeRange", e.target.checked)} />
+                      <Switch
+                        checked={values.enableDayTimeRange}
+                        onChange={(e) => setFieldValue("enableDayTimeRange", e.target.checked)}
+                        disabled={isOverridesDisabled}
+                      />
                     }
                     label={t("schedule.strictRange")}
                   />
@@ -389,7 +519,13 @@ const CalendarSection = ({
                   </Box>
                   <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems="center">
                     <FormControlLabel
-                      control={<Switch checked={!!values.disableBreak} onChange={(e) => setFieldValue("disableBreak", e.target.checked)} />}
+                      control={
+                        <Switch
+                          checked={!!values.disableBreak}
+                          onChange={(e) => setFieldValue("disableBreak", e.target.checked)}
+                          disabled={isOverridesDisabled}
+                        />
+                      }
                       label={tSucursal("breakEnableText")}
                     />
                     <TextField
@@ -402,7 +538,7 @@ const CalendarSection = ({
                       }}
                       inputProps={{ min: 1 }}
                       label={tCore("timeBreak")}
-                      disabled={!values.disableBreak}
+                      disabled={!values.disableBreak || isOverridesDisabled}
                     />
                   </Stack>
                 </Stack>
@@ -423,6 +559,7 @@ const CalendarSection = ({
                     }}
                     inputProps={{ min: 0 }}
                     label={tCore("minute")}
+                    disabled={isOverridesDisabled}
                   />
                 </Stack>
 

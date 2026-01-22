@@ -21,6 +21,7 @@ type BranchCalendarFormValues = {
     disableBreak?: boolean;
     timeBreak?: number;
     branchId: string;
+    overridesDisabled: boolean;
 };
 
 const DAY_KEYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"] as const;
@@ -74,6 +75,7 @@ const BranchCalendarTab = () => {
         disableBreak: false,
         timeBreak: 60,
         branchId: '',
+        overridesDisabled: true,
     }), []);
 
     const [initialValues, setInitialValues] = useState<BranchCalendarFormValues>(defaultInitialValues);
@@ -110,13 +112,18 @@ const BranchCalendarTab = () => {
             const data = await getRefByPathData(path);
             if (data) {
                 const advance = data.advance ?? {};
+                const overridesDisabled = data.overridesDisabled ?? false;
                 setInitialValues({
-                    schedule: mapStoredSchedule(data.overridesSchedule as WeeklyScheduleWithBreaks | undefined, fallbackSchedule),
-                    enableDayTimeRange: advance.enableDayTimeRange ?? data.strictRange ?? fallbackAdvance.enableDayTimeRange ?? false,
-                    notifyBeforeMinutes: advance.notifyBeforeMinutes ?? data.notifyBeforeMinutes ?? fallbackAdvance.notifyBeforeMinutes ?? 15,
-                    disableBreak: advance.disableBreak ?? data.disableBreak ?? fallbackAdvance.disableBreak ?? false,
-                    timeBreak: advance.timeBreak ?? data.timeBreak ?? fallbackAdvance.timeBreak ?? 60,
+                    schedule: mapStoredSchedule(
+                        overridesDisabled ? fallbackSchedule : (data.overridesSchedule as WeeklyScheduleWithBreaks | undefined),
+                        fallbackSchedule
+                    ),
+                    enableDayTimeRange: (overridesDisabled ? fallbackAdvance.enableDayTimeRange : advance.enableDayTimeRange ?? data.strictRange) ?? fallbackAdvance.enableDayTimeRange ?? false,
+                    notifyBeforeMinutes: (overridesDisabled ? fallbackAdvance.notifyBeforeMinutes : advance.notifyBeforeMinutes ?? data.notifyBeforeMinutes) ?? fallbackAdvance.notifyBeforeMinutes ?? 15,
+                    disableBreak: (overridesDisabled ? fallbackAdvance.disableBreak : advance.disableBreak ?? data.disableBreak) ?? fallbackAdvance.disableBreak ?? false,
+                    timeBreak: (overridesDisabled ? fallbackAdvance.timeBreak : advance.timeBreak ?? data.timeBreak) ?? fallbackAdvance.timeBreak ?? 60,
                     branchId,
+                    overridesDisabled,
                 });
                 if (Array.isArray(data.holidays)) {
                     setHolidays(data.holidays);
@@ -133,7 +140,8 @@ const BranchCalendarTab = () => {
                     enableDayTimeRange: fallbackAdvance.enableDayTimeRange ?? false,
                     disableBreak: fallbackAdvance.disableBreak ?? false,
                     timeBreak: fallbackAdvance.timeBreak ?? 60,
-                    notifyBeforeMinutes: fallbackAdvance.notifyBeforeMinutes ?? 15
+                    notifyBeforeMinutes: fallbackAdvance.notifyBeforeMinutes ?? 15,
+                    overridesDisabled: true,
                 }));
                 setHolidays([]);
             }
@@ -197,6 +205,7 @@ const BranchCalendarTab = () => {
                         timeBreak: initialValues.timeBreak,
                         notifyBeforeMinutes: initialValues.notifyBeforeMinutes,
                     }}
+                    initialOverridesDisabled={initialValues.overridesDisabled}
                     initialHolidays={holidays}
                     onSaved={handleSaved}
                 />

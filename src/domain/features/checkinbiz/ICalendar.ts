@@ -60,6 +60,7 @@ export type CalendarUpsertPayload = {
     employeeId?: string;
     timezone?: string;
     disabled?: boolean;
+    overridesDisabled?: boolean;
     defaultSchedule?: WeeklyScheduleWithBreaks;
     overridesSchedule?: WeeklyScheduleWithBreaks;
     holiday?: Holiday;

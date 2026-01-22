@@ -75,8 +75,14 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       saturday: { enabled: true, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
       sunday: { enabled: false, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
     },
+    baseSchedule: undefined,
+    overrideSchedule: undefined,
+    baseAdvance: undefined,
+    overrideAdvance: undefined,
     disabled: false,
     holidaysInfo: '',
+    overridesDisabled: true,
+    calendarConfig: '',
   });
 
   const defaultValidationSchema: any = {
@@ -132,11 +138,12 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     });
     return normalized;
   };
-  const buildCalendarHash = (data?: { payloadSchedule?: any; advance?: any; holidays?: any[] }) =>
+  const buildCalendarHash = (data?: { payloadSchedule?: any; advance?: any; holidays?: any[]; overridesDisabled?: boolean }) =>
     JSON.stringify({
       schedule: data?.payloadSchedule ?? {},
       advance: data?.advance ?? {},
       holidays: data?.holidays ?? [],
+      overridesDisabled: data?.overridesDisabled ?? false,
     });
 
 
@@ -180,6 +187,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
                 overridesSchedule: calendarDraft.payloadSchedule,
                 advance: calendarDraft.advance,
                 timezone: values.address?.timeZone ?? currentEntity?.entity?.legal?.address?.timeZone ?? "UTC",
+                overridesDisabled: calendarDraft.overridesDisabled ?? false,
               } as any,
               token,
               currentLocale
@@ -208,6 +216,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
               overridesSchedule: calendarDraft.payloadSchedule,
               advance: calendarDraft.advance,
               timezone: values.address?.timeZone ?? currentEntity?.entity?.legal?.address?.timeZone ?? "UTC",
+              overridesDisabled: calendarDraft.overridesDisabled ?? false,
             } as any,
             token,
             currentLocale
@@ -326,17 +335,21 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         branchId: itemId,
         timezone: (initialValues as any)?.address?.timeZone ?? currentEntity?.entity?.legal?.address?.timeZone ?? "UTC",
         initialSchedule: initialValues?.overridesSchedule,
+        baseSchedule: (initialValues as any)?.baseSchedule,
+        overrideSchedule: (initialValues as any)?.overrideSchedule,
         initialAdvance: {
           enableDayTimeRange: initialValues?.enableDayTimeRange,
           disableBreak: initialValues?.disableBreak,
           timeBreak: initialValues?.timeBreak,
           notifyBeforeMinutes: initialValues?.notifyBeforeMinutes,
         },
+        baseAdvance: (initialValues as any)?.baseAdvance,
+        overrideAdvance: (initialValues as any)?.overrideAdvance,
+        initialOverridesDisabled: initialValues?.overridesDisabled,
         initialHolidays,
         token: token,
         locale: currentLocale,
         onSaved: () => { },
-        hide: !scheduleLoaded,
         hideSaveButton: true,
         disableHolidayActions: !itemId,
         onChange: (data: any) => setCalendarDraft(data),
@@ -380,6 +393,12 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
       };
       setInitialHolidays(branchCalendar?.holidays ?? []);
 
+      const branchOverridesDisabled = branchCalendar?.overridesDisabled ?? !branchCalendar;
+      const overrideScheduleRaw = branchCalendar?.overridesSchedule ?? fallbackSchedule;
+      const overrideAdvanceRaw = branchCalendar?.advance ?? fallbackAdvance;
+      const effectiveAdvance = branchOverridesDisabled ? fallbackAdvance : overrideAdvanceRaw;
+      const effectiveSchedule = branchOverridesDisabled ? fallbackSchedule : overrideScheduleRaw;
+
       setDisableRatioChecklog((!sucursal?.disableRatioChecklog))
       setInitialValues({
         address: sucursal.address,
@@ -390,27 +409,28 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         name: sucursal.name,
         nif: sucursal.nif ?? 'N/A',
         metadata: objectToArray(sucursal.metadata),
-        disableBreak: branchCalendar?.advance?.disableBreak ?? fallbackAdvance.disableBreak,
-        timeBreak: branchCalendar?.advance?.timeBreak ?? fallbackAdvance.timeBreak,
-        notifyBeforeMinutes: branchCalendar?.advance?.notifyBeforeMinutes ?? fallbackAdvance.notifyBeforeMinutes,
-        enableDayTimeRange: branchCalendar?.advance?.enableDayTimeRange ?? fallbackAdvance.enableDayTimeRange,
-        overridesSchedule: normalizeScheduleForForm(branchCalendar?.overridesSchedule, fallbackSchedule),
+        disableBreak: effectiveAdvance.disableBreak ?? false,
+        timeBreak: effectiveAdvance.timeBreak ?? fallbackAdvance.timeBreak,
+        notifyBeforeMinutes: effectiveAdvance.notifyBeforeMinutes ?? fallbackAdvance.notifyBeforeMinutes,
+        enableDayTimeRange: effectiveAdvance.enableDayTimeRange ?? fallbackAdvance.enableDayTimeRange,
+        overridesSchedule: normalizeScheduleForForm(effectiveSchedule, fallbackSchedule),
         disabled: branchCalendar?.disabled ?? false,
+        overridesDisabled: branchOverridesDisabled,
+        baseSchedule: fallbackSchedule,
+        overrideSchedule: overrideScheduleRaw,
+        baseAdvance: fallbackAdvance,
+        overrideAdvance: overrideAdvanceRaw,
       })
       const scheduleForHash = sanitizeSchedule(
-        branchCalendar?.overridesSchedule ?? fallbackSchedule,
-        branchCalendar?.advance?.enableDayTimeRange ?? fallbackAdvance.enableDayTimeRange
+        effectiveSchedule,
+        effectiveAdvance.enableDayTimeRange ?? fallbackAdvance.enableDayTimeRange
       );
       setInitialCalendarHash(
         buildCalendarHash({
           payloadSchedule: scheduleForHash,
-          advance: {
-            enableDayTimeRange: branchCalendar?.advance?.enableDayTimeRange ?? fallbackAdvance.enableDayTimeRange,
-            disableBreak: branchCalendar?.advance?.disableBreak ?? fallbackAdvance.disableBreak,
-            timeBreak: branchCalendar?.advance?.timeBreak ?? fallbackAdvance.timeBreak,
-            notifyBeforeMinutes: branchCalendar?.advance?.notifyBeforeMinutes ?? fallbackAdvance.notifyBeforeMinutes,
-          },
+          advance: effectiveAdvance,
           holidays: branchCalendar?.holidays ?? [],
+          overridesDisabled: branchOverridesDisabled,
         })
       )
       setScheduleLoaded(true)
@@ -449,6 +469,11 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
             timeBreak: fallbackAdvance.timeBreak,
             notifyBeforeMinutes: fallbackAdvance.notifyBeforeMinutes,
             disabled: false,
+            overridesDisabled: true,
+            baseSchedule: fallbackSchedule,
+            overrideSchedule: fallbackSchedule,
+            baseAdvance: fallbackAdvance,
+            overrideAdvance: fallbackAdvance,
           }))
           setInitialCalendarHash(
             buildCalendarHash({
@@ -460,6 +485,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
                 notifyBeforeMinutes: fallbackAdvance.notifyBeforeMinutes,
               },
               holidays: [],
+              overridesDisabled: true,
             })
           )
           setScheduleLoaded(true)

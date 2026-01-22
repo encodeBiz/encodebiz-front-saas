@@ -1628,7 +1628,9 @@
         "line1": "El sistema contabiliza la jornada real trabajada.",
         "line2": "Tiempo trabajado antes o después del horario: se suma como extra.",
         "line3": "Retrasos o salidas anticipadas: se descuentan."
-      }
+      },
+      "baseSchedule": "Usar horario base",
+      "customSchedule": "Horario personalizado"
     },
     "notes": {
       "inheritance": "Los horarios heredan: Entidad -> Sucursal -> Empleado. Si no defines un override, se aplica el superior.",
