@@ -71,6 +71,11 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     timeBreak: number;
     notifyBeforeMinutes: number;
     overridesDisabled?: boolean;
+    baseSchedule?: any;
+    overrideSchedule?: any;
+    baseAdvance?: any;
+    overrideAdvance?: any;
+    calendarConfig?: any;
   }>({
     "fullName": '',
     email: '',

@@ -252,7 +252,7 @@ const WorkScheduleField: React.FC<WorkScheduleFieldProps> = ({
 
                 <Dialog
                     open={bulkOpen}
-                    onClose={(e) => {
+                    onClose={(e?: any) => {
                         e?.stopPropagation?.();
                         setBulkOpen(false);
                     }}
