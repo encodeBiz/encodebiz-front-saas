@@ -180,7 +180,14 @@ const BranchCalendarDetail = ({ branch, refreshKey = 0 }: { branch: ISucursal; r
                             )}
 
                             <Box sx={{ bgcolor: 'rgb(221, 226, 247)', borderRadius: 2, p: 2 }}>
-                                <Typography variant="subtitle2" fontWeight={700}>{t('schedule.title')}</Typography>
+                                <Stack direction="row" alignItems="center" justifyContent="space-between">
+                                    <Typography variant="subtitle2" fontWeight={700}>{t('schedule.title')}</Typography>
+                                    <Chip
+                                        size="small"
+                                        color="primary"
+                                        label={config?.advance?.enableDayTimeRange ? t('schedule.strictRange') : 'Jornada flexible'}
+                                    />
+                                </Stack>
                                 <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                                     {config?.advance?.enableDayTimeRange ? t('schedule.strictRange') : t('schedule.flexInfo.line1')}
                                 </Typography>
