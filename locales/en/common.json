@@ -29,6 +29,7 @@
         "Events": "Events",
         "Media": "Media",
         "Report": "Reports",
+        "Calendar": "Schedules & holidays",
         "Attendance": "Attendance",
         "Sucursal": "Branch/Project",
         "home": "Home",
@@ -195,7 +196,7 @@
       "inactive": "Inactive",
       "adviseWorkDay": "Workday notice",
       "minute": "Minutes",
-      "adviseWorkDayText": "Configure how much advance notice will be given to the employee before their start and end time.",
+      "adviseWorkDayText": "Set the grace period and how many minutes before to send the start/end reminder.",
       "personalData": "PERSONAL INFORMATION",
       "configData": "ADDITIONAL CONFIGURATION",
       "aditionalData": "ADDITIONAL INFORMATION",
@@ -815,6 +816,7 @@
     "dayTimeRangeDisabledText": "Flexible workday",
     "breakEnableText": "Strict break",
     "breakDisabledText": "Flexible break",
+    "breakFlexibleSwitch": "Flexible break",
     "linkToEmployeeNotBtn": "Create Employee",
     "fieldHelp1": "The system applies ",
     "fieldHelp2": "exactly",
@@ -1572,6 +1574,101 @@
     "holder/not_found": "Holder not found",
     "holder/not_found_applepass": "Holder's Apple Pass not found",
     "employee/not_resposibility": "You have no assigned responsibilities in this branch/project"
+  },
+  "calendar": {
+    "title": "Schedules & holidays",
+    "subtitle": "Define the base schedule and shared holidays for the entity.",
+    "tabs": {
+      "entity": "Entity",
+      "branch": "Branch",
+      "employee": "Employee",
+      "comingSoon": "Coming soon"
+    },
+    "timezone": {
+      "title": "Entity timezone",
+      "tooltip": "If a branch has no timezone, it will use this one. Remote employees can use their own.",
+      "label": "Timezone"
+    },
+    "schedule": {
+      "title": "Weekly schedule (base template)",
+      "subtitle": "Define the standard working hours. Days without configuration are inactive.",
+      "strictRange": "Strict schedule",
+      "strictInfo": {
+        "line1": "The system applies the official schedule without adding extra time.",
+        "line2": "Early arrivals: not counted.",
+        "line3": "Late arrivals or early departures: discounted.",
+        "line4": "Leaving after the end time: not counted as extra."
+      },
+      "flexInfo": {
+        "line1": "The system counts the actual worked time.",
+        "line2": "Time worked before or after the scheduled range is added as extra.",
+        "line3": "Late arrivals or early departures: discounted."
+      },
+      "baseSchedule": "Use base schedule",
+      "customSchedule": "Custom schedule"
+    },
+    "notes": {
+      "inheritance": "Schedules inherit: Entity -> Branch -> Employee. If you don't override, the higher level applies.",
+      "inactiveDays": "Days without schedule are treated as inactive.",
+      "toleranceHint": "Use strict schedule to avoid deviations; flexible schedule counts actual time worked."
+    },
+    "actions": {
+      "addBreak": "Add break",
+      "addHoliday": "Add holiday",
+      "discard": "Discard changes",
+      "saveCalendar": "Save calendar",
+      "saving": "Saving calendar...",
+      "savingHoliday": "Saving holiday...",
+      "deletingHoliday": "Deleting holiday...",
+      "editHoliday": "Edit holiday",
+      "deleteHoliday": "Delete holiday",
+      "cancel": "Cancel",
+      "save": "Save"
+    },
+    "labels": {
+      "breakStart": "Break {{index}} start",
+      "breakEnd": "Break {{index}} end",
+      "deleteBreak": "Delete break"
+    },
+    "holidays": {
+      "title": "Entity holidays",
+      "subtitle": "Apply to every branch; branches can add local holidays.",
+      "columns": {
+        "name": "Name",
+        "date": "Date",
+        "description": "Description",
+        "actions": "Actions"
+      },
+      "empty": "No holidays configured yet.",
+      "addTitle": "Add holiday",
+      "editTitle": "Edit holiday",
+      "fields": {
+        "name": "Holiday name",
+        "date": "Date",
+        "description": "Description (optional)"
+      },
+      "save": "Save holiday",
+      "saved": "Holiday saved",
+      "deleted": "Holiday deleted"
+    },
+    "errors": {
+      "timezoneRequired": "Select a timezone.",
+      "startEndRequired": "Set start and end for {{day}}.",
+      "startBeforeEnd": "Start time must be before end time for {{day}}.",
+      "breakOrder": "Break {{index}} on {{day}} must start before it ends.",
+      "breakOutside": "Break {{index}} on {{day}} must stay within the day range.",
+      "breakIncomplete": "Complete start and end for break {{index}} on {{day}}.",
+      "tolerancePositive": "Tolerance must be a positive number.",
+      "noEntity": "Active entity not found.",
+      "badRequest": "Check the data sent.",
+      "notFound": "Calendar not found.",
+      "generic": "We couldn't save the changes. Please try again.",
+      "holidayName": "Enter the holiday name.",
+      "holidayDate": "Select the holiday date."
+    },
+    "feedback": {
+      "saved": "Calendar saved"
+    }
   },
   "plan_translation": {
     "checkinbiz": {

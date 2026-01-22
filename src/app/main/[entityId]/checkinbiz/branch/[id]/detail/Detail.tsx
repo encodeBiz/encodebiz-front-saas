@@ -17,9 +17,9 @@ import { EmployeeList } from "./components/EmployeeList"
 import HelpTabs from "@/components/features/dashboard/HelpTabs/HelpTabs"
 import { PanelStats } from "./dashboard/PanelStats"
 import { useDashboardBranch } from "./dashboard/DashboardBranchContext"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useEntity } from "@/hooks/useEntity"
-import WorkScheduleDetail from "./components/WorkScheduleDetail"
+import BranchCalendarDetail from "./components/BranchCalendarDetail"
 
 export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { addResponsabiltyItem: () => void, branch: ISucursal, children: React.ReactNode, onSuccess: () => void }) => {
     const t = useTranslations()
@@ -27,6 +27,7 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
     const { openModal, open } = useCommonModal()
     const { initialize } = useDashboardBranch()
     const { currentEntity } = useEntity()
+    const [calendarRefreshKey, setCalendarRefreshKey] = useState(0);
 
     useEffect(() => {
         if (currentEntity?.entity?.id) {
@@ -98,40 +99,29 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
             <Divider />
 
             {branch?.id && <HelpTabs small tabs={[
-                ...[
-                    {
-                        id: '1',
-                        title: t(`core.label.workSchedule`),
-                        tabContent: <WorkScheduleDetail
-                            schedule={branch.advance?.workSchedule as WorkSchedule}
-                            branch={branch}
-                            notifyBeforeMinutes={branch.advance?.notifyBeforeMinutes as number}
-
-                        />
-                    },
-                ],
-
-                ...([
-                    {
-                        id: '1',
-                        title: t(`sucursal.panel`),
-                        tabContent: <PanelStats />
-                    },
-                ]),
-
-
+                {
+                    id: '1',
+                    title: t('calendar.title'),
+                    tabContent: <BranchCalendarDetail branch={branch} refreshKey={calendarRefreshKey} />
+                },
                 {
                     id: '2',
+                    title: t(`sucursal.panel`),
+                    tabContent: <PanelStats />
+                },
+                {
+                    id: '3',
                     title: t("employee.list"),
                     tabContent: <EmployeeList addResponsabiltyItem={addResponsabiltyItem} >{children}</EmployeeList>
                 },
-
-
             ]} />}
 
 
         </CardContent>
-        {open.type === CommonModalType.FORM && open.args?.id !== 'responsability' && <FormModal onSuccess={onSuccess} />}
+        {open.type === CommonModalType.FORM && open.args?.id !== 'responsability' && <FormModal onSuccess={() => {
+            onSuccess();
+            setCalendarRefreshKey((k) => k + 1);
+        }} />}
 
         {open.type === CommonModalType.INFO && open.args?.id === 'maxSelectionEmployee' && <InfoModal
             title={t('branch.linkToEmployeeNotTitle')}
