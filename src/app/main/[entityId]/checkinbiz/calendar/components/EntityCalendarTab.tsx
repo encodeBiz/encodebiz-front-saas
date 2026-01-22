@@ -22,6 +22,7 @@ const DAY_KEYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "satur
 
 const defaultDay = (enabled = true) => ({
   enabled,
+  disabled: !enabled,
   start: { hour: 9, minute: 0 },
   end: { hour: 17, minute: 0 },
 });
@@ -42,7 +43,8 @@ const mapStoredSchedule = (stored?: WeeklyScheduleWithBreaks, fallback?: WeeklyS
   DAY_KEYS.forEach((key) => {
     const storedDay = stored?.[key];
     if (storedDay) {
-      result[key] = { ...storedDay, enabled: true };
+      const enabled = storedDay.disabled ? false : storedDay.enabled ?? true;
+      result[key] = { ...storedDay, enabled, disabled: storedDay.disabled ?? !enabled };
     } else {
       result[key] = base[key] ?? defaultDay(false);
     }

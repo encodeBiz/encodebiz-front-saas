@@ -12,7 +12,8 @@ export type DayBreak = {
 };
 
 export type DayScheduleWithBreaks = {
-    enabled?: boolean; // UI only - removed when sending to API
+    enabled?: boolean; // UI flag
+    disabled?: boolean; // API flag
     start?: TimeValue;
     end?: TimeValue;
     breaks?: DayBreak[];

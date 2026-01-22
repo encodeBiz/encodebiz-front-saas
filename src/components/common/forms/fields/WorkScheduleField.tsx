@@ -99,17 +99,18 @@ const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
                             }} >
                                         <FormControlLabel
                                             control={
-                                                <Switch
-                                                    disabled={!workScheduleEnable}
-                                                    checked={!!dayValue?.enabled}
-                                                    onChange={(e) => {
-                                                        updateDay(day.key, (current) => ({
-                                                            ...current,
-                                                            enabled: e.target.checked
-                                                        }))
-                                                    }}
-                                                    color="primary"
-                                                />
+                                            <Switch
+                                                disabled={!workScheduleEnable}
+                                                checked={!!dayValue?.enabled}
+                                                onChange={(e) => {
+                                                    updateDay(day.key, (current) => ({
+                                                        ...current,
+                                                        enabled: e.target.checked,
+                                                        disabled: e.target.checked ? false : true,
+                                                    }))
+                                                }}
+                                                color="primary"
+                                            />
                                             }
                                             label={
                                                 <Typography fontWeight="medium">

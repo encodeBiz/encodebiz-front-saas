@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Accordion,
   AccordionDetails,
@@ -21,7 +21,7 @@ import {
   Typography,
 } from "@mui/material";
 import { ExpandMoreOutlined, AddOutlined, EditOutlined, DeleteOutline } from "@mui/icons-material";
-import { Formik } from "formik";
+import { Formik, useFormikContext } from "formik";
 import { useTranslations } from "next-intl";
 import { Holiday, WeeklyScheduleWithBreaks } from "@/domain/features/checkinbiz/ICalendar";
 import WorkScheduleField from "@/components/common/forms/fields/WorkScheduleField";
@@ -87,17 +87,61 @@ const minutesOf = (time?: { hour?: number; minute?: number }) => (time?.hour ?? 
 const sanitizeSchedule = (schedule: WeeklyScheduleWithBreaks, enableDayTimeRange: boolean): WeeklyScheduleWithBreaks => {
   const cleaned: WeeklyScheduleWithBreaks = {};
   DAY_ITEMS.forEach((day) => {
-    const dayValue = schedule[day.key];
-    if (dayValue?.enabled && dayValue.start && dayValue.end && minutesOf(dayValue.start) < minutesOf(dayValue.end)) {
-      cleaned[day.key] = {
-        start: dayValue.start,
-        end: dayValue.end,
-        strictRange: enableDayTimeRange || dayValue.strictRange ? true : undefined,
-        toleranceMinutes: undefined,
-      };
-    }
+    const dayValue = schedule[day.key] ?? {};
+    const start = dayValue.start ?? { hour: 9, minute: 0 };
+    const end = dayValue.end ?? { hour: 17, minute: 0 };
+    const isDisabled = dayValue.disabled ?? (dayValue.enabled === false);
+    cleaned[day.key] = {
+      start,
+      end,
+      strictRange: enableDayTimeRange || dayValue.strictRange ? true : undefined,
+      toleranceMinutes: dayValue.toleranceMinutes,
+      disabled: isDisabled,
+    };
   });
   return cleaned;
+};
+
+const CalendarChangeReporter = ({
+  holidays,
+  onChange,
+}: {
+  holidays: Holiday[];
+  onChange?: (data: {
+    values: FormValues;
+    payloadSchedule: WeeklyScheduleWithBreaks;
+    advance: {
+      enableDayTimeRange: boolean;
+      disableBreak?: boolean;
+      timeBreak?: number;
+      notifyBeforeMinutes?: number;
+    };
+    holidays: Holiday[];
+    dirty: boolean;
+  }) => void;
+}) => {
+  const { values, dirty } = useFormikContext<FormValues>();
+  const payloadSchedule = useMemo(() => sanitizeSchedule(values.schedule, values.enableDayTimeRange), [values.schedule, values.enableDayTimeRange]);
+  const advance = useMemo(
+    () => ({
+      enableDayTimeRange: values.enableDayTimeRange,
+      disableBreak: values.disableBreak,
+      timeBreak: values.timeBreak,
+      notifyBeforeMinutes: values.notifyBeforeMinutes,
+    }),
+    [values.disableBreak, values.enableDayTimeRange, values.notifyBeforeMinutes, values.timeBreak]
+  );
+  const changeKey = useMemo(() => JSON.stringify({ payloadSchedule, advance, holidays }), [advance, holidays, payloadSchedule]);
+  const lastKey = useRef<string>();
+
+  useEffect(() => {
+    if (!onChange) return;
+    if (lastKey.current === changeKey) return;
+    lastKey.current = changeKey;
+    onChange({ values, payloadSchedule, advance, holidays, dirty });
+  }, [advance, changeKey, dirty, holidays, onChange, payloadSchedule, values]);
+
+  return null;
 };
 
 const CalendarSection = ({
@@ -126,10 +170,12 @@ const CalendarSection = ({
     DAY_ITEMS.forEach((day) => {
       const dayValue = initialSchedule?.[day.key];
       if (dayValue && dayValue.start && dayValue.end) {
-        normalizedSchedule[day.key] = { ...dayValue, enabled: dayValue.enabled ?? true };
+        const enabled = dayValue.disabled ? false : dayValue.enabled ?? true;
+        normalizedSchedule[day.key] = { ...dayValue, enabled, disabled: dayValue.disabled ?? !enabled };
       } else {
         normalizedSchedule[day.key] = {
           enabled: false,
+          disabled: true,
           start: { hour: 9, minute: 0 },
           end: { hour: 17, minute: 0 },
         };
@@ -148,6 +194,10 @@ const CalendarSection = ({
   const [openHolidayModal, setOpenHolidayModal] = useState(false);
   const [editingHoliday, setEditingHoliday] = useState<Holiday | undefined>();
   const [scheduleErrors, setScheduleErrors] = useState<string[]>([]);
+
+  useEffect(() => {
+    setHolidays(initialHolidays ?? []);
+  }, [initialHolidays]);
 
   const validateForm = useCallback(
     (values: FormValues) => {
@@ -271,23 +321,12 @@ const CalendarSection = ({
   return (
     <Formik<FormValues> initialValues={initialValues} onSubmit={handleSave} validate={validateForm} enableReinitialize>
       {({ values, setFieldValue, isSubmitting, dirty, handleSubmit }) => {
-        const payloadSchedule = sanitizeSchedule(values.schedule, values.enableDayTimeRange);
-        const advance = {
-          enableDayTimeRange: values.enableDayTimeRange,
-          disableBreak: values.disableBreak,
-          timeBreak: values.timeBreak,
-          notifyBeforeMinutes: values.notifyBeforeMinutes,
-        };
-
-        useEffect(() => {
-          if (onChange) {
-            onChange({ values, payloadSchedule, advance, holidays, dirty });
-          }
-        }, [advance, dirty, holidays, onChange, payloadSchedule, values]);
+        const accordionInitialExpanded = !hideSaveButton;
 
         return (
           <Stack spacing={3} sx={{ pb: 6, textAlign: "left" }}>
-            <Accordion defaultExpanded={!hideSaveButton}>
+            <CalendarChangeReporter holidays={holidays} onChange={onChange} />
+            <Accordion defaultExpanded={accordionInitialExpanded}>
               <AccordionSummary expandIcon={<ExpandMoreOutlined />}>
                 <Stack>
                   <Typography fontWeight={600}>{t("schedule.title")}</Typography>
@@ -415,7 +454,7 @@ const CalendarSection = ({
               </AccordionDetails>
             </Accordion>
 
-            <Accordion defaultExpanded={!hideSaveButton}>
+            <Accordion defaultExpanded={accordionInitialExpanded}>
               <AccordionSummary expandIcon={<ExpandMoreOutlined />}>
                 <Stack>
                   <Typography fontWeight={600}>{t("holidays.title")}</Typography>

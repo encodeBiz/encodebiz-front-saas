@@ -30,7 +30,8 @@ const mapScheduleWithEnabled = (schedule?: WeeklyScheduleWithBreaks, fallback?: 
     dayKeys.forEach((key) => {
         const dayValue: any = schedule?.[key];
         if (dayValue) {
-            result[key] = { ...dayValue, enabled: dayValue.enabled ?? true };
+            const enabled = dayValue.disabled ? false : dayValue.enabled ?? true;
+            result[key] = { ...dayValue, enabled, disabled: dayValue.disabled ?? !enabled };
         } else if ((base as any)[key]) {
             result[key] = { ...(base as any)[key] };
         }
@@ -76,13 +77,13 @@ const BranchCalendarDetail = ({ branch }: { branch: ISucursal }) => {
     const [loading, setLoading] = useState(false);
 
     const fallbackSchedule: WeeklyScheduleWithBreaks = {
-        monday: { enabled: true, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
-        tuesday: { enabled: true, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
-        wednesday: { enabled: true, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
-        thursday: { enabled: true, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
-        friday: { enabled: true, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
-        saturday: { enabled: true, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
-        sunday: { enabled: false, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
+        monday: { enabled: true, disabled: false, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
+        tuesday: { enabled: true, disabled: false, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
+        wednesday: { enabled: true, disabled: false, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
+        thursday: { enabled: true, disabled: false, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
+        friday: { enabled: true, disabled: false, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
+        saturday: { enabled: true, disabled: false, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
+        sunday: { enabled: false, disabled: true, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
     };
     const fallbackAdvance = {
         enableDayTimeRange: false,

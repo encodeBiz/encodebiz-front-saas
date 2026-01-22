@@ -25,6 +25,7 @@ import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
 import { useFormStatus } from "@/hooks/useFormStatus";
 import CalendarSection from "@/app/main/[entityId]/checkinbiz/calendar/components/CalendarSection";
 import { upsertCalendar } from "@/services/checkinbiz/calendar.service";
+import { Holiday } from "@/domain/features/checkinbiz/ICalendar";
 
 
 export default function useFormController(isFromModal: boolean, onSuccess?: () => void) {
@@ -45,6 +46,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const [scheduleLoaded, setScheduleLoaded] = useState(false)
   const [calendarDraft, setCalendarDraft] = useState<any>(null)
   const [initialCalendarHash, setInitialCalendarHash] = useState<string>("")
+  const [initialHolidays, setInitialHolidays] = useState<Holiday[]>([])
 
   const [initialValues, setInitialValues] = useState<Partial<any>>({
     "name": '',
@@ -94,6 +96,41 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     notifyBeforeMinutes: timeBreakRule(t),
   }
   const [validationSchema] = useState(defaultValidationSchema)
+  const minutesOf = (time?: { hour?: number; minute?: number }) => (time?.hour ?? 0) * 60 + (time?.minute ?? 0);
+  const sanitizeSchedule = (schedule?: any, enableDayTimeRange?: boolean) => {
+    const cleaned: any = {};
+    const dayKeys = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const;
+    dayKeys.forEach((dayKey) => {
+      const dayValue: any = (schedule ?? {})[dayKey] ?? {};
+      const start = dayValue.start ?? { hour: 9, minute: 0 };
+      const end = dayValue.end ?? { hour: 17, minute: 0 };
+      const isDisabled = dayValue.disabled ?? (dayValue.enabled === false);
+      cleaned[dayKey] = {
+        start,
+        end,
+        strictRange: enableDayTimeRange || dayValue.strictRange ? true : undefined,
+        disabled: isDisabled,
+      };
+    });
+    return cleaned;
+  };
+  const normalizeScheduleForForm = (schedule?: any, fallback?: any) => {
+    const dayKeys = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const;
+    const base = fallback ?? initialValues.overridesSchedule;
+    const normalized: any = {};
+    dayKeys.forEach((dayKey) => {
+      const dayValue: any = (schedule ?? {})[dayKey] ?? (base as any)?.[dayKey] ?? {};
+      const enabled = dayValue.disabled ? false : dayValue.enabled ?? true;
+      normalized[dayKey] = {
+        start: dayValue.start ?? { hour: 9, minute: 0 },
+        end: dayValue.end ?? { hour: 17, minute: 0 },
+        enabled,
+        disabled: dayValue.disabled ?? !enabled,
+        strictRange: dayValue.strictRange,
+      };
+    });
+    return normalized;
+  };
   const buildCalendarHash = (data?: { payloadSchedule?: any; advance?: any; holidays?: any[] }) =>
     JSON.stringify({
       schedule: data?.payloadSchedule ?? {},
@@ -292,7 +329,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
           timeBreak: initialValues?.timeBreak,
           notifyBeforeMinutes: initialValues?.notifyBeforeMinutes,
         },
-        initialHolidays: [],
+        initialHolidays,
         token: token,
         locale: currentLocale,
         onSaved: () => { },
@@ -338,6 +375,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         timeBreak: 30,
         notifyBeforeMinutes: 15,
       };
+      setInitialHolidays(branchCalendar?.holidays ?? []);
 
       setDisableRatioChecklog((!sucursal?.disableRatioChecklog))
       setInitialValues({
@@ -353,19 +391,23 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         timeBreak: branchCalendar?.advance?.timeBreak ?? fallbackAdvance.timeBreak,
         notifyBeforeMinutes: branchCalendar?.advance?.notifyBeforeMinutes ?? fallbackAdvance.notifyBeforeMinutes,
         enableDayTimeRange: branchCalendar?.advance?.enableDayTimeRange ?? fallbackAdvance.enableDayTimeRange,
-        overridesSchedule: branchCalendar?.overridesSchedule ?? fallbackSchedule,
+        overridesSchedule: normalizeScheduleForForm(branchCalendar?.overridesSchedule, fallbackSchedule),
         disabled: branchCalendar?.disabled ?? false,
       })
+      const scheduleForHash = sanitizeSchedule(
+        branchCalendar?.overridesSchedule ?? fallbackSchedule,
+        branchCalendar?.advance?.enableDayTimeRange ?? fallbackAdvance.enableDayTimeRange
+      );
       setInitialCalendarHash(
         buildCalendarHash({
-          payloadSchedule: branchCalendar?.overridesSchedule ?? fallbackSchedule,
+          payloadSchedule: scheduleForHash,
           advance: {
             enableDayTimeRange: branchCalendar?.advance?.enableDayTimeRange ?? fallbackAdvance.enableDayTimeRange,
             disableBreak: branchCalendar?.advance?.disableBreak ?? fallbackAdvance.disableBreak,
             timeBreak: branchCalendar?.advance?.timeBreak ?? fallbackAdvance.timeBreak,
             notifyBeforeMinutes: branchCalendar?.advance?.notifyBeforeMinutes ?? fallbackAdvance.notifyBeforeMinutes,
           },
-          holidays: [],
+          holidays: branchCalendar?.holidays ?? [],
         })
       )
       setScheduleLoaded(true)
@@ -394,9 +436,11 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
             timeBreak: 30,
             notifyBeforeMinutes: 15,
           };
+          const scheduleForHash = sanitizeSchedule(fallbackSchedule, fallbackAdvance.enableDayTimeRange);
+          setInitialHolidays([]);
           setInitialValues(prev => ({
             ...prev,
-            overridesSchedule: fallbackSchedule,
+            overridesSchedule: normalizeScheduleForForm(undefined, fallbackSchedule),
             enableDayTimeRange: fallbackAdvance.enableDayTimeRange,
             disableBreak: fallbackAdvance.disableBreak,
             timeBreak: fallbackAdvance.timeBreak,
@@ -405,7 +449,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
           }))
           setInitialCalendarHash(
             buildCalendarHash({
-              payloadSchedule: fallbackSchedule,
+              payloadSchedule: scheduleForHash,
               advance: {
                 enableDayTimeRange: fallbackAdvance.enableDayTimeRange,
                 disableBreak: fallbackAdvance.disableBreak,

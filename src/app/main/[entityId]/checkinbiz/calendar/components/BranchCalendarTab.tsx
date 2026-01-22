@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Stack } from "@mui/material";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/hooks/useAuth";
@@ -27,6 +27,7 @@ const DAY_KEYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "satur
 
 const defaultDay = (enabled = true) => ({
     enabled,
+    disabled: !enabled,
     start: { hour: 9, minute: 0 },
     end: { hour: 17, minute: 0 },
 });
@@ -47,7 +48,8 @@ const mapStoredSchedule = (stored?: WeeklyScheduleWithBreaks, fallback?: WeeklyS
     DAY_KEYS.forEach((key) => {
         const storedDay = stored?.[key];
         if (storedDay && storedDay.start && storedDay.end) {
-            result[key] = { ...storedDay, enabled: storedDay.enabled ?? true };
+            const enabled = storedDay.disabled ? false : storedDay.enabled ?? true;
+            result[key] = { ...storedDay, enabled, disabled: storedDay.disabled ?? !enabled };
         } else if (base[key]) {
             result[key] = base[key] ?? defaultDay(false);
         } else {
@@ -91,73 +93,78 @@ const BranchCalendarTab = () => {
         loadBranches();
     }, [currentEntity?.entity?.id]);
 
-    useEffect(() => {
-        const loadConfig = async (branchId: string) => {
-            if (!currentEntity?.entity?.id || !branchId) return;
-            changeLoaderState({ show: true });
-            try {
-                const entityPath = `entities/${currentEntity.entity.id}/calendar/config`;
-                const entityData = await getRefByPathData(entityPath);
-                const fallbackSchedule = mapStoredSchedule(entityData?.defaultSchedule as WeeklyScheduleWithBreaks | undefined, buildDefaultSchedule());
-                const fallbackAdvance = entityData?.advance ?? {
-                    enableDayTimeRange: false,
-                    disableBreak: false,
-                    timeBreak: 60,
-                    notifyBeforeMinutes: 15,
-                };
-                const path = `entities/${currentEntity.entity.id}/branches/${branchId}/calendar/config`;
-                const data = await getRefByPathData(path);
-                if (data) {
-                    const advance = data.advance ?? {};
-                    setInitialValues({
-                        schedule: mapStoredSchedule(data.overridesSchedule as WeeklyScheduleWithBreaks | undefined, fallbackSchedule),
-                        enableDayTimeRange: advance.enableDayTimeRange ?? data.strictRange ?? fallbackAdvance.enableDayTimeRange ?? false,
-                        notifyBeforeMinutes: advance.notifyBeforeMinutes ?? data.notifyBeforeMinutes ?? fallbackAdvance.notifyBeforeMinutes ?? 15,
-                        disableBreak: advance.disableBreak ?? data.disableBreak ?? fallbackAdvance.disableBreak ?? false,
-                        timeBreak: advance.timeBreak ?? data.timeBreak ?? fallbackAdvance.timeBreak ?? 60,
-                        branchId,
-                    });
-                    if (Array.isArray(data.holidays)) {
-                        setHolidays(data.holidays);
-                    } else if (data.holiday) {
-                        setHolidays([data.holiday]);
-                    } else {
-                        setHolidays([]);
-                    }
+    const loadConfig = useCallback(async (branchId: string) => {
+        if (!currentEntity?.entity?.id || !branchId) return;
+        changeLoaderState({ show: true });
+        try {
+            const entityPath = `entities/${currentEntity.entity.id}/calendar/config`;
+            const entityData = await getRefByPathData(entityPath);
+            const fallbackSchedule = mapStoredSchedule(entityData?.defaultSchedule as WeeklyScheduleWithBreaks | undefined, buildDefaultSchedule());
+            const fallbackAdvance = entityData?.advance ?? {
+                enableDayTimeRange: false,
+                disableBreak: false,
+                timeBreak: 60,
+                notifyBeforeMinutes: 15,
+            };
+            const path = `entities/${currentEntity.entity.id}/branches/${branchId}/calendar/config`;
+            const data = await getRefByPathData(path);
+            if (data) {
+                const advance = data.advance ?? {};
+                setInitialValues({
+                    schedule: mapStoredSchedule(data.overridesSchedule as WeeklyScheduleWithBreaks | undefined, fallbackSchedule),
+                    enableDayTimeRange: advance.enableDayTimeRange ?? data.strictRange ?? fallbackAdvance.enableDayTimeRange ?? false,
+                    notifyBeforeMinutes: advance.notifyBeforeMinutes ?? data.notifyBeforeMinutes ?? fallbackAdvance.notifyBeforeMinutes ?? 15,
+                    disableBreak: advance.disableBreak ?? data.disableBreak ?? fallbackAdvance.disableBreak ?? false,
+                    timeBreak: advance.timeBreak ?? data.timeBreak ?? fallbackAdvance.timeBreak ?? 60,
+                    branchId,
+                });
+                if (Array.isArray(data.holidays)) {
+                    setHolidays(data.holidays);
+                } else if (data.holiday) {
+                    setHolidays([data.holiday]);
                 } else {
-                    setInitialValues(prev => ({
-                        ...prev,
-                        branchId,
-                        schedule: fallbackSchedule,
-                        enableDayTimeRange: fallbackAdvance.enableDayTimeRange ?? false,
-                        disableBreak: fallbackAdvance.disableBreak ?? false,
-                        timeBreak: fallbackAdvance.timeBreak ?? 60,
-                        notifyBeforeMinutes: fallbackAdvance.notifyBeforeMinutes ?? 15
-                    }));
                     setHolidays([]);
                 }
-            } catch (error) {
+            } else {
                 setInitialValues(prev => ({
                     ...prev,
                     branchId,
-                    schedule: buildDefaultSchedule(),
-                    enableDayTimeRange: false,
-                    disableBreak: false,
-                    timeBreak: 60,
-                    notifyBeforeMinutes: 15
+                    schedule: fallbackSchedule,
+                    enableDayTimeRange: fallbackAdvance.enableDayTimeRange ?? false,
+                    disableBreak: fallbackAdvance.disableBreak ?? false,
+                    timeBreak: fallbackAdvance.timeBreak ?? 60,
+                    notifyBeforeMinutes: fallbackAdvance.notifyBeforeMinutes ?? 15
                 }));
                 setHolidays([]);
-            } finally {
-                changeLoaderState({ show: false });
             }
-        };
+        } catch (error) {
+            setInitialValues(prev => ({
+                ...prev,
+                branchId,
+                schedule: buildDefaultSchedule(),
+                enableDayTimeRange: false,
+                disableBreak: false,
+                timeBreak: 60,
+                notifyBeforeMinutes: 15
+            }));
+            setHolidays([]);
+        } finally {
+            changeLoaderState({ show: false });
+        }
+    }, [changeLoaderState, currentEntity?.entity?.id]);
 
+    useEffect(() => {
         if (initialValues.branchId) {
             loadConfig(initialValues.branchId);
         }
-    }, [initialValues.branchId, currentEntity?.entity?.id, changeLoaderState]);
+    }, [initialValues.branchId, loadConfig]);
 
-    const handleSaved = () => showToast(t('feedback.saved'), 'success');
+    const handleSaved = async () => {
+        showToast(t('feedback.saved'), 'success');
+        if (initialValues.branchId) {
+            await loadConfig(initialValues.branchId);
+        }
+    };
 
     return (
         <Stack spacing={3} sx={{ pb: 6 }}>
