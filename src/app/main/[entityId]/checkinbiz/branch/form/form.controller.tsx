@@ -7,7 +7,7 @@ import { addressSchema, ratioLogRule, requiredRule, timeBreakRule } from '@/conf
 import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { ArrayToObject, objectToArray } from "@/lib/common/String";
 import { createSucursal, fetchSucursal, updateSucursal } from "@/services/checkinbiz/sucursal.service";
@@ -34,6 +34,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const { navivateTo } = useLayout()
   const { token, user } = useAuth()
   const { currentLocale } = useAppLocale()
+  const router = useRouter()
 
   const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
@@ -154,8 +155,9 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         address: values.address,
         entityId: currentEntity?.entity.id as string,
         advance: {
-          "disableBreak": values.disableBreak,
-          "timeBreak": values.timeBreak,
+          enableDayTimeRange: values.enableDayTimeRange,
+          disableBreak: values.disableBreak,
+          timeBreak: values.timeBreak,
           notifyBeforeMinutes: values.notifyBeforeMinutes,
         }
       }
@@ -216,6 +218,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
+      router.refresh();
 
       if (typeof onSuccess === 'function') onSuccess()
       if (typeof callback === 'function') callback()

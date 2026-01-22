@@ -17,7 +17,7 @@ import { EmployeeList } from "./components/EmployeeList"
 import HelpTabs from "@/components/features/dashboard/HelpTabs/HelpTabs"
 import { PanelStats } from "./dashboard/PanelStats"
 import { useDashboardBranch } from "./dashboard/DashboardBranchContext"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useEntity } from "@/hooks/useEntity"
 import BranchCalendarDetail from "./components/BranchCalendarDetail"
 
@@ -27,6 +27,7 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
     const { openModal, open } = useCommonModal()
     const { initialize } = useDashboardBranch()
     const { currentEntity } = useEntity()
+    const [calendarRefreshKey, setCalendarRefreshKey] = useState(0);
 
     useEffect(() => {
         if (currentEntity?.entity?.id) {
@@ -101,7 +102,7 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
                 {
                     id: '1',
                     title: t('calendar.title'),
-                    tabContent: <BranchCalendarDetail branch={branch} />
+                    tabContent: <BranchCalendarDetail branch={branch} refreshKey={calendarRefreshKey} />
                 },
                 {
                     id: '2',
@@ -117,7 +118,10 @@ export const Detail = ({ branch, onSuccess, children, addResponsabiltyItem }: { 
 
 
         </CardContent>
-        {open.type === CommonModalType.FORM && open.args?.id !== 'responsability' && <FormModal onSuccess={onSuccess} />}
+        {open.type === CommonModalType.FORM && open.args?.id !== 'responsability' && <FormModal onSuccess={() => {
+            onSuccess();
+            setCalendarRefreshKey((k) => k + 1);
+        }} />}
 
         {open.type === CommonModalType.INFO && open.args?.id === 'maxSelectionEmployee' && <InfoModal
             title={t('branch.linkToEmployeeNotTitle')}

@@ -132,7 +132,7 @@ const CalendarChangeReporter = ({
     [values.disableBreak, values.enableDayTimeRange, values.notifyBeforeMinutes, values.timeBreak]
   );
   const changeKey = useMemo(() => JSON.stringify({ payloadSchedule, advance, holidays }), [advance, holidays, payloadSchedule]);
-  const lastKey = useRef<string>();
+  const lastKey = useRef<string | undefined>(undefined);
 
   useEffect(() => {
     if (!onChange) return;

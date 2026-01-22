@@ -39,7 +39,7 @@ const mapScheduleWithEnabled = (schedule?: WeeklyScheduleWithBreaks, fallback?: 
     return result;
 };
 
-const BranchCalendarDetail = ({ branch }: { branch: ISucursal }) => {
+const BranchCalendarDetail = ({ branch, refreshKey = 0 }: { branch: ISucursal; refreshKey?: number }) => {
     const t = useTranslations('calendar');
     const tSucursal = useTranslations('sucursal');
     const tCore = useTranslations('core.label');
@@ -135,7 +135,7 @@ const BranchCalendarDetail = ({ branch }: { branch: ISucursal }) => {
             }
         };
         load();
-    }, [entityId, branchId, changeLoaderState, t]);
+    }, [entityId, branchId, changeLoaderState, t, refreshKey]);
 
     const schedule = config?.overridesSchedule ?? fallbackSchedule;
     const disabled = config?.disabled;
@@ -184,26 +184,22 @@ const BranchCalendarDetail = ({ branch }: { branch: ISucursal }) => {
                                 <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                                     {config?.advance?.enableDayTimeRange ? t('schedule.strictRange') : t('schedule.flexInfo.line1')}
                                 </Typography>
-                                <Grid container spacing={3} alignItems="center">
-                                    <Grid item xs={12} sm="auto">
-                                        <Stack direction="row" alignItems="center" spacing={1}>
-                                            <AccessTime color="primary" fontSize="small" />
-                                            <Box>
-                                                <Typography variant="caption" color="text.secondary">{tSucursal('weekTime')}</Typography>
-                                                <Typography variant="h6" fontWeight={700}>{totalWeeklyHoursLabel}</Typography>
-                                            </Box>
-                                        </Stack>
-                                    </Grid>
-                                    <Grid item xs={12} sm="auto">
-                                        <Stack direction="row" alignItems="center" spacing={1}>
-                                            <NotificationsNoneOutlined color="primary" fontSize="small" />
-                                            <Box>
-                                                <Typography variant="caption" color="text.secondary">{tCore('adviseWorkDay')}</Typography>
-                                                <Typography variant="h6" fontWeight={700}>{config?.advance?.notifyBeforeMinutes ?? 0} {tCore('minute')}</Typography>
-                                            </Box>
-                                        </Stack>
-                                    </Grid>
-                                </Grid>
+                                <Stack direction={{ xs: "column", sm: "row" }} spacing={3} alignItems="flex-start">
+                                    <Stack direction="row" alignItems="center" spacing={1}>
+                                        <AccessTime color="primary" fontSize="small" />
+                                        <Box>
+                                            <Typography variant="caption" color="text.secondary">{tSucursal('weekTime')}</Typography>
+                                            <Typography variant="h6" fontWeight={700}>{totalWeeklyHoursLabel}</Typography>
+                                        </Box>
+                                    </Stack>
+                                    <Stack direction="row" alignItems="center" spacing={1}>
+                                        <NotificationsNoneOutlined color="primary" fontSize="small" />
+                                        <Box>
+                                            <Typography variant="caption" color="text.secondary">{tCore('adviseWorkDay')}</Typography>
+                                            <Typography variant="h6" fontWeight={700}>{config?.advance?.notifyBeforeMinutes ?? 0} {tCore('minute')}</Typography>
+                                        </Box>
+                                    </Stack>
+                                </Stack>
                             </Box>
 
                             <Box>

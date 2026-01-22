@@ -1,6 +1,6 @@
 import { Box, Divider, FormControlLabel, Grid, Switch, TextFieldProps, Typography } from "@mui/material";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import { Field, FieldProps, useField } from "formik";
+import { useField } from "formik";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useAppLocale } from "@/hooks/useAppLocale";
@@ -45,7 +45,8 @@ const initialValues: WorkSchedule = {
     notifyBeforeMinutes: 15,
 };
 
-const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
+type WorkScheduleFieldProps = TextFieldProps & {
+    name: string;
     afterTextField?: string,
     onHandleChange?: (value: any) => void,
     enableDayTimeRange: boolean
@@ -56,7 +57,9 @@ const WorkScheduleField: React.FC<FieldProps & TextFieldProps & {
         dayValue: any;
         onChange: (updater: (current: any) => any) => void;
     }) => React.ReactNode
-}> = ({
+};
+
+const WorkScheduleField: React.FC<WorkScheduleFieldProps> = ({
     ...props
 }) => {
 
