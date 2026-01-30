@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { addressSchema, ratioLogRule, requiredRule, timeBreakRule } from '@/config/yupRules';
@@ -254,126 +254,124 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   };
 
 
-  const baseFields: any[] = [
-    {
-      isDivider: true,
-      label: t('sucursal.formFirstSectionTitle'),
-    },
-    {
-      name: 'name',
-      label: t('core.label.subEntityName'),
-      type: 'text',
-
-      required: true,
-      component: TextInput,
-    },
-    {
-      name: 'nif',
-      label: t('core.label.nif'),
-      component: TextInput,
-    },
-    {
-      name: 'address',
-      label: t('sucursal.address'),
-      required: true,
-      fullWidth: true,
-      component: AddressComplexInput,
-    },
-
-    {
-      isDivider: true,
-      label: t('core.label.ratioChecklogTitle'),
-    },
-
-
-    {
-      name: 'ratioChecklog',
-      label: t('core.label.ratioChecklog'),
-      component: TextInput,
-      type: 'number'
-
-
-    },
-    {
-      name: 'disableRatioChecklog',
-      label: t('core.label.disableRatioChecklogE'),
-      required: false,
-      component: ToggleInput,
-      extraProps: {
-        onHandleChange: setDisableRatioChecklog
+  const fields = useMemo(() => {
+    const baseFields: any[] = [
+      {
+        isDivider: true,
+        label: t('sucursal.formFirstSectionTitle'),
       },
-    },
-    {
-      name: 'status',
-      label: t('core.label.status'),
-      component: SelectInput,
-      required: true,
-      fullWidth: true,
-      options: [
-        { value: 'active', label: t('core.label.active') },
-        { value: 'inactive', label: t('core.label.inactive') },
-      ],
-    },
-  ];
+      {
+        name: 'name',
+        label: t('core.label.subEntityName'),
+        type: 'text',
+        required: true,
+        component: TextInput,
+      },
+      {
+        name: 'nif',
+        label: t('core.label.nif'),
+        component: TextInput,
+      },
+      {
+        name: 'address',
+        label: t('sucursal.address'),
+        required: true,
+        fullWidth: true,
+        component: AddressComplexInput,
+      },
 
-  baseFields.push(
-    {
-      isDivider: true,
-      label: t('calendar.title'),
-      hit: t('calendar.schedule.subtitle'),
-      extraProps: { disabledBottomMargin: true }
-    },
-    {
-      name: 'calendarConfig',
-      label: t('calendar.title'),
-      component: CalendarSection,
-      fullWidth: true,
-      extraProps: {
-        textAlign: 'left',
-        scope: 'branch',
-        entityId: currentEntity?.entity.id,
-        branchId: itemId,
-        timezone: (initialValues as any)?.address?.timeZone ?? currentEntity?.entity?.legal?.address?.timeZone ?? "UTC",
-        initialSchedule: initialValues?.overridesSchedule,
-        baseSchedule: (initialValues as any)?.baseSchedule,
-        overrideSchedule: (initialValues as any)?.overrideSchedule,
-        initialAdvance: {
-          enableDayTimeRange: initialValues?.enableDayTimeRange,
-          disableBreak: initialValues?.disableBreak,
-          timeBreak: initialValues?.timeBreak,
-          notifyBeforeMinutes: initialValues?.notifyBeforeMinutes,
+      {
+        isDivider: true,
+        label: t('core.label.ratioChecklogTitle'),
+      },
+
+      {
+        name: 'ratioChecklog',
+        label: t('core.label.ratioChecklog'),
+        component: TextInput,
+        type: 'number'
+      },
+      {
+        name: 'disableRatioChecklog',
+        label: t('core.label.disableRatioChecklogE'),
+        required: false,
+        component: ToggleInput,
+        extraProps: {
+          onHandleChange: setDisableRatioChecklog
         },
-        baseAdvance: (initialValues as any)?.baseAdvance,
-        overrideAdvance: (initialValues as any)?.overrideAdvance,
-        initialOverridesDisabled: initialValues?.overridesDisabled,
-        initialHolidays,
-        token: token,
-        locale: currentLocale,
-        onSaved: () => { },
-        hideSaveButton: true,
-        disableHolidayActions: !itemId,
-        onChange: (data: any) => setCalendarDraft(data),
+      },
+      {
+        name: 'status',
+        label: t('core.label.status'),
+        component: SelectInput,
+        required: true,
+        fullWidth: true,
+        options: [
+          { value: 'active', label: t('core.label.active') },
+          { value: 'inactive', label: t('core.label.inactive') },
+        ],
+      },
+    ];
+
+    baseFields.push(
+      {
+        isDivider: true,
+        label: t('calendar.title'),
+        hit: t('calendar.schedule.subtitle'),
+        extraProps: { disabledBottomMargin: true }
+      },
+      {
+        name: 'calendarConfig',
+        label: t('calendar.title'),
+        component: CalendarSection,
+        fullWidth: true,
+        extraProps: {
+          textAlign: 'left',
+          scope: 'branch',
+          entityId: currentEntity?.entity.id,
+          branchId: itemId,
+          timezone: (initialValues as any)?.address?.timeZone ?? currentEntity?.entity?.legal?.address?.timeZone ?? "UTC",
+          initialSchedule: initialValues?.overridesSchedule,
+          baseSchedule: (initialValues as any)?.baseSchedule,
+          overrideSchedule: (initialValues as any)?.overrideSchedule,
+          initialAdvance: {
+            enableDayTimeRange: initialValues?.enableDayTimeRange,
+            disableBreak: initialValues?.disableBreak,
+            timeBreak: initialValues?.timeBreak,
+            notifyBeforeMinutes: initialValues?.notifyBeforeMinutes,
+          },
+          baseAdvance: (initialValues as any)?.baseAdvance,
+          overrideAdvance: (initialValues as any)?.overrideAdvance,
+          initialOverridesDisabled: initialValues?.overridesDisabled,
+          initialHolidays,
+          token: token,
+          locale: currentLocale,
+          onSaved: () => { },
+          hideSaveButton: true,
+          disableHolidayActions: !itemId,
+          onChange: (data: any) => setCalendarDraft(data),
+        }
       }
-    }
-  );
+    );
 
-  baseFields.push(
-    {
-      isDivider: true,
-      label: t('core.label.aditionalData'),
-    },
+    baseFields.push(
+      {
+        isDivider: true,
+        label: t('core.label.aditionalData'),
+      },
 
-    {
-      name: 'metadata',
-      label: t('core.label.setting'),
-      type: 'text',
-      required: true,
-      fullWidth: true,
-      component: DynamicKeyValueInput,
-    },
-  );
+      {
+        name: 'metadata',
+        label: t('core.label.setting'),
+        type: 'text',
+        required: true,
+        fullWidth: true,
+        component: DynamicKeyValueInput,
+      },
+    );
 
-  const fields = baseFields;
+    return baseFields;
+  }, [currentEntity?.entity.id, currentLocale, initialHolidays, initialValues, itemId, setDisableRatioChecklog, setCalendarDraft, t, token]);
 
   const fetchData = useCallback(async () => {
 
