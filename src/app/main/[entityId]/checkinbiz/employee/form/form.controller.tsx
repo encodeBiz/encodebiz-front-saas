@@ -158,11 +158,26 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       delete values.createdAt
+      const {
+        overridesSchedule,
+        enableDayTimeRange,
+        disableBreak,
+        timeBreak,
+        notifyBeforeMinutes,
+        overridesDisabled,
+        baseSchedule,
+        overrideSchedule,
+        baseAdvance,
+        overrideAdvance,
+        calendarConfig,
+        ...employeeValues
+      } = values as any
+
       const data = {
-        ...values,
+        ...employeeValues,
          "uid": user?.id as string,
         "metadata": {
-          ...ArrayToObject(values.metadata as any),
+          ...ArrayToObject(employeeValues.metadata as any),
         },
         "id": itemId,
         entityId: currentEntity?.entity.id
