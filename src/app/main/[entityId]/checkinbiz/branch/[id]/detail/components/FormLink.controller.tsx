@@ -21,7 +21,6 @@ import { CommonModalType } from "@/contexts/commonModalContext";
 import { useFormStatus } from "@/hooks/useFormStatus";
 import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 import { ArrayToObject } from "@/lib/common/String";
-import WorkScheduleField from "@/components/common/forms/fields/WorkScheduleField";
 
 
 export default function useFormLinkController(onSuccess: () => void) {
@@ -77,15 +76,13 @@ export default function useFormLinkController(onSuccess: () => void) {
                         job: values.job,
                         price: values.price,
                     },
-                    "metadata": {
-                        ...ArrayToObject(values.metadata as any),
-                    },
-                    assignedBy: user?.uid as string,
-                    active: active,
-                    entityId: currentEntity?.entity.id,
-                    workSchedule: values.workSchedule,
-                    workScheduleEnable: values.enableDayTimeRange
-                }
+                "metadata": {
+                    ...ArrayToObject(values.metadata as any),
+                },
+                assignedBy: user?.uid as string,
+                active: active,
+                entityId: currentEntity?.entity.id
+            }
                 if (typeof data.id === 'number') {
                     delete data.id
                 }
@@ -189,35 +186,6 @@ export default function useFormLinkController(onSuccess: () => void) {
             label: t('core.label.active'),
             required: true,
             component: ToggleInput,
-        },
-
-
-
-
-
-        {
-            isDivider: true,
-            label: t('core.label.dayTimeRange'),
-            hit: t('core.label.dayTimeRangeDescEmployee'),
-        },
-        {
-            name: 'enableDayTimeRange',
-            label: formStatus?.values?.enableDayTimeRange ? t('core.label.workScheduleEnable') : t('core.label.workScheduleDisabled'),
-            component: ToggleInput,
-            required: true,
-        },
-        {
-            name: 'workSchedule',
-            label: t('core.label.workSchedule'),
-            component: WorkScheduleField,
-            required: true,
-            fullWidth: true,
-            extraProps: {
-                enableDayTimeRange: !formStatus?.values?.enableDayTimeRange,
-                workScheduleEnable: true,
-                hide: !formStatus?.values?.enableDayTimeRange
-            },
-
         },
 
         {
