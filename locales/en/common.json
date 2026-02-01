@@ -1579,9 +1579,10 @@
     "title": "Schedules & holidays",
     "subtitle": "Define the base schedule and shared holidays for the entity.",
     "tabs": {
-      "entity": "Entity",
+      "entity": "General settings",
       "branch": "Branch",
       "employee": "Employee",
+      "employeeHolidays": "Employee non‑working days",
       "comingSoon": "Coming soon"
     },
     "timezone": {
@@ -1650,6 +1651,15 @@
       "save": "Save holiday",
       "saved": "Holiday saved",
       "deleted": "Holiday deleted"
+    },
+    "holidaysEmpty": "No non-working days recorded",
+    "employeeHolidaysTitle": "Non-working days",
+    "loadingHolidays": "Loading non-working days...",
+    "searchPlaceholder": "Search employee...",
+    "holidayUnknown": "No name",
+    "holidayKind": {
+      "holiday": "Holiday",
+      "absence": "Absence"
     },
     "errors": {
       "timezoneRequired": "Select a timezone.",

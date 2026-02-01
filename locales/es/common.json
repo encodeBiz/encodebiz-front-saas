@@ -1604,9 +1604,10 @@
     "title": "Horarios y festivos",
     "subtitle": "Define el horario base y los festivos de la entidad.",
     "tabs": {
-      "entity": "Entidad",
+      "entity": "Configuración general",
       "branch": "Sucursal",
       "employee": "Empleado",
+      "employeeHolidays": "No laborables de empleados",
       "comingSoon": "Próximamente"
     },
     "timezone": {
@@ -1675,6 +1676,15 @@
       "save": "Guardar festivo",
       "saved": "Festivo guardado",
       "deleted": "Festivo eliminado"
+    },
+    "holidaysEmpty": "No tiene días no laborables registrados",
+    "employeeHolidaysTitle": "Días no laborables",
+    "loadingHolidays": "Cargando días no laborables...",
+    "searchPlaceholder": "Buscar empleado...",
+    "holidayUnknown": "Sin nombre",
+    "holidayKind": {
+      "holiday": "Festivo",
+      "absence": "Ausencia"
     },
     "errors": {
       "timezoneRequired": "Selecciona una zona horaria.",

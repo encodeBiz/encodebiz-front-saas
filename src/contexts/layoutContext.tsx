@@ -52,9 +52,8 @@ export const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <LayoutContext.Provider value={{ layoutState, changeLayoutState, changeLoaderState, navivateTo }}>
-            {loader.show && <PageLoader backdrop message={loader.args.text} type={'circular'} fullScreen={true} />}
+            {loader.show && <PageLoader backdrop message={loader.args?.text ?? ''} type={'circular'} fullScreen={true} />}
             {children}
         </LayoutContext.Provider>
     );
 };
-

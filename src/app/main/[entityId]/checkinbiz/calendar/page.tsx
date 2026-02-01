@@ -6,7 +6,7 @@ import GenericTabs from "@/components/common/tabs/GenericTabs";
 import { TabItem } from "@/components/common/tabs/BaseTabs";
 import { useTranslations } from "next-intl";
 import EntityCalendarTab from "./components/EntityCalendarTab";
-import BranchCalendarTab from "./components/BranchCalendarTab";
+import EmployeeHolidaysTab from "./components/EmployeeHolidaysTab";
 
 const CalendarPage = () => {
     const t = useTranslations('calendar');
@@ -18,9 +18,9 @@ const CalendarPage = () => {
             content: <EntityCalendarTab />
         },
         {
-            id: 'branch',
-            label: t('tabs.branch'),
-            content: <BranchCalendarTab />
+            id: 'employee-holidays',
+            label: t('tabs.employeeHolidays'),
+            content: <EmployeeHolidaysTab />
         },
     ];
 
