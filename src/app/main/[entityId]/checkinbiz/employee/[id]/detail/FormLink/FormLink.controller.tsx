@@ -42,7 +42,12 @@ export default function useFormLinkController(onSuccess: () => void) {
     const [branchList, setBranchList] = useState<Array<ISucursal>>([])
 
     const fetchSucursalList = async () => {
-        setBranchList(await search(currentEntity?.entity.id as string, { ...{} as any, limit: 100 }))
+        setBranchList(
+            await search(currentEntity?.entity.id as string, {
+                limit: 100,
+                filters: [{ field: 'status', operator: '==', value: 'active' }],
+            } as any)
+        )
     }
 
     useEffect(() => {
