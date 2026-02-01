@@ -5,16 +5,20 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Alert,
   Box,
   Card,
   CardContent,
   Chip,
+  CircularProgress,
   Divider,
   Grid,
   Stack,
   Typography,
+  TablePagination,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import EventBusyOutlined from '@mui/icons-material/EventBusyOutlined';
 import { useTranslations } from 'next-intl';
 import { useEntity } from '@/hooks/useEntity';
 import { useAuth } from '@/hooks/useAuth';
@@ -22,11 +26,11 @@ import { useAppLocale } from '@/hooks/useAppLocale';
 import { useLayout } from '@/hooks/useLayout';
 import { useToast } from '@/hooks/useToast';
 import { search as searchEmployees } from '@/services/checkinbiz/employee.service';
-import { search as searchBranch } from '@/services/checkinbiz/sucursal.service';
 import { IEmployee } from '@/domain/features/checkinbiz/IEmployee';
 import { fetchEffectiveCalendar } from '@/services/checkinbiz/calendar.service';
 import SearchIndexFilter from '@/components/common/table/filters/SearchIndexInput';
 import { SelectFilter } from '@/components/common/table/filters/SelectFilter';
+import { getRefByPathData } from '@/lib/firebase/firestore/readDocument';
 
 type IFilterParams = {
   filter: { status: string };
@@ -48,6 +52,7 @@ type HolidaysState = Record<
 const EmployeeHolidaysTab = () => {
   const t = useTranslations('calendar');
   const tCore = useTranslations('core.label');
+  const tTable = useTranslations('core.table');
   const { currentEntity } = useEntity();
   const { token } = useAuth();
   const { currentLocale } = useAppLocale();
@@ -55,7 +60,6 @@ const EmployeeHolidaysTab = () => {
   const { showToast } = useToast();
 
   const [employees, setEmployees] = useState<IEmployee[]>([]);
-  const [branches, setBranches] = useState<{ id: string; name: string }[]>([]);
   const [filterParams, setFilterParams] = useState<IFilterParams>({
     filter: { status: 'active' },
     currentPage: 0,
@@ -71,16 +75,9 @@ const EmployeeHolidaysTab = () => {
     {}
   );
   const [expandedId, setExpandedId] = useState<string | false>(false);
-
-  const loadBranches = useCallback(async () => {
-    if (!currentEntity?.entity?.id) return;
-    try {
-      const list = await searchBranch(currentEntity.entity.id, { limit: 200 } as any);
-      setBranches(list.map((b: any) => ({ id: b.id, name: b.name })));
-    } catch {
-      setBranches([]);
-    }
-  }, [currentEntity?.entity?.id]);
+  const [page, setPage] = useState(0);
+  const [pageCursors, setPageCursors] = useState<any[]>([null]);
+  const [hasMore, setHasMore] = useState<boolean>(true);
 
   const buildFilters = useCallback(
     (filter: IFilterParams['filter']) => {
@@ -101,6 +98,14 @@ const EmployeeHolidaysTab = () => {
         };
         const list: any[] = await searchEmployees(currentEntity.entity.id, params as any);
         setEmployees(list);
+        const lastCursor = list?.length ? (list[list.length - 1] as any)?.last ?? null : null;
+        setHasMore(list.length === fp.params.limit && !!lastCursor);
+        setPageCursors((prev) => {
+          const next = [...prev];
+          next[fp.currentPage] = fp.params.startAfter ?? null;
+          next[fp.currentPage + 1] = lastCursor;
+          return next.slice(0, fp.currentPage + 2);
+        });
         // expand first item by default
         const firstId = list[0]?.id ?? false;
         setExpandedId(firstId);
@@ -115,10 +120,6 @@ const EmployeeHolidaysTab = () => {
     },
     [buildFilters, changeLoaderState, currentEntity?.entity?.id, showToast]
   );
-
-  useEffect(() => {
-    loadBranches();
-  }, [loadBranches]);
 
   useEffect(() => {
     fetchEmployees(filterParams);
@@ -171,31 +172,62 @@ const EmployeeHolidaysTab = () => {
     [tCore]
   );
 
+  const handleSearchSelect = useCallback(
+    async (indexData: any) => {
+      if (!indexData) {
+        setHolidaysByEmployee({});
+        setPage(0);
+        setPageCursors([null]);
+        fetchEmployees(filterParams);
+        return;
+      }
+      try {
+        changeLoaderState({ show: true });
+        const item = await getRefByPathData(indexData.index);
+        if (item) {
+          setEmployees([item]);
+          setHolidaysByEmployee({});
+          const firstId = item.id ?? item.uid ?? null;
+          setExpandedId(firstId || false);
+          if (firstId) await handleLoadHolidays(firstId);
+          setHasMore(false);
+          setPage(0);
+        } else {
+          setPage(0);
+          setPageCursors([null]);
+          fetchEmployees(filterParams);
+        }
+      } catch (error: any) {
+        showToast(error.message, 'error');
+      } finally {
+        changeLoaderState({ show: false });
+      }
+    },
+    [changeLoaderState, fetchEmployees, filterParams, showToast]
+  );
+
   return (
     <Stack spacing={3} sx={{ pb: 6 }}>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center">
         <SearchIndexFilter
           placeholder={t('searchPlaceholder')}
-          onChange={(value: any) => {
-            const filter = { ...filterParams.filter };
-            const filters = buildFilters(filter);
-            if (value) {
-              filters.push({ field: 'search', operator: '>=', value });
-            }
-            setFilterParams((prev) => ({
-              ...prev,
-              params: { ...prev.params, filters, startAfter: null },
-            }));
-          }}
+          type="employee"
+          onChange={(value: any) => handleSearchSelect(value)}
         />
         <SelectFilter
           label={tCore('status')}
           value={filterParams.filter.status}
           onChange={(value: any) =>
-            setFilterParams((prev) => ({
-              ...prev,
-              filter: { ...prev.filter, status: value },
-            }))
+            setFilterParams((prev) => {
+              setPage(0);
+              setPageCursors([null]);
+              return {
+                ...prev,
+                currentPage: 0,
+                filter: { ...prev.filter, status: value },
+                params: { ...prev.params, startAfter: null },
+              };
+            })
           }
           items={statusOptions}
         />
@@ -212,6 +244,14 @@ const EmployeeHolidaysTab = () => {
             <Accordion
               key={employeeId}
               expanded={isExpanded}
+              sx={{
+                borderRadius: 2,
+                border: '1px solid',
+                borderColor: 'divider',
+                boxShadow: 0,
+                mb: 1,
+                '&:before': { display: 'none' }, // quita el separador default
+              }}
               onChange={(_, expanded) => {
                 setExpandedId(expanded ? employeeId : false);
                 if (expanded && !holidaysState?.holidays && !holidaysState?.loading) {
@@ -221,17 +261,9 @@ const EmployeeHolidaysTab = () => {
             >
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Stack direction="row" spacing={1} alignItems="center">
+                  <EventBusyOutlined fontSize="small" color="primary" />
                   <Typography fontWeight={600}>{emp.fullName}</Typography>
-                  <Chip size="small" label={emp.status} />
-                  {emp.branchId && (
-                    <Chip
-                      size="small"
-                      variant="outlined"
-                      label={
-                        branches.find((b) => b.id === emp.branchId)?.name ?? emp.branchId
-                      }
-                    />
-                  )}
+                  <Chip size="small" color="primary" label={emp.status.toUpperCase()} />
                 </Stack>
               </AccordionSummary>
               <AccordionDetails>
@@ -241,24 +273,30 @@ const EmployeeHolidaysTab = () => {
                   </Typography>
                   <Divider />
                   {holidaysState?.loading && (
-                    <Typography variant="body2">{t('loadingHolidays')}</Typography>
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <CircularProgress size={18} />
+                      <Typography variant="body2">{t('loadingHolidays')}</Typography>
+                    </Stack>
                   )}
                   {!holidaysState?.loading &&
                     (holidaysState?.holidays?.length ?? 0) === 0 && (
-                      <Typography variant="body2" color="text.secondary">
-                        {t('holidaysEmpty')}
-                      </Typography>
+                      <Alert severity="info" icon={<EventBusyOutlined fontSize="small" />}>
+                        <Typography variant="body2">{t('holidaysEmpty')}</Typography>
+                      </Alert>
                     )}
                   <Grid container spacing={2}>
                     {holidaysState?.holidays?.map((h: any) => (
                       <Grid item xs={12} sm={6} md={4} key={h.id}>
-                        <Card variant="outlined">
+                        <Card
+                          variant="outlined"
+                          sx={{ borderRadius: 2, height: '100%', boxShadow: 0, borderColor: 'divider' }}
+                        >
                           <CardContent>
                             <Stack spacing={1}>
                               <Typography fontWeight={700}>
                                 {h.name ?? t('holidayUnknown')}
                               </Typography>
-                              <Typography variant="body2">
+                              <Typography variant="body2" color="text.secondary">
                                 {h.date ??
                                   (h.startDate && h.endDate
                                     ? `${h.startDate} - ${h.endDate}`
@@ -267,6 +305,7 @@ const EmployeeHolidaysTab = () => {
                               {h.kind && (
                                 <Chip
                                   size="small"
+                                  color="secondary"
                                   label={
                                     h.kind === 'holiday'
                                       ? t('holidayKind.holiday')
@@ -291,6 +330,61 @@ const EmployeeHolidaysTab = () => {
           );
         })}
       </Stack>
+
+      <Box display="flex" justifyContent="flex-end">
+        <TablePagination
+          component="div"
+          count={hasMore ? -1 : page * filterParams.params.limit + employees.length}
+          page={page}
+          onPageChange={(_, newPage) => {
+            if (newPage > page && !hasMore) return;
+            const startAfter = newPage > page ? pageCursors[newPage] : pageCursors[newPage];
+            setPage(newPage);
+            const nextParams: IFilterParams = {
+              ...filterParams,
+              currentPage: newPage,
+              params: { ...filterParams.params, startAfter }
+            };
+            setFilterParams(nextParams);
+            fetchEmployees(nextParams);
+          }}
+          rowsPerPage={filterParams.params.limit}
+          onRowsPerPageChange={(e) => {
+            const limit = parseInt(e.target.value, 10);
+            setPage(0);
+            setPageCursors([null]);
+            const nextParams: IFilterParams = {
+              ...filterParams,
+              currentPage: 0,
+              params: { ...filterParams.params, limit, startAfter: null }
+            };
+            setFilterParams(nextParams);
+            fetchEmployees(nextParams);
+          }}
+          rowsPerPageOptions={[5, 10, 25, 50]}
+          labelRowsPerPage={tTable('rowsPerPage')}
+          labelDisplayedRows={({ from, to, count }) =>
+            `${from}-${to} ${tTable('of')} ${count === -1 ? '∞' : count}`
+          }
+          nextIconButtonProps={{ disabled: !hasMore }}
+          sx={{
+            '& .MuiTablePagination-toolbar': { pl: 0, pr: 0 },
+            '& .MuiTablePagination-actions': { mr: 0.5 },
+            '& .MuiTablePagination-selectLabel': { mr: 1 },
+            '& .MuiTablePagination-displayedRows': { ml: 1 },
+          }}
+          slotProps={{
+            select: {
+              inputProps: { 'aria-label': tTable('rowsPerPage') },
+              native: true,
+            },
+            actions: {
+              previousButton: { 'aria-label': tTable('previous') },
+              nextButton: { 'aria-label': tTable('next') },
+            },
+          }}
+        />
+      </Box>
     </Stack>
   );
 };

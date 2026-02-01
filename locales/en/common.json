@@ -94,7 +94,7 @@
       "actions": "Actions",
       "loader": "Loading...",
       "nodata": "No data available",
-      "rowsPerPage": "Rows per page:",
+      "rowsPerPage": "Rows per page",
       "of": "of",
       "previous": "Back",
       "next": "Next"
@@ -152,6 +152,7 @@
       "linkToCreateEmployee": "Create employee",
       "end": "End",
       "download": "Download",
+      "rowsPerPage": "Rows per page",
       "periocity": "Date Range",
       "minutes": "minutes",
       "job": "Occupation",

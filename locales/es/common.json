@@ -94,7 +94,7 @@
       "actions": "Acciones",
       "loader": "Cargando...",
       "nodata": "No existen datos disponibles",
-      "rowsPerPage": "Filas por página:",
+      "rowsPerPage": "Filas por página",
       "of": "de",
       "previous": "Atrás",
       "next": "Adelante"
@@ -148,6 +148,7 @@
       "linkToCreateEmployee": "Crear empleado",
       "end": "Fin",
       "download": "Descargar",
+      "rowsPerPage": "Filas por página",
       "periocity": "Rango de Fecha",
       "minutes": "minutos",
       "job": "Ocupación",
