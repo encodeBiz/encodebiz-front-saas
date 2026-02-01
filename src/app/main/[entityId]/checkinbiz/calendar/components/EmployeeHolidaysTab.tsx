@@ -12,7 +12,6 @@ import {
   Chip,
   CircularProgress,
   Divider,
-  Grid,
   Stack,
   Typography,
   TablePagination,
@@ -284,9 +283,13 @@ const EmployeeHolidaysTab = () => {
                         <Typography variant="body2">{t('holidaysEmpty')}</Typography>
                       </Alert>
                     )}
-                  <Grid container spacing={2}>
+                  <Box
+                    display="grid"
+                    gridTemplateColumns={{ xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
+                    gap={2}
+                  >
                     {holidaysState?.holidays?.map((h: any) => (
-                      <Grid item xs={12} sm={6} md={4} key={h.id}>
+                      <Box key={(h.id ?? `${h.date}-${h.name}`) as React.Key}>
                         <Card
                           variant="outlined"
                           sx={{ borderRadius: 2, height: '100%', boxShadow: 0, borderColor: 'divider' }}
@@ -321,9 +324,9 @@ const EmployeeHolidaysTab = () => {
                             </Stack>
                           </CardContent>
                         </Card>
-                      </Grid>
+                      </Box>
                     ))}
-                  </Grid>
+                  </Box>
                 </Stack>
               </AccordionDetails>
             </Accordion>
