@@ -45,3 +45,25 @@ export async function deleteCalendarItem(payload: CalendarDeletePayload, token: 
         throw new Error(mapperErrorFromBack(error?.message as string, true) as string);
     }
 }
+
+type FetchEffectiveCalendarParams = {
+    scope: 'entity' | 'branch' | 'employee';
+    entityId: string;
+    branchId?: string;
+    employeeId?: string;
+    token: string;
+    locale?: any;
+};
+
+export async function fetchEffectiveCalendar(params: FetchEffectiveCalendarParams) {
+    const { token, locale = 'es', ...query } = params;
+    if (!token) throw new Error("Error to fetch user auth token");
+    const client = getClient(token, locale);
+    const searchParams = new URLSearchParams(query as any).toString();
+    const url = `${CALENDAR_HANDLER_URL}?${searchParams}`;
+    const response: any = await client.get(url, {});
+    if (response?.errCode && response.errCode !== 200) {
+        throw new Error(response.message);
+    }
+    return response?.data ?? response;
+}

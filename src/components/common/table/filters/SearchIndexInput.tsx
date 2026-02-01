@@ -24,6 +24,7 @@ interface SearchIndexInputProps {
   label?: any,
   width?: any,
   onChange: (value: any) => void,
+  placeholder?: string,
 }
 
 const getDataLabel = (data: ISearchIndex, type: "entities" | "users" | "events" | "staff" | "holder" | "employee" | "branch") => {
@@ -50,7 +51,7 @@ const getDataLabel = (data: ISearchIndex, type: "entities" | "users" | "events" 
 }
 
 
-const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type, label  }) => {
+const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type, label, placeholder  }) => {
   const t = useTranslations();
   const { currentEntity } = useEntity()
 
@@ -135,7 +136,7 @@ const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type, la
           <TextField
             {...params}
 
-            placeholder={label?label:t("core.label.search")}
+            placeholder={placeholder ?? (label ? label : t("core.label.search"))}
             sx={{
               
               height: 46,
