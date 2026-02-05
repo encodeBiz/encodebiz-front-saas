@@ -56,10 +56,14 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
     const breakMinutes = config.advance?.disableBreak && config.advance?.timeBreak ? Number(config.advance.timeBreak) : 0;
     const dayKeys = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const;
     dayKeys.forEach((key) => {
-      const dayValue = (schedule as any)[key];
-      if (dayValue?.enabled && dayValue.start && dayValue.end) {
-        const duration = (dayValue.end.hour * 60 + dayValue.end.minute) - (dayValue.start.hour * 60 + dayValue.start.minute);
-        total += Math.max(0, duration - breakMinutes);
+      const dayValue: any = (schedule as any)[key];
+      if (dayValue?.enabled && Array.isArray(dayValue.shifts)) {
+        dayValue.shifts.forEach((s: any) => {
+          if (s?.start && s?.end) {
+            const duration = (s.end.hour * 60 + s.end.minute) - (s.start.hour * 60 + s.start.minute);
+            total += Math.max(0, duration - breakMinutes);
+          }
+        });
       }
     });
     return total;
@@ -76,13 +80,13 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
   const [loading, setLoading] = useState(false);
 
   const fallbackSchedule: WeeklyScheduleWithBreaks = {
-    monday: { enabled: true, disabled: false, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
-    tuesday: { enabled: true, disabled: false, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
-    wednesday: { enabled: true, disabled: false, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
-    thursday: { enabled: true, disabled: false, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
-    friday: { enabled: true, disabled: false, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
-    saturday: { enabled: false, disabled: true, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
-    sunday: { enabled: false, disabled: true, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
+    monday: { enabled: true, disabled: false, shifts: [{ start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } }] },
+    tuesday: { enabled: true, disabled: false, shifts: [{ start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } }] },
+    wednesday: { enabled: true, disabled: false, shifts: [{ start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } }] },
+    thursday: { enabled: true, disabled: false, shifts: [{ start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } }] },
+    friday: { enabled: true, disabled: false, shifts: [{ start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } }] },
+    saturday: { enabled: false, disabled: true, shifts: [{ start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } }] },
+    sunday: { enabled: false, disabled: true, shifts: [{ start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } }] },
   };
   const fallbackAdvance = {
     enableDayTimeRange: false,
@@ -206,56 +210,87 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
 
               <Box>
                 <Typography fontWeight={700} sx={{ mb: 1 }}>
-                  {tSucursal('scheduledDays')} ({Object.values(schedule || {}).filter((d: any) => d?.enabled).length})
+                  {tSucursal('scheduledDays')} ({Object.values(schedule || {}).filter((d: any) => d?.enabled).length}) · {totalWeeklyHoursLabel}
                 </Typography>
                 <Stack spacing={1.5}>
-                  {(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const)
-                    .map((dayKey) => {
-                      const dayValue: any = (schedule as any)[dayKey];
-                      if (!dayValue?.enabled) return null;
-                      const durationMinutes = (dayValue.end.hour * 60 + dayValue.end.minute) - (dayValue.start.hour * 60 + dayValue.start.minute);
-                      const breakMinutes = config?.advance?.disableBreak && config?.advance?.timeBreak ? Number(config.advance.timeBreak) : 0;
-                      const netMinutes = Math.max(0, durationMinutes - breakMinutes);
-                      const hours = Math.floor(netMinutes / 60);
-                      const mins = netMinutes % 60;
-                      const durationLabel = `${hours > 0 ? `${hours}h ` : ''}${mins > 0 ? `${mins}m` : ''}`.trim() || '0m';
+                                    {(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const)
+                                        .map((dayKey) => {
+                                            const dayValue: any = (schedule as any)[dayKey];
+                                            if (!dayValue?.enabled) return null;
+                                            const dayShifts = Array.isArray(dayValue.shifts) ? dayValue.shifts : [];
+                                            const breakMinutes = config?.advance?.disableBreak && config?.advance?.timeBreak ? Number(config.advance.timeBreak) : 0;
+                                            const dayTotalMinutes = dayShifts.reduce((acc: number, s: any) => {
+                                                if (s?.start && s?.end) {
+                                                    const duration = (s.end.hour * 60 + s.end.minute) - (s.start.hour * 60 + s.start.minute);
+                                                    return acc + Math.max(0, duration - breakMinutes);
+                                                }
+                                                return acc;
+                                            }, 0);
+                                            const dayHours = Math.floor(dayTotalMinutes / 60);
+                                            const dayMins = dayTotalMinutes % 60;
+                                            const dayTotalLabel = `${dayHours > 0 ? `${dayHours}h ` : ''}${dayMins > 0 ? `${dayMins}m` : ''}`.trim() || '0m';
 
-                      return (
-                        <Box key={dayKey} sx={{ bgcolor: 'rgb(221, 226, 247)', borderRadius: 2, p: 2, border: '1px solid', borderColor: '#d0d7f2' }}>
-                          <Stack direction="row" alignItems="center" spacing={1} justifyContent="space-between">
-                            <Typography fontWeight={600}>{tDays(dayKey as any)}</Typography>
-                            <Chip label={durationLabel} color="primary" variant="outlined" size="small" />
-                          </Stack>
-                          <Stack direction="row" spacing={2} mt={1} alignItems="center" flexWrap="wrap">
-                            <Chip
-                              icon={<AlarmOutlined color="success" fontSize="small" />}
-                              label={`${tCore('startTime')}: ${String(dayValue.start.hour).padStart(2, '0')}:${String(dayValue.start.minute).padStart(2, '0')}`}
-                              variant="outlined"
-                              color="success"
-                              size="small"
-                            />
-                            <Chip
-                              icon={<AlarmOutlined color="error" fontSize="small" />}
-                              label={`${tCore('endTime')}: ${String(dayValue.end.hour).padStart(2, '0')}:${String(dayValue.end.minute).padStart(2, '0')}`}
-                              variant="outlined"
-                              color="error"
-                              size="small"
-                            />
-                          </Stack>
-                        </Box>
-                      );
-                    })}
-                </Stack>
+                                            return (
+                                                <Box key={dayKey} position="relative" sx={{ bgcolor: 'white', borderRadius: 2, p: 1.5, boxShadow: 2 }}>
+                                                    <Box
+                                                        position="absolute"
+                                                        right={10}
+                                                        top="20%"
+                                                        sx={{
+                                                            width: 48,
+                                                            height: 48,
+                                                            borderRadius: '50%',
+                                                            bgcolor: (theme) => theme.palette.primary.main,
+                                                            color: (theme) => theme.palette.primary.contrastText,
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'center',
+                                                            boxShadow: 3,
+                                                            typography: 'subtitle2',
+                                                            fontWeight: 700,
+                                                        }}
+                                                    >
+                                                        {dayTotalLabel}
+                                                    </Box>
+                                                    <Stack direction="row" alignItems="center" spacing={1.5} justifyContent="space-between">
+                                                        <Stack direction="row" spacing={1} alignItems="center">
+                                                            <Typography variant="h6" fontWeight={600}>{tDays(dayKey as any)}</Typography>
+                                                            <Chip label={`${dayShifts.length} ${dayShifts.length === 1 ? tCore('shift') : tCore('shifts')}`} color="primary" variant="outlined" size="small" />
+                                                        </Stack>
+                                                    </Stack>
+                                                    <Stack spacing={0.5} mt={1} direction="row">
+                                                        {dayShifts.map((s: any, idx: number) => {
+                                                            const duration = s?.start && s?.end
+                                                                ? (s.end.hour * 60 + s.end.minute) - (s.start.hour * 60 + s.start.minute)
+                                                                : 0;
+                                                            const net = Math.max(0, duration - breakMinutes);
+                                                            const h = Math.floor(net / 60);
+                                                            const m = net % 60;
+                                                            const durationLabel = `${h > 0 ? `${h}h ` : ''}${m > 0 ? `${m}m` : ''}`.trim() || '0m';
+                                                            const startLabel = s?.start ? `${String(s.start.hour).padStart(2, '0')}:${String(s.start.minute).padStart(2, '0')}` : '--';
+                                                            const endLabel = s?.end ? `${String(s.end.hour).padStart(2, '0')}:${String(s.end.minute).padStart(2, '0')}` : '--';
+                                                            return (
+                                                                <Stack key={`${dayKey}-${idx}`} direction="row" spacing={1.5} alignItems="center" justifyContent="space-between" flexWrap="wrap">
+                                                                    <Chip
+                                                                      size="medium"
+                                                                      icon={<AlarmOutlined fontSize="small" />}
+                                                                      label={`${startLabel} - ${endLabel}`}
+                                                                      variant="outlined"
+                                                                      sx={{ fontSize: 14, fontWeight: 400 }}
+                                                                    />
+                                                                </Stack>
+                                                            );
+                                                        })}
+                                                    </Stack>
+                                                </Box>
+                                            );
+                                        })}
+                                </Stack>
               </Box>
             </Stack>
           )}
 
           <Divider sx={{ my: 2 }} />
-          <Stack spacing={1}>
-            <Typography variant="body2">{t('notes.inheritance')}</Typography>
-            <Typography variant="body2">{t('notes.inactiveDays')}</Typography>
-            <Typography variant="body2">{t('notes.toleranceHint')}</Typography>
-          </Stack>
         </AccordionDetails>
       </Accordion>
 

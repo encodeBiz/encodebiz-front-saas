@@ -14,8 +14,9 @@ export type DayBreak = {
 export type DayScheduleWithBreaks = {
     enabled?: boolean; // UI flag
     disabled?: boolean; // API flag
-    start?: TimeValue;
-    end?: TimeValue;
+    start?: TimeValue; // legacy fallback
+    end?: TimeValue;   // legacy fallback
+    shifts?: Array<{ start: TimeValue; end: TimeValue; id?: string }>;
     breaks?: DayBreak[];
     strictRange?: boolean;
     toleranceMinutes?: number;

@@ -113,12 +113,16 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     const dayKeys = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const;
     dayKeys.forEach((dayKey) => {
       const dayValue: any = (schedule ?? {})[dayKey] ?? {};
-      const start = dayValue.start ?? { hour: 9, minute: 0 };
-      const end = dayValue.end ?? { hour: 17, minute: 0 };
+      const shifts = Array.isArray(dayValue.shifts) && dayValue.shifts.length
+        ? dayValue.shifts.map((s: any, idx: number) => ({
+          start: s?.start ?? { hour: 9, minute: 0 },
+          end: s?.end ?? { hour: 17, minute: 0 },
+          id: s?.id ?? `shift-${idx}`
+        }))
+        : [{ start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 }, id: 'shift-0' }];
       const isDisabled = dayValue.disabled ?? (dayValue.enabled === false);
       cleaned[dayKey] = {
-        start,
-        end,
+        shifts,
         strictRange: enableDayTimeRange || dayValue.strictRange ? true : undefined,
         disabled: isDisabled,
       };
@@ -132,9 +136,17 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     dayKeys.forEach((dayKey) => {
       const dayValue: any = (schedule ?? {})[dayKey] ?? (base as any)?.[dayKey] ?? {};
       const enabled = dayValue.disabled ? false : dayValue.enabled ?? true;
+      const shifts = Array.isArray(dayValue.shifts) && dayValue.shifts.length
+        ? dayValue.shifts
+        : [{
+          start: dayValue.start ?? { hour: 9, minute: 0 },
+          end: dayValue.end ?? { hour: 17, minute: 0 },
+          id: 'shift-0',
+        }];
       normalized[dayKey] = {
-        start: dayValue.start ?? { hour: 9, minute: 0 },
-        end: dayValue.end ?? { hour: 17, minute: 0 },
+        shifts,
+        start: shifts[0]?.start,
+        end: shifts[0]?.end,
         enabled,
         disabled: dayValue.disabled ?? !enabled,
         strictRange: dayValue.strictRange,

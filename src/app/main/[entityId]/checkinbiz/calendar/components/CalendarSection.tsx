@@ -107,12 +107,16 @@ const sanitizeSchedule = (schedule: WeeklyScheduleWithBreaks, enableDayTimeRange
   const cleaned: WeeklyScheduleWithBreaks = {};
   DAY_ITEMS.forEach((day) => {
     const dayValue = schedule[day.key] ?? {};
-    const start = dayValue.start ?? { hour: 9, minute: 0 };
-    const end = dayValue.end ?? { hour: 17, minute: 0 };
+    const shifts = Array.isArray((dayValue as any).shifts) && (dayValue as any).shifts.length
+      ? (dayValue as any).shifts.map((s: any, idx: number) => ({
+        start: s?.start ?? { hour: 9, minute: 0 },
+        end: s?.end ?? { hour: 17, minute: 0 },
+        id: s?.id ?? `shift-${idx}`,
+      }))
+      : [{ start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 }, id: 'shift-0' }];
     const isDisabled = dayValue.disabled ?? (dayValue.enabled === false);
     cleaned[day.key] = {
-      start,
-      end,
+      shifts,
       strictRange: enableDayTimeRange || dayValue.strictRange ? true : undefined,
       toleranceMinutes: dayValue.toleranceMinutes,
       disabled: isDisabled,
@@ -200,15 +204,25 @@ const CalendarSection = ({
     const normalized: WeeklyScheduleWithBreaks = {};
     DAY_ITEMS.forEach((day) => {
       const dayValue = schedule?.[day.key] ?? fallback?.[day.key];
-      if (dayValue && dayValue.start && dayValue.end) {
+      if (dayValue) {
         const enabled = dayValue.disabled ? false : dayValue.enabled ?? true;
-        normalized[day.key] = { ...dayValue, enabled, disabled: dayValue.disabled ?? !enabled };
+        const shifts = Array.isArray((dayValue as any).shifts) && (dayValue as any).shifts.length
+          ? (dayValue as any).shifts
+          : [{
+            start: (dayValue as any).start ?? { hour: 9, minute: 0 },
+            end: (dayValue as any).end ?? { hour: 17, minute: 0 },
+            id: 'shift-0'
+          }];
+        normalized[day.key] = { ...dayValue, shifts, enabled, disabled: dayValue.disabled ?? !enabled };
       } else {
         normalized[day.key] = {
           enabled: false,
           disabled: true,
-          start: { hour: 9, minute: 0 },
-          end: { hour: 17, minute: 0 },
+          shifts: [{
+            start: { hour: 9, minute: 0 },
+            end: { hour: 17, minute: 0 },
+            id: 'shift-0',
+          }],
         };
       }
     });
@@ -253,10 +267,19 @@ const CalendarSection = ({
       DAY_ITEMS.forEach((day) => {
         const dayValue = values.schedule[day.key];
         if (!values.overridesDisabled && dayValue?.enabled) {
-          if (!dayValue.start || !dayValue.end) {
+          const shifts: any[] = Array.isArray((dayValue as any)?.shifts) ? (dayValue as any).shifts : [];
+          if (!shifts.length) {
             scheduleErrs.push(t("errors.startEndRequired", { day: day.label }));
-          } else if (minutesOf(dayValue.start) >= minutesOf(dayValue.end)) {
-            scheduleErrs.push(t("errors.startBeforeEnd", { day: day.label }));
+          } else {
+            shifts.forEach((s, idx) => {
+              const start = s?.start;
+              const end = s?.end;
+              if (!start || !end) {
+                scheduleErrs.push(t("errors.startEndRequired", { day: `${day.label} #${idx + 1}` }));
+              } else if (minutesOf(start) >= minutesOf(end)) {
+                scheduleErrs.push(t("errors.startBeforeEnd", { day: `${day.label} #${idx + 1}` }));
+              }
+            });
           }
         }
       });
@@ -580,12 +603,6 @@ const CalendarSection = ({
                   </Alert>
                 )}
 
-                <Stack mt={3} spacing={1}>
-                  <Typography variant="body2">{t("notes.inheritance")}</Typography>
-                  <Typography variant="body2">{t("notes.inactiveDays")}</Typography>
-                  <Typography variant="body2">{t("notes.toleranceHint")}</Typography>
-                </Stack>
-
                 {!hideSaveButton && (
                   <Stack direction={{ xs: "column", sm: "row" }} justifyContent="flex-end" spacing={2} sx={{ mt: 3, mb: 2 }}>
                     <SassButton type="button" variant="contained" disabled={isSubmitting || !dirty} onClick={() => handleSubmit()}>
@@ -593,86 +610,86 @@ const CalendarSection = ({
                     </SassButton>
                   </Stack>
                 )}
-              </AccordionDetails>
-            </Accordion>
+            </AccordionDetails>
+          </Accordion>
 
-            <Accordion defaultExpanded={accordionInitialExpanded}>
-              <AccordionSummary expandIcon={<ExpandMoreOutlined />}>
-                <Stack>
-                  <Typography fontWeight={600}>{scope === "employee" ? "Ausencias" : "Días libres"}</Typography>
-                  <Typography color="text.secondary" variant="body2">
-                    {scope === "employee" ? "Gestiona las ausencias del empleado." : "Gestiona los días libres que aplican a este nivel."}
-                  </Typography>
-                </Stack>
-              </AccordionSummary>
-              <AccordionDetails>
-                {!disableHolidayActions && (
-                  <Box display="flex" justifyContent="flex-end" mb={2}>
-                    <SassButton
-                      variant="contained"
-                      startIcon={<AddOutlined />}
-                      onClick={() => {
-                        setEditingHoliday(undefined);
-                        setOpenHolidayModal(true);
-                      }}
-                    >
-                      {scope === "employee" ? "Agregar ausencia" : "Agregar día libre"}
-                    </SassButton>
-                  </Box>
-                )}
+          <Accordion defaultExpanded={accordionInitialExpanded}>
+            <AccordionSummary expandIcon={<ExpandMoreOutlined />}>
+              <Stack>
+                <Typography fontWeight={600}>{scope === "employee" ? "Ausencias" : "Días libres"}</Typography>
+                <Typography color="text.secondary" variant="body2">
+                  {scope === "employee" ? "Gestiona las ausencias del empleado." : "Gestiona los días libres que aplican a este nivel."}
+                </Typography>
+              </Stack>
+            </AccordionSummary>
+            <AccordionDetails>
+              {!disableHolidayActions && (
+                <Box display="flex" justifyContent="flex-end" mb={2}>
+                  <SassButton
+                    variant="contained"
+                    startIcon={<AddOutlined />}
+                    onClick={() => {
+                      setEditingHoliday(undefined);
+                      setOpenHolidayModal(true);
+                    }}
+                  >
+                    {scope === "employee" ? "Agregar ausencia" : "Agregar día libre"}
+                  </SassButton>
+                </Box>
+              )}
 
-                <Table size="small">
-                  <TableHead>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>{t("holidays.columns.name")}</TableCell>
+                    <TableCell>{t("holidays.columns.date")}</TableCell>
+                    <TableCell>{t("holidays.columns.description")}</TableCell>
+                    <TableCell align="right">{t("holidays.columns.actions")}</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {holidays.length === 0 && (
                     <TableRow>
-                      <TableCell>{t("holidays.columns.name")}</TableCell>
-                      <TableCell>{t("holidays.columns.date")}</TableCell>
-                      <TableCell>{t("holidays.columns.description")}</TableCell>
-                      <TableCell align="right">{t("holidays.columns.actions")}</TableCell>
+                      <TableCell colSpan={4}>
+                        <Typography color="text.secondary">{t("holidays.empty")}</Typography>
+                      </TableCell>
                     </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {holidays.length === 0 && (
-                      <TableRow>
-                        <TableCell colSpan={4}>
-                          <Typography color="text.secondary">{t("holidays.empty")}</Typography>
-                        </TableCell>
-                      </TableRow>
-                    )}
-                    {holidays.map((holiday) => (
-                      <TableRow key={holiday.id}>
-                        <TableCell>{holiday.name}</TableCell>
-                        <TableCell>{holiday.date}</TableCell>
-                        <TableCell>{holiday.description || "--"}</TableCell>
-                        <TableCell align="right">
-                          {!disableHolidayActions && (
-                            <>
-                              <IconButton
-                                aria-label={t("actions.editHoliday")}
-                                onClick={() => {
-                                  setEditingHoliday(holiday);
-                                  setOpenHolidayModal(true);
-                                }}
-                              >
-                                <EditOutlined />
-                              </IconButton>
-                              <IconButton aria-label={t("actions.deleteHoliday")} onClick={() => handleHolidayDelete(holiday.id)}>
-                                <DeleteOutline />
-                              </IconButton>
-                            </>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </AccordionDetails>
-            </Accordion>
+                  )}
+                  {holidays.map((holiday) => (
+                    <TableRow key={holiday.id}>
+                      <TableCell>{holiday.name}</TableCell>
+                      <TableCell>{holiday.date}</TableCell>
+                      <TableCell>{holiday.description || "--"}</TableCell>
+                      <TableCell align="right">
+                        {!disableHolidayActions && (
+                          <>
+                            <IconButton
+                              aria-label={t("actions.editHoliday")}
+                              onClick={() => {
+                                setEditingHoliday(holiday);
+                                setOpenHolidayModal(true);
+                              }}
+                            >
+                              <EditOutlined />
+                            </IconButton>
+                            <IconButton aria-label={t("actions.deleteHoliday")} onClick={() => handleHolidayDelete(holiday.id)}>
+                              <DeleteOutline />
+                            </IconButton>
+                          </>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </AccordionDetails>
+          </Accordion>
 
-            {openHolidayModal && !disableHolidayActions && (
-              <HolidayModal
-                open={openHolidayModal}
-                scope={scope}
-                initialValue={editingHoliday}
+          {openHolidayModal && !disableHolidayActions && (
+            <HolidayModal
+              open={openHolidayModal}
+              scope={scope}
+              initialValue={editingHoliday}
                 existingDates={holidays.map((h) => h.date)}
                 onClose={() => {
                   setOpenHolidayModal(false);

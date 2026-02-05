@@ -1,4 +1,4 @@
-import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControlLabel, Grid, Stack, Switch, TextFieldProps, Typography } from "@mui/material";
+import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControlLabel, Stack, Switch, TextFieldProps, Typography, IconButton } from "@mui/material";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { useField, useFormikContext } from "formik";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -13,6 +13,7 @@ import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import dayjs from "dayjs";
 import { SassButton } from "@/components/common/buttons/GenericButton";
+import { Add, Delete } from "@mui/icons-material";
 
 // Tipos
 
@@ -30,10 +31,12 @@ const DAYS = [
 type DayKey = typeof DAYS[number]['key'];
 
 // Horas del día (0-23)
-const defaultDaySchedule: WorkDaySchedule = {
+const defaultShift = { start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } };
+const defaultDaySchedule: WorkDaySchedule & { shifts?: any[] } = {
     enabled: true,
-    start: { hour: 9, minute: 0 },
-    end: { hour: 17, minute: 0 },
+    start: defaultShift.start, // mantiene compatibilidad de tipo legacy
+    end: defaultShift.end,
+    shifts: [defaultShift],
 };
 
 const initialValues: WorkSchedule = {
@@ -112,7 +115,7 @@ const WorkScheduleField: React.FC<WorkScheduleFieldProps> = ({
         return (<LocalizationProvider dateAdapter={AdapterDayjs} localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}><Box display={'flex'} justifyItems={'center'} alignItems={'center'} >
             <Box alignItems="flex-start" gap={2} justifyContent={'space-evenly'} display={'flex'} flexDirection={'column'} width={'100%'}>
 
-                <Stack direction={{ xs: "column", sm: "row" }} justifyContent="flex-end" width="100%" spacing={1}>
+                <Stack direction={{ xs: "column", sm: "row" }} justifyContent="flex-start" width="100%" spacing={1}>
                     <SassButton
                         type="button"
                         size="small"
@@ -138,104 +141,107 @@ const WorkScheduleField: React.FC<WorkScheduleFieldProps> = ({
 
                 {DAYS.map((day) => {
                     const dayValue = (fieldValue as any)[day.key] ?? { ...defaultDaySchedule };
-                    const startValue = dayValue?.start ? createDayjsTime(dayValue.start.hour as number, dayValue.start.minute as number) : null;
-                    const endValue = dayValue?.end ? createDayjsTime(dayValue.end.hour as number, dayValue.end.minute as number) : null;
+                    const shifts = Array.isArray((dayValue as any).shifts) && (dayValue as any).shifts.length ? (dayValue as any).shifts : [defaultShift];
                     return (
                         <Box key={day.key} sx={{ mb: 3 }} width={'100%'}>
-                            <Grid spacing={2} alignItems="center" gap={2} justifyContent={'space-between'} display={'flex'} flexDirection={'row'} width={'100%'}>
-                            <Grid display={'flex'} width={'20%'} alignItems="flex-start" justifyContent={'flex-start'} flexDirection={{
-                                xs: 'column',
-                                sm: 'column',
-                                md: 'column',
-                                lg: 'row',
-                                xl: 'row',
-                            }} >
-                                        <FormControlLabel
-                                            control={
-                                            <Switch
-                                                disabled={!workScheduleEnable}
-                                                checked={!!dayValue?.enabled}
-                                                onChange={(e) => {
-                                                    updateDay(day.key, (current) => ({
-                                                        ...current,
-                                                        enabled: e.target.checked,
-                                                        disabled: e.target.checked ? false : true,
-                                                    }))
-                                                }}
-                                                color="primary"
-                                            />
-                                            }
-                                            label={
-                                                <Typography fontWeight="medium">
-                                                    {day.label}
-                                                </Typography>
-                                            }
+                            <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            disabled={!workScheduleEnable}
+                                            checked={!!dayValue?.enabled}
+                                            onChange={(e) => {
+                                                updateDay(day.key, (current) => ({
+                                                    ...current,
+                                                    enabled: e.target.checked,
+                                                    disabled: e.target.checked ? false : true,
+                                                }))
+                                            }}
+                                            color="primary"
                                         />
-                            </Grid>
+                                    }
+                                    label={
+                                        <Typography fontWeight="medium">
+                                            {day.label}
+                                        </Typography>
+                                    }
+                                />
+                                <SassButton
+                                    type="button"
+                                    variant="outlined"
+                                    size="small"
+                                    startIcon={<Add />}
+                                    disabled={!workScheduleEnable}
+                                    onClick={() => {
+                                        updateDay(day.key, (current) => {
+                                            const nextShifts = Array.isArray(current.shifts) && current.shifts.length ? [...current.shifts] : [defaultShift];
+                                            return { ...current, shifts: [...nextShifts, defaultShift], start: undefined, end: undefined };
+                                        });
+                                    }}
+                                >
+                                    {t('core.label.addShift') ?? t('core.label.add')}
+                                </SassButton>
+                            </Stack>
 
-
-
-                            <Grid display={'flex'} flexDirection={{
-                                xs: 'column',
-                                sm: 'column',
-                                md: 'column',
-                                lg: 'row',
-                                xl: 'row',
-                            }} >
-
-                                <Grid container spacing={1}>
-                                    <TimePicker label={t('core.label.startTime')} localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}
-                                        //minTime={dayjs(props.name === 'endTime' ? new Date(formStatus?.values?.startTime) ?? new Date() : new Date())}
-                                        value={startValue}
-                                        onChange={(e) => {
-                                            updateDay(day.key, (current) => ({
-                                                ...current,
-                                                start: {
-                                                    ...(current?.start ?? dayValue?.start),
-                                                    minute: e?.toDate().getMinutes(),
-                                                    hour: e?.toDate().getHours()
-                                                }
-                                            }))
-                                        }}
-                                        disabled={!workScheduleEnable || props.disabled || ((props.name === 'endTime' || props.name === 'startTime') && !enableDayTimeRange)}
-                                        sx={{ width: '100%' }}
-                                    />
-                                </Grid>
-                            </Grid>
-
-                            <Grid display={'flex'} flexDirection={{
-                                xs: 'column',
-                                sm: 'column',
-                                md: 'column',
-                                lg: 'row',
-                                xl: 'row',
-                            }} >
-
-                                <Grid display={'flex'} flexDirection={{
-                                    xs: 'column',
-                                    sm: 'column',
-                                    md: 'column',
-                                    lg: 'row',
-                                    xl: 'row',
-                                }} >
-                                    <TimePicker label={t('core.label.endTime')} localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}
-                                        //minTime={dayjs(props.name === 'endTime' ? new Date(formStatus?.values?.startTime) ?? new Date() : new Date())}
-                                        value={endValue}
-                                        onChange={(e) => {
-                                            updateDay(day.key, (current) => ({
-                                                ...current,
-                                                end: {
-                                                    ...(current?.end ?? dayValue?.end),
-                                                    minute: e?.toDate().getMinutes(),
-                                                    hour: e?.toDate().getHours()
-                                                }
-                                            }))
-                                        }}
-                                        disabled={!workScheduleEnable || props.disabled || ((props.name === 'endTime' || props.name === 'startTime') && !enableDayTimeRange)}
-                                        sx={{ width: '100%' }}
-                                    />
-                                </Grid>
-                            </Grid>
+                            <Stack spacing={1} mt={1}>
+                                <Typography variant="body2" fontWeight={600}>
+                                    {t('core.label.shifts') ?? 'Turnos'}
+                                </Typography>
+                                {shifts.map((shift: any, idx: number) => {
+                                    const startValue = shift?.start ? createDayjsTime(shift.start.hour as number, shift.start.minute as number) : null;
+                                    const endValue = shift?.end ? createDayjsTime(shift.end.hour as number, shift.end.minute as number) : null;
+                                    return (
+                                        <Stack key={idx} direction={{ xs: 'column', sm: 'row' }} spacing={1} alignItems="center">
+                                            <TimePicker
+                                                label={t('core.label.startTime')}
+                                                localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}
+                                                value={startValue}
+                                                onChange={(e) => {
+                                                    updateDay(day.key, (current) => {
+                                                        const nextShifts = (Array.isArray(current.shifts) && current.shifts.length ? [...current.shifts] : [defaultShift]).map((s: any, i: number) =>
+                                                            i === idx
+                                                                ? { ...s, start: { hour: e?.toDate().getHours() ?? 9, minute: e?.toDate().getMinutes() ?? 0 } }
+                                                                : s
+                                                        );
+                                                        return { ...current, shifts: nextShifts, start: undefined, end: undefined };
+                                                    });
+                                                }}
+                                                disabled={!workScheduleEnable || props.disabled}
+                                                sx={{ width: '100%' }}
+                                            />
+                                            <TimePicker
+                                                label={t('core.label.endTime')}
+                                                localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}
+                                                value={endValue}
+                                                onChange={(e) => {
+                                                    updateDay(day.key, (current) => {
+                                                        const nextShifts = (Array.isArray(current.shifts) && current.shifts.length ? [...current.shifts] : [defaultShift]).map((s: any, i: number) =>
+                                                            i === idx
+                                                                ? { ...s, end: { hour: e?.toDate().getHours() ?? 17, minute: e?.toDate().getMinutes() ?? 0 } }
+                                                                : s
+                                                        );
+                                                        return { ...current, shifts: nextShifts, start: undefined, end: undefined };
+                                                    });
+                                                }}
+                                                disabled={!workScheduleEnable || props.disabled}
+                                                sx={{ width: '100%' }}
+                                            />
+                                            <IconButton
+                                                aria-label="delete shift"
+                                                disabled={!workScheduleEnable || shifts.length <= 1}
+                                                onClick={() => {
+                                                    updateDay(day.key, (current) => {
+                                                        const nextShifts = (Array.isArray(current.shifts) && current.shifts.length ? [...current.shifts] : [defaultShift]).filter((_, i) => i !== idx);
+                                                        return { ...current, shifts: nextShifts.length ? nextShifts : [defaultShift], start: undefined, end: undefined };
+                                                    });
+                                                }}
+                                            >
+                                                <Delete fontSize="small" />
+                                            </IconButton>
+                                        </Stack>
+                                    );
+                                })}
+                            </Stack>
 
                             {typeof props.renderDayExtras === 'function' && <Box mt={1} width="100%">
                                     {props.renderDayExtras({
@@ -245,7 +251,6 @@ const WorkScheduleField: React.FC<WorkScheduleFieldProps> = ({
                                         onChange: (updater) => updateDay(day.key, updater),
                                     })}
                                 </Box>}
-                            </Grid>
                             <Divider sx={{ mt: 2 }} />
                         </Box>
                 )})}
