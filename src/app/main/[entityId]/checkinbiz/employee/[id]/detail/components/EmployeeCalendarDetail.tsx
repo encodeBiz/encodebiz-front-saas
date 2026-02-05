@@ -231,31 +231,34 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
                                             const dayTotalLabel = `${dayHours > 0 ? `${dayHours}h ` : ''}${dayMins > 0 ? `${dayMins}m` : ''}`.trim() || '0m';
 
                                             return (
-                                                <Box key={dayKey} sx={{ bgcolor: 'white', borderRadius: 2, p: 1.5, boxShadow: 2 }}>
+                                                <Box key={dayKey} position="relative" sx={{ bgcolor: 'white', borderRadius: 2, p: 1.5, boxShadow: 2 }}>
+                                                    <Box
+                                                        position="absolute"
+                                                        right={10}
+                                                        top="20%"
+                                                        sx={{
+                                                            width: 48,
+                                                            height: 48,
+                                                            borderRadius: '50%',
+                                                            bgcolor: (theme) => theme.palette.primary.main,
+                                                            color: (theme) => theme.palette.primary.contrastText,
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'center',
+                                                            boxShadow: 3,
+                                                            typography: 'subtitle2',
+                                                            fontWeight: 700,
+                                                        }}
+                                                    >
+                                                        {dayTotalLabel}
+                                                    </Box>
                                                     <Stack direction="row" alignItems="center" spacing={1.5} justifyContent="space-between">
                                                         <Stack direction="row" spacing={1} alignItems="center">
                                                             <Typography variant="h6" fontWeight={600}>{tDays(dayKey as any)}</Typography>
-                                                            <Chip label={`${dayShifts.length} ${dayShifts.length === 1 ? 'turno' : 'turnos'}`} color="primary" variant="outlined" size="small" />
+                                                            <Chip label={`${dayShifts.length} ${dayShifts.length === 1 ? tCore('shift') : tCore('shifts')}`} color="primary" variant="outlined" size="small" />
                                                         </Stack>
-                                                        <Box
-                                                            sx={{
-                                                                width: 48,
-                                                                height: 48,
-                                                                borderRadius: '50%',
-                                                                bgcolor: (theme) => theme.palette.primary.main,
-                                                                color: (theme) => theme.palette.primary.contrastText,
-                                                                display: 'flex',
-                                                                alignItems: 'center',
-                                                                justifyContent: 'center',
-                                                                boxShadow: 3,
-                                                                typography: 'subtitle2',
-                                                                fontWeight: 700,
-                                                            }}
-                                                        >
-                                                            {dayTotalLabel}
-                                                        </Box>
                                                     </Stack>
-                                                    <Stack spacing={0.75} mt={1}>
+                                                    <Stack spacing={0.5} mt={1} direction="row">
                                                         {dayShifts.map((s: any, idx: number) => {
                                                             const duration = s?.start && s?.end
                                                                 ? (s.end.hour * 60 + s.end.minute) - (s.start.hour * 60 + s.start.minute)
@@ -269,13 +272,12 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
                                                             return (
                                                                 <Stack key={`${dayKey}-${idx}`} direction="row" spacing={1.5} alignItems="center" justifyContent="space-between" flexWrap="wrap">
                                                                     <Chip
-                                                                      size="small"
+                                                                      size="medium"
                                                                       icon={<AlarmOutlined fontSize="small" />}
                                                                       label={`${startLabel} - ${endLabel}`}
                                                                       variant="outlined"
                                                                       sx={{ fontSize: 14, fontWeight: 400 }}
                                                                     />
-                                                                    <Typography variant="h6" fontWeight={600}>{durationLabel}</Typography>
                                                                 </Stack>
                                                             );
                                                         })}

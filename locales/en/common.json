@@ -160,6 +160,8 @@
       "minutes": "minutes",
       "job": "Occupation",
       "periocityTime": "Time range",
+      "shift": "shift",
+      "shifts": "shifts",
       "create-download": "Create and download",
       "advance": "ADVANCED CONFIGURATION",
       "dayTimeRange": "Work schedule",

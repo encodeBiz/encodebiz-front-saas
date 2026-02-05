@@ -603,12 +603,6 @@ const CalendarSection = ({
                   </Alert>
                 )}
 
-                <Stack mt={3} spacing={1}>
-                  <Typography variant="body2">{t("notes.inheritance")}</Typography>
-                  <Typography variant="body2">{t("notes.inactiveDays")}</Typography>
-                  <Typography variant="body2">{t("notes.toleranceHint")}</Typography>
-                </Stack>
-
                 {!hideSaveButton && (
                   <Stack direction={{ xs: "column", sm: "row" }} justifyContent="flex-end" spacing={2} sx={{ mt: 3, mb: 2 }}>
                     <SassButton type="button" variant="contained" disabled={isSubmitting || !dirty} onClick={() => handleSubmit()}>
@@ -619,11 +613,83 @@ const CalendarSection = ({
             </AccordionDetails>
           </Accordion>
 
+          <Accordion defaultExpanded={accordionInitialExpanded}>
+            <AccordionSummary expandIcon={<ExpandMoreOutlined />}>
+              <Stack>
+                <Typography fontWeight={600}>{scope === "employee" ? "Ausencias" : "Días libres"}</Typography>
+                <Typography color="text.secondary" variant="body2">
+                  {scope === "employee" ? "Gestiona las ausencias del empleado." : "Gestiona los días libres que aplican a este nivel."}
+                </Typography>
+              </Stack>
+            </AccordionSummary>
+            <AccordionDetails>
+              {!disableHolidayActions && (
+                <Box display="flex" justifyContent="flex-end" mb={2}>
+                  <SassButton
+                    variant="contained"
+                    startIcon={<AddOutlined />}
+                    onClick={() => {
+                      setEditingHoliday(undefined);
+                      setOpenHolidayModal(true);
+                    }}
+                  >
+                    {scope === "employee" ? "Agregar ausencia" : "Agregar día libre"}
+                  </SassButton>
+                </Box>
+              )}
+
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>{t("holidays.columns.name")}</TableCell>
+                    <TableCell>{t("holidays.columns.date")}</TableCell>
+                    <TableCell>{t("holidays.columns.description")}</TableCell>
+                    <TableCell align="right">{t("holidays.columns.actions")}</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {holidays.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={4}>
+                        <Typography color="text.secondary">{t("holidays.empty")}</Typography>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                  {holidays.map((holiday) => (
+                    <TableRow key={holiday.id}>
+                      <TableCell>{holiday.name}</TableCell>
+                      <TableCell>{holiday.date}</TableCell>
+                      <TableCell>{holiday.description || "--"}</TableCell>
+                      <TableCell align="right">
+                        {!disableHolidayActions && (
+                          <>
+                            <IconButton
+                              aria-label={t("actions.editHoliday")}
+                              onClick={() => {
+                                setEditingHoliday(holiday);
+                                setOpenHolidayModal(true);
+                              }}
+                            >
+                              <EditOutlined />
+                            </IconButton>
+                            <IconButton aria-label={t("actions.deleteHoliday")} onClick={() => handleHolidayDelete(holiday.id)}>
+                              <DeleteOutline />
+                            </IconButton>
+                          </>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </AccordionDetails>
+          </Accordion>
+
           {openHolidayModal && !disableHolidayActions && (
             <HolidayModal
               open={openHolidayModal}
               scope={scope}
-                initialValue={editingHoliday}
+              initialValue={editingHoliday}
                 existingDates={holidays.map((h) => h.date)}
                 onClose={() => {
                   setOpenHolidayModal(false);

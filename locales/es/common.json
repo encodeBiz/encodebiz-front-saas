@@ -156,6 +156,8 @@
       "minutes": "minutos",
       "job": "Ocupación",
       "periocityTime": "Rango de tiempo",
+      "shift": "turno",
+      "shifts": "turnos",
       "create-download": "Crear y descargar",
       "advance": "CONFIGURACIÓN AVANZADA",
       "dayTimeRange": "Horario de la jornada",
