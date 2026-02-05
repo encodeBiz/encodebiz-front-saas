@@ -107,12 +107,16 @@ const sanitizeSchedule = (schedule: WeeklyScheduleWithBreaks, enableDayTimeRange
   const cleaned: WeeklyScheduleWithBreaks = {};
   DAY_ITEMS.forEach((day) => {
     const dayValue = schedule[day.key] ?? {};
-    const start = dayValue.start ?? { hour: 9, minute: 0 };
-    const end = dayValue.end ?? { hour: 17, minute: 0 };
+    const shifts = Array.isArray((dayValue as any).shifts) && (dayValue as any).shifts.length
+      ? (dayValue as any).shifts.map((s: any, idx: number) => ({
+        start: s?.start ?? { hour: 9, minute: 0 },
+        end: s?.end ?? { hour: 17, minute: 0 },
+        id: s?.id ?? `shift-${idx}`,
+      }))
+      : [{ start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 }, id: 'shift-0' }];
     const isDisabled = dayValue.disabled ?? (dayValue.enabled === false);
     cleaned[day.key] = {
-      start,
-      end,
+      shifts,
       strictRange: enableDayTimeRange || dayValue.strictRange ? true : undefined,
       toleranceMinutes: dayValue.toleranceMinutes,
       disabled: isDisabled,
@@ -200,15 +204,25 @@ const CalendarSection = ({
     const normalized: WeeklyScheduleWithBreaks = {};
     DAY_ITEMS.forEach((day) => {
       const dayValue = schedule?.[day.key] ?? fallback?.[day.key];
-      if (dayValue && dayValue.start && dayValue.end) {
+      if (dayValue) {
         const enabled = dayValue.disabled ? false : dayValue.enabled ?? true;
-        normalized[day.key] = { ...dayValue, enabled, disabled: dayValue.disabled ?? !enabled };
+        const shifts = Array.isArray((dayValue as any).shifts) && (dayValue as any).shifts.length
+          ? (dayValue as any).shifts
+          : [{
+            start: (dayValue as any).start ?? { hour: 9, minute: 0 },
+            end: (dayValue as any).end ?? { hour: 17, minute: 0 },
+            id: 'shift-0'
+          }];
+        normalized[day.key] = { ...dayValue, shifts, enabled, disabled: dayValue.disabled ?? !enabled };
       } else {
         normalized[day.key] = {
           enabled: false,
           disabled: true,
-          start: { hour: 9, minute: 0 },
-          end: { hour: 17, minute: 0 },
+          shifts: [{
+            start: { hour: 9, minute: 0 },
+            end: { hour: 17, minute: 0 },
+            id: 'shift-0',
+          }],
         };
       }
     });
@@ -253,10 +267,19 @@ const CalendarSection = ({
       DAY_ITEMS.forEach((day) => {
         const dayValue = values.schedule[day.key];
         if (!values.overridesDisabled && dayValue?.enabled) {
-          if (!dayValue.start || !dayValue.end) {
+          const shifts: any[] = Array.isArray((dayValue as any)?.shifts) ? (dayValue as any).shifts : [];
+          if (!shifts.length) {
             scheduleErrs.push(t("errors.startEndRequired", { day: day.label }));
-          } else if (minutesOf(dayValue.start) >= minutesOf(dayValue.end)) {
-            scheduleErrs.push(t("errors.startBeforeEnd", { day: day.label }));
+          } else {
+            shifts.forEach((s, idx) => {
+              const start = s?.start;
+              const end = s?.end;
+              if (!start || !end) {
+                scheduleErrs.push(t("errors.startEndRequired", { day: `${day.label} #${idx + 1}` }));
+              } else if (minutesOf(start) >= minutesOf(end)) {
+                scheduleErrs.push(t("errors.startBeforeEnd", { day: `${day.label} #${idx + 1}` }));
+              }
+            });
           }
         }
       });
