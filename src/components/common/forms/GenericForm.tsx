@@ -93,6 +93,33 @@ const FieldItem = ({ field, i, formikProps, column, disabled }: { field: FormFie
   const isInvalid =
     formikProps.touched[field.name] && Boolean(formikProps.errors[field.name]);
   const errorText = formikProps.errors[field.name];
+  const { formFieldName, setParentFieldValue, ...restExtraProps } = field.extraProps || {};
+  const componentProps: any = {
+    name: field.name,
+    label: field.label,
+    type: field.type,
+    required: field.required,
+    disabled: field.disabled || disabled,
+    fullWidth: true,
+    variant: "outlined",
+    error: isInvalid,
+    helperText: isInvalid ? errorText : "",
+    value: formikProps.values[field.name],
+    onBlur: formikProps.handleBlur,
+    options: field.options,
+    ...restExtraProps,
+  };
+
+  // Evita que props internas lleguen a inputs nativos
+  delete componentProps.setParentFieldValue;
+  delete componentProps.formFieldName;
+
+  // Evita pasar props internas a inputs genéricos y solo las usa el calendario
+  if (field.name === "calendarConfig") {
+    componentProps.formFieldName = formFieldName ?? field.name;
+    componentProps.setParentFieldValue = setParentFieldValue ?? formikProps.setFieldValue;
+  }
+
   if (field?.extraProps?.hide) return null
   if (field.isDivider) return <Grid size={{
     xs: 12,
@@ -110,24 +137,8 @@ const FieldItem = ({ field, i, formikProps, column, disabled }: { field: FormFie
         md: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4,
         lg: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4,
         xl: field.fullWidth ? 12 : column == 1 ? 12 : column == 2 ? 6 : 4
-      }} key={field.name} sx={{ width: '100%', textAlign: 'center', }}>
-        <FieldComponent
-
-          name={field.name}
-          label={field.label}
-          type={field.type}
-          required={field.required}
-          disabled={field.disabled || disabled}
-          fullWidth
-          variant="outlined"
-          error={isInvalid}
-          helperText={isInvalid ? errorText : ''}
-          value={formikProps.values[field.name]}
-          onBlur={formikProps.handleBlur}
-          options={field.options}
-          {...field.extraProps}
-
-        />
+      }} key={field.name} sx={{ width: '100%', textAlign: field.extraProps?.textAlign ?? 'center', }}>
+        <FieldComponent {...componentProps} />
       </Grid>
     );
 }

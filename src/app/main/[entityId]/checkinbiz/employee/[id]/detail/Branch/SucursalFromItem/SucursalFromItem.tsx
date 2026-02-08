@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import GenericForm, { FormField } from '@/components/common/forms/GenericForm';
 import { EmployeeEntityResponsibility, Job } from '@/domain/features/checkinbiz/IEmployee';
 import useSucursalFromItemController from './SucursalFromItem.controller';
-import { ExpandMoreOutlined } from '@mui/icons-material';
+import { DeleteForever, ExpandMoreOutlined, HomeFilled } from '@mui/icons-material';
 import { useEntity } from '@/hooks/useEntity';
 import { useRef } from 'react';
 import { TrashIcon } from '@/components/common/icons/TrashIcon';
@@ -21,7 +21,7 @@ export default function SucursalFromItem({ item, onEnd }: { item: EmployeeEntity
     const { openModal } = useCommonModal()
     const formRef = useRef(null)
 
-     
+
 
 
     return (
@@ -31,7 +31,7 @@ export default function SucursalFromItem({ item, onEnd }: { item: EmployeeEntity
             <AccordionSummary
                 expandIcon={<ExpandMoreOutlined />}
                 aria-controls="panel1-content"
-                id="panel1-header"
+                id={`${item.id}panel1-header`}
 
                 sx={{ height: 56 }}
             >
@@ -48,7 +48,8 @@ export default function SucursalFromItem({ item, onEnd }: { item: EmployeeEntity
                     <FormGroup>
                         <FormControlLabel control={<Switch checked={active == 1} onChange={(e) => setActive(e.target.checked ? 1 : 0)} />} label={t('core.label.active')} />
                     </FormGroup>
-                    <IconButton color='error' onClick={() => openModal(CommonModalType.DELETE, { id: item.id, responsability: true })}><TrashIcon /></IconButton>
+                    <IconButton key={item.id} color='error' onClick={() => openModal(CommonModalType.DELETE, { id: item.id, responsability: true })}><DeleteForever key={item.id}  /></IconButton>
+               
                 </Box>
 
                 <GenericForm<Partial<any>>

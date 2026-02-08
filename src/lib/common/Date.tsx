@@ -312,20 +312,14 @@ export function decimalAHorasMinutos(decimal: number) {
 }
 
 
-export function createDayjsTime(hour: number, minute: number, baseDate = null) {
-    let dateObj;
-
-    if (baseDate) {
-        // Si se proporciona una fecha base
-        dateObj = dayjs(baseDate);
-    } else {
-        // Usar fecha actual
-        dateObj = dayjs();
-    }
+export function createDayjsTime(hour?: number, minute?: number, baseDate: any = null) {
+    const safeHour = typeof hour === 'number' && !Number.isNaN(hour) ? hour : 0;
+    const safeMinute = typeof minute === 'number' && !Number.isNaN(minute) ? minute : 0;
+    const dateObj = baseDate ? dayjs(baseDate) : dayjs();
 
     return dateObj
-        .hour(hour)
-        .minute(minute)
+        .hour(safeHour)
+        .minute(safeMinute)
         .second(0)
         .millisecond(0);
 }

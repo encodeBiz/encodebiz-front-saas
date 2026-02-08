@@ -15,7 +15,8 @@ import { RulesAnalize } from "./cards/RulesAnalize";
 import { useDashboardEmployee } from "./DashboardEmployeeContext";
 import { DispercionActivity } from "./cards/DispercionActivity";
 import { preferenceDashboardEmployeeItems } from "@/domain/features/checkinbiz/IStats";
-import EmptyState from "@/components/common/EmptyState/EmptyState";
+import EmptyList from "@/components/common/EmptyState/EmptyList";
+import emptyImage from '../../../../../../../../../public/assets/images/empty/empleados.svg';
 
 
 export const PanelStats = () => {
@@ -58,7 +59,11 @@ export const PanelStats = () => {
   const InnetContent = () => <Box sx={{ minHeight: 600 }}>
 
     {!pending && employeePatternList.length == 0 && <Box display={'flex'} justifyContent={'center'} alignItems={'center'} sx={{ minHeight: 100 }}>
-      <EmptyState text={t('employeeDashboard.emptyPattern')} />
+      <EmptyList
+        imageUrl={emptyImage}
+        title={t('statsCheckbiz.employeeNoDataTitle')}
+        description={t('statsCheckbiz.employeeNoDataText')}
+      />
     </Box>}
     {pending && <BoxLoader message={t('statsCheckbiz.loading')} />}
 
@@ -98,7 +103,7 @@ export const PanelStats = () => {
 
         actions={
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2}>
-            <Box display={'flex'} justifyContent={'space-between'}    >
+            {!pending && employeePatternList.length > 0 && <Box display={'flex'} justifyContent={'space-between'}    >
               <Box>
                 <SassButton sx={{ minWidth: 210 }} variant="text" onClick={handleClick} startIcon={<SettingsOutlined sx={{ fontSize: 20 }} color='primary' />}>
                   <Typography sx={{ marginLeft: 1 }} variant="body1" color="primary">{t('statsCheckbiz.configPanel')}</Typography>
@@ -127,7 +132,7 @@ export const PanelStats = () => {
                   </Box>
                 </Popover>
               </Box>
-            </Box>
+            </Box>}
           </Box>
         }
       > <InnetContent /></HeaderPage>

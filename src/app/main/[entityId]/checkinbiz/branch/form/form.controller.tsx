@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import * as Yup from 'yup';
 import TextInput from '@/components/common/forms/fields/TextInput';
 import { addressSchema, ratioLogRule, requiredRule, timeBreakRule } from '@/config/yupRules';
 import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useLayout } from "@/hooks/useLayout";
 import { ArrayToObject, objectToArray } from "@/lib/common/String";
 import { createSucursal, fetchSucursal, updateSucursal } from "@/services/checkinbiz/sucursal.service";
@@ -17,16 +17,15 @@ import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 
 import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 import ToggleInput from "@/components/common/forms/fields/ToggleInput";
-import TimeInput from "@/components/common/forms/fields/TimeInput";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { useAppLocale } from "@/hooks/useAppLocale";
 import AddressComplexInput from "@/components/common/forms/fields/AddressComplexInput";
-import { Alert, Box, Typography } from "@mui/material";
-import { InfoOutline } from "@mui/icons-material";
-import WorkScheduleField from "@/components/common/forms/fields/WorkScheduleField";
+import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
 import { useFormStatus } from "@/hooks/useFormStatus";
-import { CheckboxListField } from "@/components/common/forms/fields/CheckboxListField";
+import CalendarSection from "@/app/main/[entityId]/checkinbiz/calendar/components/CalendarSection";
+import { upsertCalendar } from "@/services/checkinbiz/calendar.service";
+import { Holiday } from "@/domain/features/checkinbiz/ICalendar";
 
 
 export default function useFormController(isFromModal: boolean, onSuccess?: () => void) {
@@ -35,27 +34,20 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const { navivateTo } = useLayout()
   const { token, user } = useAuth()
   const { currentLocale } = useAppLocale()
+  const router = useRouter()
 
   const { currentEntity } = useEntity()
   const { changeLoaderState } = useLayout()
+  const { formStatus } = useFormStatus()
 
   const { open, closeModal, openModal } = useCommonModal()
   const { id } = useParams<{ id: string }>()
-  const { formStatus } = useFormStatus()
-
   const itemId = isFromModal ? open.args?.id : id
-  const [enableDayTimeRange, setEnableDayTimeRange] = useState(false)
-  const [disableBreak, setDisableBreak] = useState(false)
   const [, setDisableRatioChecklog] = useState(false)
-
-
-  const startTime = new Date()
-  startTime.setMinutes(0)
-  startTime.setHours(8)
-
-  const endTime = new Date()
-  endTime.setMinutes(0)
-  endTime.setHours(17)
+  const [scheduleLoaded, setScheduleLoaded] = useState(false)
+  const [calendarDraft, setCalendarDraft] = useState<any>(null)
+  const [initialCalendarHash, setInitialCalendarHash] = useState<string>("")
+  const [initialHolidays, setInitialHolidays] = useState<Holiday[]>([])
 
   const [initialValues, setInitialValues] = useState<Partial<any>>({
     "name": '',
@@ -70,13 +62,27 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     ratioChecklog: 201,
     disableRatioChecklog: false,
     nif: 'N/A',
-    startTime: startTime,
-    endTime: endTime,
-    "enableDayTimeRange": false, //poner texto  explicativo en los detalles  y el form
     "disableBreak": false, //poner texto  explicativo en los detalles y el form
     "timeBreak": 60,
     notifyBeforeMinutes: 15,
-    workScheduleEnable: false
+    enableDayTimeRange: false,
+    overridesSchedule: {
+      monday: { enabled: true, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
+      tuesday: { enabled: true, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
+      wednesday: { enabled: true, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
+      thursday: { enabled: true, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
+      friday: { enabled: true, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
+      saturday: { enabled: true, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
+      sunday: { enabled: false, start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 } },
+    },
+    baseSchedule: undefined,
+    overrideSchedule: undefined,
+    baseAdvance: undefined,
+    overrideAdvance: undefined,
+    disabled: false,
+    holidaysInfo: '',
+    overridesDisabled: true,
+    calendarConfig: '',
   });
 
   const defaultValidationSchema: any = {
@@ -93,12 +99,64 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     nif: requiredRule(t),
     status: requiredRule(t),
     ratioChecklog: ratioLogRule(t),
-    startTime: requiredRule(t),
-    endTime: requiredRule(t),
     timeBreak: timeBreakRule(t),
     notifyBeforeMinutes: timeBreakRule(t),
   }
   const [validationSchema] = useState(defaultValidationSchema)
+  const minutesOf = (time?: { hour?: number; minute?: number }) => (time?.hour ?? 0) * 60 + (time?.minute ?? 0);
+  const sanitizeSchedule = (schedule?: any, enableDayTimeRange?: boolean) => {
+    const cleaned: any = {};
+    const dayKeys = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const;
+    dayKeys.forEach((dayKey) => {
+      const dayValue: any = (schedule ?? {})[dayKey] ?? {};
+      const shifts = Array.isArray(dayValue.shifts) && dayValue.shifts.length
+        ? dayValue.shifts.map((s: any, idx: number) => ({
+          start: s?.start ?? { hour: 9, minute: 0 },
+          end: s?.end ?? { hour: 17, minute: 0 },
+          id: s?.id ?? `shift-${idx}`
+        }))
+        : [{ start: { hour: 9, minute: 0 }, end: { hour: 17, minute: 0 }, id: 'shift-0' }];
+      const isDisabled = dayValue.disabled ?? (dayValue.enabled === false);
+      cleaned[dayKey] = {
+        shifts,
+        strictRange: enableDayTimeRange || dayValue.strictRange ? true : undefined,
+        disabled: isDisabled,
+      };
+    });
+    return cleaned;
+  };
+  const normalizeScheduleForForm = (schedule?: any, fallback?: any) => {
+    const dayKeys = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const;
+    const base = fallback ?? initialValues.overridesSchedule;
+    const normalized: any = {};
+    dayKeys.forEach((dayKey) => {
+      const dayValue: any = (schedule ?? {})[dayKey] ?? (base as any)?.[dayKey] ?? {};
+      const enabled = dayValue.disabled ? false : dayValue.enabled ?? true;
+      const shifts = Array.isArray(dayValue.shifts) && dayValue.shifts.length
+        ? dayValue.shifts
+        : [{
+          start: dayValue.start ?? { hour: 9, minute: 0 },
+          end: dayValue.end ?? { hour: 17, minute: 0 },
+          id: 'shift-0',
+        }];
+      normalized[dayKey] = {
+        shifts,
+        start: shifts[0]?.start,
+        end: shifts[0]?.end,
+        enabled,
+        disabled: dayValue.disabled ?? !enabled,
+        strictRange: dayValue.strictRange,
+      };
+    });
+    return normalized;
+  };
+  const buildCalendarHash = (data?: { payloadSchedule?: any; advance?: any; holidays?: any[]; overridesDisabled?: boolean }) =>
+    JSON.stringify({
+      schedule: data?.payloadSchedule ?? {},
+      advance: data?.advance ?? {},
+      holidays: data?.holidays ?? [],
+      overridesDisabled: data?.overridesDisabled ?? false,
+    });
 
 
 
@@ -116,24 +174,72 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         address: values.address,
         entityId: currentEntity?.entity.id as string,
         advance: {
-          "enableDayTimeRange": values.enableDayTimeRange,
-          "startTimeWorkingDay": { hour: new Date(values.startTime).getHours(), minute: new Date(values.startTime).getMinutes() },
-          "endTimeWorkingDay": { hour: new Date(values.endTime).getHours(), minute: new Date(values.endTime).getMinutes() },
-          "disableBreak": values.disableBreak,
-          "timeBreak": values.timeBreak,
+          enableDayTimeRange: values.enableDayTimeRange,
+          disableBreak: values.disableBreak,
+          timeBreak: values.timeBreak,
           notifyBeforeMinutes: values.notifyBeforeMinutes,
-          "workScheduleEnable": values.workScheduleEnable,
-          "workSchedule": values.workSchedule,
         }
       }
 
+      let branchIdToUse = itemId
+      if (itemId) {
+        const requests: Promise<any>[] = []
+        requests.push(updateSucursal(data, token, currentLocale))
 
-      if (itemId)
-        await updateSucursal(data, token, currentLocale)
-      else
-        await createSucursal(data, token, currentLocale)
+        const currentCalendarHash = calendarDraft ? buildCalendarHash(calendarDraft) : initialCalendarHash
+        const calendarDirty = calendarDraft && currentCalendarHash !== initialCalendarHash
+
+        if (calendarDirty) {
+          requests.push(
+            upsertCalendar(
+              {
+                scope: "branch",
+                entityId: currentEntity?.entity.id as string,
+                branchId: itemId,
+                overridesSchedule: calendarDraft.payloadSchedule,
+                advance: calendarDraft.advance,
+                timezone: values.address?.timeZone ?? currentEntity?.entity?.legal?.address?.timeZone ?? "UTC",
+                overridesDisabled: calendarDraft.overridesDisabled ?? false,
+              } as any,
+              token,
+              currentLocale
+            )
+          )
+        }
+
+        await Promise.all(requests)
+        if (calendarDraft && calendarDirty) {
+          setInitialCalendarHash(currentCalendarHash)
+        }
+      } else {
+        const resp = await createSucursal(data, token, currentLocale)
+        if (resp?.id) {
+          values.id = resp.id
+          branchIdToUse = resp.id
+        }
+        const currentCalendarHash = calendarDraft ? buildCalendarHash(calendarDraft) : initialCalendarHash
+        const calendarDirty = calendarDraft && currentCalendarHash !== initialCalendarHash
+        if (calendarDirty && branchIdToUse) {
+          await upsertCalendar(
+            {
+              scope: "branch",
+              entityId: currentEntity?.entity.id as string,
+              branchId: branchIdToUse,
+              overridesSchedule: calendarDraft.payloadSchedule,
+              advance: calendarDraft.advance,
+              timezone: values.address?.timeZone ?? currentEntity?.entity?.legal?.address?.timeZone ?? "UTC",
+              overridesDisabled: calendarDraft.overridesDisabled ?? false,
+            } as any,
+            token,
+            currentLocale
+          )
+          setInitialCalendarHash(currentCalendarHash)
+        }
+      }
+
       changeLoaderState({ show: false })
       showToast(t('core.feedback.success'), 'success');
+      router.refresh();
 
       if (typeof onSuccess === 'function') onSuccess()
       if (typeof callback === 'function') callback()
@@ -160,251 +266,152 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   };
 
 
-  const fields = [
-    {
-      isDivider: true,
-      label: t('sucursal.formFirstSectionTitle'),
-    },
-    {
-      name: 'name',
-      label: t('core.label.subEntityName'),
-      type: 'text',
-
-      required: true,
-      component: TextInput,
-    },
-    {
-      name: 'nif',
-      label: t('core.label.nif'),
-      component: TextInput,
-    },
-    {
-      name: 'address',
-      label: t('sucursal.address'),
-      required: true,
-      fullWidth: true,
-      component: AddressComplexInput,
-    },
-
-    {
-      isDivider: true,
-      label: t('core.label.ratioChecklogTitle'),
-    },
-
-
-    {
-      name: 'ratioChecklog',
-      label: t('core.label.ratioChecklog'),
-      component: TextInput,
-      type: 'number'
-
-
-    },
-    {
-      name: 'disableRatioChecklog',
-      label: t('core.label.disableRatioChecklogE'),
-      required: false,
-      component: ToggleInput,
-      extraProps: {
-        onHandleChange: setDisableRatioChecklog
+  const fields = useMemo(() => {
+    const baseFields: any[] = [
+      {
+        isDivider: true,
+        label: t('sucursal.formFirstSectionTitle'),
       },
-    },
-    {
-      name: 'status',
-      label: t('core.label.status'),
-      component: SelectInput,
-      required: true,
-      fullWidth: true,
-      options: [
-        { value: 'active', label: t('core.label.active') },
-        { value: 'inactive', label: t('core.label.inactive') },
-      ],
-    },
-
-
-    {
-      isDivider: true,
-      label: t('core.label.advance'),
-    },
-    {
-      isCollapse: true,
-      column: 3,
-      label: t('core.label.dayTimeRange'),
-      hit: t('core.label.dayTimeRangeDesc'),
-      extraProps: {
-        alertMessagePos:5,
-        alertMessage: <Box sx={{width:'100%'}}>
-          <Alert sx={{width:'100%', borderRadius: 2, mt: 2, color: '#FFF', bgcolor: theme => enableDayTimeRange ? theme.palette.primary.main : theme.palette.grey[800] }} icon={<InfoOutline sx={{ color: '#FFF' }} />} >
-            {enableDayTimeRange ? <>
-              <Typography>{t('sucursal.fieldHelp12')} <strong>{t('sucursal.fieldHelp13')}</strong>{t('sucursal.fieldHelp14')}</Typography>
-              <ul>
-                <li><Typography>{t('sucursal.fieldHelp15')}<strong>{t('sucursal.fieldHelp16')}</strong> {t('sucursal.fieldHelp17')}</Typography></li>
-                <li><Typography>{t('sucursal.fieldHelp18')} <strong>{t('sucursal.fieldHelp19')}</strong>.</Typography></li>
-                <li><Typography>{t('sucursal.fieldHelp20')}<strong>{t('sucursal.fieldHelp16')}</strong>{t('sucursal.fieldHelp21')}</Typography></li>
-              </ul>
-            </> : <>
-              <Typography>{t('sucursal.fieldHelp22')}<strong>{t('sucursal.fieldHelp23')}</strong>.</Typography>
-              <ul>
-                <li><Typography>{t('sucursal.fieldHelp24')}<strong> {t('sucursal.fieldHelp25')}</strong>.</Typography></li>
-                <li><Typography>{t('sucursal.fieldHelp26')} <strong>{t('sucursal.fieldHelp27')}</strong>.</Typography></li>
-              </ul>
-            </>}
-          </Alert>
-        </Box>
-
+      {
+        name: 'name',
+        label: t('core.label.subEntityName'),
+        type: 'text',
+        required: true,
+        component: TextInput,
       },
-      fieldList: [
-        {
-          name: 'workScheduleEnable',
-          component: CheckboxListField,
-          options: [
-            { value: true, label: t('core.label.workScheduleByDay') },
-            { value: false, label: t('core.label.workScheduleUniform') },
-          ],
-          required: true,
-          fullWidth: true,
-        },
-
-
-        {
-          name: 'workSchedule',
-          label: t('core.label.workSchedule'),
-          component: WorkScheduleField,
-          required: true,
-          fullWidth: true,
-          extraProps: {
-            hide: !formStatus?.values?.workScheduleEnable,
-            enableDayTimeRange: formStatus?.values?.enableDayTimeRange,
-            workScheduleEnable: formStatus?.values?.workScheduleEnable
-
-          }
-        },
-
-
-
-        {
-          name: 'startTime',
-          label: t('core.label.startTime'),
-          component: TimeInput,
-
-          required: true,
-          extraProps: {
-            hide: formStatus?.values?.workScheduleEnable
-          },
-        },
-        {
-          name: 'endTime',
-          label: t('core.label.endTime'),
-          component: TimeInput,
-          required: true,
-          extraProps: {
-            hide: formStatus?.values?.workScheduleEnable
-          },
-        },
-        {
-          name: 'enableDayTimeRange',
-          label: enableDayTimeRange ? t('sucursal.dayTimeRangeEnableText') : t('sucursal.dayTimeRangeDisabledText'),
-          component: ToggleInput,
-          required: true,
-          extraProps: {
-            onHandleChange: setEnableDayTimeRange,
-            //hide: formStatus?.values?.workScheduleEnable
-
-          },
-        },
-
-        {
-          isDivider: true,
-          label: t('core.label.adviseWorkDay'),
-          hit: t('core.label.adviseWorkDayText'),
-
-        },
-
-        {
-          name: 'notifyBeforeMinutes',
-          label: t('core.label.minute'),
-          type: 'number',
-          component: TextInput,
-        },
-
-      ]
-    },
-
-    {
-      isCollapse: true,
-      column: 3,
-      hit: t('core.label.timeBreakDesc'),
-      label: t('core.label.breakTimeRange'),
-      extraProps: {
-        alertMessage: <Box>
-          <Alert sx={{ borderRadius: 2, mt: 2, color: '#FFF', bgcolor: theme => disableBreak ? theme.palette.primary.main : theme.palette.grey[800] }} icon={<InfoOutline sx={{ color: '#FFF' }} />} >
-            {disableBreak ? <><Typography>{t('sucursal.fieldHelp1')} <strong>{t('sucursal.fieldHelp2')}</strong>{t('sucursal.fieldHelp3')}</Typography>
-              <Typography>{t('sucursal.fieldHelp4')}<strong>{t('sucursal.fieldHelp5')}</strong>{t('sucursal.fieldHelp6')}</Typography>
-              <Typography>{t('sucursal.fieldHelp7')}</Typography>
-            </> : <>
-              <Typography>{t('sucursal.fieldHelp8')} <strong>{t('sucursal.fieldHelp9')}</strong>{t('sucursal.fieldHelp10')}</Typography>
-              <Typography>{t('sucursal.fieldHelp11')}</Typography>
-            </>}
-          </Alert>
-        </Box>
+      {
+        name: 'nif',
+        label: t('core.label.nif'),
+        component: TextInput,
       },
-      fieldList: [
+      {
+        name: 'address',
+        label: t('sucursal.address'),
+        required: true,
+        fullWidth: true,
+        component: AddressComplexInput,
+      },
 
-        {
-          name: 'timeBreak',
-          label: t('core.label.timeBreak'),
-          component: TextInput,
-          type: 'number',
-          required: true,
+      {
+        isDivider: true,
+        label: t('core.label.ratioChecklogTitle'),
+      },
+
+      {
+        name: 'ratioChecklog',
+        label: t('core.label.ratioChecklog'),
+        component: TextInput,
+        type: 'number'
+      },
+      {
+        name: 'disableRatioChecklog',
+        label: t('core.label.disableRatioChecklogE'),
+        required: false,
+        component: ToggleInput,
+        extraProps: {
+          onHandleChange: setDisableRatioChecklog
         },
-        {
-          name: 'disableBreak',
-          label: disableBreak ? t('sucursal.breakEnableText') : t('sucursal.breakDisabledText'),
-          component: ToggleInput,
-          required: true,
-          extraProps: {
-            onHandleChange: setDisableBreak
+      },
+      {
+        name: 'status',
+        label: t('core.label.status'),
+        component: SelectInput,
+        required: true,
+        fullWidth: true,
+        options: [
+          { value: 'active', label: t('core.label.active') },
+          { value: 'inactive', label: t('core.label.inactive') },
+        ],
+      },
+    ];
+
+    baseFields.push(
+      {
+        isDivider: true,
+        label: t('calendar.title'),
+        hit: t('calendar.schedule.subtitle'),
+        extraProps: { disabledBottomMargin: true }
+      },
+      {
+        name: 'calendarConfig',
+        label: t('calendar.title'),
+        component: CalendarSection,
+        fullWidth: true,
+        extraProps: {
+          textAlign: 'left',
+          scope: 'branch',
+          entityId: currentEntity?.entity.id,
+          branchId: itemId,
+          timezone: (initialValues as any)?.address?.timeZone ?? currentEntity?.entity?.legal?.address?.timeZone ?? "UTC",
+          initialSchedule: initialValues?.overridesSchedule,
+          baseSchedule: (initialValues as any)?.baseSchedule,
+          overrideSchedule: (initialValues as any)?.overrideSchedule,
+          initialAdvance: {
+            enableDayTimeRange: initialValues?.enableDayTimeRange,
+            disableBreak: initialValues?.disableBreak,
+            timeBreak: initialValues?.timeBreak,
+            notifyBeforeMinutes: initialValues?.notifyBeforeMinutes,
           },
-        },
+          baseAdvance: (initialValues as any)?.baseAdvance,
+          overrideAdvance: (initialValues as any)?.overrideAdvance,
+          initialOverridesDisabled: initialValues?.overridesDisabled,
+          initialHolidays,
+          token: token,
+          locale: currentLocale,
+          onSaved: () => { },
+          hideSaveButton: true,
+          disableHolidayActions: !itemId,
+          onChange: (data: any) => setCalendarDraft(data),
+        }
+      }
+    );
 
-      ]
-    },
+    baseFields.push(
+      {
+        isDivider: true,
+        label: t('core.label.aditionalData'),
+      },
 
-    {
-      isDivider: true,
-      label: t('core.label.aditionalData'),
-    },
+      {
+        name: 'metadata',
+        label: t('core.label.setting'),
+        type: 'text',
+        required: true,
+        fullWidth: true,
+        component: DynamicKeyValueInput,
+      },
+    );
 
-    {
-      name: 'metadata',
-      label: t('core.label.setting'),
-      type: 'text',
-      required: true,
-      fullWidth: true,
-      component: DynamicKeyValueInput,
-    },
-  ];
+    return baseFields;
+  }, [currentEntity?.entity.id, currentLocale, initialHolidays, initialValues, itemId, setDisableRatioChecklog, setCalendarDraft, t, token]);
 
   const fetchData = useCallback(async () => {
 
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       const sucursal: ISucursal = await fetchSucursal(currentEntity?.entity.id as string, itemId)
+      const entityCalendar = await getRefByPathData(`entities/${currentEntity?.entity.id}/calendar/config`);
+      const branchCalendar = await getRefByPathData(`entities/${currentEntity?.entity.id}/branches/${itemId}/calendar/config`);
+      const fallbackSchedule = entityCalendar?.defaultSchedule ? Object.fromEntries(
+        Object.entries(entityCalendar.defaultSchedule).map(([k, v]: any) => [k, { ...v, enabled: true }])
+      ) : initialValues.overridesSchedule;
+      const fallbackAdvance = entityCalendar?.advance ?? {
+        enableDayTimeRange: false,
+        disableBreak: false,
+        timeBreak: 30,
+        notifyBeforeMinutes: 15,
+      };
+      setInitialHolidays(branchCalendar?.holidays ?? []);
 
+      const branchOverridesDisabled = branchCalendar?.overridesDisabled ?? !branchCalendar;
+      const overrideScheduleRaw = branchCalendar?.overridesSchedule ?? fallbackSchedule;
+      const overrideAdvanceRaw = branchCalendar?.advance ?? fallbackAdvance;
+      const effectiveAdvance = branchOverridesDisabled ? fallbackAdvance : overrideAdvanceRaw;
+      const effectiveSchedule = branchOverridesDisabled ? fallbackSchedule : overrideScheduleRaw;
 
-      const startTime = new Date()
-      startTime.setMinutes(sucursal?.advance?.startTimeWorkingDay?.minute ?? 0)
-      startTime.setHours(sucursal?.advance?.startTimeWorkingDay?.hour ?? 0)
-
-      const endTime = new Date()
-      endTime.setMinutes(sucursal?.advance?.endTimeWorkingDay?.minute ?? 0)
-      endTime.setHours(sucursal?.advance?.endTimeWorkingDay?.hour ?? 0)
-      setEnableDayTimeRange(sucursal?.advance?.enableDayTimeRange ?? false)
-      setDisableBreak(sucursal?.advance?.disableBreak ?? false)
       setDisableRatioChecklog((!sucursal?.disableRatioChecklog))
       setInitialValues({
         address: sucursal.address,
-
         postalCode: sucursal.address.postalCode,
         disableRatioChecklog: !sucursal.disableRatioChecklog,
         status: sucursal.status,
@@ -412,16 +419,31 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         name: sucursal.name,
         nif: sucursal.nif ?? 'N/A',
         metadata: objectToArray(sucursal.metadata),
-        "enableDayTimeRange": sucursal?.advance?.enableDayTimeRange,
-        "startTime": startTime,
-        "endTime": endTime,
-        "disableBreak": sucursal?.advance?.disableBreak,
-        "timeBreak": sucursal?.advance?.timeBreak,
-        workSchedule: sucursal?.advance?.workSchedule,
-        workScheduleEnable: sucursal?.advance?.workScheduleEnable,
-        notifyBeforeMinutes: sucursal?.advance?.notifyBeforeMinutes,
-
+        disableBreak: effectiveAdvance.disableBreak ?? false,
+        timeBreak: effectiveAdvance.timeBreak ?? fallbackAdvance.timeBreak,
+        notifyBeforeMinutes: effectiveAdvance.notifyBeforeMinutes ?? fallbackAdvance.notifyBeforeMinutes,
+        enableDayTimeRange: effectiveAdvance.enableDayTimeRange ?? fallbackAdvance.enableDayTimeRange,
+        overridesSchedule: normalizeScheduleForForm(effectiveSchedule, fallbackSchedule),
+        disabled: branchCalendar?.disabled ?? false,
+        overridesDisabled: branchOverridesDisabled,
+        baseSchedule: fallbackSchedule,
+        overrideSchedule: overrideScheduleRaw,
+        baseAdvance: fallbackAdvance,
+        overrideAdvance: overrideAdvanceRaw,
       })
+      const scheduleForHash = sanitizeSchedule(
+        effectiveSchedule,
+        effectiveAdvance.enableDayTimeRange ?? fallbackAdvance.enableDayTimeRange
+      );
+      setInitialCalendarHash(
+        buildCalendarHash({
+          payloadSchedule: scheduleForHash,
+          advance: effectiveAdvance,
+          holidays: branchCalendar?.holidays ?? [],
+          overridesDisabled: branchOverridesDisabled,
+        })
+      )
+      setScheduleLoaded(true)
       changeLoaderState({ show: false })
     } catch (error: any) {
       changeLoaderState({ show: false })
@@ -432,6 +454,58 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   useEffect(() => {
     if (currentEntity?.entity.id && user?.id && itemId)
       fetchData()
+    else if (currentEntity?.entity.id && !itemId) {
+      // carga fallback de entidad para alta
+      (async () => {
+        try {
+          changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
+          const entityCalendar = await getRefByPathData(`entities/${currentEntity?.entity.id}/calendar/config`);
+          const fallbackSchedule = entityCalendar?.defaultSchedule ? Object.fromEntries(
+            Object.entries(entityCalendar.defaultSchedule).map(([k, v]: any) => [k, { ...v, enabled: true }])
+          ) : initialValues.overridesSchedule;
+          const fallbackAdvance = entityCalendar?.advance ?? {
+            enableDayTimeRange: false,
+            disableBreak: false,
+            timeBreak: 30,
+            notifyBeforeMinutes: 15,
+          };
+          const scheduleForHash = sanitizeSchedule(fallbackSchedule, fallbackAdvance.enableDayTimeRange);
+          setInitialHolidays([]);
+          setInitialValues(prev => ({
+            ...prev,
+            overridesSchedule: normalizeScheduleForForm(undefined, fallbackSchedule),
+            enableDayTimeRange: fallbackAdvance.enableDayTimeRange,
+            disableBreak: fallbackAdvance.disableBreak,
+            timeBreak: fallbackAdvance.timeBreak,
+            notifyBeforeMinutes: fallbackAdvance.notifyBeforeMinutes,
+            disabled: false,
+            overridesDisabled: true,
+            baseSchedule: fallbackSchedule,
+            overrideSchedule: fallbackSchedule,
+            baseAdvance: fallbackAdvance,
+            overrideAdvance: fallbackAdvance,
+          }))
+          setInitialCalendarHash(
+            buildCalendarHash({
+              payloadSchedule: scheduleForHash,
+              advance: {
+                enableDayTimeRange: fallbackAdvance.enableDayTimeRange,
+                disableBreak: fallbackAdvance.disableBreak,
+                timeBreak: fallbackAdvance.timeBreak,
+                notifyBeforeMinutes: fallbackAdvance.notifyBeforeMinutes,
+              },
+              holidays: [],
+              overridesDisabled: true,
+            })
+          )
+          setScheduleLoaded(true)
+        } catch (error) {
+          // ignore
+        } finally {
+          changeLoaderState({ show: false })
+        }
+      })()
+    }
   }, [currentEntity?.entity.id, user?.id, itemId])
 
 

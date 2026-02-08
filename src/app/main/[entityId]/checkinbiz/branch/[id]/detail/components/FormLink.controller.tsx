@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/useToast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEntity } from "@/hooks/useEntity";
 import { useLayout } from "@/hooks/useLayout";
-import { searchJobs, handleRespnsability, addJobs, deleteJobs, searchResponsability } from "@/services/checkinbiz/employee.service";
+import { searchJobs, handleRespnsability, addJobs, deleteJobs } from "@/services/checkinbiz/employee.service";
 import { useAppLocale } from "@/hooks/useAppLocale";
 import TextInput from "@/components/common/forms/fields/TextInput";
 import SelectInput from "@/components/common/forms/fields/SelectInput";
@@ -21,7 +21,6 @@ import { CommonModalType } from "@/contexts/commonModalContext";
 import { useFormStatus } from "@/hooks/useFormStatus";
 import DynamicKeyValueInput from "@/components/common/forms/fields/DynamicKeyValueInput";
 import { ArrayToObject } from "@/lib/common/String";
-import WorkScheduleField from "@/components/common/forms/fields/WorkScheduleField";
 
 
 export default function useFormLinkController(onSuccess: () => void) {
@@ -60,43 +59,33 @@ export default function useFormLinkController(onSuccess: () => void) {
             changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
 
 
-            const listOfResponsability: Array<EmployeeEntityResponsibility> = await searchResponsability(currentEntity?.entity.id as string, values.employeeId, { limit: 1, filters: [{ field: 'scope.branchId', operator: '==', value: id }] } as any)
-            if (listOfResponsability.length > 0) {
-                showToast(t('sucursal.employeeUsed'), 'info')
-                formStatus?.setSubmitting(false)
-                changeLoaderState({ show: false })
-            } else {
-
-
-                const data: any = {
-                    id: `${id}_${currentEntity?.entity.id}_${values.employeeId}`,
-                    employeeId: values.employeeId,
-                    responsibility: values.responsibility,
-                    scope: { entityId: currentEntity?.entity.id as string, branchId: id, scope: 'branch' },
-                    job: {
-                        job: values.job,
-                        price: values.price,
-                    },
-                    "metadata": {
-                        ...ArrayToObject(values.metadata as any),
-                    },
-                    assignedBy: user?.uid as string,
-                    active: active,
-                    entityId: currentEntity?.entity.id,
-                    workSchedule: values.workSchedule,
-                    workScheduleEnable: values.enableDayTimeRange
-                }
-                if (typeof data.id === 'number') {
-                    delete data.id
-                }
-                await handleRespnsability(data, token, currentLocale, 'post')
-                if (values.job)
-                    addJobs(currentEntity?.entity.id as string, values.job, values.price)
-                changeLoaderState({ show: false })
-                showToast(t('core.feedback.success'), 'success');
-                if (typeof onSuccess == 'function') onSuccess()
-                closeModal(CommonModalType.FORM)
+            // Latencia: el backend ya valida duplicados, omitimos pre-chequeo.
+            const data: any = {
+                id: `${id}_${currentEntity?.entity.id}_${values.employeeId}`,
+                employeeId: values.employeeId,
+                responsibility: values.responsibility,
+                scope: { entityId: currentEntity?.entity.id as string, branchId: id, scope: 'branch' },
+                job: {
+                    job: values.job,
+                    price: values.price,
+                },
+                "metadata": {
+                    ...ArrayToObject(values.metadata as any),
+                },
+                assignedBy: user?.uid as string,
+                active: active,
+                entityId: currentEntity?.entity.id
             }
+            if (typeof data.id === 'number') {
+                delete data.id
+            }
+            await handleRespnsability(data, token, currentLocale, 'post')
+            if (values.job)
+                addJobs(currentEntity?.entity.id as string, values.job, values.price)
+            changeLoaderState({ show: false })
+            showToast(t('core.feedback.success'), 'success');
+            if (typeof onSuccess == 'function') onSuccess()
+            closeModal(CommonModalType.FORM)
 
         } catch (error: any) {
             changeLoaderState({ show: false })
@@ -189,35 +178,6 @@ export default function useFormLinkController(onSuccess: () => void) {
             label: t('core.label.active'),
             required: true,
             component: ToggleInput,
-        },
-
-
-
-
-
-        {
-            isDivider: true,
-            label: t('core.label.dayTimeRange'),
-            hit: t('core.label.dayTimeRangeDescEmployee'),
-        },
-        {
-            name: 'enableDayTimeRange',
-            label: formStatus?.values?.enableDayTimeRange ? t('core.label.workScheduleEnable') : t('core.label.workScheduleDisabled'),
-            component: ToggleInput,
-            required: true,
-        },
-        {
-            name: 'workSchedule',
-            label: t('core.label.workSchedule'),
-            component: WorkScheduleField,
-            required: true,
-            fullWidth: true,
-            extraProps: {
-                enableDayTimeRange: !formStatus?.values?.enableDayTimeRange,
-                workScheduleEnable: true,
-                hide: !formStatus?.values?.enableDayTimeRange
-            },
-
         },
 
         {
