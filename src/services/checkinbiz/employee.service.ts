@@ -504,7 +504,8 @@ export const addResponse = async (data: Partial<IIssueResponse>) => {
     await addDocument<IIssueResponse>({
       collection: `${collection.ISSUES}/${data.issueId}/responses`,
       data: {
-        ...data
+        ...data,
+        administration: true
       }
     });
   } catch (error: any) {
