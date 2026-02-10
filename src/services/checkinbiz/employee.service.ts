@@ -743,11 +743,11 @@ export const updateIssue = async (issue: IIssue): Promise<void> => {
 
 export const addIssue = async (issue: IIssue): Promise<void> => {
   try {
-
     await addDocument<IIssue>({
       collection: `${collection.ISSUES}`,
       data: {
-        ...issue
+        ...issue,
+        administration: true
       }
     });
 
