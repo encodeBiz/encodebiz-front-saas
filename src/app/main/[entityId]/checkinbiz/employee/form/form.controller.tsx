@@ -44,6 +44,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   const [calendarDraft, setCalendarDraft] = useState<any>(null)
   const [initialCalendarHash, setInitialCalendarHash] = useState<string>("")
   const [initialHolidays, setInitialHolidays] = useState<Holiday[]>([])
+  const [saving, setSaving] = useState(false)
 
 
 
@@ -85,7 +86,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     nationalId: 'N/A',
     metadata: [],
     enableRemoteWork: false,
-    enableA2F: true,
+    enableA2F: false,
     enableDayTimeRange: false,
     disableBreak: false,
     timeBreak: 60,
@@ -167,6 +168,8 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
 
   const handleSubmit = async (values: Partial<IEmployee>, callback?: () => void) => {
+    if (saving) return
+    setSaving(true)
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
       delete values.createdAt
@@ -184,6 +187,11 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         calendarConfig,
         ...employeeValues
       } = values as any
+
+      // Si trabajo remoto está desactivado, no enviamos dirección para permitir borrarla
+      if (!employeeValues.enableRemoteWork && employeeValues.address) {
+        delete employeeValues.address;
+      }
 
       const data = {
         ...employeeValues,
@@ -250,6 +258,8 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
     } catch (error: any) {
       changeLoaderState({ show: false })
       showToast(error.message, 'error')
+    } finally {
+      setSaving(false)
     }
   };
 
@@ -259,10 +269,12 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
     try {
       changeLoaderState({ show: true, args: { text: t('core.title.loaderAction') } })
-      const event: IEmployee = await fetchEmployee(currentEntity?.entity.id as string, itemId)
+      const [event, entityCalendar, employeeCalendar] = await Promise.all([
+        fetchEmployee(currentEntity?.entity.id as string, itemId),
+        getRefByPathData(`entities/${currentEntity?.entity.id}/calendar/config`),
+        getRefByPathData(`entities/${currentEntity?.entity.id}/employees/${itemId}/calendar/config`),
+      ]) as [IEmployee, any, any];
       const addressData = event?.address
-      const entityCalendar = await getRefByPathData(`entities/${currentEntity?.entity.id}/calendar/config`);
-      const employeeCalendar = await getRefByPathData(`entities/${currentEntity?.entity.id}/employees/${itemId}/calendar/config`);
       const fallbackSchedule = entityCalendar?.defaultSchedule
         ? Object.fromEntries(Object.entries(entityCalendar.defaultSchedule).map(([k, v]: any) => [k, { ...v, enabled: v.disabled ? false : v.enabled ?? true }]))
         : initialValues.overridesSchedule;
@@ -282,7 +294,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
       const initialValuesData = {
         ...event,
-        enableA2F: event.enableA2F ?? true,
+        enableA2F: event.enableA2F ?? false,
         metadata: objectToArray(event.metadata),
         overridesSchedule: normalizeScheduleForForm(employeeSchedule, fallbackSchedule),
         enableDayTimeRange: employeeAdvance.enableDayTimeRange ?? false,
@@ -322,34 +334,35 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
   }
 
   const remoteFieldHandleValueChanged = (checked: boolean) => {
-    if (checked) {
-      setFields(prevFields => [
-        ...prevFields.filter(e => e.name !== 'metadata' && e.name !== 'additional_data_section' && e.name !== 'address'),
-        {
+    setFields(prevFields => {
+      const withoutAddress = prevFields.filter(f => f.name !== 'address');
+      const idx = withoutAddress.findIndex(f => f.name === 'enableRemoteWork');
+      if (checked) {
+        const next = [...withoutAddress];
+        const addressField = {
           name: 'address',
           label: t('core.label.address'),
           required: true,
           fullWidth: true,
           component: AddressComplexInput,
-        },
-        ...addDataFields
-      ])
+        };
+        next.splice(idx >= 0 ? idx + 1 : next.length, 0, addressField);
+        return next;
+      }
+      return withoutAddress;
+    });
 
-      setValidationSchema(prevSchema => ({
-        ...prevSchema,
-        address: addressSchema(t)
-      }))
+    // Limpia el valor para permitir borrar completamente la dirección al desactivar remoto
+    if (!checked) {
+      setInitialValues(prev => ({ ...prev, address: undefined }));
+      // Formik instance no está disponible aquí; limpiar en initialValues es suficiente
+      // y en handleSubmit ya se elimina address cuando enableRemoteWork es falso.
     }
-    else {
-      setFields(prevFields => [
-        ...prevFields.filter(f => !['address'].includes(f.name))
-      ])    
-     
 
-      setValidationSchema(prevSchema => ({
-        ...excludeKeyOfObject(prevSchema, 'address'),
-      }))
-    }
+    setValidationSchema(prevSchema => checked
+      ? { ...prevSchema, address: addressSchema(t) }
+      : { ...excludeKeyOfObject(prevSchema, 'address') }
+    );
   }
 
   const buildFields = (vals: any = initialValues, holidays: Holiday[] = initialHolidays) => [
@@ -436,6 +449,13 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         onHandleChange: remoteFieldHandleValueChanged,
       },
     },
+    ...(vals.enableRemoteWork ? [{
+      name: 'address',
+      label: t('core.label.address'),
+      required: true,
+      fullWidth: true,
+      component: AddressComplexInput,
+    }] : []),
 
     {
       isDivider: true,
@@ -510,7 +530,7 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         nationalId: 'N/A',
         status: 'active',
         enableRemoteWork: false,
-        enableA2F: true,
+        enableA2F: false,
         metadata: [],
         address: { "country": "", "city": "", "postalCode": "", "street": "", "geo": { "lat": 0, "lng": 0 }, "timeZone": "" },
         overridesSchedule: normalizeScheduleForForm(fallbackSchedule, fallbackSchedule),
@@ -684,6 +704,11 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
   useEffect(() => {
     setFields(buildFields(initialValues, initialHolidays));
+    if (initialValues.enableRemoteWork) {
+      setValidationSchema(prev => ({ ...prev, address: addressSchema(t) }));
+    } else {
+      setValidationSchema(prev => ({ ...excludeKeyOfObject(prev, 'address') }));
+    }
   }, [initialValues, initialHolidays]);
 
 

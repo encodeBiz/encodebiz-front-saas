@@ -150,14 +150,14 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
 
             <HelpTabs small tabs={[
                 {
-                    id: 'calendar',
-                    title: t('calendar.title'),
-                    tabContent: <EmployeeCalendarDetail employee={employee} refreshKey={calendarRefreshKey} />
-                },
-                {
                     id: '1',
                     title: t(`core.label.sucursalAsigned`),
                     tabContent: <Branch />
+                },
+                {
+                    id: 'calendar',
+                    title: t('calendar.title'),
+                    tabContent: <EmployeeCalendarDetail employee={employee} refreshKey={calendarRefreshKey} />
                 },
                 {
                     id: '2',
