@@ -53,14 +53,10 @@ export class HttpClient {
     method: string,
     url: string,
     options?: RequestInit,
-    forceCache?: "force-cache" | "no-cache"
+    forceCache?: RequestInit["cache"]
   ): Promise<T> {
-    if (!forceCache) {
-      forceCache = process.env.NODE_ENV ==
-        "production"
-        ? "force-cache"
-        : "no-cache"
-    }
+    // Evita respuestas desde cache en cualquier entorno
+    const cacheMode = forceCache ?? "no-store";
     const fullURL = this.createFullURL(url);
     const config: RequestInit = {
       method,
@@ -68,6 +64,7 @@ export class HttpClient {
         "Content-Type": "application/json",
         ...this.headers,
         ...(options?.headers || {}),
+        "Cache-Control": "no-store",
       },
       ...options,
     };
@@ -76,7 +73,7 @@ export class HttpClient {
     
 
     try {
-      const response = await fetch(fullURL, { ...config, cache: forceCache });
+      const response = await fetch(fullURL, { ...config, cache: cacheMode });
 
       if (!response.ok) {
 
