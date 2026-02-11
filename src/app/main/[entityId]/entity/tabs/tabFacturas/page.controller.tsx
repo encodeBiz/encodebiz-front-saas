@@ -62,7 +62,7 @@ export const useFacturaController = () => {
             label: t('core.button.download'),
             allowItem: () => true,
             showBulk: false,
-            onPress: (item: StripeInvoice) => item.inviceData?.invoice_pdf ? window.open(item.inviceData?.invoice_pdf, '_blank') : showToast(t('entity.tabs.tab5.message'),'info'),
+            onPress: (item: StripeInvoice) => item.paymentData?.invoice_pdf ? window.open(item.paymentData?.invoice_pdf, '_blank') : showToast(t('entity.tabs.tab5.message'),'info'),
             bulk: false
         },
 
@@ -109,19 +109,42 @@ export const useFacturaController = () => {
             id: 'id',
             label: t("core.label.number"),
             minWidth: 170,
-            format: (value, row) => <Typography sx={{ textTransform: 'uppercase' }}>{row.inviceData?.number ?? ' - '}</Typography>,
+            format: (value, row) => (
+                <Typography sx={{ textTransform: 'uppercase' }}>
+                    {row.paymentData?.paymentData?.number
+                        ?? row.paymentData?.number
+                        ?? row.paymentData?.id
+                        ?? ' - '}
+                </Typography>
+            ),
         },
         {
             id: 'createdAt',
             label: t("core.label.date"),
             minWidth: 170,
-            format: (value, row) => <Typography sx={{ textTransform: 'capitalize' }}>{format_date(row.createdAt,'DD/MM/YYYY')}</Typography>,
+            format: (value, row) => {
+                const createdSeconds = (row.paymentData as any)?.created ?? (row.createdAt?.seconds ?? row.createdAt);
+                const date = createdSeconds ? new Date(createdSeconds * 1000) : undefined;
+                return (
+                    <Typography sx={{ textTransform: 'capitalize' }}>
+                        {date ? format_date(date, 'DD/MM/YYYY HH:mm') : ' - '}
+                    </Typography>
+                );
+            },
         },
         {
-            id: 'inviceData',
+            id: 'paymentData',
             label: t("core.label.priceData"),
             minWidth: 170,
-            format: (value, row) => <Typography sx={{ textTransform: 'capitalize' }}>{row.inviceData?.total ? (row.inviceData?.total/100).toFixed(2) + ' €' : ' - '}</Typography>,
+            format: (value, row) => {
+                const cents = (row.paymentData?.total ?? row.paymentData?.amount_paid ?? row.paymentData?.amount_due ?? 0) as number;
+                const currency = (row.paymentData?.currency ?? 'EUR').toUpperCase();
+                return (
+                    <Typography sx={{ textTransform: 'capitalize' }}>
+                        {typeof cents === 'number' ? `${(cents / 100).toFixed(2)} ${currency}` : ' - '}
+                    </Typography>
+                );
+            },
         },
         {
             id: 'status',
@@ -174,4 +197,3 @@ export const useFacturaController = () => {
         loading, filterParams,
     }
 }
-
