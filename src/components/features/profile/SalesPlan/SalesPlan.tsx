@@ -7,10 +7,8 @@ import { IPlan } from '@/domain/core/IPlan';
 import { karla } from '@/config/fonts/google_fonts';
 
 
-export default function SalesPlan({ fromService, salesPlans, ref }: { ref?: any, fromService: BizType, salesPlans: Array<IPlan> }) {
+export default function SalesPlan({ fromService, salesPlans, ref , cancelAt}: { ref?: any, fromService: BizType, salesPlans: Array<IPlan> , cancelAt?: Date}) {
     const t = useTranslations()
-
-
     return (
         <Box maxWidth="xl" sx={{ mt: 10 }} flexDirection={'column'} display={'flex'} justifyContent={'center'} alignItems={'center'} ref={ref}>
 
@@ -21,7 +19,7 @@ export default function SalesPlan({ fromService, salesPlans, ref }: { ref?: any,
                 {t("salesPlan.subTitle") +(fromService=='checkinbiz'?'CheckBiz':'PassBiz') +'.'}
             </Typography>
             <br />
-            <SalesPlans pricingPlans={salesPlans} fromService={fromService} />
+            <SalesPlans pricingPlans={salesPlans} fromService={fromService} cancelAt={cancelAt}/>
         </Box>
     );
 }

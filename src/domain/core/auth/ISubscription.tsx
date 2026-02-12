@@ -18,6 +18,7 @@ export interface IEntitySuscription {
     serviceId: string
     startDate: Date
     status: string
+    cancel_at?:any
 }
 
 export interface StripeInvoice {

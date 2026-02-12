@@ -607,7 +607,8 @@
       "targetDesc": "Sigue los pasos de esta guía para configurar el servicio de CheckBiz."
     }
   },
-  "salesPlan": {
+    "salesPlan": {
+    "cancelationDate": "Fecha de cancelación",
     "title": "PLANES DISPONIBLES",
     "emissionLimit": "Pases digitales",
     "sinLimit": "Sin límites",

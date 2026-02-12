@@ -600,7 +600,8 @@
       "targetDesc": "Follow the steps in this guide to configure the CheckBiz service."
     }
   },
-  "salesPlan": {
+    "salesPlan": {
+    "cancelationDate": "Cancellation date",
     "title": "AVAILABLE PLANS",
     "emissionLimit": "Digital passes",
     "sinLimit": "Unlimited",

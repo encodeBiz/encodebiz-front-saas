@@ -43,12 +43,12 @@ const PlanCard = styled(Box)<{ highlighted?: string, current?: string }>(({ them
 
 export type PricingCardProps = IPlan & {
     fromService: BizType;
-
+    cancelAt?: Date
 };
 
 export const PricingCard: React.FC<PricingCardProps> = (props) => {
     const t = useTranslations();
-    const { id, payPerUse, monthlyPrice, pricePerUse, description, name, highlighted = false, fromService } = props;
+    const { id, payPerUse, monthlyPrice, pricePerUse, description, name, highlighted = false, fromService, cancelAt } = props;
     const { ubSubcribeAction, handleSubscripe } = usePricingCardController(id as string, name as string, fromService);
     const { navivateTo } = useLayout()
     const { currentLocale } = useAppLocale()
@@ -89,7 +89,7 @@ export const PricingCard: React.FC<PricingCardProps> = (props) => {
 
                     <Box py={2}>
                         {!current && <SassButton
-                            sx={{ mb: 1, width:'100%' }}
+                            sx={{ mb: 1, width: '100%' }}
                             fullWidth
                             variant="contained"
                             onClick={() => handleSubscripe(payPerUse)}
@@ -112,9 +112,9 @@ export const PricingCard: React.FC<PricingCardProps> = (props) => {
                     {fromService === 'checkinbiz' && <>{checkbizPlansItems(current, highlighted)[currentLocale][name as string]}</>}
                     {fromService === 'passinbiz' && <>{passinbizPlansItems(current, highlighted)[currentLocale][name as string]}</>}
 
-                 
-                    {current && <SassButton
-                        fullWidth sx={{ mb: 1, width:'100%' }}
+
+                    {(current && !cancelAt) && <SassButton
+                        fullWidth sx={{ mb: 1, width: '100%' }}
                         variant="outlined"
                         color='error'
                         onClick={() => {
@@ -124,6 +124,18 @@ export const PricingCard: React.FC<PricingCardProps> = (props) => {
                         }}>
                         {t("salesPlan.del")}
                     </SassButton>}
+
+                    {
+                        (current && cancelAt) && (
+                            <Typography
+                                align='center'
+                                variant="h6"
+                                color='error'
+                            >
+                                {t('salesPlan.cancelationDate')} {cancelAt?.toLocaleDateString?.() ?? ''}
+                            </Typography>
+                        )
+                    }
                 </Box>
             </CardContent>
         </PlanCard>

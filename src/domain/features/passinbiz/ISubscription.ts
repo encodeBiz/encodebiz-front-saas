@@ -12,6 +12,7 @@ export interface Subscription {
     status: StatusType;
     startDate: string;
     endDate?: string;
+    cancel_at?: Date
 }
 
 export type StatusType = 'active' | 'trialing' | 'cancelled';
