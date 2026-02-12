@@ -1,14 +1,17 @@
 'use client';
 
 import { useEffect, useMemo, useState } from "react";
-import { Accordion, AccordionDetails, AccordionSummary, Alert, Box, Chip, Divider, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
-import { AccessTime, AlarmOutlined, ExpandMoreOutlined, NotificationsNoneOutlined } from "@mui/icons-material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Chip, Divider, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { AccessTime, AlarmOutlined, ExpandMoreOutlined } from "@mui/icons-material";
 import { useTranslations } from "next-intl";
 import { useEntity } from "@/hooks/useEntity";
 import { useLayout } from "@/hooks/useLayout";
-import { getRefByPathData } from "@/lib/firebase/firestore/readDocument";
 import { WeeklyScheduleWithBreaks, Holiday } from "@/domain/features/checkinbiz/ICalendar";
 import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
+import { useAuth } from "@/hooks/useAuth";
+import { useAppLocale } from "@/hooks/useAppLocale";
+import { fetchEffectiveCalendar } from "@/services/checkinbiz/calendar.service";
+import { search as searchBranch } from "@/services/checkinbiz/sucursal.service";
 
 type EmployeeCalendarConfig = {
   overridesSchedule?: WeeklyScheduleWithBreaks;
@@ -18,8 +21,11 @@ type EmployeeCalendarConfig = {
     disableBreak?: boolean;
     timeBreak?: number;
     notifyBeforeMinutes?: number;
+    overridesDisabled?: boolean;
   };
   holidays?: Holiday[];
+  timezone?: string;
+  sources?: any;
 };
 
 const mapScheduleWithEnabled = (schedule?: WeeklyScheduleWithBreaks, fallback?: WeeklyScheduleWithBreaks): WeeklyScheduleWithBreaks => {
@@ -45,8 +51,14 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
   const tDays = useTranslations('core.days');
   const { currentEntity } = useEntity();
   const { changeLoaderState } = useLayout();
+  const { token } = useAuth();
+  const { currentLocale } = useAppLocale();
   const entityId = currentEntity?.entity?.id;
   const employeeId = employee?.id;
+
+  const branchIds = Array.isArray(employee?.branchId) ? employee.branchId.filter(Boolean) : [];
+  const [selectedBranchId, setSelectedBranchId] = useState<string | undefined>(branchIds[0]);
+  const [branchOptions, setBranchOptions] = useState<Array<{ id: string; name: string }>>([]);
 
   const [config, setConfig] = useState<EmployeeCalendarConfig | null>(null);
   const totalWeeklyMinutes = useMemo(() => {
@@ -96,30 +108,45 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
   };
 
   useEffect(() => {
+    const loadBranches = async () => {
+      if (!entityId || branchIds.length === 0) {
+        setBranchOptions([]);
+        return;
+      }
+      const filters = [{ field: 'id', operator: 'in', value: branchIds } as any];
+      const list = await searchBranch(entityId, { limit: branchIds.length || 50, filters } as any);
+      setBranchOptions(list.map((b: any) => ({ id: b.id, name: b.name || b.title || b.id })));
+    };
+    loadBranches();
+  }, [entityId, branchIds]);
+
+  useEffect(() => {
     const load = async () => {
-      if (!entityId || !employeeId) return;
+      if (!entityId || !employeeId || !token) return;
       setLoading(true);
       changeLoaderState({ show: true, args: { text: t('actions.saving') } });
       try {
-        const entityPath = `entities/${entityId}/calendar/config`;
-        const entityData = await getRefByPathData(entityPath);
-        const entitySchedule: WeeklyScheduleWithBreaks = entityData?.defaultSchedule
-          ? mapScheduleWithEnabled(entityData.defaultSchedule as WeeklyScheduleWithBreaks, fallbackSchedule)
-          : fallbackSchedule;
-        const entityAdvance = entityData?.advance ?? fallbackAdvance;
+        const params: any = {
+          scope: 'employee',
+          entityId,
+          employeeId,
+          token,
+          locale: currentLocale,
+        };
+        if (selectedBranchId) params.branchId = selectedBranchId;
 
-        const path = `entities/${entityId}/employees/${employeeId}/calendar/config`;
-        const data = await getRefByPathData(path);
-        const overridesDisabled = data ? (data.overridesDisabled ?? false) : true;
-        const effectiveSchedule = overridesDisabled
-          ? entitySchedule
-          : mapScheduleWithEnabled(data?.overridesSchedule as WeeklyScheduleWithBreaks | undefined, entitySchedule);
-        const effectiveAdvance = overridesDisabled ? entityAdvance : data?.advance ?? entityAdvance;
+        const data = await fetchEffectiveCalendar(params);
+
+        const effectiveSchedule = mapScheduleWithEnabled(data?.weeklySchedule as WeeklyScheduleWithBreaks | undefined, fallbackSchedule);
+        const effectiveAdvance = data?.advance ?? fallbackAdvance;
+
         setConfig({
           overridesSchedule: effectiveSchedule,
-          overridesDisabled,
+          overridesDisabled: data?.advance?.overridesDisabled ?? false,
           advance: effectiveAdvance,
-          holidays: Array.isArray(data?.holidays) ? data?.holidays : data?.holiday ? [data?.holiday] : [],
+          holidays: Array.isArray(data?.holidays) ? data?.holidays : [],
+          timezone: data?.timezone,
+          sources: data?.sources,
         });
       } catch (error) {
         setConfig({
@@ -134,10 +161,12 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
       }
     };
     load();
-  }, [entityId, employeeId, changeLoaderState, t, refreshKey]);
+  }, [entityId, employeeId, selectedBranchId, token, currentLocale, changeLoaderState, t, refreshKey]);
 
   const schedule = config?.overridesSchedule ?? fallbackSchedule;
   const overridesDisabled = config?.overridesDisabled ?? false;
+
+  const isCustom = config?.sources?.schedule === 'employee' && !config?.advance?.overridesDisabled;
 
   return (
     <Stack spacing={3}>
@@ -145,22 +174,33 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
         <AccordionSummary expandIcon={<ExpandMoreOutlined />}>
           <Stack>
             <Typography fontWeight={600}>{t('schedule.title')}</Typography>
-            <Typography color="text.secondary" variant="body2">{t('schedule.subtitle')}</Typography>
           </Stack>
         </AccordionSummary>
         <AccordionDetails>
-          <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
-            <Chip
-              color="primary"
-              variant="outlined"
-              label={overridesDisabled ? t('schedule.baseSchedule') : t('schedule.customSchedule')}
-              size="small"
-            />
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} alignItems={{ xs: 'flex-start', sm: 'center' }} sx={{ mb: 2 }}>
+            {isCustom && (
+              <Chip
+                color="primary"
+                variant="outlined"
+                label={t('schedule.baseSchedule')}
+                size="small"
+              />
+            )}
+            {!isCustom && branchIds.length > 0 && (
+              <FormControl size="small" sx={{ minWidth: 220 }}>
+                <InputLabel>{tCore('branch')}</InputLabel>
+                <Select
+                  value={selectedBranchId ?? ''}
+                  label={tCore('branch')}
+                  onChange={(e) => setSelectedBranchId(e.target.value || undefined)}
+                >
+                  {branchOptions.map((b) => (
+                    <MenuItem key={b.id} value={b.id}>{b.name}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
           </Stack>
-          <Alert severity="info" sx={{ mb: 2 }}>
-            {t('notes.inheritance')}
-          </Alert>
-
           {!loading && (
             <Stack spacing={3}>
               {config?.advance?.disableBreak && (
@@ -179,8 +219,7 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
               )}
 
               <Box sx={{ bgcolor: 'rgb(221, 226, 247)', borderRadius: 2, p: 2 }}>
-                <Stack direction="row" alignItems="center" justifyContent="space-between">
-                  <Typography variant="subtitle2" fontWeight={700}>{t('schedule.title')}</Typography>
+                <Stack direction="row" alignItems="center" spacing={1}>
                   <Chip
                     size="small"
                     color="primary"
@@ -198,19 +237,12 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
                       <Typography variant="h6" fontWeight={700}>{totalWeeklyHoursLabel}</Typography>
                     </Box>
                   </Stack>
-                  <Stack direction="row" alignItems="center" spacing={1}>
-                    <NotificationsNoneOutlined color="primary" fontSize="small" />
-                    <Box>
-                      <Typography variant="caption" color="text.secondary">{tCore('adviseWorkDay')}</Typography>
-                      <Typography variant="h6" fontWeight={700}>{config?.advance?.notifyBeforeMinutes ?? 0} {tCore('minute')}</Typography>
-                    </Box>
-                  </Stack>
                 </Stack>
               </Box>
 
               <Box>
-                <Typography fontWeight={700} sx={{ mb: 1 }}>
-                  {tSucursal('scheduledDays')} ({Object.values(schedule || {}).filter((d: any) => d?.enabled).length}) · {totalWeeklyHoursLabel}
+                <Typography color="text.primary" fontWeight={400} sx={{ mb: 1 }}>
+                  {tSucursal('scheduledDays')} ({Object.values(schedule || {}).filter((d: any) => d?.enabled).length})
                 </Typography>
                 <Stack spacing={1.5}>
                                     {(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const)

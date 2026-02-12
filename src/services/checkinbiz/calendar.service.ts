@@ -2,8 +2,7 @@ import { CalendarDeletePayload, CalendarUpsertPayload } from "@/domain/features/
 import { mapperErrorFromBack } from "@/lib/common/String";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
 
-const CALENDAR_HANDLER_URL = process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_CALENDAR_HANDLER
-    ?? "http://127.0.0.1:5001/encodebiz-services/us-central1/apiV100-firebaseEntryHttp-checkinbiz-calendarHandler";
+const CALENDAR_HANDLER_URL = process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_CALENDAR_HANDLER as string;
 
 const getClient = (token: string, locale: any) => new HttpClient({
     baseURL: "",

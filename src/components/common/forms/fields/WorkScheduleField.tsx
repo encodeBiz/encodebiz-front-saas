@@ -115,29 +115,7 @@ const WorkScheduleField: React.FC<WorkScheduleFieldProps> = ({
         return (<LocalizationProvider dateAdapter={AdapterDayjs} localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}><Box display={'flex'} justifyItems={'center'} alignItems={'center'} >
             <Box alignItems="flex-start" gap={2} justifyContent={'space-evenly'} display={'flex'} flexDirection={'column'} width={'100%'}>
 
-                <Stack direction={{ xs: "column", sm: "row" }} justifyContent="flex-start" width="100%" spacing={1}>
-                    <SassButton
-                        type="button"
-                        size="small"
-                        variant="outlined"
-                        disabled={!workScheduleEnable}
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            setBulkOpen(true);
-                        }}
-                        onMouseDown={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                        }}
-                        onMouseUp={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                        }}
-                    >
-                        Aplicar a todos los días
-                    </SassButton>
-                </Stack>
+                {/* Botón de aplicar a todos los días eliminado por solicitud */}
 
                 {DAYS.map((day) => {
                     const dayValue = (fieldValue as any)[day.key] ?? { ...defaultDaySchedule };

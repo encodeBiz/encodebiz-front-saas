@@ -157,6 +157,7 @@ const BranchCalendarDetail = ({ branch, refreshKey = 0 }: { branch: ISucursal; r
                     <Stack>
                         <Typography fontWeight={600}>{t('schedule.title')}</Typography>
                         <Typography color="text.secondary" variant="body2">{t('schedule.subtitle')}</Typography>
+
                     </Stack>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -168,10 +169,6 @@ const BranchCalendarDetail = ({ branch, refreshKey = 0 }: { branch: ISucursal; r
                             size="small"
                         />
                     </Stack>
-                    <Alert severity="info" sx={{ mb: 2 }}>
-                        {t('notes.inheritance')}
-                    </Alert>
-
                     {!loading && (
                         <Stack spacing={3}>
                             {config?.advance?.disableBreak && (
@@ -190,8 +187,7 @@ const BranchCalendarDetail = ({ branch, refreshKey = 0 }: { branch: ISucursal; r
                             )}
 
                             <Box sx={{ bgcolor: 'rgb(221, 226, 247)', borderRadius: 2, p: 2 }}>
-                                <Stack direction="row" alignItems="center" justifyContent="space-between">
-                                    <Typography variant="subtitle2" fontWeight={700}>{t('schedule.title')}</Typography>
+                                <Stack direction="row" alignItems="center" spacing={1}>
                                     <Chip
                                         size="small"
                                         color="primary"
@@ -209,19 +205,12 @@ const BranchCalendarDetail = ({ branch, refreshKey = 0 }: { branch: ISucursal; r
                                             <Typography variant="h6" fontWeight={700}>{totalWeeklyHoursLabel}</Typography>
                                         </Box>
                                     </Stack>
-                                    <Stack direction="row" alignItems="center" spacing={1}>
-                                        <NotificationsNoneOutlined color="primary" fontSize="small" />
-                                        <Box>
-                                            <Typography variant="caption" color="text.secondary">{tCore('adviseWorkDay')}</Typography>
-                                            <Typography variant="h6" fontWeight={700}>{config?.advance?.notifyBeforeMinutes ?? 0} {tCore('minute')}</Typography>
-                                        </Box>
-                                    </Stack>
                                 </Stack>
                             </Box>
 
                             <Box>
                                 <Typography fontWeight={700} sx={{ mb: 1 }}>
-                                    {tSucursal('scheduledDays')} ({Object.values(schedule || {}).filter((d: any) => d?.enabled).length}) · {totalWeeklyHoursLabel}
+                                    {tSucursal('scheduledDays')} ({Object.values(schedule || {}).filter((d: any) => d?.enabled).length})
                                 </Typography>
                                 <Stack spacing={1.5}>
                                     {(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const)
@@ -243,31 +232,31 @@ const BranchCalendarDetail = ({ branch, refreshKey = 0 }: { branch: ISucursal; r
                                             return (
                                                 <Box key={dayKey} position={'relative'} sx={{ bgcolor: 'white', borderRadius: 2, p: 1, boxShadow: 2 }}>
                                                     <Box
-                                                            position={'absolute'}
-                                                            right={10}
-                                                            top={'20%'}
-                                                            sx={{
-                                                                width: 48,
-                                                                height: 48,
-                                                                borderRadius: '50%',
-                                                                bgcolor: (theme) => theme.palette.primary.main,
-                                                                color: (theme) => theme.palette.primary.contrastText,
-                                                                display: 'flex',
-                                                                alignItems: 'center',
-                                                                justifyContent: 'center',
-                                                                boxShadow: 3,
-                                                                typography: 'subtitle2',
-                                                                fontWeight: 700,
-                                                            }}
-                                                        >
-                                                            {dayTotalLabel}
-                                                        </Box>
+                                                        position={'absolute'}
+                                                        right={10}
+                                                        top={'20%'}
+                                                        sx={{
+                                                            width: 48,
+                                                            height: 48,
+                                                            borderRadius: '50%',
+                                                            bgcolor: (theme) => theme.palette.primary.main,
+                                                            color: (theme) => theme.palette.primary.contrastText,
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'center',
+                                                            boxShadow: 3,
+                                                            typography: 'subtitle2',
+                                                            fontWeight: 700,
+                                                        }}
+                                                    >
+                                                        {dayTotalLabel}
+                                                    </Box>
                                                     <Stack direction="row" alignItems="center" spacing={1.5} justifyContent="space-between">
                                                         <Stack direction="row" spacing={1} alignItems="center">
                                                             <Typography variant="h6" fontWeight={600}>{tDays(dayKey as any)}</Typography>
                                                             <Chip label={`${dayShifts.length} ${dayShifts.length === 1 ? tCore('shift') : tCore('shifts')}`} color="primary" variant="outlined" size="small" />
                                                         </Stack>
-                                                        
+
                                                     </Stack>
                                                     <Stack spacing={0.5} mt={1} direction={'row'}>
                                                         {dayShifts.map((s: any, idx: number) => {

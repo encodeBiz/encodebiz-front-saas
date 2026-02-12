@@ -22,27 +22,9 @@ export interface IEntitySuscription {
 
 export interface StripeInvoice {
     id: string;
-    status: 'PAID',
+    status: string,
     createdAt: any
     entityId: string
-    inviceData: {
-        account_country: string
-        account_name: string
-        account_tax_ids: any
-        amount_due: number
-        amount_overpaid: number
-        amount_paid: number
-        amount_remaining: number
-        amount_shipping: number
-        application: any
-        attempt_count: number
-        attempted: boolean
-        customer_email: string
-        customer_name: string
-        invoice_pdf: string
-        number: string
-        subtotal: number
-        total: number
-    }
+    paymentData: any
 }
 

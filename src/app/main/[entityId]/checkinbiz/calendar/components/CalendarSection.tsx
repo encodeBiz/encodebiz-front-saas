@@ -427,7 +427,7 @@ const CalendarSection = ({
 
         return (
           <Stack spacing={3} sx={{ pb: 6, textAlign: "left" }}>
-            <CalendarChangeReporter
+            {/* <CalendarChangeReporter
               holidays={holidays}
               onChange={onChange}
               onHashChange={(hash) => {
@@ -435,7 +435,7 @@ const CalendarSection = ({
                   setParentFieldValue(formFieldName, hash);
                 }
               }}
-            />
+            /> */}
             <Accordion expanded={!isOverridesDisabled && scheduleExpanded} onChange={handleScheduleAccordionChange}>
               <AccordionSummary
                 expandIcon={<ExpandMoreOutlined color={isOverridesDisabled ? "disabled" : undefined} />}
@@ -571,8 +571,7 @@ const CalendarSection = ({
                   </Stack>
                 </Stack>
 
-                <Divider sx={{ my: 3 }} />
-                <Stack spacing={1} maxWidth={320}>
+                <Stack display={'none'} spacing={1} maxWidth={320}>
                   <Typography fontWeight={600}>{tCore("adviseWorkDay")}</Typography>
                   <Typography variant="body2" color="text.secondary">
                     {tCore("adviseWorkDayText")}
