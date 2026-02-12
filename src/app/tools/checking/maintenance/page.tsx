@@ -2,8 +2,10 @@
 
 import { Box, Button, Container, Stack, Typography } from '@mui/material'
 
-const androidUrl = 'https://firebasestorage.googleapis.com/v0/b/encodebiz-services.firebasestorage.app/o/assets%2Fandroid.png?alt=media&token=f6e2eee2-9ed7-41b5-baa3-1aea3dfaf45b'
-const iosUrl = 'https://firebasestorage.googleapis.com/v0/b/encodebiz-services.firebasestorage.app/o/assets%2Fios.png?alt=media&token=1cde91f9-db99-4cf7-8371-ffd5339944c7'
+const androidStoreUrl = 'https://play.google.com/store/apps/details?id=com.encodebiz.checkbiz360'
+const iosStoreUrl = 'https://apps.apple.com/es/app/checkbiz360/id6737189938'
+const androidBadge = 'https://firebasestorage.googleapis.com/v0/b/encodebiz-services.firebasestorage.app/o/assets%2Fandroid.png?alt=media&token=f6e2eee2-9ed7-41b5-baa3-1aea3dfaf45b'
+const iosBadge = 'https://firebasestorage.googleapis.com/v0/b/encodebiz-services.firebasestorage.app/o/assets%2Fios.png?alt=media&token=1cde91f9-db99-4cf7-8371-ffd5339944c7'
 const logoUrl = 'https://www.encodebiz.com/_next/static/media/encodebiz_logo.d398c273.png'
 
 export default function MaintenancePage() {
@@ -21,11 +23,11 @@ export default function MaintenancePage() {
         <Stack spacing={2}>
           <Typography variant="subtitle1" fontWeight={700}>Descarga la app CheckBiz360</Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center" justifyContent="center">
-            <Button component="a" href={androidUrl} variant="contained" color="primary" sx={{ px: 3 }}>
-              Google Play
+            <Button component="a" href={androidStoreUrl} target="_blank" rel="noopener noreferrer"  sx={{ px: 1.5, py: 0.5, borderColor: 'divider' }}>
+              <Box component="img" src={androidBadge} alt="Google Play" sx={{ height: 40 }} />
             </Button>
-            <Button component="a" href={iosUrl} variant="contained" color="primary" sx={{ px: 3 }}>
-              App Store
+            <Button component="a" href={iosStoreUrl} target="_blank" rel="noopener noreferrer"  sx={{ px: 1.5, py: 0.5, borderColor: 'divider' }}>
+              <Box component="img" src={iosBadge} alt="App Store" sx={{ height: 40 }} />
             </Button>
           </Stack>
         </Stack>
