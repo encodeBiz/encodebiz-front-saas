@@ -427,7 +427,7 @@ const CalendarSection = ({
 
         return (
           <Stack spacing={3} sx={{ pb: 6, textAlign: "left" }}>
-            <CalendarChangeReporter
+            {/* <CalendarChangeReporter
               holidays={holidays}
               onChange={onChange}
               onHashChange={(hash) => {
@@ -435,7 +435,7 @@ const CalendarSection = ({
                   setParentFieldValue(formFieldName, hash);
                 }
               }}
-            />
+            /> */}
             <Accordion expanded={!isOverridesDisabled && scheduleExpanded} onChange={handleScheduleAccordionChange}>
               <AccordionSummary
                 expandIcon={<ExpandMoreOutlined color={isOverridesDisabled ? "disabled" : undefined} />}
