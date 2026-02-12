@@ -142,4 +142,4 @@ export const menuItemsGeneral = [
 ]
 
 
-export const PUBLIC_PATH = ['/tools/scanner', '/legal/privacy-policy', '/legal/terms-and-conditions', '/tools/checking']
+export const PUBLIC_PATH = ['/tools/scanner', '/legal/privacy-policy', '/legal/terms-and-conditions', '/tools/checking', '/tools/checking/maintenance']
