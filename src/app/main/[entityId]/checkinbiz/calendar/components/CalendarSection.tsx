@@ -571,8 +571,7 @@ const CalendarSection = ({
                   </Stack>
                 </Stack>
 
-                <Divider sx={{ my: 3 }} />
-                <Stack spacing={1} maxWidth={320}>
+                <Stack display={'none'} spacing={1} maxWidth={320}>
                   <Typography fontWeight={600}>{tCore("adviseWorkDay")}</Typography>
                   <Typography variant="body2" color="text.secondary">
                     {tCore("adviseWorkDayText")}
