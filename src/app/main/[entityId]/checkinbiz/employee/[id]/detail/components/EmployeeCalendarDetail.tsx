@@ -11,6 +11,7 @@ import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
 import { useAuth } from "@/hooks/useAuth";
 import { useAppLocale } from "@/hooks/useAppLocale";
 import { fetchEffectiveCalendar } from "@/services/checkinbiz/calendar.service";
+import { search as searchBranch } from "@/services/checkinbiz/sucursal.service";
 
 type EmployeeCalendarConfig = {
   overridesSchedule?: WeeklyScheduleWithBreaks;
@@ -57,6 +58,7 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
 
   const branchIds = Array.isArray(employee?.branchId) ? employee.branchId.filter(Boolean) : [];
   const [selectedBranchId, setSelectedBranchId] = useState<string | undefined>(branchIds[0]);
+  const [branchOptions, setBranchOptions] = useState<Array<{ id: string; name: string }>>([]);
 
   const [config, setConfig] = useState<EmployeeCalendarConfig | null>(null);
   const totalWeeklyMinutes = useMemo(() => {
@@ -104,6 +106,19 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
     timeBreak: 30,
     notifyBeforeMinutes: 15,
   };
+
+  useEffect(() => {
+    const loadBranches = async () => {
+      if (!entityId || branchIds.length === 0) {
+        setBranchOptions([]);
+        return;
+      }
+      const filters = [{ field: 'id', operator: 'in', value: branchIds } as any];
+      const list = await searchBranch(entityId, { limit: branchIds.length || 50, filters } as any);
+      setBranchOptions(list.map((b: any) => ({ id: b.id, name: b.name || b.title || b.id })));
+    };
+    loadBranches();
+  }, [entityId, branchIds]);
 
   useEffect(() => {
     const load = async () => {
@@ -163,22 +178,24 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
         </AccordionSummary>
         <AccordionDetails>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} alignItems={{ xs: 'flex-start', sm: 'center' }} sx={{ mb: 2 }}>
-            <Chip
-              color="primary"
-              variant="outlined"
-              label={isCustom ? t('schedule.customSchedule') : t('schedule.baseSchedule')}
-              size="small"
-            />
+            {isCustom && (
+              <Chip
+                color="primary"
+                variant="outlined"
+                label={t('schedule.baseSchedule')}
+                size="small"
+              />
+            )}
             {!isCustom && branchIds.length > 0 && (
               <FormControl size="small" sx={{ minWidth: 220 }}>
-                <InputLabel>{t('core.label.branch')}</InputLabel>
+                <InputLabel>{tCore('branch')}</InputLabel>
                 <Select
                   value={selectedBranchId ?? ''}
-                  label={t('core.label.branch')}
+                  label={tCore('branch')}
                   onChange={(e) => setSelectedBranchId(e.target.value || undefined)}
                 >
-                  {branchIds.map((bId: string) => (
-                    <MenuItem key={bId} value={bId}>{bId}</MenuItem>
+                  {branchOptions.map((b) => (
+                    <MenuItem key={b.id} value={b.id}>{b.name}</MenuItem>
                   ))}
                 </Select>
               </FormControl>
@@ -208,7 +225,6 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
                     color="primary"
                     label={config?.advance?.enableDayTimeRange ? t('schedule.strictRange') : 'Jornada flexible'}
                   />
-                  <Typography variant="subtitle2" fontWeight={700}>{t('schedule.title')}</Typography>
                 </Stack>
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                   {config?.advance?.enableDayTimeRange ? t('schedule.strictRange') : t('schedule.flexInfo.line1')}
