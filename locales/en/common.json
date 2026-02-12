@@ -1598,8 +1598,8 @@
       "label": "Timezone"
     },
     "schedule": {
-      "title": "Weekly schedule (base template)",
-      "subtitle": "Define the standard working hours. Days without configuration are inactive.",
+      "title": "Weekly schedule",
+      "subtitle": "Weekly distribution of days and time ranges.",
       "strictRange": "Strict schedule",
       "strictInfo": {
         "line1": "The system applies the official schedule without adding extra time.",
@@ -1616,7 +1616,6 @@
       "customSchedule": "Custom schedule"
     },
     "notes": {
-      "inheritance": "Schedules inherit: Entity -> Branch -> Employee. If you don't override, the higher level applies.",
       "inactiveDays": "Days without schedule are treated as inactive.",
       "toleranceHint": "Use strict schedule to avoid deviations; flexible schedule counts actual time worked."
     },

@@ -156,7 +156,6 @@ const BranchCalendarDetail = ({ branch, refreshKey = 0 }: { branch: ISucursal; r
                 <AccordionSummary expandIcon={<ExpandMoreOutlined />}>
                     <Stack>
                         <Typography fontWeight={600}>{t('schedule.title')}</Typography>
-                        <Typography color="text.secondary" variant="body2">{t('schedule.subtitle')}</Typography>
                     </Stack>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -168,10 +167,6 @@ const BranchCalendarDetail = ({ branch, refreshKey = 0 }: { branch: ISucursal; r
                             size="small"
                         />
                     </Stack>
-                    <Alert severity="info" sx={{ mb: 2 }}>
-                        {t('notes.inheritance')}
-                    </Alert>
-
                     {!loading && (
                         <Stack spacing={3}>
                             {config?.advance?.disableBreak && (
@@ -190,13 +185,13 @@ const BranchCalendarDetail = ({ branch, refreshKey = 0 }: { branch: ISucursal; r
                             )}
 
                             <Box sx={{ bgcolor: 'rgb(221, 226, 247)', borderRadius: 2, p: 2 }}>
-                                <Stack direction="row" alignItems="center" justifyContent="space-between">
-                                    <Typography variant="subtitle2" fontWeight={700}>{t('schedule.title')}</Typography>
+                                <Stack direction="row" alignItems="center" spacing={1}>
                                     <Chip
                                         size="small"
                                         color="primary"
                                         label={config?.advance?.enableDayTimeRange ? t('schedule.strictRange') : 'Jornada flexible'}
                                     />
+                                    <Typography variant="subtitle2" fontWeight={700}>{t('schedule.title')}</Typography>
                                 </Stack>
                                 <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                                     {config?.advance?.enableDayTimeRange ? t('schedule.strictRange') : t('schedule.flexInfo.line1')}
@@ -207,13 +202,6 @@ const BranchCalendarDetail = ({ branch, refreshKey = 0 }: { branch: ISucursal; r
                                         <Box>
                                             <Typography variant="caption" color="text.secondary">{tSucursal('weekTime')}</Typography>
                                             <Typography variant="h6" fontWeight={700}>{totalWeeklyHoursLabel}</Typography>
-                                        </Box>
-                                    </Stack>
-                                    <Stack direction="row" alignItems="center" spacing={1}>
-                                        <NotificationsNoneOutlined color="primary" fontSize="small" />
-                                        <Box>
-                                            <Typography variant="caption" color="text.secondary">{tCore('adviseWorkDay')}</Typography>
-                                            <Typography variant="h6" fontWeight={700}>{config?.advance?.notifyBeforeMinutes ?? 0} {tCore('minute')}</Typography>
                                         </Box>
                                     </Stack>
                                 </Stack>

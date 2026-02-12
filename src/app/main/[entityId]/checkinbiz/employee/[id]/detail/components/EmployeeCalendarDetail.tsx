@@ -157,10 +157,6 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
               size="small"
             />
           </Stack>
-          <Alert severity="info" sx={{ mb: 2 }}>
-            {t('notes.inheritance')}
-          </Alert>
-
           {!loading && (
             <Stack spacing={3}>
               {config?.advance?.disableBreak && (
@@ -180,7 +176,6 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
 
               <Box sx={{ bgcolor: 'rgb(221, 226, 247)', borderRadius: 2, p: 2 }}>
                 <Stack direction="row" alignItems="center" justifyContent="space-between">
-                  <Typography variant="subtitle2" fontWeight={700}>{t('schedule.title')}</Typography>
                   <Chip
                     size="small"
                     color="primary"
@@ -198,19 +193,12 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
                       <Typography variant="h6" fontWeight={700}>{totalWeeklyHoursLabel}</Typography>
                     </Box>
                   </Stack>
-                  <Stack direction="row" alignItems="center" spacing={1}>
-                    <NotificationsNoneOutlined color="primary" fontSize="small" />
-                    <Box>
-                      <Typography variant="caption" color="text.secondary">{tCore('adviseWorkDay')}</Typography>
-                      <Typography variant="h6" fontWeight={700}>{config?.advance?.notifyBeforeMinutes ?? 0} {tCore('minute')}</Typography>
-                    </Box>
-                  </Stack>
                 </Stack>
               </Box>
 
               <Box>
-                <Typography fontWeight={700} sx={{ mb: 1 }}>
-                  {tSucursal('scheduledDays')} ({Object.values(schedule || {}).filter((d: any) => d?.enabled).length}) · {totalWeeklyHoursLabel}
+                <Typography color="text.primary" fontWeight={400} sx={{ mb: 1 }}>
+                  {tSucursal('scheduledDays')} ({Object.values(schedule || {}).filter((d: any) => d?.enabled).length})
                 </Typography>
                 <Stack spacing={1.5}>
                                     {(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const)

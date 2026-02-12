@@ -1624,8 +1624,8 @@
       "label": "Zona horaria"
     },
     "schedule": {
-      "title": "Horario semanal (plantilla base)",
-      "subtitle": "Define el horario laboral estándar. Los días no configurados se consideran inactivos.",
+      "title": "Horario semanal",
+      "subtitle": "Distribución semanal de días y rangos horarios.",
       "strictRange": "Jornada estricta",
       "strictInfo": {
         "line1": "El sistema aplica el horario oficial, sin sumar tiempo extra.",
@@ -1642,7 +1642,6 @@
       "customSchedule": "Horario personalizado"
     },
     "notes": {
-      "inheritance": "Los horarios heredan: Entidad -> Sucursal -> Empleado. Si no defines un override, se aplica el superior.",
       "inactiveDays": "Los días sin horario se consideran inactivos.",
       "toleranceHint": "Usa jornada estricta para evitar desviaciones; jornada flexible suma el tiempo real trabajado."
     },
