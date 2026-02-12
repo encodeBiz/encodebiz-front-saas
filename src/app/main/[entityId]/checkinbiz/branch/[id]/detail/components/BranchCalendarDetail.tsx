@@ -210,7 +210,7 @@ const BranchCalendarDetail = ({ branch, refreshKey = 0 }: { branch: ISucursal; r
 
                             <Box>
                                 <Typography fontWeight={700} sx={{ mb: 1 }}>
-                                    {tSucursal('scheduledDays')} ({Object.values(schedule || {}).filter((d: any) => d?.enabled).length}) · {totalWeeklyHoursLabel}
+                                    {tSucursal('scheduledDays')} ({Object.values(schedule || {}).filter((d: any) => d?.enabled).length})
                                 </Typography>
                                 <Stack spacing={1.5}>
                                     {(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const)
