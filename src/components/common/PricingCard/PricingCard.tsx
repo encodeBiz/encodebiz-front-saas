@@ -103,7 +103,7 @@ export const PricingCard: React.FC<PricingCardProps> = (props) => {
                             sx={{ mb: 1, width: fullLayout ? '80%' : '100%', minWidth: 180 }}
                             fullWidth={!fullLayout}
                             variant="contained"
-                            onClick={() => handleSubscripe(payPerUse)}
+                            onClick={() =>{ handleSubscripe(payPerUse);}}
                             disabled={fromService !== 'checkinbiz'}
 
                         >
