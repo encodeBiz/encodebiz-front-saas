@@ -11,8 +11,8 @@ interface SalesPlansProps {
 export default function SalesPlans({ pricingPlans, fromService, cancelAt }: SalesPlansProps) {
    
     return (
-        <Grid container spacing={1} justifyContent="center">
-            {pricingPlans.map((plan, index) => (
+        <Grid container  direction={'column'}>
+            {pricingPlans.slice(1).map((plan, index) => (
                 <PricingCard  key={index} {...plan}   fromService={fromService} cancelAt={cancelAt}/>
             ))}
         </Grid>
