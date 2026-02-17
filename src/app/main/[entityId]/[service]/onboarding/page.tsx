@@ -32,7 +32,8 @@ export default function Dashboard() {
   const { currentEntity, entitySuscription, entityServiceList } = useEntity()
   const searchParams = useSearchParams()
   const isCommingZoom = entityServiceList.find(e => e.id === service)?.status === 'cooming_soon'
-  const activeService = entitySuscription.filter(e => e.serviceId === service && e.status === 'active').length > 0 || currentEntity?.role === 'owner'
+  const sub = entitySuscription.find(e => e.serviceId === service && e.status === 'active')
+  const activeService = sub || currentEntity?.role === 'owner'
   const scrollToPlan = () => {
     if (sectionServicesRef.current) {
       (sectionServicesRef.current as any).scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -47,7 +48,6 @@ export default function Dashboard() {
         scrollToPlan()
       }, 1000);
   }, [searchParams.get('to'), (sectionServicesRef?.current as any), pending, planList?.length])
-
   return (
     <Container maxWidth="xl">
 
@@ -81,7 +81,9 @@ export default function Dashboard() {
 
       ]} />
 
-      <Box id="plans" ref={sectionServicesRef} >{!pending && !isCommingZoom && activeService && Array.isArray(planList) && <SalesPlan salesPlans={planList as Array<IPlan>} fromService={service} />}</Box>
+      <Box id="plans" ref={sectionServicesRef} >{!pending && !isCommingZoom && activeService && Array.isArray(planList) && 
+        <SalesPlan salesPlans={planList as Array<IPlan>} fromService={service} cancelAt={sub?.cancel_at?.toDate()}/>}
+        </Box>
     </Container>
   );
 }

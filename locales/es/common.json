@@ -186,6 +186,7 @@
       "leave_of_absence": "Licencia por ausencia",
       "paternity_leave": "Permiso de paternidad",
       "maternity_leave": "Permiso de maternidad",
+      "fired": "Despedido",
       "subEntity": "Sucursal",
       "subEntityName": "Nombre de la sucursal",
       "subEntityData": "DATOS DE LA SUCURSAL",
@@ -607,11 +608,13 @@
       "targetDesc": "Sigue los pasos de esta guía para configurar el servicio de CheckBiz."
     }
   },
-  "salesPlan": {
+    "salesPlan": {
+    "cancelationDate": "Fecha de cancelación",
     "title": "PLANES DISPONIBLES",
     "emissionLimit": "Pases digitales",
     "sinLimit": "Sin límites",
-    "subTitle": "Elige entre la versión Gratis, Bronce o Empresarial según las funcionalidades que necesites. Actualiza o cambia tu plan en cualquier momento para potenciar tu experiencia con ",
+    "subTitle": "Elige entre la versión Bronce o Empresarial según las funcionalidades que necesites y potencia tu experiencia con ",
+    "trialHighlight": "Incluye 45 días de prueba en tu primera suscripción (no aplica en suscripciones posteriores).",
     "free": "Gratis",
     "configureLegal": "Datos de la Empresa",
     "configureBranding": "Identidad Visual",
@@ -768,8 +771,8 @@
     "description": "Rellene los campos para registrar el empleado",
     "maxSelectionBranch": "Ya tienes todas las sucursales con responsabilidades asociadas",
     "advise": "Sin sucursal asignada; el registro de asistencia no estará disponible.",
-    "deleteConfirmModalTitle": "Eliminar empleado",
-    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el empleado",
+    "deleteConfirmModalTitle": "Despedir empleado",
+    "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Despedirá al empleado y sus datos permanecerán guardados por al menos 4 años para resguardo legal",
     "deleteConfirmModalTitleResponsability": "Eliminar sucursal",
     "deleteConfirmModalTitle2Responsability": "Esta acción no se puede deshacer. Eliminará permanentemente la sucursal",
     "branchUsed": "La sucursal/proyecto seleccionada ya tiene una configuración de responsabilidad asignadada",

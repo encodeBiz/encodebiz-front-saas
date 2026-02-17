@@ -189,6 +189,7 @@
       "leave_of_absence": "Leave of absence",
       "paternity_leave": "Paternity leave",
       "maternity_leave": "Maternity leave",
+      "fired": "Fired",
       "subEntity": "Branch",
       "subEntityName": "Branch name",
       "subEntityData": "BRANCH DATA",
@@ -600,11 +601,13 @@
       "targetDesc": "Follow the steps in this guide to configure the CheckBiz service."
     }
   },
-  "salesPlan": {
+    "salesPlan": {
+    "cancelationDate": "Cancellation date",
     "title": "AVAILABLE PLANS",
     "emissionLimit": "Digital passes",
     "sinLimit": "Unlimited",
-    "subTitle": "Choose between the Free, Bronze, or Enterprise version based on the features you need. Upgrade or change your plan anytime to enhance your experience with ",
+    "subTitle": "Choose between the Bronze or Enterprise version based on the features you need and enhance your experience with ",
+    "trialHighlight": "Includes a 45-day trial on your first subscription (not available on subsequent subscriptions).",
     "free": "Free",
     "configureLegal": "Company Data",
     "configureBranding": "Visual Identity",
@@ -761,8 +764,8 @@
     "description": "Fill in the fields to register the employee",
     "maxSelectionBranch": "You already have all branches with associated responsibilities",
     "advise": "No assigned branch; attendance registration will not be available.",
-    "deleteConfirmModalTitle": "Delete employee",
-    "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the employee",
+    "deleteConfirmModalTitle": "Terminate employee",
+    "deleteConfirmModalTitle2": "This action cannot be undone. It will terminate the employee. Records will be retained for at least 4 years to meet legal requirements",
     "deleteConfirmModalTitleResponsability": "Delete branch",
     "deleteConfirmModalTitle2Responsability": "This action cannot be undone. It will permanently delete the branch",
     "branchUsed": "The selected branch/project already has a responsibility configuration assigned",

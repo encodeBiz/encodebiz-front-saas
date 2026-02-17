@@ -173,6 +173,7 @@ export default function useEmployeeListController() {
     { label: t('core.label.leave_of_absence'), value: 'leave_of_absence' },
     { label: t('core.label.paternity_leave'), value: 'paternity_leave' },
     { label: t('core.label.maternity_leave'), value: 'maternity_leave' },
+    { label: t('core.label.fired'), value: 'fired' },
   ]
 
 
@@ -415,4 +416,3 @@ export default function useEmployeeListController() {
 
 
 }
-

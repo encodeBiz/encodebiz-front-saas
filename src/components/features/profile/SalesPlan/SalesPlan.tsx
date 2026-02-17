@@ -7,10 +7,8 @@ import { IPlan } from '@/domain/core/IPlan';
 import { karla } from '@/config/fonts/google_fonts';
 
 
-export default function SalesPlan({ fromService, salesPlans, ref }: { ref?: any, fromService: BizType, salesPlans: Array<IPlan> }) {
+export default function SalesPlan({ fromService, salesPlans, ref , cancelAt}: { ref?: any, fromService: BizType, salesPlans: Array<IPlan> , cancelAt?: Date}) {
     const t = useTranslations()
-
-
     return (
         <Box maxWidth="xl" sx={{ mt: 10 }} flexDirection={'column'} display={'flex'} justifyContent={'center'} alignItems={'center'} ref={ref}>
 
@@ -20,8 +18,17 @@ export default function SalesPlan({ fromService, salesPlans, ref }: { ref?: any,
             <Typography sx={{ width: '80%' }} variant="subtitle1" align="center" color="text.secondary" fontFamily={karla.style.fontFamily}>
                 {t("salesPlan.subTitle") +(fromService=='checkinbiz'?'CheckBiz':'PassBiz') +'.'}
             </Typography>
+            {fromService === 'checkinbiz' && (
+                <Typography
+                    sx={{ width: '80%', fontSize: 'calc(1rem + 3px)', fontWeight: 700, color: (theme) => theme.palette.primary.main }}
+                    align="center"
+                    fontFamily={karla.style.fontFamily}
+                >
+                    {t("salesPlan.trialHighlight")}
+                </Typography>
+            )}
             <br />
-            <SalesPlans pricingPlans={salesPlans} fromService={fromService} />
+            <SalesPlans pricingPlans={salesPlans} fromService={fromService} cancelAt={cancelAt}/>
         </Box>
     );
 }

@@ -6,14 +6,14 @@ import { BizType } from '@/domain/core/IService';
 interface SalesPlansProps {
     pricingPlans: IPlan[];
     fromService: BizType;
-  
+    cancelAt?:Date
 }
-export default function SalesPlans({ pricingPlans, fromService }: SalesPlansProps) {
-    
+export default function SalesPlans({ pricingPlans, fromService, cancelAt }: SalesPlansProps) {
+   
     return (
-        <Grid container spacing={1} justifyContent="center">
-            {pricingPlans.map((plan, index) => (
-                <PricingCard  key={index} {...plan}   fromService={fromService} />
+        <Grid container  direction={'column'}>
+            {pricingPlans.slice(1).map((plan, index) => (
+                <PricingCard  key={index} {...plan}   fromService={fromService} cancelAt={cancelAt}/>
             ))}
         </Grid>
     );

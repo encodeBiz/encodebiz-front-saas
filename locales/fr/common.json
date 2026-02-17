@@ -118,6 +118,7 @@
       "iconUrl": "Icône",
       "address": "Adresse",
       "legal": "Légal",
+      "fired": "Licencié",
       "name": "Nom",
       "currentPassword": "Mot de passe actuel",
       "label": "Étiquette",
@@ -242,7 +243,8 @@
   },
   "salesPlan": {
     "title": "Choisissez un plan pour acquérir ce service",
-    "subTitle": "Sélectionnez le plan qui correspond le mieux aux besoins de votre entreprise",
+    "subTitle": "Choisissez entre les versions Bronze ou Enterprise selon vos besoins et améliorez votre expérience avec ",
+    "trialHighlight": "Inclut 45 jours d'essai pour votre première souscription (non disponible pour les suivantes).",
     "free": "Gratuit",
     "standard": "Standard",
     "month": "mois",
@@ -318,8 +320,8 @@
     "add": "Ajouter",
     "import": "Importer",
     "description": "Remplissez les champs pour enregistrer l'employé",
-    "deleteConfirmModalTitle": "Supprimer l'employé",
-    "deleteConfirmModalTitle2": "Cette action est irréversible. Elle supprimera définitivement l'employé"
+    "deleteConfirmModalTitle": "Licencier l'employé",
+    "deleteConfirmModalTitle2": "Cette action est irréversible. L'employé sera licencié. Les données seront conservées pendant au moins 4 ans pour respecter les obligations légales"
   },
   "media": {
     "title": "Médias",
