@@ -18,6 +18,15 @@ export default function SalesPlan({ fromService, salesPlans, ref , cancelAt}: { 
             <Typography sx={{ width: '80%' }} variant="subtitle1" align="center" color="text.secondary" fontFamily={karla.style.fontFamily}>
                 {t("salesPlan.subTitle") +(fromService=='checkinbiz'?'CheckBiz':'PassBiz') +'.'}
             </Typography>
+            {fromService === 'checkinbiz' && (
+                <Typography
+                    sx={{ width: '80%', fontSize: 'calc(1rem + 3px)', fontWeight: 700, color: (theme) => theme.palette.primary.main }}
+                    align="center"
+                    fontFamily={karla.style.fontFamily}
+                >
+                    {t("salesPlan.trialHighlight")}
+                </Typography>
+            )}
             <br />
             <SalesPlans pricingPlans={salesPlans} fromService={fromService} cancelAt={cancelAt}/>
         </Box>

@@ -242,7 +242,8 @@
   },
   "salesPlan": {
     "title": "Choisissez un plan pour acquérir ce service",
-    "subTitle": "Sélectionnez le plan qui correspond le mieux aux besoins de votre entreprise",
+    "subTitle": "Choisissez entre les versions Bronze ou Enterprise selon vos besoins et améliorez votre expérience avec ",
+    "trialHighlight": "Inclut 45 jours d'essai pour votre première souscription (non disponible pour les suivantes).",
     "free": "Gratuit",
     "standard": "Standard",
     "month": "mois",
