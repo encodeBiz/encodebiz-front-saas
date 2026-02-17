@@ -318,8 +318,8 @@
     "add": "Ajouter",
     "import": "Importer",
     "description": "Remplissez les champs pour enregistrer l'employé",
-    "deleteConfirmModalTitle": "Supprimer l'employé",
-    "deleteConfirmModalTitle2": "Cette action est irréversible. Elle supprimera définitivement l'employé"
+    "deleteConfirmModalTitle": "Licencier l'employé",
+    "deleteConfirmModalTitle2": "Cette action est irréversible. L'employé sera licencié. Les données seront conservées pendant au moins 4 ans pour respecter les obligations légales"
   },
   "media": {
     "title": "Médias",

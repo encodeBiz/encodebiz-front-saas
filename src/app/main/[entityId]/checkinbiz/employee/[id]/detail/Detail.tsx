@@ -99,7 +99,7 @@ export const Detail = ({ employee, onResend, onSuccess, children }: { employee: 
                     </SassButton>
 
                     <SassButton loading={deleting} color="error" variant="contained" onClick={() => openModal(CommonModalType.DELETE)}>
-                        {t('core.button.delete')}
+                        {t('employee.deleteConfirmModalTitle')}
                     </SassButton>
                 </Stack>
 
