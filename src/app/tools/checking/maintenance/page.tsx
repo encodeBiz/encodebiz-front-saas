@@ -18,6 +18,9 @@ export default function MaintenancePage() {
           <Typography variant="body1" color="text.secondary">
             Estamos mejorando la experiencia de fichaje. Mientras tanto, descarga la app CheckBiz360 para seguir registrando tu jornada.
           </Typography>
+          <Typography variant="body1" color="text.primary" fontWeight={700}>
+            Para acceder a la app, revisa el correo donde enviamos tus credenciales (puede estar en la carpeta spam).
+          </Typography>
         </Stack>
 
         <Stack spacing={2}>
