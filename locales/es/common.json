@@ -1162,7 +1162,91 @@
     "statsNoDataTitle": "No se puede mostrar el análisis heurísticos",
     "statsNoDataText": "No existe suficiente datos recopilados para realizar un análisis heurísticos",
     "employeeNoDataTitle": "No se puede mostrar el perfil laboral",
-    "employeeNoDataText": "No existe suficiente datos recopilados para realizar un análisis del perfil laboral y mostrar información"
+    "employeeNoDataText": "No existe suficiente datos recopilados para realizar un análisis del perfil laboral y mostrar información",
+    "help": {
+      "performance": {
+        "title": "Rendimiento y Eficiencia",
+        "items": {
+          "efficiencyCost": {
+            "title": "Relación Eficiencia–Coste",
+            "desc": "Qué indica: si el coste laboral está generando un uso eficiente del tiempo trabajado. Cómo se obtiene: analiza horas netas validadas, coste asociado, evolución histórica del coste medio por jornada y consistencia del patrón (no usa días aislados). Qué compara: coste efectivo actual vs. comportamiento medio histórico consolidado. Por qué es confiable: solo usa jornadas validadas, exige volumen mínimo y penaliza patrones inestables."
+          },
+          "evolution": {
+            "title": "Evolución de la Eficiencia Económica",
+            "desc": "Qué indica: si el rendimiento operativo mejora, se mantiene o se deteriora. Cómo se obtiene: observa cambios sostenidos en coste por jornada, duración efectiva, estabilidad horaria y tendencia acumulada. Qué compara: comportamiento actual frente al histórico consolidado. Por qué es confiable: se construye sobre patrones acumulados, no sobre fluctuaciones aisladas."
+          },
+          "recoveryPotential": {
+            "title": "Potencial de Recuperación de Eficiencia",
+            "desc": "Qué indica: el margen de mejora al reducir la variabilidad operativa. Cómo se obtiene: analiza dispersión horaria, variabilidad del coste por jornada y la distancia entre el patrón actual y uno estabilizado. Qué evalúa: impacto económico asociado a esa variabilidad. Por qué es confiable: se basa en comportamiento real registrado, no en estimaciones externas."
+          },
+          "operationalEfficiency": {
+            "title": "Índice de Eficiencia Operativa",
+            "desc": "Qué indica: equilibrio entre coste real asumido y coste esperado según patrón histórico. Cómo se obtiene: usa coste efectivo promedio por jornada, coste medio consolidado, consistencia del patrón y volumen estadístico suficiente. Qué representa: si el sistema opera en rango saludable. Por qué es confiable: requiere consistencia y base de datos mínima."
+          },
+          "operationalInefficiency": {
+            "title": "Índice de Ineficiencia Operativa",
+            "desc": "Qué indica: impacto económico derivado de inestabilidad o variabilidad. Cómo se obtiene: detecta incrementos repetidos de coste por jornada, dispersión frente al promedio y variabilidad en la duración real, ponderado por fiabilidad. Qué representa: cuánto penaliza la inestabilidad. Por qué es confiable: se activa con fluctuaciones sostenidas sin coherencia estructural."
+          },
+          "costRisk": {
+            "title": "Índice de Riesgo de Coste",
+            "desc": "Qué indica: nivel de exposición económica asociado a la inestabilidad operativa. Cómo se obtiene: analiza volatilidad del coste, dispersión acumulada, estabilidad horaria y consistencia en el tiempo. Qué representa: riesgo implícito; mayor variabilidad sostenida, mayor riesgo. Por qué es confiable: se basa en variabilidad real sostenida."
+          },
+          "globalHealth": {
+            "title": "Índice Global de Salud Operativa",
+            "desc": "Qué indica: visión consolidada del equilibrio operativo. Cómo se obtiene: integra estabilidad horaria, eficiencia económica, fiabilidad estadística y variabilidad del coste. Qué representa: estado general del sistema. Por qué es confiable: no es media simple; pondera por estabilidad y volumen de datos."
+          },
+          "confidence": {
+            "title": "Índice de Confianza del Patrón",
+            "desc": "Qué indica: grado de solidez del análisis. Cómo se obtiene: número de jornadas válidas, consistencia temporal, ausencia de anomalías y estabilidad estructural. Qué representa: confianza del patrón; baja automáticamente si hay poco volumen o inestabilidad. Por qué es confiable: se ajusta a la calidad y cantidad del dato real."
+          },
+          "shiftDeviation": {
+            "title": "Desviación de Turno Operativo",
+            "desc": "Qué indica: dispersión horaria respecto al promedio consolidado. Cómo se obtiene: analiza horas promedio de inicio y fin, variaciones repetidas y cambios progresivos. Qué representa: desalineación sostenida sin penalizar flexibilidad puntual. Por qué es confiable: usa patrones consolidados en el tiempo."
+          },
+          "returnPerHour": {
+            "title": "Retorno por Hora Trabajada",
+            "desc": "Qué indica: eficiencia generada por cada hora efectiva de trabajo. Cómo se obtiene: relaciona horas netas trabajadas, coste asociado, estabilidad operativa y evolución histórica del patrón. Qué representa: utilización estructural del tiempo (no productividad individual). Por qué es confiable: usa horas validadas y patrones estables."
+          }
+        }
+      },
+      "opsData": {
+        "title": "Datos Operativos",
+        "items": {
+          "operationalSchedule": {
+            "title": "Horario Operativo Medio",
+            "desc": "Qué indica: el horario real habitual de inicio y fin según comportamiento consolidado. Cómo se obtiene: usa solo jornadas completas validadas analizando inicio, fin, consistencia y variabilidad diaria; no usa horarios planificados. Qué consolida: un patrón estable de horario efectivo. Por qué es confiable: exige volumen mínimo y descarta registros incompletos."
+          },
+          "weeklyLoad": {
+            "title": "Carga Horaria Semanal",
+            "desc": "Qué indica: horas reales trabajadas por semana según tendencia consolidada. Cómo se obtiene: suma horas netas de jornadas validadas, distribuye por semana y observa variación y estabilidad. Qué permite: ver si la carga es constante, creciente o inestable. Por qué es confiable: se basa en horas efectivamente registradas, no en previsiones."
+          },
+          "costPerHour": {
+            "title": "Coste por Hora Trabajada",
+            "desc": "Qué indica: coste medio por hora efectiva real. Cómo se obtiene: relaciona horas netas trabajadas y coste asociado ajustado por estabilidad del patrón. Qué compara: coste medio actual vs. histórico consolidado. Por qué es confiable: usa solo jornadas válidas y estabilidad mínima antes de concluir."
+          },
+          "costPerDay": {
+            "title": "Coste por Jornada",
+            "desc": "Qué indica: coste aproximado de un día completo de actividad real. Cómo se obtiene: analiza duración efectiva, coste asociado, variabilidad diaria y consistencia histórica. Qué aporta: comparación homogénea entre periodos o sucursales. Por qué es confiable: deriva del comportamiento real registrado, no de costes teóricos."
+          },
+          "costPerformance": {
+            "title": "Coste por Rendimiento",
+            "desc": "Qué indica: medida estructural que integra coste y estabilidad. Cómo se obtiene: combina coste por jornada, estabilidad horaria, variabilidad acumulada y fiabilidad estadística. Qué representa: calidad estructural del funcionamiento. Por qué es confiable: pondera estabilidad y volumen de datos."
+          },
+          "costReturn": {
+            "title": "Rendimiento del Coste Invertido",
+            "desc": "Qué indica: aprovechamiento operativo del coste asumido. Cómo se obtiene: analiza coste efectivo acumulado junto con estabilidad del patrón, regularidad horaria y tendencia histórica. Qué representa: si el coste se aprovecha coherentemente con el patrón. Por qué es confiable: usa solo relación interna entre tiempo y coste."
+          },
+          "reliability": {
+            "title": "Nivel de Confiabilidad",
+            "desc": "Qué indica: solidez estadística del patrón operativo. Cómo se obtiene: jornadas válidas acumuladas, consistencia temporal, ausencia de anomalías y estabilidad. Qué representa: robustez del insight. Por qué es confiable: baja automáticamente si hay poco volumen o alta variabilidad."
+          },
+          "dataVolume": {
+            "title": "Volumen de Datos",
+            "desc": "Qué indica: cantidad de jornadas válidas usadas para construir el patrón. Cómo se obtiene: contabiliza solo jornadas completas que superan controles de coherencia. Por qué es relevante: mayor volumen consolidado implica más estabilidad y menor margen de distorsión."
+          }
+        }
+      }
+    }
  
   },
   "statsDashboard": {

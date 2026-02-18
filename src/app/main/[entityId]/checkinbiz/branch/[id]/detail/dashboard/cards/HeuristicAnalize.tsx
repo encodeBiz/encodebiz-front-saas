@@ -16,6 +16,24 @@ import emptyImage from '../../../../../../../../../../public/assets/images/empty
 import { SassButton } from '@/components/common/buttons/GenericButton';
 import { useState } from 'react';
 
+const operationalHelp = (t: any) => ([
+    {
+        head: t('statsCheckbiz.help.performance.title'),
+        items: [
+            { title: t('statsCheckbiz.help.performance.items.efficiencyCost.title'), description: t('statsCheckbiz.help.performance.items.efficiencyCost.desc') },
+            { title: t('statsCheckbiz.help.performance.items.evolution.title'), description: t('statsCheckbiz.help.performance.items.evolution.desc') },
+            { title: t('statsCheckbiz.help.performance.items.recoveryPotential.title'), description: t('statsCheckbiz.help.performance.items.recoveryPotential.desc') },
+            { title: t('statsCheckbiz.help.performance.items.operationalEfficiency.title'), description: t('statsCheckbiz.help.performance.items.operationalEfficiency.desc') },
+            { title: t('statsCheckbiz.help.performance.items.operationalInefficiency.title'), description: t('statsCheckbiz.help.performance.items.operationalInefficiency.desc') },
+            { title: t('statsCheckbiz.help.performance.items.costRisk.title'), description: t('statsCheckbiz.help.performance.items.costRisk.desc') },
+            { title: t('statsCheckbiz.help.performance.items.globalHealth.title'), description: t('statsCheckbiz.help.performance.items.globalHealth.desc') },
+            { title: t('statsCheckbiz.help.performance.items.confidence.title'), description: t('statsCheckbiz.help.performance.items.confidence.desc') },
+            { title: t('statsCheckbiz.help.performance.items.shiftDeviation.title'), description: t('statsCheckbiz.help.performance.items.shiftDeviation.desc') },
+            { title: t('statsCheckbiz.help.performance.items.returnPerHour.title'), description: t('statsCheckbiz.help.performance.items.returnPerHour.desc') },
+        ]
+    }
+])
+
 export const HeuristicAnalize = () => {
     const { heuristic, cardHeuristicsIndicatorSelected, pending, heuristicsItems } = useDashboardBranch()
     const theme = useTheme()
@@ -119,14 +137,10 @@ export const HeuristicAnalize = () => {
 
             {open.type === CommonModalType.INFO && open.args?.id === 'data3' && <InfoModal
                 centerBtn cancelBtn={false} closeBtn={false} closeIcon={false}
-                htmlDescription={<InfoHelp title={t("employeeDashboard.help")} data={heuristicsItems.map(e => ({
-                    head: e.name, items: e.children.map(ch => ({ title: ch.name, description: ch.description as string }))
-                }))} />}
+                htmlDescription={<InfoHelp title={t("employeeDashboard.help")} data={operationalHelp(t)} />}
                 onClose={() => closeModal(CommonModalType.INFO)}
             />}
         </BorderBox>
 
     );
 }
-
-
