@@ -1193,6 +1193,77 @@
           }
         }
       },
+      "risk": {
+        "title": "Health and Economic Risk",
+        "items": {
+          "costDelta": {
+            "title": "Cost Performance Delta",
+            "desc": "What it indicates: gap between effective real cost and average cost per cycle/day. How it is obtained: compares current cost against consolidated average. What it represents: overcost or relative efficiency. Why it is reliable: uses consolidated real costs."
+          },
+          "costRisk": {
+            "title": "Cost Risk Index",
+            "desc": "What it indicates: economic exposure due to cost variation. How it is obtained: volatility, cumulative dispersion, schedule stability, and temporal consistency. What it represents: implicit risk—greater sustained variability means higher risk. Why it is reliable: based on sustained real variability."
+          },
+          "globalHeuristic": {
+            "title": "Global Heuristic Index",
+            "desc": "What it indicates: overall operational health. How it is obtained: integrates schedule stability, economic efficiency, statistical reliability, and cost variability. What it represents: integral diagnosis. Why it is reliable: weights stability and data volume; not a simple average."
+          },
+          "globalQuality": {
+            "title": "Global Quality Heuristic Index",
+            "desc": "What it indicates: overall performance quality. How it is obtained: combines stability, efficiency, and reliability. What it represents: alignment of overall performance. Why it is reliable: uses accumulated patterns and statistical reliability."
+          },
+          "costVariance": {
+            "title": "Relative Cost Variance",
+            "desc": "What it indicates: proportion of variance relative to cost per cycle/day. How it is obtained: relative dispersion of costs. What it represents: economic volatility. Why it is reliable: calculated on consolidated real costs."
+          }
+        }
+      },
+      "stability": {
+        "title": "Operational Stability",
+        "items": {
+          "costVariability": {
+            "title": "Cost Variability Heuristic",
+            "desc": "What it indicates: cost instability weighted by reliability. How it is obtained: dispersion and volatility of cost adjusted by reliability. What it represents: economic consistency. Why it is reliable: uses validated patterns with minimum volume."
+          },
+          "heuristicConfidence": {
+            "title": "Heuristic Confidence Index",
+            "desc": "What it indicates: strength of the pattern. How it is obtained: valid days, consistency, absence of anomalies. What it represents: confidence in the pattern. Why it is reliable: automatically drops with low data or instability."
+          },
+          "shiftDeviation": {
+            "title": "Operational Shift Deviation",
+            "desc": "What it indicates: schedule dispersion vs. consolidated average. How it is obtained: average start/end, repeated variations, progressive changes. What it represents: sustained misalignment. Why it is reliable: uses consolidated patterns."
+          },
+          "operationalStability": {
+            "title": "Operational Stability Index",
+            "desc": "What it indicates: operational predictability. How it is obtained: combines variability and pattern reliability. What it represents: stability of operations. Why it is reliable: requires consistency and data volume."
+          },
+          "patternStability": {
+            "title": "Pattern Stability Score",
+            "desc": "What it indicates: stability of behavior. How it is obtained: weighted average of stability (OSI) and confidence (HCI). What it represents: pattern solidity. Why it is reliable: weights stability and confidence."
+          },
+          "smartStability": {
+            "title": "Smart Stability Ratio",
+            "desc": "What it indicates: summary of operational stability and economic performance. How it is obtained: integrates stability and performance. What it represents: intelligent stability. Why it is reliable: weights variability and reliability."
+          }
+        }
+      },
+      "time": {
+        "title": "Time and Workload Management",
+        "items": {
+          "returnPerHour": {
+            "title": "Return per Worked Hour",
+            "desc": "What it indicates: efficiency per effective hour. How it is obtained: net hours, associated cost, operational stability, historical evolution. What it represents: structural use of time. Why it is reliable: validated hours and stable pattern."
+          },
+          "workloadBalance": {
+            "title": "Workload Balance",
+            "desc": "What it indicates: balance between labor load and achieved efficiency. How it is obtained: compares load taken vs. performance achieved. What it represents: task allocation balance. Why it is reliable: based on real records and consolidated metrics."
+          },
+          "workTimeBalance": {
+            "title": "Work Time Balance",
+            "desc": "What it indicates: alignment of average workday duration with expected pattern. How it is obtained: average effective duration vs. historical pattern. What it represents: temporal balance of the workday. Why it is reliable: uses complete, validated days."
+          }
+        }
+      },
       "opsData": {
         "title": "Operational Data",
         "items": {

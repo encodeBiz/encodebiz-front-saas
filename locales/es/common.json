@@ -1209,6 +1209,77 @@
           }
         }
       },
+      "risk": {
+        "title": "Salud y Riesgo Económico",
+        "items": {
+          "costDelta": {
+            "title": "Delta de Rendimiento de Costos",
+            "desc": "Qué indica: diferencia entre coste real efectivo y coste promedio por ciclo o jornada. Cómo se obtiene: compara el coste actual contra el promedio consolidado. Qué representa: sobrecoste o eficiencia relativa. Por qué es confiable: usa costes reales consolidados."
+          },
+          "costRisk": {
+            "title": "Índice de Riesgo de Coste",
+            "desc": "Qué indica: exposición económica asociada a la variación del coste. Cómo se obtiene: analiza volatilidad, dispersión acumulada, estabilidad horaria y consistencia temporal. Qué representa: riesgo implícito; mayor variabilidad sostenida, mayor riesgo. Por qué es confiable: se basa en variabilidad real sostenida."
+          },
+          "globalHeuristic": {
+            "title": "Índice Heurístico Global",
+            "desc": "Qué indica: salud operativa global. Cómo se obtiene: integra estabilidad horaria, eficiencia económica, fiabilidad estadística y variabilidad del coste. Qué representa: diagnóstico integral. Por qué es confiable: pondera estabilidad y volumen de datos; no es una media simple."
+          },
+          "globalQuality": {
+            "title": "Índice Heurístico de Calidad Global",
+            "desc": "Qué indica: calidad global del desempeño. Cómo se obtiene: combina estabilidad, eficiencia y fiabilidad. Qué representa: alineación del desempeño global. Por qué es confiable: usa patrones acumulados con fiabilidad estadística."
+          },
+          "costVariance": {
+            "title": "Varianza Relativa de Coste",
+            "desc": "Qué indica: proporción de varianza respecto al coste por ciclo o jornada. Cómo se obtiene: dispersión relativa de costes. Qué representa: volatilidad económica. Por qué es confiable: calculado sobre costes reales consolidados."
+          }
+        }
+      },
+      "stability": {
+        "title": "Estabilidad Operativa",
+        "items": {
+          "costVariability": {
+            "title": "Heurístico de Variabilidad de Costos",
+            "desc": "Qué indica: inestabilidad de costes ponderada por confiabilidad. Cómo se obtiene: dispersión y volatilidad del coste ajustadas por fiabilidad. Qué representa: consistencia económica. Por qué es confiable: usa patrones validados con volumen mínimo."
+          },
+          "heuristicConfidence": {
+            "title": "Índice de Confianza Heurística",
+            "desc": "Qué indica: solidez del patrón. Cómo se obtiene: jornadas válidas, consistencia temporal, ausencia de anomalías. Qué representa: confianza del patrón. Por qué es confiable: baja automáticamente ante poca data o inestabilidad."
+          },
+          "shiftDeviation": {
+            "title": "Desviación de Turno Operativo",
+            "desc": "Qué indica: dispersión horaria frente al promedio consolidado. Cómo se obtiene: analiza inicio/fin promedio, variaciones repetidas y cambios progresivos. Qué representa: desalineación sostenida. Por qué es confiable: usa patrones consolidados."
+          },
+          "operationalStability": {
+            "title": "Índice de Estabilidad Operativa",
+            "desc": "Qué indica: predictibilidad operativa. Cómo se obtiene: combina variabilidad y confiabilidad del patrón. Qué representa: estabilidad de la operación. Por qué es confiable: requiere consistencia y volumen de datos."
+          },
+          "patternStability": {
+            "title": "Puntaje de Estabilidad del Patrón",
+            "desc": "Qué indica: estabilidad del comportamiento. Cómo se obtiene: promedio ponderado de estabilidad (OSI) y confianza (HCI). Qué representa: solidez del patrón. Por qué es confiable: pondera estabilidad y confianza."
+          },
+          "smartStability": {
+            "title": "Ratio de Estabilidad Inteligente",
+            "desc": "Qué indica: resumen de estabilidad operativa y rendimiento económico. Cómo se obtiene: integra estabilidad y desempeño. Qué representa: estabilidad inteligente. Por qué es confiable: pondera variabilidad y fiabilidad."
+          }
+        }
+      },
+      "time": {
+        "title": "Gestión del Tiempo y Cargas",
+        "items": {
+          "returnPerHour": {
+            "title": "Retorno por Hora Trabajada",
+            "desc": "Qué indica: eficiencia por hora efectiva. Cómo se obtiene: horas netas, coste asociado, estabilidad operativa y evolución histórica. Qué representa: uso estructural del tiempo. Por qué es confiable: horas validadas y patrón estable."
+          },
+          "workloadBalance": {
+            "title": "Balance de Carga de Trabajo",
+            "desc": "Qué indica: equilibrio entre carga laboral y eficiencia lograda. Cómo se obtiene: compara carga asumida vs. rendimiento obtenido. Qué representa: balance de asignación de tareas. Por qué es confiable: se basa en registros reales y métricas consolidadas."
+          },
+          "workTimeBalance": {
+            "title": "Balance de Tiempo Laboral",
+            "desc": "Qué indica: alineación de la duración media de la jornada con el patrón esperado. Cómo se obtiene: duración efectiva promedio vs. patrón histórico. Qué representa: equilibrio temporal de la jornada. Por qué es confiable: usa jornadas completas y validadas."
+          }
+        }
+      },
       "opsData": {
         "title": "Datos Operativos",
         "items": {
