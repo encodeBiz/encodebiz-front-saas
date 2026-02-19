@@ -31,6 +31,19 @@ const operationalHelp = (t: any) => ([
             { title: t('statsCheckbiz.help.performance.items.shiftDeviation.title'), description: t('statsCheckbiz.help.performance.items.shiftDeviation.desc') },
             { title: t('statsCheckbiz.help.performance.items.returnPerHour.title'), description: t('statsCheckbiz.help.performance.items.returnPerHour.desc') },
         ]
+    },
+    {
+        head: t('statsCheckbiz.help.opsData.title'),
+        items: [
+            { title: t('statsCheckbiz.help.opsData.items.operationalSchedule.title'), description: t('statsCheckbiz.help.opsData.items.operationalSchedule.desc') },
+            { title: t('statsCheckbiz.help.opsData.items.weeklyLoad.title'), description: t('statsCheckbiz.help.opsData.items.weeklyLoad.desc') },
+            { title: t('statsCheckbiz.help.opsData.items.costPerHour.title'), description: t('statsCheckbiz.help.opsData.items.costPerHour.desc') },
+            { title: t('statsCheckbiz.help.opsData.items.costPerDay.title'), description: t('statsCheckbiz.help.opsData.items.costPerDay.desc') },
+            { title: t('statsCheckbiz.help.opsData.items.costPerformance.title'), description: t('statsCheckbiz.help.opsData.items.costPerformance.desc') },
+            { title: t('statsCheckbiz.help.opsData.items.costReturn.title'), description: t('statsCheckbiz.help.opsData.items.costReturn.desc') },
+            { title: t('statsCheckbiz.help.opsData.items.reliability.title'), description: t('statsCheckbiz.help.opsData.items.reliability.desc') },
+            { title: t('statsCheckbiz.help.opsData.items.dataVolume.title'), description: t('statsCheckbiz.help.opsData.items.dataVolume.desc') },
+        ]
     }
 ])
 

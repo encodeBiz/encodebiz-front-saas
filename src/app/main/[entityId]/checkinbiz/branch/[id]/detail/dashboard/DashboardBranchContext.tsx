@@ -72,12 +72,12 @@ const defaultItems1 = [
 ]
 
 const defaultItems2 = [
-    "CEE",
-    "ECR",
-    "ERP",
-    "OER",
-    "OIR",
-    "PQS"
+    "CEE",  // Evolución Eficiencia/Coste
+    "CPD",  // Delta de Rendimiento de Costos
+    "CRI",  // Índice de Riesgo de Coste
+    "ECR",  // Relación Eficiencia/Costo
+    "ERP",  // Potencial de Recuperación de Eficiencia
+    "OER"   // Ratio de Eficiencia Operativa
 ]
 
 export const DashboardBranchContext = createContext<IDashboardBranchProps | undefined>(undefined);
