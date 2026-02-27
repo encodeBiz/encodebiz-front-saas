@@ -56,12 +56,17 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
   const entityId = currentEntity?.entity?.id;
   const employeeId = employee?.id;
 
-  const branchIds = useMemo(
-    () => (Array.isArray(employee?.branchId) ? employee.branchId.filter(Boolean) : []),
-    [employee?.branchId]
-  );
+  const branchIds = useMemo(() => {
+    if (Array.isArray(employee?.branchId)) return employee.branchId.filter(Boolean);
+    if (typeof employee?.branchId === 'string' && employee.branchId.trim().length > 0) {
+      return [employee.branchId.trim()];
+    }
+    return [];
+  }, [employee?.branchId]);
   const branchIdsKey = useMemo(() => branchIds.join(','), [branchIds]);
-  const [selectedBranchId, setSelectedBranchId] = useState<string | undefined>(branchIds[0]);
+  const [selectedBranchId, setSelectedBranchId] = useState<string | undefined>(
+    branchIds[0]
+  );
   const [branchOptions, setBranchOptions] = useState<Array<{ id: string; name: string }>>([]);
 
   const [config, setConfig] = useState<EmployeeCalendarConfig | null>(null);
@@ -113,7 +118,7 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
 
   // Keep branch selection stable and avoid triggering repeated fetches
   useEffect(() => {
-    setSelectedBranchId((prev) => prev || branchIds[0]);
+    setSelectedBranchId((prev) => (branchIds.length ? prev || branchIds[0] : undefined));
   }, [branchIds]);
 
   useEffect(() => {
@@ -176,6 +181,7 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
   const overridesDisabled = config?.overridesDisabled ?? false;
 
   const isCustom = config?.sources?.schedule === 'employee' && !config?.advance?.overridesDisabled;
+  const showBranchSelect = branchOptions.length > 0;
 
   return (
     <Stack spacing={3}>
@@ -195,7 +201,7 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
                 size="small"
               />
             )}
-            {!isCustom && branchIds.length > 0 && (
+            {showBranchSelect && (
               <FormControl size="small" sx={{ minWidth: 220 }}>
                 <InputLabel>{tCore('branch')}</InputLabel>
                 <Select
