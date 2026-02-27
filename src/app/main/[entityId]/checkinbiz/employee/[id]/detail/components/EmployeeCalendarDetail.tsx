@@ -56,7 +56,11 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
   const entityId = currentEntity?.entity?.id;
   const employeeId = employee?.id;
 
-  const branchIds = Array.isArray(employee?.branchId) ? employee.branchId.filter(Boolean) : [];
+  const branchIds = useMemo(
+    () => (Array.isArray(employee?.branchId) ? employee.branchId.filter(Boolean) : []),
+    [employee?.branchId]
+  );
+  const branchIdsKey = useMemo(() => branchIds.join(','), [branchIds]);
   const [selectedBranchId, setSelectedBranchId] = useState<string | undefined>(branchIds[0]);
   const [branchOptions, setBranchOptions] = useState<Array<{ id: string; name: string }>>([]);
 
@@ -107,6 +111,11 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
     notifyBeforeMinutes: 15,
   };
 
+  // Keep branch selection stable and avoid triggering repeated fetches
+  useEffect(() => {
+    setSelectedBranchId((prev) => prev || branchIds[0]);
+  }, [branchIds]);
+
   useEffect(() => {
     const loadBranches = async () => {
       if (!entityId || branchIds.length === 0) {
@@ -118,7 +127,7 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
       setBranchOptions(list.map((b: any) => ({ id: b.id, name: b.name || b.title || b.id })));
     };
     loadBranches();
-  }, [entityId, branchIds]);
+  }, [entityId, branchIdsKey]);
 
   useEffect(() => {
     const load = async () => {
