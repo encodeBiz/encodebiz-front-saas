@@ -1791,6 +1791,15 @@
         "line3": "Entradas tarde o salidas anticipadas: se descuentan.",
         "line4": "Salidas después del horario: no se contabilizan como extra."
       },
+      "presets": {
+        "search": "Buscar preset",
+        "list": "Presets disponibles",
+        "select": "Selecciona un preset",
+        "apply": "Aplicar",
+        "saveAs": "Guardar como preset",
+        "title": "Guardar preset de calendario",
+        "name": "Nombre del preset"
+      },
       "flexInfo": {
         "line1": "El sistema contabiliza la jornada real trabajada.",
         "line2": "Tiempo trabajado antes o después del horario: se suma como extra.",

@@ -19,6 +19,7 @@ import {
   TableRow,
   TextField,
   Typography,
+  Dialog,
 } from "@mui/material";
 import { ExpandMoreOutlined, AddOutlined, EditOutlined, DeleteOutline } from "@mui/icons-material";
 import { Formik, useFormikContext } from "formik";
@@ -28,7 +29,7 @@ import WorkScheduleField from "@/components/common/forms/fields/WorkScheduleFiel
 import { SassButton } from "@/components/common/buttons/GenericButton";
 import HolidayModal from "./HolidayModal";
 import { useAppLocale } from "@/hooks/useAppLocale";
-import { upsertCalendar, deleteCalendarItem } from "@/services/checkinbiz/calendar.service";
+import { upsertCalendar, deleteCalendarItem, saveCalendarPreset, listCalendarPresets, fetchCalendarPreset } from "@/services/checkinbiz/calendar.service";
 import { createSlug } from "@/lib/common/String";
 
 type Props = {
@@ -198,6 +199,7 @@ const CalendarSection = ({
   const t = useTranslations("calendar");
   const tCore = useTranslations("core.label");
   const tSucursal = useTranslations("sucursal");
+  const tBtn = useTranslations("core.button");
   const { currentLocale } = useAppLocale();
 
   const normalizeScheduleForForm = useCallback((schedule?: WeeklyScheduleWithBreaks, fallback?: WeeklyScheduleWithBreaks) => {
@@ -250,6 +252,12 @@ const CalendarSection = ({
   const [scheduleErrors, setScheduleErrors] = useState<string[]>([]);
   const accordionInitialExpanded = !hideSaveButton && !(initialOverridesDisabled ?? (scope !== "entity"));
   const [scheduleExpanded, setScheduleExpanded] = useState<boolean>(accordionInitialExpanded);
+  const [presetName, setPresetName] = useState("");
+  const [presetModalOpen, setPresetModalOpen] = useState(false);
+  const [presets, setPresets] = useState<Array<any>>([]);
+  const [selectedPresetId, setSelectedPresetId] = useState("");
+  const [presetSearch, setPresetSearch] = useState("");
+  const presetsLoadedRef = useRef(false);
 
   useEffect(() => {
     setScheduleExpanded(!hideSaveButton && !(initialOverridesDisabled ?? false));
@@ -258,6 +266,27 @@ const CalendarSection = ({
   useEffect(() => {
     setHolidays(initialHolidays ?? []);
   }, [initialHolidays]);
+
+  useEffect(() => {
+    if (hideSaveButton) return; // en detalle no necesitamos listar presets
+    if (presetsLoadedRef.current && presetSearch === "") return; // evita loop cuando no hay búsqueda
+    const loadPresets = async () => {
+      if (!token || !entityId) return;
+      try {
+        const data = await listCalendarPresets(
+          { scope, entityId, branchId, employeeId, search: presetSearch },
+          token,
+          locale ?? currentLocale
+        );
+        setPresets(Array.isArray(data) ? data : []);
+        presetsLoadedRef.current = true;
+      } catch {
+        setPresets([]);
+      }
+    };
+    loadPresets();
+    // Dependencias mínimas para evitar re-render en bucle por currentLocale objeto
+  }, [hideSaveButton, token, entityId, branchId, employeeId, scope, presetSearch]);
 
   const validateForm = useCallback(
     (values: FormValues) => {
@@ -370,6 +399,64 @@ const CalendarSection = ({
     setEditingHoliday(undefined);
   };
 
+  const handleSavePreset = async (values: FormValues) => {
+    if (!presetName.trim()) {
+      showToast("El nombre es obligatorio", "error");
+      return;
+    }
+    if (!entityId || !token) return;
+    try {
+      await saveCalendarPreset(
+        {
+          scope,
+          entityId,
+          branchId,
+          employeeId,
+          name: presetName.trim(),
+        },
+        token,
+        locale ?? currentLocale
+      );
+      setPresetModalOpen(false);
+      setPresetName("");
+      showToast(t("feedback.saved"), "success");
+      const data = await listCalendarPresets({ scope, entityId, branchId, employeeId }, token, locale ?? currentLocale);
+      setPresets(Array.isArray(data) ? data : []);
+    } catch (e: any) {
+      showToast(e?.message ?? "Error al guardar preset", "error");
+    }
+  };
+
+  const handleApplyPreset = async (presetId: string, values: FormValues, setSubmitting: (v: boolean) => void) => {
+    if (!presetId || !entityId || !token) return;
+    try {
+      setSubmitting(true);
+      const preset = await fetchCalendarPreset(presetId, token, locale ?? currentLocale);
+      const payloadSchedule = preset?.defaultSchedule ?? preset?.overridesSchedule ?? {};
+      const advance = preset?.advance ?? {};
+      await upsertCalendar(
+        {
+          scope,
+          entityId,
+          branchId,
+          employeeId,
+          defaultSchedule: scope === "entity" ? payloadSchedule : undefined,
+          overridesSchedule: scope !== "entity" ? payloadSchedule : undefined,
+          timezone: timezone ?? preset?.timezone ?? "UTC",
+          advance,
+          overridesDisabled: values.overridesDisabled,
+        } as any,
+        token,
+        locale ?? currentLocale
+      );
+      showToast(t("feedback.saved"), "success");
+    } catch (e: any) {
+      showToast(e?.message ?? "Error al aplicar preset", "error");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const handleHolidayDelete = async (id: string) => {
     if (!entityId || (scope === "branch" && !branchId) || (scope === "employee" && !employeeId)) return;
     if (!token) return;
@@ -390,7 +477,7 @@ const CalendarSection = ({
 
   return (
     <Formik<FormValues> initialValues={initialValues} onSubmit={handleSave} validate={validateForm} enableReinitialize>
-      {({ values, setFieldValue, isSubmitting, dirty, handleSubmit }) => {
+      {({ values, setFieldValue, isSubmitting, dirty, handleSubmit, setSubmitting }) => {
         const isOverridesDisabled = values.overridesDisabled;
 
         const handleScheduleAccordionChange = (_: any, expanded: boolean) => {
@@ -602,15 +689,82 @@ const CalendarSection = ({
                   </Alert>
                 )}
 
+                {/* Vista de edición: selector/aplicar presets */}
                 {!hideSaveButton && (
-                  <Stack direction={{ xs: "column", sm: "row" }} justifyContent="flex-end" spacing={2} sx={{ mt: 3, mb: 2 }}>
-                    <SassButton type="button" variant="contained" disabled={isSubmitting || !dirty} onClick={() => handleSubmit()}>
-                      {t("actions.save")}
+                  <Stack direction={{ xs: "column", sm: "row" }} justifyContent="flex-end" spacing={2} sx={{ mt: 3, mb: 2 }} alignItems="center">
+                    <Stack direction={{ xs: "column", sm: "row" }} spacing={1} flexGrow={1}>
+                      <TextField
+                        size="small"
+                        label={t("schedule.presets.search")}
+                        value={presetSearch}
+                        onChange={(e) => setPresetSearch(e.target.value)}
+                      />
+                      <TextField
+                        select
+                        size="small"
+                        label={t("schedule.presets.list")}
+                        value={selectedPresetId}
+                        onChange={(e) => setSelectedPresetId(e.target.value)}
+                        SelectProps={{ native: true }}
+                      >
+                        <option value="">{t("schedule.presets.select")}</option>
+                        {presets.map((p) => (
+                          <option key={p.id} value={p.id}>
+                            {p.name} — {p.createdAt ? new Date(p.createdAt).toLocaleDateString() : ""}
+                          </option>
+                        ))}
+                      </TextField>
+                      <SassButton
+                        variant="outlined"
+                        disabled={!selectedPresetId || isSubmitting}
+                        onClick={() => handleApplyPreset(selectedPresetId, values, setSubmitting)}
+                      >
+                        {t("schedule.presets.apply")}
+                      </SassButton>
+                    </Stack>
+                    <Stack direction={{ xs: "column", sm: "row" }} spacing={1}>
+                      <SassButton type="button" variant="contained" disabled={isSubmitting || !dirty} onClick={() => handleSubmit()}>
+                        {t("actions.save")}
+                      </SassButton>
+                    </Stack>
+                  </Stack>
+                )}
+
+                {/* Vista detalle/solo lectura con botón Guardar como preset */}
+                {hideSaveButton && (
+                  <Stack direction="row" justifyContent="flex-end" spacing={2} sx={{ mt: 3, mb: 2 }}>
+                    <SassButton
+                      variant="outlined"
+                      onClick={() => setPresetModalOpen(true)}
+                    >
+                      {t("schedule.presets.saveAs")}
                     </SassButton>
                   </Stack>
                 )}
             </AccordionDetails>
           </Accordion>
+
+          {presetModalOpen && (
+            <Dialog open onClose={() => setPresetModalOpen(false)} fullWidth maxWidth="xs">
+              <Box p={3} display="flex" flexDirection="column" gap={2}>
+                <Typography variant="h6">{t("schedule.presets.title")}</Typography>
+                <TextField
+                  label={t("schedule.presets.name")}
+                  value={presetName}
+                  onChange={(e) => setPresetName(e.target.value)}
+                  required
+                />
+                <Stack direction="row" justifyContent="flex-end" spacing={1}>
+                  <SassButton variant="outlined" onClick={() => setPresetModalOpen(false)}>
+                    {tBtn("cancel")}
+                  </SassButton>
+                  <SassButton variant="contained" onClick={() => handleSavePreset(values)}>
+                    {tBtn("save")}
+                  </SassButton>
+                </Stack>
+              </Box>
+            </Dialog>
+          )}
 
           <Accordion defaultExpanded={accordionInitialExpanded}>
             <AccordionSummary expandIcon={<ExpandMoreOutlined />}>

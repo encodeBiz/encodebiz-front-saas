@@ -1764,6 +1764,15 @@
         "line3": "Late arrivals or early departures: discounted.",
         "line4": "Leaving after the end time: not counted as extra."
       },
+      "presets": {
+        "search": "Search preset",
+        "list": "Available presets",
+        "select": "Select a preset",
+        "apply": "Apply",
+        "saveAs": "Save as preset",
+        "title": "Save calendar preset",
+        "name": "Preset name"
+      },
       "flexInfo": {
         "line1": "The system counts the actual worked time.",
         "line2": "Time worked before or after the scheduled range is added as extra.",
