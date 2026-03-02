@@ -514,15 +514,17 @@ const CalendarSection = ({
 
         return (
           <Stack spacing={3} sx={{ pb: 6, textAlign: "left" }}>
-            {/* <CalendarChangeReporter
-              holidays={holidays}
-              onChange={onChange}
-              onHashChange={(hash) => {
-                if (formFieldName && setParentFieldValue) {
-                  setParentFieldValue(formFieldName, hash);
-                }
-              }}
-            /> */}
+            {(onChange || (formFieldName && setParentFieldValue)) && (
+              <CalendarChangeReporter
+                holidays={holidays}
+                onChange={onChange}
+                onHashChange={(hash) => {
+                  if (formFieldName && setParentFieldValue) {
+                    setParentFieldValue(formFieldName, hash);
+                  }
+                }}
+              />
+            )}
             <Accordion expanded={!isOverridesDisabled && scheduleExpanded} onChange={handleScheduleAccordionChange}>
               <AccordionSummary
                 expandIcon={<ExpandMoreOutlined color={isOverridesDisabled ? "disabled" : undefined} />}
@@ -547,6 +549,7 @@ const CalendarSection = ({
                         {t("schedule.baseSchedule")}
                       </Typography>
                       <Switch
+                        name="overridesDisabled"
                         size="small"
                         checked={!!values.overridesDisabled}
                         onChange={(e) => {

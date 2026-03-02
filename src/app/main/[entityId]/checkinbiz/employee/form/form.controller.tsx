@@ -203,16 +203,27 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         entityId: currentEntity?.entity.id
       }
 
-      const calendarPayload = calendarDraft
-        ? {
-          overridesSchedule: calendarDraft.payloadSchedule,
-          advance: calendarDraft.advance,
-          holidays: calendarDraft.holidays ?? [],
-          overridesDisabled: calendarDraft.overridesDisabled ?? false,
-        }
-        : null;
-      const currentCalendarHash = calendarDraft ? buildCalendarHash(calendarDraft) : initialCalendarHash;
-      const calendarDirty = calendarDraft && currentCalendarHash !== initialCalendarHash;
+      const fallbackCalendar = calendarDraft ?? {
+        payloadSchedule: sanitizeSchedule(overridesSchedule ?? baseSchedule ?? {}, enableDayTimeRange ?? false),
+        advance: {
+          enableDayTimeRange: enableDayTimeRange ?? false,
+          disableBreak: disableBreak ?? false,
+          timeBreak: timeBreak ?? 0,
+          notifyBeforeMinutes: notifyBeforeMinutes ?? 0,
+        },
+        holidays: initialHolidays ?? [],
+        overridesDisabled: overridesDisabled ?? true,
+      };
+
+      const calendarPayload = {
+        overridesSchedule: fallbackCalendar.payloadSchedule,
+        advance: fallbackCalendar.advance,
+        holidays: fallbackCalendar.holidays ?? [],
+        overridesDisabled: fallbackCalendar.overridesDisabled ?? false,
+      };
+
+      const currentCalendarHash = buildCalendarHash(fallbackCalendar);
+      const calendarDirty = currentCalendarHash !== initialCalendarHash;
 
       let response
       if (itemId)
