@@ -261,9 +261,9 @@ const CalendarSection = ({
   const presetsLoadedRef = useRef(false);
   const loadPresetsIfNeeded = useCallback(async () => {
     if (presetsLoadedRef.current) return;
-    if (!entityId || !token) return;
+    if (!entityId) return;
     try {
-      const data = await listCalendarPresets({ entityId }, token, locale ?? currentLocale);
+      const data = await listCalendarPresets({ entityId }, locale ?? currentLocale);
       setPresets(Array.isArray(data) ? data : []);
       presetsLoadedRef.current = true;
     } catch {
@@ -426,7 +426,7 @@ const CalendarSection = ({
       setPresetModalOpen(false);
       setPresetName("");
       showToast(t("feedback.saved"), "success");
-      const data = await listCalendarPresets({ scope, entityId, branchId, employeeId }, token, locale ?? currentLocale);
+      const data = await listCalendarPresets({ entityId }, locale ?? currentLocale);
       setPresets(Array.isArray(data) ? data : []);
     } catch (e: any) {
       showToast(e?.message ?? "Error al guardar preset", "error");

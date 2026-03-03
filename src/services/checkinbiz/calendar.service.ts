@@ -57,14 +57,11 @@ export async function listCalendarPresets(
     { field: "type", operator: "==", value: "preset" },
     { field: "entityId", operator: "==", value: entityId },
   ];
-  console.log("Fetched calendar presets from Firestore:", params);
-
   const results = await searchGroupCollectionFirestore<any>({
     collection: "calendar",
     filters,
     limit: 50,
   });
-  console.log("Fetched calendar presets from Firestore:", results);
   return results;
 }
 

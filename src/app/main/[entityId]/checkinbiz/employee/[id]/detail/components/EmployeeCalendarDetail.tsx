@@ -57,9 +57,11 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
   const employeeId = employee?.id;
 
   const branchIds = useMemo(() => {
-    if (Array.isArray(employee?.branchId)) return employee.branchId.filter(Boolean);
-    if (typeof employee?.branchId === 'string' && employee.branchId.trim().length > 0) {
-      return [employee.branchId.trim()];
+    const b = employee?.branchId as unknown;
+    if (Array.isArray(b)) return b.filter((v) => typeof v === "string" && v.trim().length > 0) as string[];
+    if (typeof b === "string") {
+      const t = (b as string).trim();
+      return t.length > 0 ? [t] : [];
     }
     return [];
   }, [employee?.branchId]);
