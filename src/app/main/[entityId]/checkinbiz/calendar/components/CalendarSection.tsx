@@ -256,8 +256,18 @@ const CalendarSection = ({
   const [presetModalOpen, setPresetModalOpen] = useState(false);
   const [presets, setPresets] = useState<Array<any>>([]);
   const [selectedPresetId, setSelectedPresetId] = useState("");
-  const [presetSearch, setPresetSearch] = useState("");
   const presetsLoadedRef = useRef(false);
+  const loadPresetsIfNeeded = useCallback(async () => {
+    if (presetsLoadedRef.current) return;
+    if (!entityId) return;
+    try {
+      const data = await listCalendarPresets({ entityId }, token ?? "", locale ?? currentLocale);
+      setPresets(Array.isArray(data) ? data : []);
+      presetsLoadedRef.current = true;
+    } catch {
+      setPresets([]);
+    }
+  }, [entityId, token, locale, currentLocale]);
 
   useEffect(() => {
     setScheduleExpanded(!hideSaveButton && !(initialOverridesDisabled ?? false));
@@ -268,25 +278,19 @@ const CalendarSection = ({
   }, [initialHolidays]);
 
   useEffect(() => {
-    if (hideSaveButton) return; // en detalle no necesitamos listar presets
-    if (presetsLoadedRef.current && presetSearch === "") return; // evita loop cuando no hay búsqueda
-    const loadPresets = async () => {
-      if (!token || !entityId) return;
-      try {
-        const data = await listCalendarPresets(
-          { scope, entityId, branchId, employeeId, search: presetSearch },
-          token,
-          locale ?? currentLocale
-        );
-        setPresets(Array.isArray(data) ? data : []);
-        presetsLoadedRef.current = true;
-      } catch {
-        setPresets([]);
-      }
-    };
-    loadPresets();
+    loadPresetsIfNeeded();
     // Dependencias mínimas para evitar re-render en bucle por currentLocale objeto
-  }, [hideSaveButton, token, entityId, branchId, employeeId, scope, presetSearch]);
+  }, [loadPresetsIfNeeded]);
+
+  // Resetea bandera cuando cambia la entidad
+  useEffect(() => {
+    presetsLoadedRef.current = false;
+  }, [entityId]);
+
+  // Reintenta carga cuando cambia el token o la entidad
+  useEffect(() => {
+    loadPresetsIfNeeded();
+  }, [loadPresetsIfNeeded, token, entityId]);
 
   const validateForm = useCallback(
     (values: FormValues) => {
@@ -434,22 +438,17 @@ const CalendarSection = ({
       const preset = await fetchCalendarPreset(presetId, token, locale ?? currentLocale);
       const payloadSchedule = preset?.defaultSchedule ?? preset?.overridesSchedule ?? {};
       const advance = preset?.advance ?? {};
-      await upsertCalendar(
-        {
-          scope,
-          entityId,
-          branchId,
-          employeeId,
-          defaultSchedule: scope === "entity" ? payloadSchedule : undefined,
-          overridesSchedule: scope !== "entity" ? payloadSchedule : undefined,
-          timezone: timezone ?? preset?.timezone ?? "UTC",
-          advance,
-          overridesDisabled: values.overridesDisabled,
-        } as any,
-        token,
-        locale ?? currentLocale
-      );
-      showToast(t("feedback.saved"), "success");
+
+      // Solo hidrata el formulario; la persistencia la hace el guardado general
+      const nextSchedule = normalizeScheduleForForm(payloadSchedule, baseSchedule ?? initialSchedule);
+      setFieldValue("schedule", nextSchedule, true);
+      setFieldValue("enableDayTimeRange", advance?.enableDayTimeRange ?? values.enableDayTimeRange ?? false, true);
+      setFieldValue("notifyBeforeMinutes", advance?.notifyBeforeMinutes ?? values.notifyBeforeMinutes ?? 15, true);
+      setFieldValue("disableBreak", advance?.disableBreak ?? values.disableBreak ?? false, true);
+      setFieldValue("timeBreak", advance?.timeBreak ?? values.timeBreak ?? 60, true);
+      setFieldValue("overridesDisabled", values.overridesDisabled, true);
+      setScheduleExpanded(!values.overridesDisabled);
+      showToast(t("schedule.presets.applied"), "success");
     } catch (e: any) {
       showToast(e?.message ?? "Error al aplicar preset", "error");
     } finally {
@@ -483,6 +482,7 @@ const CalendarSection = ({
         const handleScheduleAccordionChange = (_: any, expanded: boolean) => {
           if (isOverridesDisabled) return;
           setScheduleExpanded(expanded);
+          if (expanded) loadPresetsIfNeeded();
         };
 
         // Sincroniza el switch con el valor que viene del config (cuando rehidrata el formulario)
@@ -575,6 +575,34 @@ const CalendarSection = ({
                 </Stack>
               </AccordionSummary>
               <AccordionDetails>
+                {/* Selector / aplicación de presets dentro del acordeón */}
+                <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} alignItems={{ xs: "stretch", sm: "center" }} sx={{ mb: 2 }}>
+                  <TextField
+                    select
+                    size="small"
+                    label={t("schedule.presets.list")}
+                    value={selectedPresetId}
+                    onChange={(e) => setSelectedPresetId(e.target.value)}
+                    SelectProps={{ native: true, displayEmpty: true }}
+                    InputLabelProps={{ shrink: true }}
+                    sx={{ minWidth: 220 }}
+                  >
+                    <option value="">{t("schedule.presets.select")}</option>
+                    {presets.map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.name} — {p.createdAt ? new Date(p.createdAt).toLocaleDateString() : ""}
+                      </option>
+                    ))}
+                  </TextField>
+                  <SassButton
+                    variant="outlined"
+                    disabled={!selectedPresetId || isSubmitting}
+                    onClick={() => handleApplyPreset(selectedPresetId, values, setSubmitting)}
+                  >
+                    {t("schedule.presets.apply")}
+                  </SassButton>
+                </Stack>
+
                 <WorkScheduleField
                   name="schedule"
                   enableDayTimeRange={values.enableDayTimeRange}
@@ -690,47 +718,6 @@ const CalendarSection = ({
                       ))}
                     </Stack>
                   </Alert>
-                )}
-
-                {/* Vista de edición: selector/aplicar presets */}
-                {!hideSaveButton && (
-                  <Stack direction={{ xs: "column", sm: "row" }} justifyContent="flex-end" spacing={2} sx={{ mt: 3, mb: 2 }} alignItems="center">
-                    <Stack direction={{ xs: "column", sm: "row" }} spacing={1} flexGrow={1}>
-                      <TextField
-                        size="small"
-                        label={t("schedule.presets.search")}
-                        value={presetSearch}
-                        onChange={(e) => setPresetSearch(e.target.value)}
-                      />
-                      <TextField
-                        select
-                        size="small"
-                        label={t("schedule.presets.list")}
-                        value={selectedPresetId}
-                        onChange={(e) => setSelectedPresetId(e.target.value)}
-                        SelectProps={{ native: true }}
-                      >
-                        <option value="">{t("schedule.presets.select")}</option>
-                        {presets.map((p) => (
-                          <option key={p.id} value={p.id}>
-                            {p.name} — {p.createdAt ? new Date(p.createdAt).toLocaleDateString() : ""}
-                          </option>
-                        ))}
-                      </TextField>
-                      <SassButton
-                        variant="outlined"
-                        disabled={!selectedPresetId || isSubmitting}
-                        onClick={() => handleApplyPreset(selectedPresetId, values, setSubmitting)}
-                      >
-                        {t("schedule.presets.apply")}
-                      </SassButton>
-                    </Stack>
-                    <Stack direction={{ xs: "column", sm: "row" }} spacing={1}>
-                      <SassButton type="button" variant="contained" disabled={isSubmitting || !dirty} onClick={() => handleSubmit()}>
-                        {t("actions.save")}
-                      </SassButton>
-                    </Stack>
-                  </Stack>
                 )}
 
                 {/* Vista detalle/solo lectura con botón Guardar como preset */}

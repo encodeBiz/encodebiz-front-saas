@@ -503,7 +503,10 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
         onSaved: () => { },
         hideSaveButton: true,
         disableHolidayActions: !itemId,
-        onChange: (data: any) => setCalendarDraft(data),
+        onChange: (data: any) => {
+          setCalendarDraft(data);
+          // Mantén el formulario en sucio y deja que el admin confirme con Guardar
+        },
       }
     },
 

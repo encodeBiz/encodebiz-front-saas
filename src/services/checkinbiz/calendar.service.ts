@@ -45,17 +45,27 @@ export async function saveCalendarPreset(
 }
 
 export async function listCalendarPresets(
-    params: { scope?: CalendarPresetScope; entityId?: string; branchId?: string; employeeId?: string; search?: string },
-    token: string,
-    locale: any = 'es'
+  params: { entityId: string; search?: string },
+  _locale: any = "es"
 ) {
-    if (!token) throw new Error("Error to fetch user auth token");
-    const client = getClient(token, locale);
-    const searchParams = new URLSearchParams({ ...params, type: 'preset' } as any).toString();
-    const url = `${CALENDAR_HANDLER_URL}?${searchParams}`;
-    const response: any = await client.get(url, {});
-    if (response?.errCode && response.errCode !== 200) throw new Error(response.message);
-    return response?.data ?? response ?? [];
+  // Lectura directa vía collectionGroup "calendar" filtrando type==preset y entityId
+
+  const { entityId } = params;
+  if (!entityId) throw new Error("entityId is required");
+  const { searchGroupCollectionFirestore } = await import("@/lib/firebase/firestore/searchGroupCollectionFirestore");
+  const filters: any[] = [
+    { field: "type", operator: "==", value: "preset" },
+    { field: "entityId", operator: "==", value: entityId },
+  ];
+  console.log("Fetched calendar presets from Firestore:", params);
+
+  const results = await searchGroupCollectionFirestore<any>({
+    collection: "calendar",
+    filters,
+    limit: 50,
+  });
+  console.log("Fetched calendar presets from Firestore:", results);
+  return results;
 }
 
 export async function fetchCalendarPreset(id: string, token: string, locale: any = 'es') {

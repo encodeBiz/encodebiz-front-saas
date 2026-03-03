@@ -156,7 +156,7 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
 
         setConfig({
           overridesSchedule: effectiveSchedule,
-          overridesDisabled: data?.advance?.overridesDisabled ?? false,
+          overridesDisabled: data?.overridesDisabled ?? data?.advance?.overridesDisabled ?? false,
           advance: effectiveAdvance,
           holidays: Array.isArray(data?.holidays) ? data?.holidays : [],
           timezone: data?.timezone,
@@ -180,7 +180,8 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
   const schedule = config?.overridesSchedule ?? fallbackSchedule;
   const overridesDisabled = config?.overridesDisabled ?? false;
 
-  const isCustom = config?.sources?.schedule === 'employee' && !config?.advance?.overridesDisabled;
+  const isCustom = config?.sources?.schedule === 'employee' && !overridesDisabled;
+  const isBase = overridesDisabled;
   const showBranchSelect = branchOptions.length > 0;
 
   return (
@@ -194,6 +195,14 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
         <AccordionDetails>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} alignItems={{ xs: 'flex-start', sm: 'center' }} sx={{ mb: 2 }}>
             {isCustom && (
+              <Chip
+                color="primary"
+                variant="outlined"
+                label={t('schedule.customSchedule')}
+                size="small"
+              />
+            )}
+            {isBase && !isCustom && (
               <Chip
                 color="primary"
                 variant="outlined"
