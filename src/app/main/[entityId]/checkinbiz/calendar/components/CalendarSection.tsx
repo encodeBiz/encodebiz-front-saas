@@ -29,8 +29,9 @@ import WorkScheduleField from "@/components/common/forms/fields/WorkScheduleFiel
 import { SassButton } from "@/components/common/buttons/GenericButton";
 import HolidayModal from "./HolidayModal";
 import { useAppLocale } from "@/hooks/useAppLocale";
-import { upsertCalendar, deleteCalendarItem, saveCalendarPreset, listCalendarPresets, fetchCalendarPreset } from "@/services/checkinbiz/calendar.service";
+import { upsertCalendar, deleteCalendarItem, saveCalendarPreset, listCalendarPresets } from "@/services/checkinbiz/calendar.service";
 import { createSlug } from "@/lib/common/String";
+import { useToast } from "@/hooks/useToast";
 
 type Props = {
   scope: "entity" | "branch" | "employee";
@@ -201,6 +202,7 @@ const CalendarSection = ({
   const tSucursal = useTranslations("sucursal");
   const tBtn = useTranslations("core.button");
   const { currentLocale } = useAppLocale();
+  const { showToast } = useToast();
 
   const normalizeScheduleForForm = useCallback((schedule?: WeeklyScheduleWithBreaks, fallback?: WeeklyScheduleWithBreaks) => {
     const normalized: WeeklyScheduleWithBreaks = {};
@@ -259,9 +261,9 @@ const CalendarSection = ({
   const presetsLoadedRef = useRef(false);
   const loadPresetsIfNeeded = useCallback(async () => {
     if (presetsLoadedRef.current) return;
-    if (!entityId) return;
+    if (!entityId || !token) return;
     try {
-      const data = await listCalendarPresets({ entityId }, token ?? "", locale ?? currentLocale);
+      const data = await listCalendarPresets({ entityId }, token, locale ?? currentLocale);
       setPresets(Array.isArray(data) ? data : []);
       presetsLoadedRef.current = true;
     } catch {
@@ -431,13 +433,23 @@ const CalendarSection = ({
     }
   };
 
-  const handleApplyPreset = async (presetId: string, values: FormValues, setSubmitting: (v: boolean) => void) => {
-    if (!presetId || !entityId || !token) return;
+  const handleApplyPreset = async (
+    presetId: string,
+    values: FormValues,
+    setSubmitting: (v: boolean) => void,
+    setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void
+  ) => {
+    if (!presetId || !entityId) return;
+    setSubmitting(true);
     try {
-      setSubmitting(true);
-      const preset = await fetchCalendarPreset(presetId, token, locale ?? currentLocale);
+      const preset = presets.find((p) => p.id === presetId);
+      if (!preset) {
+        showToast(t("schedule.presets.notFound"), "error");
+        return;
+      }
       const payloadSchedule = preset?.defaultSchedule ?? preset?.overridesSchedule ?? {};
       const advance = preset?.advance ?? {};
+      const overridesDisabledPreset = preset?.overridesDisabled ?? values.overridesDisabled;
 
       // Solo hidrata el formulario; la persistencia la hace el guardado general
       const nextSchedule = normalizeScheduleForForm(payloadSchedule, baseSchedule ?? initialSchedule);
@@ -446,8 +458,9 @@ const CalendarSection = ({
       setFieldValue("notifyBeforeMinutes", advance?.notifyBeforeMinutes ?? values.notifyBeforeMinutes ?? 15, true);
       setFieldValue("disableBreak", advance?.disableBreak ?? values.disableBreak ?? false, true);
       setFieldValue("timeBreak", advance?.timeBreak ?? values.timeBreak ?? 60, true);
-      setFieldValue("overridesDisabled", values.overridesDisabled, true);
-      setScheduleExpanded(!values.overridesDisabled);
+      setFieldValue("overridesDisabled", overridesDisabledPreset, true);
+      setScheduleExpanded(!overridesDisabledPreset);
+      setSelectedPresetId("");
       showToast(t("schedule.presets.applied"), "success");
     } catch (e: any) {
       showToast(e?.message ?? "Error al aplicar preset", "error");
@@ -597,7 +610,7 @@ const CalendarSection = ({
                   <SassButton
                     variant="outlined"
                     disabled={!selectedPresetId || isSubmitting}
-                    onClick={() => handleApplyPreset(selectedPresetId, values, setSubmitting)}
+                  onClick={() => handleApplyPreset(selectedPresetId, values, setSubmitting, setFieldValue)}
                   >
                     {t("schedule.presets.apply")}
                   </SassButton>

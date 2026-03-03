@@ -1796,6 +1796,7 @@
         "list": "Presets disponibles",
         "select": "Selecciona un preset",
         "apply": "Aplicar",
+        "applied": "Preset aplicado",
         "saveAs": "Guardar como preset",
         "title": "Guardar preset de calendario",
         "name": "Nombre del preset"
