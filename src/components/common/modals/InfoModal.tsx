@@ -58,8 +58,8 @@ const InfoModal = ({ title, description, decisiveAction = false, htmlDescription
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
             fullWidth
-            maxWidth="sm"
-            slotProps={{ paper: { sx: { p: 2, borderRadius: 2 } } }}
+            maxWidth="md"
+            slotProps={{ paper: { sx: { p: 2, borderRadius: 2, maxWidth: 900 } } }}
         >
             {title && <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-start', textAlign: 'left' }}>

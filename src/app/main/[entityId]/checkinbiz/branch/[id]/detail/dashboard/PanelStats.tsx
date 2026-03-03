@@ -114,7 +114,15 @@ export const PanelStats = () => {
                     </Box>
                     <NestedSelectWithCheckmarks preferenceItems={preferenceDashboardItems(t)} value={preferenceSelected} onChange={setPreferenceSelected} />
                     <SelectorChart type={preferenceTypeSelected} setType={setPreferenceTypeSelected} />
-                    {heuristic.length > 0 && <NestedSelectWithCheckmarks title='INDICADORES HEURÍSTICOS' label='Indicadores heurísticos' preferenceItems={heuristicsItems} value={preferenceHeuristicSelected} onChange={setPreferenceHeuristicSelected} />}
+                    {(heuristicsItems.length > 0) && (
+                      <NestedSelectWithCheckmarks
+                        title='INDICADORES HEURÍSTICOS'
+                        label='Indicadores heurísticos'
+                        preferenceItems={heuristicsItems}
+                        value={preferenceHeuristicSelected}
+                        onChange={setPreferenceHeuristicSelected}
+                      />
+                    )}
 
                   </Box>
 

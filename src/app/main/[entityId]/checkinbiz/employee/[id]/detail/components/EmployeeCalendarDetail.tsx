@@ -56,8 +56,19 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
   const entityId = currentEntity?.entity?.id;
   const employeeId = employee?.id;
 
-  const branchIds = Array.isArray(employee?.branchId) ? employee.branchId.filter(Boolean) : [];
-  const [selectedBranchId, setSelectedBranchId] = useState<string | undefined>(branchIds[0]);
+  const branchIds = useMemo(() => {
+    const b = employee?.branchId as unknown;
+    if (Array.isArray(b)) return b.filter((v) => typeof v === "string" && v.trim().length > 0) as string[];
+    if (typeof b === "string") {
+      const t = (b as string).trim();
+      return t.length > 0 ? [t] : [];
+    }
+    return [];
+  }, [employee?.branchId]);
+  const branchIdsKey = useMemo(() => branchIds.join(','), [branchIds]);
+  const [selectedBranchId, setSelectedBranchId] = useState<string | undefined>(
+    branchIds[0]
+  );
   const [branchOptions, setBranchOptions] = useState<Array<{ id: string; name: string }>>([]);
 
   const [config, setConfig] = useState<EmployeeCalendarConfig | null>(null);
@@ -107,6 +118,11 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
     notifyBeforeMinutes: 15,
   };
 
+  // Keep branch selection stable and avoid triggering repeated fetches
+  useEffect(() => {
+    setSelectedBranchId((prev) => (branchIds.length ? prev || branchIds[0] : undefined));
+  }, [branchIds]);
+
   useEffect(() => {
     const loadBranches = async () => {
       if (!entityId || branchIds.length === 0) {
@@ -118,7 +134,7 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
       setBranchOptions(list.map((b: any) => ({ id: b.id, name: b.name || b.title || b.id })));
     };
     loadBranches();
-  }, [entityId, branchIds]);
+  }, [entityId, branchIdsKey]);
 
   useEffect(() => {
     const load = async () => {
@@ -142,7 +158,7 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
 
         setConfig({
           overridesSchedule: effectiveSchedule,
-          overridesDisabled: data?.advance?.overridesDisabled ?? false,
+          overridesDisabled: data?.overridesDisabled ?? data?.advance?.overridesDisabled ?? false,
           advance: effectiveAdvance,
           holidays: Array.isArray(data?.holidays) ? data?.holidays : [],
           timezone: data?.timezone,
@@ -166,7 +182,9 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
   const schedule = config?.overridesSchedule ?? fallbackSchedule;
   const overridesDisabled = config?.overridesDisabled ?? false;
 
-  const isCustom = config?.sources?.schedule === 'employee' && !config?.advance?.overridesDisabled;
+  const isCustom = config?.sources?.schedule === 'employee' && !overridesDisabled;
+  const isBase = overridesDisabled;
+  const showBranchSelect = branchOptions.length > 0;
 
   return (
     <Stack spacing={3}>
@@ -182,11 +200,19 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
               <Chip
                 color="primary"
                 variant="outlined"
+                label={t('schedule.customSchedule')}
+                size="small"
+              />
+            )}
+            {isBase && !isCustom && (
+              <Chip
+                color="primary"
+                variant="outlined"
                 label={t('schedule.baseSchedule')}
                 size="small"
               />
             )}
-            {!isCustom && branchIds.length > 0 && (
+            {showBranchSelect && (
               <FormControl size="small" sx={{ minWidth: 220 }}>
                 <InputLabel>{tCore('branch')}</InputLabel>
                 <Select
