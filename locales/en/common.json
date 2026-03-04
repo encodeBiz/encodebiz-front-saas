@@ -1700,7 +1700,7 @@
         "apply": "Apply",
         "applied": "Preset applied",
         "deleted": "Preset deleted",
-        "saveAs": "Save as preset",
+        "saveAs": "Save configuration",
         "title": "Save calendar preset",
         "name": "Preset name"
       },
