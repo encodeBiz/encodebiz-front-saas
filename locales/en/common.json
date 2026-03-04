@@ -1844,5 +1844,18 @@
       "name": "CheckBiz",
       "description": "Real work traceability with validation by location, schedule and device. EU compliance, enhanced security and complete metrics ready for audit."
     }
+  },
+  "sucursal": {
+    "merlin": {
+      "title": "Merlin · Ops AI (Beta)",
+      "subtitleIdle": "Get an operational insight for this branch.",
+      "subtitleAnalysing": "Analysing...",
+      "subtitleReady": "Insight ready",
+      "description": "Merlin analyses schedules, logs and efficiency to suggest actions.",
+      "buttonRun": "Analyse now",
+      "buttonRunning": "Analysing",
+      "insufficientData": "Merlin does not have enough data for this branch.",
+      "error": "Merlin could not complete the analysis."
+    }
   }
 }

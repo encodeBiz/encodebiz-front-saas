@@ -1871,5 +1871,18 @@
       "name": "CheckBiz",
       "description": "Trazabilidad laboral real con validación por ubicación, horario y dispositivo. Cumplimiento UE, seguridad reforzada y métricas completas listas para auditoría."
     }
+  },
+  "sucursal": {
+    "merlin": {
+      "title": "Merlin · IA Operativa (Beta)",
+      "subtitleIdle": "Genera un diagnóstico operativo para esta sucursal.",
+      "subtitleAnalysing": "Analizando...",
+      "subtitleReady": "Insight listo",
+      "description": "Merlin analiza horarios, fichajes y eficiencia para sugerir acciones.",
+      "buttonRun": "Analizar ahora",
+      "buttonRunning": "Analizando",
+      "insufficientData": "Merlin no tiene datos suficientes para esta sucursal.",
+      "error": "Merlin no pudo completar el análisis."
+    }
   }
 }
