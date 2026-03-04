@@ -20,7 +20,7 @@ type MerlinResponse =
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_MERLIN_API ??
-  "http://ns537963.ip-158-69-247.net:32823/api/v1/gpt/interpret";
+  "http://localhost:8080/api/v1/gpt/interpret";
 
 const TOKEN = process.env.NEXT_PUBLIC_MERLIN_TOKEN;
 
