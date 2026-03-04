@@ -18,6 +18,15 @@
       "messages": "Messages",
       "notification": "Notifications"
     },
+    "merlin": {
+      "title": "Merlin · Ops AI (Beta)",
+      "subtitleIdle": "Get an operational insight for this branch.",
+      "subtitleAnalysing": "Analysing...",
+      "subtitleReady": "Insight ready",
+      "description": "Merlin analyses schedules, logs and efficiency to suggest actions.",
+      "buttonRun": "Analyse now",
+      "buttonRunning": "Analysing"
+    },
     "side": {
       "menu": {
         "Dashboard": "Dashboard",
@@ -803,6 +812,15 @@
     "breakTime": "BREAK TIME",
     "workTime": "WORK SCHEDULE",
     "weekTime": "Week Time",
+    "merlin": {
+      "title": "Merlin · Ops AI (Beta)",
+      "subtitleIdle": "Get an operational insight for this branch.",
+      "subtitleAnalysing": "Analysing...",
+      "subtitleReady": "Insight ready",
+      "description": "Merlin analyses schedules, logs and efficiency to suggest actions.",
+      "buttonRun": "Analyse now",
+      "buttonRunning": "Analysing"
+    },
     "detailSucursal": "Branch/project details",
     "update": "Edit branch/project",
     "edit": "Edit branch/project",
