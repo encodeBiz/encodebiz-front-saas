@@ -1,6 +1,8 @@
 import { CalendarDeletePayload, CalendarUpsertPayload } from "@/domain/features/checkinbiz/ICalendar";
 import { mapperErrorFromBack } from "@/lib/common/String";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
+import { doc, deleteDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase/initializeApp";
 
 const CALENDAR_HANDLER_URL = process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_CALENDAR_HANDLER as string;
 const CALENDAR_PRESET_URL = `${CALENDAR_HANDLER_URL}?action=savePreset`;
@@ -63,6 +65,17 @@ export async function listCalendarPresets(
     limit: 50,
   });
   return results;
+}
+
+export async function deleteCalendarPreset(params: { entityId: string; id: string; branchId?: string | null; employeeId?: string | null }) {
+  const { entityId, id, branchId, employeeId } = params;
+  if (!entityId || !id) throw new Error("entityId and id are required");
+  let path: string;
+  if (employeeId) path = `entities/${entityId}/employees/${employeeId}/calendar/${id}`;
+  else if (branchId) path = `entities/${entityId}/branches/${branchId}/calendar/${id}`;
+  else path = `entities/${entityId}/calendar/${id}`;
+  await deleteDoc(doc(db, path));
+  return true;
 }
 
 export async function fetchCalendarPreset(id: string, token: string, locale: any = 'es') {

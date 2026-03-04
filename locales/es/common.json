@@ -1726,6 +1726,7 @@
         "select": "Selecciona un preset",
         "apply": "Aplicar",
         "applied": "Preset aplicado",
+        "deleted": "Preset eliminado",
         "saveAs": "Guardar como preset",
         "title": "Guardar preset de calendario",
         "name": "Nombre del preset"
