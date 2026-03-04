@@ -1353,6 +1353,7 @@
       "geoCompliance": "Distancia promedio y cumplimiento geográfico vs umbral.",
       "absenteeism": "Días activos vs inactivos y tasa de actividad por sucursal.",
       "shiftCompliance": "Tasa diaria de cumplimiento de turnos por sucursal.",
+      "costDistribution": "Participación porcentual del costo por sucursal en el rango seleccionado.",
       "weeklyTrends": "Totales semanales de costo, horas y sospechas para ver tendencia.",
       "hourlyDistribution": "Empleados promedio por hora (normalizado por días). Inicios/finales por día en líneas punteadas; cambia de sucursal en tabs.",
       "salaryEstimate": "Tabla con horas, tarifa promedio y total a pagar por empleado; filtra por sucursal o rol."

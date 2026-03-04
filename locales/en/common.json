@@ -1336,6 +1336,7 @@
       "geoCompliance": "Average distance to expected point and within-rate vs threshold.",
       "absenteeism": "Active vs inactive days and activity rate by branch.",
       "shiftCompliance": "Daily compliance rate per branch (0–100%).",
+      "costDistribution": "Cost share by branch for the selected range, expressed as percentages.",
       "weeklyTrends": "Weekly totals of cost, hours, and suspects to track trend.",
       "hourlyDistribution": "Average employees per hour (normalized by days). Starts/ends per day as dashed lines; switch tabs per branch.",
       "salaryEstimate": "Table with hours, average rate, and total payout per employee; filter by branch or role."
