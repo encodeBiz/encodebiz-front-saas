@@ -52,11 +52,12 @@ const ChartLine = ({ data, sub }: { sub?: string; data: Array<Record<string, num
                         textAlign:'left'
                     }}
                 >
-                    <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 'bold' }}>
+                    <Typography component="div" variant="subtitle2" sx={{ mb: 1, fontWeight: 'bold' }}>
                         {label}
                     </Typography>
                     {payload.map((entry: { color: string, name: string, value: any }, index: number) => (
                         <Typography
+                            component="div"
                             key={index}
                             variant="body2"
                             sx={{
@@ -66,6 +67,7 @@ const ChartLine = ({ data, sub }: { sub?: string; data: Array<Record<string, num
                             }}
                         >
                             <Box
+                                component="span"
                                 sx={{
                                     width: 12,
                                     height: 12,

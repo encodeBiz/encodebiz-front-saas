@@ -601,11 +601,7 @@ const CalendarSection = ({
                 {/* Selector / aplicación de presets dentro del acordeón */}
                 <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} alignItems={{ xs: "stretch", sm: "center" }} sx={{ mb: 2 }}>
                   <FormControl size="small" sx={{ minWidth: 240 }}>
-                    <InputLabel id="preset-select-label" shrink>
-                      {t("schedule.presets.list")}
-                    </InputLabel>
                     <Select
-                      labelId="preset-select-label"
                       value={selectedPresetId}
                       onChange={(e) => setSelectedPresetId(e.target.value)}
                       displayEmpty
