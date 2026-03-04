@@ -11,6 +11,7 @@ import {
   FormControl,
   FormControlLabel,
   IconButton,
+  CircularProgress,
   InputLabel,
   MenuItem,
   Select,
@@ -263,6 +264,8 @@ const CalendarSection = ({
   const [presets, setPresets] = useState<Array<any>>([]);
   const [selectedPresetId, setSelectedPresetId] = useState("");
   const presetsLoadedRef = useRef(false);
+  const [presetLoading, setPresetLoading] = useState(false);
+  const showPresetSaveButton = hideSaveButton || scope === "entity";
   const loadPresetsIfNeeded = useCallback(async () => {
     if (presetsLoadedRef.current) return;
     if (!entityId) return;
@@ -416,6 +419,7 @@ const CalendarSection = ({
     }
     if (!entityId || !token) return;
     try {
+      setPresetLoading(true);
       await saveCalendarPreset(
         {
           scope,
@@ -434,6 +438,8 @@ const CalendarSection = ({
       setPresets(Array.isArray(data) ? data : []);
     } catch (e: any) {
       showToast(e?.message ?? "Error al guardar preset", "error");
+    } finally {
+      setPresetLoading(false);
     }
   };
 
@@ -766,8 +772,8 @@ const CalendarSection = ({
                   </Alert>
                 )}
 
-                {/* Vista detalle/solo lectura con botón Guardar como preset */}
-                {hideSaveButton && (
+                {/* Botón Guardar configuración (entity o vistas sin botón de guardado general) */}
+                {showPresetSaveButton && (
                   <Stack direction="row" justifyContent="flex-end" spacing={2} sx={{ mt: 3, mb: 2 }}>
                     <SassButton
                       variant="outlined"
@@ -781,22 +787,23 @@ const CalendarSection = ({
           </Accordion>
 
           {presetModalOpen && (
-            <Dialog open onClose={() => setPresetModalOpen(false)} fullWidth maxWidth="xs">
-              <Box p={3} display="flex" flexDirection="column" gap={2}>
-                <Typography variant="h6">{t("schedule.presets.title")}</Typography>
-                <TextField
-                  label={t("schedule.presets.name")}
-                  value={presetName}
-                  onChange={(e) => setPresetName(e.target.value)}
-                  required
-                />
-                <Stack direction="row" justifyContent="flex-end" spacing={1}>
-                  <SassButton variant="outlined" onClick={() => setPresetModalOpen(false)}>
-                    {tBtn("cancel")}
-                  </SassButton>
-                  <SassButton variant="contained" onClick={() => handleSavePreset(values)}>
+          <Dialog open onClose={() => setPresetModalOpen(false)} fullWidth maxWidth="xs">
+            <Box p={3} display="flex" flexDirection="column" gap={2}>
+              <Typography variant="h6">{t("schedule.presets.title")}</Typography>
+              <TextField
+                label={t("schedule.presets.name")}
+                value={presetName}
+                onChange={(e) => setPresetName(e.target.value)}
+                required
+              />
+              <Stack direction="row" justifyContent="flex-end" spacing={1} alignItems="center">
+                <SassButton variant="outlined" onClick={() => setPresetModalOpen(false)}>
+                  {tBtn("cancel")}
+                </SassButton>
+                <SassButton variant="contained" onClick={() => handleSavePreset(values)} disabled={presetLoading}>
                     {tBtn("save")}
                   </SassButton>
+                {presetLoading && <CircularProgress size={20} />}
                 </Stack>
               </Box>
             </Dialog>
