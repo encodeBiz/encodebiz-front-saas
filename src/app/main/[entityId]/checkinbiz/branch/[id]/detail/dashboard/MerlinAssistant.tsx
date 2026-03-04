@@ -43,32 +43,42 @@ const MerlinAssistant = () => {
 
   useEffect(() => {
     if (!path) return;
-    if (status === "pending") {
-      const unsub = merlinSubscribe(path, (snap) => {
-        if (snap.code === "ai/cache_hit" && (snap as any).result) {
-          setResult((snap as any).result);
-          setStatus("ready");
-        } else if (snap.code === "ai/error") {
-          setStatus("error");
-          showToast("Merlin no pudo completar el análisis.", "error");
-        } else {
-          setStatus("pending");
-        }
-      });
-      return () => unsub();
-    }
-  }, [status, path, setResult, setStatus, showToast]);
+    const unsub = merlinSubscribe(path, (snap) => {
+      if (snap.code === "ai/cache_hit" && (snap as any).result) {
+        setResult((snap as any).result);
+        setStatus("ready");
+      } else if (snap.code === "ai/error") {
+        setStatus("error");
+        showToast("Merlin no pudo completar el análisis.", "error");
+      } else if (snap.code === "analyze/insufficient_data") {
+        setStatus("error");
+        setResult(null);
+        showToast("Merlin no tiene datos suficientes para esta sucursal.", "warning");
+      } else {
+        setStatus("pending");
+      }
+    });
+    return () => unsub();
+  }, [path, setResult, setStatus, showToast]);
 
   const handleRun = useCallback(async () => {
     if (!canRun) return;
     reset();
-    await run({
+    const resp = await run({
       entityId: entityId as string,
       branchIds: [branchId as string],
       scope: "branch",
       authToken: token ?? "",
       locale,
     });
+    if (resp?.code === "analyze/insufficient_data") {
+      setStatus("error");
+      setResult(null);
+      showToast(t("merlin.insufficientData"), "warning");
+    } else if (resp?.code === "ai/error") {
+      setStatus("error");
+      showToast(t("merlin.error"), "error");
+    }
   }, [canRun, reset, run, entityId, branchId, token, locale]);
 
   const loading = status === "pending";

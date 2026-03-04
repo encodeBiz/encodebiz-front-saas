@@ -63,6 +63,8 @@ export const merlinSubscribe = (
         if (data?.status === "completed") {
           const result = data?.result ?? data?.output ?? data;
           cb({ code: "ai/cache_hit", cached: true, path, result } as MerlinResponse);
+        } else if (data?.status === "insufficient_data") {
+          cb({ code: "analyze/insufficient_data", cached: true, path, result: data } as MerlinResponse);
         } else if (data?.status === "error") {
           cb({ code: "ai/error", cached: true, path, result: data } as MerlinResponse);
         } else {

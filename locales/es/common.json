@@ -25,7 +25,9 @@
       "subtitleReady": "Insight listo",
       "description": "Merlin analiza horarios, fichajes y eficiencia para sugerir acciones.",
       "buttonRun": "Analizar ahora",
-      "buttonRunning": "Analizando"
+      "buttonRunning": "Analizando",
+      "insufficientData": "Merlin no tiene datos suficientes para esta sucursal.",
+      "error": "Merlin no pudo completar el análisis."
     },
     "side": {
       "menu": {
