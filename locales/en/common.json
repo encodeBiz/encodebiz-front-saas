@@ -19,7 +19,7 @@
       "notification": "Notifications"
     },
     "merlin": {
-      "title": "Merlin · Ops AI",
+      "title": "Merlin · Ops AI (Beta)",
       "subtitleIdle": "Get an operational insight for this branch.",
       "subtitleAnalysing": "Analysing...",
       "subtitleReady": "Insight ready",
@@ -813,7 +813,7 @@
     "workTime": "WORK SCHEDULE",
     "weekTime": "Week Time",
     "merlin": {
-      "title": "Merlin · Ops AI",
+      "title": "Merlin · Ops AI (Beta)",
       "subtitleIdle": "Get an operational insight for this branch.",
       "subtitleAnalysing": "Analysing...",
       "subtitleReady": "Insight ready",

@@ -19,7 +19,7 @@
       "notification": "Notificaciones"
     },
     "merlin": {
-      "title": "Merlin · IA Operativa",
+      "title": "Merlin · IA Operativa (Beta)",
       "subtitleIdle": "Genera un diagnóstico operativo para esta sucursal.",
       "subtitleAnalysing": "Analizando...",
       "subtitleReady": "Insight listo",
@@ -844,7 +844,7 @@
     "workTime": "HORARIO DE JORNADA LABORAL",
     "weekTime": "Horas semanales",
     "merlin": {
-      "title": "Merlin · IA Operativa",
+      "title": "Merlin · IA Operativa (Beta)",
       "subtitleIdle": "Genera un diagnóstico operativo para esta sucursal.",
       "subtitleAnalysing": "Analizando...",
       "subtitleReady": "Insight listo",

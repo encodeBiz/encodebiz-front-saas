@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import React, { createContext, useContext, useMemo, useState } from "react";
+import React, { createContext, useContext, useMemo, useState, useCallback } from "react";
 import { merlinInterpret, merlinSnapshot } from "@/services/merlin.service";
 
 type MerlinScope = "branch" | "entity" | "employee";
@@ -32,13 +32,13 @@ export const MerlinProvider = ({ children }: { children: React.ReactNode }) => {
   const [result, setResult] = useState<MerlinResult | null>(null);
   const [path, setPath] = useState<string | null>(null);
 
-  const reset = () => {
+  const reset = useCallback(() => {
     setStatus("idle");
     setResult(null);
     setPath(null);
-  };
+  }, []);
 
-  const run = async ({ entityId, branchIds = [], scope, authToken, locale = "es" }: { entityId: string; branchIds?: string[]; scope: MerlinScope; authToken?: string; locale?: string }) => {
+  const run = useCallback(async ({ entityId, branchIds = [], scope, authToken, locale = "es" }: { entityId: string; branchIds?: string[]; scope: MerlinScope; authToken?: string; locale?: string }) => {
     setStatus("pending");
     setResult(null);
     setPath(null);
@@ -63,11 +63,11 @@ export const MerlinProvider = ({ children }: { children: React.ReactNode }) => {
     } catch {
       setStatus("error");
     }
-  };
+  }, [setStatus, setResult, setPath]);
 
   const value = useMemo(
     () => ({ status, result, path, run, reset, setStatus, setResult, setPath }),
-    [status, result, path]
+    [status, result, path, run, reset]
   );
 
   return <MerlinContext.Provider value={value}>{children}</MerlinContext.Provider>;

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { Paper, Stack, Typography, Divider, IconButton, Avatar, Chip, CircularProgress } from "@mui/material";
 import { SmartToyOutlined, RefreshOutlined, Close, ExpandMoreOutlined } from "@mui/icons-material";
 import { SassButton } from "@/components/common/buttons/GenericButton";
@@ -11,7 +11,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { useDashboardBranch } from "./DashboardBranchContext";
 import { useToast } from "@/hooks/useToast";
 import { useMerlin } from "@/contexts/merlinContext";
-import { merlinSnapshot, merlinSubscribe } from "@/services/merlin.service";
+import { merlinSubscribe } from "@/services/merlin.service";
 
 type MerlinStatus = "idle" | "pending" | "ready" | "error";
 
@@ -33,17 +33,13 @@ const MerlinAssistant = () => {
   const locale = useLocale();
   const [collapsed, setCollapsed] = useState(false);
 
-  const pollRef = useRef<NodeJS.Timeout | null>(null);
   const entityId = currentEntity?.entity?.id;
   const canRun = useMemo(() => Boolean(entityId && branchId), [entityId, branchId]);
 
-  const clearPoll = () => {
-    if (pollRef.current) {
-      clearInterval(pollRef.current);
-      pollRef.current = null;
-    }
-  };
-  useEffect(() => clearPoll, []);
+  useEffect(() => {
+    // Reset cuando cambia sucursal o entidad
+    reset();
+  }, [branchId, entityId, reset]);
 
   useEffect(() => {
     if (!path) return;
@@ -63,9 +59,9 @@ const MerlinAssistant = () => {
     }
   }, [status, path, setResult, setStatus, showToast]);
 
-  const handleRun = async () => {
+  const handleRun = useCallback(async () => {
     if (!canRun) return;
-    clearPoll();
+    reset();
     await run({
       entityId: entityId as string,
       branchIds: [branchId as string],
@@ -73,7 +69,7 @@ const MerlinAssistant = () => {
       authToken: token ?? "",
       locale,
     });
-  };
+  }, [canRun, reset, run, entityId, branchId, token, locale]);
 
   const loading = status === "pending";
   const subtitle =
@@ -82,6 +78,13 @@ const MerlinAssistant = () => {
       : result
       ? t("merlin.subtitleReady")
       : t("merlin.subtitleIdle");
+
+  // Auto-run al entrar si no hay resultado ni path
+  useEffect(() => {
+    if (canRun && status === "idle" && !path && !result) {
+      handleRun();
+    }
+  }, [canRun, status, path, result, handleRun]);
 
   const handleToggleCollapse = () => {
     setCollapsed((c) => !c);
@@ -98,7 +101,7 @@ const MerlinAssistant = () => {
         zIndex: 1300,
         p: collapsed ? 1.5 : 3,
         width: collapsed
-          ? { xs: 280, sm: 300 }
+          ? { xs: 320, sm: 340 }
           : result && status === "ready"
           ? { xs: "calc(100% - 32px)", sm: 520 }
           : { xs: "calc(100% - 32px)", sm: 360 },
@@ -113,8 +116,8 @@ const MerlinAssistant = () => {
       <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
         <Stack direction="row" spacing={1} alignItems="center">
           <Avatar
-            src="/assets/images/Merlin_IA_v2.png"
-            sx={{ bgcolor: "primary.main", width: 40, height: 40, cursor: "pointer" }}
+            src="/assets/images/Merili_IA_blue.png"
+            sx={{ bgcolor: "primary.main", width: 55, height: 55, cursor: "pointer" }}
             onClick={() => {
               if (collapsed) setCollapsed(false);
             }}
