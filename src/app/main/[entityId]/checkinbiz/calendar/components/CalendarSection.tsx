@@ -8,8 +8,12 @@ import {
   Alert,
   Box,
   Divider,
+  FormControl,
   FormControlLabel,
   IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
   Stack,
   Switch,
   Table,
@@ -29,7 +33,7 @@ import WorkScheduleField from "@/components/common/forms/fields/WorkScheduleFiel
 import { SassButton } from "@/components/common/buttons/GenericButton";
 import HolidayModal from "./HolidayModal";
 import { useAppLocale } from "@/hooks/useAppLocale";
-import { upsertCalendar, deleteCalendarItem, saveCalendarPreset, listCalendarPresets } from "@/services/checkinbiz/calendar.service";
+import { upsertCalendar, deleteCalendarItem, saveCalendarPreset, listCalendarPresets, deleteCalendarPreset } from "@/services/checkinbiz/calendar.service";
 import { createSlug } from "@/lib/common/String";
 import { useToast } from "@/hooks/useToast";
 
@@ -526,7 +530,7 @@ const CalendarSection = ({
         ]);
 
         return (
-          <Stack spacing={3} sx={{ pb: 6, textAlign: "left" }}>
+            <Stack spacing={3} sx={{ pb: 6, textAlign: "left" }}>
             {(onChange || (formFieldName && setParentFieldValue)) && (
               <CalendarChangeReporter
                 holidays={holidays}
@@ -590,27 +594,56 @@ const CalendarSection = ({
               <AccordionDetails>
                 {/* Selector / aplicación de presets dentro del acordeón */}
                 <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} alignItems={{ xs: "stretch", sm: "center" }} sx={{ mb: 2 }}>
-                  <TextField
-                    select
-                    size="small"
-                    label={t("schedule.presets.list")}
-                    value={selectedPresetId}
-                    onChange={(e) => setSelectedPresetId(e.target.value)}
-                    SelectProps={{ native: true, displayEmpty: true }}
-                    InputLabelProps={{ shrink: true }}
-                    sx={{ minWidth: 220 }}
-                  >
-                    <option value="">{t("schedule.presets.select")}</option>
-                    {presets.map((p) => (
-                      <option key={p.id} value={p.id}>
-                        {p.name} — {p.createdAt ? new Date(p.createdAt).toLocaleDateString() : ""}
-                      </option>
-                    ))}
-                  </TextField>
+                  <FormControl size="small" sx={{ minWidth: 240 }}>
+                    <InputLabel id="preset-select-label" shrink>
+                      {t("schedule.presets.list")}
+                    </InputLabel>
+                    <Select
+                      labelId="preset-select-label"
+                      value={selectedPresetId}
+                      onChange={(e) => setSelectedPresetId(e.target.value)}
+                      displayEmpty
+                      renderValue={(val) => {
+                        if (!val) return t("schedule.presets.select");
+                        const p = presets.find((pr) => pr.id === val);
+                        return p?.name ?? t("schedule.presets.select");
+                      }}
+                    >
+                      <MenuItem value="">{t("schedule.presets.select")}</MenuItem>
+                      {presets.map((p) => (
+                        <MenuItem key={p.id} value={p.id} sx={{ display: "flex", justifyContent: "space-between", gap: 1 }}>
+                          <span>{p.name}</span>
+                          <IconButton
+                            size="small"
+                            edge="end"
+                            onClick={async (ev) => {
+                              ev.stopPropagation();
+                              try {
+                                const scopeToDelete = p.employeeId ? "employee" : p.branchId ? "branch" : "entity";
+                                await deleteCalendarPreset({
+                                  entityId,
+                                  id: p.id,
+                                  branchId: p.branchId ?? branchId,
+                                  employeeId: p.employeeId ?? employeeId,
+                                });
+                                setPresets((prev) => prev.filter((it) => it.id !== p.id));
+                                if (selectedPresetId === p.id) setSelectedPresetId("");
+                                showToast(t("schedule.presets.deleted") ?? "Preset eliminado", "success");
+                              } catch (e: any) {
+                                showToast(e?.message ?? "Error al eliminar preset", "error");
+                              }
+                            }}
+                          >
+                            <DeleteOutline fontSize="small" />
+                          </IconButton>
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                   <SassButton
                     variant="outlined"
                     disabled={!selectedPresetId || isSubmitting}
-                  onClick={() => handleApplyPreset(selectedPresetId, values, setSubmitting, setFieldValue)}
+                    onClick={() => handleApplyPreset(selectedPresetId, values, setSubmitting, setFieldValue)}
                   >
                     {t("schedule.presets.apply")}
                   </SassButton>

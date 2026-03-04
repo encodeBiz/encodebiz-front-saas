@@ -1699,6 +1699,7 @@
         "select": "Select a preset",
         "apply": "Apply",
         "applied": "Preset applied",
+        "deleted": "Preset deleted",
         "saveAs": "Save as preset",
         "title": "Save calendar preset",
         "name": "Preset name"
