@@ -2,14 +2,13 @@
 "use client";
 
 import { useEffect, useMemo, useState, useCallback } from "react";
-import { Paper, Stack, Typography, Divider, IconButton, Avatar, Chip, CircularProgress } from "@mui/material";
+import { Paper, Stack, Typography, Divider, IconButton, Avatar, Chip, CircularProgress, Alert } from "@mui/material";
 import { SmartToyOutlined, RefreshOutlined, Close, ExpandMoreOutlined } from "@mui/icons-material";
 import { SassButton } from "@/components/common/buttons/GenericButton";
 import { useEntity } from "@/hooks/useEntity";
 import { useAuth } from "@/hooks/useAuth";
 import { useTranslations, useLocale } from "next-intl";
 import { useDashboardBranch } from "./DashboardBranchContext";
-import { useToast } from "@/hooks/useToast";
 import { useMerlin } from "@/contexts/merlinContext";
 import { merlinSubscribe } from "@/services/merlin.service";
 
@@ -27,11 +26,11 @@ const MerlinAssistant = () => {
   const t = useTranslations("sucursal");
   const { currentEntity } = useEntity();
   const { branchId } = useDashboardBranch();
-  const { showToast } = useToast();
   const { token } = useAuth();
   const { status, result, path, run, reset, setResult, setStatus } = useMerlin();
   const locale = useLocale();
   const [collapsed, setCollapsed] = useState(false);
+  const [message, setMessage] = useState<{ text: string; severity: "error" | "warning" | "info" } | null>(null);
 
   const entityId = currentEntity?.entity?.id;
   const canRun = useMemo(() => Boolean(entityId && branchId), [entityId, branchId]);
@@ -39,37 +38,49 @@ const MerlinAssistant = () => {
   useEffect(() => {
     // Reset cuando cambia sucursal o entidad
     reset();
+    setMessage(null);
   }, [branchId, entityId, reset]);
 
   useEffect(() => {
     if (!path) return;
-    if (status === "pending") {
-      const unsub = merlinSubscribe(path, (snap) => {
-        if (snap.code === "ai/cache_hit" && (snap as any).result) {
-          setResult((snap as any).result);
-          setStatus("ready");
-        } else if (snap.code === "ai/error") {
-          setStatus("error");
-          showToast("Merlin no pudo completar el análisis.", "error");
-        } else {
-          setStatus("pending");
-        }
-      });
-      return () => unsub();
-    }
-  }, [status, path, setResult, setStatus, showToast]);
+    const unsub = merlinSubscribe(path, (snap) => {
+      if (snap.code === "ai/cache_hit" && (snap as any).result) {
+        setResult((snap as any).result);
+        setStatus("ready");
+      } else if (snap.code === "ai/error") {
+        setStatus("error");
+        setMessage({ text: t("merlin.error"), severity: "error" });
+      } else if (snap.code === "analyze/insufficient_data") {
+        setStatus("error");
+        setResult(null);
+        setMessage({ text: t("merlin.insufficientData"), severity: "warning" });
+      } else {
+        setStatus("pending");
+      }
+    });
+    return () => unsub();
+  }, [path, setResult, setStatus, t]);
 
   const handleRun = useCallback(async () => {
     if (!canRun) return;
     reset();
-    await run({
+    setMessage(null);
+    const resp = await run({
       entityId: entityId as string,
       branchIds: [branchId as string],
       scope: "branch",
       authToken: token ?? "",
       locale,
     });
-  }, [canRun, reset, run, entityId, branchId, token, locale]);
+    if (resp?.code === "analyze/insufficient_data") {
+      setStatus("error");
+      setResult(null);
+      setMessage({ text: t("merlin.insufficientData"), severity: "warning" });
+    } else if (resp?.code === "ai/error") {
+      setStatus("error");
+      setMessage({ text: t("merlin.error"), severity: "error" });
+    }
+  }, [canRun, reset, run, entityId, branchId, token, locale, t]);
 
   const loading = status === "pending";
   const subtitle =
@@ -88,7 +99,10 @@ const MerlinAssistant = () => {
 
   const handleToggleCollapse = () => {
     setCollapsed((c) => !c);
-    if (!collapsed && status === "error") reset();
+    if (!collapsed && status === "error") {
+      reset();
+      setMessage(null);
+    }
   };
 
   return (
@@ -171,6 +185,11 @@ const MerlinAssistant = () => {
           <Typography variant="body2" color="text.secondary">
             {loading ? t("merlin.subtitleAnalysing") : t("merlin.description")}
           </Typography>
+          {status === "error" && message && (
+            <Alert severity={message.severity} sx={{ width: "100%" }}>
+              {message.text}
+            </Alert>
+          )}
           <SassButton
             variant="contained"
             color="primary"

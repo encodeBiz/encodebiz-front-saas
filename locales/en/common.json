@@ -25,7 +25,9 @@
       "subtitleReady": "Insight ready",
       "description": "Merlin analyses schedules, logs and efficiency to suggest actions.",
       "buttonRun": "Analyse now",
-      "buttonRunning": "Analysing"
+      "buttonRunning": "Analysing",
+      "insufficientData": "Merlin does not have enough data for this branch.",
+      "error": "Merlin could not complete the analysis."
     },
     "side": {
       "menu": {
@@ -819,7 +821,9 @@
       "subtitleReady": "Insight ready",
       "description": "Merlin analyses schedules, logs and efficiency to suggest actions.",
       "buttonRun": "Analyse now",
-      "buttonRunning": "Analysing"
+      "buttonRunning": "Analysing",
+      "insufficientData": "Merlin does not have enough data for this branch.",
+      "error": "Merlin could not complete the analysis."
     },
     "detailSucursal": "Branch/project details",
     "update": "Edit branch/project",

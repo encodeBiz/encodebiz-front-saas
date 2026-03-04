@@ -18,7 +18,7 @@ type MerlinContextType = {
   status: "idle" | "pending" | "ready" | "error";
   result: MerlinResult | null;
   path: string | null;
-  run: (args: { entityId: string; branchIds?: string[]; scope: MerlinScope; authToken?: string; locale?: string }) => Promise<void>;
+  run: (args: { entityId: string; branchIds?: string[]; scope: MerlinScope; authToken?: string; locale?: string }) => Promise<any>;
   reset: () => void;
   setStatus: (s: MerlinContextType["status"]) => void;
   setResult: (r: MerlinResult | null) => void;
@@ -57,9 +57,14 @@ export const MerlinProvider = ({ children }: { children: React.ReactNode }) => {
         setStatus("ready");
       } else if (resp.code === "ai/analysing" && (resp as any).path) {
         setPath((resp as any).path);
+        setStatus("pending");
+      } else if (resp.code === "analyze/insufficient_data") {
+        setResult(null);
+        setStatus("error");
       } else {
         setStatus("error");
       }
+      return resp;
     } catch {
       setStatus("error");
     }

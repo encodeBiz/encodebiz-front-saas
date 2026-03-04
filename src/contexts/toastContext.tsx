@@ -1,5 +1,5 @@
 'use client'
-import React, { createContext, useState, useRef } from 'react';
+import React, { createContext, useState, useRef, useCallback, useEffect } from 'react';
 import { Snackbar, Alert, AlertColor } from '@mui/material';
 
 type ToastMessage = {
@@ -18,24 +18,44 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
     const [open, setOpen] = useState(false);
     const [messageInfo, setMessageInfo] = useState<ToastMessage | undefined>(undefined);
     const queueRef = useRef<ToastMessage[]>([]);
+    const openRef = useRef(false);
 
- 
-    const showToast = (message: string, severity: AlertColor = 'info') => {
-        const key = new Date().getTime();
-        const newToast = { message, severity, key };
-        if (open) {
-            queueRef.current.push(newToast);
-        } else {
-            setMessageInfo(newToast);
+    // Mantiene una referencia sincronizada del estado `open` para que showToast
+    // pueda ser estable sin depender de él en la lista de dependencias.
+    useEffect(() => {
+        openRef.current = open;
+    }, [open]);
+
+    const processQueue = useCallback(() => {
+        if (queueRef.current.length > 0) {
+            setMessageInfo(queueRef.current.shift());
             setOpen(true);
         }
-    }
+    }, []);
+
+    const showToast = useCallback((message: string, severity: AlertColor = 'info') => {
+        const key = new Date().getTime();
+        queueRef.current.push({ message, severity, key });
+
+        // Si ya hay un toast visible lo cerramos para que se ejecute `processQueue`
+        // al finalizar la animación y muestre el siguiente mensaje.
+        if (openRef.current) {
+            setOpen(false);
+            return;
+        }
+
+        processQueue();
+    }, [processQueue]);
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
             return;
         }
         setOpen(false);
+    };
+
+    const handleExited = () => {
+        processQueue();
     };
 
     
@@ -46,7 +66,9 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
                 open={open}
                 autoHideDuration={6000}
                 onClose={handleClose}
+                onExited={handleExited}
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                key={messageInfo?.key}
             >
                 <Alert
                     onClose={handleClose}
@@ -59,4 +81,3 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
         </ToastContext.Provider>
     );
 };
-
