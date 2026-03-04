@@ -18,6 +18,15 @@
       "messages": "Mensajes",
       "notification": "Notificaciones"
     },
+    "merlin": {
+      "title": "Merlin · IA Operativa",
+      "subtitleIdle": "Genera un diagnóstico operativo para esta sucursal.",
+      "subtitleAnalysing": "Analizando...",
+      "subtitleReady": "Insight listo",
+      "description": "Merlin analiza horarios, fichajes y eficiencia para sugerir acciones.",
+      "buttonRun": "Analizar ahora",
+      "buttonRunning": "Analizando"
+    },
     "side": {
       "menu": {
         "Dashboard": "Panel",
@@ -834,6 +843,15 @@
     "breakTime": "TIEMPO DE DESCANSO",
     "workTime": "HORARIO DE JORNADA LABORAL",
     "weekTime": "Horas semanales",
+    "merlin": {
+      "title": "Merlin · IA Operativa",
+      "subtitleIdle": "Genera un diagnóstico operativo para esta sucursal.",
+      "subtitleAnalysing": "Analizando...",
+      "subtitleReady": "Insight listo",
+      "description": "Merlin analiza horarios, fichajes y eficiencia para sugerir acciones.",
+      "buttonRun": "Analizar ahora",
+      "buttonRunning": "Analizando"
+    },
     "fieldHelp1": "El sistema aplica ",
     "fieldHelp2": "exactamente",
     "fieldHelp3": " la duración configurada para el descanso.",

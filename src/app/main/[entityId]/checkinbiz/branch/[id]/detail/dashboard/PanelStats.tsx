@@ -14,6 +14,7 @@ import { SelectorChart } from "../../../../panel/components/common/SelectorChart
 import { useDashboardBranch } from "./DashboardBranchContext";
 import { HeuristicAnalize } from "./cards/HeuristicAnalize";
 import { preferenceDashboardItems } from "@/domain/features/checkinbiz/IStats";
+import MerlinAssistant from "./MerlinAssistant";
  
 
 export const PanelStats = () => {
@@ -137,6 +138,7 @@ export const PanelStats = () => {
         }
       > <InnetContent /></HeaderPage>
 
+      <MerlinAssistant />
 
     </Container>
 

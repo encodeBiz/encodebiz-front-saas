@@ -13,6 +13,7 @@ import { EntityProvider } from '@/contexts/entityContext';
 import { FormStatusProvider } from '@/contexts/formStatusContext';
 import { LayoutProvider } from '@/contexts/layoutContext';
 import { MediaProvider } from '@/contexts/mediaContext';
+import { MerlinProvider } from '@/contexts/merlinContext';
 import { useAuth } from '@/hooks/useAuth';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { useEntity } from '@/hooks/useEntity';
@@ -97,7 +98,7 @@ function Admin({
           sx={{
             position: 'fixed',
             bottom: 24,
-            right: 24,
+            left: 24,
             zIndex: 1300,
             maxWidth: 400,
           }}
@@ -139,7 +140,9 @@ export default function AdminLayout({
         <CommonModalProvider>
           <MediaProvider>
             <FormStatusProvider>
-              <Admin>{children}</Admin>
+              <MerlinProvider>
+                <Admin>{children}</Admin>
+              </MerlinProvider>
             </FormStatusProvider>
           </MediaProvider>
         </CommonModalProvider>
