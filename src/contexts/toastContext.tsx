@@ -54,10 +54,6 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
         setOpen(false);
     };
 
-    const handleExited = () => {
-        processQueue();
-    };
-
     
     return (
         <ToastContext.Provider value={{ showToast }}>
@@ -66,9 +62,11 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
                 open={open}
                 autoHideDuration={6000}
                 onClose={handleClose}
-                onExited={handleExited}
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                 key={messageInfo?.key}
+                TransitionProps={{
+                    onExited: processQueue,
+                }}
             >
                 <Alert
                     onClose={handleClose}
