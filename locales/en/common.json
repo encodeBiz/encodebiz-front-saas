@@ -27,7 +27,9 @@
       "buttonRun": "Analyse now",
       "buttonRunning": "Analysing",
       "insufficientData": "Merlin does not have enough data for this branch.",
-      "error": "Merlin could not complete the analysis."
+      "error": "Merlin could not complete the analysis.",
+      "noPattern": "No pattern available for this employee.",
+      "behaviorTitle": "Behavior"
     },
     "side": {
       "menu": {

@@ -17,6 +17,7 @@ import { DispercionActivity } from "./cards/DispercionActivity";
 import { preferenceDashboardEmployeeItems } from "@/domain/features/checkinbiz/IStats";
 import EmptyList from "@/components/common/EmptyState/EmptyList";
 import emptyImage from '../../../../../../../../../public/assets/images/empty/empleados.svg';
+import EmployeeMerlinAssistant from "./EmployeeMerlinAssistant";
 
 
 export const PanelStats = () => {
@@ -137,6 +138,7 @@ export const PanelStats = () => {
         }
       > <InnetContent /></HeaderPage>
 
+      <EmployeeMerlinAssistant />
 
     </Container>
 

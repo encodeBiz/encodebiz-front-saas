@@ -27,7 +27,9 @@
       "buttonRun": "Analizar ahora",
       "buttonRunning": "Analizando",
       "insufficientData": "Merlin no tiene datos suficientes para esta sucursal.",
-      "error": "Merlin no pudo completar el análisis."
+      "error": "Merlin no pudo completar el análisis.",
+      "noPattern": "Sin patrón disponible para este empleado.",
+      "behaviorTitle": "Comportamiento"
     },
     "side": {
       "menu": {
