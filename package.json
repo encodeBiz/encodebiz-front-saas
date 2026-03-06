@@ -3,11 +3,11 @@
   "version": "1.2.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "BASELINE_BROWSER_MAPPING_IGNORE_OLD_DATA=true next dev",
+    "build": "BASELINE_BROWSER_MAPPING_IGNORE_OLD_DATA=true next build",
     "start": "next start",
-    "lint": "eslint src/**/*.{js,ts,tsx}",
-    "lint:fix": "eslint src/**/*.{js,ts,tsx} --fix"
+    "lint": "BASELINE_BROWSER_MAPPING_IGNORE_OLD_DATA=true eslint src/**/*.{js,ts,tsx}",
+    "lint:fix": "BASELINE_BROWSER_MAPPING_IGNORE_OLD_DATA=true eslint src/**/*.{js,ts,tsx} --fix"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
