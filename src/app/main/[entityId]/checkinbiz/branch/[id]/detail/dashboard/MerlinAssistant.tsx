@@ -102,8 +102,9 @@ const MerlinAssistant = ({ scope = "branch", branchId: branchIdProp, employeeId:
     if (!path) return;
     const unsub = merlinSubscribe(path, (snap) => {
       if (snap.code === "ai/cache_hit" && (snap as any).result) {
+        const wasCached = Boolean((snap as any).cached);
+        setCached(wasCached);
         setResult((snap as any).result);
-        setCached(Boolean((snap as any).cached));
         setClean((snap as any).result?.clean ?? null);
         setStatus("ready");
       } else if (snap.code === "ai/error") {
@@ -143,9 +144,10 @@ const MerlinAssistant = ({ scope = "branch", branchId: branchIdProp, employeeId:
       locale,
     });
     if (resp?.code === "ai/cache_hit" && (resp as any).result) {
+      const wasCached = Boolean((resp as any).cached);
+      setCached(wasCached);
       setResult((resp as any).result);
       setClean((resp as any).result?.clean ?? null);
-      setCached(Boolean((resp as any).cached));
       setStatus("ready");
       return;
     }
@@ -198,11 +200,11 @@ const MerlinAssistant = ({ scope = "branch", branchId: branchIdProp, employeeId:
         zIndex: 1300,
         p: collapsed ? 1.5 : 3,
         width: collapsed
-          ? { xs: 320, sm: 340 }
+          ? { xs: 330, sm: 360 }
           : (scope === "employee" ? clean : result) && status === "ready"
-          ? { xs: "calc(100% - 32px)", sm: 520 }
-          : { xs: "calc(100% - 32px)", sm: 360 },
-        maxWidth: (scope === "employee" ? clean : result) && status === "ready" ? 560 : 420,
+          ? { xs: "calc(100% - 32px)", sm: 620 }
+          : { xs: "calc(100% - 32px)", sm: 420 },
+        maxWidth: (scope === "employee" ? clean : result) && status === "ready" ? 660 : 460,
         backdropFilter: "blur(8px)",
         cursor: collapsed ? "pointer" : "default",
       }}
@@ -278,12 +280,7 @@ const MerlinAssistant = ({ scope = "branch", branchId: branchIdProp, employeeId:
             </Typography>
             <Chip label={clean.quadrant} color={quadrantColor[clean.quadrant]} size="small" />
           </Stack>
-          <Stack direction="row" spacing={1} flexWrap="wrap">
-            <Chip label={`${t("merlin.metricEfficiency", { value: clean.operational_metrics.efficiency_index ?? "–" })}`} size="small" variant="outlined" />
-            <Chip label={`${t("merlin.metricCostGap", { value: clean.operational_metrics.cost_gap ?? "–" })}`} size="small" variant="outlined" />
-            <Chip label={`${t("merlin.metricPredictability", { value: clean.operational_metrics.predictability_score ?? "–" })}`} size="small" variant="outlined" />
-            <Chip label={`${t("merlin.metricCostTrend", { value: clean.operational_metrics.cost_trend ?? "-" })}`} size="small" variant="outlined" />
-          </Stack>
+          {/* Métricas operacionales ocultas por requerimiento */}
           <Typography variant="body2">{clean.analysis.summary}</Typography>
           <Typography variant="body2" color="text.secondary">
             {clean.analysis.behavior_body}
@@ -291,9 +288,16 @@ const MerlinAssistant = ({ scope = "branch", branchId: branchIdProp, employeeId:
           <Typography variant="caption" color="text.secondary">
             {clean.analysis.experience_context}
           </Typography>
-          <Stack spacing={0.5}>
+          <Stack spacing={1}>
             {clean.actions.map((action, i) => (
-              <Chip key={i} label={action.text} size="small" variant="outlined" />
+              <Paper key={i} variant="outlined" sx={{ p: 1.5, borderRadius: 2 }}>
+                <Typography variant="body2" fontWeight={600} sx={{ mb: 0.5 }}>
+                  {action.type.toUpperCase()}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {action.text}
+                </Typography>
+              </Paper>
             ))}
           </Stack>
           <Typography variant="caption" color="text.secondary">

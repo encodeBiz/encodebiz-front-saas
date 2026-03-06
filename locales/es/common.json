@@ -1787,6 +1787,7 @@
       "discard": "Descartar cambios",
       "saveCalendar": "Guardar calendario",
       "saving": "Guardando calendario...",
+      "loading": "Cargando calendario...",
       "savingHoliday": "Guardando festivo...",
       "deletingHoliday": "Eliminando festivo...",
       "editHoliday": "Editar festivo",

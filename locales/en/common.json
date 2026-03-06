@@ -1759,6 +1759,7 @@
       "discard": "Discard changes",
       "saveCalendar": "Save calendar",
       "saving": "Saving calendar...",
+      "loading": "Loading calendar...",
       "savingHoliday": "Saving holiday...",
       "deletingHoliday": "Deleting holiday...",
       "editHoliday": "Edit holiday",

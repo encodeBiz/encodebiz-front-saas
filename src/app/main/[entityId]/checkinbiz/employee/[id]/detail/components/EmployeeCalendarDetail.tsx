@@ -136,14 +136,14 @@ const EmployeeCalendarDetail = ({ employee, refreshKey = 0 }: { employee: IEmplo
     loadBranches();
   }, [entityId, branchIdsKey]);
 
-  useEffect(() => {
-    const load = async () => {
-      if (!entityId || !employeeId || !token) return;
-      setLoading(true);
-      changeLoaderState({ show: true, args: { text: t('actions.saving') } });
-      try {
-        const params: any = {
-          scope: 'employee',
+    useEffect(() => {
+        const load = async () => {
+            if (!entityId || !employeeId || !token) return;
+            setLoading(true);
+            changeLoaderState({ show: true, args: { text: t('actions.loading') } });
+            try {
+                const params: any = {
+                    scope: 'employee',
           entityId,
           employeeId,
           token,
