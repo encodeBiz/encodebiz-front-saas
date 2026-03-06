@@ -138,7 +138,7 @@ export const PanelStats = () => {
         }
       > <InnetContent /></HeaderPage>
 
-      <MerlinAssistant />
+      <MerlinAssistant scope="branch" />
 
     </Container>
 

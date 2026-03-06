@@ -17,7 +17,7 @@ import { DispercionActivity } from "./cards/DispercionActivity";
 import { preferenceDashboardEmployeeItems } from "@/domain/features/checkinbiz/IStats";
 import EmptyList from "@/components/common/EmptyState/EmptyList";
 import emptyImage from '../../../../../../../../../public/assets/images/empty/empleados.svg';
-import EmployeeMerlinAssistant from "./EmployeeMerlinAssistant";
+import MerlinAssistant from "@/app/main/[entityId]/checkinbiz/branch/[id]/detail/dashboard/MerlinAssistant";
 
 
 export const PanelStats = () => {
@@ -138,7 +138,7 @@ export const PanelStats = () => {
         }
       > <InnetContent /></HeaderPage>
 
-      <EmployeeMerlinAssistant />
+      <MerlinAssistant scope="employee" employeeId={employeeId} audience="admin" />
 
     </Container>
 
