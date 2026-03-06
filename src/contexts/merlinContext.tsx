@@ -62,9 +62,10 @@ export const MerlinProvider = ({ children }: { children: React.ReactNode }) => {
               lang: locale,
               locale,
               target: scope,
+              branchIds: [],
             }
           : {
-              branchIds,
+              branchIds: branchIds ?? [],
               lang: locale,
               locale,
               entityId,
