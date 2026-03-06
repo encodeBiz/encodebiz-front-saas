@@ -27,7 +27,15 @@
       "buttonRun": "Analizar ahora",
       "buttonRunning": "Analizando",
       "insufficientData": "Merlin no tiene datos suficientes para esta sucursal.",
-      "error": "Merlin no pudo completar el análisis."
+      "error": "Merlin no pudo completar el análisis.",
+      "noPattern": "Sin patrón disponible para este empleado.",
+      "behaviorTitle": "Comportamiento",
+      "cacheHint": "Resultado cacheado hasta 7 días. Si los patrones no cambian, no tiene sentido recalcular: ahorramos tokens y mantenemos respuestas estables."
+      ,
+      "metricEfficiency": "Eficiencia: {value}",
+      "metricCostGap": "Brecha de coste: {value}",
+      "metricPredictability": "Predictibilidad: {value}",
+      "metricCostTrend": "Tendencia de coste: {value}"
     },
     "side": {
       "menu": {
@@ -854,7 +862,14 @@
       "buttonRun": "Analizar ahora",
       "buttonRunning": "Analizando",
       "insufficientData": "Merlin no tiene datos suficientes para esta sucursal.",
-      "error": "Merlin no pudo completar el análisis."
+      "error": "Merlin no pudo completar el análisis.",
+      "noPattern": "Sin patrón disponible para este empleado.",
+      "behaviorTitle": "Comportamiento",
+      "cacheHint": "Este resultado se actualiza solo si detectamos cambios de patrón relevantes. Lo mantenemos hasta 7 días para evitar cálculos innecesarios y darte siempre una referencia consistente.",
+      "metricEfficiency": "Eficiencia: {value}",
+      "metricCostGap": "Brecha de coste: {value}",
+      "metricPredictability": "Predictibilidad: {value}",
+      "metricCostTrend": "Tendencia de coste: {value}"
     },
     "fieldHelp1": "El sistema aplica ",
     "fieldHelp2": "exactamente",
@@ -1772,6 +1787,7 @@
       "discard": "Descartar cambios",
       "saveCalendar": "Guardar calendario",
       "saving": "Guardando calendario...",
+      "loading": "Cargando calendario...",
       "savingHoliday": "Guardando festivo...",
       "deletingHoliday": "Eliminando festivo...",
       "editHoliday": "Editar festivo",

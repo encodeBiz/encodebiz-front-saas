@@ -107,7 +107,7 @@ const BranchCalendarDetail = ({ branch, refreshKey = 0 }: { branch: ISucursal; r
         const load = async () => {
             if (!entityId || !branchId) return;
             setLoading(true);
-            changeLoaderState({ show: true, args: { text: t('actions.saving') } });
+            changeLoaderState({ show: true, args: { text: t('actions.loading') } });
             try {
                 const entityPath = `entities/${entityId}/calendar/config`;
                 const entityData = await getRefByPathData(entityPath);

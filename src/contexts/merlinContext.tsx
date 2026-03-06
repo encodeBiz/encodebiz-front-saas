@@ -18,7 +18,16 @@ type MerlinContextType = {
   status: "idle" | "pending" | "ready" | "error";
   result: MerlinResult | null;
   path: string | null;
-  run: (args: { entityId: string; branchIds?: string[]; scope: MerlinScope; authToken?: string; locale?: string }) => Promise<any>;
+  run: (args: {
+    entityId: string;
+    branchIds?: string[];
+    scope: MerlinScope;
+    employeeId?: string;
+    branchId?: string;
+    audience?: "admin" | "employee";
+    authToken?: string;
+    locale?: string;
+  }) => Promise<any>;
   reset: () => void;
   setStatus: (s: MerlinContextType["status"]) => void;
   setResult: (r: MerlinResult | null) => void;
@@ -38,20 +47,32 @@ export const MerlinProvider = ({ children }: { children: React.ReactNode }) => {
     setPath(null);
   }, []);
 
-  const run = useCallback(async ({ entityId, branchIds = [], scope, authToken, locale = "es" }: { entityId: string; branchIds?: string[]; scope: MerlinScope; authToken?: string; locale?: string }) => {
+  const run = useCallback(async ({ entityId, branchIds = [], scope, employeeId, branchId, audience = "admin", authToken, locale = "es" }: { entityId: string; branchIds?: string[]; scope: MerlinScope; employeeId?: string; branchId?: string; audience?: "admin" | "employee"; authToken?: string; locale?: string }) => {
     setStatus("pending");
     setResult(null);
     setPath(null);
     try {
-      const resp = await merlinInterpret({
-        request: {
-          branchIds,
-          lang: locale,
-          locale,
-          entityId,
-          target: scope,
-        },
-      }, authToken);
+      const request =
+        scope === "employee"
+          ? {
+              employeeId,
+              branchId,
+              entityId,
+              audience,
+              lang: locale,
+              locale,
+              target: scope,
+              branchIds: [],
+            }
+          : {
+              branchIds: branchIds ?? [],
+              lang: locale,
+              locale,
+              entityId,
+              target: scope,
+            };
+
+      const resp = await merlinInterpret({ request }, authToken);
       if (resp.code === "ai/cache_hit" && (resp as any).result) {
         setResult((resp as any).result);
         setStatus("ready");

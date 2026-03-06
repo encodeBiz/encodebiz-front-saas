@@ -27,7 +27,14 @@
       "buttonRun": "Analyse now",
       "buttonRunning": "Analysing",
       "insufficientData": "Merlin does not have enough data for this branch.",
-      "error": "Merlin could not complete the analysis."
+      "error": "Merlin could not complete the analysis.",
+      "noPattern": "No pattern available for this employee.",
+      "behaviorTitle": "Behavior",
+      "cacheHint": "We only recompute when the pattern changes. The insight is kept for up to 7 days to avoid unnecessary runs and keep a consistent reference.",
+      "metricEfficiency": "Efficiency: {value}",
+      "metricCostGap": "Cost gap: {value}",
+      "metricPredictability": "Predictability: {value}",
+      "metricCostTrend": "Cost trend: {value}"
     },
     "side": {
       "menu": {
@@ -823,7 +830,14 @@
       "buttonRun": "Analyse now",
       "buttonRunning": "Analysing",
       "insufficientData": "Merlin does not have enough data for this branch.",
-      "error": "Merlin could not complete the analysis."
+      "error": "Merlin could not complete the analysis.",
+      "noPattern": "No pattern available for this employee.",
+      "behaviorTitle": "Behavior",
+      "cacheHint": "Result cached up to 7 days. If patterns don’t change there’s no point in recomputing; we save tokens and keep answers stable.",
+      "metricEfficiency": "Efficiency: {value}",
+      "metricCostGap": "Cost gap: {value}",
+      "metricPredictability": "Predictability: {value}",
+      "metricCostTrend": "Cost trend: {value}"
     },
     "detailSucursal": "Branch/project details",
     "update": "Edit branch/project",
@@ -1745,6 +1759,7 @@
       "discard": "Discard changes",
       "saveCalendar": "Save calendar",
       "saving": "Saving calendar...",
+      "loading": "Loading calendar...",
       "savingHoliday": "Saving holiday...",
       "deletingHoliday": "Deleting holiday...",
       "editHoliday": "Edit holiday",
