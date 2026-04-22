@@ -23,5 +23,6 @@ export type GenericTabsProps = {
   defaultTab?: number;
   onChange?: (index: number) => void;
   sx?: SxProps<Theme>;
+  panelSx?: SxProps<Theme>;
   syncUrl?: boolean;
 };

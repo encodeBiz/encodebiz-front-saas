@@ -195,7 +195,9 @@ export default function useFormController(isFromModal: boolean, onSuccess?: () =
 
       const data = {
         ...employeeValues,
-         "uid": user?.id as string,
+        enableA2F: employeeValues.enableA2F ?? false,
+        enableRemoteWork: employeeValues.enableRemoteWork ?? false,
+        "uid": user?.id as string,
         "metadata": {
           ...ArrayToObject(employeeValues.metadata as any),
         },
