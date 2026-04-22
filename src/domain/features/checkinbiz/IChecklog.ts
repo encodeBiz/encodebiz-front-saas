@@ -24,6 +24,7 @@ export interface IChecklog {
     "employeeId": string
     "entityId": string
     "branchId": string
+    checkin?: string
     "type": "checkout" | "checkin" | "restin" | "restout"
     "geo": {
         "lat": number,

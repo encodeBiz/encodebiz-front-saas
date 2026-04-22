@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useToast } from "@/hooks/useToast";
 import { useEntity } from "@/hooks/useEntity";
 import { searchLogs, fetchEmployee as fetchEmployeeData } from "@/services/checkinbiz/employee.service";
@@ -8,14 +8,12 @@ import { IChecklog } from "@/domain/features/checkinbiz/IChecklog";
 import { Column } from "@/components/common/table/GenericTable";
 import { format_date, getDateRange } from "@/lib/common/Date";
 import { fetchSucursal as fetchSucursalData } from "@/services/checkinbiz/sucursal.service";
-
-import { Box, IconButton } from "@mui/material";
-
+import { Box, IconButton, TextField } from "@mui/material";
 import SearchFilter from "@/components/common/table/filters/SearchFilter";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { CustomChip } from "@/components/common/table/CustomChip";
-import { Edit, Map } from "@mui/icons-material";
+import { Edit, Map as MapIcon } from "@mui/icons-material";
 import { onGoMap } from "@/lib/common/maps";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
@@ -24,193 +22,345 @@ import { HistoryIcon } from "@/components/common/icons/HistoryIcon";
 import { fetchUserAccount } from "@/services/core/account.service";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { DateRange, DateRangeFilter } from "../panel/components/statsDashboard/DateRangeFilter";
+import { buildWorkSessionSummaries } from "./attendanceSummary";
 
-interface IFilterParams {
-  filter: { branchId: string, employeeId: string, status: string, range: { start: any, end: any } | null },
-  params: {
-    orderBy: string,
-    orderDirection: 'desc' | 'asc',
-    startAfter: any,
-    limit: number,
-    filters: Array<{
-      field: string;
-      operator: | '<' | '<=' | '==' | '!=' | '>=' | '>' | 'array-contains' | 'in' | 'array-contains-any' | 'not-in'
-      value: any;
-    }>
-  }
-  total: number
-  currentPage: number
-  startAfter: string | null,
+type AttendanceViewMode = "events" | "summary";
+
+interface EventPaginationState {
+  currentPage: number;
+  limit: number;
+  orderBy: string;
+  orderDirection: 'desc' | 'asc';
+  startAfter: any;
 }
-export default function useAttendanceController() {
-  const t = useTranslations();
-  const { showToast } = useToast()
-  const { currentEntity, watchServiceAccess } = useEntity()
-  const { openModal } = useCommonModal()
-  const [loading, setLoading] = useState<boolean>(true);
-  const [items, setItems] = useState<IChecklog[]>([]);
-  const [itemsHistory, setItemsHistory] = useState<IChecklog[]>([]);
-  const [empthy, setEmpthy] = useState(false)
 
-  const [filterParams, setFilterParams] = useState<any>({
-    filter: { branchId: 'none', employeeId: 'none', status: 'valid', range: { start: getDateRange('today').start, end: getDateRange('today').end } },
-    startAfter: null,
-    currentPage: 0,
-    total: 0,
-    params: {
-      filters: [
-        { field: 'status', operator: '==', value: 'valid' },
-        { field: 'timestamp', operator: '>=', value: getDateRange('today').start },
-        { field: 'timestamp', operator: '<=', value: getDateRange('today').end }
-      ],
-      startAfter: null,
-      limit: 5,
-      orderBy: 'timestamp',
-      orderDirection: 'desc',
+interface CommonAttendanceFilters {
+  branchId: string;
+  employeeId: string;
+}
+
+interface EventFilters extends CommonAttendanceFilters {
+  status: string;
+  range: { start: Date; end: Date };
+}
+
+interface SummaryFilters extends CommonAttendanceFilters {
+  day: string;
+}
+
+const formatDateInputValue = (value: Date) => {
+  const year = value.getFullYear();
+  const month = `${value.getMonth() + 1}`.padStart(2, "0");
+  const day = `${value.getDate()}`.padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
+const parseDayBoundaries = (day: string) => {
+  const start = new Date(`${day}T00:00:00`);
+  const end = new Date(`${day}T23:59:59.999`);
+  return { start, end };
+};
+
+const buildEventQueryFilters = (filters: EventFilters) => {
+  const queryFilters: Array<{ field: string; operator: any; value: any }> = [
+    { field: "status", operator: "==", value: filters.status },
+    { field: "timestamp", operator: ">=", value: filters.range.start },
+    { field: "timestamp", operator: "<=", value: filters.range.end },
+  ];
+
+  if (filters.branchId !== "none") {
+    queryFilters.push({ field: "branchId", operator: "==", value: filters.branchId });
+  }
+
+  if (filters.employeeId !== "none") {
+    queryFilters.push({ field: "employeeId", operator: "==", value: filters.employeeId });
+  }
+
+  return queryFilters;
+};
+
+const buildSummaryQueryFilters = (filters: SummaryFilters) => {
+  const { start, end } = parseDayBoundaries(filters.day);
+  const queryFilters: Array<{ field: string; operator: any; value: any }> = [
+    { field: "timestamp", operator: ">=", value: start },
+    { field: "timestamp", operator: "<=", value: end },
+  ];
+
+  if (filters.branchId !== "none") {
+    queryFilters.push({ field: "branchId", operator: "==", value: filters.branchId });
+  }
+
+  if (filters.employeeId !== "none") {
+    queryFilters.push({ field: "employeeId", operator: "==", value: filters.employeeId });
+  }
+
+  return queryFilters;
+};
+
+const enrichLogs = async (entityId: string, logs: IChecklog[]): Promise<IChecklog[]> => {
+  const employeeCache = new Map<string, Promise<any>>();
+  const branchCache = new Map<string, Promise<any>>();
+  const userCache = new Map<string, Promise<any>>();
+
+  const getEmployee = (employeeId?: string) => {
+    if (!employeeId) return Promise.resolve(null);
+    if (!employeeCache.has(employeeId)) {
+      employeeCache.set(employeeId, fetchEmployeeData(entityId, employeeId));
     }
-  })
+    return employeeCache.get(employeeId)!;
+  };
 
-  /** Paginated Changed */
-  const onBack = (): void => {
-    const backSize = items.length
-    itemsHistory.splice(-backSize)
-    setItemsHistory([...itemsHistory])
-    setItems([...itemsHistory.slice(-filterParams.params.limit)])
-    setFilterParams({ ...filterParams, currentPage: filterParams.currentPage - 1, params: { ...filterParams.params, startAfter: (itemsHistory[itemsHistory.length - 1] as any).last } })
+  const getBranch = (branchId?: string) => {
+    if (!branchId) return Promise.resolve(null);
+    if (!branchCache.has(branchId)) {
+      branchCache.set(branchId, fetchSucursalData(entityId, branchId));
+    }
+    return branchCache.get(branchId)!;
+  };
 
-  }
+  const getUser = (userId?: string) => {
+    if (!userId) return Promise.resolve(null);
+    if (!userCache.has(userId)) {
+      userCache.set(userId, fetchUserAccount(userId));
+    }
+    return userCache.get(userId)!;
+  };
 
-  const onEdit = async (item: any) => {
-    openModal(CommonModalType.CHECKLOGFORM, { data: item })
-  }
+  return Promise.all(
+    logs.map(async (item) => {
+      const [branch, employee] = await Promise.all([
+        getBranch(item.branchId),
+        getEmployee(item.employeeId),
+      ]);
 
+      let requestUpdates: Array<any> = [];
+      let requestUpdateData: any;
 
-  const rowAction: Array<any> = [{
-    actionBtn: true,
-    color: 'primary',
-    icon: <Edit color="primary" />,
-    label: t('core.button.edit'),
-    bulk: false,
-    allowItem: () => true,
-    onPress: (item: IChecklog) => onEdit(item)
-  }, {
-    actionBtn: true,
-    color: 'primary',
-    icon: <Map color="primary" />,
-    label: t('sucursal.map'),
-    bulk: false,
-    allowItem: () => true,
-    onPress: (item: IChecklog) => onGoMap(item.geo.lat, item.geo.lng)
-  }, {
-    actionBtn: true,
-    color: 'primary',
-    icon: <InfoOutlinedIcon color="primary" />,
-    label: t('core.label.viewDetails'),
-    bulk: false,
-    allowItem: () => true,
-    onPress: (item: IChecklog) => openModal(CommonModalType.LOGS, { log: item })
-  }]
+      if (Array.isArray(item.metadata?.requestUpdates) && item.metadata.requestUpdates.length > 0) {
+        requestUpdates = await Promise.all(
+          item.metadata.requestUpdates.map(async (requestUpdate: any) => {
+            const [requestEmployee, admin] = await Promise.all([
+              getEmployee(requestUpdate.data?.employeeId),
+              getUser(requestUpdate.updateBy),
+            ]);
 
-  /** Paginated Changed */
-  const onNext = async (): Promise<void> => {
-    setLoading(true)
-    const filterParamsUpdated: any = { ...filterParams, currentPage: filterParams.currentPage + 1 }
-    fetchingData(filterParamsUpdated)
-  }
-
-
-
-  /** Sort Change */
-  const onSort = (sort: { orderBy: string, orderDirection: 'desc' | 'asc' }) => {
-    const filterParamsUpdated: any = { ...filterParams, currentPage: 0, params: { ...filterParams.params, ...sort, startAfter: null, } }
-    setFilterParams(filterParamsUpdated)
-    fetchingData(filterParamsUpdated)
-  }
-
-
-  /** Limit Change */
-  const onRowsPerPageChange = (limit: number) => {
-    const filterParamsUpdated: any = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null, limit } }
-    setFilterParams(filterParamsUpdated)
-    fetchingData(filterParamsUpdated)
-  }
-
-
-
-  const fetchingData = async (filterParams: IFilterParams) => {
-
-    if (filterParams.params.filters.find((e: any) => e.field === 'branchId' && e.value === 'none'))
-      filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "branchId")
-
-    if (filterParams.params.filters.find((e: any) => e.field === "employeeId" && e.value === 'none'))
-      filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "employeeId")
-
-    if (filterParams.params.filters.find((e: any) => e.field === "employeeId" && !e.value))
-      filterParams.params.filters = filterParams.params.filters.filter((e: any) => e.field !== "employeeId")
-    const filters = [
-      ...filterParams.params.filters,
-    ]
-    setLoading(true)
-
-    setEmpthy(await emptyChecklog(currentEntity?.entity.id as string))
-
-   
-
-    searchLogs(currentEntity?.entity.id as string, { ...(filterParams.params as any), filters }).then(async res => {
-      if (res.length !== 0) {
-        setFilterParams({ ...filterParams, params: { ...filterParams.params, startAfter: res.length > 0 ? (res[res.length - 1] as any).last : null } })
-
-        const data: Array<IChecklog> = await Promise.all(
-          res.map(async (item) => {
-             
-            const branch = (await fetchSucursalData(currentEntity?.entity.id as string, item.branchId as string))
-            const employee = (await fetchEmployeeData(currentEntity?.entity.id as string, item.employeeId as string))
-            let requestUpdates: Array<any> = []
-            let requestUpdate: any
-            if (Array.isArray(item.metadata?.requestUpdates) && item.metadata?.requestUpdates.length > 0) {
-              requestUpdates = await Promise.all(
-                item.metadata?.requestUpdates.map(async (e: any) => {
-                  const employee1 = (await fetchEmployeeData(currentEntity?.entity.id as string, e.data?.employeeId as string))
-                  const admin = (await fetchUserAccount(e.updateBy as string))
-
-                  return { ...e, employee: employee1, admin };
-                })
-              );
-
-              if (item.requestUpdate) {
-                requestUpdate = requestUpdates.find(e => e.id === item.requestUpdate)
-              }
-            }
-
-
-            return { ...item, requestUpdates, branch, employee, requestUpdateData: requestUpdate };
+            return { ...requestUpdate, employee: requestEmployee, admin };
           })
         );
 
- 
-
-        setItems(data)
-        if (!filterParams.params.startAfter) {
-          setItemsHistory([...data])
-        } else {
-          setItemsHistory(prev => [...prev, ...data])
+        if (item.requestUpdate) {
+          requestUpdateData = requestUpdates.find((requestUpdate) => requestUpdate.id === item.requestUpdate);
         }
       }
 
-      if (!filterParams.params.startAfter && res.length === 0) {
-        setItems([])
-        setItemsHistory([])
+      return { ...item, branch, employee, requestUpdates, requestUpdateData };
+    })
+  );
+};
+
+export default function useAttendanceController() {
+  const t = useTranslations();
+  const { showToast } = useToast();
+  const { currentEntity, watchServiceAccess } = useEntity();
+  const { openModal } = useCommonModal();
+
+  const [loading, setLoading] = useState<boolean>(true);
+  const [empthy, setEmpthy] = useState(false);
+  const [viewMode, setViewMode] = useState<AttendanceViewMode>("summary");
+  const [refreshToken, setRefreshToken] = useState(0);
+
+  const todayRange = useMemo(() => getDateRange('today'), []);
+  const todayDay = useMemo(() => formatDateInputValue(new Date()), []);
+
+  const [eventItems, setEventItems] = useState<IChecklog[]>([]);
+  const [, setEventItemsHistory] = useState<IChecklog[]>([]);
+  const [summaryLogs, setSummaryLogs] = useState<IChecklog[]>([]);
+
+  const [eventPagination, setEventPagination] = useState<EventPaginationState>({
+    currentPage: 0,
+    limit: 5,
+    orderBy: 'timestamp',
+    orderDirection: 'desc',
+    startAfter: null,
+  });
+  const [summaryPage, setSummaryPage] = useState(0);
+  const [summaryRowsPerPage, setSummaryRowsPerPage] = useState(5);
+
+  const [eventFilters, setEventFilters] = useState<EventFilters>({
+    branchId: 'none',
+    employeeId: 'none',
+    status: 'valid',
+    range: { start: todayRange.start, end: todayRange.end },
+  });
+  const [summaryFilters, setSummaryFilters] = useState<SummaryFilters>({
+    branchId: 'none',
+    employeeId: 'none',
+    day: todayDay,
+  });
+
+  const fetchEventData = useCallback(async (options?: { startAfter?: any; resetHistory?: boolean }) => {
+    if (!currentEntity?.entity?.id) return;
+
+    const entityId = currentEntity.entity.id;
+    setLoading(true);
+
+    try {
+      const [isEmpty, logs] = await Promise.all([
+        emptyChecklog(entityId),
+        searchLogs(entityId, {
+          filters: buildEventQueryFilters(eventFilters),
+          startAfter: options?.startAfter ?? null,
+          limit: eventPagination.limit,
+          orderBy: eventPagination.orderBy,
+          orderDirection: eventPagination.orderDirection,
+        } as any),
+      ]);
+
+      setEmpthy(isEmpty);
+
+      if (logs.length === 0) {
+        if (options?.resetHistory) {
+          setEventItems([]);
+          setEventItemsHistory([]);
+        }
+        return;
       }
 
-    }).catch(e => {
-      showToast(e?.message, 'error')
-    }).finally(() => {
-      setLoading(false)
-    })
-  }
+      const data = await enrichLogs(entityId, logs);
+      setEventItems(data);
+      setEventPagination((prev) => ({
+        ...prev,
+        startAfter: (logs[logs.length - 1] as any)?.last ?? null,
+      }));
 
+      if (options?.resetHistory) {
+        setEventItemsHistory(data);
+      } else {
+        setEventItemsHistory((prev) => [...prev, ...data]);
+      }
+    } catch (error: any) {
+      showToast(error?.message, 'error');
+    } finally {
+      setLoading(false);
+    }
+  }, [currentEntity?.entity?.id, eventFilters, eventPagination.limit, eventPagination.orderBy, eventPagination.orderDirection, refreshToken]);
 
-  const columns: Column<any>[] = [
+  const fetchSummaryData = useCallback(async () => {
+    if (!currentEntity?.entity?.id) return;
+
+    const entityId = currentEntity.entity.id;
+    setLoading(true);
+
+    try {
+      const [isEmpty, logs] = await Promise.all([
+        emptyChecklog(entityId),
+        searchLogs(entityId, {
+          filters: buildSummaryQueryFilters(summaryFilters),
+          limit: 10000,
+          orderBy: 'timestamp',
+          orderDirection: 'asc',
+          includeCount: false,
+        } as any),
+      ]);
+
+      setEmpthy(isEmpty);
+      const data = await enrichLogs(entityId, logs);
+      setSummaryLogs(data);
+    } catch (error: any) {
+      showToast(error?.message, 'error');
+    } finally {
+      setLoading(false);
+    }
+  }, [currentEntity?.entity?.id, summaryFilters, refreshToken]);
+
+  useEffect(() => {
+    if (!currentEntity?.entity?.id) return;
+    if (viewMode === "events") fetchEventData({ startAfter: null, resetHistory: true });
+    else fetchSummaryData();
+  }, [currentEntity?.entity?.id, viewMode, fetchEventData, fetchSummaryData]);
+
+  useEffect(() => {
+    if (currentEntity?.entity?.id) {
+      watchServiceAccess('checkinbiz');
+    }
+  }, [currentEntity?.entity?.id]);
+
+  const onEdit = (item: IChecklog) => {
+    openModal(CommonModalType.CHECKLOGFORM, { data: item });
+  };
+
+  const rowAction: Array<any> = [
+    {
+      actionBtn: true,
+      color: 'primary',
+      icon: <Edit color="primary" />,
+      label: t('core.button.edit'),
+      bulk: false,
+      allowItem: () => true,
+      onPress: (item: IChecklog) => onEdit(item)
+    },
+    {
+      actionBtn: true,
+      color: 'primary',
+      icon: <MapIcon color="primary" />,
+      label: t('sucursal.map'),
+      bulk: false,
+      allowItem: () => true,
+      onPress: (item: IChecklog) => onGoMap(item.geo.lat, item.geo.lng)
+    },
+    {
+      actionBtn: true,
+      color: 'primary',
+      icon: <InfoOutlinedIcon color="primary" />,
+      label: t('core.label.viewDetails'),
+      bulk: false,
+      allowItem: () => true,
+      onPress: (item: IChecklog) => openModal(CommonModalType.LOGS, { log: item })
+    }
+  ];
+
+  const onNext = async (): Promise<void> => {
+    const nextPage = eventPagination.currentPage + 1;
+    setEventPagination((prev) => ({ ...prev, currentPage: nextPage }));
+    fetchEventData({ startAfter: eventPagination.startAfter, resetHistory: false });
+  };
+
+  const onBack = (): void => {
+    setEventItemsHistory((prev) => {
+      const nextHistory = [...prev];
+      nextHistory.splice(-eventItems.length);
+      setEventItems([...nextHistory.slice(-eventPagination.limit)]);
+      setEventPagination((current) => ({
+        ...current,
+        currentPage: Math.max(0, current.currentPage - 1),
+        startAfter: (nextHistory[nextHistory.length - 1] as any)?.last ?? null,
+      }));
+      return nextHistory;
+    });
+  };
+
+  const onSort = (sort: { orderBy: string, orderDirection: 'desc' | 'asc' }) => {
+    setEventItemsHistory([]);
+    setEventPagination((prev) => ({
+      ...prev,
+      currentPage: 0,
+      startAfter: null,
+      orderBy: sort.orderBy,
+      orderDirection: sort.orderDirection,
+    }));
+  };
+
+  const onRowsPerPageChange = (limit: number) => {
+    setEventItemsHistory([]);
+    setEventPagination((prev) => ({
+      ...prev,
+      currentPage: 0,
+      startAfter: null,
+      limit,
+    }));
+  };
+
+  const eventColumns: Column<any>[] = [
     {
       id: 'branch',
       label: t("core.label.branch"),
@@ -248,122 +398,133 @@ export default function useAttendanceController() {
         </Box>
       )
     },
-
-
-
   ];
 
-
-
-
-
-  useEffect(() => {
-    if (currentEntity?.entity?.id) {
-      fetchingData(filterParams)
-
-    }
-  }, [currentEntity?.entity?.id])
-
-
-
-
-
-
-  const topFilter = <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap', width: '100%', justifyContent: 'flex-end' }}>
-
-
-    <SearchFilter
-      label={t('core.label.status')}
-      value={filterParams.filter.status}
-      onChange={(value: any) => onFilter({ ...filterParams, filter: { ...filterParams.filter, status: value } })}
-      options={[{ value: 'valid' as string, label: t('core.label.valid') }, { value: 'failed' as string, label: t('core.label.failed') }, { value: 'pending-employee-validation' as string, label: t('core.label.pending-employee-validation') }, { value: 'incomplete_workday' as string, label: t('core.label.incomplete_workday') }]}
-    />
-
-
-
-    <SearchIndexFilter width='auto'
-      type="branch"
-      label={t('core.label.subEntity')}
-      onChange={async (value: ISearchIndex) => {
-        if (value?.id) {
-          const parts = value.index?.split('/')
-          const branchId = parts[parts.length - 1]
-          if (branchId)
-            onFilter({ ...filterParams, filter: { ...filterParams.filter, branchId } })
-          else
-            onFilter({ ...filterParams, filter: { ...filterParams.filter, branchId: 'none' } })
-        } else onFilter({ ...filterParams, filter: { ...filterParams.filter, branchId: 'none' } })
-
-      }}
-    />
-
-    <SearchIndexFilter width='auto'
-      type="employee"
-      label={t('core.label.employee')}
-      onChange={async (value: ISearchIndex) => {
-        if (value?.index) {
-          const parts = value.index?.split('/')
-          const employeeId = parts[parts.length - 1]
-          if (employeeId)
-            onFilter({ ...filterParams, filter: { ...filterParams.filter, employeeId } })
-          else
-            onFilter({ ...filterParams, filter: { ...filterParams.filter, employeeId: 'none' } })
-        } else {
-          onFilter({ ...filterParams, filter: { ...filterParams.filter, employeeId: 'none' } })
-
-        }
-      }}
-    />
-
-    <DateRangeFilter value={{ from: filterParams.filter.range.start?.toISOString(), to: filterParams.filter.range.end?.toISOString() }}
-      onChange={(rg: DateRange) => {               
-        onFilter({ ...filterParams, filter: { ...filterParams.filter, range: { start: new Date(rg.from), end: new Date(rg.to) } } })
-      }}
-    />
-
-    
-  </Box>
-
-
-  const onFilter = (filterParamsData: any) => {
-
-    const filterData: Array<{ field: string, operator: any, value: any }> = []
-    const filter = filterParamsData.filter
-    Object.keys(filter).forEach((key) => {
-      if (key === 'range')
-        filterData.push(
-          { field: 'timestamp', operator: '>=', value: filter[key].start },
-          { field: 'timestamp', operator: '<=', value: filter[key].end }
-        )
-      else
-        filterData.push({ field: key, operator: '==', value: filter[key] })
-    })
-    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null, filters: filterData }, filter: filter }
-    setFilterParams(filterParamsUpdated)
-    fetchingData(filterParamsUpdated)
-  }
-
-
-
-
-
-  useEffect(() => {
-    if (currentEntity?.entity?.id) {
-      watchServiceAccess('checkinbiz')
-    }
-  }, [currentEntity?.entity?.id])
-
+  const summaryItems = useMemo(() => buildWorkSessionSummaries(summaryLogs), [summaryLogs]);
 
   const onSuccessCreate = () => {
-    const filterParamsUpdated: IFilterParams = { ...filterParams, currentPage: 0, params: { ...filterParams.params, startAfter: null } }
-    setFilterParams(filterParamsUpdated)
-    fetchingData(filterParamsUpdated)
-  }
+    setRefreshToken((prev) => prev + 1);
+    if (viewMode === "events") {
+      setEventItemsHistory([]);
+      setEventPagination((prev) => ({
+        ...prev,
+        currentPage: 0,
+        startAfter: null,
+      }));
+    } else {
+      setSummaryPage(0);
+    }
+  };
+
+  const topFilter = (
+    <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap', width: '100%', justifyContent: 'flex-end', alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+        {viewMode === "events" && (
+          <SearchFilter
+            label={t('core.label.status')}
+            value={eventFilters.status}
+            onChange={(value: any) => {
+              setEventItemsHistory([]);
+              setEventFilters((prev) => ({ ...prev, status: value }));
+              setEventPagination((prev) => ({ ...prev, currentPage: 0, startAfter: null }));
+            }}
+            options={[
+              { value: 'valid' as string, label: t('core.label.valid') },
+              { value: 'failed' as string, label: t('core.label.failed') },
+              { value: 'pending-employee-validation' as string, label: t('core.label.pending-employee-validation') },
+              { value: 'incomplete_workday' as string, label: t('core.label.incomplete_workday') }
+            ]}
+          />
+        )}
+
+        <SearchIndexFilter
+          width='auto'
+          type="branch"
+          label={t('core.label.subEntity')}
+          onChange={async (value: ISearchIndex) => {
+            const branchId = value?.index ? value.index.split('/').pop() ?? 'none' : 'none';
+            setEventItemsHistory([]);
+            setEventPagination((prev) => ({ ...prev, currentPage: 0, startAfter: null }));
+            setSummaryPage(0);
+            setEventFilters((prev) => ({ ...prev, branchId }));
+            setSummaryFilters((prev) => ({ ...prev, branchId }));
+          }}
+        />
+
+        <SearchIndexFilter
+          width='auto'
+          type="employee"
+          label={t('core.label.employee')}
+          onChange={async (value: ISearchIndex) => {
+            const employeeId = value?.index ? value.index.split('/').pop() ?? 'none' : 'none';
+            setEventItemsHistory([]);
+            setEventPagination((prev) => ({ ...prev, currentPage: 0, startAfter: null }));
+            setSummaryPage(0);
+            setEventFilters((prev) => ({ ...prev, employeeId }));
+            setSummaryFilters((prev) => ({ ...prev, employeeId }));
+          }}
+        />
+
+        {viewMode === "events" ? (
+          <DateRangeFilter
+            value={{ from: eventFilters.range.start.toISOString(), to: eventFilters.range.end.toISOString() }}
+            onChange={(range: DateRange) => {
+              setEventItemsHistory([]);
+              setEventFilters((prev) => ({
+                ...prev,
+                range: { start: new Date(range.from), end: new Date(range.to) }
+              }));
+              setEventPagination((prev) => ({ ...prev, currentPage: 0, startAfter: null }));
+            }}
+          />
+        ) : (
+          <TextField
+            size="small"
+            type="date"
+            label={t('attendance.summaryDay')}
+            value={summaryFilters.day}
+            onChange={(event) => {
+              setSummaryPage(0);
+              setSummaryFilters((prev) => ({ ...prev, day: event.target.value }));
+            }}
+            InputLabelProps={{ shrink: true }}
+          />
+        )}
+      </Box>
+    </Box>
+  );
+
   return {
-    items, onSort, onRowsPerPageChange,
-    topFilter, empthy,
-    onNext, onBack,
-    columns, rowAction, onSuccessCreate,
-    loading, filterParams
-  }
+    items: eventItems,
+    summaryItems,
+    viewMode,
+    setViewMode,
+    onSort,
+    onRowsPerPageChange,
+    topFilter,
+    empthy,
+    onNext,
+    onBack,
+    columns: eventColumns,
+    rowAction,
+    onSuccessCreate,
+    loading,
+    filterParams: {
+      currentPage: eventPagination.currentPage,
+      params: {
+        limit: eventPagination.limit,
+        orderBy: eventPagination.orderBy,
+        orderDirection: eventPagination.orderDirection,
+      },
+    },
+    summaryPagination: {
+      page: summaryPage,
+      rowsPerPage: summaryRowsPerPage,
+      onPageChange: setSummaryPage,
+      onRowsPerPageChange: (rows: number) => {
+        setSummaryRowsPerPage(rows);
+        setSummaryPage(0);
+      },
+    },
+  };
 }
