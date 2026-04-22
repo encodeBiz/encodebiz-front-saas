@@ -49,11 +49,34 @@ const statusLabelMap: Record<WorkSessionSummary['status'], string> = {
 };
 
 const statusChipColorMap: Record<WorkSessionSummary['status'], string> = {
-  pending: 'pending',
+  pending: 'pending-employee-validation',
   incident: 'failed',
-  on_break: 'default',
-  working: 'active',
+  on_break: 'failed',
+  working: 'pending',
   completed: 'valid',
+};
+
+const chipVisualMap: Record<string, { backgroundColor: string; borderColor: string }> = {
+  'pending-employee-validation': {
+    backgroundColor: 'rgba(121, 123, 125, 0.08)',
+    borderColor: 'rgba(121, 123, 125, 0.08)',
+  },
+  failed: {
+    backgroundColor: '#F4AA32',
+    borderColor: '#F4AA32',
+  },
+  pending: {
+    backgroundColor: 'rgba(122, 166, 223, 0.65)',
+    borderColor: 'rgba(122, 166, 223, 0.65)',
+  },
+  active: {
+    backgroundColor: 'rgba(122, 223, 127, 0.65)',
+    borderColor: 'rgba(122, 223, 127, 0.65)',
+  },
+  valid: {
+    backgroundColor: 'rgba(122, 223, 127, 0.65)',
+    borderColor: 'rgba(122, 223, 127, 0.65)',
+  },
 };
 
 const incidentLabelMap: Record<string, string> = {
@@ -191,7 +214,11 @@ export const AttendanceSummaryList = ({
                   role="ship"
                   background={statusChipColorMap[session.status]}
                   label={t(statusLabelMap[session.status])}
-                  sx={{ justifySelf: 'flex-start' }}
+                  sx={{
+                    justifySelf: 'flex-start',
+                    backgroundColor: chipVisualMap[statusChipColorMap[session.status]]?.backgroundColor,
+                    borderColor: chipVisualMap[statusChipColorMap[session.status]]?.borderColor,
+                  }}
                 />
                 <Box>
                   <Typography variant="caption" color="text.secondary">{t('attendance.summaryStart')}</Typography>
@@ -229,6 +256,10 @@ export const AttendanceSummaryList = ({
                       background="failed"
                       size="small"
                       label={t(incidentLabelMap[incident.code] ?? 'attendance.summaryIncidentInvalidSequence')}
+                      sx={{
+                        backgroundColor: chipVisualMap.failed.backgroundColor,
+                        borderColor: chipVisualMap.failed.borderColor,
+                      }}
                     />
                   ))}
                 </Stack>
@@ -256,6 +287,10 @@ export const AttendanceSummaryList = ({
                             size="small"
                             background={log.status}
                             label={t(`core.label.${log.status}`)}
+                            sx={{
+                              backgroundColor: chipVisualMap[log.status]?.backgroundColor,
+                              borderColor: chipVisualMap[log.status]?.borderColor,
+                            }}
                           />
                         </TableCell>
                         <TableCell>{format_date(log.timestamp, 'DD/MM/YYYY HH:mm:ss', log.metadata?.tz ?? log.metadata?.etz)}</TableCell>
