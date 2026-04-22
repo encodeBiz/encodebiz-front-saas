@@ -6,6 +6,8 @@ import { useTranslations } from "next-intl";
 
 export const LogDetail = ({ logDetail }: { logDetail: any }) => {
     const t = useTranslations()
+    const isRatioCheckDisabled = logDetail?.branch?.disableRatioChecklog ?? logDetail?.disableRatioChecklog ?? false;
+    const ratioChecklog = logDetail?.branch?.ratioChecklog;
  
 
     return <Stack spacing={2.5}>
@@ -59,15 +61,23 @@ export const LogDetail = ({ logDetail }: { logDetail: any }) => {
                     </Box>
                 </li>
                 
-                {logDetail.disableRatioChecklog && <li style={{ fontSize: 16, fontWeight: 400, }}>
+                {!isRatioCheckDisabled && <li style={{ fontSize: 16, fontWeight: 400, }}>
                     <Box display={'flex'} gap={1}>
                         <Typography fontWeight={700}>{t('attendance.logDetail.distanceToAuthorizedPointLabel')}</Typography>
                         <Typography >{Number(logDetail.metadata?.distance ?? 0).toFixed(2)} {t('attendance.logDetail.meters')}</Typography>
                     </Box>
                 </li>}
+                {!isRatioCheckDisabled && <li style={{ fontSize: 16, fontWeight: 400, }}>
+                    <Box display={'flex'} gap={1}>
+                        <Typography fontWeight={700}>{t('core.label.ratioChecklog2')}</Typography>
+                        <Typography >{ratioChecklog ?? 0} {t('core.label.meters')}</Typography>
+                    </Box>
+                </li>}
                 <li style={{ fontSize: 16, fontWeight: 400, }}>
                     <Box display={'flex'} gap={1}>
-                        <Typography fontWeight={700}>{t('core.label.' + logDetail.disableRatioChecklog ? t('core.label.disableRatioChecklogD') : t('core.label.disableRatioChecklogE'))}</Typography>
+                        <Typography fontWeight={700}>
+                            {isRatioCheckDisabled ? t('core.label.disableRatioChecklogD') : t('core.label.disableRatioChecklogE')}
+                        </Typography>
                     </Box>
                 </li>
 
@@ -92,12 +102,6 @@ export const LogDetail = ({ logDetail }: { logDetail: any }) => {
                     <Box display={'flex'} gap={1}>
                         <Typography fontWeight={700}>{t('attendance.logDetail.appliedScheduleLabel')}</Typography>
                         <Typography >{`${(logDetail.metadata?.scheduleApplied?.start?.hour ?? 0).toString().padStart(2, '0')}:${(logDetail.metadata?.scheduleApplied?.start?.minute ?? 0).toString().padStart(2, '0')}`} - {`${(logDetail.metadata?.scheduleApplied?.end?.hour ?? 0).toString().padStart(2, '0')}:${(logDetail.metadata?.scheduleApplied?.end?.minute ?? 0).toString().padStart(2, '0')}`}</Typography>
-                    </Box>
-                </li>
-                <li style={{ fontSize: 16, fontWeight: 400, }}>
-                    <Box display={'flex'} gap={1}>
-                        <Typography fontWeight={700}>{t('attendance.logDetail.scheduleNoticeLabel')}</Typography>
-                        <Typography > {logDetail?.branch?.advance?.notifyBeforeMinutes} {t('attendance.logDetail.minutesBeforeEntryAndExit')}</Typography>
                     </Box>
                 </li>
             </ul>
