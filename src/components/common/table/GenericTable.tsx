@@ -96,6 +96,7 @@ interface GenericTableProps<T> {
   rowAction?: Array<IRowAction>
   topFilter?: React.ReactNode
   empty?: React.ReactNode
+  paperSx?: any
 }
 
 export function GenericTable<T extends Record<string, any>>({
@@ -117,7 +118,8 @@ export function GenericTable<T extends Record<string, any>>({
   onBack,
   onNext,
   rowAction = [],
-  topFilter = <></>
+  topFilter = <></>,
+  paperSx
 }: GenericTableProps<T>) {
   // State management
   const [order, setOrder] = useState<'asc' | 'desc'>(sort?.orderDirection ?? 'asc');
@@ -235,7 +237,7 @@ export function GenericTable<T extends Record<string, any>>({
 
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+    <Paper elevation={0} sx={{ width: '100%', overflow: 'hidden', ...paperSx }}>
 
       <Box
         sx={{
@@ -513,4 +515,3 @@ export function GenericTable<T extends Record<string, any>>({
     </Paper >
   );
 }
-

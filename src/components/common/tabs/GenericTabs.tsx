@@ -38,6 +38,7 @@ const GenericTabs: React.FC<GenericTabsProps> = ({
     defaultTab = 0,
     onChange,
     sx = [],
+    panelSx,
     syncUrl = true,
 }) => {
     const [currentTab, setCurrentTab] = useState(defaultTab);
@@ -112,7 +113,7 @@ const GenericTabs: React.FC<GenericTabsProps> = ({
 
                 <Box flexGrow={1}>
                     {tabs.map((tab, index) => (
-                        <TabPanel key={`tabpanel-${index}`} value={currentTab} index={index} sx={{ pl: 8, pr: 8, background: (theme) => theme.palette.background.paper }}>
+                        <TabPanel key={`tabpanel-${index}`} value={currentTab} index={index} sx={{ pl: 8, pr: 8, background: (theme) => theme.palette.background.paper, ...panelSx }}>
                             {tab.content}
                         </TabPanel>
                     ))}
