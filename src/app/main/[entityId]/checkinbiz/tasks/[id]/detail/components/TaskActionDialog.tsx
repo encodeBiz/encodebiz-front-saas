@@ -1,8 +1,12 @@
 "use client";
 
 import { SassButton } from "@/components/common/buttons/GenericButton";
+import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
+import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { TaskAssignment, TaskNoteType } from "@/domain/features/checkinbiz/ITask";
 import {
+  Box,
+  Chip,
   Dialog,
   DialogActions,
   DialogContent,
@@ -32,6 +36,7 @@ export default function TaskActionDialog({
 }) {
   const [text, setText] = useState("");
   const [noteType, setNoteType] = useState<TaskNoteType>("operational_note");
+  const [selectedEmployees, setSelectedEmployees] = useState<Array<{ id: string; label: string }>>([]);
   const [employeeId, setEmployeeId] = useState("");
   const [rating, setRating] = useState(5);
   const [resourceType, setResourceType] = useState<"photo" | "video">("photo");
@@ -41,6 +46,7 @@ export default function TaskActionDialog({
     if (open) {
       setText("");
       setNoteType("operational_note");
+      setSelectedEmployees([]);
       setEmployeeId(assignments?.[0]?.employeeId ?? "");
       setRating(5);
       setResourceType("photo");
@@ -57,8 +63,23 @@ export default function TaskActionDialog({
     cancel: "Cancelar tarea",
   };
 
+  const getIndexId = (value: ISearchIndex | null) => value?.index?.split("/").pop() ?? value?.id ?? "";
+  const getIndexLabel = (value: ISearchIndex | null) => {
+    if (!value) return "";
+    return String(value.fields?.fullName ?? value.fields?.name ?? getIndexId(value));
+  };
+
+  const addEmployee = (value: ISearchIndex | null) => {
+    const id = getIndexId(value);
+    if (!id) return;
+    setSelectedEmployees((prev) => {
+      if (prev.some((employee) => employee.id === id)) return prev;
+      return [...prev, { id, label: getIndexLabel(value) }];
+    });
+  };
+
   const submit = () => {
-    if (type === "assign") onSubmit({ employeeIds: text.split(",").map((item) => item.trim()).filter(Boolean) });
+    if (type === "assign") onSubmit({ employeeIds: selectedEmployees.map((employee) => employee.id) });
     if (type === "note") onSubmit({ content: text.trim(), type: noteType });
     if (type === "reject") onSubmit({ reason: text.trim() });
     if (type === "cancel") onSubmit({ cancellationReason: text.trim() });
@@ -68,7 +89,8 @@ export default function TaskActionDialog({
 
   const disabled =
     loading ||
-    (["assign", "note", "reject", "cancel"].includes(type) && !text.trim()) ||
+    (type === "assign" && selectedEmployees.length === 0) ||
+    (["note", "reject", "cancel"].includes(type) && !text.trim()) ||
     (type === "rate" && !employeeId) ||
     (type === "resource" && !file);
 
@@ -77,7 +99,22 @@ export default function TaskActionDialog({
       <DialogTitle>{titles[type]}</DialogTitle>
       <DialogContent>
         <Stack gap={2} sx={{ mt: 1 }}>
-          {type === "assign" && <TextField label="IDs de empleados" helperText="Separados por coma" value={text} onChange={(event) => setText(event.target.value)} fullWidth />}
+          {type === "assign" && (
+            <Box>
+              <SearchIndexFilter type="employee" label="Buscar empleado" placeholder="Buscar empleado" onChange={addEmployee} />
+              {selectedEmployees.length > 0 && (
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 1 }}>
+                  {selectedEmployees.map((employee) => (
+                    <Chip
+                      key={employee.id}
+                      label={employee.label || employee.id}
+                      onDelete={() => setSelectedEmployees((prev) => prev.filter((item) => item.id !== employee.id))}
+                    />
+                  ))}
+                </Box>
+              )}
+            </Box>
+          )}
 
           {type === "note" && (
             <>

@@ -1,10 +1,13 @@
 "use client";
 
 import { SassButton } from "@/components/common/buttons/GenericButton";
+import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
+import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { Task, TaskPriority, defaultTaskConfig } from "@/domain/features/checkinbiz/ITask";
 import {
   Box,
   Checkbox,
+  Chip,
   Dialog,
   DialogActions,
   DialogContent,
@@ -20,9 +23,10 @@ type TaskFormState = {
   title: string;
   description: string;
   branchId: string;
+  branchLabel: string;
   dueAt: string;
   priority: TaskPriority;
-  assignedEmployeeIds: string;
+  assignedEmployees: Array<{ id: string; label: string }>;
   allowSupervisorCreation: boolean;
   allowSupervisorValidation: boolean;
   allowSupervisorRating: boolean;
@@ -41,9 +45,10 @@ const initialForm = (task?: Task): TaskFormState => ({
   title: task?.title ?? "",
   description: task?.description ?? "",
   branchId: task?.branchId ?? "",
+  branchLabel: task?.branch?.name ?? task?.branchId ?? "",
   dueAt: toInputDate(task?.dueAt),
   priority: task?.priority ?? "medium",
-  assignedEmployeeIds: task?.assignedEmployeeIds?.join(", ") ?? "",
+  assignedEmployees: task?.assignedEmployeeIds?.map((id) => ({ id, label: id })) ?? [],
   allowSupervisorCreation: task?.config?.allowSupervisorCreation ?? defaultTaskConfig.allowSupervisorCreation,
   allowSupervisorValidation: task?.config?.allowSupervisorValidation ?? defaultTaskConfig.allowSupervisorValidation,
   allowSupervisorRating: task?.config?.allowSupervisorRating ?? defaultTaskConfig.allowSupervisorRating,
@@ -71,19 +76,34 @@ export default function TaskFormDialog({
 
   const change = (field: keyof TaskFormState, value: any) => setForm((prev) => ({ ...prev, [field]: value }));
 
-  const submit = () => {
-    const assignedEmployeeIds = form.assignedEmployeeIds
-      .split(",")
-      .map((item) => item.trim())
-      .filter(Boolean);
+  const getIndexId = (value: ISearchIndex | null) => value?.index?.split("/").pop() ?? value?.id ?? "";
+  const getIndexLabel = (value: ISearchIndex | null, fallback: string) => {
+    if (!value) return "";
+    return String(value.fields?.[fallback] ?? value.fields?.fullName ?? value.fields?.name ?? getIndexId(value));
+  };
 
+  const addEmployee = (value: ISearchIndex | null) => {
+    const id = getIndexId(value);
+    if (!id) return;
+    const label = getIndexLabel(value, "fullName");
+    setForm((prev) => {
+      if (prev.assignedEmployees.some((employee) => employee.id === id)) return prev;
+      return { ...prev, assignedEmployees: [...prev.assignedEmployees, { id, label }] };
+    });
+  };
+
+  const removeEmployee = (id: string) => {
+    setForm((prev) => ({ ...prev, assignedEmployees: prev.assignedEmployees.filter((employee) => employee.id !== id) }));
+  };
+
+  const submit = () => {
     onSubmit({
       title: form.title.trim(),
       description: form.description.trim(),
       branchId: form.branchId.trim(),
       dueAt: new Date(form.dueAt).toISOString(),
       priority: form.priority,
-      assignedEmployeeIds,
+      assignedEmployeeIds: form.assignedEmployees.map((employee) => employee.id),
       config: {
         ...defaultTaskConfig,
         allowSupervisorCreation: form.allowSupervisorCreation,
@@ -110,7 +130,25 @@ export default function TaskFormDialog({
             multiline
             minRows={3}
           />
-          <TextField label="Sucursal ID" value={form.branchId} onChange={(event) => change("branchId", event.target.value)} fullWidth required />
+          <Box>
+            <SearchIndexFilter
+              type="branch"
+              label="Buscar sucursal"
+              placeholder="Buscar sucursal"
+              onChange={(value: ISearchIndex | null) => {
+                change("branchId", getIndexId(value));
+                change("branchLabel", getIndexLabel(value, "name"));
+              }}
+            />
+            {form.branchId && (
+              <Box sx={{ mt: 1 }}>
+                <Chip label={form.branchLabel || form.branchId} onDelete={() => {
+                  change("branchId", "");
+                  change("branchLabel", "");
+                }} />
+              </Box>
+            )}
+          </Box>
           <TextField
             label="Fecha límite"
             type="datetime-local"
@@ -126,13 +164,16 @@ export default function TaskFormDialog({
             <MenuItem value="high">Alta</MenuItem>
             <MenuItem value="critical">Crítica</MenuItem>
           </TextField>
-          <TextField
-            label="IDs de empleados asignados"
-            helperText="Separados por coma"
-            value={form.assignedEmployeeIds}
-            onChange={(event) => change("assignedEmployeeIds", event.target.value)}
-            fullWidth
-          />
+          <Box>
+            <SearchIndexFilter type="employee" label="Buscar empleado" placeholder="Buscar empleado" onChange={addEmployee} />
+            {form.assignedEmployees.length > 0 && (
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 1 }}>
+                {form.assignedEmployees.map((employee) => (
+                  <Chip key={employee.id} label={employee.label || employee.id} onDelete={() => removeEmployee(employee.id)} />
+                ))}
+              </Box>
+            )}
+          </Box>
           <Box>
             <FormControlLabel
               control={<Checkbox checked={form.allowSupervisorCreation} onChange={(event) => change("allowSupervisorCreation", event.target.checked)} />}

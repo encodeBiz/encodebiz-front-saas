@@ -108,10 +108,12 @@ export default function SideMenu() {
     ...menuItemsServices.reduce((acc: any, key: any) => {
       acc[key] = false;
       return acc;
-    }, {})
+    }, {}),
+    checkinbiz: true,
   });
 
   const handleSubMenuToggle = (menu: string) => {
+    if (menu === 'checkinbiz') return;
     setOpenSubMenu({ ...openSubMenu, [menu]: !openSubMenu[menu] });
   };
 
@@ -175,10 +177,10 @@ export default function SideMenu() {
                   return <div key={i} >
                     <ListItem disablePadding>
                       <CustomListItemButton item={item} handleSubMenuToggle={handleSubMenuToggle} disableHover={true}>
-                        {openSubMenu[item.id] ? <ExpandLess /> : <ExpandMore />}
+                        {item.id === 'checkinbiz' || openSubMenu[item.id] ? <ExpandLess /> : <ExpandMore />}
                       </CustomListItemButton>
                     </ListItem>
-                    <Collapse in={openSubMenu[item.id]} timeout="auto" unmountOnExit>
+                    <Collapse in={item.id === 'checkinbiz' || openSubMenu[item.id]} timeout="auto" unmountOnExit>
                       <List component="div" disablePadding>
                         {item.subMenu.map((e: any, index: number) => <ListItem onClick={() => navivateTo(e.link, true)} key={i + '-' + index} disablePadding>
                           <CustomListItemButton subItem item={e} />
