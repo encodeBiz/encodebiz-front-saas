@@ -1,5 +1,6 @@
 import { IEmployee, ResponsibilityKey } from "./IEmployee";
 import { ISucursal } from "./ISucursal";
+import IUser from "@/domain/core/auth/IUser";
 
 export type TaskStatus =
   | "draft"
@@ -92,6 +93,7 @@ export interface TaskNote {
   content: string;
   type: TaskNoteType;
   createdBy: string;
+  createdByName?: string;
   createdByRole: ResponsibilityKey;
   createdAt: Date | string | any;
   updatedBy?: string;
@@ -126,6 +128,8 @@ export interface TaskRating {
   rating: 1 | 2 | 3 | 4 | 5;
   comment?: string;
   ratedBy: string;
+  ratedByName?: string;
+  ratedByUser?: IUser;
   ratedByRole: Exclude<ResponsibilityKey, "worker">;
   ratedAt: Date | string | any;
 }

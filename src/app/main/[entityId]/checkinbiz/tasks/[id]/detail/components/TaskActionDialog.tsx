@@ -1,12 +1,10 @@
 "use client";
 
 import { SassButton } from "@/components/common/buttons/GenericButton";
-import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
-import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { TaskAssignment, TaskNoteType } from "@/domain/features/checkinbiz/ITask";
 import {
+  Alert,
   Box,
-  Chip,
   Dialog,
   DialogActions,
   DialogContent,
@@ -16,6 +14,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import TaskSearchIndexMultiSelect, { TaskSearchOption } from "../../../components/TaskSearchIndexMultiSelect";
 
 export type TaskActionType = "assign" | "note" | "reject" | "rate" | "resource" | "cancel";
 
@@ -24,6 +23,7 @@ export default function TaskActionDialog({
   type,
   loading,
   assignments,
+  currentEmployeeId,
   onClose,
   onSubmit,
 }: {
@@ -31,28 +31,66 @@ export default function TaskActionDialog({
   type: TaskActionType;
   loading?: boolean;
   assignments?: TaskAssignment[];
+  currentEmployeeId?: string | null;
   onClose: () => void;
   onSubmit: (data: any) => void;
 }) {
   const [text, setText] = useState("");
   const [noteType, setNoteType] = useState<TaskNoteType>("operational_note");
-  const [selectedEmployees, setSelectedEmployees] = useState<Array<{ id: string; label: string }>>([]);
+  const [selectedEmployees, setSelectedEmployees] = useState<TaskSearchOption[]>([]);
   const [employeeId, setEmployeeId] = useState("");
   const [rating, setRating] = useState(5);
   const [resourceType, setResourceType] = useState<"photo" | "video">("photo");
   const [file, setFile] = useState<File | null>(null);
+  const [fileError, setFileError] = useState("");
 
   useEffect(() => {
     if (open) {
       setText("");
       setNoteType("operational_note");
       setSelectedEmployees([]);
-      setEmployeeId(assignments?.[0]?.employeeId ?? "");
+      setEmployeeId(assignments?.find((assignment) => assignment.employeeId !== currentEmployeeId)?.employeeId ?? "");
       setRating(5);
       setResourceType("photo");
       setFile(null);
+      setFileError("");
     }
-  }, [open, assignments]);
+  }, [open, assignments, currentEmployeeId]);
+
+  const resourceRules = {
+    photo: {
+      accept: "image/jpeg,image/png,image/webp",
+      maxBytes: 5 * 1024 * 1024,
+      allowedMimeTypes: ["image/jpeg", "image/png", "image/webp"],
+      helper: "Formatos permitidos: JPG, PNG, WEBP. Tamaño máximo: 5 MB.",
+    },
+    video: {
+      accept: "video/mp4,video/webm",
+      maxBytes: 25 * 1024 * 1024,
+      allowedMimeTypes: ["video/mp4", "video/webm"],
+      helper: "Formatos permitidos: MP4 y WEBM. Tamaño máximo: 25 MB.",
+    },
+  } as const;
+
+  const currentRule = resourceRules[resourceType];
+
+  const handleFileChange = (nextFile: File | null) => {
+    setFileError("");
+    setFile(null);
+    if (!nextFile) return;
+
+    if (!(currentRule.allowedMimeTypes as readonly string[]).includes(nextFile.type)) {
+      setFileError(`Tipo no permitido. ${currentRule.helper}`);
+      return;
+    }
+
+    if (nextFile.size > currentRule.maxBytes) {
+      setFileError(`Archivo demasiado grande. ${currentRule.helper}`);
+      return;
+    }
+
+    setFile(nextFile);
+  };
 
   const titles: Record<TaskActionType, string> = {
     assign: "Asignar trabajadores",
@@ -61,21 +99,6 @@ export default function TaskActionDialog({
     rate: "Valorar trabajador",
     resource: "Subir evidencia",
     cancel: "Cancelar tarea",
-  };
-
-  const getIndexId = (value: ISearchIndex | null) => value?.index?.split("/").pop() ?? value?.id ?? "";
-  const getIndexLabel = (value: ISearchIndex | null) => {
-    if (!value) return "";
-    return String(value.fields?.fullName ?? value.fields?.name ?? getIndexId(value));
-  };
-
-  const addEmployee = (value: ISearchIndex | null) => {
-    const id = getIndexId(value);
-    if (!id) return;
-    setSelectedEmployees((prev) => {
-      if (prev.some((employee) => employee.id === id)) return prev;
-      return [...prev, { id, label: getIndexLabel(value) }];
-    });
   };
 
   const submit = () => {
@@ -92,7 +115,9 @@ export default function TaskActionDialog({
     (type === "assign" && selectedEmployees.length === 0) ||
     (["note", "reject", "cancel"].includes(type) && !text.trim()) ||
     (type === "rate" && !employeeId) ||
-    (type === "resource" && !file);
+    (type === "resource" && (!file || !!fileError));
+
+  const rateableAssignments = (assignments ?? []).filter((assignment) => assignment.employeeId !== currentEmployeeId);
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
@@ -101,18 +126,12 @@ export default function TaskActionDialog({
         <Stack gap={2} sx={{ mt: 1 }}>
           {type === "assign" && (
             <Box>
-              <SearchIndexFilter type="employee" label="Buscar empleado" placeholder="Buscar empleado" onChange={addEmployee} />
-              {selectedEmployees.length > 0 && (
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 1 }}>
-                  {selectedEmployees.map((employee) => (
-                    <Chip
-                      key={employee.id}
-                      label={employee.label || employee.id}
-                      onDelete={() => setSelectedEmployees((prev) => prev.filter((item) => item.id !== employee.id))}
-                    />
-                  ))}
-                </Box>
-              )}
+              <TaskSearchIndexMultiSelect
+                type="employee"
+                label="Buscar empleados"
+                value={selectedEmployees}
+                onChange={setSelectedEmployees}
+              />
             </Box>
           )}
 
@@ -135,12 +154,19 @@ export default function TaskActionDialog({
           {type === "rate" && (
             <>
               <TextField select label="Trabajador" value={employeeId} onChange={(event) => setEmployeeId(event.target.value)} fullWidth>
-                {(assignments ?? []).map((assignment) => (
+                {rateableAssignments.map((assignment) => (
                   <MenuItem key={assignment.employeeId} value={assignment.employeeId}>
                     {assignment.employee?.fullName ?? assignment.employeeId}
                   </MenuItem>
                 ))}
               </TextField>
+              {rateableAssignments.length === 0 && (
+                <TextField
+                  value="No hay trabajadores disponibles para valorar. No puedes valorarte a ti mismo."
+                  fullWidth
+                  disabled
+                />
+              )}
               <TextField select label="Valoración" value={rating} onChange={(event) => setRating(Number(event.target.value))} fullWidth>
                 {[1, 2, 3, 4, 5].map((value) => (
                   <MenuItem key={value} value={value}>
@@ -165,7 +191,14 @@ export default function TaskActionDialog({
                   </MenuItem>
                 ))}
               </TextField>
-              <TextField type="file" onChange={(event: any) => setFile(event.target.files?.[0] ?? null)} fullWidth />
+              <TextField
+                type="file"
+                onChange={(event: any) => handleFileChange(event.target.files?.[0] ?? null)}
+                fullWidth
+                slotProps={{ htmlInput: { accept: currentRule.accept } }}
+                helperText={currentRule.helper}
+              />
+              {fileError && <Alert severity="error">{fileError}</Alert>}
               <TextField label="Descripción" value={text} onChange={(event) => setText(event.target.value)} fullWidth multiline minRows={2} />
             </>
           )}

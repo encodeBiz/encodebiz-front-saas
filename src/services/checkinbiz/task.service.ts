@@ -15,6 +15,7 @@ import { mapperErrorFromBack } from "@/lib/common/String";
 import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { getOne } from "@/lib/firebase/firestore/readDocument";
 import { HttpClient } from "@/lib/http/httpClientFetchNext";
+import { codeError } from "@/config/errorLocales";
 
 const TASKS_HANDLER_URL = process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_TASKS_HANDLER as string;
 const TASKS_FALLBACK_URL =
@@ -40,8 +41,20 @@ const unwrapResponse = (response: any) => {
   return response?.data ?? response;
 };
 
-const handleServiceError = (error: any) => {
-  throw new Error(mapperErrorFromBack(error?.message as string, true) as string);
+const handleServiceError = (error: any, locale: any = "es") => {
+  const rawMessage = error?.message;
+  let parsed: any = null;
+  try {
+    parsed = typeof rawMessage === "string" ? JSON.parse(rawMessage) : rawMessage;
+  } catch {
+    parsed = null;
+  }
+  const code = parsed?.code;
+  const mapped = code ? codeError?.[locale]?.[code] ?? codeError?.es?.[code] : null;
+  if (mapped) throw new Error(mapped);
+  if (typeof parsed?.message === "string") throw new Error(parsed.message);
+  if (typeof parsed?.error === "string") throw new Error(parsed.error);
+  throw new Error(mapperErrorFromBack(rawMessage as string, false) as string);
 };
 
 export async function searchTasks(entityId: string, params: Partial<SearchParams> = {}): Promise<Task[]> {
@@ -141,7 +154,7 @@ export async function createTask(data: Partial<Task>, token: string, locale: any
     const response = await getClient(token, locale).post(getTasksUrl(), data);
     return unwrapResponse(response);
   } catch (error: any) {
-    handleServiceError(error);
+    handleServiceError(error, locale);
   }
 }
 
@@ -151,7 +164,7 @@ export async function updateTask(taskId: string, data: Partial<Task>, token: str
     const response = await getClient(token, locale).patch(`${getTasksUrl()}/${taskId}`, data);
     return unwrapResponse(response);
   } catch (error: any) {
-    handleServiceError(error);
+    handleServiceError(error, locale);
   }
 }
 
@@ -166,7 +179,7 @@ export async function assignTaskWorkers(
     const response = await getClient(token, locale).post(`${getTasksUrl()}/${taskId}/assignments`, data);
     return unwrapResponse(response);
   } catch (error: any) {
-    handleServiceError(error);
+    handleServiceError(error, locale);
   }
 }
 
@@ -181,7 +194,7 @@ export async function updateTaskStatus(
     const response = await getClient(token, locale).patch(`${getTasksUrl()}/${taskId}/status`, data);
     return unwrapResponse(response);
   } catch (error: any) {
-    handleServiceError(error);
+    handleServiceError(error, locale);
   }
 }
 
@@ -196,7 +209,7 @@ export async function addTaskNote(
     const response = await getClient(token, locale).post(`${getTasksUrl()}/${taskId}/notes`, data);
     return unwrapResponse(response);
   } catch (error: any) {
-    handleServiceError(error);
+    handleServiceError(error, locale);
   }
 }
 
@@ -212,7 +225,7 @@ export async function updateTaskNote(
     const response = await getClient(token, locale).patch(`${getTasksUrl()}/${taskId}/notes/${noteId}`, data);
     return unwrapResponse(response);
   } catch (error: any) {
-    handleServiceError(error);
+    handleServiceError(error, locale);
   }
 }
 
@@ -227,7 +240,7 @@ export async function validateTask(
     const response = await getClient(token, locale).post(`${getTasksUrl()}/${taskId}/validation`, data);
     return unwrapResponse(response);
   } catch (error: any) {
-    handleServiceError(error);
+    handleServiceError(error, locale);
   }
 }
 
@@ -242,7 +255,7 @@ export async function rejectTask(
     const response = await getClient(token, locale).post(`${getTasksUrl()}/${taskId}/rejection`, data);
     return unwrapResponse(response);
   } catch (error: any) {
-    handleServiceError(error);
+    handleServiceError(error, locale);
   }
 }
 
@@ -257,7 +270,7 @@ export async function rateTaskWorker(
     const response = await getClient(token, locale).post(`${getTasksUrl()}/${taskId}/ratings`, data);
     return unwrapResponse(response);
   } catch (error: any) {
-    handleServiceError(error);
+    handleServiceError(error, locale);
   }
 }
 
@@ -287,6 +300,6 @@ export async function uploadTaskResource(
     if (contentType?.includes("application/json")) return unwrapResponse(await response.json());
     return {};
   } catch (error: any) {
-    handleServiceError(error);
+    handleServiceError(error, locale);
   }
 }

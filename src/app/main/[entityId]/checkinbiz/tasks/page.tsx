@@ -55,6 +55,7 @@ export default function TasksList() {
           onBack={onBack}
           onNext={onNext}
           topFilter={topFilter}
+          disableRowHover
         />
 
         {items.length === 0 && !loading && (

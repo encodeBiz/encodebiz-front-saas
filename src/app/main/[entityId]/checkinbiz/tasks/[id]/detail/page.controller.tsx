@@ -3,7 +3,9 @@
 
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
 import { Task, TaskDetail, TaskStatus } from "@/domain/features/checkinbiz/ITask";
-import { fetchEmployee } from "@/services/checkinbiz/employee.service";
+import { fetchEmployee, search as searchEmployee } from "@/services/checkinbiz/employee.service";
+import { fetchUser } from "@/services/core/users.service";
+import { fetchSucursal } from "@/services/checkinbiz/sucursal.service";
 import {
   addTaskNote,
   assignTaskWorkers,
@@ -26,7 +28,7 @@ import { TaskActionType } from "./components/TaskActionDialog";
 
 export default function useTaskDetailController() {
   const { id } = useParams<{ id: string }>();
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const { currentEntity, watchServiceAccess } = useEntity();
   const { currentLocale } = useAppLocale();
   const { navivateTo } = useLayout();
@@ -36,6 +38,7 @@ export default function useTaskDetailController() {
   const [detail, setDetail] = useState<TaskDetail | null>(null);
   const [openForm, setOpenForm] = useState(false);
   const [action, setAction] = useState<TaskActionType | null>(null);
+  const [currentEmployeeId, setCurrentEmployeeId] = useState<string | null>(null);
 
   const entityId = currentEntity?.entity.id as string;
 
@@ -44,12 +47,32 @@ export default function useTaskDetailController() {
     setLoading(true);
     try {
       const data = await fetchTaskDetail(entityId, id);
+      let branch = data.task.branch;
+      try {
+        branch = await fetchSucursal(entityId, data.task.branchId);
+      } catch {
+        branch = data.task.branch;
+      }
       const assignments = await Promise.all(
         data.assignments.map(async (assignment) => {
           try {
             return { ...assignment, employee: await fetchEmployee(entityId, assignment.employeeId) };
           } catch {
             return assignment;
+          }
+        })
+      );
+      const notes = await Promise.all(
+        data.notes.map(async (note) => {
+          try {
+            const createdByEmployee = await fetchEmployee(entityId, note.createdBy).catch(() => undefined);
+            const createdByUser = createdByEmployee ? undefined : await fetchUser(note.createdBy).catch(() => undefined);
+            return {
+              ...note,
+              createdByName: createdByEmployee?.fullName ?? createdByUser?.fullName ?? note.createdBy,
+            };
+          } catch {
+            return note;
           }
         })
       );
@@ -65,13 +88,21 @@ export default function useTaskDetailController() {
       const ratings = await Promise.all(
         data.ratings.map(async (rating) => {
           try {
-            return { ...rating, employee: await fetchEmployee(entityId, rating.employeeId) };
+            const employee = await fetchEmployee(entityId, rating.employeeId).catch(() => undefined);
+            const ratedByEmployee = await fetchEmployee(entityId, rating.ratedBy).catch(() => undefined);
+            const ratedByUser = ratedByEmployee ? undefined : await fetchUser(rating.ratedBy).catch(() => undefined);
+            return {
+              ...rating,
+              employee,
+              ratedByUser,
+              ratedByName: ratedByEmployee?.fullName ?? ratedByUser?.fullName ?? rating.ratedBy,
+            };
           } catch {
             return rating;
           }
         })
       );
-      setDetail({ ...data, assignments, resources, ratings });
+      setDetail({ ...data, task: { ...data.task, branch }, assignments, notes, resources, ratings });
     } catch (error: any) {
       showToast(error?.message, "error");
     } finally {
@@ -111,6 +142,13 @@ export default function useTaskDetailController() {
 
   const onValidate = () => runMutation(() => validateTask(id, { entityId }, token, currentLocale));
 
+  const onRemoveAssignment = (employeeId: string) => {
+    const employeeIds = (detail?.assignments ?? [])
+      .map((assignment) => assignment.employeeId)
+      .filter((id) => id !== employeeId);
+    return runMutation(() => assignTaskWorkers(id, { entityId, employeeIds }, token, currentLocale));
+  };
+
   const onActionSubmit = (data: any) => {
     if (action === "assign") return runMutation(() => assignTaskWorkers(id, { entityId, employeeIds: data.employeeIds }, token, currentLocale));
     if (action === "note") return runMutation(() => addTaskNote(id, { entityId, content: data.content, type: data.type }, token, currentLocale));
@@ -131,6 +169,20 @@ export default function useTaskDetailController() {
 
   const back = () => navivateTo(`/${CHECKINBIZ_MODULE_ROUTE}/tasks`);
 
+  const resolveCurrentEmployee = async () => {
+    if (!entityId || !user?.id) return;
+    try {
+      const employees = await searchEmployee(entityId, {
+        filters: [{ field: "uid", operator: "==", value: user.id }],
+        limit: 1,
+        includeCount: false,
+      } as any);
+      setCurrentEmployeeId(employees?.[0]?.id ?? null);
+    } catch {
+      setCurrentEmployeeId(null);
+    }
+  };
+
   useEffect(() => {
     if (entityId) watchServiceAccess("checkinbiz");
   }, [entityId, watchServiceAccess]);
@@ -138,6 +190,10 @@ export default function useTaskDetailController() {
   useEffect(() => {
     loadDetail();
   }, [entityId, id]);
+
+  useEffect(() => {
+    resolveCurrentEmployee();
+  }, [entityId, user?.id]);
 
   return {
     detail,
@@ -147,10 +203,12 @@ export default function useTaskDetailController() {
     setOpenForm,
     action,
     setAction,
+    currentEmployeeId,
     back,
     onUpdate,
     onStatus,
     onValidate,
+    onRemoveAssignment,
     onActionSubmit,
   };
 }

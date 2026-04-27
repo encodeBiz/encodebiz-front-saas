@@ -1,13 +1,11 @@
 "use client";
 
 import { SassButton } from "@/components/common/buttons/GenericButton";
-import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
-import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { Task, TaskPriority, defaultTaskConfig } from "@/domain/features/checkinbiz/ITask";
+import { fetchEmployee } from "@/services/checkinbiz/employee.service";
 import {
   Box,
   Checkbox,
-  Chip,
   Dialog,
   DialogActions,
   DialogContent,
@@ -18,6 +16,8 @@ import {
   TextField,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useEntity } from "@/hooks/useEntity";
+import TaskSearchIndexMultiSelect, { TaskSearchOption } from "./TaskSearchIndexMultiSelect";
 
 type TaskFormState = {
   title: string;
@@ -26,7 +26,7 @@ type TaskFormState = {
   branchLabel: string;
   dueAt: string;
   priority: TaskPriority;
-  assignedEmployees: Array<{ id: string; label: string }>;
+  assignedEmployees: TaskSearchOption[];
   allowSupervisorCreation: boolean;
   allowSupervisorValidation: boolean;
   allowSupervisorRating: boolean;
@@ -68,33 +68,37 @@ export default function TaskFormDialog({
   onClose: () => void;
   onSubmit: (data: Partial<Task>) => void;
 }) {
+  const { currentEntity } = useEntity();
   const [form, setForm] = useState<TaskFormState>(initialForm(task));
 
   useEffect(() => {
     if (open) setForm(initialForm(task));
   }, [open, task]);
 
+  useEffect(() => {
+    const hydrateAssignedEmployees = async () => {
+      if (!open || !task?.assignedEmployeeIds?.length || !currentEntity?.entity?.id) return;
+      try {
+        const employees = await Promise.all(
+          task.assignedEmployeeIds.map(async (id) => {
+            try {
+              const employee = await fetchEmployee(currentEntity.entity.id as string, id);
+              return { id, label: employee?.fullName ?? id };
+            } catch {
+              return { id, label: id };
+            }
+          })
+        );
+        setForm((prev) => ({ ...prev, assignedEmployees: employees }));
+      } catch {
+        // keep fallback labels
+      }
+    };
+
+    hydrateAssignedEmployees();
+  }, [open, task?.assignedEmployeeIds, currentEntity?.entity?.id]);
+
   const change = (field: keyof TaskFormState, value: any) => setForm((prev) => ({ ...prev, [field]: value }));
-
-  const getIndexId = (value: ISearchIndex | null) => value?.index?.split("/").pop() ?? value?.id ?? "";
-  const getIndexLabel = (value: ISearchIndex | null, fallback: string) => {
-    if (!value) return "";
-    return String(value.fields?.[fallback] ?? value.fields?.fullName ?? value.fields?.name ?? getIndexId(value));
-  };
-
-  const addEmployee = (value: ISearchIndex | null) => {
-    const id = getIndexId(value);
-    if (!id) return;
-    const label = getIndexLabel(value, "fullName");
-    setForm((prev) => {
-      if (prev.assignedEmployees.some((employee) => employee.id === id)) return prev;
-      return { ...prev, assignedEmployees: [...prev.assignedEmployees, { id, label }] };
-    });
-  };
-
-  const removeEmployee = (id: string) => {
-    setForm((prev) => ({ ...prev, assignedEmployees: prev.assignedEmployees.filter((employee) => employee.id !== id) }));
-  };
 
   const submit = () => {
     onSubmit({
@@ -131,23 +135,16 @@ export default function TaskFormDialog({
             minRows={3}
           />
           <Box>
-            <SearchIndexFilter
+            <TaskSearchIndexMultiSelect
               type="branch"
               label="Buscar sucursal"
-              placeholder="Buscar sucursal"
-              onChange={(value: ISearchIndex | null) => {
-                change("branchId", getIndexId(value));
-                change("branchLabel", getIndexLabel(value, "name"));
+              value={form.branchId ? [{ id: form.branchId, label: form.branchLabel || form.branchId }] : []}
+              onChange={(value) => {
+                const selected = value[value.length - 1];
+                change("branchId", selected?.id ?? "");
+                change("branchLabel", selected?.label ?? "");
               }}
             />
-            {form.branchId && (
-              <Box sx={{ mt: 1 }}>
-                <Chip label={form.branchLabel || form.branchId} onDelete={() => {
-                  change("branchId", "");
-                  change("branchLabel", "");
-                }} />
-              </Box>
-            )}
           </Box>
           <TextField
             label="Fecha límite"
@@ -165,14 +162,12 @@ export default function TaskFormDialog({
             <MenuItem value="critical">Crítica</MenuItem>
           </TextField>
           <Box>
-            <SearchIndexFilter type="employee" label="Buscar empleado" placeholder="Buscar empleado" onChange={addEmployee} />
-            {form.assignedEmployees.length > 0 && (
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 1 }}>
-                {form.assignedEmployees.map((employee) => (
-                  <Chip key={employee.id} label={employee.label || employee.id} onDelete={() => removeEmployee(employee.id)} />
-                ))}
-              </Box>
-            )}
+            <TaskSearchIndexMultiSelect
+              type="employee"
+              label="Buscar empleados asignados"
+              value={form.assignedEmployees}
+              onChange={(value) => change("assignedEmployees", value)}
+            />
           </Box>
           <Box>
             <FormControlLabel

@@ -97,6 +97,7 @@ interface GenericTableProps<T> {
   topFilter?: React.ReactNode
   empty?: React.ReactNode
   paperSx?: any
+  disableRowHover?: boolean
 }
 
 export function GenericTable<T extends Record<string, any>>({
@@ -119,7 +120,8 @@ export function GenericTable<T extends Record<string, any>>({
   onNext,
   rowAction = [],
   topFilter = <></>,
-  paperSx
+  paperSx,
+  disableRowHover = false
 }: GenericTableProps<T>) {
   // State management
   const [order, setOrder] = useState<'asc' | 'desc'>(sort?.orderDirection ?? 'asc');
@@ -363,13 +365,16 @@ export function GenericTable<T extends Record<string, any>>({
                 const isItemSelected = isSelected(row);
                 return (
                   <TableRow
-                    hover
+                    hover={!disableRowHover}
                     role="checkbox"
                     tabIndex={-1}
                     key={row[keyField]}
                     selected={isItemSelected}
                     onClick={() => handleClick(row)}
-                    sx={{ cursor: onRowClick ? 'pointer' : 'default' }}
+                    sx={{
+                      cursor: onRowClick ? 'pointer' : 'default',
+                      ...(disableRowHover ? { '&:hover': { backgroundColor: 'inherit' } } : {})
+                    }}
                   >
                     {selectable && (
                       <TableCell padding="checkbox">
