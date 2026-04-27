@@ -75,13 +75,15 @@ export async function fetchTask(entityId: string, taskId: string): Promise<Task>
 }
 
 export async function fetchTaskAssignments(entityId: string, taskId: string): Promise<TaskAssignment[]> {
-  return searchFirestore<TaskAssignment>({
+  const assignments = await searchFirestore<TaskAssignment>({
     collection: taskSubCollection(entityId, taskId, "assignments"),
     orderBy: "assignedAt",
     orderDirection: "asc",
     limit: 100,
     includeCount: false,
   } as SearchParams);
+
+  return assignments.filter((assignment) => assignment.status !== "removed");
 }
 
 export async function fetchTaskNotes(entityId: string, taskId: string): Promise<TaskNote[]> {
@@ -177,6 +179,23 @@ export async function assignTaskWorkers(
   try {
     if (!token) throw new Error("Error to fetch user auth token");
     const response = await getClient(token, locale).post(`${getTasksUrl()}/${taskId}/assignments`, data);
+    return unwrapResponse(response);
+  } catch (error: any) {
+    handleServiceError(error, locale);
+  }
+}
+
+export async function deleteTaskAssignment(
+  taskId: string,
+  employeeId: string,
+  entityId: string,
+  token: string,
+  locale: any = "es"
+) {
+  try {
+    if (!token) throw new Error("Error to fetch user auth token");
+    const query = new URLSearchParams({ entityId }).toString();
+    const response = await getClient(token, locale).delete(`${getTasksUrl()}/${taskId}/assignments/${employeeId}?${query}`);
     return unwrapResponse(response);
   } catch (error: any) {
     handleServiceError(error, locale);

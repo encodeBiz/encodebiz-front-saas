@@ -2,13 +2,15 @@
 "use client";
 
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
+import { EmployeeEntityResponsibility } from "@/domain/features/checkinbiz/IEmployee";
 import { Task, TaskDetail, TaskStatus } from "@/domain/features/checkinbiz/ITask";
-import { fetchEmployee, search as searchEmployee } from "@/services/checkinbiz/employee.service";
+import { fetchEmployee, search as searchEmployee, searchResponsability } from "@/services/checkinbiz/employee.service";
 import { fetchUser } from "@/services/core/users.service";
 import { fetchSucursal } from "@/services/checkinbiz/sucursal.service";
 import {
   addTaskNote,
   assignTaskWorkers,
+  deleteTaskAssignment,
   fetchTaskDetail,
   rateTaskWorker,
   rejectTask,
@@ -39,6 +41,7 @@ export default function useTaskDetailController() {
   const [openForm, setOpenForm] = useState(false);
   const [action, setAction] = useState<TaskActionType | null>(null);
   const [currentEmployeeId, setCurrentEmployeeId] = useState<string | null>(null);
+  const [canManageAssignments, setCanManageAssignments] = useState(false);
 
   const entityId = currentEntity?.entity.id as string;
 
@@ -143,10 +146,7 @@ export default function useTaskDetailController() {
   const onValidate = () => runMutation(() => validateTask(id, { entityId }, token, currentLocale));
 
   const onRemoveAssignment = (employeeId: string) => {
-    const employeeIds = (detail?.assignments ?? [])
-      .map((assignment) => assignment.employeeId)
-      .filter((id) => id !== employeeId);
-    return runMutation(() => assignTaskWorkers(id, { entityId, employeeIds }, token, currentLocale));
+    return runMutation(() => deleteTaskAssignment(id, employeeId, entityId, token, currentLocale));
   };
 
   const onActionSubmit = (data: any) => {
@@ -183,6 +183,35 @@ export default function useTaskDetailController() {
     }
   };
 
+  const resolveAdministrativePermissions = async () => {
+    if (!entityId || !currentEmployeeId || !detail?.task.branchId) return;
+    try {
+      if (currentEntity?.role === "owner" || currentEntity?.role === "admin") {
+        setCanManageAssignments(true);
+        return;
+      }
+
+      const responsibilities: Array<EmployeeEntityResponsibility> = await searchResponsability(
+        entityId,
+        currentEmployeeId,
+        100,
+        [{ field: "active", operator: "==", value: 1 }]
+      );
+
+      const hasAdministrativeTaskPermission = responsibilities.some((responsibility) => {
+        const role = responsibility.responsibility;
+        const scope = responsibility.scope as any;
+        const sameBranch = scope?.scope === "branch" && scope?.branchId === detail.task.branchId;
+        const entityScope = scope?.scope === "entity";
+        return (role === "owner" || role === "manager") && (entityScope || sameBranch);
+      });
+
+      setCanManageAssignments(hasAdministrativeTaskPermission);
+    } catch {
+      setCanManageAssignments(false);
+    }
+  };
+
   useEffect(() => {
     if (entityId) watchServiceAccess("checkinbiz");
   }, [entityId, watchServiceAccess]);
@@ -195,6 +224,10 @@ export default function useTaskDetailController() {
     resolveCurrentEmployee();
   }, [entityId, user?.id]);
 
+  useEffect(() => {
+    resolveAdministrativePermissions();
+  }, [entityId, currentEmployeeId, detail?.task.branchId, currentEntity?.role]);
+
   return {
     detail,
     loading,
@@ -204,6 +237,7 @@ export default function useTaskDetailController() {
     action,
     setAction,
     currentEmployeeId,
+    canManageAssignments,
     back,
     onUpdate,
     onStatus,

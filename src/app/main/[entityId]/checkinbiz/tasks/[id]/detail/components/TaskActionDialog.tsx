@@ -13,7 +13,7 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import TaskSearchIndexMultiSelect, { TaskSearchOption } from "../../../components/TaskSearchIndexMultiSelect";
 
 export type TaskActionType = "assign" | "note" | "reject" | "rate" | "resource" | "cancel";
@@ -40,7 +40,6 @@ export default function TaskActionDialog({
   const [selectedEmployees, setSelectedEmployees] = useState<TaskSearchOption[]>([]);
   const [employeeId, setEmployeeId] = useState("");
   const [rating, setRating] = useState(5);
-  const [resourceType, setResourceType] = useState<"photo" | "video">("photo");
   const [file, setFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState("");
 
@@ -51,28 +50,20 @@ export default function TaskActionDialog({
       setSelectedEmployees([]);
       setEmployeeId(assignments?.find((assignment) => assignment.employeeId !== currentEmployeeId)?.employeeId ?? "");
       setRating(5);
-      setResourceType("photo");
       setFile(null);
       setFileError("");
     }
   }, [open, assignments, currentEmployeeId]);
 
-  const resourceRules = {
-    photo: {
+  const currentRule = useMemo(
+    () => ({
       accept: "image/jpeg,image/png,image/webp",
       maxBytes: 5 * 1024 * 1024,
       allowedMimeTypes: ["image/jpeg", "image/png", "image/webp"],
       helper: "Formatos permitidos: JPG, PNG, WEBP. Tamaño máximo: 5 MB.",
-    },
-    video: {
-      accept: "video/mp4,video/webm",
-      maxBytes: 25 * 1024 * 1024,
-      allowedMimeTypes: ["video/mp4", "video/webm"],
-      helper: "Formatos permitidos: MP4 y WEBM. Tamaño máximo: 25 MB.",
-    },
-  } as const;
-
-  const currentRule = resourceRules[resourceType];
+    }),
+    []
+  );
 
   const handleFileChange = (nextFile: File | null) => {
     setFileError("");
@@ -107,7 +98,7 @@ export default function TaskActionDialog({
     if (type === "reject") onSubmit({ reason: text.trim() });
     if (type === "cancel") onSubmit({ cancellationReason: text.trim() });
     if (type === "rate") onSubmit({ employeeId, rating, comment: text.trim() });
-    if (type === "resource") onSubmit({ type: resourceType, description: text.trim(), employeeId, file });
+    if (type === "resource") onSubmit({ type: "photo", description: text.trim(), employeeId, file });
   };
 
   const disabled =
@@ -180,10 +171,6 @@ export default function TaskActionDialog({
 
           {type === "resource" && (
             <>
-              <TextField select label="Tipo" value={resourceType} onChange={(event) => setResourceType(event.target.value as "photo" | "video")} fullWidth>
-                <MenuItem value="photo">Foto</MenuItem>
-                <MenuItem value="video">Video</MenuItem>
-              </TextField>
               <TextField select label="Empleado" value={employeeId} onChange={(event) => setEmployeeId(event.target.value)} fullWidth>
                 {(assignments ?? []).map((assignment) => (
                   <MenuItem key={assignment.employeeId} value={assignment.employeeId}>

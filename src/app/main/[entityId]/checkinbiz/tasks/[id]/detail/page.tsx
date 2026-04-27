@@ -60,6 +60,7 @@ export default function TaskDetailPage() {
     onRemoveAssignment,
     onActionSubmit,
     currentEmployeeId,
+    canManageAssignments,
   } = useTaskDetailController();
 
   if (loading && !detail) {
@@ -88,6 +89,7 @@ export default function TaskDetailPage() {
   }
 
   const { task, assignments, notes, resources, ratings, validations } = detail;
+  const photoResources = resources.filter((resource) => resource.type === "photo");
 
   return (
     <Container maxWidth="lg">
@@ -157,11 +159,17 @@ export default function TaskDetailPage() {
             >
               <Section
                 title="Equipo asignado"
-                action={
-                  <SassButton variant="outlined" startIcon={<GroupAdd />} onClick={() => setAction("assign")} disabled={saving} size="small">
+                action={canManageAssignments ? (
+                  <SassButton
+                    variant="outlined"
+                    startIcon={<GroupAdd />}
+                    onClick={() => setAction("assign")}
+                    disabled={saving}
+                    size="small"
+                  >
                     Asignar
                   </SassButton>
-                }
+                ) : null}
               >
                 <Stack gap={1}>
                   {assignments.length === 0 && <Typography color="text.secondary">No hay trabajadores asignados.</Typography>}
@@ -169,23 +177,25 @@ export default function TaskDetailPage() {
                     <Box key={assignment.id ?? assignment.employeeId}>
                       <Box display="flex" justifyContent="space-between" alignItems="center" gap={2}>
                         <Typography>{assignment.employee?.fullName ?? assignment.employeeId}</Typography>
-                        <Tooltip title="Quitar del equipo">
-                          <span>
-                            <IconButton
-                              color="error"
-                              disabled={saving}
-                              onClick={() => onRemoveAssignment(assignment.employeeId)}
-                              sx={{
-                                border: "1px solid",
-                                borderColor: "error.main",
-                                width: 36,
-                                height: 36,
-                              }}
-                            >
-                              <DeleteOutline fontSize="small" />
-                            </IconButton>
+                        {canManageAssignments && (
+                          <Tooltip title="Quitar del equipo">
+                            <span>
+                              <IconButton
+                                color="error"
+                                disabled={saving}
+                                onClick={() => onRemoveAssignment(assignment.employeeId)}
+                                sx={{
+                                  border: "1px solid",
+                                  borderColor: "error.main",
+                                  width: 36,
+                                  height: 36,
+                                }}
+                              >
+                                <DeleteOutline fontSize="small" />
+                              </IconButton>
                           </span>
                         </Tooltip>
+                      )}
                       </Box>
                       {index < assignments.length - 1 && <Divider sx={{ my: 1.5 }} />}
                     </Box>
@@ -308,15 +318,17 @@ export default function TaskDetailPage() {
                 }
               >
                 <Stack gap={2}>
-                  {resources.length === 0 && <Typography color="text.secondary">No hay evidencias.</Typography>}
-                  {resources.map((resource, index) => (
+                  {photoResources.length === 0 && <Typography color="text.secondary">No hay evidencias.</Typography>}
+                  {photoResources.map((resource, index) => (
                     <Box key={resource.id}>
                       <Link href={resource.url} target="_blank" rel="noreferrer" underline="hover" sx={{ fontWeight: 700 }}>
                         {`${index + 1}. ${resource.filename}`}
                       </Link>
-                      <Typography variant="caption" color="text.secondary">{statusLabel(resource.type)} · {Math.round(resource.sizeKB)} KB</Typography>
+                      <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 0.5 }}>
+                        {statusLabel(resource.type)} · {Math.round(resource.sizeKB)} KB
+                      </Typography>
                       {resource.description && <Typography color="text.secondary">{resource.description}</Typography>}
-                      {index < resources.length - 1 && <Divider sx={{ mt: 1.5 }} />}
+                      {index < photoResources.length - 1 && <Divider sx={{ mt: 1.5 }} />}
                     </Box>
                   ))}
                 </Stack>
