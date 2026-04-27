@@ -41,6 +41,7 @@
       "menu": {
         "Dashboard": "Panel",
         "Issue": "Incidencias",
+        "Task": "Gestión de tareas",
         "Panel": "Panel",
         "Stats": "Estadísticas",
         "Staff": "Personal",
@@ -1004,6 +1005,30 @@
     "description": "Rellene los campos para registrar la incidencia",
     "deleteConfirmModalTitle": "Eliminar reporte",
     "deleteConfirmModalTitle2": "Esta acción no se puede deshacer. Eliminará permanentemente el reporte"
+  },
+  "tasks": {
+    "title": "Gestión de tareas",
+    "list": "Gestión de tareas",
+    "add": "Crear tarea",
+    "edit": "Editar tarea",
+    "detail": "Detalle de tarea",
+    "emptyTitle": "Todavía no hay tareas",
+    "emptyText": "Aquí se mostrarán las tareas operativas asignadas a sucursales y equipos.",
+    "assignedEmployees": "Equipo asignado",
+    "notes": "Notas",
+    "resources": "Evidencias",
+    "ratings": "Valoraciones",
+    "activity": "Actividad",
+    "validations": "Validaciones",
+    "start": "Iniciar",
+    "complete": "Completar",
+    "cancel": "Cancelar",
+    "validate": "Validar",
+    "reject": "Rechazar",
+    "rate": "Valorar",
+    "upload": "Subir evidencia",
+    "addNote": "Agregar nota",
+    "assign": "Asignar trabajadores"
   },
   "report": {
     "title": "Reportes",
