@@ -118,7 +118,7 @@ const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type, la
     debouncedSearch(newInput);
   };
   return (
-    <FormControl sx={{ textAlign: "left", width }}>
+    <FormControl sx={{ textAlign: "left", width, minWidth: "200px" }}>
 
       <Autocomplete<Option, false, false, false>
         options={options}
@@ -140,13 +140,16 @@ const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type, la
             sx={{
               
               height: 46,
+              minWidth: "200px",
               '& .MuiOutlinedInput-root': {
                 transition: 'width 0.3s ease',
                 width,
+                minWidth: "200px",
                 position:'relative',
                 height: 46,
                 '&.Mui-focused': {
                   width,
+                  minWidth: "200px",
                 },
               },
 
@@ -177,6 +180,7 @@ const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type, la
           </ListItem>
         )}
         sx={{
+          minWidth: "200px",
           "& .MuiAutocomplete-inputRoot": { padding: "8px" },
         }}
       />

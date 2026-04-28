@@ -6,8 +6,8 @@ import { useToast } from "@/hooks/useToast";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { CHECKINBIZ_MODULE_ROUTE } from "@/config/routes";
-import { IEmployee } from "@/domain/features/checkinbiz/IEmployee";
-import { createEmployee, emptyEmployee, search, updateEmployee } from "@/services/checkinbiz/employee.service";
+import { EmployeeEntityResponsibility, IEmployee } from "@/domain/features/checkinbiz/IEmployee";
+import { createEmployee, downloadBlob, emptyEmployee, exportEmployeesCsv, search, searchResponsability, updateEmployee } from "@/services/checkinbiz/employee.service";
 import { search as searchBranch } from "@/services/checkinbiz/sucursal.service";
 import { useLayout } from "@/hooks/useLayout";
 import { useParams, useSearchParams } from "next/navigation";
@@ -57,6 +57,8 @@ export default function useEmployeeListController() {
   const [empthy, setEmpthy] = useState(false)
   const [items, setItems] = useState<IEmployee[]>([]);
   const [itemsHistory, setItemsHistory] = useState<IEmployee[]>([]);
+  const [exportLoading, setExportLoading] = useState(false)
+  const [canExportEmployees, setCanExportEmployees] = useState(false)
   const [filterParams, setFilterParams] = useState<IFilterParams>({
     filter: { status: 'active', branchId: 'none' },
     startAfter: null,
@@ -285,12 +287,57 @@ export default function useEmployeeListController() {
     setBranchList(await searchBranch(currentEntity?.entity.id as string, { ...{} as any, limit: 100 }))
   }
 
+  const resolveExportPermission = async () => {
+    const entityId = currentEntity?.entity.id
+    if (!entityId || !user?.id) {
+      setCanExportEmployees(false)
+      return
+    }
+
+    if (currentEntity?.role === "owner" || currentEntity?.role === "admin") {
+      setCanExportEmployees(true)
+      return
+    }
+
+    try {
+      const employee = await search(entityId, {
+        filters: [{ field: "uid", operator: "==", value: user.id }],
+        limit: 1,
+        includeCount: false,
+      } as any).then(res => res?.[0])
+
+      if (!employee?.id) {
+        setCanExportEmployees(false)
+        return
+      }
+
+      const responsibilities: Array<EmployeeEntityResponsibility> = await searchResponsability(
+        entityId,
+        employee.id,
+        100,
+        [{ field: "active", operator: "==", value: 1 }]
+      )
+
+      setCanExportEmployees(responsibilities.some((responsibility) => {
+        const role = responsibility.responsibility
+        const scope = responsibility.scope as any
+        return (role === "owner" || role === "manager") && scope?.scope === "entity"
+      }))
+    } catch {
+      setCanExportEmployees(false)
+    }
+  }
+
 
   useEffect(() => {
     if (currentEntity?.entity?.id) {
       watchServiceAccess('checkinbiz')
     }
   }, [currentEntity?.entity?.id])
+
+  useEffect(() => {
+    resolveExportPermission()
+  }, [currentEntity?.entity?.id, currentEntity?.role, user?.id])
 
   useEffect(() => {
     if (currentEntity?.entity?.id) {
@@ -405,12 +452,30 @@ export default function useEmployeeListController() {
     }
   }
 
+  const exportCsv = async () => {
+    const entityId = currentEntity?.entity.id as string
+    try {
+      setExportLoading(true)
+      const { blob, filename } = await exportEmployeesCsv(entityId, token)
+      downloadBlob(blob, filename || `employees-${entityId}.csv`)
+      showToast(t('employee.exportSuccess'), 'success')
+    } catch (error: any) {
+      if (error?.status === 401) showToast(t('employee.exportUnauthorized'), 'error')
+      else if (error?.status === 403) showToast(t('employee.exportForbidden'), 'error')
+      else if (error?.status === 500) showToast(t('employee.exportServerError'), 'error')
+      else showToast(error?.message || t('employee.exportError'), 'error')
+    } finally {
+      setExportLoading(false)
+    }
+  }
+
   return {
     items, onSort, onRowsPerPageChange,
-    onEdit, onSuccess, addEmployee,
+    onEdit, onSuccess, addEmployee, exportCsv,
     onNext, onBack,
     columns, rowAction, topFilter,
-    loading, filterParams,empthy
+    loading, filterParams, empthy,
+    exportLoading, canExportEmployees
 
   }
 

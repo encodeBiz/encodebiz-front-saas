@@ -319,6 +319,13 @@
     "list": "Employés",
     "add": "Ajouter",
     "import": "Importer",
+    "exportCsv": "Exporter CSV",
+    "exportingCsv": "Exportation...",
+    "exportSuccess": "CSV des employés téléchargé avec succès",
+    "exportError": "Impossible d'exporter le CSV des employés",
+    "exportUnauthorized": "Votre session n'est pas autorisée à exporter les employés",
+    "exportForbidden": "Vous n'avez pas l'autorisation d'exporter les employés",
+    "exportServerError": "Impossible de générer le CSV des employés",
     "description": "Remplissez les champs pour enregistrer l'employé",
     "deleteConfirmModalTitle": "Licencier l'employé",
     "deleteConfirmModalTitle2": "Cette action est irréversible. L'employé sera licencié. Les données seront conservées pendant au moins 4 ans pour respecter les obligations légales"

@@ -14,6 +14,80 @@ import { Timestamp } from "firebase/firestore";
 import { Issue } from "next/dist/build/swc/types";
 import { Unsubscribe } from "firebase/auth";
 
+const EMPLOYEES_EXPORT_FALLBACK_URL =
+  "http://127.0.0.1:5001/encodebiz-services/us-central1/apiV100-firebaseEntryHttp-checkinbiz-employeesExportHandler";
+
+const getEmployeesExportUrl = () =>
+  process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_EMPLOYEES_EXPORT_HANDLER || EMPLOYEES_EXPORT_FALLBACK_URL;
+
+export class EmployeeExportError extends Error {
+  status?: number;
+
+  constructor(message: string, status?: number) {
+    super(message);
+    this.name = "EmployeeExportError";
+    this.status = status;
+  }
+}
+
+const getFilenameFromContentDisposition = (contentDisposition: string | null): string | undefined => {
+  if (!contentDisposition) return undefined;
+
+  const utf8Match = contentDisposition.match(/filename\*=UTF-8''([^;]+)/i);
+  if (utf8Match?.[1]) return decodeURIComponent(utf8Match[1].replace(/"/g, ""));
+
+  const filenameMatch = contentDisposition.match(/filename="?([^";]+)"?/i);
+  return filenameMatch?.[1];
+};
+
+export async function exportEmployeesCsv(entityId: string, token: string): Promise<{ blob: Blob; filename?: string }> {
+  if (!token) throw new EmployeeExportError("Error to fetch user auth token", 401);
+  if (!entityId) throw new EmployeeExportError("Missing entityId");
+
+  const url = new URL(getEmployeesExportUrl());
+  url.searchParams.set("entityId", entityId);
+
+  const response = await fetch(url.toString(), {
+    method: "GET",
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    let message = `HTTP error! status: ${response.status}`;
+    try {
+      const errorData = await response.json();
+      message = errorData?.message || errorData?.error || message;
+    } catch {
+      try {
+        message = (await response.text()) || message;
+      } catch {
+        message = `HTTP error! status: ${response.status}`;
+      }
+    }
+
+    throw new EmployeeExportError(message, response.status);
+  }
+
+  return {
+    blob: await response.blob(),
+    filename: getFilenameFromContentDisposition(response.headers.get("content-disposition")),
+  };
+}
+
+export function downloadBlob(blob: Blob, filename: string) {
+  const objectUrl = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = objectUrl;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(objectUrl);
+}
+
 
 /**
    * Search employee

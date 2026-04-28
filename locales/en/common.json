@@ -795,6 +795,13 @@
     "linkToBranchNotTitle": "No branches available",
     "linkToBranchNotText": "Create a new Branch / Project to assign to this employee.",
     "linkToBranchNotBtn": "Create Branch / Project",
+    "exportCsv": "Export CSV",
+    "exportingCsv": "Exporting...",
+    "exportSuccess": "Employee CSV downloaded successfully",
+    "exportError": "Could not export the employee CSV",
+    "exportUnauthorized": "Your session is not authorized to export employees",
+    "exportForbidden": "You do not have permission to export employees",
+    "exportServerError": "Could not generate the employee CSV",
     "freePlanAdviseTitle": "Action unavailable",
     "freePlanAdviseBtn": "Upgrade plan",
     "freePlanAdviseText": "Your current plan is free. To create more Branches / Projects, upgrade your subscription."

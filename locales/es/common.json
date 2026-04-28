@@ -803,6 +803,13 @@
     "linkToBranchNotTitle": "No hay sucursales disponibles",
     "linkToBranchNotText": "Crea una nueva Sucursal / Proyecto para asignar a este empleado.",
     "linkToBranchNotBtn": "Crear Sucursal / Proyecto",
+    "exportCsv": "Exportar CSV",
+    "exportingCsv": "Exportando...",
+    "exportSuccess": "CSV de empleados descargado correctamente",
+    "exportError": "No se pudo exportar el CSV de empleados",
+    "exportUnauthorized": "Tu sesión no está autorizada para exportar empleados",
+    "exportForbidden": "No tienes permisos para exportar empleados",
+    "exportServerError": "No se pudo generar el CSV de empleados",
     "freePlanAdviseTitle": "Acción no disponible",
     "freePlanAdviseBtn": "Actualizar plan",
     "freePlanAdviseText": "Tu plan actual es el gratuito. Para crear más Sucursales / Proyectos, actualiza tu suscripción."

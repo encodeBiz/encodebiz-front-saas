@@ -13,6 +13,7 @@ import { useCommonModal } from '@/hooks/useCommonModal';
 import InfoModal from '@/components/common/modals/InfoModal';
 import EmptyList from '@/components/common/EmptyState/EmptyList';
 import emptyImage from '../../../../../../public/assets/images/empty/empleados.svg';
+import { Download } from '@mui/icons-material';
 
 export default function EmployeeList() {
   const t = useTranslations();
@@ -21,7 +22,7 @@ export default function EmployeeList() {
     onNext, onBack, addEmployee,
     filterParams, topFilter,
     columns, onSuccess, empthy,
-    loading } = useEmployeeListController();
+    loading, exportCsv, exportLoading, canExportEmployees } = useEmployeeListController();
   const { navivateTo } = useLayout()
   const { open } = useCommonModal()
 
@@ -31,6 +32,14 @@ export default function EmployeeList() {
         title={t("employee.list")}
         actions={
           <Box display={'flex'} justifyContent={'flex-end'} alignItems='flex-end' gap={2} sx={{ width: '100%' }}>
+            {canExportEmployees && (
+              <SassButton
+                onClick={exportCsv}
+                variant='outlined'
+                disabled={exportLoading}
+                startIcon={<Download />}
+              >{exportLoading ? t('employee.exportingCsv') : t('employee.exportCsv')}</SassButton>
+            )}
             <SassButton
               onClick={addEmployee}
               variant='contained'
