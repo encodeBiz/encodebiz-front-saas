@@ -20,8 +20,29 @@ const colorRepository: any = {
     'disabled': 'rgba(121, 123, 125, 0.08)',
     "pending": 'rgba(122, 166, 223, 0.65)',
     "resolved": 'rgba(122, 223, 127, 0.65)',
+    "success": 'rgba(46, 125, 50, 0.16)',
+    "warning": 'rgba(237, 108, 2, 0.18)',
+    "error": 'rgba(211, 47, 47, 0.18)',
+    "info": 'rgba(2, 136, 209, 0.16)',
+    "neutral": 'rgba(121, 123, 125, 0.12)',
 
     'rejected': 'rgba(121, 123, 125, 0.08)',
+}
+
+const borderColorRepository: any = {
+    success: 'rgba(46, 125, 50, 0.7)',
+    warning: 'rgba(237, 108, 2, 0.7)',
+    error: 'rgba(211, 47, 47, 0.7)',
+    info: 'rgba(2, 136, 209, 0.7)',
+    neutral: 'rgba(121, 123, 125, 0.5)',
+}
+
+const textColorRepository: any = {
+    success: '#1b5e20',
+    warning: '#8a4b00',
+    error: '#b71c1c',
+    info: '#01579b',
+    neutral: '#4f5156',
 }
 
 export const CustomChip = ({ label, background = "default", id = '', role = 'button', text = '', ...props }: { label: string; id?: string; text?: string; background?: string; role: 'ship' | 'button' } & any) => {
@@ -37,7 +58,8 @@ export const CustomChip = ({ label, background = "default", id = '', role = 'but
             } : null}
             sx={{
                 background: colorRepository[background],
-                borderColor: (theme) => background == "default" ? theme.palette.primary.main : background == "disabled" ? theme.palette.grey[400] : colorRepository[background],
+                borderColor: (theme) => borderColorRepository[background] ?? (background == "default" ? theme.palette.primary.main : background == "disabled" ? theme.palette.grey[400] : colorRepository[background]),
+                color: textColorRepository[background],
                 px: props.size == 'small' ? 0 : 1, py: props.size == 'small' ? 0 : 2,
                 width: 'fit-content',
                 cursor: text ? 'pointer' : 'default',

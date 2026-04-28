@@ -51,7 +51,7 @@ const getDataLabel = (data: ISearchIndex, type: "entities" | "users" | "events" 
 }
 
 
-const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type, label, placeholder  }) => {
+const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type, label, placeholder, width = "200px"  }) => {
   const t = useTranslations();
   const { currentEntity } = useEntity()
 
@@ -118,7 +118,7 @@ const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type, la
     debouncedSearch(newInput);
   };
   return (
-    <FormControl sx={{    textAlign: "left" }}>
+    <FormControl sx={{ textAlign: "left", width }}>
 
       <Autocomplete<Option, false, false, false>
         options={options}
@@ -142,11 +142,11 @@ const SearchIndexFilter: React.FC<SearchIndexInputProps> = ({ onChange, type, la
               height: 46,
               '& .MuiOutlinedInput-root': {
                 transition: 'width 0.3s ease',
-                width: '200px',
+                width,
                 position:'relative',
                 height: 46,
                 '&.Mui-focused': {
-                  width: '300px',
+                  width,
                 },
               },
 

@@ -40,6 +40,7 @@
       "menu": {
         "Dashboard": "Dashboard",
         "Issue": "Issues",
+        "Task": "Task management",
         "Panel": "Panel",
         "Stats": "Statistics",
         "Staff": "Staff",
@@ -989,6 +990,30 @@
     "description": "Fill in the fields to register the issue",
     "deleteConfirmModalTitle": "Delete report",
     "deleteConfirmModalTitle2": "This action cannot be undone. It will permanently delete the report"
+  },
+  "tasks": {
+    "title": "Task management",
+    "list": "Task management",
+    "add": "Create task",
+    "edit": "Edit task",
+    "detail": "Task detail",
+    "emptyTitle": "No tasks yet",
+    "emptyText": "Operational tasks assigned to branches and teams will appear here.",
+    "assignedEmployees": "Assigned team",
+    "notes": "Notes",
+    "resources": "Evidence",
+    "ratings": "Ratings",
+    "activity": "Activity",
+    "validations": "Validations",
+    "start": "Start",
+    "complete": "Complete",
+    "cancel": "Cancel",
+    "validate": "Validate",
+    "reject": "Reject",
+    "rate": "Rate",
+    "upload": "Upload evidence",
+    "addNote": "Add note",
+    "assign": "Assign workers"
   },
   "report": {
     "title": "Reports",

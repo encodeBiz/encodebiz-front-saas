@@ -59,6 +59,10 @@ const CHECKINBIZ: any = [{
     link: `/${CHECKINBIZ_MODULE_ROUTE}/calendar`,
     subMenu: []
 }, {
+    name: 'Task',
+    link: `/${CHECKINBIZ_MODULE_ROUTE}/tasks`,
+    subMenu: []
+}, {
     name: 'Report',
     link: `/${CHECKINBIZ_MODULE_ROUTE}/report`,
     subMenu: []
@@ -81,11 +85,7 @@ export const menuItemsHome = [{
 }
 ]
 
-export const menuItemsServices = [{
-    id: 'services',
-    name: 'Services',
-    header: true, subMenu: []
-},
+export const menuItemsServices = [
 ...(process.env.NEXT_PUBLIC_ENV === 'dev' ? [
     {
         id: 'passinbiz',
