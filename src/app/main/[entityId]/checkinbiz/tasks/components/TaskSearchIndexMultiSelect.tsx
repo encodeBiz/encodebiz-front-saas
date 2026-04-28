@@ -18,6 +18,7 @@ const getIndexLabel = (value: ISearchIndex, type: SearchIndexType) => {
   const labelField = type === "branch" ? "name" : "fullName";
   return String(value.fields?.[labelField] ?? value.fields?.fullName ?? value.fields?.name ?? getIndexId(value));
 };
+const dedupeOptions = (items: TaskSearchOption[]) => Array.from(new Map(items.map((item) => [item.id, item])).values());
 
 export default function TaskSearchIndexMultiSelect({
   type,
@@ -52,11 +53,13 @@ export default function TaskSearchIndexMultiSelect({
           entityId: currentEntity?.entity?.id as string,
         });
         setOptions(
-          data.map((item: ISearchIndex) => ({
-            id: getIndexId(item),
-            label: getIndexLabel(item, type),
-            data: item,
-          }))
+          dedupeOptions(
+            data.map((item: ISearchIndex) => ({
+              id: getIndexId(item),
+              label: getIndexLabel(item, type),
+              data: item,
+            }))
+          )
         );
       } finally {
         setPending(false);
@@ -95,10 +98,20 @@ export default function TaskSearchIndexMultiSelect({
       noOptionsText={t("core.label.noOptionsText")}
       renderTags={(selected, getTagProps) =>
         selected.map((option, index) => {
-          const { key, ...tagProps } = getTagProps({ index });
-          return <Chip key={key} label={option.label} {...tagProps} />;
+          const tagProps = { ...getTagProps({ index }) } as Record<string, any>;
+          delete tagProps.key;
+          return <Chip key={option.id} label={option.label} {...tagProps} />;
         })
       }
+      renderOption={(props, option) => {
+        const optionProps = { ...props } as Record<string, any>;
+        delete optionProps.key;
+        return (
+          <li {...optionProps} key={option.id}>
+            {option.label}
+          </li>
+        );
+      }}
       renderInput={(params) => (
         <TextField
           {...params}

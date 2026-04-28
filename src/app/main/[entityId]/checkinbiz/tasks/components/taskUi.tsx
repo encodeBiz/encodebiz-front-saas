@@ -60,7 +60,7 @@ export const statusLabel = (status?: TaskStatus | TaskTimeComplianceStatus | Tas
     started: "Iniciada",
     note_added: "Nota agregada",
     note_updated: "Nota actualizada",
-    resource_uploaded: "Evidencia subida",
+    resource_uploaded: "Recurso adjuntado",
     rated: "Valorada",
     commented: "Comentada",
   };

@@ -128,6 +128,7 @@ export default function TaskDetailPage() {
             </Typography>
             <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="flex-start" gap={6} alignItems="flex-start">
               <DetailText label="Sucursal" value={task.branch?.name ?? task.branchId} />
+              <DetailText label="Inicio previsto" value={task.scheduledStartAt ? format_date_with_locale(task.scheduledStartAt, currentLocale as "en" | "es") : "-"} />
               <DetailText label="Fecha límite" value={format_date_with_locale(task.dueAt, currentLocale as "en" | "es")} />
               <DetailText label="Asignados" value={task.assignedEmployeeIds?.length ?? 0} />
               <DetailText label="Evidencia requerida" value={task.config?.requireEvidenceOnCompletion ? "Sí" : "No"} />
@@ -310,15 +311,15 @@ export default function TaskDetailPage() {
               </Section>
 
               <Section
-                title="Evidencias"
+                title="Recursos"
                 action={
                   <SassButton variant="outlined" startIcon={<UploadFile />} onClick={() => setAction("resource")} disabled={saving} size="small">
-                    Evidencia
+                    Adjuntar
                   </SassButton>
                 }
               >
                 <Stack gap={2}>
-                  {photoResources.length === 0 && <Typography color="text.secondary">No hay evidencias.</Typography>}
+                  {photoResources.length === 0 && <Typography color="text.secondary">No hay recursos.</Typography>}
                   {photoResources.map((resource, index) => (
                     <Box key={resource.id}>
                       <Link href={resource.url} target="_blank" rel="noreferrer" underline="hover" sx={{ fontWeight: 700 }}>

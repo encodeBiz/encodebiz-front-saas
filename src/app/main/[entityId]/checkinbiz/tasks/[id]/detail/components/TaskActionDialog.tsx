@@ -88,7 +88,7 @@ export default function TaskActionDialog({
     note: "Agregar nota",
     reject: "Rechazar tarea",
     rate: "Valorar trabajador",
-    resource: "Subir evidencia",
+    resource: "Adjuntar recurso",
     cancel: "Cancelar tarea",
   };
 

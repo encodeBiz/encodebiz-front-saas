@@ -1,7 +1,7 @@
 "use client";
 
 import { SassButton } from "@/components/common/buttons/GenericButton";
-import { Task, TaskPriority, defaultTaskConfig } from "@/domain/features/checkinbiz/ITask";
+import { Task, TaskPriority, TaskStatus, defaultTaskConfig } from "@/domain/features/checkinbiz/ITask";
 import { fetchEmployee } from "@/services/checkinbiz/employee.service";
 import {
   Box,
@@ -18,13 +18,16 @@ import {
 import { useEffect, useState } from "react";
 import { useEntity } from "@/hooks/useEntity";
 import TaskSearchIndexMultiSelect, { TaskSearchOption } from "./TaskSearchIndexMultiSelect";
+import { taskStatusOptions } from "./taskUi";
 
 type TaskFormState = {
   title: string;
   description: string;
   branchId: string;
   branchLabel: string;
+  scheduledStartAt: string;
   dueAt: string;
+  status: TaskStatus;
   priority: TaskPriority;
   assignedEmployees: TaskSearchOption[];
   allowSupervisorCreation: boolean;
@@ -46,7 +49,9 @@ const initialForm = (task?: Task): TaskFormState => ({
   description: task?.description ?? "",
   branchId: task?.branchId ?? "",
   branchLabel: task?.branch?.name ?? task?.branchId ?? "",
+  scheduledStartAt: toInputDate(task?.scheduledStartAt),
   dueAt: toInputDate(task?.dueAt),
+  status: task?.status ?? "draft",
   priority: task?.priority ?? "medium",
   assignedEmployees: task?.assignedEmployeeIds?.map((id) => ({ id, label: id })) ?? [],
   allowSupervisorCreation: task?.config?.allowSupervisorCreation ?? defaultTaskConfig.allowSupervisorCreation,
@@ -70,6 +75,7 @@ export default function TaskFormDialog({
 }) {
   const { currentEntity } = useEntity();
   const [form, setForm] = useState<TaskFormState>(initialForm(task));
+  const readOnlyStatuses = new Set<TaskStatus>(["validated", "rejected", "cancelled"]);
 
   useEffect(() => {
     if (open) setForm(initialForm(task));
@@ -101,11 +107,12 @@ export default function TaskFormDialog({
   const change = (field: keyof TaskFormState, value: any) => setForm((prev) => ({ ...prev, [field]: value }));
 
   const submit = () => {
-    onSubmit({
+    const payload: Partial<Task> = {
       title: form.title.trim(),
       description: form.description.trim(),
       branchId: form.branchId.trim(),
       dueAt: new Date(form.dueAt).toISOString(),
+      status: form.status,
       priority: form.priority,
       assignedEmployeeIds: form.assignedEmployees.map((employee) => employee.id),
       config: {
@@ -115,10 +122,20 @@ export default function TaskFormDialog({
         allowSupervisorRating: form.allowSupervisorRating,
         requireEvidenceOnCompletion: form.requireEvidenceOnCompletion,
       },
-    });
+    };
+
+    if (form.scheduledStartAt) payload.scheduledStartAt = new Date(form.scheduledStartAt).toISOString();
+    else if (task) payload.scheduledStartAt = null as any;
+
+    onSubmit(payload);
   };
 
-  const disabled = loading || !form.title.trim() || !form.branchId.trim() || !form.dueAt;
+  const disabled =
+    loading ||
+    !form.title.trim() ||
+    !form.branchId.trim() ||
+    !form.dueAt ||
+    (!!form.scheduledStartAt && Number.isNaN(new Date(form.scheduledStartAt).getTime()));
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
@@ -147,6 +164,14 @@ export default function TaskFormDialog({
             />
           </Box>
           <TextField
+            label="Fecha prevista de inicio"
+            type="datetime-local"
+            value={form.scheduledStartAt}
+            onChange={(event) => change("scheduledStartAt", event.target.value)}
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+          />
+          <TextField
             label="Fecha límite"
             type="datetime-local"
             value={form.dueAt}
@@ -155,6 +180,19 @@ export default function TaskFormDialog({
             required
             InputLabelProps={{ shrink: true }}
           />
+          <TextField select label="Estado" value={form.status} onChange={(event) => change("status", event.target.value)} fullWidth>
+            {taskStatusOptions
+              .filter((option) => option.value !== "all")
+              .map((option) => (
+                <MenuItem
+                  key={option.value}
+                  value={option.value}
+                  disabled={readOnlyStatuses.has(option.value as TaskStatus) && form.status !== option.value}
+                >
+                  {option.label}
+                </MenuItem>
+              ))}
+          </TextField>
           <TextField select label="Prioridad" value={form.priority} onChange={(event) => change("priority", event.target.value)} fullWidth>
             <MenuItem value="low">Baja</MenuItem>
             <MenuItem value="medium">Media</MenuItem>

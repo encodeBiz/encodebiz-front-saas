@@ -43,6 +43,7 @@ export interface IRowAction {
   icon: any
   color?: "inherit" | "error" | "primary" | "secondary" | "info" | "success" | "warning"
   actionBtn?: React.ReactNode,
+  iconOnly?: boolean,
   label?: string
   onPress: (row: any) => void,
   allowItem: (row: any) => boolean,
@@ -408,11 +409,25 @@ export function GenericTable<T extends Record<string, any>>({
                     {(onEdit || onDelete || rowAction.length > 0) && (
                       <TableCell align="right" sx={{ whiteSpace: 'nowrap', gap: 2, display: 'flex', flexDirection: 'row' }}>
 
-                        {rowAction.length == 1 &&
-                          <SassButton startIcon={rowAction[0].icon} color={rowAction[0].color} variant='outlined' onClick={() => rowAction[0].onPress(row)}>
-                            {rowAction[0].label}
-                          </SassButton>
-                        }
+                        {rowAction.length == 1 && (
+                          rowAction[0].iconOnly ? (
+                            <Tooltip title={rowAction[0].label}>
+                              <IconButton
+                                color={rowAction[0].color}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  rowAction[0].onPress(row);
+                                }}
+                              >
+                                {rowAction[0].icon}
+                              </IconButton>
+                            </Tooltip>
+                          ) : (
+                            <SassButton startIcon={rowAction[0].icon} color={rowAction[0].color} variant='outlined' onClick={() => rowAction[0].onPress(row)}>
+                              {rowAction[0].label}
+                            </SassButton>
+                          )
+                        )}
                         {rowAction.length > 1 && <>
                           <SassButton startIcon={<SettingsOutlined />} color='primary' variant='outlined' onClick={(e) => openRowMenu(e, row.id)}>
                             {t('core.table.actions')}

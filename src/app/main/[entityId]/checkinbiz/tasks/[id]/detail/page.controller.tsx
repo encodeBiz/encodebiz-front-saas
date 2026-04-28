@@ -129,17 +129,27 @@ export default function useTaskDetailController() {
   };
 
   const onUpdate = (data: Partial<Task>) =>
-    runMutation(() =>
-      updateTask(
+    runMutation(async () => {
+      const nextStatus = data.status;
+      const currentStatus = detail?.task.status;
+      const shouldUpdateStatus = !!nextStatus && nextStatus !== currentStatus;
+
+      const taskPayload = Object.fromEntries(Object.entries(data).filter(([key]) => key !== "status")) as Partial<Task>;
+
+      await updateTask(
         id,
         {
-          ...data,
+          ...taskPayload,
           entityId,
         },
         token,
         currentLocale
-      )
-    );
+      );
+
+      if (shouldUpdateStatus && nextStatus) {
+        await updateTaskStatus(id, { entityId, status: nextStatus }, token, currentLocale);
+      }
+    });
 
   const onStatus = (status: TaskStatus) => runMutation(() => updateTaskStatus(id, { entityId, status }, token, currentLocale));
 

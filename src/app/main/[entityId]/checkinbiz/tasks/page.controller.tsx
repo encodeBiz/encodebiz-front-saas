@@ -15,7 +15,7 @@ import { useLayout } from "@/hooks/useLayout";
 import { useToast } from "@/hooks/useToast";
 import { format_date_with_locale } from "@/lib/common/Date";
 import { createTask, searchTasks } from "@/services/checkinbiz/task.service";
-import { ListAltOutlined } from "@mui/icons-material";
+import { VisibilityOutlined } from "@mui/icons-material";
 import { Box, Typography } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { taskPriorityOptions, taskStatusOptions, TaskChip } from "./components/taskUi";
@@ -58,8 +58,9 @@ export default function useTasksListController() {
   const rowAction: Array<IRowAction> = [
     {
       actionBtn: true,
+      iconOnly: true,
       color: "primary",
-      icon: <ListAltOutlined color="primary" />,
+      icon: <VisibilityOutlined color="primary" />,
       label: "Detalle",
       bulk: false,
       allowItem: () => true,
@@ -81,12 +82,6 @@ export default function useTasksListController() {
       format: (_value, row) => <TaskChip value={row.status} />,
     },
     {
-      id: "timeComplianceStatus",
-      label: "Tiempo",
-      minWidth: 170,
-      format: (_value, row) => <TaskChip value={row.timeComplianceStatus} />,
-    },
-    {
       id: "priority",
       label: "Prioridad",
       minWidth: 130,
@@ -97,6 +92,16 @@ export default function useTasksListController() {
       label: "Asignados",
       minWidth: 110,
       format: (_value, row) => row.assignedEmployeeIds?.length ?? 0,
+    },
+    {
+      id: "scheduledStartAt",
+      label: "Inicio previsto",
+      minWidth: 180,
+      format: (_value, row) => (
+        <Typography variant="body2" textTransform="capitalize">
+          {row.scheduledStartAt ? format_date_with_locale(row.scheduledStartAt, currentLocale as "en" | "es") : "-"}
+        </Typography>
+      ),
     },
     {
       id: "dueAt",

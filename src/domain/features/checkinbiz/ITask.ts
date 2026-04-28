@@ -45,6 +45,7 @@ export interface Task {
   status: TaskStatus;
   timeComplianceStatus: TaskTimeComplianceStatus;
   priority?: TaskPriority;
+  scheduledStartAt?: Date | string | any;
   dueAt: Date | string | any;
   startedAt?: Date | string | any;
   completedAt?: Date | string | any;
