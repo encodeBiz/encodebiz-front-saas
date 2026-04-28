@@ -88,6 +88,8 @@ const incidentLabelMap: Record<string, string> = {
   cross_branch_session: 'attendance.summaryIncidentCrossBranchSession',
 };
 
+const getLogTimezone = (log?: IChecklog) => log?.metadata?.tz ?? log?.metadata?.etz;
+
 export const AttendanceSummaryList = ({
   data,
   loading = false,
@@ -222,11 +224,11 @@ export const AttendanceSummaryList = ({
                 />
                 <Box>
                   <Typography variant="caption" color="text.secondary">{t('attendance.summaryStart')}</Typography>
-                  <Typography>{session.openingLog ? format_date(session.openingLog.timestamp, 'HH:mm') : '--:--'}</Typography>
+                  <Typography>{session.openingLog ? format_date(session.openingLog.timestamp, 'HH:mm', getLogTimezone(session.openingLog)) : '--:--'}</Typography>
                 </Box>
                 <Box>
                   <Typography variant="caption" color="text.secondary">{t('attendance.summaryEnd')}</Typography>
-                  <Typography>{session.closingLog ? format_date(session.closingLog.timestamp, 'HH:mm') : '--:--'}</Typography>
+                  <Typography>{session.closingLog ? format_date(session.closingLog.timestamp, 'HH:mm', getLogTimezone(session.closingLog)) : '--:--'}</Typography>
                 </Box>
                 <Box>
                   <Typography variant="caption" color="text.secondary">{t('attendance.summaryWorked')}</Typography>
