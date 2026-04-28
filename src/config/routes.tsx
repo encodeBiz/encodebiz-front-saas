@@ -58,6 +58,11 @@ const CHECKINBIZ: any = [{
     name: 'Calendar',
     link: `/${CHECKINBIZ_MODULE_ROUTE}/calendar`,
     subMenu: []
+// TODO(checkinbiz-tasks): descomentar tras merge a main.
+// }, {
+//     name: 'Task',
+//     link: `/${CHECKINBIZ_MODULE_ROUTE}/tasks`,
+//     subMenu: []
 }, {
     name: 'Report',
     link: `/${CHECKINBIZ_MODULE_ROUTE}/report`,
@@ -81,11 +86,7 @@ export const menuItemsHome = [{
 }
 ]
 
-export const menuItemsServices = [{
-    id: 'services',
-    name: 'Services',
-    header: true, subMenu: []
-},
+export const menuItemsServices = [
 ...(process.env.NEXT_PUBLIC_ENV === 'dev' ? [
     {
         id: 'passinbiz',

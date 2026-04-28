@@ -48,6 +48,19 @@ interface SummaryFilters extends CommonAttendanceFilters {
   day: string;
 }
 
+const createDefaultEventFilters = (range: { start: Date; end: Date }): EventFilters => ({
+  branchId: 'none',
+  employeeId: 'none',
+  status: 'valid',
+  range: { start: range.start, end: range.end },
+});
+
+const createDefaultSummaryFilters = (day: string): SummaryFilters => ({
+  branchId: 'none',
+  employeeId: 'none',
+  day,
+});
+
 const formatDateInputValue = (value: Date) => {
   const year = value.getFullYear();
   const month = `${value.getMonth() + 1}`.padStart(2, "0");
@@ -186,17 +199,8 @@ export default function useAttendanceController() {
   const [summaryPage, setSummaryPage] = useState(0);
   const [summaryRowsPerPage, setSummaryRowsPerPage] = useState(5);
 
-  const [eventFilters, setEventFilters] = useState<EventFilters>({
-    branchId: 'none',
-    employeeId: 'none',
-    status: 'valid',
-    range: { start: todayRange.start, end: todayRange.end },
-  });
-  const [summaryFilters, setSummaryFilters] = useState<SummaryFilters>({
-    branchId: 'none',
-    employeeId: 'none',
-    day: todayDay,
-  });
+  const [eventFilters, setEventFilters] = useState<EventFilters>(() => createDefaultEventFilters(todayRange));
+  const [summaryFilters, setSummaryFilters] = useState<SummaryFilters>(() => createDefaultSummaryFilters(todayDay));
 
   const fetchEventData = useCallback(async (options?: { startAfter?: any; resetHistory?: boolean }) => {
     if (!currentEntity?.entity?.id) return;
@@ -416,6 +420,19 @@ export default function useAttendanceController() {
     }
   };
 
+  const changeViewMode = (nextViewMode: AttendanceViewMode) => {
+    setViewMode(nextViewMode);
+
+    if (nextViewMode === "events") {
+      setEventItemsHistory([]);
+      setEventPagination((prev) => ({ ...prev, currentPage: 0, startAfter: null }));
+      setEventFilters(createDefaultEventFilters(todayRange));
+    } else {
+      setSummaryPage(0);
+      setSummaryFilters(createDefaultSummaryFilters(todayDay));
+    }
+  };
+
   const topFilter = (
     <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap', width: '100%', justifyContent: 'flex-end', alignItems: 'center' }}>
       <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
@@ -438,6 +455,7 @@ export default function useAttendanceController() {
         )}
 
         <SearchIndexFilter
+          key={`branch-${viewMode}`}
           width='auto'
           type="branch"
           label={t('core.label.subEntity')}
@@ -446,12 +464,13 @@ export default function useAttendanceController() {
             setEventItemsHistory([]);
             setEventPagination((prev) => ({ ...prev, currentPage: 0, startAfter: null }));
             setSummaryPage(0);
-            setEventFilters((prev) => ({ ...prev, branchId }));
-            setSummaryFilters((prev) => ({ ...prev, branchId }));
+            if (viewMode === "events") setEventFilters((prev) => ({ ...prev, branchId }));
+            else setSummaryFilters((prev) => ({ ...prev, branchId }));
           }}
         />
 
         <SearchIndexFilter
+          key={`employee-${viewMode}`}
           width='auto'
           type="employee"
           label={t('core.label.employee')}
@@ -460,8 +479,8 @@ export default function useAttendanceController() {
             setEventItemsHistory([]);
             setEventPagination((prev) => ({ ...prev, currentPage: 0, startAfter: null }));
             setSummaryPage(0);
-            setEventFilters((prev) => ({ ...prev, employeeId }));
-            setSummaryFilters((prev) => ({ ...prev, employeeId }));
+            if (viewMode === "events") setEventFilters((prev) => ({ ...prev, employeeId }));
+            else setSummaryFilters((prev) => ({ ...prev, employeeId }));
           }}
         />
 
@@ -498,7 +517,7 @@ export default function useAttendanceController() {
     items: eventItems,
     summaryItems,
     viewMode,
-    setViewMode,
+    setViewMode: changeViewMode,
     onSort,
     onRowsPerPageChange,
     topFilter,

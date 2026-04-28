@@ -10,7 +10,7 @@ import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
 import { ISucursal } from "@/domain/features/checkinbiz/ISucursal";
 import { deleteSucursal, search, updateSucursal } from "@/services/checkinbiz/sucursal.service";
-import { countFirestore } from "@/lib/firebase/firestore/searchFirestore";
+import { searchFirestore } from "@/lib/firebase/firestore/searchFirestore";
 import { useLayout } from "@/hooks/useLayout";
 import { DeleteOutline, Edit, ListAltOutlined } from "@mui/icons-material";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
@@ -20,6 +20,8 @@ import { Box, Tooltip } from "@mui/material";
 import { useAppLocale } from "@/hooks/useAppLocale";
 import { SelectFilter } from "@/components/common/table/filters/SelectFilter";
 import { collection } from "@/config/collection";
+import { EmployeeEntityResponsibility } from "@/domain/features/checkinbiz/IEmployee";
+import { fetchEmployee } from "@/services/checkinbiz/employee.service";
 
 
 interface IFilterParams {
@@ -208,6 +210,24 @@ export default function useEmployeeListController() {
     }
   };
 
+  const countActiveBranchEmployees = async (branchId: string) => {
+    const responsibilities = await searchFirestore<EmployeeEntityResponsibility>({
+      collection: `${collection.ENTITIES}/${currentEntity?.entity.id}/${collection.RESPONSABILITY}`,
+      filters: [
+        { field: "scope.branchId", operator: "==", value: branchId },
+      ],
+      limit: 10000,
+      includeCount: false,
+    } as any);
+
+    const employeeIds = Array.from(new Set(responsibilities.map((item) => item.employeeId).filter(Boolean)));
+    const employees = await Promise.all(
+      employeeIds.map((employeeId) => fetchEmployee(currentEntity?.entity.id as string, employeeId))
+    );
+
+    return employees.filter((employee) => employee?.status === "active").length;
+  }
+
   const fetchingData = (filterParams: IFilterParams) => {
 
     setLoading(true)
@@ -216,14 +236,7 @@ export default function useEmployeeListController() {
       const enriched = await Promise.all(
         res.map(async (branch) => {
           try {
-            const employeesCount = await countFirestore({
-              collection: `${collection.ENTITIES}/${currentEntity?.entity.id}/${collection.RESPONSABILITY}`,
-              filters: [
-                { field: "scope.branchId", operator: "==", value: branch.id },
-                { field: "active", operator: "==", value: 1 },
-              ],
-              includeCount: true,
-            });
+            const employeesCount = await countActiveBranchEmployees(branch.id as string);
             return { ...branch, employeesCount };
           } catch {
             return { ...branch, employeesCount: 0 };

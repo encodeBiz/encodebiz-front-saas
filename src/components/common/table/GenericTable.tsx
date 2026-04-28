@@ -43,6 +43,7 @@ export interface IRowAction {
   icon: any
   color?: "inherit" | "error" | "primary" | "secondary" | "info" | "success" | "warning"
   actionBtn?: React.ReactNode,
+  iconOnly?: boolean,
   label?: string
   onPress: (row: any) => void,
   allowItem: (row: any) => boolean,
@@ -97,6 +98,7 @@ interface GenericTableProps<T> {
   topFilter?: React.ReactNode
   empty?: React.ReactNode
   paperSx?: any
+  disableRowHover?: boolean
 }
 
 export function GenericTable<T extends Record<string, any>>({
@@ -119,7 +121,8 @@ export function GenericTable<T extends Record<string, any>>({
   onNext,
   rowAction = [],
   topFilter = <></>,
-  paperSx
+  paperSx,
+  disableRowHover = false
 }: GenericTableProps<T>) {
   // State management
   const [order, setOrder] = useState<'asc' | 'desc'>(sort?.orderDirection ?? 'asc');
@@ -363,13 +366,16 @@ export function GenericTable<T extends Record<string, any>>({
                 const isItemSelected = isSelected(row);
                 return (
                   <TableRow
-                    hover
+                    hover={!disableRowHover}
                     role="checkbox"
                     tabIndex={-1}
                     key={row[keyField]}
                     selected={isItemSelected}
                     onClick={() => handleClick(row)}
-                    sx={{ cursor: onRowClick ? 'pointer' : 'default' }}
+                    sx={{
+                      cursor: onRowClick ? 'pointer' : 'default',
+                      ...(disableRowHover ? { '&:hover': { backgroundColor: 'inherit' } } : {})
+                    }}
                   >
                     {selectable && (
                       <TableCell padding="checkbox">
@@ -403,11 +409,25 @@ export function GenericTable<T extends Record<string, any>>({
                     {(onEdit || onDelete || rowAction.length > 0) && (
                       <TableCell align="right" sx={{ whiteSpace: 'nowrap', gap: 2, display: 'flex', flexDirection: 'row' }}>
 
-                        {rowAction.length == 1 &&
-                          <SassButton startIcon={rowAction[0].icon} color={rowAction[0].color} variant='outlined' onClick={() => rowAction[0].onPress(row)}>
-                            {rowAction[0].label}
-                          </SassButton>
-                        }
+                        {rowAction.length == 1 && (
+                          rowAction[0].iconOnly ? (
+                            <Tooltip title={rowAction[0].label}>
+                              <IconButton
+                                color={rowAction[0].color}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  rowAction[0].onPress(row);
+                                }}
+                              >
+                                {rowAction[0].icon}
+                              </IconButton>
+                            </Tooltip>
+                          ) : (
+                            <SassButton startIcon={rowAction[0].icon} color={rowAction[0].color} variant='outlined' onClick={() => rowAction[0].onPress(row)}>
+                              {rowAction[0].label}
+                            </SassButton>
+                          )
+                        )}
                         {rowAction.length > 1 && <>
                           <SassButton startIcon={<SettingsOutlined />} color='primary' variant='outlined' onClick={(e) => openRowMenu(e, row.id)}>
                             {t('core.table.actions')}
