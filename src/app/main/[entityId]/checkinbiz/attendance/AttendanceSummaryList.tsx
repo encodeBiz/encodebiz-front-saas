@@ -86,6 +86,7 @@ const incidentLabelMap: Record<string, string> = {
   invalid_sequence: 'attendance.summaryIncidentInvalidSequence',
   multiple_checkouts: 'attendance.summaryIncidentMultipleCheckouts',
   cross_branch_session: 'attendance.summaryIncidentCrossBranchSession',
+  incomplete_workday: 'core.label.incomplete_workday',
 };
 
 const getLogTimezone = (log?: IChecklog) => log?.metadata?.tz ?? log?.metadata?.etz;
