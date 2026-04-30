@@ -90,6 +90,8 @@ const incidentLabelMap: Record<string, string> = {
 };
 
 const getLogTimezone = (log?: IChecklog) => log?.metadata?.tz ?? log?.metadata?.etz;
+const getVisibleIncidents = (incidents: WorkSessionSummary['incidents']) =>
+  Array.from(new Map(incidents.map((incident) => [incident.code, incident])).values());
 
 export const AttendanceSummaryList = ({
   data,
@@ -193,11 +195,11 @@ export const AttendanceSummaryList = ({
                   width: '100%',
                   display: 'grid',
                   gap: 1.5,
-                  gridTemplateColumns: { xs: '1fr', md: '2fr 1.2fr 1fr 1fr 1fr 1fr auto' },
+                  gridTemplateColumns: { xs: '1fr', md: 'minmax(220px, 1.6fr) minmax(120px, 0.8fr) repeat(4, minmax(72px, 0.55fr)) 40px' },
                   alignItems: 'center',
                 }}
               >
-                <Box sx={{ minWidth: 0, width: { xs: '100%', md: 260 } }}>
+                <Box sx={{ minWidth: 0, width: '100%' }}>
                   <Typography
                     fontWeight={700}
                     sx={{
@@ -209,20 +211,30 @@ export const AttendanceSummaryList = ({
                   >
                     {session.employeeName}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{
+                      width: '100%',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                  >
                     {session.branchName ?? t('attendance.summaryMultipleBranches')}
                   </Typography>
                 </Box>
-                <CustomChip
-                  role="ship"
-                  background={statusChipColorMap[session.status]}
-                  label={t(statusLabelMap[session.status])}
-                  sx={{
-                    justifySelf: 'flex-start',
-                    backgroundColor: chipVisualMap[statusChipColorMap[session.status]]?.backgroundColor,
-                    borderColor: chipVisualMap[statusChipColorMap[session.status]]?.borderColor,
-                  }}
-                />
+                <Box sx={{ justifySelf: 'stretch', display: 'flex', justifyContent: 'flex-start' }}>
+                  <CustomChip
+                    role="ship"
+                    background={statusChipColorMap[session.status]}
+                    label={t(statusLabelMap[session.status])}
+                    sx={{
+                      backgroundColor: chipVisualMap[statusChipColorMap[session.status]]?.backgroundColor,
+                      borderColor: chipVisualMap[statusChipColorMap[session.status]]?.borderColor,
+                    }}
+                  />
+                </Box>
                 <Box>
                   <Typography variant="caption" color="text.secondary">{t('attendance.summaryStart')}</Typography>
                   <Typography>{session.openingLog ? format_date(session.openingLog.timestamp, 'HH:mm', getLogTimezone(session.openingLog)) : '--:--'}</Typography>
@@ -240,19 +252,19 @@ export const AttendanceSummaryList = ({
                   <Typography>{formatMinutesAsHours(session.breakMinutes)}</Typography>
                 </Box>
                 <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-end">
-                  {session.incidents.length > 0 && (
+                  {getVisibleIncidents(session.incidents).length > 0 && (
                     <>
                       <WarningAmberOutlined color="warning" fontSize="small" />
-                      <Typography variant="body2">{session.incidents.length}</Typography>
+                      <Typography variant="body2">{getVisibleIncidents(session.incidents).length}</Typography>
                     </>
                   )}
                 </Stack>
               </Box>
             </AccordionSummary>
             <AccordionDetails>
-              {session.incidents.length > 0 && (
+              {getVisibleIncidents(session.incidents).length > 0 && (
                 <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mb: 2 }}>
-                  {session.incidents.map((incident, index) => (
+                  {getVisibleIncidents(session.incidents).map((incident, index) => (
                     <CustomChip
                       key={`${session.sessionKey}-${incident.code}-${index}`}
                       role="ship"

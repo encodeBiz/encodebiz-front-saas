@@ -73,6 +73,11 @@ const pushIncident = (
   incidents: WorkSessionIncident[],
   incident: WorkSessionIncident
 ) => {
+  if (incident.code === "incomplete_workday") {
+    if (!incidents.some((item) => item.code === incident.code)) incidents.push(incident);
+    return;
+  }
+
   const duplicate = incidents.find(
     (item) => item.code === incident.code && JSON.stringify(item.relatedLogIds ?? []) === JSON.stringify(incident.relatedLogIds ?? [])
   );
