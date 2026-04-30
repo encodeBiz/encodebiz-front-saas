@@ -14,7 +14,8 @@ export interface WorkSessionIncident {
     | "open_break"
     | "invalid_sequence"
     | "multiple_checkouts"
-    | "cross_branch_session";
+    | "cross_branch_session"
+    | "incomplete_workday";
   severity: "low" | "medium" | "high";
   relatedLogIds?: string[];
 }
@@ -72,6 +73,11 @@ const pushIncident = (
   incidents: WorkSessionIncident[],
   incident: WorkSessionIncident
 ) => {
+  if (incident.code === "incomplete_workday") {
+    if (!incidents.some((item) => item.code === incident.code)) incidents.push(incident);
+    return;
+  }
+
   const duplicate = incidents.find(
     (item) => item.code === incident.code && JSON.stringify(item.relatedLogIds ?? []) === JSON.stringify(incident.relatedLogIds ?? [])
   );
@@ -124,6 +130,14 @@ export const buildWorkSessionSummaries = (logs: IChecklog[]): WorkSessionSummary
         if (log.status === "failed") {
           pushIncident(incidents, {
             code: "failed_log",
+            severity: "high",
+            relatedLogIds: log.id ? [log.id] : undefined,
+          });
+        }
+
+        if (log.status === "incomplete_workday") {
+          pushIncident(incidents, {
+            code: "incomplete_workday",
             severity: "high",
             relatedLogIds: log.id ? [log.id] : undefined,
           });
