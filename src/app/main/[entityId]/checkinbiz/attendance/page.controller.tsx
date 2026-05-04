@@ -22,7 +22,7 @@ import { HistoryIcon } from "@/components/common/icons/HistoryIcon";
 import { fetchUserAccount } from "@/services/core/account.service";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { DateRange, DateRangeFilter } from "../panel/components/statsDashboard/DateRangeFilter";
-import { buildWorkSessionSummaries } from "./attendanceSummary";
+import { buildWorkSessionSummaries, WorkSessionStatus } from "./attendanceSummary";
 
 type AttendanceViewMode = "events" | "summary";
 
@@ -46,6 +46,7 @@ interface EventFilters extends CommonAttendanceFilters {
 
 interface SummaryFilters extends CommonAttendanceFilters {
   day: string;
+  status: WorkSessionStatus | "all";
 }
 
 const createDefaultEventFilters = (range: { start: Date; end: Date }): EventFilters => ({
@@ -59,6 +60,7 @@ const createDefaultSummaryFilters = (day: string): SummaryFilters => ({
   branchId: 'none',
   employeeId: 'none',
   day,
+  status: 'working',
 });
 
 const formatDateInputValue = (value: Date) => {
@@ -404,7 +406,11 @@ export default function useAttendanceController() {
     },
   ];
 
-  const summaryItems = useMemo(() => buildWorkSessionSummaries(summaryLogs), [summaryLogs]);
+  const summaryItems = useMemo(() => {
+    const sessions = buildWorkSessionSummaries(summaryLogs);
+    if (summaryFilters.status === "all") return sessions;
+    return sessions.filter((session) => session.status === summaryFilters.status);
+  }, [summaryLogs, summaryFilters.status]);
 
   const onSuccessCreate = () => {
     setRefreshToken((prev) => prev + 1);
@@ -436,23 +442,34 @@ export default function useAttendanceController() {
   const topFilter = (
     <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap', width: '100%', justifyContent: 'flex-end', alignItems: 'center' }}>
       <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-        {viewMode === "events" && (
-          <SearchFilter
-            label={t('core.label.status')}
-            value={eventFilters.status}
-            onChange={(value: any) => {
+        <SearchFilter
+          label={t('core.label.status')}
+          value={viewMode === "events" ? eventFilters.status : summaryFilters.status}
+          onChange={(value: any) => {
+            if (viewMode === "events") {
               setEventItemsHistory([]);
               setEventFilters((prev) => ({ ...prev, status: value }));
               setEventPagination((prev) => ({ ...prev, currentPage: 0, startAfter: null }));
-            }}
-            options={[
-              { value: 'valid' as string, label: t('core.label.valid') },
-              { value: 'failed' as string, label: t('core.label.failed') },
-              { value: 'pending-employee-validation' as string, label: t('core.label.pending-employee-validation') },
-              { value: 'incomplete_workday' as string, label: t('core.label.incomplete_workday') }
-            ]}
-          />
-        )}
+              return;
+            }
+
+            setSummaryPage(0);
+            setSummaryFilters((prev) => ({ ...prev, status: value ?? 'working' }));
+          }}
+          options={viewMode === "events" ? [
+            { value: 'valid' as string, label: t('core.label.valid') },
+            { value: 'failed' as string, label: t('core.label.failed') },
+            { value: 'pending-employee-validation' as string, label: t('core.label.pending-employee-validation') },
+            { value: 'incomplete_workday' as string, label: t('core.label.incomplete_workday') }
+          ] : [
+            { value: 'working' as string, label: t('attendance.summaryStatusWorking') },
+            { value: 'incident' as string, label: t('attendance.summaryStatusIncident') },
+            { value: 'pending' as string, label: t('attendance.summaryStatusPending') },
+            { value: 'on_break' as string, label: t('attendance.summaryStatusOnBreak') },
+            { value: 'completed' as string, label: t('attendance.summaryStatusCompleted') },
+            { value: 'all' as string, label: t('core.label.all') }
+          ]}
+        />
 
         <SearchIndexFilter
           key={`branch-${viewMode}`}
