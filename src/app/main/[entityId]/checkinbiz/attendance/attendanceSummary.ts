@@ -101,9 +101,13 @@ export const buildWorkSessionSummaries = (logs: IChecklog[]): WorkSessionSummary
     .map(([sessionKey, sessionLogs]) => {
       const sortedLogs = [...sessionLogs].sort((a, b) => getTime(a.timestamp) - getTime(b.timestamp));
       const incidents: WorkSessionIncident[] = [];
-      const openingLog = sortedLogs.find((log) => log.type === "checkin");
+      const openingLog = sortedLogs.find((log) => log.type === "checkin" && log.status === "valid")
+        ?? sortedLogs.find((log) => log.type === "checkin");
       const checkoutLogs = sortedLogs.filter((log) => log.type === "checkout");
-      const closingLog = checkoutLogs.length > 0 ? checkoutLogs[checkoutLogs.length - 1] : undefined;
+      const validCheckoutLogs = checkoutLogs.filter((log) => log.status === "valid");
+      const closingLog = validCheckoutLogs.length > 0
+        ? validCheckoutLogs[validCheckoutLogs.length - 1]
+        : checkoutLogs[checkoutLogs.length - 1];
       const lastMovement = sortedLogs[sortedLogs.length - 1];
       const branchIds = Array.from(new Set(sortedLogs.map((log) => log.branchId).filter(Boolean)));
 
@@ -193,13 +197,16 @@ export const buildWorkSessionSummaries = (logs: IChecklog[]): WorkSessionSummary
       const hasPending = sortedLogs.some((log) => log.status === "pending-employee-validation");
       const hasIncident = incidents.length > 0;
       const hasOpenBreak = breakSegments.some((segment) => segment.status === "open");
-      const isCompleted = Boolean(openingLog && closingLog);
+      const isCompleted = Boolean(
+        openingLog?.status === "valid" &&
+        closingLog?.status === "valid"
+      );
 
       let status: WorkSessionStatus = "working";
       if (hasPending) status = "pending";
-      else if (hasIncident) status = "incident";
       else if (hasOpenBreak) status = "on_break";
       else if (isCompleted) status = "completed";
+      else if (hasIncident) status = "incident";
 
       return {
         sessionKey,
