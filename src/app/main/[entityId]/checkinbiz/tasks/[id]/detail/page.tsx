@@ -9,7 +9,7 @@ import { ArrowBackOutlined, CancelOutlined, CheckCircleOutline, DeleteOutline, E
 import { Box, Card, CardContent, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, IconButton, Link, Paper, Stack, Tooltip, Typography } from "@mui/material";
 import { useAppLocale } from "@/hooks/useAppLocale";
 import TaskFormDialog from "../../components/TaskFormDialog";
-import { statusLabel, TaskChip } from "../../components/taskUi";
+import { statusLabel, TaskChip, TaskStatusChip, TaskTimeComplianceChip } from "../../components/taskUi";
 import TaskActionDialog from "./components/TaskActionDialog";
 import useTaskDetailController from "./page.controller";
 
@@ -101,8 +101,8 @@ export default function TaskDetailPage() {
               <Box display="flex" flexDirection="column">
                 <Typography variant="h4">{task.title}</Typography>
                 <Box display="flex" flexDirection="row" gap={1} flexWrap="wrap">
-                  <TaskChip value={task.status} />
-                  <TaskChip value={task.timeComplianceStatus} />
+                  <TaskStatusChip task={task} />
+                  <TaskTimeComplianceChip task={task} />
                   <TaskChip value={task.priority ?? "medium"} />
                 </Box>
               </Box>

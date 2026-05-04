@@ -17,7 +17,8 @@ export type TaskTimeComplianceStatus =
   | "at_risk"
   | "overdue"
   | "completed_on_time"
-  | "completed_late";
+  | "completed_late"
+  | "rejected";
 
 export type TaskPriority = "low" | "medium" | "high" | "critical";
 export type TaskAssignmentStatus = "assigned" | "accepted" | "working" | "completed" | "blocked" | "removed";

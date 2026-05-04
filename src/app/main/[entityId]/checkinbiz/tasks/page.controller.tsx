@@ -18,7 +18,7 @@ import { createTask, searchTasks } from "@/services/checkinbiz/task.service";
 import { VisibilityOutlined } from "@mui/icons-material";
 import { Box, Typography } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
-import { taskPriorityOptions, taskStatusOptions, TaskChip } from "./components/taskUi";
+import { taskPriorityOptions, taskStatusOptions, TaskChip, TaskStatusChip } from "./components/taskUi";
 
 interface IFilterParams {
   filter: { branchId: string; status: TaskStatus | "all"; priority: TaskPriority | "all"; employeeId: string };
@@ -79,7 +79,7 @@ export default function useTasksListController() {
       id: "status",
       label: "Estado",
       minWidth: 150,
-      format: (_value, row) => <TaskChip value={row.status} />,
+      format: (_value, row) => <TaskStatusChip task={row} />,
     },
     {
       id: "priority",

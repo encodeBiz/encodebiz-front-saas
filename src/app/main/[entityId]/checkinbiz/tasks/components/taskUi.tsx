@@ -1,7 +1,7 @@
 "use client";
 
 import { CustomChip } from "@/components/common/table/CustomChip";
-import { TaskPriority, TaskStatus, TaskTimeComplianceStatus } from "@/domain/features/checkinbiz/ITask";
+import { Task, TaskPriority, TaskStatus, TaskTimeComplianceStatus } from "@/domain/features/checkinbiz/ITask";
 
 export const taskStatusOptions: Array<{ label: string; value: TaskStatus | "all" }> = [
   { label: "Todas", value: "all" },
@@ -67,6 +67,21 @@ export const statusLabel = (status?: TaskStatus | TaskTimeComplianceStatus | Tas
   return labels[status ?? ""] ?? status ?? "";
 };
 
+export const taskStatusLabel = (task: Pick<Task, "status">) => {
+  if (task.status === "rejected") return statusLabel("rejected");
+  return statusLabel(task.status);
+};
+
+export const taskTimeComplianceLabel = (
+  task: Pick<Task, "status" | "timeComplianceStatus">
+) => {
+  if (task.status === "rejected" || task.timeComplianceStatus === "rejected") {
+    return statusLabel("rejected");
+  }
+
+  return statusLabel(task.timeComplianceStatus);
+};
+
 const chipColor = (value?: string) => {
   const colors: Record<string, string> = {
     draft: "neutral",
@@ -97,3 +112,18 @@ const chipColor = (value?: string) => {
 export const TaskChip = ({ value, size = "small" }: { value?: string; size?: "small" | "medium" }) => (
   <CustomChip role="text" background={chipColor(value)} label={statusLabel(value)} size={size} />
 );
+
+export const TaskStatusChip = ({ task, size = "small" }: { task: Pick<Task, "status">; size?: "small" | "medium" }) => (
+  <CustomChip role="text" background={chipColor(task.status)} label={taskStatusLabel(task)} size={size} />
+);
+
+export const TaskTimeComplianceChip = ({
+  task,
+  size = "small",
+}: {
+  task: Pick<Task, "status" | "timeComplianceStatus">;
+  size?: "small" | "medium";
+}) => {
+  const effectiveStatus = task.status === "rejected" ? "rejected" : task.timeComplianceStatus;
+  return <CustomChip role="text" background={chipColor(effectiveStatus)} label={taskTimeComplianceLabel(task)} size={size} />;
+};
