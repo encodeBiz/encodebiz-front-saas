@@ -768,15 +768,25 @@ const CalendarSection = ({
                   </Alert>
                 )}
 
-                {/* Botón Guardar configuración (entity o vistas sin botón de guardado general) */}
-                {showPresetSaveButton && (
+                {(showPresetSaveButton || !hideSaveButton) && (
                   <Stack direction="row" justifyContent="flex-end" spacing={2} sx={{ mt: 3, mb: 2 }}>
+                    {!hideSaveButton && (
+                      <SassButton
+                        variant="contained"
+                        disabled={isSubmitting}
+                        onClick={() => handleSubmit()}
+                      >
+                        {isSubmitting ? t("actions.saving") : t("actions.saveCalendar")}
+                      </SassButton>
+                    )}
+                    {showPresetSaveButton && (
                     <SassButton
                       variant="outlined"
                       onClick={() => setPresetModalOpen(true)}
                     >
                       {t("schedule.presets.saveAs")}
                     </SassButton>
+                    )}
                   </Stack>
                 )}
             </AccordionDetails>

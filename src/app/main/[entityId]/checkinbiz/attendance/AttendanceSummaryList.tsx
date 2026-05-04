@@ -89,7 +89,7 @@ const incidentLabelMap: Record<string, string> = {
   incomplete_workday: 'core.label.incomplete_workday',
 };
 
-const getLogTimezone = (log?: IChecklog) => log?.metadata?.tz ?? log?.metadata?.etz;
+const getLogTimezone = (log?: IChecklog) => log?.branch?.address?.timeZone ?? log?.metadata?.tz ?? log?.metadata?.etz;
 const getVisibleIncidents = (incidents: WorkSessionSummary['incidents']) =>
   Array.from(new Map(incidents.map((incident) => [incident.code, incident])).values());
 
@@ -308,7 +308,7 @@ export const AttendanceSummaryList = ({
                             }}
                           />
                         </TableCell>
-                        <TableCell>{format_date(log.timestamp, 'DD/MM/YYYY HH:mm:ss', log.metadata?.tz ?? log.metadata?.etz)}</TableCell>
+                        <TableCell>{format_date(log.timestamp, 'DD/MM/YYYY HH:mm:ss', getLogTimezone(log))}</TableCell>
                         <TableCell align="right">{renderActions(log)}</TableCell>
                       </TableRow>
                     ))}
