@@ -120,6 +120,14 @@ export interface TaskResource {
   createdAt: Date | string | any;
 }
 
+export interface TaskRatingImage {
+  filename: string;
+  mimeType: string;
+  url: string;
+  storagePath: string;
+  sizeKB: number;
+}
+
 export interface TaskRating {
   id?: string;
   taskId: string;
@@ -129,6 +137,7 @@ export interface TaskRating {
   employee?: IEmployee;
   rating: 1 | 2 | 3 | 4 | 5;
   comment?: string;
+  image?: TaskRatingImage | null;
   ratedBy: string;
   ratedByName?: string;
   ratedByUser?: IUser;
