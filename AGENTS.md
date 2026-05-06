@@ -67,7 +67,47 @@ La lectura de `config` se hace **directo a Firestore** desde el frontend (`getRe
 
 > Estado: **el módulo necesita una refactorización**. Aquí se concentran las fuentes conocidas de duplicación y bugs reportados.
 
-### 3.1 BUGS CRÍTICOS
+### 3.0 Cascada `entity → branch → employee` (FUENTE PRINCIPAL DE DUPLICACIONES)
+
+El módulo modela tres niveles que **deberían heredarse en cascada** (entidad → sucursal → empleado), pero la implementación actual es **inconsistente** entre lectura, escritura y vista efectiva. Esto es el origen de buena parte de los duplicados que reportan los usuarios.
+
+**Cómo está hoy:**
+
+| Vista | Qué lee | Cómo |
+|---|---|---|
+| `EntityCalendarTab` (edición) | Solo nivel entidad | Firestore directo: `entities/{eid}/calendar/config` |
+| `BranchCalendarTab` (edición, **muerto**) | Solo nivel sucursal | Firestore directo: `entities/{eid}/branches/{bid}/calendar/config` |
+| `branch/form/form.controller` (edición) | Entidad (fallback) + sucursal | Lecturas paralelas a Firestore |
+| `employee/form/form.controller` (edición) | Entidad (fallback) + empleado | Lecturas paralelas a Firestore |
+| `BranchCalendarDetail` (read-only) | **Solo nivel sucursal** + horario merged a mano | Firestore directo |
+| `EmployeeCalendarDetail` (read-only) | Calendario efectivo merged | `fetchEffectiveCalendar({ scope: 'employee' })` |
+| `EmployeeHolidaysTab` (read-only) | Calendario efectivo merged | `fetchEffectiveCalendar({ scope: 'entity', employeeId })` ← **scope inconsistente** |
+
+**Bugs específicos de cascada:**
+
+A. **El editor solo muestra los días libres del nivel propio, pero la vista efectiva los acumula con los heredados.** Como el admin no ve los días heredados al editar, **vuelve a añadirlos** a nivel sucursal o empleado pensando que faltan → duplicado al renderizar la efectiva. Causa raíz frecuente del "veo dos veces el mismo festivo".
+
+B. **`existingDates` solo contiene las fechas del scope propio** ([HolidayModal.tsx:158](src/app/main/[entityId]/checkinbiz/calendar/components/HolidayModal.tsx#L158)), no las heredadas. El calendario permite elegir un día que ya viene de la entidad sin advertencia.
+
+C. **`BranchCalendarDetail` no usa `fetchEffectiveCalendar`** ([BranchCalendarDetail.tsx:106-145](src/app/main/[entityId]/checkinbiz/branch/[id]/detail/components/BranchCalendarDetail.tsx#L106-L145)): muestra solo los días libres locales de la sucursal y **omite los heredados de la entidad**. Inconsistente con `EmployeeCalendarDetail` (que sí los agrega) → el admin ve "dos verdades" según en qué pantalla esté.
+
+D. **`EmployeeHolidaysTab` llama `fetchEffectiveCalendar` con `scope: 'entity'`** pero pasa `employeeId` ([EmployeeHolidaysTab.tsx:141-147](src/app/main/[entityId]/checkinbiz/calendar/components/EmployeeHolidaysTab.tsx#L141-L147)). El contrato del handler con esa combinación es ambiguo: ¿devuelve solo entidad? ¿hace merge con el empleado? Si el backend hace doble merge (una vez por scope, otra por employeeId) explica duplicados visibles ahí.
+
+E. **No hay metadato de origen en cada `Holiday`** que llega al cliente. `Holiday` es `{id, name, date, description?}` ([ICalendar.ts:42-47](src/domain/features/checkinbiz/ICalendar.ts#L42-L47)). El backend devuelve un campo `kind` (`holiday | absence`) usado en una sola vista ([EmployeeHolidaysTab.tsx:308-318](src/app/main/[entityId]/checkinbiz/calendar/components/EmployeeHolidaysTab.tsx#L308-L318)) y un objeto `sources` usado solo para el horario ([EmployeeCalendarDetail.tsx:185](src/app/main/[entityId]/checkinbiz/employee/[id]/detail/components/EmployeeCalendarDetail.tsx#L185)). **No existe `holiday.source` ni `holiday.scope`**, así que en una lista combinada **no se puede distinguir un festivo entidad de uno sucursal o uno empleado** ni renderizarlos con badge / read-only.
+
+F. **No hay deduplicación de fechas idénticas en distintos niveles.** Si entidad y sucursal coinciden en `2025-12-25`, ambos llegan a la efectiva → renderizado doble. La política debería ser explícita (ganar el más específico, mostrar uno con badge agregado, etc.) y hoy no lo es.
+
+G. **`overridesDisabled` solo afecta al horario, no a los días libres.** No existe forma de "ignorar festivos heredados" desde una sucursal o empleado (p. ej. franquicia internacional con festivos diferentes a la matriz). El usuario no tiene control granular del merge para holidays.
+
+H. **El `DELETE` actúa solo sobre el scope que se le pasa** ([calendar.service.ts:90-104](src/services/checkinbiz/calendar.service.ts#L90-L104)). Si la UI llegara a permitir borrar un festivo heredado desde la vista efectiva, borraría un fantasma con ese ID en el scope local (no el origen) → comportamiento impredecible. Hoy las vistas efectivas son read-only, lo que mitiga el bug pero también limita la usabilidad.
+
+I. **No hay merge entre festivos de entidad y ausencias de empleado del mismo día.** Una vacación que cae en festivo se ve dos veces en `EmployeeHolidaysTab` y, según política, podría contarse / penalizarse mal. No existe lógica de prioridad.
+
+J. **El payload de upsert siempre escribe a un único scope.** No hay endpoint para "promover" un festivo de sucursal a entidad ni para copiarlo. La UI obliga a borrar y recrear, ruta propensa a errores.
+
+> **Conclusión clave**: los duplicados visibles no son tanto un bug de UI como un bug del **modelo**: `Holiday` no es scope-aware, las lecturas son inconsistentes, y no hay política declarada de merge ni deduplicación.
+
+### 3.1 BUGS CRÍTICOS (componente / formulario)
 
 1. **`useEffect` dentro del render-prop de Formik**
    [CalendarSection.tsx:512-536](src/app/main/[entityId]/checkinbiz/calendar/components/CalendarSection.tsx#L512-L536) declara un `useEffect` **dentro** del callback `({ values, setFieldValue, ... }) => {…}` de `<Formik>`. Esto:
@@ -140,13 +180,24 @@ La lectura de `config` se hace **directo a Firestore** desde el frontend (`getRe
 
 ## 4. Recomendación de orden de ataque
 
-1. **Eliminar el `useEffect` interno del render-prop de Formik** (bug 1) y borrar `BranchCalendarTab.tsx` (bug 13). Cambios pequeños, alto impacto en estabilidad.
-2. **Unificar la generación de IDs en `HolidayModal`** y devolver siempre slug; manejar correctamente la edición de rangos (bug 2).
-3. **Introducir `Absence` real**: un solo documento con `startDate/endDate/status`, una sola request, y eliminar la expansión a N holidays en el cliente (bug 3 + 8). Requiere coordinación con el backend handler.
-4. **Centralizar fallbacks y mappers** (`buildDefaultSchedule`, `mapStoredSchedule`, `normalizeScheduleForForm`) en un único helper `src/lib/calendar/`. Resuelve bug 10.
-5. **Sustituir lecturas directas a Firestore por `fetchEffectiveCalendar`** o un nuevo `fetchRawCalendar(scope)` (bug 11).
-6. **Mover labels hardcodeados a `locales/*/common.json`** bajo `calendar.scope.{entity,branch,employee}.*` (bug 9 + 14).
-7. **Deduplicar la sección de calendario en `employee/form/form.controller.tsx`** factorizando un helper `getCalendarFieldConfig(vals, holidays)` (bug 12).
+**Quick wins (bajo riesgo, alto impacto en estabilidad)**
+1. Eliminar el `useEffect` interno del render-prop de Formik (bug 1).
+2. Borrar `BranchCalendarTab.tsx` y todas sus utilidades muertas (bug 13).
+3. Corregir el `scope: 'entity'` por `scope: 'employee'` en `EmployeeHolidaysTab.handleLoadHolidays` (bug 3.0.D).
+4. Unificar la generación de IDs en `HolidayModal` siempre vía `createSlug` y manejar correctamente la edición de rangos (bug 2).
+
+**Cambios de modelo (requieren backend + migración)**
+5. Añadir `source` (`'entity' | 'branch' | 'employee'`) y, opcionalmente, `originId` a cada `Holiday` que llega del cliente (bug 3.0.E). Sin esto la cascada nunca podrá renderizarse correctamente.
+6. Definir y documentar la **política de merge** entre niveles (deduplicación por fecha, ganador, etiquetado, override) y publicarla en `fetchEffectiveCalendar` con tests (bug 3.0.F + 3.0.I).
+7. Introducir `overridesHolidays` análogo a `overridesDisabled` para horarios, para que sucursal/empleado pueda ignorar festivos heredados (bug 3.0.G).
+8. Introducir `Absence` real (rango con `startDate/endDate/status`) en una sola request, eliminar la expansión a N holidays en el cliente (bug 3 + 8 + 3.0.I).
+
+**Refactor estructural**
+9. Centralizar fallbacks y mappers (`buildDefaultSchedule`, `mapStoredSchedule`, `normalizeScheduleForForm`) en un solo helper `src/lib/calendar/`. Resuelve bug 10.
+10. Sustituir todas las lecturas directas a Firestore por `fetchEffectiveCalendar` (o `fetchRawCalendar(scope)` cuando se necesite el nivel sin merge), incluido `BranchCalendarDetail` (bug 11 + 3.0.C).
+11. Renderizar los `Holiday` heredados con badge de origen y read-only en el editor del nivel inferior; mostrar las fechas heredadas en `existingDates` con flag visual (bug 3.0.A + 3.0.B).
+12. Mover labels hardcodeados a `locales/*/common.json` bajo `calendar.scope.{entity,branch,employee}.*` (bug 9 + 14).
+13. Deduplicar la sección de calendario en `employee/form/form.controller.tsx` factorizando un helper `getCalendarFieldConfig(vals, holidays)` (bug 12).
 
 ---
 
