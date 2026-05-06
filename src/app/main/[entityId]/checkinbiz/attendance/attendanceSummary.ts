@@ -1,10 +1,4 @@
 import { IChecklog } from "@/domain/features/checkinbiz/IChecklog";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 export type WorkSessionStatus =
   | "pending"
@@ -77,41 +71,6 @@ const minutesBetween = (start?: IChecklog, end?: IChecklog): number => {
   return minutesBetweenMs(start ? getTime(start.timestamp) : 0, end ? getTime(end.timestamp) : 0);
 };
 
-const getLogTimezone = (log?: IChecklog) => log?.branch?.address?.timeZone ?? log?.metadata?.tz ?? log?.metadata?.etz ?? "UTC";
-
-const dayKeys = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] as const;
-
-const getScheduleApplied = (log?: IChecklog) => {
-  if (!log) return null;
-  if (log.metadata?.scheduleApplied?.start && log.metadata?.scheduleApplied?.end) {
-    return log.metadata.scheduleApplied;
-  }
-
-  const tz = getLogTimezone(log);
-  const date = getJsDate(log.timestamp);
-  const dayKey = date ? dayKeys[Number(dayjs(date).tz(tz).format("d"))] : undefined;
-  const responsibilitySchedule = dayKey ? log.metadata?.employeeResponsibility?.workSchedule?.[dayKey] : null;
-  if (responsibilitySchedule?.start && responsibilitySchedule?.end) return responsibilitySchedule;
-
-  const branchSchedule = dayKey ? log.branch?.advance?.workSchedule?.[dayKey] : null;
-  if (branchSchedule?.start && branchSchedule?.end) return branchSchedule;
-
-  if (log.branch?.advance?.startTimeWorkingDay && log.branch?.advance?.endTimeWorkingDay) {
-    return {
-      start: log.branch.advance.startTimeWorkingDay,
-      end: log.branch.advance.endTimeWorkingDay,
-    };
-  }
-
-  return null;
-};
-
-const getStrictScheduleEnabled = (logs: IChecklog[]) =>
-  logs.some((log) =>
-    log.metadata?.enableDayTimeRange === true ||
-    log.branch?.advance?.enableDayTimeRange === true
-  );
-
 const getStrictBreakConfig = (logs: IChecklog[]) => {
   const source = logs.find((log) =>
     log.metadata?.disableBreak !== undefined ||
@@ -129,55 +88,22 @@ const getStrictBreakConfig = (logs: IChecklog[]) => {
   };
 };
 
-const buildScheduleBounds = (referenceLog: IChecklog, schedule: any) => {
-  const date = getJsDate(referenceLog.timestamp);
-  if (!date || !schedule?.start || !schedule?.end) return null;
-
-  const tz = getLogTimezone(referenceLog);
-  const day = dayjs(date).tz(tz).format("YYYY-MM-DD");
-  const start = dayjs.tz(
-    `${day} ${String(schedule.start.hour ?? 0).padStart(2, "0")}:${String(schedule.start.minute ?? 0).padStart(2, "0")}`,
-    "YYYY-MM-DD HH:mm",
-    tz
-  );
-  let end = dayjs.tz(
-    `${day} ${String(schedule.end.hour ?? 0).padStart(2, "0")}:${String(schedule.end.minute ?? 0).padStart(2, "0")}`,
-    "YYYY-MM-DD HH:mm",
-    tz
-  );
-
-  if (end.valueOf() <= start.valueOf()) end = end.add(1, "day");
-  return { startMs: start.valueOf(), endMs: end.valueOf() };
-};
-
 const calculateWorkedMinutes = ({
   openingLog,
   closingLog,
   lastMovement,
   breakMinutes,
-  strictSchedule,
-  scheduleApplied,
 }: {
   openingLog?: IChecklog;
   closingLog?: IChecklog;
   lastMovement?: IChecklog;
   breakMinutes: number;
-  strictSchedule: boolean;
-  scheduleApplied: any;
 }) => {
   if (!openingLog) return 0;
 
   const endLog = closingLog ?? lastMovement;
-  let startMs = getTime(openingLog.timestamp);
-  let endMs = endLog ? getTime(endLog.timestamp) : 0;
-
-  if (strictSchedule && scheduleApplied) {
-    const bounds = buildScheduleBounds(openingLog, scheduleApplied);
-    if (bounds) {
-      startMs = Math.max(startMs, bounds.startMs);
-      endMs = Math.min(endMs, bounds.endMs);
-    }
-  }
+  const startMs = getTime(openingLog.timestamp);
+  const endMs = endLog ? getTime(endLog.timestamp) : 0;
 
   return Math.max(0, minutesBetweenMs(startMs, endMs) - breakMinutes);
 };
@@ -302,8 +228,6 @@ export const buildWorkSessionSummaries = (logs: IChecklog[]): WorkSessionSummary
         });
       }
 
-      const strictSchedule = getStrictScheduleEnabled(sortedLogs);
-      const scheduleApplied = getScheduleApplied(openingLog) ?? getScheduleApplied(closingLog) ?? getScheduleApplied(lastMovement);
       const strictBreakConfig = getStrictBreakConfig(sortedLogs);
       const realBreakMinutes = breakSegments.reduce((total, segment) => total + (segment.durationMinutes ?? 0), 0);
       const breakMinutes = strictBreakConfig.strictBreak ? strictBreakConfig.breakMinutes : realBreakMinutes;
@@ -312,8 +236,6 @@ export const buildWorkSessionSummaries = (logs: IChecklog[]): WorkSessionSummary
         closingLog,
         lastMovement,
         breakMinutes,
-        strictSchedule,
-        scheduleApplied,
       });
 
       const hasPending = sortedLogs.some((log) => log.status === "pending-employee-validation");
