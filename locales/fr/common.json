@@ -400,5 +400,26 @@
       "registeredUserAgentLabel": "Agent utilisateur enregistré: ",
       "meters": "m"
     }
+  },
+  "calendar": {
+    "holidays": {
+      "fields": {
+        "nameAbsence": "Nom de l'absence",
+        "nameDayOff": "Nom du jour de congé",
+        "detailAbsence": "Détail de l'absence",
+        "detailDayOff": "Détail du jour de congé",
+        "dateDayOff": "Date du jour de congé",
+        "dateRange": "Plage de dates"
+      },
+      "addAbsenceTitle": "Ajouter une absence",
+      "editAbsenceTitle": "Modifier l'absence",
+      "addDayOffTitle": "Ajouter un jour de congé",
+      "editDayOffTitle": "Modifier le jour de congé",
+      "saveAbsence": "Accepter",
+      "saveDayOff": "Enregistrer le congé"
+    },
+    "errors": {
+      "endAfterStart": "La date de fin doit être postérieure à la date de début"
+    }
   }
 }

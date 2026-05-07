@@ -139,7 +139,7 @@
       "nocard": "You have no payment methods associated with the entity, please configure at least one."
     },
     "label": {
-       "incomplete_workday":"Imcomplete Workday",
+      "incomplete_workday": "Imcomplete Workday",
       "fromRole": "From Role",
       "toRole": "To Role",
       "journeyRegistration": "Journey Registration",
@@ -410,7 +410,7 @@
     },
     "button": {
       "revoke": "Revoke",
-       "review":"Review",
+      "review": "Review",
       "applyFilter": "Apply",
       "configure": "Configure",
       "createReport": "Create report",
@@ -620,7 +620,7 @@
       "targetDesc": "Follow the steps in this guide to configure the CheckBiz service."
     }
   },
-    "salesPlan": {
+  "salesPlan": {
     "cancelationDate": "Cancellation date",
     "title": "AVAILABLE PLANS",
     "emissionLimit": "Digital passes",
@@ -1832,11 +1832,23 @@
       "fields": {
         "name": "Holiday name",
         "date": "Date",
-        "description": "Description (optional)"
+        "description": "Description (optional)",
+        "nameAbsence": "Absence name",
+        "nameDayOff": "Day off name",
+        "detailAbsence": "Absence detail",
+        "detailDayOff": "Day off detail",
+        "dateDayOff": "Day off date",
+        "dateRange": "Date range"
       },
       "save": "Save holiday",
       "saved": "Holiday saved",
-      "deleted": "Holiday deleted"
+      "deleted": "Holiday deleted",
+      "addAbsenceTitle": "Add absence",
+      "editAbsenceTitle": "Edit absence",
+      "addDayOffTitle": "Add day off",
+      "editDayOffTitle": "Edit day off",
+      "saveAbsence": "Accept",
+      "saveDayOff": "Save day off"
     },
     "holidaysEmpty": "No non-working days recorded",
     "employeeHolidaysTitle": "Non-working days",
@@ -1860,7 +1872,8 @@
       "notFound": "Calendar not found.",
       "generic": "We couldn't save the changes. Please try again.",
       "holidayName": "Enter the holiday name.",
-      "holidayDate": "Select the holiday date."
+      "holidayDate": "Select the holiday date.",
+      "endAfterStart": "End date must be after start date"
     },
     "feedback": {
       "saved": "Calendar saved"
