@@ -1,64 +1,86 @@
-{ 
-"layout":{ 
-"header": { 
-"title": "encodeBiz", 
-"language": "Language", 
-"english": "English", 
-"spanish": "Spanish", 
-"french": "French", 
-"germany": "German" 
-}, 
-"footer": { 
-"copyright": "© {{year}} EncodeBiz. All rights reserved." 
-}, 
-"attendance": {
-  "viewModeEvents": "Einträge",
-  "viewModeSummary": "Tagesübersicht",
-  "summaryDay": "Tag",
-  "summaryNoData": "Keine gruppierten Sitzungen für die ausgewählten Filter.",
-  "summaryStatusPending": "Ausstehend",
-  "summaryStatusIncident": "Vorfall",
-  "summaryStatusOnBreak": "Pause",
-  "summaryStatusWorking": "Im Dienst",
-  "summaryStatusCompleted": "Abgeschlossen",
-  "summaryMultipleBranches": "Mehrere Filialen",
-  "summaryStart": "Start",
-  "summaryEnd": "Ende",
-  "summaryWorked": "Stunden",
-  "summaryBreak": "Pause",
-  "summaryIncidentFailedLog": "Fehlgeschlagener Eintrag",
-  "summaryIncidentMissingCheckin": "Fehlender Start",
-  "summaryIncidentOpenBreak": "Offene Pause",
-  "summaryIncidentInvalidSequence": "Ungültige Sequenz",
-  "summaryIncidentMultipleCheckouts": "Mehrere Abschlüsse",
-  "summaryIncidentCrossBranchSession": "Sitzung über mehrere Filialen",
-  "logDetail": {
-    "summaryTitle": "Zusammenfassung des Datensatzes",
-    "recordTypeLabel": "Datensatztyp: ",
-    "recordStatusLabel": "Datensatzstatus: ",
-    "dateTimeLabel": "Datum und Uhrzeit: ",
-    "timezoneLabel": "Zeitzone: ",
-    "locationValidationTitle": "Standort und Validierung",
-    "registeredLocation": "Registrierter Standort",
-    "coordinatesLabel": "Koordinaten: ",
-    "distanceToAuthorizedPointLabel": "Entfernung zum autorisierten Punkt: ",
-    "locationControl": "Standortkontrolle",
-    "automaticEvaluation": "Automatische Bewertung",
-    "suspiciousRecordLabel": "Verdächtiger Datensatz: ",
-    "viewLocationOnMap": "Standort auf Karte anzeigen",
-    "workdayConditionsTitle": "Arbeitstagbedingungen",
-    "strictSchedule": "Strenger Zeitplan",
-    "flexibleSchedule": "Flexibler Zeitplan",
-    "appliedScheduleLabel": "Angewandter Zeitplan:",
-    "scheduleNoticeLabel": "Zeitplanhinweis: ",
-    "minutesBeforeEntryAndExit": " Minuten vor Ein- und Austritt",
-    "workModality": "Arbeitsmodalität",
-    "remoteWorkLabel": "Heimarbeit: ",
-    "roleAndCostTitle": "Rolle und Kosten",
-    "assignedResponsibility": "Zugewiesene Verantwortung",
-    "areaLabel": "Bereich: ",
-    "roleLabel": "Rolle: ",
-    "levelLabel": "Ebene: "  }
-}
-}
+{
+  "layout": {
+    "header": {
+      "title": "encodeBiz",
+      "language": "Language",
+      "english": "English",
+      "spanish": "Spanish",
+      "french": "French",
+      "germany": "German"
+    },
+    "footer": {
+      "copyright": "© {{year}} EncodeBiz. All rights reserved."
+    },
+    "attendance": {
+      "viewModeEvents": "Einträge",
+      "viewModeSummary": "Tagesübersicht",
+      "summaryDay": "Tag",
+      "summaryNoData": "Keine gruppierten Sitzungen für die ausgewählten Filter.",
+      "summaryStatusPending": "Ausstehend",
+      "summaryStatusIncident": "Vorfall",
+      "summaryStatusOnBreak": "Pause",
+      "summaryStatusWorking": "Im Dienst",
+      "summaryStatusCompleted": "Abgeschlossen",
+      "summaryMultipleBranches": "Mehrere Filialen",
+      "summaryStart": "Start",
+      "summaryEnd": "Ende",
+      "summaryWorked": "Stunden",
+      "summaryBreak": "Pause",
+      "summaryIncidentFailedLog": "Fehlgeschlagener Eintrag",
+      "summaryIncidentMissingCheckin": "Fehlender Start",
+      "summaryIncidentOpenBreak": "Offene Pause",
+      "summaryIncidentInvalidSequence": "Ungültige Sequenz",
+      "summaryIncidentMultipleCheckouts": "Mehrere Abschlüsse",
+      "summaryIncidentCrossBranchSession": "Sitzung über mehrere Filialen",
+      "logDetail": {
+        "summaryTitle": "Zusammenfassung des Datensatzes",
+        "recordTypeLabel": "Datensatztyp: ",
+        "recordStatusLabel": "Datensatzstatus: ",
+        "dateTimeLabel": "Datum und Uhrzeit: ",
+        "timezoneLabel": "Zeitzone: ",
+        "locationValidationTitle": "Standort und Validierung",
+        "registeredLocation": "Registrierter Standort",
+        "coordinatesLabel": "Koordinaten: ",
+        "distanceToAuthorizedPointLabel": "Entfernung zum autorisierten Punkt: ",
+        "locationControl": "Standortkontrolle",
+        "automaticEvaluation": "Automatische Bewertung",
+        "suspiciousRecordLabel": "Verdächtiger Datensatz: ",
+        "viewLocationOnMap": "Standort auf Karte anzeigen",
+        "workdayConditionsTitle": "Arbeitstagbedingungen",
+        "strictSchedule": "Strenger Zeitplan",
+        "flexibleSchedule": "Flexibler Zeitplan",
+        "appliedScheduleLabel": "Angewandter Zeitplan:",
+        "scheduleNoticeLabel": "Zeitplanhinweis: ",
+        "minutesBeforeEntryAndExit": " Minuten vor Ein- und Austritt",
+        "workModality": "Arbeitsmodalität",
+        "remoteWorkLabel": "Heimarbeit: ",
+        "roleAndCostTitle": "Rolle und Kosten",
+        "assignedResponsibility": "Zugewiesene Verantwortung",
+        "areaLabel": "Bereich: ",
+        "roleLabel": "Rolle: ",
+        "levelLabel": "Ebene: "
+      }
+    }
+  },
+  "calendar": {
+    "holidays": {
+      "fields": {
+        "nameAbsence": "Name der Abwesenheit",
+        "nameDayOff": "Name des freien Tages",
+        "detailAbsence": "Details der Abwesenheit",
+        "detailDayOff": "Details des freien Tages",
+        "dateDayOff": "Datum des freien Tages",
+        "dateRange": "Datumsbereich"
+      },
+      "addAbsenceTitle": "Abwesenheit hinzufügen",
+      "editAbsenceTitle": "Abwesenheit bearbeiten",
+      "addDayOffTitle": "Freien Tag hinzufügen",
+      "editDayOffTitle": "Freien Tag bearbeiten",
+      "saveAbsence": "Bestätigen",
+      "saveDayOff": "Freien Tag speichern"
+    },
+    "errors": {
+      "endAfterStart": "Das Enddatum muss nach dem Startdatum liegen"
+    }
+  }
 }

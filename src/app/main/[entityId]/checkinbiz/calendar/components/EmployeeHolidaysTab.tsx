@@ -139,7 +139,7 @@ const EmployeeHolidaysTab = () => {
     }));
     try {
       const data = await fetchEffectiveCalendar({
-        scope: 'entity',
+        scope: 'employee',
         entityId: currentEntity.entity.id,
         employeeId,
         token,
