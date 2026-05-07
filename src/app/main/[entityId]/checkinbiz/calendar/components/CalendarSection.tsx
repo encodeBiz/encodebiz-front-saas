@@ -287,7 +287,15 @@ const CalendarSection = ({
   }, [hideSaveButton, initialOverridesDisabled, scope]);
 
   useEffect(() => {
-    setHolidays(initialHolidays ?? []);
+    const next = initialHolidays ?? [];
+    setHolidays((prev) => {
+      if (prev.length !== next.length) return next;
+      const same = next.every((n, i) => {
+        const p = prev[i];
+        return p && p.id === n.id && p.name === n.name && p.date === n.date && p.description === n.description;
+      });
+      return same ? prev : next;
+    });
   }, [initialHolidays]);
 
   // Reset flag and reload presets when entity changes
@@ -383,6 +391,19 @@ const CalendarSection = ({
   const handleHolidaySubmit = async (holiday: Holiday) => {
     if (!entityId || (scope === "branch" && !branchId) || (scope === "employee" && !employeeId)) return;
     if (!token) return;
+    const previous = holidays;
+    // Close modal and update list immediately for instant feedback
+    setOpenHolidayModal(false);
+    setEditingHoliday(undefined);
+    setHolidays((prev) => {
+      const exists = prev.findIndex((item) => item.id === holiday.id);
+      if (exists >= 0) {
+        const next = [...prev];
+        next[exists] = holiday;
+        return next;
+      }
+      return [...prev, holiday];
+    });
     try {
       await upsertCalendar(
         {
@@ -395,22 +416,10 @@ const CalendarSection = ({
         token,
         locale ?? currentLocale
       );
-      if (onHolidayChange) {
-        onHolidayChange();
-      } else {
-        setHolidays((prev) => {
-          const exists = prev.findIndex((item) => item.id === holiday.id);
-          if (exists >= 0) {
-            const next = [...prev];
-            next[exists] = holiday;
-            return next;
-          }
-          return [...prev, holiday];
-        });
-      }
-      setOpenHolidayModal(false);
-      setEditingHoliday(undefined);
+      onHolidayChange?.();
     } catch (error: any) {
+      // Rollback optimistic change on failure
+      setHolidays(previous);
       showToast(error?.message ?? t("errors.generic"), "error");
     }
   };
@@ -487,7 +496,10 @@ const CalendarSection = ({
     if (!entityId || (scope === "branch" && !branchId) || (scope === "employee" && !employeeId)) return;
     if (!token) return;
     if (deletingId) return;
+    const previous = holidays;
     setDeletingId(id);
+    // Optimistic remove for instant feedback
+    setHolidays((prev) => prev.filter((h) => h.id !== id));
     try {
       await deleteCalendarItem(
         {
@@ -501,12 +513,10 @@ const CalendarSection = ({
         token,
         locale ?? currentLocale
       );
-      if (onHolidayChange) {
-        onHolidayChange();
-      } else {
-        setHolidays((prev) => prev.filter((h) => h.id !== id));
-      }
+      onHolidayChange?.();
     } catch (error: any) {
+      // Rollback on failure
+      setHolidays(previous);
       showToast(error?.message ?? t("errors.generic"), "error");
     } finally {
       setDeletingId(null);
@@ -865,10 +875,10 @@ const CalendarSection = ({
                             </IconButton>
                             <IconButton
                               aria-label={t("actions.deleteHoliday")}
-                              disabled={deletingId === holiday.id}
+                              disabled={!!deletingId}
                               onClick={() => handleHolidayDelete(holiday.id)}
                             >
-                              {deletingId === holiday.id ? <CircularProgress size={18} /> : <DeleteOutline />}
+                              <DeleteOutline />
                             </IconButton>
                           </>
                         )}

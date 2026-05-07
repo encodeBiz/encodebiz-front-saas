@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Stack } from "@mui/material";
 import { useTranslations } from "next-intl";
 import { Holiday, WeeklyScheduleWithBreaks } from "@/domain/features/checkinbiz/ICalendar";
@@ -80,22 +80,6 @@ const EntityCalendarTab = () => {
   const entityId = currentEntity?.entity?.id;
   const entityTimezone = currentEntity?.entity?.legal?.address?.timeZone ?? "UTC";
 
-  const loadHolidays = useCallback(async () => {
-    if (!entityId) return;
-    try {
-      const data = await getRefByPathData(`entities/${entityId}/calendar/config`);
-      if (Array.isArray(data?.holidays)) {
-        setHolidays(data.holidays);
-      } else if (data?.holiday) {
-        setHolidays([data.holiday]);
-      } else {
-        setHolidays([]);
-      }
-    } catch {
-      setHolidays([]);
-    }
-  }, [entityId]);
-
   useEffect(() => {
     const loadConfig = async () => {
       if (!entityId) return;
@@ -136,7 +120,6 @@ const EntityCalendarTab = () => {
     loadConfig();
   }, [entityId]);
 
-  const initialAdvance = useMemo(() => advance, [advance]);
   const handleSaved = useCallback(() => showToast(t("feedback.saved"), "success"), [showToast, t]);
 
   return (
@@ -149,10 +132,9 @@ const EntityCalendarTab = () => {
           token={token as string}
           locale={currentLocale}
           initialSchedule={schedule}
-          initialAdvance={initialAdvance}
+          initialAdvance={advance}
           initialHolidays={holidays}
           onSaved={handleSaved}
-          onHolidayChange={loadHolidays}
         />
       )}
     </Stack>
