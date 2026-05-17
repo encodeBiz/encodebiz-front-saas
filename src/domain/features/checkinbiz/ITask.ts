@@ -32,6 +32,7 @@ export interface TaskConfig {
   allowSupervisorRating: boolean;
   completionPolicy: TaskCompletionPolicy;
   requireEvidenceOnCompletion: boolean;
+  notifyIfNotStarted: boolean;
   maxPhotoSizeMB: number;
   maxVideoSizeMB: number;
 }
@@ -67,6 +68,8 @@ export interface Task {
   updatedAt: Date | string | any;
   dueSoonNotifiedAt?: Date | string | any;
   overdueNotifiedAt?: Date | string | any;
+  scheduledStartNotificationAt?: Date | string | any;
+  scheduledStartNotifiedAt?: Date | string | any;
   totalItems?: number;
   last?: string;
 }
@@ -176,7 +179,8 @@ export interface TaskActivity {
     | "note_updated"
     | "resource_uploaded"
     | "rated"
-    | "commented";
+    | "commented"
+    | "start_delay_notified";
   actorId: string;
   actorRole: ResponsibilityKey;
   employeeId?: string;
@@ -202,6 +206,7 @@ export const defaultTaskConfig: TaskConfig = {
   allowSupervisorRating: true,
   completionPolicy: "any_assigned_worker",
   requireEvidenceOnCompletion: true,
+  notifyIfNotStarted: false,
   maxPhotoSizeMB: 5,
   maxVideoSizeMB: 25,
 };

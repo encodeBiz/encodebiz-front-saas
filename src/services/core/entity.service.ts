@@ -39,8 +39,17 @@ export async function fetchUserEntities(
   };
   try {
     const resultList: IUserEntity[] = await searchFirestore(params);
+    const entitiesById = new Map<string, IUserEntity>();
+    resultList.forEach((item) => {
+      const current = entitiesById.get(item.entityId);
+      if (!current || (!current.isActive && item.isActive)) {
+        entitiesById.set(item.entityId, item);
+      }
+    });
+    const uniqueResultList = Array.from(entitiesById.values());
+
     return await Promise.all(
-      resultList.map(async (item) => {
+      uniqueResultList.map(async (item) => {
         const entity = await fetchEntity(item.entityId, locale);
         return {
           ...item,
@@ -327,7 +336,6 @@ export async function deleteOwnerOfEntity(id: string): Promise<void> {
 export function watchEntityChange(entityId: string, callback: (data: IEntity) => void): Unsubscribe {
   return onSnapshotFirestore(`${collection.ENTITIES}/${entityId}`, callback)
 }
-
 
 
 

@@ -132,6 +132,19 @@ export default function TaskDetailPage() {
               <DetailText label="Fecha límite" value={format_date_with_locale(task.dueAt, currentLocale as "en" | "es")} />
               <DetailText label="Asignados" value={task.assignedEmployeeIds?.length ?? 0} />
               <DetailText label="Evidencia requerida" value={task.config?.requireEvidenceOnCompletion ? "Sí" : "No"} />
+              <DetailText label="Notificación de inicio" value={task.config?.notifyIfNotStarted ? "Sí" : "No"} />
+              {task.scheduledStartNotificationAt && (
+                <DetailText
+                  label="Notificación programada"
+                  value={format_date_with_locale(task.scheduledStartNotificationAt, currentLocale as "en" | "es")}
+                />
+              )}
+              {task.scheduledStartNotifiedAt && (
+                <DetailText
+                  label="Notificación enviada"
+                  value={format_date_with_locale(task.scheduledStartNotifiedAt, currentLocale as "en" | "es")}
+                />
+              )}
             </Box>
             {task.description && (
               <Paper sx={{ mt: 4 }} elevation={0}>

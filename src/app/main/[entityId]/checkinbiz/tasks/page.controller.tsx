@@ -104,6 +104,12 @@ export default function useTasksListController() {
       ),
     },
     {
+      id: "config",
+      label: "Notif. inicio",
+      minWidth: 130,
+      format: (_value, row) => (row.config?.notifyIfNotStarted ? "Sí" : "No"),
+    },
+    {
       id: "dueAt",
       label: "Vence",
       minWidth: 180,
