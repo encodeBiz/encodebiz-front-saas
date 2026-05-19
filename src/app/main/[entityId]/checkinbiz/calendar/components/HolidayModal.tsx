@@ -16,6 +16,7 @@ import { useAppLocale } from "@/hooks/useAppLocale";
 import { esES } from '@mui/x-date-pickers/locales';
 import { enUS } from '@mui/x-date-pickers/locales';
 import { Dayjs } from "dayjs";
+import { createSlug } from "@/lib/common/String";
 
 type HolidayModalProps = {
     open: boolean;
@@ -31,17 +32,19 @@ const HolidayModal = ({ open, scope, initialValue, onClose, onSubmit, existingDa
     const { currentLocale } = useAppLocale();
     const isEmployee = scope === "employee";
     const isBranch = scope === "branch";
-    const isEntity = scope === "entity";
+    const isEditMode = !!initialValue;
+    // Employee range picker only when creating; editing goes day-by-day (single date)
+    const showRangePicker = isEmployee && !isEditMode;
 
-    const nameLabel = isEmployee ? "Nombre de la ausencia" : isBranch ? "Nombre del día libre" : t('holidays.fields.name');
-    const descLabel = isEmployee ? "Detalle de la ausencia" : isBranch ? "Detalle del día libre" : t('holidays.fields.description');
-    const dateLabel = isEmployee ? "" : isBranch ? "Fecha del día libre" : t('holidays.fields.date');
-    const saveLabel = isEmployee ? "Aceptar" : isBranch ? "Guardar día libre" : t('holidays.save');
+    const nameLabel = isEmployee ? t('holidays.fields.nameAbsence') : isBranch ? t('holidays.fields.nameDayOff') : t('holidays.fields.name');
+    const descLabel = isEmployee ? t('holidays.fields.detailAbsence') : isBranch ? t('holidays.fields.detailDayOff') : t('holidays.fields.description');
+    const dateLabel = isBranch ? t('holidays.fields.dateDayOff') : t('holidays.fields.date');
+    const saveLabel = isEmployee ? t('holidays.saveAbsence') : isBranch ? t('holidays.saveDayOff') : t('holidays.save');
     const dialogTitle = isEmployee
-        ? initialValue ? "Editar ausencia" : "Agregar ausencia"
+        ? isEditMode ? t('holidays.editAbsenceTitle') : t('holidays.addAbsenceTitle')
         : isBranch
-            ? initialValue ? "Editar día libre" : "Agregar día libre"
-            : initialValue ? t('holidays.editTitle') : t('holidays.addTitle');
+            ? isEditMode ? t('holidays.editDayOffTitle') : t('holidays.addDayOffTitle')
+            : isEditMode ? t('holidays.editTitle') : t('holidays.addTitle');
 
     const formik = useFormik({
         initialValues: {
@@ -55,14 +58,14 @@ const HolidayModal = ({ open, scope, initialValue, onClose, onSubmit, existingDa
         enableReinitialize: true,
         validationSchema: Yup.object({
             name: Yup.string().required(t('errors.holidayName')),
-            date: isEmployee ? Yup.string().optional() : Yup.string().required(t('errors.holidayDate')),
-            startDate: isEmployee
+            date: showRangePicker ? Yup.string().optional() : Yup.string().required(t('errors.holidayDate')),
+            startDate: showRangePicker
                 ? Yup.string().required(t('errors.holidayDate'))
                 : Yup.string().optional(),
-            endDate: isEmployee
+            endDate: showRangePicker
                 ? Yup.string()
                     .required(t('errors.holidayDate'))
-                    .test('range', 'La fecha fin debe ser posterior al inicio', function (value) {
+                    .test('range', t('errors.endAfterStart'), function (value) {
                         const { startDate } = this.parent as { startDate?: string };
                         if (!startDate || !value) return true;
                         return !dayjs(value).isBefore(dayjs(startDate), 'day');
@@ -71,22 +74,25 @@ const HolidayModal = ({ open, scope, initialValue, onClose, onSubmit, existingDa
             description: Yup.string().optional()
         }),
         onSubmit: async (values, helpers) => {
-            if (isEmployee) {
+            if (showRangePicker) {
+                // Create mode with range: emit one Holiday per day using stable slug IDs
                 const start = dayjs(values.startDate).startOf("day");
                 const end = dayjs(values.endDate).startOf("day");
                 const days = Math.max(0, end.diff(start, "day"));
+                const nameSlug = createSlug(values.name.trim());
                 for (let i = 0; i <= days; i++) {
                     const date = start.add(i, "day").format("YYYY-MM-DD");
                     await onSubmit({
-                        id: values.id ? `${values.id}-${i}` : `${values.name}-${date}`,
+                        id: `${nameSlug}-${date}`,
                         name: values.name.trim(),
                         date,
                         description: values.description?.trim() || undefined
                     });
                 }
             } else {
+                // Single-date mode (entity, branch, or employee edit): stable ID
                 await onSubmit({
-                    id: values.id,
+                    id: values.id || `${createSlug(values.name.trim())}-${values.date}`,
                     name: values.name.trim(),
                     date: values.date,
                     description: values.description?.trim() || undefined
@@ -97,7 +103,7 @@ const HolidayModal = ({ open, scope, initialValue, onClose, onSubmit, existingDa
     });
 
     return (
-        <Dialog open={open} onClose={onClose} maxWidth={isEmployee ? "xs" : "sm"} fullWidth>
+        <Dialog open={open} onClose={onClose} maxWidth={showRangePicker ? "xs" : "sm"} fullWidth>
             <DialogTitle>{dialogTitle}</DialogTitle>
             <DialogContent>
                 <Stack spacing={2} mt={1}>
@@ -116,9 +122,9 @@ const HolidayModal = ({ open, scope, initialValue, onClose, onSubmit, existingDa
                         dateAdapter={AdapterDayjs}
                         localeText={currentLocale == 'es' ? esES.components.MuiLocalizationProvider.defaultProps.localeText : enUS.components.MuiLocalizationProvider.defaultProps.localeText}
                     >
-                        {isEmployee ? (
+                        {showRangePicker ? (
                             <Stack spacing={1.5} alignItems="center">
-                                <Typography variant="subtitle2" alignSelf="flex-start">Rango de fechas</Typography>
+                                <Typography variant="subtitle2" alignSelf="flex-start">{t('holidays.fields.dateRange')}</Typography>
                                 <DateCalendar
                                     value={(formik.values.endDate || formik.values.startDate) ? dayjs(formik.values.endDate || formik.values.startDate) : null}
                                     onChange={(date) => {

@@ -72,6 +72,7 @@ type Props = {
   formFieldName?: string;
   setParentFieldValue?: (name: string, value: any) => void;
   onSaved?: () => void;
+  onHolidayChange?: () => void;
   hideSaveButton?: boolean;
   disableHolidayActions?: boolean;
   onChange?: (data: {
@@ -198,6 +199,7 @@ const CalendarSection = ({
   formFieldName,
   setParentFieldValue,
   onSaved,
+  onHolidayChange,
   hideSaveButton = false,
   disableHolidayActions = false,
   onChange,
@@ -256,6 +258,7 @@ const CalendarSection = ({
   const [holidays, setHolidays] = useState<Holiday[]>(initialHolidays ?? []);
   const [openHolidayModal, setOpenHolidayModal] = useState(false);
   const [editingHoliday, setEditingHoliday] = useState<Holiday | undefined>();
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [scheduleErrors, setScheduleErrors] = useState<string[]>([]);
   const accordionInitialExpanded = !hideSaveButton && !(initialOverridesDisabled ?? (scope !== "entity"));
   const [scheduleExpanded, setScheduleExpanded] = useState<boolean>(accordionInitialExpanded);
@@ -270,36 +273,36 @@ const CalendarSection = ({
     if (presetsLoadedRef.current) return;
     if (!entityId) return;
     try {
-      const data = await listCalendarPresets({ entityId }, locale ?? currentLocale);
+      const data = await listCalendarPresets({ entityId });
       setPresets(Array.isArray(data) ? data : []);
       presetsLoadedRef.current = true;
     } catch {
       setPresets([]);
     }
-  }, [entityId, token, locale, currentLocale]);
-
-  useEffect(() => {
-    setScheduleExpanded(!hideSaveButton && !(initialOverridesDisabled ?? false));
-  }, [hideSaveButton, initialOverridesDisabled]);
-
-  useEffect(() => {
-    setHolidays(initialHolidays ?? []);
-  }, [initialHolidays]);
-
-  useEffect(() => {
-    loadPresetsIfNeeded();
-    // Dependencias mínimas para evitar re-render en bucle por currentLocale objeto
-  }, [loadPresetsIfNeeded]);
-
-  // Resetea bandera cuando cambia la entidad
-  useEffect(() => {
-    presetsLoadedRef.current = false;
   }, [entityId]);
 
-  // Reintenta carga cuando cambia el token o la entidad
   useEffect(() => {
+    const fallbackOverrides = initialOverridesDisabled ?? (scope !== "entity");
+    setScheduleExpanded(!hideSaveButton && !fallbackOverrides);
+  }, [hideSaveButton, initialOverridesDisabled, scope]);
+
+  useEffect(() => {
+    const next = initialHolidays ?? [];
+    setHolidays((prev) => {
+      if (prev.length !== next.length) return next;
+      const same = next.every((n, i) => {
+        const p = prev[i];
+        return p && p.id === n.id && p.name === n.name && p.date === n.date && p.description === n.description;
+      });
+      return same ? prev : next;
+    });
+  }, [initialHolidays]);
+
+  // Reset flag and reload presets when entity changes
+  useEffect(() => {
+    presetsLoadedRef.current = false;
     loadPresetsIfNeeded();
-  }, [loadPresetsIfNeeded, token, entityId]);
+  }, [entityId, loadPresetsIfNeeded]);
 
   const validateForm = useCallback(
     (values: FormValues) => {
@@ -388,17 +391,10 @@ const CalendarSection = ({
   const handleHolidaySubmit = async (holiday: Holiday) => {
     if (!entityId || (scope === "branch" && !branchId) || (scope === "employee" && !employeeId)) return;
     if (!token) return;
-    await upsertCalendar(
-      {
-        scope,
-        entityId,
-        branchId,
-        employeeId,
-        holiday,
-      } as any,
-      token,
-      locale ?? currentLocale
-    );
+    const previous = holidays;
+    // Close modal and update list immediately for instant feedback
+    setOpenHolidayModal(false);
+    setEditingHoliday(undefined);
     setHolidays((prev) => {
       const exists = prev.findIndex((item) => item.id === holiday.id);
       if (exists >= 0) {
@@ -408,8 +404,24 @@ const CalendarSection = ({
       }
       return [...prev, holiday];
     });
-    setOpenHolidayModal(false);
-    setEditingHoliday(undefined);
+    try {
+      await upsertCalendar(
+        {
+          scope,
+          entityId,
+          branchId,
+          employeeId,
+          holiday,
+        } as any,
+        token,
+        locale ?? currentLocale
+      );
+      onHolidayChange?.();
+    } catch (error: any) {
+      // Rollback optimistic change on failure
+      setHolidays(previous);
+      showToast(error?.message ?? t("errors.generic"), "error");
+    }
   };
 
   const handleSavePreset = async (values: FormValues) => {
@@ -480,21 +492,35 @@ const CalendarSection = ({
   };
 
   const handleHolidayDelete = async (id: string) => {
+    if (!id) return;
     if (!entityId || (scope === "branch" && !branchId) || (scope === "employee" && !employeeId)) return;
     if (!token) return;
-    await deleteCalendarItem(
-      {
-        scope,
-        kind: "holiday",
-        entityId,
-        branchId,
-        employeeId,
-        id,
-      } as any,
-      token,
-      locale ?? currentLocale
-    );
-    setHolidays((prev) => prev.filter((holiday) => holiday.id !== id));
+    if (deletingId) return;
+    const previous = holidays;
+    setDeletingId(id);
+    // Optimistic remove for instant feedback
+    setHolidays((prev) => prev.filter((h) => h.id !== id));
+    try {
+      await deleteCalendarItem(
+        {
+          scope,
+          kind: "holiday",
+          entityId,
+          branchId,
+          employeeId,
+          id,
+        } as any,
+        token,
+        locale ?? currentLocale
+      );
+      onHolidayChange?.();
+    } catch (error: any) {
+      // Rollback on failure
+      setHolidays(previous);
+      showToast(error?.message ?? t("errors.generic"), "error");
+    } finally {
+      setDeletingId(null);
+    }
   };
 
   return (
@@ -507,33 +533,6 @@ const CalendarSection = ({
           setScheduleExpanded(expanded);
           if (expanded) loadPresetsIfNeeded();
         };
-
-        // Sincroniza el switch con el valor que viene del config (cuando rehidrata el formulario)
-        useEffect(() => {
-          const fallbackOverrides = initialOverridesDisabled ?? (scope !== "entity");
-          const scheduleSource = fallbackOverrides ? baseSchedule ?? initialSchedule : overrideSchedule ?? initialSchedule ?? baseSchedule;
-          const advanceSource = fallbackOverrides ? baseAdvance ?? initialAdvance : overrideAdvance ?? initialAdvance ?? baseAdvance;
-
-          setFieldValue("overridesDisabled", fallbackOverrides, false);
-          setFieldValue("schedule", normalizeScheduleForForm(scheduleSource, baseSchedule ?? initialSchedule), false);
-          setFieldValue("enableDayTimeRange", advanceSource?.enableDayTimeRange ?? false, false);
-          setFieldValue("notifyBeforeMinutes", advanceSource?.notifyBeforeMinutes ?? 15, false);
-          setFieldValue("disableBreak", advanceSource?.disableBreak ?? false, false);
-          setFieldValue("timeBreak", advanceSource?.timeBreak ?? 60, false);
-          setScheduleExpanded(!hideSaveButton && !fallbackOverrides);
-        }, [
-          baseAdvance,
-          baseSchedule,
-          hideSaveButton,
-          initialAdvance,
-          initialOverridesDisabled,
-          initialSchedule,
-          normalizeScheduleForForm,
-          overrideAdvance,
-          overrideSchedule,
-          scope,
-          setFieldValue,
-        ]);
 
         return (
             <Stack spacing={3} sx={{ pb: 6, textAlign: "left" }}>
@@ -874,7 +873,11 @@ const CalendarSection = ({
                             >
                               <EditOutlined />
                             </IconButton>
-                            <IconButton aria-label={t("actions.deleteHoliday")} onClick={() => handleHolidayDelete(holiday.id)}>
+                            <IconButton
+                              aria-label={t("actions.deleteHoliday")}
+                              disabled={!!deletingId}
+                              onClick={() => handleHolidayDelete(holiday.id)}
+                            >
                               <DeleteOutline />
                             </IconButton>
                           </>
@@ -898,7 +901,7 @@ const CalendarSection = ({
                   setEditingHoliday(undefined);
                 }}
                 onSubmit={(data) => {
-                  const id = data.id ?? `${createSlug(data.name)}-${data.date}`;
+                  const id = data.id || `${createSlug(data.name)}-${data.date}`;
                   return handleHolidaySubmit({ ...data, id });
                 }}
               />

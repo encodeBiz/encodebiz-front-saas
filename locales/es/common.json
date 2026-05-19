@@ -30,8 +30,7 @@
       "error": "Merlin no pudo completar el análisis.",
       "noPattern": "Sin patrón disponible para este empleado.",
       "behaviorTitle": "Comportamiento",
-      "cacheHint": "Resultado cacheado hasta 7 días. Si los patrones no cambian, no tiene sentido recalcular: ahorramos tokens y mantenemos respuestas estables."
-      ,
+      "cacheHint": "Resultado cacheado hasta 7 días. Si los patrones no cambian, no tiene sentido recalcular: ahorramos tokens y mantenemos respuestas estables.",
       "metricEfficiency": "Eficiencia: {value}",
       "metricCostGap": "Brecha de coste: {value}",
       "metricPredictability": "Predictibilidad: {value}",
@@ -140,7 +139,7 @@
       "nocard": "No tienes métodos de pago asociado a la entidad, por favor configure al menos uno."
     },
     "label": {
-      "incomplete_workday":"Jornada Incompleta",
+      "incomplete_workday": "Jornada Incompleta",
       "fromRole": "Rol Origen",
       "toRole": "Rol Destino",
       "journeyRegistration": "Registro de jornada",
@@ -170,14 +169,13 @@
       "add": "Añadir",
       "addShift": "Añadir turno",
       "download": "Descargar",
-      "shifts": "Turnos",
+      "shifts": "turnos",
       "rowsPerPage": "Filas por página",
       "periocity": "Rango de Fecha",
       "minutes": "minutos",
       "job": "Ocupación",
       "periocityTime": "Rango de tiempo",
       "shift": "turno",
-      "shifts": "turnos",
       "create-download": "Crear y descargar",
       "advance": "CONFIGURACIÓN AVANZADA",
       "dayTimeRange": "Horario de la jornada",
@@ -418,7 +416,7 @@
     },
     "button": {
       "revoke": "Revocar",
-      "review":"Revisar",
+      "review": "Revisar",
       "applyFilter": "Aplicar",
       "configure": "Configurar",
       "createReport": "Crear reporte",
@@ -631,7 +629,7 @@
       "targetDesc": "Sigue los pasos de esta guía para configurar el servicio de CheckBiz."
     }
   },
-    "salesPlan": {
+  "salesPlan": {
     "cancelationDate": "Fecha de cancelación",
     "title": "PLANES DISPONIBLES",
     "emissionLimit": "Pases digitales",
@@ -1360,7 +1358,6 @@
         }
       }
     }
- 
   },
   "statsDashboard": {
     "dateRange": "Rango de fechas",
@@ -1701,12 +1698,9 @@
     "noGeoText": "Al parecer no tienes activado el permiso de geolocalización, actívelo para usar esta herramienta",
     "statsNoDataTitle": "No existen datos para mostrar",
     "statsNoDataText": "No existe solicitudes de cambio horario para resolver",
-    "contact":"Contacto",
-    "contactNoDataText":"No tienes incidencias para mostrar",
-    "":"",
-    "":"",
-    "":"",
-    "":""
+    "contact": "Contacto",
+    "contactNoDataText": "No tienes incidencias para mostrar",
+    "": ""
   },
   "twoFactor": {
     "copyCode": "Código copiado",
@@ -1891,11 +1885,23 @@
       "fields": {
         "name": "Nombre del festivo",
         "date": "Fecha",
-        "description": "Descripción (opcional)"
+        "description": "Descripción (opcional)",
+        "nameAbsence": "Nombre de la ausencia",
+        "nameDayOff": "Nombre del día libre",
+        "detailAbsence": "Detalle de la ausencia",
+        "detailDayOff": "Detalle del día libre",
+        "dateDayOff": "Fecha del día libre",
+        "dateRange": "Rango de fechas"
       },
       "save": "Guardar festivo",
       "saved": "Festivo guardado",
-      "deleted": "Festivo eliminado"
+      "deleted": "Festivo eliminado",
+      "addAbsenceTitle": "Agregar ausencia",
+      "editAbsenceTitle": "Editar ausencia",
+      "addDayOffTitle": "Agregar día libre",
+      "editDayOffTitle": "Editar día libre",
+      "saveAbsence": "Aceptar",
+      "saveDayOff": "Guardar día libre"
     },
     "holidaysEmpty": "No tiene días no laborables registrados",
     "employeeHolidaysTitle": "Días no laborables",
@@ -1919,7 +1925,8 @@
       "notFound": "No se encontró el calendario.",
       "generic": "No pudimos guardar los cambios. Intenta de nuevo.",
       "holidayName": "Ingresa el nombre del festivo.",
-      "holidayDate": "Selecciona la fecha del festivo."
+      "holidayDate": "Selecciona la fecha del festivo.",
+      "endAfterStart": "La fecha fin debe ser posterior al inicio"
     },
     "feedback": {
       "saved": "Calendario guardado"

@@ -14,7 +14,8 @@ export interface WorkSessionIncident {
     | "open_break"
     | "invalid_sequence"
     | "multiple_checkouts"
-    | "cross_branch_session";
+    | "cross_branch_session"
+    | "incomplete_workday";
   severity: "low" | "medium" | "high";
   relatedLogIds?: string[];
 }
@@ -61,17 +62,61 @@ const getTime = (value: IChecklog["timestamp"]): number => {
   return getJsDate(value)?.getTime() ?? 0;
 };
 
-const minutesBetween = (start?: IChecklog, end?: IChecklog): number => {
-  const startTime = start ? getTime(start.timestamp) : 0;
-  const endTime = end ? getTime(end.timestamp) : 0;
+const minutesBetweenMs = (startTime: number, endTime: number): number => {
   if (!startTime || !endTime || endTime <= startTime) return 0;
   return Math.round((endTime - startTime) / 60000);
+};
+
+const minutesBetween = (start?: IChecklog, end?: IChecklog): number => {
+  return minutesBetweenMs(start ? getTime(start.timestamp) : 0, end ? getTime(end.timestamp) : 0);
+};
+
+const getStrictBreakConfig = (logs: IChecklog[]) => {
+  const source = logs.find((log) =>
+    log.metadata?.disableBreak !== undefined ||
+    log.metadata?.timeBreak !== undefined ||
+    log.branch?.advance?.disableBreak !== undefined ||
+    log.branch?.advance?.timeBreak !== undefined
+  );
+
+  const strictBreak = source?.metadata?.disableBreak ?? source?.branch?.advance?.disableBreak ?? false;
+  const breakMinutes = Number(source?.metadata?.timeBreak ?? source?.branch?.advance?.timeBreak ?? 0);
+
+  return {
+    strictBreak: Boolean(strictBreak),
+    breakMinutes: Number.isFinite(breakMinutes) && breakMinutes > 0 ? breakMinutes : 0,
+  };
+};
+
+const calculateWorkedMinutes = ({
+  openingLog,
+  closingLog,
+  lastMovement,
+  breakMinutes,
+}: {
+  openingLog?: IChecklog;
+  closingLog?: IChecklog;
+  lastMovement?: IChecklog;
+  breakMinutes: number;
+}) => {
+  if (!openingLog) return 0;
+
+  const endLog = closingLog ?? lastMovement;
+  const startMs = getTime(openingLog.timestamp);
+  const endMs = endLog ? getTime(endLog.timestamp) : 0;
+
+  return Math.max(0, minutesBetweenMs(startMs, endMs) - breakMinutes);
 };
 
 const pushIncident = (
   incidents: WorkSessionIncident[],
   incident: WorkSessionIncident
 ) => {
+  if (incident.code === "incomplete_workday") {
+    if (!incidents.some((item) => item.code === incident.code)) incidents.push(incident);
+    return;
+  }
+
   const duplicate = incidents.find(
     (item) => item.code === incident.code && JSON.stringify(item.relatedLogIds ?? []) === JSON.stringify(incident.relatedLogIds ?? [])
   );
@@ -95,9 +140,13 @@ export const buildWorkSessionSummaries = (logs: IChecklog[]): WorkSessionSummary
     .map(([sessionKey, sessionLogs]) => {
       const sortedLogs = [...sessionLogs].sort((a, b) => getTime(a.timestamp) - getTime(b.timestamp));
       const incidents: WorkSessionIncident[] = [];
-      const openingLog = sortedLogs.find((log) => log.type === "checkin");
+      const openingLog = sortedLogs.find((log) => log.type === "checkin" && log.status === "valid")
+        ?? sortedLogs.find((log) => log.type === "checkin");
       const checkoutLogs = sortedLogs.filter((log) => log.type === "checkout");
-      const closingLog = checkoutLogs.length > 0 ? checkoutLogs[checkoutLogs.length - 1] : undefined;
+      const validCheckoutLogs = checkoutLogs.filter((log) => log.status === "valid");
+      const closingLog = validCheckoutLogs.length > 0
+        ? validCheckoutLogs[validCheckoutLogs.length - 1]
+        : checkoutLogs[checkoutLogs.length - 1];
       const lastMovement = sortedLogs[sortedLogs.length - 1];
       const branchIds = Array.from(new Set(sortedLogs.map((log) => log.branchId).filter(Boolean)));
 
@@ -124,6 +173,14 @@ export const buildWorkSessionSummaries = (logs: IChecklog[]): WorkSessionSummary
         if (log.status === "failed") {
           pushIncident(incidents, {
             code: "failed_log",
+            severity: "high",
+            relatedLogIds: log.id ? [log.id] : undefined,
+          });
+        }
+
+        if (log.status === "incomplete_workday") {
+          pushIncident(incidents, {
+            code: "incomplete_workday",
             severity: "high",
             relatedLogIds: log.id ? [log.id] : undefined,
           });
@@ -171,21 +228,29 @@ export const buildWorkSessionSummaries = (logs: IChecklog[]): WorkSessionSummary
         });
       }
 
-      const breakMinutes = breakSegments.reduce((total, segment) => total + (segment.durationMinutes ?? 0), 0);
-      const workedMinutes = openingLog
-        ? Math.max(0, minutesBetween(openingLog, closingLog ?? lastMovement) - breakMinutes)
-        : 0;
+      const strictBreakConfig = getStrictBreakConfig(sortedLogs);
+      const realBreakMinutes = breakSegments.reduce((total, segment) => total + (segment.durationMinutes ?? 0), 0);
+      const breakMinutes = strictBreakConfig.strictBreak ? strictBreakConfig.breakMinutes : realBreakMinutes;
+      const workedMinutes = calculateWorkedMinutes({
+        openingLog,
+        closingLog,
+        lastMovement,
+        breakMinutes,
+      });
 
       const hasPending = sortedLogs.some((log) => log.status === "pending-employee-validation");
       const hasIncident = incidents.length > 0;
       const hasOpenBreak = breakSegments.some((segment) => segment.status === "open");
-      const isCompleted = Boolean(openingLog && closingLog);
+      const isCompleted = Boolean(
+        openingLog?.status === "valid" &&
+        closingLog?.status === "valid"
+      );
 
       let status: WorkSessionStatus = "working";
       if (hasPending) status = "pending";
-      else if (hasIncident) status = "incident";
       else if (hasOpenBreak) status = "on_break";
       else if (isCompleted) status = "completed";
+      else if (hasIncident) status = "incident";
 
       return {
         sessionKey,
