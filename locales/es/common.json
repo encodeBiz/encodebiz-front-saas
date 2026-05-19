@@ -70,7 +70,8 @@
         "HoldersList": "Listado de Titulares",
         "AddHolders": "Adicionar Titulares",
         "Plans": "Planes",
-        "Holders": "Pases Digitales"
+        "Holders": "Pases Digitales",
+        "Documents": "Gestión Documental"
       }
     },
     "footer": {
@@ -283,7 +284,7 @@
       "thumbnail": "Imagen en miniatura",
       "subject": "Asunto",
       "comminsoom": "- Muy pronto",
-      "from": "Correo electrónico",
+      "from": "Desde",
       "owner": "Propietario",
       "availableEvent": "Eventos disponibles",
       "selectedEvent": "Eventos seleccionados",
@@ -347,7 +348,6 @@
       "message": "Mensaje",
       "all": "Todos",
       "createdAt": "Creado el",
-      "from": "Desde",
       "to": "Hasta",
       "uploadResourse": "Subir recurso",
       "lastName": "Apellido",

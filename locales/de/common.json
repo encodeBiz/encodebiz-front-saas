@@ -60,6 +60,11 @@
         "roleLabel": "Rolle: ",
         "levelLabel": "Ebene: "
       }
+    },
+    "side": {
+      "menu": {
+        "Documents": "Dokumentenverwaltung"
+      }
     }
   },
   "calendar": {

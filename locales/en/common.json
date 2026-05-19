@@ -70,7 +70,8 @@
         "HoldersList": "Holders List",
         "AddHolders": "Add Holders",
         "Plans": "Plans",
-        "Holders": "Digital Passes"
+        "Holders": "Digital Passes",
+        "Documents": "Document Management"
       }
     },
     "footer": {
@@ -280,7 +281,7 @@
       "thumbnail": "Thumbnail image",
       "subject": "Subject",
       "comminsoom": "- Coming soon",
-      "from": "Email",
+      "from": "From",
       "owner": "Owner",
       "availableEvent": "Available events",
       "selectedEvent": "Selected events",
@@ -344,7 +345,6 @@
       "message": "Message",
       "all": "All",
       "createdAt": "Created at",
-      "from": "From",
       "to": "To",
       "uploadResourse": "Upload resource",
       "lastName": "Last name",

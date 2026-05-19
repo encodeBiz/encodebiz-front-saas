@@ -82,7 +82,22 @@ export const errorDict: any = {
     "checklog/manual_request_created": "Solicitud enviada correctamente.",
     "checklog/checkin_not_found": "No se encontró el checkin de referencia.",
     "checklog/checkin_not_open": "Este checkin no puede cerrarse manualmente (estado inválido).",
-    "checklog/checkout_already_exists": "Ya existe un cierre pendiente o válido para este checkin."
+    "checklog/checkout_already_exists": "Ya existe un cierre pendiente o válido para este checkin.",
+    "documents/unauthorized": "No tienes permisos para acceder a este documento",
+    "documents/not_found": "Documento no encontrado o no visible",
+    "documents/file_required": "Debes adjuntar un archivo",
+    "documents/file_too_large": "El archivo supera el máximo permitido de 10 MB",
+    "documents/invalid_mime_type": "Formato de archivo no permitido",
+    "documents/invalid_visibility_roles": "Revisa la configuración de visibilidad",
+    "documents/invalid_acknowledgement_mode": "Revisa la configuración de acuse de recibo",
+    "documents/branch_not_found": "Sucursal/proyecto no válido",
+    "documents/employee_not_found": "Empleado no válido",
+    "documents/employee_not_in_branch": "El empleado no pertenece al proyecto/sucursal seleccionado",
+    "documents/already_archived": "El documento ya está archivado",
+    "documents/acknowledgement_not_required": "Este documento no requiere acuse de recibo",
+    "documents/acknowledgement_not_allowed": "No puedes acusar recibo de este documento",
+    "documents/restricted_document_type": "No tienes permisos para este tipo de documento",
+    "documents/bad_request": "Datos del documento no válidos"
 
   },
   en: {
@@ -167,7 +182,22 @@ export const errorDict: any = {
     "checklog/manual_request_created": "Request sent successfully.",
     "checklog/checkin_not_found": "The reference checkin was not found.",
     "checklog/checkin_not_open": "This checkin cannot be manually closed (invalid state).",
-    "checklog/checkout_already_exists": "A pending or valid checkout already exists for this checkin."
+    "checklog/checkout_already_exists": "A pending or valid checkout already exists for this checkin.",
+    "documents/unauthorized": "You do not have permission to access this document",
+    "documents/not_found": "Document not found or not visible",
+    "documents/file_required": "You must attach a file",
+    "documents/file_too_large": "The file exceeds the maximum allowed size of 10 MB",
+    "documents/invalid_mime_type": "File format not allowed",
+    "documents/invalid_visibility_roles": "Check the visibility configuration",
+    "documents/invalid_acknowledgement_mode": "Check the acknowledgement configuration",
+    "documents/branch_not_found": "Branch/project not valid",
+    "documents/employee_not_found": "Employee not valid",
+    "documents/employee_not_in_branch": "The employee does not belong to the selected branch/project",
+    "documents/already_archived": "The document is already archived",
+    "documents/acknowledgement_not_required": "This document does not require acknowledgement",
+    "documents/acknowledgement_not_allowed": "You cannot acknowledge this document",
+    "documents/restricted_document_type": "You do not have permission for this document type",
+    "documents/bad_request": "Invalid document data"
 
   }
 }
