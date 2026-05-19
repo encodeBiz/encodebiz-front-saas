@@ -32,6 +32,8 @@ export enum CommonModalType {
     UPDATEREQUEST = 'UPDATEREQUEST',
     CONFIRMUPDATE="CONFIRMUPDATE",
     CONTACT_CHECKING = 'CONTACT_CHECKING',
+    MANUAL_CHECKLOG_REQUEST = 'MANUAL_CHECKLOG_REQUEST',
+    MANUAL_CHECKLOG_DETAIL = 'MANUAL_CHECKLOG_DETAIL',
 }
 interface CommonModalContextType {
     open: { type: CommonModalType, open: boolean, args?: any }

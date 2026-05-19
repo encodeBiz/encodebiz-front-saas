@@ -73,7 +73,16 @@ export const errorDict: any = {
     "holder/not_found": "No se encuentra el titular",
     "holder/not_found_applepass": "No se encuentra el Applepass del titular",
     "subscription/limit_off": "No puedes realizar esta acción, su plan alcanzó el límite de operaciones permitidas",
-    "analyze/insufficient_data":"No existen suficiente información recopilada para mostrar un analisis detallado de los indicadores de predicción del estado de las operaciones"
+    "analyze/insufficient_data":"No existen suficiente información recopilada para mostrar un analisis detallado de los indicadores de predicción del estado de las operaciones",
+    "checklog/branch_geo_required": "La sucursal no tiene ubicación configurada. Contacta con soporte.",
+    "checklog/calendar_not_resolved": "No hay calendario efectivo para esa fecha. Introduce las horas manualmente.",
+    "checklog/day_disabled": "El día está deshabilitado. Introduce las horas manualmente.",
+    "checklog/duplicate_pending": "Ya existe una solicitud pendiente para este empleado en esta fecha.",
+    "checklog/overlap_detected": "Existe una jornada válida que solapa con ese horario.",
+    "checklog/manual_request_created": "Solicitud enviada correctamente.",
+    "checklog/checkin_not_found": "No se encontró el checkin de referencia.",
+    "checklog/checkin_not_open": "Este checkin no puede cerrarse manualmente (estado inválido).",
+    "checklog/checkout_already_exists": "Ya existe un cierre pendiente o válido para este checkin."
 
   },
   en: {
@@ -149,8 +158,16 @@ export const errorDict: any = {
     "holder/not_found": "Holder not found",
     "holder/not_found_applepass": "Holder not found applepass",
     "subscription/limit_off":"You cannot perform this action, your plan has reached the limit of allowed operations",
-    "analyze/insufficient_data":"There is not enough information available to provide a detailed analysis of the predictive indicators of the state of operations."
- 
+    "analyze/insufficient_data":"There is not enough information available to provide a detailed analysis of the predictive indicators of the state of operations.",
+    "checklog/branch_geo_required": "The branch has no location configured. Contact support.",
+    "checklog/calendar_not_resolved": "No effective calendar for that date. Enter the times manually.",
+    "checklog/day_disabled": "The day is disabled. Enter the times manually.",
+    "checklog/duplicate_pending": "A pending request already exists for this employee on this date.",
+    "checklog/overlap_detected": "A valid shift overlaps with that schedule.",
+    "checklog/manual_request_created": "Request sent successfully.",
+    "checklog/checkin_not_found": "The reference checkin was not found.",
+    "checklog/checkin_not_open": "This checkin cannot be manually closed (invalid state).",
+    "checklog/checkout_already_exists": "A pending or valid checkout already exists for this checkin."
 
   }
 }

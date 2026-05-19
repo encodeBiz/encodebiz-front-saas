@@ -18,10 +18,8 @@ import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { codeError } from "@/config/errorLocales";
 
 const TASKS_HANDLER_URL = process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_TASKS_HANDLER as string;
-const TASKS_FALLBACK_URL =
-  "http://127.0.0.1:5001/encodebiz-services/us-central1/apiV100-firebaseEntryHttp-checkinbiz-tasksHandler/tasks";
 
-const getTasksUrl = () => TASKS_HANDLER_URL || TASKS_FALLBACK_URL;
+const getTasksUrl = () => TASKS_HANDLER_URL;
 
 const getClient = (token: string, locale: any) =>
   new HttpClient({
