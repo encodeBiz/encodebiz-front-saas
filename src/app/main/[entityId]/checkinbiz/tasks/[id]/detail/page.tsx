@@ -9,7 +9,7 @@ import { ArrowBackOutlined, CancelOutlined, CheckCircleOutline, DeleteOutline, E
 import { Box, Card, CardContent, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, IconButton, Link, Paper, Stack, Tooltip, Typography } from "@mui/material";
 import { useAppLocale } from "@/hooks/useAppLocale";
 import TaskFormDialog from "../../components/TaskFormDialog";
-import { statusLabel, TaskChip } from "../../components/taskUi";
+import { statusLabel, TaskChip, TaskStatusChip, TaskTimeComplianceChip } from "../../components/taskUi";
 import TaskActionDialog from "./components/TaskActionDialog";
 import useTaskDetailController from "./page.controller";
 
@@ -101,8 +101,8 @@ export default function TaskDetailPage() {
               <Box display="flex" flexDirection="column">
                 <Typography variant="h4">{task.title}</Typography>
                 <Box display="flex" flexDirection="row" gap={1} flexWrap="wrap">
-                  <TaskChip value={task.status} />
-                  <TaskChip value={task.timeComplianceStatus} />
+                  <TaskStatusChip task={task} />
+                  <TaskTimeComplianceChip task={task} />
                   <TaskChip value={task.priority ?? "medium"} />
                 </Box>
               </Box>
@@ -132,6 +132,19 @@ export default function TaskDetailPage() {
               <DetailText label="Fecha límite" value={format_date_with_locale(task.dueAt, currentLocale as "en" | "es")} />
               <DetailText label="Asignados" value={task.assignedEmployeeIds?.length ?? 0} />
               <DetailText label="Evidencia requerida" value={task.config?.requireEvidenceOnCompletion ? "Sí" : "No"} />
+              <DetailText label="Notificación de inicio" value={task.config?.notifyIfNotStarted ? "Sí" : "No"} />
+              {task.scheduledStartNotificationAt && (
+                <DetailText
+                  label="Notificación programada"
+                  value={format_date_with_locale(task.scheduledStartNotificationAt, currentLocale as "en" | "es")}
+                />
+              )}
+              {task.scheduledStartNotifiedAt && (
+                <DetailText
+                  label="Notificación enviada"
+                  value={format_date_with_locale(task.scheduledStartNotifiedAt, currentLocale as "en" | "es")}
+                />
+              )}
             </Box>
             {task.description && (
               <Paper sx={{ mt: 4 }} elevation={0}>
@@ -222,6 +235,23 @@ export default function TaskDetailPage() {
                           <Typography variant="caption" color="text.secondary">
                             {format_date_with_locale(rating.ratedAt, currentLocale as "en" | "es")}
                           </Typography>
+                          {rating.image?.url && (
+                            <Link href={rating.image.url} target="_blank" rel="noreferrer" underline="none" display="block" sx={{ mt: 1, width: 72 }}>
+                              <Box
+                                component="img"
+                                src={rating.image.url}
+                                alt={rating.image.filename}
+                                sx={{
+                                  width: 72,
+                                  height: 48,
+                                  objectFit: "cover",
+                                  borderRadius: 1,
+                                  border: "1px solid",
+                                  borderColor: "divider",
+                                }}
+                              />
+                            </Link>
+                          )}
                         </Box>
                         <Box display="flex" alignItems="center" gap={1}>
                           <Typography fontWeight={700}>{rating.rating}/5</Typography>
@@ -368,6 +398,7 @@ export default function TaskDetailPage() {
           loading={saving}
           assignments={assignments}
           currentEmployeeId={currentEmployeeId}
+          maxPhotoSizeMB={task.config?.maxPhotoSizeMB ?? 5}
           onClose={() => setAction(null)}
           onSubmit={onActionSubmit}
         />
@@ -384,6 +415,29 @@ export default function TaskDetailPage() {
               <DetailText label="Rol del valorador" value={statusLabel(selectedRating.ratedByRole)} valueFontSize={16} />
               <DetailText label="Fecha" value={format_date_with_locale(selectedRating.ratedAt, currentLocale as "en" | "es")} />
               <DetailText label="Comentario" value={selectedRating.comment ?? "Sin comentario"} valueFontSize={16} />
+              {selectedRating.image?.url && (
+                <Box>
+                  <Typography variant="subtitle2" fontWeight={700} sx={{ mb: 1 }}>Imagen adjunta</Typography>
+                  <Link href={selectedRating.image.url} target="_blank" rel="noreferrer" underline="none">
+                    <Box
+                      component="img"
+                      src={selectedRating.image.url}
+                      alt={selectedRating.image.filename}
+                      sx={{
+                        width: "100%",
+                        maxHeight: 360,
+                        objectFit: "contain",
+                        borderRadius: 2,
+                        border: "1px solid",
+                        borderColor: "divider",
+                      }}
+                    />
+                  </Link>
+                  <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 0.5 }}>
+                    {selectedRating.image.filename} · {Math.round(Number(selectedRating.image.sizeKB ?? 0))} KB
+                  </Typography>
+                </Box>
+              )}
             </Stack>
           )}
         </DialogContent>

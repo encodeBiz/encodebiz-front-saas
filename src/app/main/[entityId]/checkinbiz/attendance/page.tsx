@@ -7,6 +7,8 @@ import useAttendanceController from './page.controller';
 import { useCommonModal } from '@/hooks/useCommonModal';
 import { CommonModalType } from '@/contexts/commonModalContext';
 import dynamic from "next/dynamic";
+import { SassButton } from '@/components/common/buttons/GenericButton';
+import { Add } from '@mui/icons-material';
 import EmptyList from '@/components/common/EmptyState/EmptyList';
 import emptyImage from '../../../../../../public/assets/images/empty/asistencia.svg';
 import InfoModal from '@/components/common/modals/InfoModal';
@@ -21,6 +23,10 @@ const AttendanceFormModal = dynamic(() => import("./AttendanceFormModal/Attendan
   ssr: false,
 })
 
+const ManualChecklogRequestModal = dynamic(() => import("./ManualChecklogRequestModal/ManualChecklogRequestModal").then(mod => mod.default), {
+  ssr: false,
+})
+
 export default function AttendanceList() {
   const t = useTranslations();
   const {
@@ -28,10 +34,12 @@ export default function AttendanceList() {
     onNext, onBack, empthy,
     filterParams, topFilter,
     columns, rowAction, onSuccessCreate,
+    onRequestManual,
     loading, setViewMode, summaryItems, summaryPagination } = useAttendanceController();
 
   const { open, closeModal } = useCommonModal();
   const logDetail = useMemo(() => open.args?.log, [open.args?.log]);
+
   const tabs: TabItem[] = [
     {
       id: 'summary',
@@ -77,12 +85,20 @@ export default function AttendanceList() {
           />
         </Box>
       )
-    }
+    },
   ];
+
   return (
     <Container maxWidth={false} disableGutters sx={{ px: { xs: 2, md: 4 } }}>
       <HeaderPage
         title={t("attendance.list")}
+        actions={
+          <Box display="flex" justifyContent="flex-end" alignItems="flex-end" gap={2} sx={{ width: '100%' }}>
+            <SassButton onClick={onRequestManual} variant="contained" startIcon={<Add />}>
+              {t('attendance.manualRequest.buttonLabel')}
+            </SassButton>
+          </Box>
+        }
       >
         {empthy && !loading &&
           <EmptyList
@@ -90,9 +106,6 @@ export default function AttendanceList() {
             title={t('employeeDashboard.attendanceNoDataTitle')}
             description={t('employeeDashboard.attendanceNoDataText')}
           />}
-
-
-         
 
         {!empthy && (
           <Box sx={{ width: '100%' }}>
@@ -109,7 +122,13 @@ export default function AttendanceList() {
           </Box>
         )}
       </HeaderPage>
+
       {open.type === CommonModalType.CHECKLOGFORM && <AttendanceFormModal onSuccess={onSuccessCreate} />}
+
+      {open.type === CommonModalType.MANUAL_CHECKLOG_REQUEST && (
+        <ManualChecklogRequestModal onSuccess={onSuccessCreate} />
+      )}
+
       {open.type === CommonModalType.INFO && !!open.args?.item &&
         <InfoModal
           title={t('attendance.requestUpdates')}
@@ -117,15 +136,16 @@ export default function AttendanceList() {
           htmlDescription={<UpdateRequest logDetail={open.args} />}
           cancelBtn={false}
         />}
-      {open.type === CommonModalType.LOGS && !!logDetail && (<InfoModal onClose={() => closeModal(CommonModalType.LOGS)}
-        title={t("core.label.viewDetailsTitle")}
-        centerBtn
-        htmlDescription={<LogDetail logDetail={logDetail} />}
-        cancelBtn={false}
-      />
 
+      {open.type === CommonModalType.LOGS && !!logDetail && (
+        <InfoModal
+          onClose={() => closeModal(CommonModalType.LOGS)}
+          title={t("core.label.viewDetailsTitle")}
+          centerBtn
+          htmlDescription={<LogDetail logDetail={logDetail} />}
+          cancelBtn={false}
+        />
       )}
-
     </Container>
   );
 }

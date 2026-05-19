@@ -164,7 +164,15 @@ export default function useTaskDetailController() {
     if (action === "note") return runMutation(() => addTaskNote(id, { entityId, content: data.content, type: data.type }, token, currentLocale));
     if (action === "reject") return runMutation(() => rejectTask(id, { entityId, reason: data.reason }, token, currentLocale));
     if (action === "cancel") return runMutation(() => updateTaskStatus(id, { entityId, status: "cancelled", cancellationReason: data.cancellationReason }, token, currentLocale));
-    if (action === "rate") return runMutation(() => rateTaskWorker(id, { entityId, employeeId: data.employeeId, rating: data.rating, comment: data.comment }, token, currentLocale));
+    if (action === "rate") {
+      return runMutation(() => rateTaskWorker(id, {
+        entityId,
+        employeeId: data.employeeId,
+        rating: data.rating,
+        comment: data.comment,
+        image: data.image,
+      }, token, currentLocale));
+    }
     if (action === "resource") {
       const formData = new FormData();
       formData.append("entityId", entityId);

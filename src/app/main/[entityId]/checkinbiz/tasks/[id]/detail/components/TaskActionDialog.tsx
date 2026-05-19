@@ -12,6 +12,7 @@ import {
   MenuItem,
   Stack,
   TextField,
+  Typography,
 } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import TaskSearchIndexMultiSelect, { TaskSearchOption } from "../../../components/TaskSearchIndexMultiSelect";
@@ -24,6 +25,7 @@ export default function TaskActionDialog({
   loading,
   assignments,
   currentEmployeeId,
+  maxPhotoSizeMB = 5,
   onClose,
   onSubmit,
 }: {
@@ -32,6 +34,7 @@ export default function TaskActionDialog({
   loading?: boolean;
   assignments?: TaskAssignment[];
   currentEmployeeId?: string | null;
+  maxPhotoSizeMB?: number;
   onClose: () => void;
   onSubmit: (data: any) => void;
 }) {
@@ -42,6 +45,7 @@ export default function TaskActionDialog({
   const [rating, setRating] = useState(5);
   const [file, setFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState("");
+  const [previewUrl, setPreviewUrl] = useState("");
 
   useEffect(() => {
     if (open) {
@@ -52,17 +56,30 @@ export default function TaskActionDialog({
       setRating(5);
       setFile(null);
       setFileError("");
+      setPreviewUrl("");
     }
   }, [open, assignments, currentEmployeeId]);
+
+  useEffect(() => {
+    if (!file) {
+      setPreviewUrl("");
+      return;
+    }
+
+    const url = URL.createObjectURL(file);
+    setPreviewUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [file]);
 
   const currentRule = useMemo(
     () => ({
       accept: "image/jpeg,image/png,image/webp",
-      maxBytes: 5 * 1024 * 1024,
+      maxBytes: maxPhotoSizeMB * 1024 * 1024,
       allowedMimeTypes: ["image/jpeg", "image/png", "image/webp"],
-      helper: "Formatos permitidos: JPG, PNG, WEBP. Tamaño máximo: 5 MB.",
+      allowedExtensions: [".jpg", ".jpeg", ".png", ".webp"],
+      helper: `Formatos permitidos: JPG, PNG, WEBP. Tamaño máximo: ${maxPhotoSizeMB} MB.`,
     }),
-    []
+    [maxPhotoSizeMB]
   );
 
   const handleFileChange = (nextFile: File | null) => {
@@ -70,7 +87,9 @@ export default function TaskActionDialog({
     setFile(null);
     if (!nextFile) return;
 
-    if (!(currentRule.allowedMimeTypes as readonly string[]).includes(nextFile.type)) {
+    const fileName = nextFile.name.toLowerCase();
+    const hasAllowedExtension = currentRule.allowedExtensions.some((extension) => fileName.endsWith(extension));
+    if (!(currentRule.allowedMimeTypes as readonly string[]).includes(nextFile.type) || !hasAllowedExtension) {
       setFileError(`Tipo no permitido. ${currentRule.helper}`);
       return;
     }
@@ -97,7 +116,7 @@ export default function TaskActionDialog({
     if (type === "note") onSubmit({ content: text.trim(), type: noteType });
     if (type === "reject") onSubmit({ reason: text.trim() });
     if (type === "cancel") onSubmit({ cancellationReason: text.trim() });
-    if (type === "rate") onSubmit({ employeeId, rating, comment: text.trim() });
+    if (type === "rate") onSubmit({ employeeId, rating, comment: text.trim(), image: file });
     if (type === "resource") onSubmit({ type: "photo", description: text.trim(), employeeId, file });
   };
 
@@ -105,7 +124,7 @@ export default function TaskActionDialog({
     loading ||
     (type === "assign" && selectedEmployees.length === 0) ||
     (["note", "reject", "cancel"].includes(type) && !text.trim()) ||
-    (type === "rate" && !employeeId) ||
+    (type === "rate" && (!employeeId || !!fileError)) ||
     (type === "resource" && (!file || !!fileError));
 
   const rateableAssignments = (assignments ?? []).filter((assignment) => assignment.employeeId !== currentEmployeeId);
@@ -165,7 +184,34 @@ export default function TaskActionDialog({
                   </MenuItem>
                 ))}
               </TextField>
+              {rating <= 2 && (
+                <Alert severity="info">Puedes adjuntar una imagen como evidencia para justificar esta valoración.</Alert>
+              )}
               <TextField label="Comentario" value={text} onChange={(event) => setText(event.target.value)} fullWidth multiline minRows={3} />
+              <TextField
+                type="file"
+                onChange={(event: any) => handleFileChange(event.target.files?.[0] ?? null)}
+                fullWidth
+                slotProps={{ htmlInput: { accept: currentRule.accept } }}
+                helperText={`Imagen opcional. ${currentRule.helper}`}
+              />
+              {fileError && <Alert severity="error">{fileError}</Alert>}
+              {previewUrl && (
+                <Box sx={{ border: "1px solid", borderColor: "divider", borderRadius: 2, p: 1 }}>
+                  <Box
+                    component="img"
+                    src={previewUrl}
+                    alt="Vista previa de valoración"
+                    sx={{ width: "100%", maxHeight: 260, objectFit: "contain", borderRadius: 1 }}
+                  />
+                  <Stack direction="row" justifyContent="space-between" alignItems="center" gap={1} sx={{ mt: 1 }}>
+                    <Typography variant="caption" color="text.secondary">{file?.name}</Typography>
+                    <SassButton size="small" variant="outlined" onClick={() => handleFileChange(null)}>
+                      Quitar
+                    </SassButton>
+                  </Stack>
+                </Box>
+              )}
             </>
           )}
 

@@ -13,7 +13,7 @@ import SearchFilter from "@/components/common/table/filters/SearchFilter";
 import SearchIndexFilter from "@/components/common/table/filters/SearchIndexInput";
 import { ISearchIndex } from "@/domain/core/SearchIndex";
 import { CustomChip } from "@/components/common/table/CustomChip";
-import { Edit, Map as MapIcon } from "@mui/icons-material";
+import { Edit, Map as MapIcon, ExitToApp } from "@mui/icons-material";
 import { onGoMap } from "@/lib/common/maps";
 import { useCommonModal } from "@/hooks/useCommonModal";
 import { CommonModalType } from "@/contexts/commonModalContext";
@@ -295,6 +295,19 @@ export default function useAttendanceController() {
     openModal(CommonModalType.CHECKLOGFORM, { data: item });
   };
 
+  const onCloseShift = (item: IChecklog & any) => {
+    const tz = item.metadata?.tz ?? item.branch?.address?.timeZone;
+    openModal(CommonModalType.MANUAL_CHECKLOG_REQUEST, {
+      checkinId: item.id,
+      employeeId: item.employeeId,
+      employeeName: item.employee?.fullName ?? item.employeeId,
+      branchId: item.branchId,
+      branchName: item.branch?.name ?? item.branchId,
+      checkinDate: format_date(item.timestamp, 'DD/MM/YYYY', tz),
+      checkinTime: format_date(item.timestamp, 'HH:mm', tz),
+    });
+  };
+
   const rowAction: Array<any> = [
     {
       actionBtn: true,
@@ -313,6 +326,15 @@ export default function useAttendanceController() {
       bulk: false,
       allowItem: () => true,
       onPress: (item: IChecklog) => onGoMap(item.geo.lat, item.geo.lng)
+    },
+    {
+      actionBtn: true,
+      color: 'warning' as const,
+      icon: <ExitToApp color="warning" />,
+      label: t('attendance.manualRequest.closeShiftButton'),
+      bulk: false,
+      allowItem: (row: IChecklog) => row.type === 'checkin' && row.status === 'valid',
+      onPress: (item: IChecklog & any) => onCloseShift(item),
     },
     {
       actionBtn: true,
@@ -426,9 +448,12 @@ export default function useAttendanceController() {
     }
   };
 
+  const onRequestManual = () => {
+    openModal(CommonModalType.MANUAL_CHECKLOG_REQUEST);
+  };
+
   const changeViewMode = (nextViewMode: AttendanceViewMode) => {
     setViewMode(nextViewMode);
-
     if (nextViewMode === "events") {
       setEventItemsHistory([]);
       setEventPagination((prev) => ({ ...prev, currentPage: 0, startAfter: null }));
@@ -544,6 +569,7 @@ export default function useAttendanceController() {
     columns: eventColumns,
     rowAction,
     onSuccessCreate,
+    onRequestManual,
     loading,
     filterParams: {
       currentPage: eventPagination.currentPage,

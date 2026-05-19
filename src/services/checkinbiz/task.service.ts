@@ -18,10 +18,8 @@ import { HttpClient } from "@/lib/http/httpClientFetchNext";
 import { codeError } from "@/config/errorLocales";
 
 const TASKS_HANDLER_URL = process.env.NEXT_PUBLIC_BACKEND_URI_CHECKINBIZ_TASKS_HANDLER as string;
-const TASKS_FALLBACK_URL =
-  "http://127.0.0.1:5001/encodebiz-services/us-central1/apiV100-firebaseEntryHttp-checkinbiz-tasksHandler/tasks";
 
-const getTasksUrl = () => TASKS_HANDLER_URL || TASKS_FALLBACK_URL;
+const getTasksUrl = () => TASKS_HANDLER_URL;
 
 const getClient = (token: string, locale: any) =>
   new HttpClient({
@@ -280,13 +278,46 @@ export async function rejectTask(
 
 export async function rateTaskWorker(
   taskId: string,
-  data: { entityId: string; employeeId: string; rating: number; comment?: string },
+  data: { entityId: string; employeeId: string; rating: number; comment?: string; image?: File | null },
   token: string,
   locale: any = "es"
 ) {
   try {
     if (!token) throw new Error("Error to fetch user auth token");
-    const response = await getClient(token, locale).post(`${getTasksUrl()}/${taskId}/ratings`, data);
+    if (data.image) {
+      const formData = new FormData();
+      formData.append("entityId", data.entityId);
+      formData.append("employeeId", data.employeeId);
+      formData.append("rating", `${data.rating}`);
+      if (data.comment?.trim()) formData.append("comment", data.comment.trim());
+      formData.append("image", data.image);
+
+      const response = await fetch(`${getTasksUrl()}/${taskId}/ratings`, {
+        method: "POST",
+        headers: {
+          authorization: `Bearer ${token}`,
+          locale,
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const error = await response.json().catch(() => null);
+        throw new Error(error ? JSON.stringify(error) : `HTTP error! status: ${response.status}`);
+      }
+
+      const contentType = response.headers.get("content-type");
+      if (contentType?.includes("application/json")) return unwrapResponse(await response.json());
+      return {};
+    }
+
+    const jsonPayload = {
+      entityId: data.entityId,
+      employeeId: data.employeeId,
+      rating: data.rating,
+      ...(data.comment?.trim() ? { comment: data.comment.trim() } : {}),
+    };
+    const response = await getClient(token, locale).post(`${getTasksUrl()}/${taskId}/ratings`, jsonPayload);
     return unwrapResponse(response);
   } catch (error: any) {
     handleServiceError(error, locale);
