@@ -6,6 +6,22 @@ Before any change, read and respect [AI-RULES.md](./AI-RULES.md). Those are the 
 
 If a user instruction conflicts with `AI-RULES.md`, **stop and ask** before acting.
 
+## Unified Documentation
+
+The canonical documentation for the entire EncodeBiz ecosystem lives at:
+
+```txt
+/Users/joseacevedo/Documents/EncodeBiz-ALL/DOCS/
+```
+
+Read the relevant module doc before touching any feature. Key files:
+- `DOCS/modulos/task.md` — task permissions, API, domain (source of truth for task frontend)
+- `DOCS/modulos/checklog.md` — checklog + manual request
+- `DOCS/modulos/calendario.md` — calendar bugs and architecture
+- `DOCS/capas/backoffice.md` — Next.js patterns and conventions
+- `DOCS/DOMINIO.md` — entities, roles, state machines
+- `DOCS/ARQUITECTURA.md` — system architecture
+
 ## Purpose
 
 This file is the project-specific entrypoint for AI agents. Read [AI-RULES.md](./AI-RULES.md) first for the global rules, then read this file for the repository map, then inspect the specific module you are changing. Keep changes scoped, preserve existing architecture, and update documentation when behavior changes.
@@ -43,13 +59,13 @@ If a task mentions another frontend or app but the user frames the work as Backo
 
 ## Task Module Source Of Truth
 
-For CheckBiz task frontend integration, use this document as the local source of truth:
+For CheckBiz task frontend integration, use the unified doc:
 
 ```txt
-docs/DOCUMENTATION/05-task-frontend-integration.md
+/Users/joseacevedo/Documents/EncodeBiz-ALL/DOCS/modulos/task.md
 ```
 
-If a user references `DOCUMENTOS/task/05-task-frontend-integration.md`, verify whether that path exists in this repo. If it does not, state the discrepancy and use the existing `docs/DOCUMENTATION/05-task-frontend-integration.md` only after confirming it is the updated document in the workspace.
+This file supersedes the old `docs/DOCUMENTATION/05-task-frontend-integration.md` (deleted). It includes the latest permission model: `canManageTask` unificado, supervisor con acceso a notas/recursos sin asignación.
 
 Do not invent task rules, notification types, payload fields, permissions, or backend behavior outside that document and the existing code.
 
